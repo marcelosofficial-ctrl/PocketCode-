@@ -4,6 +4,8 @@
 **Created:** 2026-10-20.  
 **Warning:** Do not treat this document as evidence or a completed plan until sections are populated with sourced findings and reviewed.
 
+**Interim companion:** See [AI_COLLAB/MVP_DECISION_BRIEF.md](MVP_DECISION_BRIEF.md) for ChatGPT's current narrow-MVP recommendation and an official-documentation shortlist of execution providers. This companion is not a provider selection, and this master research scaffold remains incomplete. Gemini's pasted specification has not been verified as a canonical repository update.
+
 ## 1. Executive summary
 Product hypothesis; strongest evidence for/against; recommendation; confidence; go/pivot/stop recommendation; key uncertainties.
 
