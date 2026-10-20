@@ -27,6 +27,7 @@ The initial MVP candidate is a mobile-first web app with one remote runtime and 
 - [Project status](PROJECT_STATUS.md)
 - [Product specification](PRODUCT_SPEC.md)
 - [First-run workflow](PRODUCT/FIRST_RUN_WORKFLOW.md)
+- [User validation interview script (not yet conducted)](PRODUCT/USER_VALIDATION_SCRIPT.md)
 - [Controlled Python execution proof runbook (not yet executed)](PRODUCT/CONTROLLED_PYTHON_PROOF_RUNBOOK.md)
 - [Interactive mobile runner prototype source (simulated; no code execution)](prototypes/mobile-runner/index.html)
 - [How to enable and review the phone preview](prototypes/mobile-runner/README.md)
