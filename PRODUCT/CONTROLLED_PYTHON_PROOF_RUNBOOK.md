@@ -84,7 +84,8 @@ Configure a small server-side output cap. Expected: captured output does not exc
 Upload a synthetic file named `input.txt` containing exactly `pocketcode-file-input-v1\n`.
 
 Source:
-```from pathlib import Path
+```python
+from pathlib import Path
 
 data = Path("input.txt").read_text(encoding="utf-8")
 Path("result.txt").write_text("copied:" + data, encoding="utf-8")
