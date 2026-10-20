@@ -40,15 +40,16 @@ Discovery, competitive research, and MVP definition. No production architecture,
 
 ## Immediate next steps
 
-1. Validate the target user and most valuable first workflow.
-2. Complete a competitor and alternatives matrix, including limits and evidence quality.
-3. Decide what the MVP must execute and what it deliberately will not support.
-4. Compare hosted sandbox options and cost/security constraints before choosing a provider.
-5. Create a small, testable technical proof before building a full application.
-6. Update the README and repository description once positioning and naming are clearer.
+1. Interview likely users to test whether the main pain is running AI-generated code from a phone, debugging it, or building complete apps.
+2. Test the working positioning hypothesis in [MARKETING/POSITIONING_HYPOTHESIS.md](MARKETING/POSITIONING_HYPOTHESIS.md); do not treat the slogan as validated.
+3. Compare the strongest two hosted sandbox options against the acceptance tests, current pricing, isolation, and data-retention constraints.
+4. Create a small, testable Python execution proof before building a full application.
+5. Use real test evidence to decide whether to proceed to a mobile UI prototype.
+6. Revisit the provisional name before investing in a final brand or domain.
 
 ## Progress log
 
 - Repository created by owner and made public.
 - Initial README exists; its current wording is temporary.
 - Initial product hypothesis and working documents established.
+- Added a working vibe-coding marketing/positioning hypothesis and updated the README headline; positioning is not customer-validated.
