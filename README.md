@@ -25,6 +25,7 @@ The initial MVP candidate is a mobile-first web app with one remote runtime and 
 ## Project documents
 
 - [Project status](PROJECT_STATUS.md)
+- [Zero-budget work plan](PRODUCT/ZERO_BUDGET_WORK_PLAN.md)
 - [Product specification](PRODUCT_SPEC.md)
 - [First-run workflow](PRODUCT/FIRST_RUN_WORKFLOW.md)
 - [User validation interview script (not yet conducted)](PRODUCT/USER_VALIDATION_SCRIPT.md)
