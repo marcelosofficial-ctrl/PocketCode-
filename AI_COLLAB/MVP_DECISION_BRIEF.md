@@ -164,17 +164,17 @@ LLM costs are excluded from the first proof because it does not call a model API
 | Task ID | Status | Goal | Completion evidence |
 |---|---|---|---|
 | PC-MVP-001 | READY | Freeze the first-run acceptance criteria | Product workflow and test IDs agree |
-| PC-PROV-001 | READY for desk research; owner approval required before paid/live tests | Compare exact Cloudflare and Modal products; keep Daytona as alternate if its tier meets egress requirements | Source-linked provider gate table, pricing formulas, unresolved questions |
+| PC-PROV-001 | PARTIAL — documentation comparison updated; exact lifecycle, retention, and account billing still require confirmation | Compare exact Cloudflare and Modal products; keep Daytona as alternate if its tier meets egress requirements | Source-linked provider gate table, pricing arithmetic, explicit unresolved questions |
 | PC-CONTRACT-001 | READY | Define provider-neutral run/result lifecycle and file constraints | Request/result schemas and state machine reviewed |
 | PC-SEC-001 | READY | Turn security launch gates into testable requirements | Threats mapped to controls and PC-RUN tests |
 | PC-PROOF-001 | BLOCKED pending provider/account/owner approval | Run controlled real Python execution proof | Actual evidence recorded for PC-RUN-001 to 008 |
 | PC-SEC-TEST-001 | BLOCKED pending controlled test environment | Test isolation, egress, cleanup and abuse limits | Evidence recorded for PC-RUN-009 to 014 |
-| PC-UX-001 | READY | Create phone-reviewable UI prototype with simulated states | No fake execution represented as real; mobile layout reviewed |
+| PC-UX-001 | COMPLETE — owner reviewed; clarity feedback applied | Create phone-reviewable UI prototype with simulated states | Public preview deployed; owner reviewed; controls simplified and simulation clearly labeled |
 | PC-USER-001 | NEEDS OWNER ACTION | Validate the workflow with target users | Non-leading interviews/usability observations and explicit decision threshold |
 
 ## Owner approvals deliberately not requested yet
 
-No paid usage, provider account, credential creation, execution backend, native release, repository visibility change, or irreversible infrastructure action is included in this recommendation. The static mobile prototype has been implemented and reviewed by the owner; the next safe work is to finish the exact provider comparison and define the smallest controlled test plan. Any paid/live execution test remains blocked pending explicit owner approval.
+No paid usage, provider account, credential creation, execution backend, native release, repository visibility change, or irreversible infrastructure action is included in this recommendation. The static mobile prototype has been implemented and reviewed by the owner; the provider documentation comparison now has a conditional leading candidate, but retention, lifecycle, billing, and live security behavior remain unresolved. Any paid/live execution test remains blocked pending explicit owner approval.
 
 ## Sources
 
