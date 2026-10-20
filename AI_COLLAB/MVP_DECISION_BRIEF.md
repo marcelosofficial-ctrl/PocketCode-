@@ -103,6 +103,18 @@ After provider choice and owner approval, run a small test suite with non-sensit
 
 Record exact provider product/plan, configuration, test date, observed outputs, failure behavior, cold-start and repeat-run timing, and actual billed usage if any. Never label a test passed unless it was executed and its evidence recorded.
 
+## Current cost and network facts to carry into the decision
+
+Checked against current official provider pages on 2026-10-20. These are desk-research facts, not an account-specific quote or a live security test.
+
+| Question | Cloudflare Containers / Sandbox | Modal Sandboxes | Product implication |
+|---|---|---|---|
+| Fixed/entry cost | Containers pricing currently lists usage as part of the **$5/month Workers Paid plan**; the Containers table lists no Free-tier allocation. CPU, memory and disk allowances/overages are metered. See [Containers pricing](https://developers.cloudflare.com/containers/platform/pricing/). | The current [Sandbox product page](https://modal.com/products/sandboxes) advertises **$30/month free compute**. Treat this as included credit, not proof that all production use is free or that it will remain available; confirm account eligibility, expiration, and billing terms before any test. | Neither option should be described as unconditionally free. Do not create an account or enable paid usage without owner approval. |
+| Outbound network default | Current [sandbox security guidance](https://developers.cloudflare.com/sandbox/concepts/security/) says the Container's internet access is disabled by default; verify the exact current API/configuration and any proxy/intercepted egress paths. | Current [networking guidance](https://frontend-deadbeef.modal.com/docs/guide/sandbox-networking) says public outbound access is allowed by default; explicitly set `block_network=True` or a carefully reviewed allowlist for untrusted code. | Modal needs explicit egress configuration from the start. Cloudflare's default is promising but is not itself proof of a complete SSRF/metadata/private-network defense. |
+| Isolation caveat | The [security model](https://developers.cloudflare.com/sandbox/concepts/security/) says processes inside a single sandbox share its Linux system, files, processes and localhost; do not put unrelated users' code in the same sandbox trust boundary. | Modal documents Sandboxes built on gVisor and isolated per-sandbox environments; verify account/workspace access, resource cleanup and the exact workload behavior in a controlled test. | Use a fresh disposable sandbox per run/user boundary for the first proof; never inject provider credentials or unrelated secrets into untrusted code. |
+
+**Interim recommendation:** keep Cloudflare and Modal as candidates, not a winner. Cloudflare's documented no-internet default may reduce configuration mistakes; Modal exposes explicit network-blocking controls and has a clear sandbox execution API. Compare the exact configuration, fixed costs, lifecycle, file transfer, and ability to enforce limits before choosing. No provider has been exercised by PocketCode.
+
 ## Cost model template
 
 Do not rely on manually typed per-user totals. Calculate the model from the actual selected product rate card:
@@ -138,7 +150,7 @@ LLM costs are excluded from the first proof because it does not call a model API
 
 ## Owner approvals deliberately not requested yet
 
-No paid usage, new public endpoint, credential creation, native release, repository visibility change, or irreversible infrastructure action is included in this recommendation. The next safe work is documentation and a mobile UI prototype with clearly simulated execution states.
+No paid usage, provider account, credential creation, execution backend, native release, repository visibility change, or irreversible infrastructure action is included in this recommendation. The static mobile prototype has been implemented and reviewed by the owner; the next safe work is to finish the exact provider comparison and define the smallest controlled test plan. Any paid/live execution test remains blocked pending explicit owner approval.
 
 ## Sources
 
