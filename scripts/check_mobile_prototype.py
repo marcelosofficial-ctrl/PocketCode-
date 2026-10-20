@@ -38,35 +38,35 @@ def main() -> int:
     # Lightweight accessibility/mobile smoke checks. These are source heuristics, not an audit.
     if 'name="viewport"' not in html or "width=device-width" not in html:
         errors.append("Missing responsive viewport metadata")
-    if len(re.findall(r"<h1\\b", html, re.IGNORECASE)) != 1:
+    if len(re.findall(r"<h1\b", html, re.IGNORECASE)) != 1:
         errors.append("Expected exactly one primary <h1> heading")
 
-    textareas = re.findall(r"<textarea\\b([^>]*)>", html, re.IGNORECASE)
+    textareas = re.findall(r"<textarea\b([^>]*)>", html, re.IGNORECASE)
     for index, attrs in enumerate(textareas, start=1):
-        if not re.search(r"\\baria-label\\s*=", attrs, re.IGNORECASE) and not re.search(
-            r"\\baria-labelledby\\s*=", attrs, re.IGNORECASE
+        if not re.search(r"\baria-label\s*=", attrs, re.IGNORECASE) and not re.search(
+            r"\baria-labelledby\s*=", attrs, re.IGNORECASE
         ):
             errors.append(f"Textarea {index} is missing an accessible label")
 
-    buttons = re.findall(r"<button\\b([^>]*)>(.*?)</button>", html, re.IGNORECASE | re.DOTALL)
+    buttons = re.findall(r"<button\b([^>]*)>(.*?)</button>", html, re.IGNORECASE | re.DOTALL)
     for index, (attrs, inner) in enumerate(buttons, start=1):
         visible_text = re.sub(r"<[^>]+>", "", inner).strip()
-        has_label = re.search(r"\\baria-label\\s*=", attrs, re.IGNORECASE)
+        has_label = re.search(r"\baria-label\s*=", attrs, re.IGNORECASE)
         if not visible_text and not has_label:
             errors.append(f"Button {index} has no detectable accessible name")
 
     for tab_id in ("codeTab", "csvTab"):
         tab_match = re.search(
-            rf"<button\\b(?=[^>]*\\bid=[\\\"]{tab_id}[\\\"])([^>]*)>",
+            rf"<button\b(?=[^>]*\bid=["']{tab_id}["'])([^>]*)>",
             html,
             re.IGNORECASE,
         )
-        if not tab_match or not re.search(r"\\brole=[\\\"]tab[\\\"]", tab_match.group(1), re.IGNORECASE):
+        if not tab_match or not re.search(r"\brole=["']tab["']", tab_match.group(1), re.IGNORECASE):
             errors.append(f"#{tab_id} is missing role=tab")
-        elif not re.search(r"\\baria-selected=[\\\"](?:true|false)[\\\"]", tab_match.group(1), re.IGNORECASE):
+        elif not re.search(r"\baria-selected=["'](?:true|false)["']", tab_match.group(1), re.IGNORECASE):
             errors.append(f"#{tab_id} is missing aria-selected state")
 
-    if not re.search(r"\\baria-live=[\\\"](?:polite|assertive)[\\\"]", html, re.IGNORECASE):
+    if not re.search(r"\baria-live=["'](?:polite|assertive)["']", html, re.IGNORECASE):
         errors.append("Missing aria-live region for status/output updates")
 
     required_phrases = [
