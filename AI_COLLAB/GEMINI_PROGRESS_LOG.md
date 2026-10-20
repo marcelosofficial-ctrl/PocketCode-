@@ -29,5 +29,6 @@
 - Created a co-developer role split and mandatory multi-pass protocol.
 - Baseline docs inspected: AGENTS.md, GEMINI.md, PROJECT_STATUS.md, PRODUCT_SPEC.md, PRODUCT/FIRST_RUN_WORKFLOW.md, ARCHITECTURE.md, SECURITY.md, ROADMAP.md, DECISIONS.md, competitive analysis, execution-provider research, and marketing positioning hypothesis.
 - Current truth: discovery stage; no app code, framework, or provider selected; Python execution is proposed but unproven; first-run workflow contains 12 proposed acceptance tests.
+- Added AI_COLLAB/CHATGPT_INITIAL_PROVIDER_REVIEW.md as a preliminary independent primary-source review of Modal, Daytona, Cloudflare Sandbox and E2B; this is desk research only, not a selection or live test.
 - No provider selected, no execution tests run, no customer interviews conducted, no paid services used.
 - Next: Gemini begins Pass 0 and proceeds through the full protocol in GEMINI_HANDOFF.md.
