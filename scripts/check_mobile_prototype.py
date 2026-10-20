@@ -57,16 +57,16 @@ def main() -> int:
 
     for tab_id in ("codeTab", "csvTab"):
         tab_match = re.search(
-            rf"<button\b(?=[^>]*\bid=["']{tab_id}["'])([^>]*)>",
+            rf"""<button\b(?=[^>]*\bid=["']{tab_id}["'])([^>]*)>""",
             html,
             re.IGNORECASE,
         )
-        if not tab_match or not re.search(r"\brole=["']tab["']", tab_match.group(1), re.IGNORECASE):
+        if not tab_match or not re.search(r"""\brole=["']tab["']""", tab_match.group(1), re.IGNORECASE):
             errors.append(f"#{tab_id} is missing role=tab")
-        elif not re.search(r"\baria-selected=["'](?:true|false)["']", tab_match.group(1), re.IGNORECASE):
+        elif not re.search(r"""\baria-selected=["'](?:true|false)["']""", tab_match.group(1), re.IGNORECASE):
             errors.append(f"#{tab_id} is missing aria-selected state")
 
-    if not re.search(r"\baria-live=["'](?:polite|assertive)["']", html, re.IGNORECASE):
+    if not re.search(r"""\baria-live=["'](?:polite|assertive)["']""", html, re.IGNORECASE):
         errors.append("Missing aria-live region for status/output updates")
 
     required_phrases = [
