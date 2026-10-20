@@ -77,7 +77,7 @@ class PrototypeCheckerTests(unittest.TestCase):
             "editor.value + report()",
         ))
         self.assertEqual(result.returncode, 1)
-        self.assertIn("debugging prompt no longer includes csv.textContent", result.stdout)
+        self.assertIn("Debugging prompt no longer includes csv.textContent", result.stdout)
 
 
 if __name__ == "__main__":
