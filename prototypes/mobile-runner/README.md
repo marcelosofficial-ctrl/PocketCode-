@@ -1,5 +1,7 @@
 # Mobile Runner Prototype Preview
 
+**[Open the live phone preview](https://marcelosofficial-ctrl.github.io/PocketCode-/)** — sample output only; submitted code is not executed.
+
 This is a static, interactive UI prototype for product feedback. It does not execute submitted code and must not be treated as evidence that the runtime works.
 
 ## Enable the phone-friendly preview
