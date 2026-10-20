@@ -115,6 +115,30 @@ Checked against current official provider pages on 2026-10-20. These are desk-re
 
 **Interim recommendation:** keep Cloudflare and Modal as candidates, not a winner. Cloudflare's documented no-internet default may reduce configuration mistakes; Modal exposes explicit network-blocking controls and has a clear sandbox execution API. Compare the exact configuration, fixed costs, lifecycle, file transfer, and ability to enforce limits before choosing. No provider has been exercised by PocketCode.
 
+## Practical first-proof candidate (not a vendor decision)
+
+For the first controlled proof, **Modal Sandboxes are the current leading candidate for evaluation**, not an approved selection. Reasons: the product has a documented Python SDK/process API, explicit server-configurable `block_network=True`, and the Starter plan currently advertises $30/month in compute credit that applies to Sandboxes. That makes it easier to evaluate without committing to a monthly platform subscription than Cloudflare Containers, which currently requires the $5/month Workers Paid plan. This comparison is about proof friction, not a conclusion that Modal is more secure or better for production.
+
+Sources checked 2026-10-20:
+- [Modal Sandbox SDK reference](https://modal.com/docs/sdk/py/latest/Sandbox): exposes `block_network`, whose default is `False`; the proof must set it to `True` explicitly and verify the resulting behavior.
+- [Modal pricing](https://modal.com/pricing): Starter is $0/month plus compute and advertises $30/month compute credit; the page separately lists Sandbox CPU and memory rates. Credit eligibility and current billing settings must be confirmed before running anything.
+- [Cloudflare Containers pricing](https://developers.cloudflare.com/containers/platform/pricing/): Containers are included in the $5/month Workers Paid plan with resource allowances and overage rates; the Free column lists no Containers usage.
+- [Cloudflare sandbox security](https://developers.cloudflare.com/sandbox/concepts/security/): a Container is a trust boundary and code in it can access the sandbox's files/processes; credentials must not be injected into untrusted code.
+
+### Illustrative compute arithmetic (not a cost estimate)
+
+At Modal's currently listed Sandbox rates, a hypothetical run billed for 10 seconds at the minimum 0.125 physical cores and 0.25 GiB memory computes to:
+
+`CPU: 10 × 0.125 × $0.00003942 = $0.000049275`  
+`Memory: 10 × 0.25 × $0.00000667 = $0.000016675`  
+`Subtotal: $0.00006595 per 10 billed seconds`
+
+This excludes startup/idle time if billed, storage, network egress, request/control-plane charges, retries, and any usage outside included credits. It is arithmetic from listed rates only, not a prediction of real run cost. Do not use it as a budget until billing semantics are verified against a real account.
+
+### Recommendation for the first proof
+
+If the owner later approves a controlled provider test, start with a single disposable Modal Sandbox, pinned minimal Python image, explicit network block, short server-side wall-time deadline, small CPU/memory limits, no credentials, no package installation, and a tiny fixed test suite. Before executing even sample code, verify account billing/budget controls and confirm the API can terminate a timed-out process. If any of these cannot be demonstrated, stop and return to provider comparison. Keep Cloudflare as the fallback if its exact Container controls better satisfy the gate. **No account creation, credentials, live workload, or charges are authorized by this recommendation.**
+
 ## Cost model template
 
 Do not rely on manually typed per-user totals. Calculate the model from the actual selected product rate card:
