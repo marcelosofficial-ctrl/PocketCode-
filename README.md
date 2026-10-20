@@ -33,6 +33,7 @@ The initial MVP candidate is a mobile-first web app with one remote runtime and 
 - [Cross-agent contributor instructions](AGENTS.md)
 - [Initial competitor research](RESEARCH/COMPETITOR_MATRIX.md)
 - [Competitive analysis and positioning hypotheses](RESEARCH/COMPETITIVE_ANALYSIS.md)
+- [Code execution backend research](RESEARCH/EXECUTION_PROVIDER_RESEARCH.md)
 
 ## Principles
 
