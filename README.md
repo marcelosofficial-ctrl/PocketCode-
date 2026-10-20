@@ -26,6 +26,7 @@ The initial MVP candidate is a mobile-first web app with one remote runtime and 
 
 - [Project status](PROJECT_STATUS.md)
 - [Product specification](PRODUCT_SPEC.md)
+- [First-run workflow](PRODUCT/FIRST_RUN_WORKFLOW.md)
 - [Roadmap](ROADMAP.md)
 - [Architecture proposal](ARCHITECTURE.md)
 - [Safety requirements](SECURITY.md)
