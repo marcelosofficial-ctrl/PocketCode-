@@ -8,9 +8,14 @@ import unittest
 CHECKER = Path(__file__).with_name("check_mobile_prototype.py").resolve()
 
 VALID_HTML = """
-<button id="codeTab"></button><button id="csvTab"></button>
-<button id="runButton"></button><button id="errorButton"></button>
-<button id="copyReport"></button><button id="copyPrompt"></button>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<h1>Checker fixture</h1>
+<textarea id="editor" aria-label="Python code"></textarea>
+<section aria-live="polite"></section>
+<button id="codeTab" role="tab" aria-selected="true">Code</button>
+<button id="csvTab" role="tab" aria-selected="false">CSV</button>
+<button id="runButton">Run example</button><button id="errorButton">Error example</button>
+<button id="copyReport">Copy report</button><button id="copyPrompt">Copy prompt</button>
 <script>
 const codeTab = document.getElementById('codeTab');
 const csvTab = document.getElementById('csvTab');
@@ -70,6 +75,14 @@ class PrototypeCheckerTests(unittest.TestCase):
         result = self.run_checker(VALID_HTML.replace("No code was executed.", ""))
         self.assertEqual(result.returncode, 1)
         self.assertIn("Missing simulation disclaimer/marker", result.stdout)
+
+    def test_rejects_textarea_without_accessible_label(self) -> None:
+        result = self.run_checker(VALID_HTML.replace(
+            '<textarea id="editor" aria-label="Python code"></textarea>',
+            '<textarea id="editor"></textarea>',
+        ))
+        self.assertEqual(result.returncode, 1)
+        self.assertIn("Textarea 1 is missing an accessible label", result.stdout)
 
     def test_rejects_prompt_that_omits_csv(self) -> None:
         result = self.run_checker(VALID_HTML.replace(
