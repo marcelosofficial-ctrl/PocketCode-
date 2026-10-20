@@ -35,6 +35,40 @@ def main() -> int:
         if not re.search(pattern, html):
             errors.append(f"Expected click handler missing for #{element_id}")
 
+    # Lightweight accessibility/mobile smoke checks. These are source heuristics, not an audit.
+    if 'name="viewport"' not in html or "width=device-width" not in html:
+        errors.append("Missing responsive viewport metadata")
+    if len(re.findall(r"<h1\\b", html, re.IGNORECASE)) != 1:
+        errors.append("Expected exactly one primary <h1> heading")
+
+    textareas = re.findall(r"<textarea\\b([^>]*)>", html, re.IGNORECASE)
+    for index, attrs in enumerate(textareas, start=1):
+        if not re.search(r"\\baria-label\\s*=", attrs, re.IGNORECASE) and not re.search(
+            r"\\baria-labelledby\\s*=", attrs, re.IGNORECASE
+        ):
+            errors.append(f"Textarea {index} is missing an accessible label")
+
+    buttons = re.findall(r"<button\\b([^>]*)>(.*?)</button>", html, re.IGNORECASE | re.DOTALL)
+    for index, (attrs, inner) in enumerate(buttons, start=1):
+        visible_text = re.sub(r"<[^>]+>", "", inner).strip()
+        has_label = re.search(r"\\baria-label\\s*=", attrs, re.IGNORECASE)
+        if not visible_text and not has_label:
+            errors.append(f"Button {index} has no detectable accessible name")
+
+    for tab_id in ("codeTab", "csvTab"):
+        tab_match = re.search(
+            rf"<button\\b(?=[^>]*\\bid=[\\\"]{tab_id}[\\\"])([^>]*)>",
+            html,
+            re.IGNORECASE,
+        )
+        if not tab_match or not re.search(r"\\brole=[\\\"]tab[\\\"]", tab_match.group(1), re.IGNORECASE):
+            errors.append(f"#{tab_id} is missing role=tab")
+        elif not re.search(r"\\baria-selected=[\\\"](?:true|false)[\\\"]", tab_match.group(1), re.IGNORECASE):
+            errors.append(f"#{tab_id} is missing aria-selected state")
+
+    if not re.search(r"\\baria-live=[\\\"](?:polite|assertive)[\\\"]", html, re.IGNORECASE):
+        errors.append("Missing aria-live region for status/output updates")
+
     required_phrases = [
         "SIMULATED EXECUTION ONLY",
         "Your code is not executed.",
@@ -69,6 +103,7 @@ def main() -> int:
     print(f"- {len(referenced)} getElementById references all resolve")
     print(f"- {len(required_actions)} expected UI click handlers are present")
     print("- simulated-execution disclaimers are present")
+    print("- basic mobile/accessibility source heuristics are satisfied")
     print("- debugging prompt includes editor code, sample CSV, and report")
     print("Note: these checks do not run browser interactions or submitted code.")
     return 0
