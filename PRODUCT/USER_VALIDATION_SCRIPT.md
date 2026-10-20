@@ -5,6 +5,23 @@
 **Goal:** Learn whether people have a recurring problem testing AI-generated code from a phone before investing in a backend.  
 **Privacy:** Ask about the task, not sensitive code or account details. Do not record names, contact details, private project content, or credentials unless a separate consent-based research process is approved.
 
+## Copy/paste invitation
+
+Use this short message to recruit people without pitching the product or biasing their answers:
+
+> Hey! I’m exploring a small idea for people who use AI to write code, especially when they only have a phone handy. I’m not selling anything—I’d just like to hear about the last time you tried to test AI-generated code and what happened. It would take about 10 minutes. Totally fine if you haven’t run into this problem.
+
+Send it only to people you already have an appropriate way to contact. Do not add people to mailing lists or collect contact details in the research notes.
+
+## Phone-friendly way to run a session
+
+1. Ask the recent-behavior questions before sharing the prototype.
+2. Keep the session to 10–15 minutes; skip questions already answered naturally.
+3. Take short, non-identifying notes in the template below, or write them immediately after the call.
+4. Mark direct observations separately from your interpretation.
+5. End by asking for one specific task they might try later, not a vague promise to use the app.
+6. After each conversation, note one thing that supports the idea and one thing that challenges it.
+
 ## Who to talk to
 
 Start with 5–8 people who have personally tried to generate code with an AI assistant and then test it on a phone or without convenient access to a computer. Keep beginners and experienced developers distinguishable in notes; their needs may differ.
