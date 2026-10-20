@@ -46,6 +46,7 @@ Discovery, competitive research, and MVP definition. No production architecture,
 4. Before any provider account or live workload, obtain explicit owner approval, verify billing/budget controls, and confirm the exact network-blocking and termination semantics. If approved, run the proof and record actual evidence rather than assuming success.
 5. Validate the product pain and positioning with likely users before expanding runtime/language scope or adding AI API integration.
 6. Revisit the provisional name before investing in a final brand or domain.
+7. Use the [user validation interview script](PRODUCT/USER_VALIDATION_SCRIPT.md) to gather evidence about recent real tasks before committing to backend implementation; no interviews have been conducted yet.
 
 ## Progress log
 
@@ -82,3 +83,5 @@ Discovery, competitive research, and MVP definition. No production architecture,
 - 2026-10-20: Expanded `scripts/check_mobile_prototype.py` with lightweight mobile/accessibility source heuristics: responsive viewport metadata, one primary heading, accessible labels for textareas, detectable button names, tab roles/selection state, and a live status/output region. Added a regression test for unlabeled textareas and adjusted the duplicate-ID fixture to match the updated accessible tab markup. Latest GitHub Actions run https://github.com/marcelosofficial-ctrl/PocketCode-/actions/runs/39432719962 succeeded: all six checker unit tests passed, the actual prototype source check passed, and Pages deployment succeeded. These heuristics are not a full accessibility audit and do not replace keyboard/screen-reader/browser testing; no submitted code is executed.
 
 - 2026-10-20: Reduced avoidable GitHub Actions runs: the Pages preview workflow now triggers on prototype HTML changes or workflow changes, not checker/test-script-only edits. The unit tests and static source checker still run before each preview deployment, and manual dispatch remains available. This deliberately trades immediate CI feedback for checker-only edits to conserve the owner's Actions-minute budget; run the Python checks locally when possible and use a preview deployment when the actual prototype changes.
+
+- 2026-10-20: Added `PRODUCT/USER_VALIDATION_SCRIPT.md` with a 10–15 minute, behavior-first interview flow, non-identifying notes template, and directional continue/narrow/pause criteria. Linked it from the README. This is preparation only; no user interviews or customer validation have occurred. No Actions workflow was triggered because the changes do not touch the prototype HTML or workflow.
