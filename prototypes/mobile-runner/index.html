@@ -14,7 +14,7 @@
 <div class="shell">
   <div class="demo-banner">INTERACTIVE PROTOTYPE · SIMULATED EXECUTION ONLY · YOUR CODE IS NOT RUN</div>
   <header class="topbar"><div class="brand"><span class="logo">›_</span><span>PocketCode</span></div><span class="pill">MVP concept</span></header>
-  <section class="intro"><h1>Run it. See what happened.</h1><p>A phone-first place to test a small script, inspect the result, and share useful evidence with your AI.</p></section>
+  <section class="intro"><h1>Try the PocketCode workflow</h1><p>Explore a sample script, see what a result or error could look like, then copy a report for an AI assistant.</p></section>
   <main class="workspace">
     <div class="workspace-head"><div><div class="workspace-title">Untitled workspace</div><div class="runtime">Python 3.x · proposed runtime</div></div><div class="status"><span class="dot"></span><span id="statusText">Ready to demo</span></div></div>
     <div class="tabs" role="tablist" aria-label="Workspace files"><button class="tab" id="codeTab" role="tab" aria-selected="true">main.py</button><button class="tab" id="csvTab" role="tab" aria-selected="false">sales.csv</button></div>
@@ -34,7 +34,7 @@ with open("summary.txt", "w") as output:
 2026-10-02,food,8.25
 2026-10-03,travel,24.00</div>
     </div>
-    <div class="actions"><button id="errorButton" class="btn subtle">Preview error state</button><div class="runline"><button id="resetButton" class="btn">Reset</button><button id="runButton" class="btn primary">▶ Run demo</button></div></div>
+    <div class="actions"><button id="errorButton" class="btn subtle">Show error example</button><div class="runline"><button id="runButton" class="btn primary">Show success example</button></div></div><p class="footnote" style="padding:0 14px 12px;margin:0">These buttons switch between fixed examples. Your code is not executed.</p>
     <section class="output" aria-live="polite">
       <div class="output-head"><h2>Execution report</h2><span id="resultBadge" class="result-badge">SAMPLE RESULT</span></div>
       <div class="metrics"><div class="metric"><span>Exit status</span><strong id="exitStatus">0 · success</strong></div><div class="metric"><span>Duration</span><strong id="duration">0.18s (sample)</strong></div><div class="metric"><span>Runtime</span><strong>Python 3.x</strong></div></div>
@@ -42,7 +42,7 @@ with open("summary.txt", "w") as output:
 Total sales: $44.75
 Process finished (sample output).</span></div>
       <div id="fileCard" class="files"><div><div class="file-name">▤ summary.txt</div><div class="file-meta">Generated file · sample only</div></div><a id="downloadSample" class="download" href="data:text/plain;charset=utf-8,DEMO%20ONLY%0ATotal%20sales%3A%20%2444.75" download="summary-demo.txt">Download sample</a></div>
-      <div class="share-row"><button id="copyReport" class="btn">Copy report</button><button id="copyPrompt" class="btn subtle">Copy AI prompt</button></div><div id="toast" class="toast" role="status"></div>
+      <div class="share-row"><button id="copyReport" class="btn">Copy report text</button><button id="copyPrompt" class="btn subtle">Copy debugging prompt</button></div><p class="footnote">Report text = status and sample output. Debugging prompt = a ready-to-paste request plus that same sample report.</p><div id="toast" class="toast" role="status"></div>
       <p class="footnote">Demo data only. In a real product, status, timing, logs, and files must come from the execution service—not from this screen.</p>
     </section>
   </main>
@@ -62,9 +62,8 @@ Process finished (sample output).</span></div>
   function showTab(which){const isCode=which==='code';editor.style.display=isCode?'block':'none';csv.style.display=isCode?'none':'block';codeTab.setAttribute('aria-selected',String(isCode));csvTab.setAttribute('aria-selected',String(!isCode));}
   function render(){toast.textContent='';status.textContent=mode==='success'?'Sample succeeded':'Sample failed';badge.textContent=mode==='success'?'SAMPLE SUCCESS':'SAMPLE FAILURE';badge.classList.toggle('failed',mode!=='success');exit.textContent=mode==='success'?'0 · success':'1 · program error';duration.textContent=mode==='success'?'0.18s (sample)':'0.04s (sample)';consoleBox.innerHTML=mode==='success'?'<span class="ok"></span>':'<span class="err"></span>';consoleBox.textContent=mode==='success'?successText:errorText;consoleBox.style.color=mode==='success'?'#c8d3df':'#ffaaa8';fileCard.classList.toggle('hidden',mode!=='success');}
   codeTab.addEventListener('click',()=>showTab('code'));csvTab.addEventListener('click',()=>showTab('csv'));
-  document.getElementById('runButton').addEventListener('click',()=>{mode='success';render();toast.textContent='Displayed a fixed sample result. No code executed.';});
-  document.getElementById('errorButton').addEventListener('click',()=>{mode='error';render();toast.textContent='Displayed a fixed sample error. No code executed.';});
-  document.getElementById('resetButton').addEventListener('click',()=>{mode='success';editor.value='import csv\n\nwith open("sales.csv", newline="") as source:\n    rows = list(csv.DictReader(source))\n\ntotal = sum(float(row["amount"]) for row in rows)\nprint(f"Rows processed: {len(rows)}")\nprint(f"Total sales: ${total:.2f}")\n\nwith open("summary.txt", "w") as output:\n    output.write(f"Total sales: ${total:.2f}\\n")';showTab('code');render();toast.textContent='Prototype reset.';});
+  document.getElementById('runButton').addEventListener('click',()=>{mode='success';render();toast.textContent='Showing the fixed success example. No code executed.';});
+  document.getElementById('errorButton').addEventListener('click',()=>{mode='error';render();toast.textContent='Showing the fixed error example. No code executed.';});
   function report(){return 'POCKETCODE DEMO REPORT (SIMULATED)\nStatus: '+(mode==='success'?'succeeded':'program_failed')+'\nRuntime: Python 3.x (proposed)\nExit status: '+(mode==='success'?'0':'1')+'\nDuration: '+(mode==='success'?'0.18s':'0.04s')+' (sample, not measured)\nOutput:\n'+(mode==='success'?successText:errorText)+'\n\nIMPORTANT: This is a UI prototype. No code was executed.';}
   async function copyText(value){try{await navigator.clipboard.writeText(value);toast.textContent='Copied to clipboard.';}catch(e){const area=document.createElement('textarea');area.value=value;area.style.position='fixed';area.style.opacity='0';document.body.appendChild(area);area.select();const ok=document.execCommand('copy');area.remove();toast.textContent=ok?'Copied to clipboard.':'Clipboard unavailable; select and copy the text manually.';}}
   document.getElementById('copyReport').addEventListener('click',()=>copyText(report()));
