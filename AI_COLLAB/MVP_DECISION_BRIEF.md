@@ -84,6 +84,8 @@ Daytona documents network policy differences by organization tier. Tier 1/2 cann
 
 ## Required controlled proof
 
+The step-by-step, safety-gated procedure and evidence template are maintained in [PRODUCT/CONTROLLED_PYTHON_PROOF_RUNBOOK.md](../PRODUCT/CONTROLLED_PYTHON_PROOF_RUNBOOK.md). It has not been executed.
+
 After provider choice and owner approval, run a small test suite with non-sensitive sample code only:
 
 - PC-RUN-001 success and exact output;
