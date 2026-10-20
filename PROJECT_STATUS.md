@@ -27,6 +27,14 @@ Discovery, competitive research, and MVP definition. No production architecture,
 - Make actual execution evidence easy to copy/share with any AI provider.
 - No mandatory AI-provider lock-in.
 
+## Budget and workflow policy
+
+- **Budget: $0 unless the owner explicitly changes it.** No paid trials, payment methods, billing enablement, purchases, or potentially billable workloads without explicit approval.
+- Free credits are not a guarantee of zero cost. Do not create provider accounts or run live workloads just to explore.
+- Conserve GitHub Actions minutes; documentation-only edits should not trigger deployments.
+- Current priority is evidence from real user conversations plus small improvements to the simulated prototype, not backend implementation.
+- See the [zero-budget work plan](PRODUCT/ZERO_BUDGET_WORK_PLAN.md) and accepted [D-005](DECISIONS.md).
+
 ## Guardrails
 
 - Do not claim code execution works until an actual execution path and tests demonstrate it.
@@ -49,6 +57,9 @@ Discovery, competitive research, and MVP definition. No production architecture,
 7. Use the [user validation interview script](PRODUCT/USER_VALIDATION_SCRIPT.md) to gather evidence about recent real tasks before committing to backend implementation; no interviews have been conducted yet.
 
 ## Progress log
+
+- 2026-10-20: Owner confirmed a zero-spend constraint. Added `PRODUCT/ZERO_BUDGET_WORK_PLAN.md`, recorded accepted decision D-005, and linked the plan from the README. Work is now explicitly prioritized toward user validation, the static prototype, and local/source-level checks; no provider accounts, live workloads, paid services, or Actions runs were initiated by this documentation update.
+
 
 - Repository created by owner and made public.
 - Initial README exists; its current wording is temporary.
