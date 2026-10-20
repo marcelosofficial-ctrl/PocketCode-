@@ -1,8 +1,8 @@
 # PocketCode
 
-**Build, run, and improve code from your phone.**
+**Vibe code. Run it. Fix it. From your phone.**
 
-PocketCode is an early-stage project exploring a mobile-first workspace for people who want to create and test software without always having access to a computer.
+PocketCode is an early-stage project exploring a mobile-first workspace for people who use AI to create code and want to test and improve it without always having access to a computer.
 
 ## The idea
 
@@ -14,7 +14,7 @@ AI can generate code, but generated code still needs to be run, inspected, and c
 4. Share execution evidence with the AI assistant of their choice.
 5. Review changes and rerun to check whether they worked.
 
-This is a product hypothesis, not a claim that these capabilities are already implemented or unique to PocketCode.
+This is a product hypothesis, not a claim that these capabilities are already implemented or unique to PocketCode. Our working marketing angle is vibe coding from your phone; the product proof we need is reliable, real execution and debugging.
 
 ## Current status
 
@@ -32,6 +32,7 @@ The initial MVP candidate is a mobile-first web app with one remote runtime and 
 - [Safety requirements](SECURITY.md)
 - [Decision log](DECISIONS.md)
 - [Cross-agent contributor instructions](AGENTS.md)
+- [Marketing and positioning hypothesis](MARKETING/POSITIONING_HYPOTHESIS.md)
 - [Initial competitor research](RESEARCH/COMPETITOR_MATRIX.md)
 - [Competitive analysis and positioning hypotheses](RESEARCH/COMPETITIVE_ANALYSIS.md)
 - [Code execution backend research](RESEARCH/EXECUTION_PROVIDER_RESEARCH.md)
