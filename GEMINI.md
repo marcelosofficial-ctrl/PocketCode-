@@ -1,6 +1,6 @@
 # Gemini Instructions for PocketCode
 
-Read AGENTS.md first. It contains the shared rules for all agents and contributors.
+Read AGENTS.md first. It contains the shared rules for all agents and contributors. Then read AI_COLLAB/GEMINI_HANDOFF.md and follow its mandatory multi-pass protocol; do not stop after a one-pass summary. Keep AI_COLLAB/GEMINI_PROGRESS_LOG.md updated and consolidate the final research in AI_COLLAB/MASTER_RESEARCH_IMPLEMENTATION_PLAN.md.
 
 Use PROJECT_STATUS.md, PRODUCT_SPEC.md, ARCHITECTURE.md, SECURITY.md, ROADMAP.md, and DECISIONS.md as current project references. Inspect the repository before relying on prior chat context.
 
