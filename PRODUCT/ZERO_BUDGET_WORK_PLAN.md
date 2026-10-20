@@ -16,7 +16,7 @@
 
 ## What we can do for $0
 
-1. **Validate the problem:** use `PRODUCT/USER_VALIDATION_SCRIPT.md` to interview people about a recent real attempt to test AI-generated code on a phone. Record anonymized notes only.
+1. **Review public user evidence:** use `RESEARCH/MOBILE_CODING_USER_EVIDENCE.md` as the starting point; prefer firsthand discussions and include evidence against the idea. Interviews are optional, not a blocker.
 2. **Improve the prototype:** make small, understandable UX changes based on observed confusion; keep it static and simulated.
 3. **Test source-level behavior locally:** run the dependency-free Python checker and unit tests when a Python environment is available. These checks do not prove browser behavior, accessibility, or sandbox security.
 4. **Strengthen the contract and threat model:** review state transitions, quotas, file handling, cancellation, data retention, abuse controls, and truthful reporting before implementation.
@@ -34,7 +34,7 @@
 ## Decision gates
 
 ### Gate A — Evidence of need
-Before backend work, seek several short conversations with people who have recently tried to test AI-generated code from a phone. Ask about their last real attempt and current workaround before showing the prototype. A few interviews are directional evidence, not statistical proof.
+Start with public firsthand discussions, reviews, and community feature requests. Document recurring pain points, existing workarounds, positive experiences, and counter-evidence. This is qualitative desk research, not a representative sample. User interviews are optional; lack of access to interview participants must not block progress. Before backend work, the evidence should at least identify a specific unmet job that existing tools do not already solve adequately.
 
 ### Gate B — Zero-cost implementation path
 Before any hosted execution experiment, document:
@@ -51,4 +51,4 @@ If real execution eventually cannot be demonstrated at $0, stop at that boundary
 
 ## Current next action
 
-Use the existing interview script to learn whether the problem is real for target users. Until evidence arrives, improve only the static prototype and its source-level checks; do not start provider implementation.
+Use `RESEARCH/MOBILE_CODING_USER_EVIDENCE.md` to guide desk research and narrow the proposed user job. Improve only the static prototype and its source-level checks; do not start provider implementation. The interview script is optional if relevant participants become available later.
