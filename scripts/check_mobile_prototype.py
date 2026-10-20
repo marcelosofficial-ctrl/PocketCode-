@@ -31,7 +31,7 @@ def main() -> int:
         "codeTab", "csvTab", "runButton", "errorButton", "copyReport", "copyPrompt"
     }
     for element_id in sorted(required_actions):
-        pattern = rf"getElementById\(['\"]{re.escape(element_id)}['\"]\)\.addEventListener\(['\"]click['\"]"
+        pattern = rf"(?:getElementById\\(['\"]{re.escape(element_id)}['\"]\\)|\\b{re.escape(element_id)})\\.addEventListener\\(['\"]click['\"]"
         if not re.search(pattern, html):
             errors.append(f"Expected click handler missing for #{element_id}")
 
