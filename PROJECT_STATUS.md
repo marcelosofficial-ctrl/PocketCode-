@@ -32,7 +32,7 @@ Discovery, competitive research, and MVP definition. No production architecture,
 - **Budget: $0 unless the owner explicitly changes it.** No paid trials, payment methods, billing enablement, purchases, or potentially billable workloads without explicit approval.
 - Free credits are not a guarantee of zero cost. Do not create provider accounts or run live workloads just to explore.
 - Conserve GitHub Actions minutes; documentation-only edits should not trigger deployments.
-- Current priority is evidence from real user conversations plus small improvements to the simulated prototype, not backend implementation.
+- Current priority is public desk research, small improvements to the simulated prototype, and local/source-level checks—not recruiting interviews or backend implementation.
 - See the [zero-budget work plan](PRODUCT/ZERO_BUDGET_WORK_PLAN.md) and accepted [D-005](DECISIONS.md).
 
 ## Guardrails
@@ -52,11 +52,14 @@ Discovery, competitive research, and MVP definition. No production architecture,
 2. Finish the provider gate review using the current [MVP decision brief](AI_COLLAB/MVP_DECISION_BRIEF.md). Modal is the leading candidate for evaluation, not an approved selection; Cloudflare remains a fallback.
 3. Review the [controlled Python proof runbook](PRODUCT/CONTROLLED_PYTHON_PROOF_RUNBOOK.md), which defines test fixtures, expected evidence, and safety gates.
 4. Before any provider account or live workload, obtain explicit owner approval, verify billing/budget controls, and confirm the exact network-blocking and termination semantics. If approved, run the proof and record actual evidence rather than assuming success.
-5. Validate the product pain and positioning with likely users before expanding runtime/language scope or adding AI API integration.
+5. Use public firsthand discussions and reviews in [mobile-coding user evidence](RESEARCH/MOBILE_CODING_USER_EVIDENCE.md) to refine the problem hypothesis; user interviews are optional, not a blocker.
 6. Revisit the provisional name before investing in a final brand or domain.
-7. Use the [user validation interview script](PRODUCT/USER_VALIDATION_SCRIPT.md) to gather evidence about recent real tasks before committing to backend implementation; no interviews have been conducted yet.
+7. Use public desk research first. The [user validation interview script](PRODUCT/USER_VALIDATION_SCRIPT.md) remains optional; no interviews have been conducted.
 
 ## Progress log
+
+- 2026-10-20: Owner chose public online evidence instead of recruiting interview participants. Added `RESEARCH/MOBILE_CODING_USER_EVIDENCE.md` with a balanced preliminary review of firsthand forum posts, community feature requests, and app reviews, including positive experiences, existing alternatives, and limitations. Updated README, zero-budget work plan, and project status so desk research is the default and interviews are optional. No interviews or accounts were used, no paid services were used, and no GitHub Actions workflow was triggered.
+
 
 - 2026-10-20: Made the user-validation script easier to use from a phone by adding a neutral copy/paste recruiting invitation and a six-step session checklist. This lowers the effort to start no-cost discovery without leading participants. No interviews were conducted, no user data was collected, and no Actions workflow was triggered.
 
