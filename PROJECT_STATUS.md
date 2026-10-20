@@ -40,11 +40,11 @@ Discovery, competitive research, and MVP definition. No production architecture,
 
 ## Immediate next steps
 
-1. Interview likely users to test whether the main pain is running AI-generated code from a phone, debugging it, or building complete apps.
-2. Test the working positioning hypothesis in [MARKETING/POSITIONING_HYPOTHESIS.md](MARKETING/POSITIONING_HYPOTHESIS.md); do not treat the slogan as validated.
-3. Compare the strongest two hosted sandbox options against the acceptance tests, current pricing, isolation, and data-retention constraints.
-4. Create a small, testable Python execution proof before building a full application.
-5. Use real test evidence to decide whether to proceed to a mobile UI prototype.
+1. Use the owner-reviewed [live mobile prototype](https://marcelosofficial-ctrl.github.io/PocketCode-/) only to refine the core flow; keep sample output clearly marked as simulated.
+2. Finish the provider gate review using the current [MVP decision brief](AI_COLLAB/MVP_DECISION_BRIEF.md). Modal is the leading candidate for evaluation, not an approved selection; Cloudflare remains a fallback.
+3. Before any provider account or live workload, obtain explicit owner approval, verify billing/budget controls, and confirm the exact network-blocking and termination semantics.
+4. If approved, run the smallest controlled Python proof against the [execution contract](PRODUCT/EXECUTION_CONTRACT.md), recording actual evidence for each test rather than assuming success.
+5. Validate the product pain and positioning with likely users before expanding runtime/language scope or adding AI API integration.
 6. Revisit the provisional name before investing in a final brand or domain.
 
 ## Progress log
@@ -65,3 +65,5 @@ Discovery, competitive research, and MVP definition. No production architecture,
 
 - 2026-10-20: Owner reviewed the prototype and found the controls unclear. Simplified the UI by removing Reset, renaming sample-state actions, and explaining the difference between copying a report and copying a debugging prompt. Latest UI update is committed and the static preview deployment succeeded at https://marcelosofficial-ctrl.github.io/PocketCode-/. Browser interaction checks have not been run by the project team.
 - 2026-10-20: Updated `AI_COLLAB/MVP_DECISION_BRIEF.md` with current official provider pricing and egress defaults. Cloudflare Containers currently requires the Workers Paid plan; Modal advertises monthly compute credit, while public outbound access is allowed by default unless blocked/allowlisted. This remains desk research only; no provider selected, account created, or workload run.
+
+- 2026-10-20: Refined the provider comparison with a conditional first-proof recommendation: evaluate Modal Sandbox first because its SDK documents an explicit `block_network=True` control and its Starter plan advertises compute credit that applies to Sandboxes; retain Cloudflare as fallback, noting the $5/month Workers Paid minimum for Containers. Added an illustrative rate calculation with explicit exclusions. This is not a provider selection; no account, credentials, live run, or charges are authorized.
