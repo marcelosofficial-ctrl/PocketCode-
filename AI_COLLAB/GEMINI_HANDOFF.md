@@ -51,6 +51,7 @@ Read current versions, not only this handoff:
 - RESEARCH/COMPETITIVE_ANALYSIS.md: https://github.com/marcelosofficial-ctrl/PocketCode-/blob/main/RESEARCH/COMPETITIVE_ANALYSIS.md
 - RESEARCH/EXECUTION_PROVIDER_RESEARCH.md: https://github.com/marcelosofficial-ctrl/PocketCode-/blob/main/RESEARCH/EXECUTION_PROVIDER_RESEARCH.md
 - MARKETING/POSITIONING_HYPOTHESIS.md: https://github.com/marcelosofficial-ctrl/PocketCode-/blob/main/MARKETING/POSITIONING_HYPOTHESIS.md
+- AI_COLLAB/CHATGPT_INITIAL_PROVIDER_REVIEW.md: https://github.com/marcelosofficial-ctrl/PocketCode-/blob/main/AI_COLLAB/CHATGPT_INITIAL_PROVIDER_REVIEW.md — preliminary independent provider evidence; verify it rather than copying it.
 
 Do not merely restate these docs. Find stale claims, gaps, contradictions, and questions requiring evidence.
 
