@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#101318">
+<title>PocketCode — Mobile Runner Prototype</title>
+<style>
+:root{color-scheme:dark;--bg:#101318;--panel:#181d25;--panel2:#202733;--line:#303946;--text:#f3f5f7;--muted:#a0aaba;--green:#9be7bd;--blue:#9bc7ff;--red:#ffaaa8;--yellow:#f3d58a}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:15px/1.5 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}button,textarea{font:inherit}button{cursor:pointer}button:focus-visible,textarea:focus-visible{outline:2px solid var(--blue);outline-offset:3px}.shell{max-width:760px;margin:auto;padding:0 16px 36px}.demo-banner{margin:0 -16px 20px;padding:10px 16px;background:#493b18;color:#ffe9a9;font-size:12px;font-weight:700;text-align:center;letter-spacing:.02em}.topbar{display:flex;align-items:center;justify-content:space-between;padding:7px 0 22px}.brand{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:-.03em;font-size:20px}.logo{display:grid;place-items:center;width:35px;height:35px;border-radius:11px;background:var(--green);color:#102018;font-weight:900;font-size:20px}.pill{border:1px solid var(--line);border-radius:999px;padding:5px 10px;color:var(--muted);font-size:12px}.intro h1{font-size:clamp(27px,7vw,38px);letter-spacing:-.045em;line-height:1.12;margin:0 0 8px}.intro p{margin:0 0 19px;color:var(--muted)}.workspace{border:1px solid var(--line);border-radius:18px;overflow:hidden;background:var(--panel);box-shadow:0 14px 45px #0002}.workspace-head{padding:14px 15px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:12px;align-items:center}.workspace-title{font-weight:700}.runtime{font-size:12px;color:var(--muted);margin-top:2px}.status{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--green);white-space:nowrap}.dot{width:7px;height:7px;background:currentColor;border-radius:50%}.tabs{display:flex;gap:6px;padding:10px 12px 0}.tab{border:1px solid transparent;border-radius:9px;padding:8px 12px;background:transparent;color:var(--muted);font-size:13px}.tab[aria-selected=true]{background:var(--panel2);border-color:var(--line);color:var(--text)}.editor-wrap{padding:12px}.editor{display:block;width:100%;min-height:225px;resize:vertical;border:1px solid var(--line);border-radius:12px;background:#11161d;color:#d9e5f6;padding:14px;font:13px/1.65 ui-monospace,SFMono-Regular,Menlo,monospace;tab-size:4}.csv-preview{display:none;min-height:225px;border:1px solid var(--line);border-radius:12px;background:#11161d;padding:14px;overflow:auto;font:13px/1.9 ui-monospace,monospace;color:#d9e5f6}.actions{display:flex;flex-wrap:wrap;gap:9px;padding:0 12px 14px}.btn{border:1px solid var(--line);border-radius:11px;padding:10px 14px;background:var(--panel2);color:var(--text);font-weight:650}.btn.primary{background:var(--green);border-color:var(--green);color:#102018}.btn.subtle{background:transparent;color:var(--muted)}.btn:active{transform:translateY(1px)}.runline{margin-left:auto;display:flex;align-items:center;gap:9px}.output{border-top:1px solid var(--line);padding:15px 14px 14px}.output-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}.output-head h2{font-size:14px;margin:0}.result-badge{font-size:11px;font-weight:800;letter-spacing:.04em;padding:4px 8px;border-radius:6px;background:#193c2b;color:var(--green)}.result-badge.failed{background:#482423;color:var(--red)}.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:13px}.metric{border:1px solid var(--line);border-radius:10px;padding:9px 10px;min-width:0}.metric span{display:block;color:var(--muted);font-size:11px;margin-bottom:3px}.metric strong{font-size:13px;overflow-wrap:anywhere}.console{border:1px solid var(--line);border-radius:10px;background:#0c1015;padding:12px;font:12px/1.65 ui-monospace,SFMono-Regular,Menlo,monospace;white-space:pre-wrap;overflow-wrap:anywhere;min-height:90px;color:#c8d3df}.console .ok{color:var(--green)}.console .err{color:var(--red)}.files{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:12px;padding:11px;border:1px solid var(--line);border-radius:10px}.file-name{font-size:13px}.file-meta{font-size:11px;color:var(--muted)}.download{font-size:12px;color:var(--blue);text-decoration:none;white-space:nowrap}.share-row{display:flex;gap:9px;margin-top:12px}.share-row .btn{flex:1}.footnote{font-size:12px;color:var(--muted);margin:13px 2px 0}.below{margin:22px 2px 0}.below h2{font-size:16px;margin:0 0 8px}.below ul{padding-left:20px;margin:0;color:var(--muted);font-size:13px}.below li+li{margin-top:5px}.toast{min-height:18px;margin-top:8px;color:var(--green);font-size:12px}.hidden{display:none!important}@media(min-width:600px){.shell{padding-top:4px}.editor{min-height:260px}.demo-banner{margin-top:0;border-radius:0 0 10px 10px}.workspace-head{padding:16px 18px}.editor-wrap{padding:14px}.output{padding:18px}}
+</style>
+</head>
+<body>
+<div class="shell">
+  <div class="demo-banner">INTERACTIVE PROTOTYPE · SIMULATED EXECUTION ONLY · YOUR CODE IS NOT RUN</div>
+  <header class="topbar"><div class="brand"><span class="logo">›_</span><span>PocketCode</span></div><span class="pill">MVP concept</span></header>
+  <section class="intro"><h1>Run it. See what happened.</h1><p>A phone-first place to test a small script, inspect the result, and share useful evidence with your AI.</p></section>
+  <main class="workspace">
+    <div class="workspace-head"><div><div class="workspace-title">Untitled workspace</div><div class="runtime">Python 3.x · proposed runtime</div></div><div class="status"><span class="dot"></span><span id="statusText">Ready to demo</span></div></div>
+    <div class="tabs" role="tablist" aria-label="Workspace files"><button class="tab" id="codeTab" role="tab" aria-selected="true">main.py</button><button class="tab" id="csvTab" role="tab" aria-selected="false">sales.csv</button></div>
+    <div class="editor-wrap"><textarea id="codeEditor" class="editor" spellcheck="false" aria-label="Example Python code">import csv
+
+with open("sales.csv", newline="") as source:
+    rows = list(csv.DictReader(source))
+
+total = sum(float(row["amount"]) for row in rows)
+print(f"Rows processed: {len(rows)}")
+print(f"Total sales: ${total:.2f}")
+
+with open("summary.txt", "w") as output:
+    output.write(f"Total sales: ${total:.2f}\n")</textarea>
+      <div id="csvPreview" class="csv-preview" role="tabpanel">date,category,amount
+2026-10-01,books,12.50
+2026-10-02,food,8.25
+2026-10-03,travel,24.00</div>
+    </div>
+    <div class="actions"><button id="errorButton" class="btn subtle">Preview error state</button><div class="runline"><button id="resetButton" class="btn">Reset</button><button id="runButton" class="btn primary">▶ Run demo</button></div></div>
+    <section class="output" aria-live="polite">
+      <div class="output-head"><h2>Execution report</h2><span id="resultBadge" class="result-badge">SAMPLE RESULT</span></div>
+      <div class="metrics"><div class="metric"><span>Exit status</span><strong id="exitStatus">0 · success</strong></div><div class="metric"><span>Duration</span><strong id="duration">0.18s (sample)</strong></div><div class="metric"><span>Runtime</span><strong>Python 3.x</strong></div></div>
+      <div id="console" class="console"><span class="ok">Rows processed: 3
+Total sales: $44.75
+Process finished (sample output).</span></div>
+      <div id="fileCard" class="files"><div><div class="file-name">▤ summary.txt</div><div class="file-meta">Generated file · sample only</div></div><a id="downloadSample" class="download" href="data:text/plain;charset=utf-8,DEMO%20ONLY%0ATotal%20sales%3A%20%2444.75" download="summary-demo.txt">Download sample</a></div>
+      <div class="share-row"><button id="copyReport" class="btn">Copy report</button><button id="copyPrompt" class="btn subtle">Copy AI prompt</button></div><div id="toast" class="toast" role="status"></div>
+      <p class="footnote">Demo data only. In a real product, status, timing, logs, and files must come from the execution service—not from this screen.</p>
+    </section>
+  </main>
+  <section class="below"><h2>Designed around real evidence</h2><ul><li>Separate program errors from service errors.</li><li>Make runtime limits and file outputs visible.</li><li>Copy a compact report into any AI assistant—no AI subscription required.</li></ul></section>
+</div>
+<script>
+(() => {
+  const codeTab=document.getElementById('codeTab'), csvTab=document.getElementById('csvTab');
+  const editor=document.getElementById('codeEditor'), csv=document.getElementById('csvPreview');
+  const consoleBox=document.getElementById('console'), badge=document.getElementById('resultBadge');
+  const exit=document.getElementById('exitStatus'), duration=document.getElementById('duration');
+  const status=document.getElementById('statusText'), fileCard=document.getElementById('fileCard');
+  const toast=document.getElementById('toast');
+  let mode='success';
+  const successText='Rows processed: 3\nTotal sales: $44.75\nProcess finished (sample output).';
+  const errorText='Traceback (most recent call last):\n  File "main.py", line 6, in <module>\n    total = sum(float(row["amount"]) for row in rows)\nValueError: could not convert string to float: \'unknown\'\n\nProcess exited with code 1 (simulated).';
+  function showTab(which){const isCode=which==='code';editor.style.display=isCode?'block':'none';csv.style.display=isCode?'none':'block';codeTab.setAttribute('aria-selected',String(isCode));csvTab.setAttribute('aria-selected',String(!isCode));}
+  function render(){toast.textContent='';status.textContent=mode==='success'?'Sample succeeded':'Sample failed';badge.textContent=mode==='success'?'SAMPLE SUCCESS':'SAMPLE FAILURE';badge.classList.toggle('failed',mode!=='success');exit.textContent=mode==='success'?'0 · success':'1 · program error';duration.textContent=mode==='success'?'0.18s (sample)':'0.04s (sample)';consoleBox.innerHTML=mode==='success'?'<span class="ok"></span>':'<span class="err"></span>';consoleBox.textContent=mode==='success'?successText:errorText;consoleBox.style.color=mode==='success'?'#c8d3df':'#ffaaa8';fileCard.classList.toggle('hidden',mode!=='success');}
+  codeTab.addEventListener('click',()=>showTab('code'));csvTab.addEventListener('click',()=>showTab('csv'));
+  document.getElementById('runButton').addEventListener('click',()=>{mode='success';render();toast.textContent='Displayed a fixed sample result. No code executed.';});
+  document.getElementById('errorButton').addEventListener('click',()=>{mode='error';render();toast.textContent='Displayed a fixed sample error. No code executed.';});
+  document.getElementById('resetButton').addEventListener('click',()=>{mode='success';editor.value='import csv\n\nwith open("sales.csv", newline="") as source:\n    rows = list(csv.DictReader(source))\n\ntotal = sum(float(row["amount"]) for row in rows)\nprint(f"Rows processed: {len(rows)}")\nprint(f"Total sales: ${total:.2f}")\n\nwith open("summary.txt", "w") as output:\n    output.write(f"Total sales: ${total:.2f}\\n")';showTab('code');render();toast.textContent='Prototype reset.';});
+  function report(){return 'POCKETCODE DEMO REPORT (SIMULATED)\nStatus: '+(mode==='success'?'succeeded':'program_failed')+'\nRuntime: Python 3.x (proposed)\nExit status: '+(mode==='success'?'0':'1')+'\nDuration: '+(mode==='success'?'0.18s':'0.04s')+' (sample, not measured)\nOutput:\n'+(mode==='success'?successText:errorText)+'\n\nIMPORTANT: This is a UI prototype. No code was executed.';}
+  async function copyText(value){try{await navigator.clipboard.writeText(value);toast.textContent='Copied to clipboard.';}catch(e){const area=document.createElement('textarea');area.value=value;area.style.position='fixed';area.style.opacity='0';document.body.appendChild(area);area.select();const ok=document.execCommand('copy');area.remove();toast.textContent=ok?'Copied to clipboard.':'Clipboard unavailable; select and copy the text manually.';}}
+  document.getElementById('copyReport').addEventListener('click',()=>copyText(report()));
+  document.getElementById('copyPrompt').addEventListener('click',()=>copyText('Help me debug this Python program. Here is a PocketCode DEMO report with simulated output, not real execution evidence. Please review the code and error carefully, suggest a minimal fix, and explain what I should verify when I run it for real.\n\n'+report()));
+})();
+</script>
+</body>
+</html>
