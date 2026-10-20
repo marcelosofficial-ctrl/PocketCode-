@@ -5,9 +5,7 @@ on:
     branches: [main]
     paths:
       - "prototypes/mobile-runner/index.html"
-      - "scripts/check_mobile_prototype.py"
-      - "scripts/test_check_mobile_prototype.py"
-      - ".github/workflows/preview-prototype.yml"
+      - ".github/workflows/preview-prototype.yml" # Workflow edits validate the deployment pipeline itself.
   workflow_dispatch:
 
 permissions:
