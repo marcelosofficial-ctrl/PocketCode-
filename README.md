@@ -36,6 +36,7 @@ The initial MVP candidate is a mobile-first web app with one remote runtime and 
 - [Gemini co-developer handoff](AI_COLLAB/GEMINI_HANDOFF.md)
 - [Master research and implementation plan](AI_COLLAB/MASTER_RESEARCH_IMPLEMENTATION_PLAN.md)
 - [Initial independent provider review](AI_COLLAB/CHATGPT_INITIAL_PROVIDER_REVIEW.md)
+- [Independent review of Gemini's architecture proposal](AI_COLLAB/CHATGPT_REVIEW_OF_GEMINI_PLAN.md)
 - [Initial competitor research](RESEARCH/COMPETITOR_MATRIX.md)
 - [Competitive analysis and positioning hypotheses](RESEARCH/COMPETITIVE_ANALYSIS.md)
 - [Code execution backend research](RESEARCH/EXECUTION_PROVIDER_RESEARCH.md)
