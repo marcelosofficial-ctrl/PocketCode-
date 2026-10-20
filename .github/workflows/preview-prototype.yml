@@ -1,0 +1,37 @@
+name: Publish mobile prototype preview
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "prototypes/mobile-runner/index.html"
+      - ".github/workflows/preview-prototype.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: mobile-prototype-pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+      - name: Upload prototype as the site root
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: prototypes/mobile-runner
+      - name: Deploy static prototype
+        id: deployment
+        uses: actions/deploy-pages@v4
