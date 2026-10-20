@@ -4,6 +4,8 @@
 
 ## Provisional shape
 
+The proposed provider-neutral request/result lifecycle and file/security constraints are documented in [PRODUCT/EXECUTION_CONTRACT.md](PRODUCT/EXECUTION_CONTRACT.md). That contract is a design proposal, not an implemented or approved public API.
+
 A mobile-first web client communicates with an application API. The API authenticates the user, validates a run request, stores the minimum necessary metadata, and dispatches execution to a disposable isolated worker. The worker returns structured results. The API exposes a bounded result stream or polling endpoint to the client.
 
 Mobile browser
