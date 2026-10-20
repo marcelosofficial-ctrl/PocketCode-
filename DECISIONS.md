@@ -22,6 +22,13 @@ Only record decisions that have actually been made. Proposals belong in the open
 - **Decision:** Do not select a runtime vendor, framework, AI provider, monetization plan, or native-app strategy until relevant research and proof points are available.
 - **Reason:** Avoid expensive premature commitments.
 
+## D-005: Keep PocketCode at zero spend by default
+- **Status:** Accepted
+- **Decision:** Work within a $0 budget unless the owner explicitly changes this constraint. Do not start paid trials, attach payment methods, enable billing, purchase services, or run potentially billable workloads without explicit approval.
+- **Reason:** The owner has stated they do not want to spend money. Progress should prioritize validation, static prototype improvements, local checks, and careful design over cloud execution experiments.
+- **Operational detail:** Promotional credits and advertised free tiers are not proof of zero cost. Conserve GitHub Actions minutes and do not trigger deployments for documentation-only changes.
+- **Reference:** [Zero-budget work plan](PRODUCT/ZERO_BUDGET_WORK_PLAN.md).
+
 ## Proposed, not yet decided
 - Start with a mobile-first PWA.
 - Use a remote isolated Python runtime for the first vertical slice.
