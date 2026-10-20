@@ -56,8 +56,8 @@ class PrototypeCheckerTests(unittest.TestCase):
 
     def test_rejects_duplicate_ids(self) -> None:
         result = self.run_checker(VALID_HTML.replace(
-            '<button id="codeTab"></button>',
-            '<button id="codeTab"></button><span id="codeTab"></span>',
+            '<button id="codeTab" role="tab" aria-selected="true">Code</button>',
+            '<button id="codeTab" role="tab" aria-selected="true">Code</button><span id="codeTab"></span>',
         ))
         self.assertEqual(result.returncode, 1)
         self.assertIn("Duplicate HTML IDs: codeTab", result.stdout)
