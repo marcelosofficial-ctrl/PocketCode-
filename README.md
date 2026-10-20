@@ -30,7 +30,7 @@ The initial MVP candidate is a mobile-first web app with one remote runtime and 
 - [Controlled Python execution proof runbook (not yet executed)](PRODUCT/CONTROLLED_PYTHON_PROOF_RUNBOOK.md)
 - [Interactive mobile runner prototype source (simulated; no code execution)](prototypes/mobile-runner/index.html)
 - [How to enable and review the phone preview](prototypes/mobile-runner/README.md)
-- [Interactive mobile runner prototype (simulated; no code execution)](prototypes/mobile-runner/index.html)
+- [Prototype static checker](scripts/check_mobile_prototype.py) and [its regression tests](scripts/test_check_mobile_prototype.py) (CI checks source patterns only; no browser execution or submitted-code execution)
 - [Proposed provider-neutral execution contract](PRODUCT/EXECUTION_CONTRACT.md)
 - [Roadmap](ROADMAP.md)
 - [Architecture proposal](ARCHITECTURE.md)
