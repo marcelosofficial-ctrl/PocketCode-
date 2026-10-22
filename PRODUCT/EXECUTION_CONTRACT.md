@@ -110,6 +110,77 @@ The user-copyable report should be bounded and human-readable, with fields such 
 
 The report must not claim that an AI fixed the code, that the code is correct, or that a run succeeded unless the result supports that statement.
 
+## Canonical copyable report (proposed)
+
+The report is plain text first. A UI may render it as a pink result block, but the copied text must preserve stable field names and remain understandable when pasted into any AI assistant.
+
+Example of a **synthetic illustration only**; these values are not evidence of a real PocketCode run:
+
+```text
+POCKETCODE RUN REPORT
+Report format: 1
+Run ID: demo-run-001
+Verdict: FAIL
+Execution status: program_failed
+Runtime: Python 3.x (illustrative; actual version must be supplied by the runner)
+Exit code: 1
+Duration: 0.42 s (illustrative)
+Evidence source: controlled runner result
+Task summary: Convert input.csv into cleaned.csv
+
+CHECKS REPORTED BY PROGRAM (not independently verified by PocketCode)
+- PASS | input_file_exists | Input file was found
+- FAIL | required_column_present | Missing column: email
+
+EXECUTION OUTPUT
+stdout:
+Validation started.
+1 check passed, 1 check failed.
+
+stderr:
+ValueError: required column 'email' not found
+
+Output files:
+- none reported
+
+Truncation:
+- stdout: no
+- stderr: no
+- check list: no
+
+Uncertainty / notes:
+- The process failure is supported by the runner's terminal status and exit code.
+- The listed checks are script-reported; PocketCode has not independently validated their truth.
+- Example values are illustrative and must never be displayed as a real run.
+```
+
+A real report must omit unknown values or mark them `unknown`; it must not reuse the illustrative runtime, timing, run ID, output, or checks. A report generated from sample UI state must be visibly labeled `SIMULATED EXAMPLE — NOT AN EXECUTION` in both the UI and copied text.
+
+### Required report semantics
+
+- **Verdict** describes what the runner can prove about the process outcome, not whether the user's broader goal is correct.
+- **Execution status** is the authoritative lifecycle outcome. Never infer `succeeded` from HTTP acceptance, a UI animation, or text printed by the script.
+- **Evidence source** must distinguish trusted runner metadata from script output and user-provided claims.
+- **Checks** must have provenance: runner-verified, program-reported, or user-supplied. Do not mix these without labels.
+- **Exit code** and **duration** are optional only when genuinely unavailable. Do not fabricate them to make the report look complete.
+- **stdout**, **stderr**, checks, filenames, and the complete report have server-enforced or otherwise trusted size bounds. Every truncation is explicit.
+- **Output files** list safe display names and sizes only. Download links, when added, must be scoped to the authenticated owner and expire according to a defined policy.
+- The copied report excludes secrets, environment variables, unrelated files, and full source code by default.
+- Report format changes require a version increment or backward-compatible extension. Consumers should tolerate unknown optional fields.
+
+### Report formatting checks to implement
+
+1. A confirmed exit code of zero plus a confirmed terminal success can produce `PASS`.
+2. A confirmed non-zero exit or confirmed program/runtime error produces `FAIL`.
+3. Timeout, cancellation, rejection, missing terminal evidence, or infrastructure uncertainty produces `INCOMPLETE`.
+4. A script's printed `PASS` cannot override a non-zero exit code.
+5. A script-reported failed check remains visible even if the process exits zero; process success does not prove task correctness.
+6. Missing exit code or duration is represented honestly, not replaced by a default.
+7. Truncated output is marked, with no claim that the report contains all output.
+8. Simulated reports are labeled as simulated in the UI and copied text.
+9. Empty stdout/stderr and no generated files are rendered distinctly from missing/unavailable data.
+10. All user-controlled strings are safely escaped in the UI and bounded before inclusion in the report.
+
 ## Acceptance tests
 
 | Test ID | Contract behavior | Pass condition |
