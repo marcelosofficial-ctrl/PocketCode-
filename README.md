@@ -30,6 +30,7 @@ The initial MVP candidate is a mobile-first web app with one remote runtime and 
 - [RevDev + PocketCode shared-core proposal](PRODUCT/REVDEV_POCKETCODE_SHARED_CORE.md)
 - [Mobile technical task opportunity map](PRODUCT/MOBILE_TECHNICAL_TASKS.md)
 - [First-run workflow](PRODUCT/FIRST_RUN_WORKFLOW.md)
+- [Execution loop acceptance criteria](PRODUCT/EXECUTION_LOOP_ACCEPTANCE.md) (proposed; not yet implemented or run)
 - [Desk research on mobile-coding user feedback](RESEARCH/MOBILE_CODING_USER_EVIDENCE.md)
 - [Optional user validation interview script (not yet conducted)](PRODUCT/USER_VALIDATION_SCRIPT.md)
 - [Controlled Python execution proof runbook (not yet executed)](PRODUCT/CONTROLLED_PYTHON_PROOF_RUNBOOK.md)
