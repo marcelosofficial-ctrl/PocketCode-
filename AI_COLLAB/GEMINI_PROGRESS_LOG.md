@@ -41,3 +41,10 @@
 - No external web research, interviews, benchmarks, live provider workload, or security test was performed in this pass. No provider decision was made; budget remains $0.
 - **Status boundary:** this is ChatGPT's contribution. Gemini's required Pass 0–7 remain uncompleted; do not check off Gemini's passes based on this entry.
 - Next: Pass 1 current official-source research across workstreams A–H, beginning with competitor/product capability and execution-provider security/pricing sources.
+
+
+### 2026-10-26 — ChatGPT parallel Pass 1 provider subpass (workstream C only)
+- Added [PASS1_PROVIDER_RESEARCH.md](PASS1_PROVIDER_RESEARCH.md) with dated links to official pricing, security, and network-policy docs for Modal, Daytona, Cloudflare Containers/Sandboxes, and E2B.
+- Material findings: Modal outbound is open by default but documents `block_network=True`; Daytona's network enforcement depends on organization tier; Cloudflare Container internet is disabled by default but Dynamic Worker mode differs and Containers require the $5/month Workers Paid plan; E2B's security page requires prior written consent before testing. No provider selected.
+- Cost comparisons remain unnormalized and vendor claims are not live security proof. No accounts, credentials, workloads, billing, or live tests were used; budget remains $0.
+- This is a ChatGPT contribution, not Gemini completing workstream C or Pass 1. Remaining workstreams A–H and the full multi-pass protocol remain open.
