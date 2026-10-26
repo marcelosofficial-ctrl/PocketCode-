@@ -1,15 +1,15 @@
 # PocketCode Current Checkpoint
 
-**Checkpoint ID:** PC-CP-2026-10-26-009  
-**Checkpoint stage:** Strict output/list truncation metadata validation and continuity repair  
-**Checkpoint status:** METADATA VALIDATION PATCHES COMMITTED — TESTS UNVERIFIED — DRAFT PR OPEN  
+**Checkpoint ID:** PC-CP-2026-10-26-010  
+**Checkpoint stage:** Hash-verified offline unit test execution and remaining prototype check  
+**Checkpoint status:** 25 HASH-VERIFIED UNIT TESTS PASS — PROTOTYPE SOURCE CHECK PENDING — DRAFT PR OPEN  
 **Recorded:** 2026-10-26  
 **Repository:** https://github.com/marcelosofficial-ctrl/PocketCode-  
 **Default branch:** `main`  
 **Working branch:** `chat-continuity-report-regressions-2026-10-26`  
 **Baseline commit:** `555840d8d83342513d9cd353d4d1522d46a5c82d`  
-**Latest branch head inspected before checkpoint 009:** `aefbef31f13436d40b675d8e7161bdfb13fa454f`  
-**Latest checkpoint snapshot:** [PC-CP-2026-10-26-009](checkpoints/PC-CP-2026-10-26-009.md)  
+**Latest branch head inspected before checkpoint 010:** `87e34286a7553246e52e275588ae1cb2e933e97a`  
+**Latest checkpoint snapshot:** [PC-CP-2026-10-26-010](checkpoints/PC-CP-2026-10-26-010.md)  
 **Draft pull request:** https://github.com/marcelosofficial-ctrl/PocketCode-/pull/2  
 **Prior snapshots:** [PC-CP-2026-10-26-007](checkpoints/PC-CP-2026-10-26-007.md), [PC-CP-2026-10-26-006](checkpoints/PC-CP-2026-10-26-006.md), [PC-CP-2026-10-26-005](checkpoints/PC-CP-2026-10-26-005.md), [PC-CP-2026-10-26-004](checkpoints/PC-CP-2026-10-26-004.md), [PC-CP-2026-10-26-003](checkpoints/PC-CP-2026-10-26-003.md), [PC-CP-2026-10-26-002](checkpoints/PC-CP-2026-10-26-002.md), [PC-CP-2026-10-26-001](checkpoints/PC-CP-2026-10-26-001.md).
 
@@ -222,3 +222,22 @@ Strict boolean validation now covers stdout/stderr truncation and check/file-lis
 **Test command:** `python -m unittest discover -s scripts -p 'test_*.py' -v` — NOT RUN because the environment cannot resolve GitHub for cloning and the connector does not execute Python. The Pages workflow was not dispatched because it deploys. PR #2 remains draft and unmerged; no paid workload; budget $0.
 
 **Next task:** obtain actual test output from a free, test-only route and review all failures before advancing.
+
+
+## Latest checkpoint update: PC-CP-2026-10-26-010
+
+**Snapshot:** [PC-CP-2026-10-26-010](checkpoints/PC-CP-2026-10-26-010.md)  
+**Branch head inspected:** `87e34286a7553246e52e275588ae1cb2e933e97a`  
+**Snapshot commit:** pending at time this section was authored.
+
+### Test result
+
+Executed `python -m unittest discover -s scripts -p 'test_*.py' -v` in Python 3.13.5 on Linux x86_64 using a temporary reconstructed tree of the four Python files fetched from GitHub. The reconstructed source and test files matched the GitHub branch's blob SHA values exactly. **25 tests passed, exit status 0, zero failures/errors.** The environment printed an unrelated spreadsheet-runtime warmup traceback during Python startup, but the test command completed successfully.
+
+This is genuine local Python execution of hash-verified branch file contents, not a GitHub Actions run or a repository clone. The network clone still fails due to DNS resolution. The separate `python scripts/check_mobile_prototype.py` check against the actual prototype HTML remains NOT RUN. No browser/runtime/security claims are implied.
+
+**Verified blobs:** report source `e9d944a722c2fac5279952696528da72a7011af3`; report tests `39f3a3ef865ed55f333a1edc208096d99197d023`; prototype checker `c745668f4abcc9c164c6d846ecb661a625e8d4d5`; checker tests `c186e79a0d1e57bb3ee02164231b5522cf1cf1b5`.
+
+**Safety:** PR #2 remains draft and unmerged. No workflow dispatch, deployment, paid workload, account creation, or billing change. Budget remains $0.
+
+**Next task:** execute the standalone prototype checker against the actual branch HTML using the same hash-verified reconstruction route, then review the full PR diff. Do not mark ready or merge without explicit approval.
