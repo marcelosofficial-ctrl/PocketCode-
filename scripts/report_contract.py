@@ -168,8 +168,18 @@ def format_report(result: Mapping[str, Any]) -> str:
     if len(files) > MAX_FILES:
         lines.append(f"- [file list truncated: {len(files) - MAX_FILES} additional item(s) omitted]")
 
-    check_list_truncated = bool(result.get("check_list_truncated", False)) or len(checks) > MAX_CHECKS
-    file_list_truncated = bool(result.get("file_list_truncated", False)) or len(files) > MAX_FILES
+    check_list_flag = result.get("check_list_truncated", False)
+    file_list_flag = result.get("file_list_truncated", False)
+    for flag_name, flag_value in (
+        ("check_list_truncated", check_list_flag),
+        ("file_list_truncated", file_list_flag),
+    ):
+        if not isinstance(flag_value, bool):
+            diagnostic_notes.append(
+                f"Invalid {flag_name} flag ignored; expected a boolean."
+            )
+    check_list_truncated = check_list_flag is True or len(checks) > MAX_CHECKS
+    file_list_truncated = file_list_flag is True or len(files) > MAX_FILES
     lines.extend(["", "Truncation:"])
     lines.append(f"- stdout: {'yes' if output_truncated['stdout'] else 'no'}")
     lines.append(f"- stderr: {'yes' if output_truncated['stderr'] else 'no'}")
