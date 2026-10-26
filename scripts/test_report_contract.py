@@ -93,6 +93,19 @@ class ReportTests(unittest.TestCase):
         self.assertIn("Invalid stdout_truncated flag ignored; expected a boolean.", report)
         self.assertNotIn("output truncated by source", report)
 
+    def test_string_false_list_truncation_flags_are_not_treated_as_true(self):
+        report = format_report({
+            "execution_status": "running",
+            "checks": [{"name": "one"}],
+            "output_files": [{"name": "one.txt", "size_bytes": 1}],
+            "check_list_truncated": "false",
+            "file_list_truncated": "false",
+        })
+        self.assertIn("- check list: no", report)
+        self.assertIn("- file list: no", report)
+        self.assertIn("Invalid check_list_truncated flag ignored; expected a boolean.", report)
+        self.assertIn("Invalid file_list_truncated flag ignored; expected a boolean.", report)
+
     def test_actual_check_list_truncation_is_reported_without_source_flag(self):
         report = format_report({
             "execution_status": "running",
