@@ -11,7 +11,7 @@
 **Latest branch head inspected before checkpoint 010:** `87e34286a7553246e52e275588ae1cb2e933e97a`  
 **Latest checkpoint snapshot:** [PC-CP-2026-10-26-010](checkpoints/PC-CP-2026-10-26-010.md)  
 **Draft pull request:** https://github.com/marcelosofficial-ctrl/PocketCode-/pull/2  
-**Prior snapshots:** [PC-CP-2026-10-26-007](checkpoints/PC-CP-2026-10-26-007.md), [PC-CP-2026-10-26-006](checkpoints/PC-CP-2026-10-26-006.md), [PC-CP-2026-10-26-005](checkpoints/PC-CP-2026-10-26-005.md), [PC-CP-2026-10-26-004](checkpoints/PC-CP-2026-10-26-004.md), [PC-CP-2026-10-26-003](checkpoints/PC-CP-2026-10-26-003.md), [PC-CP-2026-10-26-002](checkpoints/PC-CP-2026-10-26-002.md), [PC-CP-2026-10-26-001](checkpoints/PC-CP-2026-10-26-001.md).
+**Prior snapshots:** [PC-CP-2026-10-26-009](checkpoints/PC-CP-2026-10-26-009.md), [PC-CP-2026-10-26-008](checkpoints/PC-CP-2026-10-26-008.md), [PC-CP-2026-10-26-007](checkpoints/PC-CP-2026-10-26-007.md), [PC-CP-2026-10-26-006](checkpoints/PC-CP-2026-10-26-006.md), [PC-CP-2026-10-26-005](checkpoints/PC-CP-2026-10-26-005.md), [PC-CP-2026-10-26-004](checkpoints/PC-CP-2026-10-26-004.md), [PC-CP-2026-10-26-003](checkpoints/PC-CP-2026-10-26-003.md), [PC-CP-2026-10-26-002](checkpoints/PC-CP-2026-10-26-002.md), [PC-CP-2026-10-26-001](checkpoints/PC-CP-2026-10-26-001.md).
 
 ## Purpose
 
@@ -215,7 +215,7 @@ Static review found malformed output truncation flags were interpreted by truthi
 
 **Snapshot:** [PC-CP-2026-10-26-009](checkpoints/PC-CP-2026-10-26-009.md)  
 **Source/test head before snapshot:** `aefbef31f13436d40b675d8e7161bdfb13fa454f`  
-**Snapshot commit:** pending at time this section was authored.
+**Snapshot commit:** `bea64600b269ad8e17c0232138ddd12243c487be`.
 
 Strict boolean validation now covers stdout/stderr truncation and check/file-list truncation flags. Non-boolean values are ignored and disclosed. Regression coverage was added for string-valued `"false"` flags. The new-chat bootstrap's checkpoint 008 link and latest-record label were repaired. These are static-review changes only; Python tests remain NOT RUN.
 
