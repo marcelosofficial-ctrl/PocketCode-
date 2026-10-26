@@ -44,8 +44,8 @@ This file is the first read for a new PocketCode chat. It is a compact pointer t
 
 - The listed source files and their content/blob SHAs were fetched from GitHub.
 - The latest commit returned by repository commit search before branch creation was the baseline SHA above. The working branch was created from that baseline; subsequent source/test changes are recorded in commit `e8e8555b627efe61f5dbdd0a3f870e3cbea67a21`.
-- The current report-contract source classifies any valid nonzero integer exit code as FAIL before checking whether the lifecycle status is `succeeded`.
-- The formatter's final size-cap path slices the assembled report and appends a size-limit marker; this can remove lower-priority footer content.
+- The baseline report-contract source classified any valid nonzero integer exit code as FAIL before checking whether the lifecycle status was `succeeded`.
+- The baseline formatter's final size-cap path sliced the assembled report and appended a size-limit marker; this could remove lower-priority footer content.
 - The implementation patch now limits nonzero-exit FAIL classification to `succeeded` status (or explicit `program_failed`), adds finite duration validation, derives output/list truncation disclosures, reports malformed check/file entries, and preserves a bounded uncertainty footer when the overall report cap is reached. These are source-inspection observations, not runtime/test verification.
 
 ### Not verified in this checkpoint
