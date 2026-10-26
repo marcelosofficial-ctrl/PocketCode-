@@ -130,9 +130,15 @@ def format_report(result: Mapping[str, Any]) -> str:
             value = "(empty)"
         else:
             value = _safe_text(raw, MAX_OUTPUT_CHARS)
-        was_truncated = bool(result.get(f"{key}_truncated", False)) or value.endswith("[field truncated]")
+        source_truncated_flag = result.get(f"{key}_truncated", False)
+        source_says_truncated = source_truncated_flag is True
+        if not isinstance(source_truncated_flag, bool):
+            diagnostic_notes.append(
+                f"Invalid {key}_truncated flag ignored; expected a boolean."
+            )
+        was_truncated = source_says_truncated or value.endswith("[field truncated]")
         output_truncated[key] = was_truncated
-        if bool(result.get(f"{key}_truncated", False)) and not value.endswith("[field truncated]"):
+        if source_says_truncated and not value.endswith("[field truncated]"):
             value += " …[output truncated by source]"
         rendered_outputs[key] = value
         lines.extend(["", key + ":", value])
