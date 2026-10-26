@@ -6,7 +6,7 @@ Use this file when starting a new ChatGPT, Claude, or Gemini conversation about 
 
 1. Read [AGENTS.md](../AGENTS.md) and follow its rules.
 2. Read [CURRENT_CHECKPOINT.md](CURRENT_CHECKPOINT.md).
-3. Open the current checkpoint's [historical record](checkpoints/PC-CP-2026-10-26-001.md) and use the ID/path actually referenced by the current checkpoint if it has advanced.
+3. Open the historical record linked from the current checkpoint. At this point, the current checkpoint is `PC-CP-2026-10-26-002`; the initial checkpoint is preserved at [PC-CP-2026-10-26-001](checkpoints/PC-CP-2026-10-26-001.md).
 4. Verify the repository's latest commit and branch state on GitHub. Compare the current checkpoint's recorded SHA with the actual current branch head. Do not assume this file's original branch or SHA remains current.
 5. Read the relevant source, tests, and contract documents named by the active task. Prefer a targeted read over re-reading the entire repository.
 6. Report any mismatch between the checkpoint and repository before making further changes. Source code, commit history, and actual test evidence outrank stale chat text.
@@ -48,9 +48,7 @@ Every checkpoint must include:
 
 ## Current baseline at bootstrap creation
 
-The first checkpoint is `PC-CP-2026-10-26-001`, anchored to baseline commit `555840d8d83342513d9cd353d4d1522d46a5c82d`. The initial active task is a source-level regression review of `scripts/report_contract.py` and `scripts/test_report_contract.py`. The checkpoint states which observations came from reading source and explicitly says no fresh tests were run in that inspection.
-
-That baseline is historical. Always verify the latest branch head and checkpoint before acting.
+The initial checkpoint is `PC-CP-2026-10-26-001`, anchored to baseline commit `555840d8d83342513d9cd353d4d1522d46a5c82d`. The current checkpoint at bootstrap creation is `PC-CP-2026-10-26-002`; it records the report-contract patch and draft PR #2, and explicitly says tests have not been run. Always verify the latest branch head and checkpoint before acting.
 
 ## Copy/paste opening prompt
 
