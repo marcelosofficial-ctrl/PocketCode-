@@ -83,6 +83,16 @@ class ReportTests(unittest.TestCase):
         self.assertIn("stdout: yes", report)
         self.assertIn("field truncated", report)
 
+    def test_string_false_truncation_flag_is_not_treated_as_true(self):
+        report = format_report({
+            "execution_status": "running",
+            "stdout": "short output",
+            "stdout_truncated": "false",
+        })
+        self.assertIn("- stdout: no", report)
+        self.assertIn("Invalid stdout_truncated flag ignored; expected a boolean.", report)
+        self.assertNotIn("output truncated by source", report)
+
     def test_actual_check_list_truncation_is_reported_without_source_flag(self):
         report = format_report({
             "execution_status": "running",
