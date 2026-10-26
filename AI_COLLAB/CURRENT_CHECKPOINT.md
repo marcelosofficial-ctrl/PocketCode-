@@ -2,13 +2,15 @@
 
 **Checkpoint ID:** PC-CP-2026-10-26-001  
 **Checkpoint stage:** Continuity foundation / report-contract regression review  
-**Checkpoint status:** IN PROGRESS  
+**Checkpoint status:** IMPLEMENTATION PATCH WRITTEN — TESTS NOT RUN  
 **Recorded:** 2026-10-26  
 **Repository:** https://github.com/marcelosofficial-ctrl/PocketCode-  
 **Default branch:** `main`  
 **Working branch:** `chat-continuity-report-regressions-2026-10-26`  
 **Baseline commit:** `555840d8d83342513d9cd353d4d1522d46a5c82d`  
 **Baseline commit URL:** https://github.com/marcelosofficial-ctrl/PocketCode-/commit/555840d8d83342513d9cd353d4d1522d46a5c82d
+
+**Implementation patch commit:** `e8e8555b627efe61f5dbdd0a3f870e3cbea67a21` (report-contract implementation; the checkpoint metadata is being recorded in subsequent commits).
 
 ## Purpose
 
@@ -38,15 +40,14 @@ This file is the first read for a new PocketCode chat. It is a compact pointer t
 ### Verified by repository inspection in this checkpoint
 
 - The listed source files and their content/blob SHAs were fetched from GitHub.
-- The latest commit returned by repository commit search during this pass was the baseline SHA above.
+- The latest commit returned by repository commit search before branch creation was the baseline SHA above. The working branch was created from that baseline; subsequent source/test changes are recorded in commit `e8e8555b627efe61f5dbdd0a3f870e3cbea67a21`.
 - The current report-contract source classifies any valid nonzero integer exit code as FAIL before checking whether the lifecycle status is `succeeded`.
 - The formatter's final size-cap path slices the assembled report and appends a size-limit marker; this can remove lower-priority footer content.
-- Duration validation rejects NaN through the `duration >= 0` comparison, but positive infinity passes; explicit finite-value validation is still desirable.
-- Output truncation disclosure depends partly on caller-provided flags; malformed check/file entries can be skipped without a clear omission count.
+- The implementation patch now limits nonzero-exit FAIL classification to `succeeded` status (or explicit `program_failed`), adds finite duration validation, derives output/list truncation disclosures, reports malformed check/file entries, and preserves a bounded uncertainty footer when the overall report cap is reached. These are source-inspection observations, not runtime/test verification.
 
 ### Not verified in this checkpoint
 
-- No test suite was executed during the source inspection.
+- No test suite was executed during this pass. The regression test file was expanded, but all new and existing tests remain UNVERIFIED until actually run.
 - Historical test results recorded in `PROJECT_STATUS.md` are repository history, not a fresh run.
 - No browser interaction, backend execution, provider isolation, egress, cancellation, or cleanup behavior was tested.
 - No changes in this checkpoint are claimed to be tested until evidence is recorded after execution.
@@ -54,16 +55,18 @@ This file is the first read for a new PocketCode chat. It is a compact pointer t
 ## Active task
 
 **Task ID:** PC-TASK-REPORT-CONTRACT-REGRESSION-001  
-**Status:** READY FOR IMPLEMENTATION / review required  
+**Status:** PATCH WRITTEN / TESTS NOT RUN / review required  
 **Goal:** Make report verdict and truncation behavior preserve the distinction between confirmed program failure and uncertain/incomplete execution, and add regression coverage.
 
-### Candidate changes
+### Changes now present on the working branch
 
-1. Change verdict classification so `program_failed` is FAIL; `succeeded` with valid integer exit code 0 is PASS; `succeeded` with a valid nonzero integer exit code is FAIL; all other statuses are INCOMPLETE regardless of a stale exit code.
-2. Reject non-finite duration values explicitly (NaN and positive/negative infinity).
-3. Derive and disclose actual output/check/file omissions rather than trusting caller flags alone.
-4. Keep the verdict, lifecycle status, uncertainty notes, and explicit report-size marker visible under the whole-report cap.
-5. Add regression tests for stale exit codes on timeout/cancel/infrastructure failure, non-finite duration, actual truncation, malformed entries, and footer preservation.
+1. `scripts/report_contract.py` now treats nonzero exit codes as FAIL only for `succeeded`; explicit `program_failed` remains FAIL, and uncertain/nonterminal statuses remain INCOMPLETE regardless of stale exit code.
+2. Duration validation uses finite, nonnegative numeric checks and excludes booleans.
+3. Truncation status is derived from rendered output and actual list lengths, in addition to caller flags; malformed check/file entries are disclosed.
+4. Overall report-size truncation preserves the evidence header, size-limit marker, uncertainty section, and an unconfirmed-outcome note for INCOMPLETE verdicts.
+5. `scripts/test_report_contract.py` now includes regression tests for stale exit codes, non-finite duration, actual output/list truncation, malformed entries, and footer preservation.
+
+These changes are committed on the working branch but have not been executed in a Python test run.
 
 ### Acceptance criteria
 
@@ -73,11 +76,11 @@ This file is the first read for a new PocketCode chat. It is a compact pointer t
 - Report length never exceeds `MAX_REPORT_CHARS`.
 - If the report is shortened, it retains its verdict/status header, explicit size-limit marker, and an uncertainty statement that the result may be incomplete.
 - Every omission caused by field/list/report limits is disclosed accurately within the report's own size bounds.
-- Tests are run and exact command/results are recorded; no test is marked passed before execution.
+- Existing and new tests are run and exact command/results are recorded; no test is marked passed before execution. **Not yet satisfied.**
 
 ## Next action
 
-Implement the report-contract regression patch on the working branch, then inspect the diff and run the dependency-free test suite if the available environment supports it. If tests cannot be executed, record that limitation and do not claim they passed.
+Inspect the branch diff and obtain an actual Python test run for `python -m unittest discover -s scripts -p 'test_*.py' -v` (or, at minimum, `python -m unittest discover -s scripts -p 'test_report_contract.py' -v`). The GitHub connector used for these edits cannot execute the Python suite; no test run has been observed. Review the open PR, address any failures, and keep it draft until evidence is recorded.
 
 ## Approval and safety gates
 
