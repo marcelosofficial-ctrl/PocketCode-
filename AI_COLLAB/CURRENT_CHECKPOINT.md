@@ -8,10 +8,10 @@
 **Default branch:** `main`  
 **Working branch:** `chat-continuity-report-regressions-2026-10-26`  
 **Baseline commit:** `555840d8d83342513d9cd353d4d1522d46a5c82d`  
-**Latest PR head before this pass:** `bc47d811beb0c313ad77b2fa765861aa2e975886`  
-**Latest checkpoint snapshot:** [PC-CP-2026-10-26-005](checkpoints/PC-CP-2026-10-26-005.md)  
+**Latest branch head after checkpoint 006:** `c892003e7dbdc4c1090deb6ba2eda5c77d572fd3`  
+**Latest checkpoint snapshot:** [PC-CP-2026-10-26-006](checkpoints/PC-CP-2026-10-26-006.md)  
 **Draft pull request:** https://github.com/marcelosofficial-ctrl/PocketCode-/pull/2  
-**Prior snapshots:** [PC-CP-2026-10-26-004](checkpoints/PC-CP-2026-10-26-004.md), [PC-CP-2026-10-26-003](checkpoints/PC-CP-2026-10-26-003.md), [PC-CP-2026-10-26-002](checkpoints/PC-CP-2026-10-26-002.md), [PC-CP-2026-10-26-001](checkpoints/PC-CP-2026-10-26-001.md).
+**Prior snapshots:** [PC-CP-2026-10-26-005](checkpoints/PC-CP-2026-10-26-005.md), [PC-CP-2026-10-26-004](checkpoints/PC-CP-2026-10-26-004.md), [PC-CP-2026-10-26-003](checkpoints/PC-CP-2026-10-26-003.md), [PC-CP-2026-10-26-002](checkpoints/PC-CP-2026-10-26-002.md), [PC-CP-2026-10-26-001](checkpoints/PC-CP-2026-10-26-001.md).
 
 ## Purpose
 
