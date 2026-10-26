@@ -1,8 +1,8 @@
 # PocketCode Current Checkpoint
 
-**Checkpoint ID:** PC-CP-2026-10-26-011  
-**Stage:** Report-contract hardening, continuity records, and offline verification  
-**Status:** 25 UNIT TESTS PASS / PROTOTYPE STATIC CHECK PASS / PR DRAFT / RUNTIME UNTESTED  
+**Checkpoint ID:** PC-CP-2026-10-26-012  
+**Stage:** Report-contract hardening, offline verification, and PR diff review  
+**Status:** DIFF REVIEWED / 25 UNIT TESTS PASS / PROTOTYPE STATIC CHECK PASS / PR DRAFT / RUNTIME UNTESTED  
 **Recorded:** 2026-10-26  
 **Repository:** https://github.com/marcelosofficial-ctrl/PocketCode-  
 **Default branch:** `main`  
@@ -12,7 +12,7 @@
 **Checkpoint 011 snapshot commit:** `d9880de4b4acd0e03cbc2bcfba5f71c1cbf3427b`  
 **Draft PR:** https://github.com/marcelosofficial-ctrl/PocketCode-/pull/2  
 **Latest snapshot:** [PC-CP-2026-10-26-011](checkpoints/PC-CP-2026-10-26-011.md)  
-**Prior snapshots:** [010](checkpoints/PC-CP-2026-10-26-010.md), [009](checkpoints/PC-CP-2026-10-26-009.md), [008](checkpoints/PC-CP-2026-10-26-008.md), [007](checkpoints/PC-CP-2026-10-26-007.md), [006](checkpoints/PC-CP-2026-10-26-006.md), [005](checkpoints/PC-CP-2026-10-26-005.md), [004](checkpoints/PC-CP-2026-10-26-004.md), [003](checkpoints/PC-CP-2026-10-26-003.md), [002](checkpoints/PC-CP-2026-10-26-002.md), [001](checkpoints/PC-CP-2026-10-26-001.md).
+**Prior snapshots:** [011](checkpoints/PC-CP-2026-10-26-011.md), [010](checkpoints/PC-CP-2026-10-26-010.md), [009](checkpoints/PC-CP-2026-10-26-009.md), [008](checkpoints/PC-CP-2026-10-26-008.md), [007](checkpoints/PC-CP-2026-10-26-007.md), [006](checkpoints/PC-CP-2026-10-26-006.md), [005](checkpoints/PC-CP-2026-10-26-005.md), [004](checkpoints/PC-CP-2026-10-26-004.md), [003](checkpoints/PC-CP-2026-10-26-003.md), [002](checkpoints/PC-CP-2026-10-26-002.md), [001](checkpoints/PC-CP-2026-10-26-001.md).
 
 ## Current project truth
 
@@ -60,4 +60,17 @@ Python emitted an unrelated spreadsheet-runtime warmup traceback during startup,
 
 ## Next task
 
-Finish reviewing the complete PR diff (16 changed files) against `main`. Check for stale/contradictory historical claims, accidental scope changes, and whether the regression patch matches the documented contract. Keep the PR draft and do not merge without explicit approval.
+Keep PR #2 isolated and draft for owner review. For further product work, start a separate branch after inspecting `AI_COLLAB/MASTER_RESEARCH_IMPLEMENTATION_PLAN.md` and `AI_COLLAB/GEMINI_HANDOFF.md`; advance one bounded product/architecture deliverable without mixing it into this report-contract PR. Do not merge without explicit approval.
+
+
+## Latest checkpoint update: PC-CP-2026-10-26-012
+
+**Snapshot:** [PC-CP-2026-10-26-012](checkpoints/PC-CP-2026-10-26-012.md)  
+**Branch head inspected before snapshot:** `e45843e29e5c4873c862d0379232c9f5ecb9b58d`  
+**Snapshot commit:** pending at time this section was authored.
+
+Reviewed the functional diff, report-contract tests, contributor policy, active continuity files, and checkpoint records 001–011. No production runner/backend/provider, dependency, workflow, deployment, or browser-runtime code was added. The formatter remains explicitly bounded as a reporting helper. Corrected stale bootstrap checkpoint references and updated the PR body with the hash-verified 25-test pass and prototype static-check pass. Historical “tests not run” statements remain in historical snapshots and accurately describe those earlier stages.
+
+**Verification:** 25 unit tests passed and the prototype source checker passed against temporary reconstructions with exact GitHub blob hashes. These are not GitHub Actions CI or browser/runtime tests. DNS still prevents cloning. PR #2 remains draft and unmerged; budget $0; no deployment or paid workload.
+
+**Next task:** keep PR #2 separate for owner review. Start future product/architecture work in a separate branch after inspecting the canonical master research plan and Gemini handoff. Do not merge without explicit approval.
