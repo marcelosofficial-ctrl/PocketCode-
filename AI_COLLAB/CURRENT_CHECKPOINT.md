@@ -8,10 +8,11 @@
 **Default branch:** `main`  
 **Working branch:** `chat-continuity-report-regressions-2026-10-26`  
 **Base commit:** `555840d8d83342513d9cd353d4d1522d46a5c82d`  
-**Branch head inspected for checkpoint 011:** `0ce1f9b369096e947f1f6bf421164788161ed287`  
+**Branch head inspected for checkpoint 012:** `e45843e29e5c4873c862d0379232c9f5ecb9b58d`  
 **Checkpoint 011 snapshot commit:** `d9880de4b4acd0e03cbc2bcfba5f71c1cbf3427b`  
 **Draft PR:** https://github.com/marcelosofficial-ctrl/PocketCode-/pull/2  
-**Latest snapshot:** [PC-CP-2026-10-26-011](checkpoints/PC-CP-2026-10-26-011.md)  
+**Latest snapshot:** [PC-CP-2026-10-26-012](checkpoints/PC-CP-2026-10-26-012.md)  
+**Checkpoint 012 snapshot commit:** `a504d1a51a899a06e7f89ace985b968f248f8fe5`  
 **Prior snapshots:** [011](checkpoints/PC-CP-2026-10-26-011.md), [010](checkpoints/PC-CP-2026-10-26-010.md), [009](checkpoints/PC-CP-2026-10-26-009.md), [008](checkpoints/PC-CP-2026-10-26-008.md), [007](checkpoints/PC-CP-2026-10-26-007.md), [006](checkpoints/PC-CP-2026-10-26-006.md), [005](checkpoints/PC-CP-2026-10-26-005.md), [004](checkpoints/PC-CP-2026-10-26-004.md), [003](checkpoints/PC-CP-2026-10-26-003.md), [002](checkpoints/PC-CP-2026-10-26-002.md), [001](checkpoints/PC-CP-2026-10-26-001.md).
 
 ## Current project truth
