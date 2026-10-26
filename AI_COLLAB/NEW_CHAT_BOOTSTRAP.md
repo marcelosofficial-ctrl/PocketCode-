@@ -6,7 +6,7 @@ Use this file when starting a new ChatGPT, Claude, or Gemini conversation about 
 
 1. Read [AGENTS.md](../AGENTS.md) and follow its rules.
 2. Read [CURRENT_CHECKPOINT.md](CURRENT_CHECKPOINT.md).
-3. Open the historical record linked from the current checkpoint. At this point, the current checkpoint is `PC-CP-2026-10-26-002`; the initial checkpoint is preserved at [PC-CP-2026-10-26-001](checkpoints/PC-CP-2026-10-26-001.md).
+3. Open the historical record linked from the current checkpoint. The latest review record is [PC-CP-2026-10-26-004](checkpoints/PC-CP-2026-10-26-004.md); earlier records 001, 002, and 003 remain historical snapshots.
 4. Verify the repository's latest commit and branch state on GitHub. Compare the current checkpoint's recorded SHA with the actual current branch head. Do not assume this file's original branch or SHA remains current.
 5. Read the relevant source, tests, and contract documents named by the active task. Prefer a targeted read over re-reading the entire repository.
 6. Report any mismatch between the checkpoint and repository before making further changes. Source code, commit history, and actual test evidence outrank stale chat text.
@@ -48,7 +48,7 @@ Every checkpoint must include:
 
 ## Current baseline at bootstrap creation
 
-The initial checkpoint is `PC-CP-2026-10-26-001`, anchored to baseline commit `555840d8d83342513d9cd353d4d1522d46a5c82d`. The current checkpoint at bootstrap creation is `PC-CP-2026-10-26-002`; it records the report-contract patch and draft PR #2, and explicitly says tests have not been run. Always verify the latest branch head and checkpoint before acting.
+The initial checkpoint is `PC-CP-2026-10-26-001`, anchored to baseline commit `555840d8d83342513d9cd353d4d1522d46a5c82d`. The latest checkpoint record is `PC-CP-2026-10-26-004`; it records the report-contract static review, stale-pointer correction, draft PR #2, and the fact that Python tests remain unrun. Always verify the latest branch head and checkpoint before acting.
 
 ## Copy/paste opening prompt
 
