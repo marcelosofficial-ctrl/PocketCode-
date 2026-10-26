@@ -63,3 +63,10 @@
 - Updated master-plan section 3 with candidate jobs-to-be-done, strongest counterarguments, low-cost falsification steps, and a warning that no interview, benchmark, or user validation is complete.
 - Primary concern: current one-word PocketCode and Derle both market local code execution and AI from phones; the product must prove a specific advantage in no-setup disposable execution and report-to-any-AI handoff, or pivot.
 - No apps were installed, no benchmark/interviews performed, no account created, and no spend incurred. This remains ChatGPT's partial Pass 1 work, not Gemini completion.
+
+
+### 2026-10-26 — ChatGPT illustrative cost-model subpass (workstream H partial)
+- Added [PASS1_COST_MODEL.md](PASS1_COST_MODEL.md) using current official provider pricing pages and explicit resource/time assumptions.
+- Example variable CPU/memory arithmetic: Modal Sandbox+Notebooks about $0.00158 per 60s active at 1 vCPU-equivalent/1 GiB (about $0.00317 if a full 60s idle tail is billed); Daytona and E2B about $0.00111 per 60s at 1 vCPU/1 GiB; Cloudflare's standard-2 example is within included resource quotas but still requires the $5/month Workers Paid base plan. These are lower-bound illustrations, not all-in estimates.
+- Material risks: free credits do not guarantee a $0 ceiling; Modal can bill beyond included compute, Daytona network controls depend on tier, Cloudflare has a base fee and component charges, and E2B requires prior written consent before tests.
+- No accounts, credentials, live workloads, or spend. Budget remains $0. This is ChatGPT's partial workstream H, not Gemini completion; full cost/operations and Pass 1 remain incomplete.
