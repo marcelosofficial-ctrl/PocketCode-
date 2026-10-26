@@ -1,19 +1,17 @@
 # PocketCode Current Checkpoint
 
-**Checkpoint ID:** PC-CP-2026-10-26-002  
-**Checkpoint stage:** Continuity foundation / report-contract patch review  
-**Checkpoint status:** PATCH WRITTEN — TESTS NOT RUN — DRAFT PR OPEN  
+**Checkpoint ID:** PC-CP-2026-10-26-004  
+**Checkpoint stage:** Report-contract regression review and continuity reconciliation  
+**Checkpoint status:** STATIC REVIEW RECORDED — PYTHON TESTS BLOCKED — DRAFT PR OPEN  
 **Recorded:** 2026-10-26  
 **Repository:** https://github.com/marcelosofficial-ctrl/PocketCode-  
 **Default branch:** `main`  
 **Working branch:** `chat-continuity-report-regressions-2026-10-26`  
 **Baseline commit:** `555840d8d83342513d9cd353d4d1522d46a5c82d`  
-**Baseline commit URL:** https://github.com/marcelosofficial-ctrl/PocketCode-/commit/555840d8d83342513d9cd353d4d1522d46a5c82d
-
-**Report-contract implementation commit:** `e8e8555b627efe61f5dbdd0a3f870e3cbea67a21`  
-**Branch head verified before this checkpoint metadata update:** `a68de2d4225f99b8748abe4789703e2a0b7e7cf6`  
+**Latest source head reviewed:** `f9e845292ffcecd2a5ea62832fa23191a4f07a84`  
+**Latest checkpoint snapshot:** [PC-CP-2026-10-26-004](checkpoints/PC-CP-2026-10-26-004.md)  
 **Draft pull request:** https://github.com/marcelosofficial-ctrl/PocketCode-/pull/2  
-**Checkpoint history:** [PC-CP-2026-10-26-002](checkpoints/PC-CP-2026-10-26-002.md); prior stage: [PC-CP-2026-10-26-001](checkpoints/PC-CP-2026-10-26-001.md).
+**Prior snapshots:** [PC-CP-2026-10-26-003](checkpoints/PC-CP-2026-10-26-003.md), [PC-CP-2026-10-26-002](checkpoints/PC-CP-2026-10-26-002.md), [PC-CP-2026-10-26-001](checkpoints/PC-CP-2026-10-26-001.md).
 
 ## Purpose
 
@@ -124,3 +122,21 @@ No source/test code was changed by this review. PR #2 remains open, draft and un
 ### Next action
 
 Run the complete unittest discovery command against the exact working-branch files in a Python environment with repository access. Record actual test count, exit status and tested commit. Fix failures and rerun before changing the PR out of draft. Do not infer test success from static inspection.
+
+
+## Latest checkpoint reconciliation: PC-CP-2026-10-26-004
+
+**Snapshot:** [PC-CP-2026-10-26-004](checkpoints/PC-CP-2026-10-26-004.md)  
+**Source head reviewed:** `f9e845292ffcecd2a5ea62832fa23191a4f07a84`  
+**Snapshot commit:** `e5b161569adf2dcce1cbe9ad4bcc11a8eee8a035`  
+**Bootstrap pointer correction:** `cbf3407246a93933e9b376801dcc2d40987a01df`
+
+The new-chat bootstrap's hard-coded claim that checkpoint 002 was current has been corrected to point to checkpoint 004. The complete report-contract source and test file were re-read. Static findings and the outstanding test blocker are captured in the snapshot.
+
+**Verification:** no Python tests run; no workflow runs or commit status checks were returned for the source head reviewed. The environment's GitHub DNS failure remains the blocker to obtaining exact branch files for local execution. Required command: `python -m unittest discover -s scripts -p 'test_*.py' -v`.
+
+**Changed paths in this documentation-only stage:** `AI_COLLAB/checkpoints/PC-CP-2026-10-26-004.md`, `AI_COLLAB/NEW_CHAT_BOOTSTRAP.md`, `AI_COLLAB/CURRENT_CHECKPOINT.md`. No application code or tests changed. PR #2 remains draft and unmerged. No deployment or paid workload; budget remains $0.
+
+### Next task and acceptance criteria
+
+Run the full unittest discovery command against the exact branch files. Record actual test count, exit status, environment, and tested commit. Fix failures and rerun. Until real execution evidence exists, keep PR #2 in draft and report the test state as BLOCKED/UNVERIFIED.
