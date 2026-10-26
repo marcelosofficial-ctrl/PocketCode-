@@ -42,7 +42,26 @@ The detailed baseline table, blob SHAs, contradictions, and next-workstream orde
 Use evidence labels: VERIFIED_PRIMARY_SOURCE, SECONDARY_SOURCE, INFERENCE, ASSUMPTION, UNVERIFIED, NEEDS_LIVE_TEST, NEEDS_OWNER_APPROVAL. “VERIFIED_PRIMARY_SOURCE” for repository facts only means the repo directly states the fact; it does not validate external claims repeated by that document.
 
 ## 3. Users and validation
-Segment hypotheses; jobs-to-be-done; phone-first failure moments; non-leading interview script; validation protocol; measurable pass/fail thresholds; disconfirming evidence and pivot criteria.
+
+**Status:** hypotheses only; no representative user validation or task benchmark has been completed. Directional public anecdotes are logged in [RESEARCH/MOBILE_CODING_USER_EVIDENCE.md](../RESEARCH/MOBILE_CODING_USER_EVIDENCE.md); competitor counterevidence and the fixed-task comparison are in [PASS1_COMPETITOR_RESEARCH.md](PASS1_COMPETITOR_RESEARCH.md).
+
+| Segment hypothesis | Job-to-be-done | Current evidence | Strongest counterargument | Cheap falsification step |
+|---|---|---|---|---|
+| A. Quick-run verifier | “I have an AI-generated script and small input file on my phone; help me check the actual result without setting up a full IDE/server.” | Existing public anecdotes mention phone Python, mobile editing friction, and debugging context loss; official competitors confirm this is technically possible | Free local IDEs (existing PocketCode, Derle) and Codespaces may already solve it; no evidence of enough frequency or willingness to pay | Compare one fixed Python+CSV task across local IDE, Codespaces, Kodo+SSH, Codeg and proposed flow; measure setup steps, time-to-result, report usefulness and failure recovery |
+| B. Learner/hobbyist | “Help me learn/debug small scripts and understand errors from my phone.” | Public anecdotal reports of mobile Python use and frustration; no representative sample | Local tools are free and may teach more; support needs and low willingness to pay may undermine hosted economics | Review public learner workflows and existing apps; ask non-leading questions about the last actual failed run |
+| C. Professional away from workstation | “Let me supervise a repo-wide agent or long-running task from a phone.” | Codeg and Codespaces already address remote continuation | This is a broader persistent-workspace/agent product with more auth, state, cost and security complexity than the narrow MVP | Defer unless target users explicitly name this as the unmet job |
+
+**Provisional recommendation:** test segment A first because it is the smallest technical hypothesis, not because it is proven to be the largest market.
+
+### Validation protocol (not yet run)
+
+1. Ask about the last real instance of trying to run AI-generated code from a phone, not whether the person likes the idea.
+2. Record device/OS, code source, input files, runtime, current workaround, setup steps, time-to-result, error handling, and what they copied back to the AI.
+3. Compare the same small Python+CSV task in existing tools using public documentation/screenshots first; hands-on tests require the relevant accounts and approvals.
+4. Define thresholds before collecting results. Do not invent a numeric pass threshold until the task and target audience are specified.
+5. Pivot/stop if the same task is already easy in a free local IDE/Codespaces, if users need persistent full IDE features, or if safe hosted execution cannot fit the approved budget.
+
+**No interviews, controlled usability study, or task benchmark is claimed complete.**
 
 ## 4. Competitors and substitutes
 
