@@ -18,7 +18,7 @@
 
 **Recommendation (not accepted as a final decision):** Keep the first technical proof narrow: a phone-browser/PWA candidate, one small Python task, optional text/CSV input, genuine bounded output and file evidence, and a copyable report. Do not require native mobile, Termux, SSH/Tailscale, local WASM, floating overlays, direct AI integrations, or a broad agentic control plane to prove the core hypothesis. Keep those as future options only if evidence justifies them.
 
-**Confidence:** High on repository state; moderate that the narrow run→evidence→AI handoff loop is the clearest technical test; low on demand, differentiation, and sustainable economics. Public-source research is not representative demand evidence.
+**Confidence:** High on repository state; moderate that the narrow run→evidence→AI handoff loop is the clearest technical test; low on demand, differentiation, and sustainable economics. Public-source research is not representative demand evidence. The current competitor refresh strengthens the counterargument: the one-word PocketCode brand is already used by an Android IDE with local execution/AI, Derle markets a phone-native IDE with local execution/AI, Kodo covers iOS editing/preview/SSH, Codeg supervises host-side agents, and Codespaces provides cloud development from a browser. The product cannot differentiate on “coding from a phone” alone.
 
 **Gate:** Continue $0 desk research and static work. No provider selection, account, credentials, live workload, billing, public runner, or deployment without explicit owner approval after current official-source and safety review.
 
@@ -45,8 +45,19 @@ Use evidence labels: VERIFIED_PRIMARY_SOURCE, SECONDARY_SOURCE, INFERENCE, ASSUM
 Segment hypotheses; jobs-to-be-done; phone-first failure moments; non-leading interview script; validation protocol; measurable pass/fail thresholds; disconfirming evidence and pivot criteria.
 
 ## 4. Competitors and substitutes
-| Product/alternative | User | Execution location | Mobile UX | Languages | Files in/out | AI lock-in | Price/limits | Security evidence | Gap/weakness | Source/date/confidence |
-|---|---|---|---|---|---|---|---|---|---|---|
+
+Current official-source refresh: [PASS1_COMPETITOR_RESEARCH.md](PASS1_COMPETITOR_RESEARCH.md), checked 2026-10-26. This is a targeted desk-research subpass, not a hands-on or representative market study.
+
+| Product/alternative | User | Execution location | Mobile UX | Languages / files | AI lock-in | Price/limits | Security evidence | Gap/weakness to test | Source/date/confidence |
+|---|---|---|---|---|---|---|---|---|---|
+| PocketCode (one word, existing Android IDE) | Android developers wanting a full phone IDE | On-device runtimes; terminal/SSH also available | Android 9+, 64-bit; editor, terminal, Git, API/database tools | Official site lists Python/Node/Ruby/PHP/Java/Kotlin and more; broad local toolchain | BYOK/multiple AI providers | Free tier (one project); Pro advertised at $6.99/month | No independent security test in this pass | Exact-name collision; how much extra value does a hosted disposable runner add over local execution? | Official [site](https://www.pocketcodeapp.com/en), [about](https://www.pocketcodeapp.com/en/about); 2026-10-26; official claims, not hands-on verified |
+| Derle | Phone-first users who want local IDE/terminal/AI | On-device Linux/toolchains; site describes Android PRoot and iOS ARM64 emulator | Markets Android and iPhone experiences; public iOS distribution status needs confirmation | Local Python/Node/compilers and project builds claimed; files/Git/previews | Built-in models and BYOK options | Free tier; optional Pro, exact current pricing not assessed | No independent security test in this pass | Local execution is already possible; verify iOS availability and test real constraints | Official [site](https://derle.app/); 2026-10-26; marketing claims |
+| Kodo | iPhone/iPad users needing a light editor and remote access | Local HTML/CSS/JS preview; SSH runs other languages on user-owned server | iOS/iPadOS 18+, free/no account according to site | Local web preview; says Python/PHP/Swift are not run locally; SSH/SFTP/FTP/GitHub/SQLite | Optional on-device AI | Free/no subscription according to current site | No independent security test in this pass | A simple Python run without configuring a personal server may be a gap | Official [site](https://www.kodoeditor.com/); 2026-10-26; no app test |
+| Codeg | Users supervising coding agents from a phone | User-owned desktop or server hosts projects/agents | Native iOS/Android clients; current mobile releases are described as test releases | Host retains files, CLIs and sessions; mobile streams output/approvals | Multi-agent coding workspace; host-owned | Current price not assessed | Authenticated host/server architecture described; no independent test | Requires a separate host/server; may be too complex for a one-shot run | Official [installation](https://docs.codeg.app/getting-started/installation), [architecture](https://docs.codeg.app/reference/architecture); 2026-10-26 |
+| GitHub Codespaces | GitHub users needing a cloud development environment | Hosted cloud VM | Browser access from any internet-connected device; setup uses repo/devcontainer workflow | Full development environment and repository files | Optional GitHub ecosystem integrations | Personal Free quota: 120 compute hours and 15 GB-month storage; over-quota use blocks without payment method or is billed with one | GitHub describes isolated environments/access/cost controls; this is not a PocketCode security test | Full IDE is capable but may be more setup/complexity than a single supported run; mobile usability needs task testing | Official [product page](https://github.com/features/codespaces), [billing](https://docs.github.com/en/billing/concepts/product-billing/github-codespaces); 2026-10-26 |
+| Manual browser + terminal/copy-paste workflow | Users who already have access to a cloud IDE, shell or phone-local runtime | Depends on existing tool | No extra app or account beyond the chosen tools | Flexible but fragmented | None required | Existing quotas/costs vary | Depends on underlying environment | May already solve the user's problem; compare time-to-first-run and evidence quality | INFERENCE; needs task-based comparison |
+
+The main differentiator hypothesis to falsify is not “coding from a phone.” It is a lower-friction, cross-platform, disposable run with trustworthy bounded evidence and a clean AI handoff, without installing a full IDE or configuring a server. The current product still needs to prove that users prefer this narrow flow over the alternatives above.
 
 Include mobile IDEs, local runtimes, hosted runners, cloud IDEs, remote agents, AI app builders, manual workarounds and naming risk.
 
@@ -105,7 +116,15 @@ Cover success, syntax/runtime errors, timeout, cancellation, output cap, file ou
 Provide a dependency-ordered minimal vertical slice, explicit definition of done, tasks possible without credentials, and owner-only approvals.
 
 ## 11. Marketing, naming and distribution
-Positioning alternatives; evidence/counterevidence; low-cost ethical experiments; pass/fail thresholds; name validation checklist; distribution hypotheses; claims prohibited until functionality is verified.
+
+**Current status:** no final name or validated positioning. See [PASS1_COMPETITOR_RESEARCH.md](PASS1_COMPETITOR_RESEARCH.md).
+
+- Do not position “code from your phone” as unique: current competitors explicitly claim local code execution, mobile AI assistance, remote-agent supervision, or browser-hosted cloud development.
+- The strongest testable positioning hypothesis is “run a small supported task from an AI-generated snippet without setting up an IDE/server; get a truthful, bounded report that can be pasted back into any AI assistant.” This is an INFERENCE, not validated demand.
+- **Name risk: high priority.** An existing one-word PocketCode Android IDE directly overlaps the developer-tool category and uses the exact spelling. The Catrobat “Pocket Code” name adds adjacent-category confusion. Keep the name provisional; do not invest in domain, logo, or launch assets before a distinct-name shortlist and formal trademark/domain review.
+- Low-cost next experiment: compare one fixed Python+CSV task across existing PocketCode, Derle, Kodo+SSH, Codeg, Codespaces, and a manual workflow using public docs/screenshots first. Record setup steps, time-to-first-run, file handling, error/report quality, mobile friction, cost/limits, and required hardware/server.
+- Pass/fail criteria must be set before interpreting results: if a free local IDE or Codespaces completes the same task with similar friction, or target users prefer a full persistent IDE, pivot the product hypothesis rather than adding features.
+- Do not claim real execution, sandbox isolation, speed, affordability, security, or user demand until implemented/tested/evidenced. No interview or benchmark claim is supported by this desk pass.
 
 ## 12. Business and operations
 
@@ -160,6 +179,11 @@ See the detailed grouped register in [PASS0_REPOSITORY_AUDIT.md](PASS0_REPOSITOR
 | PROV-CF-PRICE-01 | Containers base plan, resource, egress and component charges | Cloudflare Containers pricing | https://developers.cloudflare.com/containers/platform/pricing/ | Official pricing page | 2026-10-26 | Requires Workers Paid plan; Workers, Durable Objects and logs add costs |
 | PROV-E2B-SEC-01 | Per-sandbox microVM claims and testing-consent restriction | E2B security | https://e2b.dev/security | Official security page | 2026-10-26 | Written consent required before testing; vendor claims need review |
 | PROV-E2B-PRICE-01 | Per-second resource pricing and plan/concurrency differences | E2B pricing | https://e2b.dev/pricing | Official pricing page | 2026-10-26 | Current estimator is not a normalized cost model; exact plan assumptions required |
+| COMP-PCODE-01 | Existing one-word PocketCode Android IDE with on-device runtimes and AI BYOK | PocketCode official site/about | https://www.pocketcodeapp.com/en | Official product pages | 2026-10-26 | Direct naming collision; claims not independently tested |
+| COMP-DERLE-01 | Phone-native IDE with local execution, terminal, Git, previews and AI | Derle official site | https://derle.app/ | Official product page | 2026-10-26 | iOS distribution status and real behavior need confirmation |
+| COMP-KODO-01 | iOS/iPadOS editor with local web preview and SSH-based remote execution | Kodo official site | https://www.kodoeditor.com/ | Official product page | 2026-10-26 | Python is not claimed to run locally; no app test |
+| COMP-CODEG-01 | Mobile clients supervise agents on a user-owned desktop/server | Codeg installation/architecture docs | https://docs.codeg.app/getting-started/installation | Official technical docs | 2026-10-26 | Current mobile releases described as test releases |
+| COMP-CODESPACES-01 | Cloud development from any internet-connected device; included personal quotas and paid overage | GitHub Codespaces product/billing | https://github.com/features/codespaces | Official product/billing docs | 2026-10-26 | Phone UX and exact workflow friction not tested |
 
 ## 18. Completion checklist
 - [ ] Pass 0 repository/hypothesis audit (ChatGPT audit draft exists; Gemini's required Pass 0 still pending)
@@ -181,3 +205,12 @@ See the detailed grouped register in [PASS0_REPOSITORY_AUDIT.md](PASS0_REPOSITOR
 - Key finding: no provider can be called “safe and free” from marketing pages alone. Modal's outbound default is open but `block_network=True` is documented; Daytona's egress policy depends on organization tier; Cloudflare Container internet is disabled by default but its Workers Paid base plan is $5/month and Dynamic Worker behavior differs; E2B documents a per-sandbox microVM and requires prior written consent before testing.
 - No provider selected, no account/workload created, no live security claim made, and no budget changed. Official pages were checked 2026-10-26; pricing is time-sensitive.
 - This is ChatGPT's partial research, not Gemini completion. Pass 1 across workstreams A–H remains open.
+
+
+### 2026-10-26 — Pass 1 competitor/substitute subpass (ChatGPT, workstream B only)
+
+- Added [PASS1_COMPETITOR_RESEARCH.md](PASS1_COMPETITOR_RESEARCH.md) using current official product pages for PocketCode, Derle, Kodo, Codeg, and GitHub Codespaces.
+- Strong counterevidence: the exact one-word PocketCode brand is already used by an Android IDE with local runtimes and multi-provider AI; Derle markets local execution and AI on phone; Kodo covers iOS editing/preview/SSH; Codeg supervises host-side agents; Codespaces provides browser-based cloud development. “Code from a phone” is not a differentiator.
+- Current differentiation hypothesis to falsify: a no-setup, cross-platform disposable run with trustworthy bounded output/files and a clean report-to-any-AI handoff. No hands-on comparison or customer validation was performed.
+- High-priority naming risk; do not invest in final branding before a distinct-name and formal trademark/domain review. No final name recommendation or legal conclusion is made.
+- This is ChatGPT's partial subpass, not Gemini completing workstream B or Pass 1. Remaining A–H research remains open.
