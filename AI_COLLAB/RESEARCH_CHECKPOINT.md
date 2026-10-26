@@ -1,47 +1,49 @@
-# PocketCode Research Checkpoint — Pass 0 and provider subpass
+# PocketCode Research Checkpoint — Provider, competitor, and cost subpasses
 
-**Checkpoint ID:** PC-RESEARCH-CP-2026-10-26-002  
-**Status:** CHATGPT PASS 0 AUDIT + PASS 1 PROVIDER/COMPETITOR SUBPASSES RECORDED / GEMINI RESEARCH STILL PENDING  
+**Checkpoint ID:** PC-RESEARCH-CP-2026-10-26-003  
+**Status:** CHATGPT PASS 0 AUDIT + PASS 1 PROVIDER/COMPETITOR/COST SUBPASSES RECORDED / GEMINI RESEARCH STILL PENDING  
 **Date:** 2026-10-26  
 **Repository:** https://github.com/marcelosofficial-ctrl/PocketCode-  
 **Branch:** `pocketcode-pass0-audit-2026-10-26`  
 **Base:** `main` at `555840d8d83342513d9cd353d4d1522d46a5c82d`  
-**Branch head before checkpoint:** `5a96a43abbac58099c13a0b482bc2922970482de`
+**Branch head before checkpoint:** `6b509711f386f4bd50488e7c405184ae40f31a7c`  
+**Draft PR:** https://github.com/marcelosofficial-ctrl/PocketCode-/pull/3
 
-## Artifacts
+## Canonical artifacts
 
 - [Pass 0 repository audit](PASS0_REPOSITORY_AUDIT.md)
-- [Pass 1 provider research subpass](PASS1_PROVIDER_RESEARCH.md)
-- [Pass 1 competitor research and task comparison](PASS1_COMPETITOR_RESEARCH.md)
-- [Canonical master research/implementation plan](MASTER_RESEARCH_IMPLEMENTATION_PLAN.md)
+- [Pass 1 provider research](PASS1_PROVIDER_RESEARCH.md)
+- [Pass 1 competitor/substitute research](PASS1_COMPETITOR_RESEARCH.md)
+- [Pass 1 illustrative cost model](PASS1_COST_MODEL.md)
+- [Master research/implementation plan](MASTER_RESEARCH_IMPLEMENTATION_PLAN.md)
 - [Gemini progress log](GEMINI_PROGRESS_LOG.md)
 
 ## Work completed
 
-1. Audited the current repository's product hypothesis, prototype, report helper, product/architecture/security docs, competitor/provider desk research, zero-budget plan, naming risk, and cross-agent status.
-2. Filled master-plan sections 1, 2, 15, and 16 with current repository truth, evidence labels, blockers, and a dependency-ordered workstream plan.
-3. Refreshed official provider pricing/security/network docs for Modal, Daytona, Cloudflare Containers/Sandboxes, and E2B, then populated initial master-plan content in sections 5, 8, 12, and 17.
-4. Added a current official-source competitor/substitute comparison for PocketCode, Derle, Kodo, Codeg, and GitHub Codespaces, including a fixed Python+CSV task scenario and three user-segment hypotheses.
-5. Updated the canonical master plan's product, competitor, provider, security, cost, marketing, evidence-register, and blocker sections.
-6. Logged ChatGPT's contributions without falsely marking Gemini's passes complete.
+1. Audited repository truth, the proposed product loop, prototype/report-helper boundaries, security and zero-budget gates, naming risk, and cross-agent status.
+2. Updated master-plan sections 1–5, 8, 11–12, and 15–17 with repository-backed truth, provider/competitor evidence, user-segment hypotheses, cost assumptions, blockers, and source links.
+3. Refreshed current official provider docs for Modal, Daytona, Cloudflare Containers/Sandboxes, and E2B.
+4. Refreshed current official competitor pages for the existing one-word PocketCode Android IDE, Derle, Kodo, Codeg, and GitHub Codespaces.
+5. Added a fixed Python+CSV task comparison and candidate segments: quick-run verifier, learner/hobbyist, professional away from workstation.
+6. Added explicit 60-second and 1,000-run variable-cost arithmetic with exclusions; no provider decision or live test.
+7. Updated the existing competitor analysis/matrix and progress log while keeping Gemini's required research marked pending.
 
-## Key findings
+## Key conclusions
 
-- Product remains discovery-stage; the existing UI is simulated and no real runner/backend/provider has been implemented.
-- The narrow phone-browser Python run → genuine output/files → copyable AI report → fix/rerun loop remains a testable hypothesis, not validated demand.
-- No provider is selected. Current official docs show materially different network defaults, plan requirements, and pricing. Free credits are not a guarantee of zero spend.
-- “Coding from a phone” is not a differentiator: the existing one-word PocketCode Android IDE and Derle already market local execution and AI; Kodo supports iOS editing/preview/SSH; Codeg supports remote-agent supervision; Codespaces provides browser-based cloud development. The product must prove a narrower no-setup disposable-run/report-handoff advantage.
-- The exact one-word PocketCode name is a high-priority collision risk. No final rename decision or legal conclusion has been made.
-- Modal documents `block_network=True` but outbound access is open by default and usage may exceed credits; Daytona network enforcement depends on tier; Cloudflare Container internet is disabled by default but the Workers Paid plan starts at $5/month and Dynamic Worker behavior differs; E2B asks for prior written consent before tests.
-- No accounts, credentials, workloads, billing changes, external interviews, benchmarks, or live security tests were used. Budget remains $0.
+- The project remains discovery-stage; the existing prototype is simulated and no real execution backend exists.
+- “Coding from a phone” is not a differentiator. The strongest current hypothesis to falsify is a no-setup, cross-platform disposable run with trustworthy bounded output/files and a clean report-to-any-AI handoff.
+- The one-word PocketCode name is a high-priority collision risk because an existing Android IDE uses the same spelling and directly overlaps the category. No rename or legal decision is made.
+- No provider is selected. Egress defaults, plan requirements, cost, and testing restrictions differ. A free allowance is not a guaranteed $0 ceiling.
+- Under the strict $0 budget, no live provider test is authorized. E2B additionally requires prior written consent before testing.
+- The candidate target segment is a quick-run verifier, but this is a hypothesis—not validated demand.
 
-## Evidence and limitations
+## Evidence / limitations
 
-- Repository audit used current `main` files at the PR #2 base commit noted above.
-- Provider source links and check date (2026-10-26) are recorded in `PASS1_PROVIDER_RESEARCH.md` and the master plan evidence register.
-- Provider pricing and terms are time-sensitive. Security claims remain vendor documentation until independently reviewed and eventually tested under explicit owner approval.
-- This is ChatGPT's parallel research contribution. Gemini's required Pass 0–7 remains incomplete. Pass 1 across workstreams A–H is not complete.
+- Official pages were checked 2026-10-26 and are linked in the provider/competitor research docs.
+- No apps were installed; no task benchmark, customer interview, account creation, credentials, provider workload, billing change, or live security test was performed.
+- Cost arithmetic excludes major unknowns (startup/idle distributions, storage/logs, requests, abuse, plan-specific charges, orchestration/support); it is not an all-in model.
+- Gemini's Pass 0–7 is not complete. ChatGPT's work is a parallel contribution, not a substitute for Gemini's required multi-pass research and cross-review.
 
 ## Next task
 
-Continue Pass 1 across remaining workstreams A–H: refresh primary sources, test the strongest counterarguments, and build a normalized cost/operations model. Keep the narrow MVP and all provider choices provisional. No accounts/workloads; do not mix this research into report-contract PR #2.
+Continue Pass 1 with a fuller user/problem falsification and task-based comparison, then research remaining workstreams A–H. Keep all decisions provisional and all live tests blocked pending explicit owner approval.
