@@ -1,17 +1,17 @@
 # PocketCode Current Checkpoint
 
-**Checkpoint ID:** PC-CP-2026-10-26-006  
-**Checkpoint stage:** Open-source-first policy / report-contract review  
-**Checkpoint status:** DEPENDENCY POLICY ADDED — REPORT PATCH STATICALLY REVIEWED — PYTHON TESTS NOT RUN — DRAFT PR OPEN  
+**Checkpoint ID:** PC-CP-2026-10-26-007  
+**Checkpoint stage:** Open-source-first policy / report-contract test execution attempt  
+**Checkpoint status:** DEPENDENCY POLICY ADDED — TEST EXECUTION BLOCKED BY DNS — DRAFT PR OPEN  
 **Recorded:** 2026-10-26  
 **Repository:** https://github.com/marcelosofficial-ctrl/PocketCode-  
 **Default branch:** `main`  
 **Working branch:** `chat-continuity-report-regressions-2026-10-26`  
 **Baseline commit:** `555840d8d83342513d9cd353d4d1522d46a5c82d`  
-**Latest branch head after checkpoint 006:** `c892003e7dbdc4c1090deb6ba2eda5c77d572fd3`  
-**Latest checkpoint snapshot:** [PC-CP-2026-10-26-006](checkpoints/PC-CP-2026-10-26-006.md)  
+**Latest branch head inspected before checkpoint 007:** `19a055f72b6d524d0327680d9802eb1de2ee72aa`  
+**Latest checkpoint snapshot:** [PC-CP-2026-10-26-007](checkpoints/PC-CP-2026-10-26-007.md)  
 **Draft pull request:** https://github.com/marcelosofficial-ctrl/PocketCode-/pull/2  
-**Prior snapshots:** [PC-CP-2026-10-26-005](checkpoints/PC-CP-2026-10-26-005.md), [PC-CP-2026-10-26-004](checkpoints/PC-CP-2026-10-26-004.md), [PC-CP-2026-10-26-003](checkpoints/PC-CP-2026-10-26-003.md), [PC-CP-2026-10-26-002](checkpoints/PC-CP-2026-10-26-002.md), [PC-CP-2026-10-26-001](checkpoints/PC-CP-2026-10-26-001.md).
+**Prior snapshots:** [PC-CP-2026-10-26-006](checkpoints/PC-CP-2026-10-26-006.md), [PC-CP-2026-10-26-005](checkpoints/PC-CP-2026-10-26-005.md), [PC-CP-2026-10-26-004](checkpoints/PC-CP-2026-10-26-004.md), [PC-CP-2026-10-26-003](checkpoints/PC-CP-2026-10-26-003.md), [PC-CP-2026-10-26-002](checkpoints/PC-CP-2026-10-26-002.md), [PC-CP-2026-10-26-001](checkpoints/PC-CP-2026-10-26-001.md).
 
 ## Purpose
 
@@ -51,7 +51,7 @@ This file is the first read for a new PocketCode chat. It is a compact pointer t
 - The implementation remains a pure report formatter/classifier, not a runner and not an independent source of trusted execution evidence.
 - The status classification change aligns with the proposed lifecycle distinction: only `succeeded` with a valid integer exit code can classify as PASS/FAIL based on the code; `program_failed` is FAIL; other lifecycle states remain INCOMPLETE.
 - Duration validation uses the standard-library `math.isfinite`; output/list truncation and malformed entries have explicit disclosure; report-cap behavior has regression coverage in source.
-- A local test-execution attempt did not produce a completed test run. **No Python test result is claimed.** Keep PR #2 draft until actual test output is recorded. Do not invoke the existing Pages workflow for testing because it includes deployment.
+- A test-execution attempt via a temporary clone was blocked before checkout: `git clone --depth 1 --branch chat-continuity-report-regressions-2026-10-26 https://github.com/marcelosofficial-ctrl/PocketCode-.git /tmp/pocketcode-pr2-test` failed with `Could not resolve host: github.com`. This is a DNS/network failure, not a test failure; no Python test result is claimed. Keep PR #2 draft until actual test output is recorded. Do not invoke the existing Pages workflow for testing because it includes deployment.
 
 ## Verified versus unverified
 
@@ -185,3 +185,11 @@ Python tests remain NOT RUN. The prior local clone attempt failed due to DNS fai
 **Test command:** `python -m unittest discover -s scripts -p 'test_*.py' -v` — NOT RUN to completion. The available GitHub connector cannot execute Python; a separate assistant-runtime execution attempt did not yield a completed run. No tests are claimed passing.
 
 **Acceptance criteria for next task:** obtain actual output and exit status from the full suite on the exact PR head; fix any failures; review the complete PR diff; update this checkpoint and add a new historical snapshot. Keep PR #2 draft until evidence is recorded.
+
+
+## Checkpoint 007 — test execution attempt
+
+- Attempted a shallow clone of the exact working branch using `git clone --depth 1 --branch chat-continuity-report-regressions-2026-10-26 https://github.com/marcelosofficial-ctrl/PocketCode-.git /tmp/pocketcode-pr2-test` before running `python3 -m unittest discover -s scripts -p 'test_*.py' -v`.
+- Clone failed before checkout: `Could not resolve host: github.com`. The test command therefore did not execute. This is an environment/network blocker, not a test failure and not a pass.
+- No GitHub Actions workflow was dispatched. The existing Pages workflow includes deployment, and a test-only workflow has not been approved or created.
+- Next action remains obtaining real test output against the exact PR head, either from a working Python/network environment or after explicit owner approval for a test-only, non-deploying workflow.
