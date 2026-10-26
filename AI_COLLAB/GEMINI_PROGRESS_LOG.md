@@ -56,3 +56,10 @@
 - The testable differentiation hypothesis is a no-setup, cross-platform disposable run with trustworthy bounded output/files and clean handoff to any AI assistant. It is still unvalidated; no apps were installed and no task-based benchmark or customer interview was performed.
 - Exact-name collision is a high-priority branding risk. Name remains provisional; no legal clearance or rename decision made.
 - This is ChatGPT's research, not Gemini completing workstream B or Pass 1. Workstreams A–H remain incomplete.
+
+
+### 2026-10-26 — ChatGPT competitor comparison and user-segment hypotheses
+- Expanded [PASS1_COMPETITOR_RESEARCH.md](PASS1_COMPETITOR_RESEARCH.md) with a fixed Python+CSV task comparison and three falsifiable segment hypotheses: quick-run verifier, learner/hobbyist, and professional away from workstation.
+- Updated master-plan section 3 with candidate jobs-to-be-done, strongest counterarguments, low-cost falsification steps, and a warning that no interview, benchmark, or user validation is complete.
+- Primary concern: current one-word PocketCode and Derle both market local code execution and AI from phones; the product must prove a specific advantage in no-setup disposable execution and report-to-any-AI handoff, or pivot.
+- No apps were installed, no benchmark/interviews performed, no account created, and no spend incurred. This remains ChatGPT's partial Pass 1 work, not Gemini completion.
