@@ -56,3 +56,12 @@ Inspect relevant files and the current branch before claiming knowledge of proje
 - Do not implement a public code runner without reviewed isolation and abuse controls.
 - Do not promise broad runtime support before a tested execution contract exists.
 - Favor exportability, honest limitations, mobile usability, and verifiable execution evidence.
+
+## Chat continuity and checkpoints
+
+- For a new or resumed AI chat, read [AI_COLLAB/NEW_CHAT_BOOTSTRAP.md](AI_COLLAB/NEW_CHAT_BOOTSTRAP.md) and [AI_COLLAB/CURRENT_CHECKPOINT.md](AI_COLLAB/CURRENT_CHECKPOINT.md) before project work.
+- Verify the repository's actual current branch head and compare it with the checkpoint SHA. The checkpoint is a resume index, not a substitute for source files or test evidence.
+- Update `AI_COLLAB/CURRENT_CHECKPOINT.md` after meaningful progress. Add a dated, uniquely identified snapshot under `AI_COLLAB/checkpoints/`; preserve earlier snapshots as historical records rather than rewriting them to match later progress.
+- Every checkpoint records exact commit/branch, work performed, changed paths, tests actually run and results (or why not run), remaining risks, approvals needed, and the next bounded task with acceptance criteria.
+- Distinguish VERIFIED, PROPOSED, UNVERIFIED, NEEDS_LIVE_TEST, BLOCKED, and NEEDS_OWNER_APPROVAL. Chat claims and historical test notes are not fresh verification.
+- Never merge a working branch, deploy, start paid or potentially billable workloads, enable billing, or create provider accounts without the required explicit owner approval.
