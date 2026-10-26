@@ -200,7 +200,7 @@ Python tests remain NOT RUN. The prior local clone attempt failed due to DNS fai
 **Snapshot:** [PC-CP-2026-10-26-008](checkpoints/PC-CP-2026-10-26-008.md)  
 **Source/test head before checkpoint record:** `61b6988640282337986b216da88a80a98cb7e302`  
 **Source change commit:** `3db35542d412dd923259483e697bc7d37549c779`  
-**Checkpoint record commit:** pending at time this section was authored.
+**Checkpoint record commit:** `9a150784cbd8f5abd4b7b9fe8d5ed1716b737729`.
 
 Static review found malformed output truncation flags were interpreted by truthiness, so a string `"false"` could be treated as true. The formatter now accepts only boolean `True` as a source truncation flag and adds a diagnostic for non-boolean values. A regression test was added. This is a code-review finding and patch, not a test result.
 
