@@ -65,3 +65,15 @@ Inspect relevant files and the current branch before claiming knowledge of proje
 - Every checkpoint records exact commit/branch, work performed, changed paths, tests actually run and results (or why not run), remaining risks, approvals needed, and the next bounded task with acceptance criteria.
 - Distinguish VERIFIED, PROPOSED, UNVERIFIED, NEEDS_LIVE_TEST, BLOCKED, and NEEDS_OWNER_APPROVAL. Chat claims and historical test notes are not fresh verification.
 - Never merge a working branch, deploy, start paid or potentially billable workloads, enable billing, or create provider accounts without the required explicit owner approval.
+
+## Open-source-first implementation policy
+
+Before implementing a utility, algorithm, parser, protocol, security control, or framework feature, inspect whether the language standard library, an existing project component, or a reputable open-source package already solves the need. Prefer the smallest suitable, maintained, ecosystem-standard option; do not add a dependency merely to avoid a few clear lines of safe code.
+
+For any proposed third-party dependency, record the package and version range, official source, license, maintenance/release health, compatibility with the project stack, known security/advisory status, transitive/deployment footprint, and the concrete benefit over the standard library or existing code. Verify current facts rather than relying on popularity or memory. Check repository manifests and existing dependencies before proposing a new one. Do not add a dependency until its fit and trade-offs are reviewed.
+
+Reuse a reference implementation only after checking its provenance, license, maintenance, security assumptions, and compatibility with PocketCode's contract. Adapt only the relevant pattern; do not copy code blindly or silently change the product contract.
+
+Custom code is appropriate when the behavior is genuinely product-specific, no suitable maintained solution fits, or a dependency would add disproportionate risk or complexity. Keep such code narrow and test edge cases. Security-critical behavior (including execution isolation, egress enforcement, authorization, idempotency, and trustworthy lifecycle/recovery decisions) must be backed by explicit guarantees and tests; a package's existence is not proof that these guarantees hold.
+
+For the current report-contract helpers, the Python standard library is sufficient; do not add third-party packages unless a specific gap is demonstrated.
