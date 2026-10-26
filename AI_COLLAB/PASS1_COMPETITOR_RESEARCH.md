@@ -66,3 +66,33 @@ If the task can be completed just as quickly with a free existing tool, or if ta
 ## Next research step
 
 Complete a task-based comparison with one fixed task, for example “run a 20-line Python script that reads a small CSV and produces a summary file.” Record setup steps, time-to-first-run, input/output handling, error visibility, AI handoff, mobile friction, runtime reproducibility, cost/limits, and security claims. Use public docs/screenshots first; do not create accounts or run workloads without explicit approval.
+
+
+## Fixed-task comparison — documentation-only (not a benchmark)
+
+**Task:** Take an AI-generated Python script that reads a small CSV, prints a summary, and writes `summary.txt`. The user needs to inspect real output/error status and share it with the AI assistant that generated the script.
+
+| Alternative | What official docs indicate the user must bring/setup | Python + CSV / output | AI handoff | Provisional friction hypothesis (not measured) |
+|---|---|---|---|---|
+| Existing PocketCode Android IDE | Install/sign in to the Android IDE; project is local; runtime ships on-device | Python runtime and local project/files are advertised; user can inspect local terminal output | Multi-provider BYOK assistant built in | Likely strong on-device fit and avoids hosted execution costs; Android-only and full-IDE surface may be more than a one-shot task needs |
+| Derle | Install phone IDE; page describes local runtime/toolchains; iOS distribution still unclear | Python and local files/terminal are advertised; real behavior not tested | Built-in assistant and BYOK; page says it can read/edit files and run commands with approval | Very strong direct substitute; local execution avoids a hosted-runner dependency but device/platform constraints must be tested |
+| Kodo | Install iOS/iPadOS editor; use local web preview or configure a user-owned SSH server for Python | Local HTML/CSS/JS preview; Python requires remote server per official FAQ | Optional on-device AI; AI is not required | For Python, server setup may be the friction PocketCode could remove; verify actual SSH setup cost before claiming advantage |
+| Codeg | Install mobile client and have Codeg desktop/server running somewhere the user controls | Host owns files, processes and project; mobile client supervises the agent | Remote agent sessions, streamed output and approvals | Excellent for long-running agent sessions but likely requires a pre-existing host, unlike a one-shot hosted runner |
+| GitHub Codespaces | GitHub account, repository and cloud workspace/devcontainer; internet connection | Full cloud development environment; run Python and manage files in workspace | GitHub ecosystem; report can be copied manually | Capable but may be heavier than a single script; exact phone workflow/time is untested. Personal free quota is limited and paid use can follow |
+| Proposed PocketCode | **Not implemented.** Hypothetical phone-browser flow with code paste + small input upload | Would need real isolated execution, real status/output, output file download, strict limits and cleanup | Explicit copyable report usable with any AI assistant | Potentially simpler than a full IDE/server, but no evidence yet that this advantage is meaningful enough to justify hosted execution cost/security burden |
+
+### Candidate target segments to falsify
+
+1. **Quick-run verifier:** someone has a short AI-generated script and input file on their phone and wants to verify the output without setting up a full IDE or server. This best matches the narrow MVP, but demand is unvalidated and local IDEs may already solve it.
+2. **Learner/hobbyist:** needs examples, repeatable small runs and clear errors. Existing free local IDEs are strong substitutes; support burden and willingness to pay are unknown.
+3. **Professional away from a workstation:** wants to continue a repo-wide agent or long-running task from a phone. Codeg/Codespaces/remote-host products fit this job more closely; this would likely expand scope beyond the narrow MVP.
+
+**Current recommendation:** test segment 1 first because it is the smallest hypothesis, not because it is proven to be the largest market. Do not build persistent workspaces, multi-agent orchestration, SSH host management, or native app layers until evidence shows the quick-run job is insufficient.
+
+### Falsification questions
+
+- Can a new user complete the task with a free local IDE or Codespaces as quickly and reliably as the proposed flow?
+- Is configuring a local IDE/SSH server genuinely painful enough that a hosted disposable run is worth its latency, privacy trade-offs, and operating cost?
+- Does the copyable report reduce debugging back-and-forth versus copying terminal output manually?
+- Do target users need arbitrary packages, outbound internet, persistent workspaces, or Git? Each expands security/cost scope and may invalidate the smallest proof.
+- Does the exact-name PocketCode collision make a rename unavoidable before any public validation campaign?
