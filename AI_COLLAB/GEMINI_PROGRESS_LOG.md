@@ -48,3 +48,11 @@
 - Material findings: Modal outbound is open by default but documents `block_network=True`; Daytona's network enforcement depends on organization tier; Cloudflare Container internet is disabled by default but Dynamic Worker mode differs and Containers require the $5/month Workers Paid plan; E2B's security page requires prior written consent before testing. No provider selected.
 - Cost comparisons remain unnormalized and vendor claims are not live security proof. No accounts, credentials, workloads, billing, or live tests were used; budget remains $0.
 - This is a ChatGPT contribution, not Gemini completing workstream C or Pass 1. Remaining workstreams A–H and the full multi-pass protocol remain open.
+
+
+### 2026-10-26 — ChatGPT parallel Pass 1 competitor/substitute subpass (workstream B only)
+- Added [PASS1_COMPETITOR_RESEARCH.md](PASS1_COMPETITOR_RESEARCH.md) and populated master-plan section 4/11 with current official pages for PocketCode, Derle, Kodo, Codeg, and GitHub Codespaces.
+- Strong counterevidence: an existing one-word PocketCode Android IDE and Derle already claim local execution and AI from phones; Kodo covers iOS editing/preview/SSH; Codeg is a remote-agent mobile client; Codespaces offers browser cloud development. “Code from a phone” alone is not differentiated.
+- The testable differentiation hypothesis is a no-setup, cross-platform disposable run with trustworthy bounded output/files and clean handoff to any AI assistant. It is still unvalidated; no apps were installed and no task-based benchmark or customer interview was performed.
+- Exact-name collision is a high-priority branding risk. Name remains provisional; no legal clearance or rename decision made.
+- This is ChatGPT's research, not Gemini completing workstream B or Pass 1. Workstreams A–H remain incomplete.
