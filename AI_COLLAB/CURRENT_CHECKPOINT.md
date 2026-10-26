@@ -228,7 +228,7 @@ Strict boolean validation now covers stdout/stderr truncation and check/file-lis
 
 **Snapshot:** [PC-CP-2026-10-26-010](checkpoints/PC-CP-2026-10-26-010.md)  
 **Branch head inspected:** `87e34286a7553246e52e275588ae1cb2e933e97a`  
-**Snapshot commit:** pending at time this section was authored.
+**Snapshot commit:** `bea64600b269ad8e17c0232138ddd12243c487be`.
 
 ### Test result
 
@@ -247,7 +247,7 @@ This is genuine local Python execution of hash-verified branch file contents, no
 
 **Snapshot:** [PC-CP-2026-10-26-011](checkpoints/PC-CP-2026-10-26-011.md)  
 **Branch head inspected:** `0ce1f9b369096e947f1f6bf421164788161ed287`  
-**Snapshot commit:** pending at time this section was authored.
+**Snapshot commit:** `d9880de4b4acd0e03cbc2bcfba5f71c1cbf3427b`.
 
 The full unittest-discovery command was executed in a temporary tree containing the four Python files fetched from GitHub. Each file's Git blob hash matched the branch exactly. Result: **25 tests passed, exit status 0, zero failures/errors**. The standalone command `python scripts/check_mobile_prototype.py` was also executed against a reconstructed HTML file whose Git blob hash exactly matched the branch; result: **static checker passed, exit status 0**. Python startup printed an unrelated spreadsheet-runtime warmup traceback, but both commands completed successfully.
 
