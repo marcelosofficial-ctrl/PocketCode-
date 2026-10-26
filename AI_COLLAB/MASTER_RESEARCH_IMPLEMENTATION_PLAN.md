@@ -1,8 +1,8 @@
 # PocketCode — Master Research and Implementation Plan
 
-**Status:** Partial — ChatGPT Pass 0 repository audit drafted; Gemini's required research passes remain incomplete.  
+**Status:** Partial — ChatGPT Pass 0 audit and Pass 1 provider-source subpass drafted; Gemini's required research passes remain incomplete.  
 **Created:** 2026-10-20.  
-**Warning:** Only sections 1, 2, 15, and 16 have initial repository-audit content. This is not a completed research plan; external claims, current pricing, user demand, and provider/security behavior remain unverified until sourced and reviewed.
+**Warning:** Sections 1, 2, 5, 8, 12, 15, 16, and 17 contain initial repository-audit/provider-subpass content; other sections remain incomplete. This is not a completed research plan. User demand, all-workstream research, normalized cost, and live provider/security behavior remain unverified.
 
 **Interim companions:** See [MVP_DECISION_BRIEF.md](MVP_DECISION_BRIEF.md) for the narrow-MVP recommendation and provider shortlist, and [../PRODUCT/EXECUTION_CONTRACT.md](../PRODUCT/EXECUTION_CONTRACT.md) for a proposed provider-neutral execution lifecycle and testable API contract. Neither document selects a provider or claims implementation/test completion. This master research scaffold remains incomplete. Gemini's pasted specification has not been verified as a canonical repository update.
 
