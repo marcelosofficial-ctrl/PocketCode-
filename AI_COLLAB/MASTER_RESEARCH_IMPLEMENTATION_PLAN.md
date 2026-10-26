@@ -1,10 +1,10 @@
 # PocketCode — Master Research and Implementation Plan
 
-**Status:** Partial — ChatGPT Pass 0 audit plus Pass 1 provider/competitor subpasses drafted; Gemini's required research passes remain incomplete.  
+**Status:** Partial — ChatGPT Pass 0 audit plus Pass 1 provider, competitor, and illustrative cost subpasses drafted; Gemini's required research passes remain incomplete.  
 **Created:** 2026-10-20.  
 **Warning:** Sections 1–5, 8, 11, 12, and 15–17 contain initial repository-audit or partial provider/competitor-subpass content; other sections remain incomplete. This is not a completed research plan. User demand, all-workstream research, normalized cost, and live provider/security behavior remain unverified.
 
-**Interim companions:** See [MVP_DECISION_BRIEF.md](MVP_DECISION_BRIEF.md) for the narrow-MVP recommendation and provider shortlist, and [../PRODUCT/EXECUTION_CONTRACT.md](../PRODUCT/EXECUTION_CONTRACT.md) for a proposed provider-neutral execution lifecycle and testable API contract. Neither document selects a provider or claims implementation/test completion. This master research scaffold remains incomplete. Gemini's pasted specification has not been verified as a canonical repository update.
+**Interim companions:** [MVP_DECISION_BRIEF.md](MVP_DECISION_BRIEF.md) contains the narrow-MVP recommendation; [PASS0_REPOSITORY_AUDIT.md](PASS0_REPOSITORY_AUDIT.md) records the repo baseline; [PASS1_PROVIDER_RESEARCH.md](PASS1_PROVIDER_RESEARCH.md), [PASS1_COMPETITOR_RESEARCH.md](PASS1_COMPETITOR_RESEARCH.md), and [PASS1_COST_MODEL.md](PASS1_COST_MODEL.md) contain partial dated evidence; [../PRODUCT/EXECUTION_CONTRACT.md](../PRODUCT/EXECUTION_CONTRACT.md) proposes a provider-neutral lifecycle/contract. These are not final decisions or implementation/test completion. The master plan remains incomplete. Gemini's pasted specification has not been verified as a canonical repository update.
 
 ## 1. Executive summary
 
@@ -95,7 +95,9 @@ The vendor pages describe their products; they do not prove PocketCode's securit
 
 ### Cost model
 
-Do not compare headline per-second prices directly. Normalize one request by CPU/vCPU, memory, provisioned disk/storage, startup time, active execution time, post-input idle tail, network egress, request/API charges, logs, concurrency, included credits, monthly base fees, and abuse scenarios. Include best/expected/adverse scenarios with date, currency, source, and sensitivity. Do not treat a free allowance as a guaranteed $0 ceiling. Current pricing pages and terms are snapshots checked 2026-10-26; recheck before a decision.
+See [PASS1_COST_MODEL.md](PASS1_COST_MODEL.md) for a dated, illustrative 60-second run and 1,000-run calculation. Under the stated assumptions, variable CPU/memory is approximately $0.00111 per 60-second run for the illustrative Daytona and E2B configurations, $0.0015828 active-only for Modal Sandbox+Notebooks (potentially $0.0031656 if a full 60-second idle tail is billed), and within Cloudflare's included resource quotas for one standard-2 run—but Cloudflare still requires the $5/month Workers Paid base plan. These are not comparable performance tests or all-in estimates.
+
+Normalize one request by CPU/vCPU, memory, provisioned disk/storage, startup time, active execution time, post-input idle tail, network egress, request/API charges, logs, concurrency, included credits, monthly base fees, and abuse scenarios. Include best/expected/adverse scenarios with date, currency, source, and sensitivity. Do not treat a free allowance as a guaranteed $0 ceiling. Current pricing pages and terms are snapshots checked 2026-10-26; recheck before a decision. No live workload is authorized under the current $0 budget.
 
 ### Provider-neutral adapter
 
@@ -147,7 +149,7 @@ Provide a dependency-ordered minimal vertical slice, explicit definition of done
 
 ## 12. Business and operations
 
-Current cost gate: do not claim a free hosted runner. Modal's Starter page advertises included compute but is pay-as-you-go beyond included usage and its default idle tail can be billable; Daytona advertises free compute but tier requirements affect network policy and higher tiers require top-ups; Cloudflare Containers requires the $5/month Workers Paid plan plus component usage; E2B pricing includes per-second usage and paid plan tiers, and testing requires prior written consent. See [PASS1_PROVIDER_RESEARCH.md](PASS1_PROVIDER_RESEARCH.md).
+Current cost gate: do not claim a free hosted runner. See [PASS1_COST_MODEL.md](PASS1_COST_MODEL.md) for explicit illustrative assumptions and exclusions. Modal's Starter page advertises included compute but is pay-as-you-go beyond included usage and its default idle tail can be billable; Daytona advertises free compute but tier requirements affect network policy and higher tiers require top-ups; Cloudflare Containers requires the $5/month Workers Paid plan plus component usage; E2B pricing includes per-second usage and paid plan tiers, and testing requires prior written consent. See [PASS1_PROVIDER_RESEARCH.md](PASS1_PROVIDER_RESEARCH.md).
 
 Before pricing or a live proof, model one short run, repeat-use monthly patterns, and adverse/abuse scenarios using consistent runtime, CPU, memory, disk, startup/idle, egress, logs, concurrency, and plan assumptions. Include quotas, support, abuse response, retention/deletion, and provider outage behavior. The owner has not approved any spend; current budget is $0.
 
@@ -233,3 +235,11 @@ See the detailed grouped register in [PASS0_REPOSITORY_AUDIT.md](PASS0_REPOSITOR
 - Current differentiation hypothesis to falsify: a no-setup, cross-platform disposable run with trustworthy bounded output/files and a clean report-to-any-AI handoff. No hands-on comparison or customer validation was performed.
 - High-priority naming risk; do not invest in final branding before a distinct-name and formal trademark/domain review. No final name recommendation or legal conclusion is made.
 - This is ChatGPT's partial subpass, not Gemini completing workstream B or Pass 1. Remaining A–H research remains open.
+
+
+### 2026-10-26 — Pass 1 illustrative cost-model subpass (ChatGPT)
+
+- Added [PASS1_COST_MODEL.md](PASS1_COST_MODEL.md) with explicit 60-second and 1,000-run arithmetic using current official pricing pages for Modal Sandbox+Notebooks, Daytona, E2B, and Cloudflare Containers.
+- The calculations are lower-bound illustrations, not a fair performance comparison or an all-in cost estimate. Modal's idle tail, Daytona's tier-dependent network policy, Cloudflare's $5/month Workers Paid base and additional components, and E2B's testing-consent requirement are material.
+- No provider is “safe and free” on the strength of a free allowance. Under the strict $0 constraint, no live provider test is authorized; no accounts/workloads were created.
+- This is ChatGPT's partial cost research, not Gemini completing workstream H or Pass 1. A–H research and the normalized best/expected/adverse model remain incomplete.
