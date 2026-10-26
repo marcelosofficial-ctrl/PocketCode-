@@ -51,16 +51,25 @@ Segment hypotheses; jobs-to-be-done; phone-first failure moments; non-leading in
 Include mobile IDEs, local runtimes, hosted runners, cloud IDEs, remote agents, AI app builders, manual workarounds and naming risk.
 
 ## 5. Execution backend comparison
-Screen at least three candidates; compare at least two deeply. Include isolation model, egress/network policy, lifecycle/cancel/timeout, resource/output limits, files, logs/streaming, cleanup, region/data handling, retention, quotas, cold starts, API maturity, portability, operator burden and failure behavior.
 
-| Criterion | Weight | Candidate A | Candidate B | Candidate C | Evidence/caveats |
-|---|---:|---|---|---|---|
+**Initial official-source refresh:** [PASS1_PROVIDER_RESEARCH.md](PASS1_PROVIDER_RESEARCH.md), checked 2026-10-26. This is a partial provider workstream, not a final ranking. Four candidates have been screened from current official pricing/security/network pages; exact API semantics, plan eligibility, retention, and real behavior remain unverified.
+
+| Candidate | Current documented strengths | Cost / $0 risk | Main unresolved gate | Status |
+|---|---|---|---|---|
+| Modal Sandboxes | Python SDK documents `block_network=True`; CIDR allowlists and a beta domain allowlist; gVisor default and VM runtime option described | Starter advertises $30/month included compute but is pay-as-you-go; Sandbox+Notebooks rates differ from standard compute; default 60-second post-input idle tail is billable unless configured | Verify hard spend cap/plan, exact timeout/cancel/termination semantics, region/retention, and observed network denial | Candidate only |
+| Daytona Sandboxes | Docs describe Firecracker microVMs and configurable network limits | $200 free compute advertised, but network controls and organization policy depend on tier; Tier 2 requires card plus $25 top-up; Tier 3/4 require larger top-ups | Confirm the no-payment tier can enforce required default-deny policy and verify the exact product version/plan | Candidate only |
+| Cloudflare Containers / Sandboxes | Container internet is documented disabled by default; Worker-mediated outbound controls available; distinct Container vs Dynamic Worker modes | Containers require the $5/month Workers Paid plan and may add CPU, memory, disk, egress, Workers, Durable Objects, and logs costs | Define execution mode; verify current 1.0 API, lifecycle/termination, full cost, and per-job sandbox boundary | Candidate only |
+| E2B Sandboxes | Docs describe one Firecracker microVM per sandbox | Per-second CPU/memory rates and plan/concurrency differences; Pro base and Enterprise minimum appear in current estimator; not a normalized estimate | Default egress, lifecycle, full cost, plan/retention, and written testing consent | Candidate only; no test without prior written consent |
+
+The vendor pages describe their products; they do not prove PocketCode's security properties. No provider is selected. See [PASS1_PROVIDER_RESEARCH.md](PASS1_PROVIDER_RESEARCH.md) for current source links, values, caveats, and next checks.
 
 ### Cost model
-Date/currency; run assumptions; best/expected/adverse scenarios; baseline charges; compute/storage/network; sensitivity; abuse/quota risks; source URLs and unresolved pricing terms.
+
+Do not compare headline per-second prices directly. Normalize one request by CPU/vCPU, memory, provisioned disk/storage, startup time, active execution time, post-input idle tail, network egress, request/API charges, logs, concurrency, included credits, monthly base fees, and abuse scenarios. Include best/expected/adverse scenarios with date, currency, source, and sensitivity. Do not treat a free allowance as a guaranteed $0 ceiling. Current pricing pages and terms are snapshots checked 2026-10-26; recheck before a decision.
 
 ### Provider-neutral adapter
-Request/result schemas; job states; cancellation semantics; files; error mapping; retries/idempotency; limits; provider-specific degraded modes.
+
+Request/result schemas; job states; cancellation semantics; files; error mapping; retries/idempotency; limits; provider-specific degraded modes. The adapter must keep lifecycle evidence authoritative, represent unknown outcomes as INCOMPLETE, avoid duplicate billable runs after uncertain retries, and expose network/timeout/resource policy as server-owned configuration rather than client-supplied arbitrary controls.
 
 ## 6. Product requirements and mobile UX
 | Requirement ID | Requirement | Priority | Evidence/rationale | Acceptance criteria | Test IDs | Status |
@@ -74,6 +83,12 @@ Compare at least two architectures; component responsibilities; trust boundaries
 ## 8. Threat model and launch gates
 | Threat ID | Threat | Preconditions | Impact | Control | Detection | Test/evidence | Residual risk |
 |---|---|---|---|---|---|---|---|
+| SEC-NET-001 | Untrusted code exfiltrates user data or probes internal/metadata addresses | Sandbox can reach public/internal network | Data loss, SSRF, credential exposure | Server-side default-deny egress; allowlist only when needed; no secrets in job environment | Provider audit/network logs and alerts | NEEDS_LIVE_TEST: outbound public, private, link-local/metadata, DNS, IPv4/IPv6 cases | Unknown until provider+plan+configuration are tested |
+| SEC-TENANT-001 | Two jobs/users share a sandbox trust domain | Reused named sandbox, shared container, or snapshot | Cross-user file/process/credential access | One disposable sandbox per job or user; derive IDs server-side; never trust client sandbox names | Ownership and lifecycle logs | NEEDS_LIVE_TEST: attempt cross-job file/process/snapshot access | Vendor isolation docs are not PocketCode proof |
+| SEC-OUTPUT-001 | Malicious output or generated files attack the app/browser or operator | Untrusted program emits HTML/URLs/archives/oversized files | XSS, path traversal, resource exhaustion, misleading reports | Render output as text; bounded output/file count/size; safe archive extraction; no execution of returned artifacts | Validation errors and bounded logs | Automated malformed-output, archive traversal, output-cap and browser-render tests | Requires implementation and browser tests |
+| SEC-BILLING-001 | Runaway jobs or retries create unexpected cost | Weak deadlines, uncertain retries, free allowance overrun | Budget breach or abuse | Server-enforced wall-time/resource caps, idempotency, concurrency quotas, hard stop/approval gates | Usage and cost reconciliation | NEEDS_LIVE_TEST: timeout/cancel/retry/cleanup and cost observations | No provider test approved; budget remains $0 |
+
+Initial official docs show different egress defaults: Modal outbound is open unless blocked/configured; Daytona policy depends on organization tier; Cloudflare Container internet is disabled by default but Dynamic Worker network access differs; E2B egress still needs further verification. These facts are in [PASS1_PROVIDER_RESEARCH.md](PASS1_PROVIDER_RESEARCH.md). Do not treat provider documentation as a verified control until the exact plan/configuration is tested.
 
 Include malicious code, sandbox escape, SSRF/metadata, tenant crossover, resource exhaustion, secret exposure, malicious archives/path traversal, output injection, supply-chain attacks, network egress, abuse economics and deletion.
 
@@ -93,7 +108,10 @@ Provide a dependency-ordered minimal vertical slice, explicit definition of done
 Positioning alternatives; evidence/counterevidence; low-cost ethical experiments; pass/fail thresholds; name validation checklist; distribution hypotheses; claims prohibited until functionality is verified.
 
 ## 12. Business and operations
-Usage scenarios with assumptions; cost/abuse risks; reliability/support expectations; monetization hypotheses; evidence required before pricing decisions; go/no-go thresholds.
+
+Current cost gate: do not claim a free hosted runner. Modal's Starter page advertises included compute but is pay-as-you-go beyond included usage and its default idle tail can be billable; Daytona advertises free compute but tier requirements affect network policy and higher tiers require top-ups; Cloudflare Containers requires the $5/month Workers Paid plan plus component usage; E2B pricing includes per-second usage and paid plan tiers, and testing requires prior written consent. See [PASS1_PROVIDER_RESEARCH.md](PASS1_PROVIDER_RESEARCH.md).
+
+Before pricing or a live proof, model one short run, repeat-use monthly patterns, and adverse/abuse scenarios using consistent runtime, CPU, memory, disk, startup/idle, egress, logs, concurrency, and plan assumptions. Include quotas, support, abuse response, retention/deletion, and provider outage behavior. The owner has not approved any spend; current budget is $0.
 
 ## 13. Risk register
 | Risk ID | Description | Likelihood | Impact | Detection | Mitigation | Owner | Residual risk |
@@ -134,10 +152,18 @@ See the detailed grouped register in [PASS0_REPOSITORY_AUDIT.md](PASS0_REPOSITOR
 ## 17. Evidence register
 | Source ID | Claim | Title | Direct URL | Quality/type | Date checked | Caveats |
 |---|---|---|---|---|---|---|
+| PROV-MODAL-PRICE-01 | Sandbox-specific pricing and Starter credits/idle billing | Modal pricing | https://modal.com/pricing | Official pricing page | 2026-10-26 | Sandbox+Notebooks rate card differs from standard compute; pay-as-you-go can exceed included credits |
+| PROV-MODAL-NET-01 | Outbound default and network-block/allowlist API | Modal Sandbox networking | https://modal.com/docs/guide/sandbox-networking | Official technical docs | 2026-10-26 | Outbound is open by default; domain allowlist is Beta; live behavior untested |
+| PROV-DAYTONA-PRICE-01 | Resource rates, free compute, tier/top-up gates | Daytona pricing | https://www.daytona.io/pricing | Official pricing page | 2026-10-26 | Free allowance is not a $0 guarantee; normalize resource/time assumptions |
+| PROV-DAYTONA-NET-01 | Tier-based egress restrictions and sandbox network controls | Daytona Network Limits | https://www.daytona.io/docs/en/network-limits/ | Official technical docs | 2026-10-26 | Policy depends on organization tier; exact zero-payment-tier behavior needs confirmation |
+| PROV-CF-SEC-01 | Container vs Dynamic Worker network behavior and sandbox trust boundary | Cloudflare Sandbox security | https://developers.cloudflare.com/sandbox/concepts/security/ | Official technical docs | 2026-10-26 | Verify current SDK/mode; all processes in one Container share a trust domain |
+| PROV-CF-PRICE-01 | Containers base plan, resource, egress and component charges | Cloudflare Containers pricing | https://developers.cloudflare.com/containers/platform/pricing/ | Official pricing page | 2026-10-26 | Requires Workers Paid plan; Workers, Durable Objects and logs add costs |
+| PROV-E2B-SEC-01 | Per-sandbox microVM claims and testing-consent restriction | E2B security | https://e2b.dev/security | Official security page | 2026-10-26 | Written consent required before testing; vendor claims need review |
+| PROV-E2B-PRICE-01 | Per-second resource pricing and plan/concurrency differences | E2B pricing | https://e2b.dev/pricing | Official pricing page | 2026-10-26 | Current estimator is not a normalized cost model; exact plan assumptions required |
 
 ## 18. Completion checklist
 - [ ] Pass 0 repository/hypothesis audit (ChatGPT audit draft exists; Gemini's required Pass 0 still pending)
-- [ ] Pass 1 all workstreams researched
+- [ ] Pass 1 all workstreams researched (ChatGPT has completed only a current-source provider subpass; A–H research remains incomplete)
 - [ ] Pass 2 synthesis and falsification
 - [ ] Pass 3 implementation-ready specifications
 - [ ] Pass 4 cost and operations review
@@ -147,3 +173,11 @@ See the detailed grouped register in [PASS0_REPOSITORY_AUDIT.md](PASS0_REPOSITOR
 - [ ] All material claims sourced and dated
 - [ ] No invented tests, interviews, benchmarks, pricing, or repo changes
 - [ ] Owner decisions and paid-service gates explicit
+
+
+### 2026-10-26 — Pass 1 provider-source subpass (ChatGPT, workstream C only)
+
+- Added [PASS1_PROVIDER_RESEARCH.md](PASS1_PROVIDER_RESEARCH.md) using current official pricing/security/network docs for Modal, Daytona, Cloudflare Containers/Sandboxes, and E2B.
+- Key finding: no provider can be called “safe and free” from marketing pages alone. Modal's outbound default is open but `block_network=True` is documented; Daytona's egress policy depends on organization tier; Cloudflare Container internet is disabled by default but its Workers Paid base plan is $5/month and Dynamic Worker behavior differs; E2B documents a per-sandbox microVM and requires prior written consent before testing.
+- No provider selected, no account/workload created, no live security claim made, and no budget changed. Official pages were checked 2026-10-26; pricing is time-sensitive.
+- This is ChatGPT's partial research, not Gemini completion. Pass 1 across workstreams A–H remains open.
