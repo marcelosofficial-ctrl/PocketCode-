@@ -1,14 +1,14 @@
 # PocketCode Current Checkpoint
 
-**Checkpoint ID:** PC-CP-2026-10-26-005  
-**Checkpoint stage:** Report-contract review and safe test-execution path  
-**Checkpoint status:** STATIC REVIEW RECORDED — PYTHON TESTS NOT RUN — EXISTING WORKFLOW WOULD DEPLOY — DRAFT PR OPEN  
+**Checkpoint ID:** PC-CP-2026-10-26-006  
+**Checkpoint stage:** Open-source-first policy / report-contract review  
+**Checkpoint status:** DEPENDENCY POLICY ADDED — REPORT PATCH STATICALLY REVIEWED — PYTHON TESTS NOT RUN — DRAFT PR OPEN  
 **Recorded:** 2026-10-26  
 **Repository:** https://github.com/marcelosofficial-ctrl/PocketCode-  
 **Default branch:** `main`  
 **Working branch:** `chat-continuity-report-regressions-2026-10-26`  
 **Baseline commit:** `555840d8d83342513d9cd353d4d1522d46a5c82d`  
-**Latest source head reviewed:** `f9e845292ffcecd2a5ea62832fa23191a4f07a84`  
+**Latest PR head before this pass:** `bc47d811beb0c313ad77b2fa765861aa2e975886`  
 **Latest checkpoint snapshot:** [PC-CP-2026-10-26-005](checkpoints/PC-CP-2026-10-26-005.md)  
 **Draft pull request:** https://github.com/marcelosofficial-ctrl/PocketCode-/pull/2  
 **Prior snapshots:** [PC-CP-2026-10-26-004](checkpoints/PC-CP-2026-10-26-004.md), [PC-CP-2026-10-26-003](checkpoints/PC-CP-2026-10-26-003.md), [PC-CP-2026-10-26-002](checkpoints/PC-CP-2026-10-26-002.md), [PC-CP-2026-10-26-001](checkpoints/PC-CP-2026-10-26-001.md).
@@ -36,9 +36,28 @@ This file is the first read for a new PocketCode chat. It is a compact pointer t
 - `PRODUCT/EXECUTION_CONTRACT.md` — proposed provider-neutral contract; not an implemented API.
 - `AI_COLLAB/GEMINI_HANDOFF.md` and `AI_COLLAB/MASTER_RESEARCH_IMPLEMENTATION_PLAN.md` — cross-agent multi-pass process and canonical research-plan destination.
 
+
+
+## Open-source-first policy added in checkpoint 006
+
+- Added an explicit open-source-first implementation policy to `AGENTS.md` and `AI_COLLAB/NEW_CHAT_BOOTSTRAP.md`.
+- Rule: check standard library and existing repository code before third-party packages; evaluate official source, maintenance, license, compatibility, security/advisories, footprint, and concrete benefit before adding a dependency; inspect reference code provenance/license/security assumptions; retain narrow custom code when genuinely product-specific.
+- Current report-contract helper uses Python standard-library modules only (`math`, `typing`, `unittest`). No new dependency is proposed; no package manifest was found at the repository root for `pyproject.toml` or `requirements.txt` on this branch.
+- `CLAUDE.md` and `GEMINI.md` already instruct agents to read `AGENTS.md`, so the new shared rule is inherited rather than duplicated into provider-specific files.
+
+## Report-contract static review in checkpoint 006
+
+- Re-read `scripts/report_contract.py`, `scripts/test_report_contract.py`, and `PRODUCT/EXECUTION_CONTRACT.md` from the working branch.
+- The implementation remains a pure report formatter/classifier, not a runner and not an independent source of trusted execution evidence.
+- The status classification change aligns with the proposed lifecycle distinction: only `succeeded` with a valid integer exit code can classify as PASS/FAIL based on the code; `program_failed` is FAIL; other lifecycle states remain INCOMPLETE.
+- Duration validation uses the standard-library `math.isfinite`; output/list truncation and malformed entries have explicit disclosure; report-cap behavior has regression coverage in source.
+- A local test-execution attempt did not produce a completed test run. **No Python test result is claimed.** Keep PR #2 draft until actual test output is recorded. Do not invoke the existing Pages workflow for testing because it includes deployment.
+
 ## Verified versus unverified
 
 ### Verified by repository inspection in this checkpoint
+
+- The open-source-first policy is present in the branch versions of `AGENTS.md` and `AI_COLLAB/NEW_CHAT_BOOTSTRAP.md`.
 
 - The listed source files and their content/blob SHAs were fetched from GitHub.
 - The latest commit returned by repository commit search before branch creation was the baseline SHA above. The working branch was created from that baseline; subsequent source/test changes are recorded in commit `e8e8555b627efe61f5dbdd0a3f870e3cbea67a21`.
@@ -47,6 +66,8 @@ This file is the first read for a new PocketCode chat. It is a compact pointer t
 - The implementation patch now limits nonzero-exit FAIL classification to `succeeded` status (or explicit `program_failed`), adds finite duration validation, derives output/list truncation disclosures, reports malformed check/file entries, and preserves a bounded uncertainty footer when the overall report cap is reached. These are source-inspection observations, not runtime/test verification.
 
 ### Not verified in this checkpoint
+
+- The complete Python unittest suite has not run to completion in an execution environment; no pass/fail test result is asserted.
 
 - No test suite was executed during this pass. The regression test file was expanded, but all new and existing tests remain UNVERIFIED until actually run.
 - Historical test results recorded in `PROJECT_STATUS.md` are repository history, not a fresh run.
@@ -152,3 +173,15 @@ Inspected `.github/workflows/preview-prototype.yml`. Its test command is inside 
 Python tests remain NOT RUN. The prior local clone attempt failed due to DNS failure for `github.com`. No source/test code or workflow was changed. PR #2 remains draft and unmerged; no deployment or paid workload was started; budget remains $0.
 
 **Next task:** execute `python -m unittest discover -s scripts -p 'test_*.py' -v` against the exact branch files in a working Python environment. If that is unavailable, request owner action to run the command or explicitly approve a dedicated test-only workflow with no deployment steps and confirmed $0 impact. Do not claim success without output.
+
+
+## Exact changes recorded in checkpoint 006
+
+- `AGENTS.md` — added open-source-first dependency/reference review policy.
+- `AI_COLLAB/NEW_CHAT_BOOTSTRAP.md` — added the same policy to the new-chat resume instructions.
+- `AI_COLLAB/CURRENT_CHECKPOINT.md` — this active checkpoint update.
+- `AI_COLLAB/checkpoints/PC-CP-2026-10-26-006.md` — historical snapshot for this stage.
+
+**Test command:** `python -m unittest discover -s scripts -p 'test_*.py' -v` — NOT RUN to completion. The available GitHub connector cannot execute Python; a separate assistant-runtime execution attempt did not yield a completed run. No tests are claimed passing.
+
+**Acceptance criteria for next task:** obtain actual output and exit status from the full suite on the exact PR head; fix any failures; review the complete PR diff; update this checkpoint and add a new historical snapshot. Keep PR #2 draft until evidence is recorded.
