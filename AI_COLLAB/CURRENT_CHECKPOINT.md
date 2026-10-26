@@ -1,17 +1,17 @@
 # PocketCode Current Checkpoint
 
-**Checkpoint ID:** PC-CP-2026-10-26-004  
-**Checkpoint stage:** Report-contract regression review and continuity reconciliation  
-**Checkpoint status:** STATIC REVIEW RECORDED — PYTHON TESTS BLOCKED — DRAFT PR OPEN  
+**Checkpoint ID:** PC-CP-2026-10-26-005  
+**Checkpoint stage:** Report-contract review and safe test-execution path  
+**Checkpoint status:** STATIC REVIEW RECORDED — PYTHON TESTS NOT RUN — EXISTING WORKFLOW WOULD DEPLOY — DRAFT PR OPEN  
 **Recorded:** 2026-10-26  
 **Repository:** https://github.com/marcelosofficial-ctrl/PocketCode-  
 **Default branch:** `main`  
 **Working branch:** `chat-continuity-report-regressions-2026-10-26`  
 **Baseline commit:** `555840d8d83342513d9cd353d4d1522d46a5c82d`  
 **Latest source head reviewed:** `f9e845292ffcecd2a5ea62832fa23191a4f07a84`  
-**Latest checkpoint snapshot:** [PC-CP-2026-10-26-004](checkpoints/PC-CP-2026-10-26-004.md)  
+**Latest checkpoint snapshot:** [PC-CP-2026-10-26-005](checkpoints/PC-CP-2026-10-26-005.md)  
 **Draft pull request:** https://github.com/marcelosofficial-ctrl/PocketCode-/pull/2  
-**Prior snapshots:** [PC-CP-2026-10-26-003](checkpoints/PC-CP-2026-10-26-003.md), [PC-CP-2026-10-26-002](checkpoints/PC-CP-2026-10-26-002.md), [PC-CP-2026-10-26-001](checkpoints/PC-CP-2026-10-26-001.md).
+**Prior snapshots:** [PC-CP-2026-10-26-004](checkpoints/PC-CP-2026-10-26-004.md), [PC-CP-2026-10-26-003](checkpoints/PC-CP-2026-10-26-003.md), [PC-CP-2026-10-26-002](checkpoints/PC-CP-2026-10-26-002.md), [PC-CP-2026-10-26-001](checkpoints/PC-CP-2026-10-26-001.md).
 
 ## Purpose
 
@@ -140,3 +140,15 @@ The new-chat bootstrap's hard-coded claim that checkpoint 002 was current has be
 ### Next task and acceptance criteria
 
 Run the full unittest discovery command against the exact branch files. Record actual test count, exit status, environment, and tested commit. Fix failures and rerun. Until real execution evidence exists, keep PR #2 in draft and report the test state as BLOCKED/UNVERIFIED.
+
+
+## Latest checkpoint update: PC-CP-2026-10-26-005
+
+**Snapshot:** [PC-CP-2026-10-26-005](checkpoints/PC-CP-2026-10-26-005.md)  
+**Record commit:** `b61d274013f67942c9b3313f99a1ed1294132221`
+
+Inspected `.github/workflows/preview-prototype.yml`. Its test command is inside a workflow whose job also deploys GitHub Pages, and the workflow is triggered by selected pushes to `main` or manual dispatch. It is not a PR-only test workflow. Do not dispatch it merely to get test output, because that would also run the deployment job.
+
+Python tests remain NOT RUN. The prior local clone attempt failed due to DNS failure for `github.com`. No source/test code or workflow was changed. PR #2 remains draft and unmerged; no deployment or paid workload was started; budget remains $0.
+
+**Next task:** execute `python -m unittest discover -s scripts -p 'test_*.py' -v` against the exact branch files in a working Python environment. If that is unavailable, request owner action to run the command or explicitly approve a dedicated test-only workflow with no deployment steps and confirmed $0 impact. Do not claim success without output.
