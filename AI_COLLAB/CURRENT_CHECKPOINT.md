@@ -1,17 +1,17 @@
 # PocketCode Current Checkpoint
 
-**Checkpoint ID:** PC-CP-2026-10-26-007  
-**Checkpoint stage:** Open-source-first policy / report-contract test execution attempt  
-**Checkpoint status:** DEPENDENCY POLICY ADDED — TEST EXECUTION BLOCKED BY DNS — DRAFT PR OPEN  
+**Checkpoint ID:** PC-CP-2026-10-26-008  
+**Checkpoint stage:** Strict output-truncation flag handling / regression hardening  
+**Checkpoint status:** FLAG-HANDLING PATCH COMMITTED — TESTS UNVERIFIED — DRAFT PR OPEN  
 **Recorded:** 2026-10-26  
 **Repository:** https://github.com/marcelosofficial-ctrl/PocketCode-  
 **Default branch:** `main`  
 **Working branch:** `chat-continuity-report-regressions-2026-10-26`  
 **Baseline commit:** `555840d8d83342513d9cd353d4d1522d46a5c82d`  
-**Latest branch head inspected before checkpoint 007:** `19a055f72b6d524d0327680d9802eb1de2ee72aa`  
-**Latest checkpoint snapshot:** [PC-CP-2026-10-26-007](checkpoints/PC-CP-2026-10-26-007.md)  
+**Latest branch head inspected before checkpoint 008:** `61b6988640282337986b216da88a80a98cb7e302`  
+**Latest checkpoint snapshot:** [PC-CP-2026-10-26-008](checkpoints/PC-CP-2026-10-26-008.md)  
 **Draft pull request:** https://github.com/marcelosofficial-ctrl/PocketCode-/pull/2  
-**Prior snapshots:** [PC-CP-2026-10-26-006](checkpoints/PC-CP-2026-10-26-006.md), [PC-CP-2026-10-26-005](checkpoints/PC-CP-2026-10-26-005.md), [PC-CP-2026-10-26-004](checkpoints/PC-CP-2026-10-26-004.md), [PC-CP-2026-10-26-003](checkpoints/PC-CP-2026-10-26-003.md), [PC-CP-2026-10-26-002](checkpoints/PC-CP-2026-10-26-002.md), [PC-CP-2026-10-26-001](checkpoints/PC-CP-2026-10-26-001.md).
+**Prior snapshots:** [PC-CP-2026-10-26-007](checkpoints/PC-CP-2026-10-26-007.md), [PC-CP-2026-10-26-006](checkpoints/PC-CP-2026-10-26-006.md), [PC-CP-2026-10-26-005](checkpoints/PC-CP-2026-10-26-005.md), [PC-CP-2026-10-26-004](checkpoints/PC-CP-2026-10-26-004.md), [PC-CP-2026-10-26-003](checkpoints/PC-CP-2026-10-26-003.md), [PC-CP-2026-10-26-002](checkpoints/PC-CP-2026-10-26-002.md), [PC-CP-2026-10-26-001](checkpoints/PC-CP-2026-10-26-001.md).
 
 ## Purpose
 
@@ -193,3 +193,19 @@ Python tests remain NOT RUN. The prior local clone attempt failed due to DNS fai
 - Clone failed before checkout: `Could not resolve host: github.com`. The test command therefore did not execute. This is an environment/network blocker, not a test failure and not a pass.
 - No GitHub Actions workflow was dispatched. The existing Pages workflow includes deployment, and a test-only workflow has not been approved or created.
 - Next action remains obtaining real test output against the exact PR head, either from a working Python/network environment or after explicit owner approval for a test-only, non-deploying workflow.
+
+
+## Latest checkpoint update: PC-CP-2026-10-26-008
+
+**Snapshot:** [PC-CP-2026-10-26-008](checkpoints/PC-CP-2026-10-26-008.md)  
+**Source/test head before checkpoint record:** `61b6988640282337986b216da88a80a98cb7e302`  
+**Source change commit:** `3db35542d412dd923259483e697bc7d37549c779`  
+**Checkpoint record commit:** pending at time this section was authored.
+
+Static review found malformed output truncation flags were interpreted by truthiness, so a string `"false"` could be treated as true. The formatter now accepts only boolean `True` as a source truncation flag and adds a diagnostic for non-boolean values. A regression test was added. This is a code-review finding and patch, not a test result.
+
+**Changed paths:** `scripts/report_contract.py`, `scripts/test_report_contract.py`, `AI_COLLAB/checkpoints/PC-CP-2026-10-26-008.md`, `AI_COLLAB/CURRENT_CHECKPOINT.md`, `AI_COLLAB/NEW_CHAT_BOOTSTRAP.md`.  
+**Test command:** `python -m unittest discover -s scripts -p 'test_*.py' -v` — NOT RUN. The previous clone attempt failed before checkout due to DNS resolution failure for `github.com`. No workflow was dispatched because the existing Pages workflow includes deployment.  
+**Safety:** PR #2 remains draft and unmerged; no deployment or paid workload; budget remains $0.
+
+**Next task:** obtain actual test output against the exact current branch head; inspect failures and rerun before considering review readiness.
