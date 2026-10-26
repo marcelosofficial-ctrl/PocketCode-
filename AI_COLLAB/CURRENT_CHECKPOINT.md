@@ -1,15 +1,15 @@
 # PocketCode Current Checkpoint
 
-**Checkpoint ID:** PC-CP-2026-10-26-008  
-**Checkpoint stage:** Strict output-truncation flag handling / regression hardening  
-**Checkpoint status:** FLAG-HANDLING PATCH COMMITTED — TESTS UNVERIFIED — DRAFT PR OPEN  
+**Checkpoint ID:** PC-CP-2026-10-26-009  
+**Checkpoint stage:** Strict output/list truncation metadata validation and continuity repair  
+**Checkpoint status:** METADATA VALIDATION PATCHES COMMITTED — TESTS UNVERIFIED — DRAFT PR OPEN  
 **Recorded:** 2026-10-26  
 **Repository:** https://github.com/marcelosofficial-ctrl/PocketCode-  
 **Default branch:** `main`  
 **Working branch:** `chat-continuity-report-regressions-2026-10-26`  
 **Baseline commit:** `555840d8d83342513d9cd353d4d1522d46a5c82d`  
-**Latest branch head inspected before checkpoint 008:** `61b6988640282337986b216da88a80a98cb7e302`  
-**Latest checkpoint snapshot:** [PC-CP-2026-10-26-008](checkpoints/PC-CP-2026-10-26-008.md)  
+**Latest branch head inspected before checkpoint 009:** `aefbef31f13436d40b675d8e7161bdfb13fa454f`  
+**Latest checkpoint snapshot:** [PC-CP-2026-10-26-009](checkpoints/PC-CP-2026-10-26-009.md)  
 **Draft pull request:** https://github.com/marcelosofficial-ctrl/PocketCode-/pull/2  
 **Prior snapshots:** [PC-CP-2026-10-26-007](checkpoints/PC-CP-2026-10-26-007.md), [PC-CP-2026-10-26-006](checkpoints/PC-CP-2026-10-26-006.md), [PC-CP-2026-10-26-005](checkpoints/PC-CP-2026-10-26-005.md), [PC-CP-2026-10-26-004](checkpoints/PC-CP-2026-10-26-004.md), [PC-CP-2026-10-26-003](checkpoints/PC-CP-2026-10-26-003.md), [PC-CP-2026-10-26-002](checkpoints/PC-CP-2026-10-26-002.md), [PC-CP-2026-10-26-001](checkpoints/PC-CP-2026-10-26-001.md).
 
@@ -209,3 +209,16 @@ Static review found malformed output truncation flags were interpreted by truthi
 **Safety:** PR #2 remains draft and unmerged; no deployment or paid workload; budget remains $0.
 
 **Next task:** obtain actual test output against the exact current branch head; inspect failures and rerun before considering review readiness.
+
+
+## Latest checkpoint update: PC-CP-2026-10-26-009
+
+**Snapshot:** [PC-CP-2026-10-26-009](checkpoints/PC-CP-2026-10-26-009.md)  
+**Source/test head before snapshot:** `aefbef31f13436d40b675d8e7161bdfb13fa454f`  
+**Snapshot commit:** pending at time this section was authored.
+
+Strict boolean validation now covers stdout/stderr truncation and check/file-list truncation flags. Non-boolean values are ignored and disclosed. Regression coverage was added for string-valued `"false"` flags. The new-chat bootstrap's checkpoint 008 link and latest-record label were repaired. These are static-review changes only; Python tests remain NOT RUN.
+
+**Test command:** `python -m unittest discover -s scripts -p 'test_*.py' -v` — NOT RUN because the environment cannot resolve GitHub for cloning and the connector does not execute Python. The Pages workflow was not dispatched because it deploys. PR #2 remains draft and unmerged; no paid workload; budget $0.
+
+**Next task:** obtain actual test output from a free, test-only route and review all failures before advancing.
