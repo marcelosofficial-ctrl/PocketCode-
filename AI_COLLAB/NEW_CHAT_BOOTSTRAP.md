@@ -48,7 +48,7 @@ Every checkpoint must include:
 
 ## Current baseline at bootstrap creation
 
-The initial checkpoint is `PC-CP-2026-10-26-001`, anchored to baseline commit `555840d8d83342513d9cd353d4d1522d46a5c82d`. The latest checkpoint record is `PC-CP-2026-10-26-010`; it records 25 passing unit tests and a passing standalone checker run against GitHub-blob-hash-verified Python and prototype HTML files. Draft PR #2 remains unmerged. Always verify the latest branch head and checkpoint before acting. Always verify the latest branch head and checkpoint before acting.
+The initial checkpoint is `PC-CP-2026-10-26-001`, anchored to baseline commit `555840d8d83342513d9cd353d4d1522d46a5c82d`. The latest checkpoint record is `PC-CP-2026-10-26-011`; it records 25 passing unit tests and a passing standalone checker run against GitHub-blob-hash-verified Python and prototype HTML files. Draft PR #2 remains unmerged. Always verify the latest branch head and checkpoint before acting.
 
 ## Copy/paste opening prompt
 
