@@ -104,3 +104,8 @@ This proposal narrows implementation ambiguity but does **not** freeze the schem
 The owner delegated the six lifecycle choices to ChatGPT after reviewing the decision packet. The selected baseline and research rationale are recorded in [PASS1_OWNER_DECISION_PACKET_20261027.md](PASS1_OWNER_DECISION_PACKET_20261027.md) and [PASS1_OWNER_DECISIONS_RESEARCH_20261027.md](PASS1_OWNER_DECISIONS_RESEARCH_20261027.md). The draft contract now reflects the selected outcome/disposition split and idempotency, ordering, artifact, and output-limit rules. Numeric output budgets are provisional offline-test defaults. No provider, spend, live workload, production implementation, merge, or deployment is authorized.
 
 **Next:** implement synthetic provider-neutral contract/state-machine/report tests; record exact results only after execution. Provider-specific testing remains blocked by strict $0 and any applicable consent requirements.
+
+
+## Provider-neutral test implementation status — 2026-10-27
+
+The initial helper and synthetic test files now exist: `scripts/lifecycle_contract.py` and `scripts/test_lifecycle_contract.py`. The suite is **NOT RUN**. Next: run the test module in an offline local interpreter if available, inspect results and source, fix failures, then update the traceability matrix with exact evidence. Do not use GitHub Actions or a provider workload for this step. Strict $0 and no-live-execution rules remain in force.
