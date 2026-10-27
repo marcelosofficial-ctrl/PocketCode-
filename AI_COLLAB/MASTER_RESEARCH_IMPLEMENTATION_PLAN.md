@@ -308,3 +308,11 @@ See the detailed grouped register in [PASS0_REPOSITORY_AUDIT.md](PASS0_REPOSITOR
 - This is a design proposal, not API freeze or implementation authorization. The key open owner decisions are artifact release after cleanup failure, event reconciliation, idempotency retention/canonical fingerprint, and stream overflow behavior.
 - No code/tests executed; no provider selected or tested; strict $0 gate remains. User validation and Gemini's full Pass 0–7 remain incomplete.
 - Current PR #3 head should be checked live rather than inferred from older checkpoint SHAs. Keep PR #3 draft/unmerged and PR #2 untouched.
+
+
+### 2026-10-27 — Race determinism and link audit
+
+- Refined the lifecycle proposal after identifying that compare-and-set alone guarantees a single winner, not a repeatable winner across concurrent timeout/cancel permutations. The proposal now requires a monotonic coordinator-ingress sequence or an explicit precedence rule; tests must distinguish single-winner safety from replay determinism.
+- Updated the acceptance matrix with RACE-SEM-04 and corrected literal newline escapes that were rendering as backslash-n text.
+- Ran a focused internal Markdown-link audit across 12 current research/contract documents against the live branch tree: 0 missing relative file targets and 0 broken anchors among the inspected documents. This is a focused audit, not a guarantee for every file or external URL.
+- Current next step: complete the remaining owner decision packet and static consistency pass. Offline tests remain NOT RUN until expected semantics are approved; no provider-dependent test is authorized.
