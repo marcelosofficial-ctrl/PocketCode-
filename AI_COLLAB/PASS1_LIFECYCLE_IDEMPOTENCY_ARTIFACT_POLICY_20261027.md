@@ -135,3 +135,8 @@ The owner delegated the six decisions to ChatGPT. The selected defaults are now 
 - Execution outcome, cleanup state, and versioned derived disposition are separate; issued reports are immutable.
 
 The old owner-review list above is historical as of this decision. Numeric limits require review before any live execution. No provider, account, spend, live workload, production implementation, merge, or deployment is authorized.
+
+
+## Replay clarification — 2026-10-27
+
+The one-terminal-decision rule applies even when distinct terminal events arrive with different event IDs. Replay retains all accepted evidence and records the earliest terminal event by coordinator sequence as the nominal winner; any additional distinct terminal event is contradictory evidence and must derive INCOMPLETE, not PASS. This is a conservative offline contract rule, not a statement about any provider's event guarantees. Regression coverage added; tests not run.
