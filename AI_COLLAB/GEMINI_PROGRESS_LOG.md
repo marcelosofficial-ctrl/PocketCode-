@@ -77,3 +77,10 @@
 - Added an exploratory 5–8 person behavior-based interview plan, fixed Python+CSV task comparison, metrics, and proposed pre-registered stop/re-scope/continue rules. No sessions or benchmarks have been run.
 - No app installed, no account/provider workload created, no spend, and no provider selected. Strict $0 gate preserved.
 - This is ChatGPT's partial Pass 1 workstream A contribution. Gemini's required Pass 0–7 and workstreams A–H remain pending unless independently recorded by Gemini.
+
+### 2026-10-27 — ChatGPT execution security/abuse subpass (not Gemini completion)
+- Added [PASS1_SECURITY_ABUSE_RESEARCH.md](PASS1_SECURITY_ABUSE_RESEARCH.md), grounded in Docker Engine/seccomp/rootless documentation and OWASP input validation, file upload, multi-tenant, and AI execution guidance.
+- Defined minimum gates for per-job isolation, default-deny network/metadata, hard resource/time/output limits, safe artifact paths/rendering, tenant-aware rate/concurrency limits, cancellation, cleanup, and authoritative run evidence.
+- Added a pre-proof adversarial acceptance-test matrix. These are requirements, not tests run; no sandbox or provider was deployed.
+- No provider selected, no accounts/credentials/workloads, no live security test, and no spend. Strict $0 gate preserved.
+- This is ChatGPT's partial workstream D contribution. Gemini's required passes remain pending.
