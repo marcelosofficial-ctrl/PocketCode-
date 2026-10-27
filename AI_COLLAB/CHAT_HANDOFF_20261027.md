@@ -156,3 +156,5 @@ Acceptance criteria:
 - Next: verify the final branch files and test syntax/behavior using an approved offline Python runtime. Continue static review only until executable verification is available.
 
 - Additional event-schema audit: terminal-event reduction now rejects whitespace-only event IDs/kinds and missing or non-mapping payloads into `invalid_events`, marking evidence contradictory. Acceptance case LIFE-17 and regression test added. Source/test suite remains NOT RUN.
+
+- Tombstone retry audit: repeated insertion for the same tenant/key/fingerprint now preserves the later expiry and cannot shorten retention; a different fingerprint conflicts. Added IDEM-05 regression and matrix/crosswalk entries. Exact suite remains NOT RUN.
