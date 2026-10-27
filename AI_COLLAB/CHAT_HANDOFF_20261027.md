@@ -172,3 +172,6 @@ Latest source-count refresh: 30 test methods in `scripts/test_lifecycle_contract
 - Current `scripts/test_lifecycle_contract.py` count: 32 test methods by source inspection only. **The exact checked-in test module and full repository suite remain NOT RUN.** No GitHub Actions, provider, spend, deployment, merge, or PR update.
 - Important limitation: the additional booleans are a pure-model consistency guard, not authenticated evidence. Production must derive gates from authoritative job-bound observations, not trust caller-provided booleans.
 - Next: static diff review and consistency check across helper, test fixtures, matrix, and traceability. Do not claim test success without executing the exact checked-in files in an offline checkout.
+
+
+- Additional follow-up: added `test_report_history_pass_rejects_truthy_non_boolean_gates`, covering `1`, `"true"`, and `None` for each of the nine PASS gates; added acceptance case REPORT-05. Static source count is now 33 test methods; exact tests remain NOT RUN.
