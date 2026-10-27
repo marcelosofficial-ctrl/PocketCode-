@@ -66,7 +66,7 @@ The example is not a public API commitment. Limit values are discussion defaults
 
 ## Proposed lifecycle
 
-> **Do not implement this diagram as a normative state machine yet.** It is internally inconsistent: the diagram places execution success before cleanup, while the prose below requires cleanup success for `SUCCEEDED`. The leading resolution is to separate execution outcome from overall job disposition, but the canonical enum, reconciliation rules, and artifact-release policy remain owner-review items. See [PASS1_CONTRACT_COHERENCE_RESOLUTION.md](PASS1_CONTRACT_COHERENCE_RESOLUTION.md) and [PASS1_LIFECYCLE_IDEMPOTENCY_ARTIFACT_POLICY_20261027.md](PASS1_LIFECYCLE_IDEMPOTENCY_ARTIFACT_POLICY_20261027.md). Both are proposals, not API freeze.
+> **Do not implement this diagram as a normative state machine yet.** It is internally inconsistent: the diagram places execution success before cleanup, while the prose below requires cleanup success for `SUCCEEDED`. The leading resolution is to separate execution outcome from overall job disposition, but the canonical enum, reconciliation rules, and artifact-release policy remain owner-review items. See [PASS1_CONTRACT_COHERENCE_RESOLUTION.md](PASS1_CONTRACT_COHERENCE_RESOLUTION.md) and [PASS1_LIFECYCLE_IDEMPOTENCY_ARTIFACT_POLICY_20261027.md](PASS1_LIFECYCLE_IDEMPOTENCY_ARTIFACT_POLICY_20261027.md). Both are proposals, not API freeze. The six recommended owner decisions and pending approval fields are consolidated in [PASS1_OWNER_DECISION_PACKET_20261027.md](PASS1_OWNER_DECISION_PACKET_20261027.md); do not infer approval from the existence of that packet.
 
     RECEIVED
       -> REJECTED
@@ -157,8 +157,13 @@ They cannot prove kernel/microVM isolation, egress enforcement, metadata denial,
 5. Is authentication required before the first closed beta? Recommended: yes, unless a carefully reviewed abuse model justifies otherwise.
 6. What owner-approved spend ceiling, if any, can replace the current $0 gate? Until explicitly changed, none.
 7. What exact provider evidence proves asynchronous network policy application, including policy identity/revision, status, and fail-closed timeout behavior?
-8. What idempotency scope and conflict rule applies when the same tenant reuses a key with a different canonical request payload?
-9. What report fields distinguish observed CPU/RAM/process telemetry from provider-invoice cost, and how are ESTIMATED, FINAL, and UNAVAILABLE defined?
+8. How should timeout/cancel event ordering and reconciliation be made replayable when concurrent signals race?
+9. What tenant-scoped idempotency rule applies to same-key/same-payload retries, same-key/different-payload conflicts, explicit reruns, and retention/deletion?
+10. What canonical server-side request fields determine the idempotency fingerprint?
+11. What byte/time budgets and aggregate-vs-per-stream rule apply to output overflow, termination, and bounded drain/discard?
+12. What report fields distinguish observed CPU/RAM/process telemetry from provider-invoice cost, and how are ESTIMATED, FINAL, and UNAVAILABLE defined?
+
+Before implementation, review the consolidated [owner decision packet](PASS1_OWNER_DECISION_PACKET_20261027.md); all six decisions remain pending.
 
 ## Decision
 
