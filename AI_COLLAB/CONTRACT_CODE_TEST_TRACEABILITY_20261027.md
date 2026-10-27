@@ -82,3 +82,6 @@ Current count refresh: `scripts/test_lifecycle_contract.py` contains 30 test met
 | Report-history job IDs and evidence references reject whitespace-only strings | `ReportHistory.append` | `test_report_history_rejects_whitespace_only_identity_fields` | Pure in-memory model only; durable atomic append/versioning remains unimplemented. |
 
 Current branch `pocketcode-report-pass-gate-hardening-2026-10-27`: 32 test methods defined by source inspection. No tests run.
+
+
+| PASS gate values must be literal booleans, not truthy substitutes | `ReportHistory.append` | `test_report_history_pass_rejects_truthy_non_boolean_gates` | Static source/test addition; exact suite NOT RUN. Prevents malformed report metadata from being accepted by the pure helper; does not authenticate the underlying evidence. |
