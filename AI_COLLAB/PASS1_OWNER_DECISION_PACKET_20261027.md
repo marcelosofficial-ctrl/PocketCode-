@@ -59,7 +59,7 @@ Read with [PASS1_LIFECYCLE_IDEMPOTENCY_ARTIFACT_POLICY_20261027.md](PASS1_LIFECY
 
 ## Approval record
 
-No choices are approved by this document. Record any owner-approved deviations here before implementing tests:
+The six choices below are selected under the owner's explicit delegation. Record any later owner-directed deviations here:
 
 | Decision | Approved option / deviation | Date |
 |---|---|---|
