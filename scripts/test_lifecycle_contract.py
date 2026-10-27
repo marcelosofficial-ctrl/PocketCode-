@@ -10,6 +10,12 @@ from lifecycle_contract import (
 
 
 class LifecycleTests(unittest.TestCase):
+    def test_contradictory_evidence_takes_precedence_over_not_started(self):
+        self.assertEqual(derive_disposition(
+            "NOT_STARTED", "CONFIRMED", policy_confirmed=False,
+            termination_confirmed=False, artifacts_valid=False,
+            tenant_job_authorized=False, contradictory_evidence=True), "INCOMPLETE")
+
     def test_exit_zero_needs_cleanup_policy_termination_artifact_and_tenant_gates(self):
         args = dict(policy_confirmed=True, termination_confirmed=True,
                     artifacts_valid=True, tenant_job_authorized=True)
