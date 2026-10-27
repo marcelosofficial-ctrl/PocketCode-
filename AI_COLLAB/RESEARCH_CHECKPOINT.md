@@ -68,3 +68,12 @@ Continue Pass 1 with a fuller user/problem falsification and task-based comparis
 - Current design rule: if a free tier cannot enforce mandatory controls, do not weaken requirements to fit it. No provider chosen, no live execution, no accounts, no spend; $0 gate unchanged.
 - Master plan and Gemini progress log updated. This is ChatGPT research, not Gemini completion.
 - Next: compare candidate runtime options against the security/operational requirements and narrow the implementation proof without assuming provider capability.
+
+## 2026-10-27 continuation — runtime/provider feasibility gate
+
+**Latest completed subpass:** [PASS1_RUNTIME_PROVIDER_GATE.md](PASS1_RUNTIME_PROVIDER_GATE.md)
+
+- No candidate approved for a live proof at $0. Cloudflare has the clearest paper fit but Containers require a $5/month Workers Paid plan. Daytona network controls are tier/API-version dependent; Modal credits are not a hard billing cap; E2B testing requires prior written consent.
+- Added a provider-neutral adapter contract and fail-closed capability states; fake adapters can prove report/orchestration logic only.
+- Updated provider research, master plan, and cross-agent log. No account, workload, live test, provider selection, or spend.
+- Next: convert the combined user/problem, security, and provider gates into a small implementation-neutral contract and test plan, then audit remaining research gaps and link integrity. Keep PR draft and do not merge.
