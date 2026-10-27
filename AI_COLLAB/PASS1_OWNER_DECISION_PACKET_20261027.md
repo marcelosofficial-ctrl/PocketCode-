@@ -70,7 +70,7 @@ The six choices below are selected under the owner's explicit delegation. Record
 | 5. Canonical fingerprint | Selected: versioned server-side canonical request/policy fingerprint over exact decoded bytes | 2026-10-27 |
 | 6. Outcome/disposition model | Selected: immutable execution facts, separate cleanup state, versioned derived disposition | 2026-10-27 |
 
-## After approval
+## After selection
 
 1. Update the draft contract and matrix once, using the selected vocabulary and policy.
 2. Implement pure offline tests with synthetic events and fake adapters; record exact commands/results only after execution.
