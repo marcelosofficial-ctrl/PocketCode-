@@ -162,6 +162,19 @@ class LifecycleTests(unittest.TestCase):
             broken[field] = "UNKNOWN" if field == "cleanup_state" else False
             self.assertFalse(artifact_release_allowed(**broken))
 
+    def test_aggregate_cap_triggers_when_each_stream_is_below_its_own_cap(self):
+        budget = OutputBudget(per_stream_cap=5, aggregate_cap=6)
+        budget.add("stdout", b"abc")
+        budget.add("stderr", b"def")
+        self.assertFalse(budget.exceeded)  # exactly at aggregate cap is allowed
+        before = (budget.retained_bytes("stdout"), budget.retained_bytes("stderr"))
+        budget.add("stdout", b"x")  # aggregate cap + 1; stdout remains below its own cap
+        self.assertTrue(budget.exceeded)
+        self.assertEqual(budget.observed, {"stdout": 4, "stderr": 3})
+        budget.add("stderr", b"more")
+        budget.finish()
+        self.assertEqual((budget.retained_bytes("stdout"), budget.retained_bytes("stderr")), before)
+
     def test_output_budget_counts_observed_bytes_and_stops_retaining_on_overflow(self):
         budget = OutputBudget(per_stream_cap=4, aggregate_cap=6)
         budget.add("stdout", b"1234")
