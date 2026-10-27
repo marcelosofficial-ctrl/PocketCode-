@@ -91,7 +91,7 @@ For tests actually run, record test ID, source commit, exact command, runtime ve
 
 ## Next safe step
 
-Resolve the lifecycle contradiction and the open questions in the contract audit before implementation. The two-axis outcome/disposition model is a proposal only and requires review before schema freeze. Provider integration remains blocked by the strict $0 gate.
+The lifecycle contradiction now has two linked resolution proposals: [PASS1_CONTRACT_COHERENCE_RESOLUTION.md](PASS1_CONTRACT_COHERENCE_RESOLUTION.md) and [PASS1_LIFECYCLE_IDEMPOTENCY_ARTIFACT_POLICY_20261027.md](PASS1_LIFECYCLE_IDEMPOTENCY_ARTIFACT_POLICY_20261027.md). They narrow the semantics but do not settle owner decisions or freeze the schema. Next is owner review of artifact quarantine/release, event reconciliation, idempotency retention/fingerprint, and stream-overflow behavior; implement pure offline tests only after those expected outcomes are agreed. Provider integration remains blocked by the strict $0 gate.
 
 
 ## 2026-10-27 lifecycle/idempotency/artifact expansion
