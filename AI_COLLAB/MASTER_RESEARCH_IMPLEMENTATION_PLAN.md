@@ -267,3 +267,12 @@ See the detailed grouped register in [PASS0_REPOSITORY_AUDIT.md](PASS0_REPOSITOR
 - Added provider-neutral adapter requirements for job isolation, confirmed network policy, hard limits, lifecycle/cleanup, authoritative outputs, tenant authorization, spend controls, and retention.
 - Implementation should expose capability states (supported / unsupported / not_verified / blocked_by_plan) and fail closed rather than silently weakening security. Fake adapters may validate orchestration only, not sandbox isolation.
 - No provider selected, no account/workload/live test/spend, no architecture claim upgraded. $0 gate remains binding.
+
+### 2026-10-27 — Draft provider-neutral execution contract
+
+- Added [DRAFT_EXECUTION_CONTRACT.md](DRAFT_EXECUTION_CONTRACT.md): request validation, state machine, provider adapter seam, report trust model, offline test matrix, and unresolved product/security choices.
+- This is a proposal only. Initial size/time values are placeholders, not approved production limits or API commitments.
+- Core invariant: client-supplied status is never execution evidence; provider-confirmed policy, observed execution, cleanup, and formatter output remain distinct. Missing or contradictory evidence cannot produce PASS.
+- Capability states distinguish supported, unsupported, not_verified, and blocked_by_plan. Any mandatory control not verified blocks execution; no silent security downgrade.
+- Offline fake-adapter tests may validate orchestration/report behavior only. They cannot prove real isolation, egress blocking, cleanup, tenant isolation, or billing.
+- No production implementation/provider SDK, account, workload, test, spend, or provider selection.
