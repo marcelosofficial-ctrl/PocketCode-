@@ -192,9 +192,12 @@ def canonical_request_fingerprint(
         seen.add(collision_key)
         if not isinstance(media_type, str) or not isinstance(data, bytes):
             raise TypeError("input media type must be text and content must be bytes")
+        canonical_media_type = media_type.strip().lower()
+        if not canonical_media_type:
+            raise ValueError("input media type must not be empty")
         canonical_inputs.append({
             "name": canonical_name,
-            "media_type": media_type.strip().lower(),
+            "media_type": canonical_media_type,
             "content_b64": base64.b64encode(data).decode("ascii"),
         })
     canonical_inputs.sort(key=lambda item: item["name"])
