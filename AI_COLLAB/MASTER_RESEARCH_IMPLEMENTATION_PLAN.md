@@ -335,3 +335,8 @@ See the detailed grouped register in [PASS0_REPOSITORY_AUDIT.md](PASS0_REPOSITOR
 ## 2026-10-27 delegated lifecycle decision update
 
 The owner delegated the six lifecycle decisions to ChatGPT after reviewing the packet. The selected baseline and official research rationale are in [PASS1_OWNER_DECISIONS_RESEARCH_20261027.md](PASS1_OWNER_DECISIONS_RESEARCH_20261027.md). The draft execution contract, lifecycle policy, decision register, and checkpoint now reflect the selection. Provider-neutral helpers and synthetic tests were added under `scripts/lifecycle_contract.py` and `scripts/test_lifecycle_contract.py`; **they have not been run**. Do not treat this as production implementation or security proof. Numeric budgets are provisional offline-test defaults; strict $0, provider-neutrality, and no-live-workload guardrails remain in force.
+
+
+## 2026-10-27 offline-test evidence qualification
+
+Eight synthetic tests passed in a temporary Python run of a reconstructed copy of the lifecycle helper and test module. The exact checked-in files have not been executed from a repository checkout, and the full existing repository suite remains unrun. This does not validate provider behavior or production security. Next verification: run the exact files in an offline checkout without dispatching GitHub Actions.
