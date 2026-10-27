@@ -1,6 +1,6 @@
 # Lifecycle, Idempotency, and Artifact Policy — Decision Proposal
 
-**Status:** Proposed semantics for owner review; not a frozen API or implementation authorization.  
+**Status:** Selected provider-neutral baseline after owner delegation on 2026-10-27; not a frozen public API or live-execution authorization. See [research rationale](PASS1_OWNER_DECISIONS_RESEARCH_20261027.md).  
 **Date:** 2026-10-27  
 **Scope:** Offline orchestration/report contract only. Strict $0; no provider, accounts, workloads, or tests run.
 
@@ -121,3 +121,17 @@ Owner review is needed for:
 6. The final execution-outcome versus service-disposition fields, terminal labels, and permitted versioned reconciliation path.
 
 Until reviewed, keep these as proposals. No implementation, provider selection, account creation, spend, live security testing, merge, or deployment is authorized. Keep PR #3 draft/unmerged and PR #2 untouched.
+
+
+## 10. Selected decision record — 2026-10-27
+
+The owner delegated the six decisions to ChatGPT. The selected defaults are now recorded in [PASS1_OWNER_DECISION_PACKET_20261027.md](PASS1_OWNER_DECISION_PACKET_20261027.md), with research and official references in [PASS1_OWNER_DECISIONS_RESEARCH_20261027.md](PASS1_OWNER_DECISIONS_RESEARCH_20261027.md).
+
+- Artifacts remain quarantined until cleanup, integrity, and tenant/job authorization gates pass; recovery creates a new report version.
+- Accepted coordinator events receive a monotonic sequence; one atomic terminal decision commits per attempt; ambiguity is non-PASS.
+- Idempotency is tenant-scoped and fingerprinted; retain records while addressable and a one-way tombstone for 30 days after deletion; explicit reruns use a new key.
+- Offline-test output defaults are 32 KiB per stream, 64 KiB aggregate retained output, and at most 1 second of drain/discard after a cap breach. Exceeding a cap is LIMIT_EXCEEDED, never PASS. These limits are provisional, not production-validated.
+- Fingerprinting uses versioned canonical encoding over exact decoded source/input bytes and effective execution policy.
+- Execution outcome, cleanup state, and versioned derived disposition are separate; issued reports are immutable.
+
+The old owner-review list above is historical as of this decision. Numeric limits require review before any live execution. No provider, account, spend, live workload, production implementation, merge, or deployment is authorized.
