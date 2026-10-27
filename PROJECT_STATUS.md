@@ -135,3 +135,14 @@ Ran 8 synthetic unit tests in a temporary Python environment using a reconstruct
 ### Offline test evidence clarification — 2026-10-27
 
 Ran 8 synthetic unit tests in a temporary Python environment using a reconstructed copy of the checked-in helper and test module: 8 passed, 0 failures, 0 errors. This included disposition gates, coordinator-sequence replay, idempotency/fingerprint behavior, artifact release gates, output caps, and a chunk-boundary redaction fixture. This was not a test run from a checkout of the repository, and the full existing repository suite was not run. No GitHub Actions, provider, submitted code, or live workload was used. Before treating this as verified branch evidence, run the exact checked-in files in an offline local checkout when available.
+
+
+## 2026-10-27 — lifecycle helper static review follow-up
+
+- Reviewed `scripts/lifecycle_contract.py` and its synthetic tests on the PR branch.
+- Corrected over-escaped byte-regex patterns, protected configured matches crossing the streaming carry cutoff, and made duplicate event identity sensitive to coordinator sequence.
+- Expanded the test module to 11 test cases, including redaction boundary/provider-token fixtures and changed-sequence duplicate event conflict.
+- Reconciled the offline acceptance matrix with the six delegated lifecycle decisions and refreshed PR #3's body to reflect current scope/status.
+- **Verification is NOT RUN for the exact updated checked-in helper/test pair and the full repository suite.** The earlier 8/8 reconstructed-copy result is historical and must not be used as evidence for this revision.
+- No GitHub Actions, provider, workload, paid service, deployment, or merge. PR #3 remains draft/open; PR #2 remains untouched.
+- Next offline work: run exact files when an interpreter is available; then cover artifact quarantine/release, immutable report versions, deletion tombstones, output overflow/drain behavior, and atomic concurrent idempotency.
