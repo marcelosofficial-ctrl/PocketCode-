@@ -173,3 +173,7 @@ A further coherence pass found contradictory-evidence handling occurred after th
 
 ### Latest lifecycle evidence hardening — 2026-10-27
 Static review found that Python truthiness could allow malformed values such as the string `"false"` or integer `1` to satisfy PASS gates in `derive_disposition`. The helper now requires literal boolean `True` for policy, termination, artifact, and tenant/job authorization gates, and for timeout/cancel termination confirmation. Added negative synthetic coverage and acceptance case LC-15. The checked-in lifecycle test module contains 23 test methods. This is a source-level change only: the exact checked-in helper/test pair and full repository suite remain NOT RUN; no Actions run or provider workload occurred.
+
+
+### Follow-on artifact gate hardening — 2026-10-27
+The same Python truthiness flaw existed in `artifact_release_allowed`: truthy malformed values could satisfy digest, job-association, or tenant-authorization checks. Those gates now require literal boolean `True`; added `test_artifact_release_rejects_truthy_non_boolean_evidence` and acceptance case ART-SEM-02. The checked-in lifecycle test module contains 24 test methods. Exact checked-in tests and full repository suite remain NOT RUN.
