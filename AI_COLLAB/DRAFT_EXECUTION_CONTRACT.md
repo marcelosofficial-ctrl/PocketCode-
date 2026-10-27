@@ -18,6 +18,7 @@ Turn research constraints into a small contract that can be unit-tested without 
 6. The default first-proof policy is no outbound network, no secrets, no arbitrary package installation, no persistence, and small allowlisted text/CSV inputs.
 7. All sizes and durations are bounded server-side. Truncation is explicit and cannot be hidden by a formatter.
 8. The fake adapter is a test double only. Passing its tests does not establish real isolation, network blocking, cleanup, or billing behavior.
+9. If a mandatory control (including network egress policy) is applied asynchronously, no user code may start until authoritative provider evidence confirms the exact required policy and revision are applied. Pending, failed, missing, stale, or mismatched policy evidence fails closed; a request acknowledgement or ETag alone is not proof of enforcement.
 
 ## Proposed request shape
 
@@ -90,7 +91,7 @@ Rules:
 The orchestration layer should depend on a narrow interface equivalent to:
 
 - capabilities(plan_context): each mandatory feature is supported, unsupported, not_verified, or blocked_by_plan, with evidence/source timestamp.
-- prepare(job_id, tenant_id, validated_task, enforced_policy): creates a fresh boundary and returns confirmed configuration; no code runs before validation.
+- prepare(job_id, tenant_id, validated_task, enforced_policy): creates a fresh boundary and returns provider-confirmed configuration and policy evidence. The orchestrator must verify that mandatory controls are actually applied to the intended revision before execute() is called; pending/failed/missing/mismatched evidence blocks execution.
 - execute(job_id, fixed_entrypoint): starts only validated task content and emits lifecycle events.
 - collect(job_id): returns exit code, termination reason, bounded stdout/stderr and byte counts, artifact manifest, and provider-side resource observations.
 - cancel(job_id): requests cancellation and reports whether process-tree termination is confirmed.
@@ -153,6 +154,9 @@ They cannot prove kernel/microVM isolation, egress enforcement, metadata denial,
 4. What is the minimum retention policy and how is deletion confirmed?
 5. Is authentication required before the first closed beta? Recommended: yes, unless a carefully reviewed abuse model justifies otherwise.
 6. What owner-approved spend ceiling, if any, can replace the current $0 gate? Until explicitly changed, none.
+7. What exact provider evidence proves asynchronous network policy application, including policy identity/revision, status, and fail-closed timeout behavior?
+8. What idempotency scope and conflict rule applies when the same tenant reuses a key with a different canonical request payload?
+9. What report fields distinguish observed CPU/RAM/process telemetry from provider-invoice cost, and how are ESTIMATED, FINAL, and UNAVAILABLE defined?
 
 ## Decision
 
