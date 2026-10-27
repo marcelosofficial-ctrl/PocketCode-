@@ -323,3 +323,10 @@ See the detailed grouped register in [PASS0_REPOSITORY_AUDIT.md](PASS0_REPOSITOR
 - Prepared [PASS1_OWNER_DECISION_PACKET_20261027.md](PASS1_OWNER_DECISION_PACKET_20261027.md) with explicit recommendations, trade-offs, and pending approval fields for artifact quarantine, event ordering, idempotency retention, output overflow, canonical request fingerprints, and outcome/disposition separation.
 - This packet is a review aid, not authorization or a recorded decision. Do not freeze the schema or implement lifecycle tests until the expected outcomes are agreed.
 - Next: owner review, then a single coordinated contract/matrix update and pure offline test implementation. Strict $0 and provider-consent gates remain unchanged.
+
+
+### 2026-10-27 — Cross-document decision/status alignment
+
+- Aligned the draft contract, offline acceptance matrix, lifecycle resolution note, and decision register with the six-item owner decision packet. Direct links now make the pending approval boundary visible at the relevant design/test decision points.
+- Tightened event-ordering language: provider timestamps alone are not authoritative; replayable decisions require coordinator-ingress ordering and a single committed terminal decision, with competing evidence retained.
+- The next action is owner review of the packet. No lifecycle tests should be implemented until expected outcomes are agreed and implementation is explicitly authorized. All tests remain NOT RUN; strict $0 and provider-consent gates remain binding.
