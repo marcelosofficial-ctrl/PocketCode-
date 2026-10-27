@@ -177,3 +177,9 @@ Static review found that Python truthiness could allow malformed values such as 
 
 ### Follow-on artifact gate hardening — 2026-10-27
 The same Python truthiness flaw existed in `artifact_release_allowed`: truthy malformed values could satisfy digest, job-association, or tenant-authorization checks. Those gates now require literal boolean `True`; added `test_artifact_release_rejects_truthy_non_boolean_evidence` and acceptance case ART-SEM-02. The checked-in lifecycle test module contains 24 test methods. Exact checked-in tests and full repository suite remain NOT RUN.
+
+
+### Operating workflow now recorded in the master plan — 2026-10-27
+The research/implementation master now includes a durable operating-method addendum: inspect repo evidence before acting; work in coherent risk-proportionate passes; reuse existing code/dependencies; delegate bounded non-overlapping AI roles; preserve discovery-first/provider-neutral/security requirements; report only executed verification; respect $0/no-provider/no-deploy/no-merge boundaries; and keep continuity in repository records. This supplements rather than replaces product, architecture, security, roadmap, and decision documents.
+
+**Current branch-specific state:** lifecycle helper/test module contains 24 test methods; exact checked-in pair and full repository suite remain NOT RUN. PR #3 is draft/open/unmerged; PR #2 is unchanged. No Actions, provider workload, spend, deployment, or merge.
