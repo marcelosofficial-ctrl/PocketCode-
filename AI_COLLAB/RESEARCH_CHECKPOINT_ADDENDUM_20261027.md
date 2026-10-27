@@ -122,3 +122,7 @@ The exact checked-in tests and full repository suite remain **NOT RUN**. This is
 
 ## Follow-on static audit — malformed evidence types (2026-10-27)
 A PASS-gate review found that truthy non-boolean values (for example, `"false"` or integer `1`) could satisfy Python's prior `all(...)` check. The helper now requires identity with literal `True` for PASS gates and for timeout/cancel termination confirmation. Added `test_malformed_truthy_gate_values_never_produce_pass`, matrix case LC-15, and a traceability update. The lifecycle test module contains 23 test methods. Exact checked-in tests and full repository suite remain NOT RUN.
+
+
+## Follow-on artifact-release gate review — 2026-10-27
+Static review found that artifact release authorization also relied on truthiness for digest, job-association, and tenant-authorization flags. It now requires literal boolean `True` for all three flags; added a synthetic negative test and acceptance case ART-SEM-02. The lifecycle test module contains 24 test methods. This change is not test-executed; exact checked-in helper/test pair and full repository suite remain NOT RUN.
