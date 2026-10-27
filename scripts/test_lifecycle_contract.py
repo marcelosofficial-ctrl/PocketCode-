@@ -131,6 +131,16 @@ class LifecycleTests(unittest.TestCase):
             canonical_request_fingerprint(**{**base, "runtime": "  PYTHON  "}),
         )
 
+    def test_idempotency_rejects_blank_or_non_string_identity_values(self):
+        fields = ("tenant_id", "key", "fingerprint", "proposed_job_id")
+        valid = dict(tenant_id="t1", key="k", fingerprint="f1", proposed_job_id="j1")
+        for field in fields:
+            for invalid in ("", "   ", None, 1):
+                args = dict(valid)
+                args[field] = invalid
+                with self.subTest(field=field, invalid=repr(invalid)), self.assertRaises(ValueError):
+                    reserve_idempotency({}, **args)
+
     def test_idempotency_replay_conflict_and_tenant_scope(self):
         records = {}
         self.assertEqual(reserve_idempotency(records, tenant_id="t1", key="k",
