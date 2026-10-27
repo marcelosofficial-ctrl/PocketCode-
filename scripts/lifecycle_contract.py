@@ -66,8 +66,8 @@ def derive_disposition(
 def reduce_terminal_events(events: Iterable[Mapping[str, Any]]) -> dict[str, Any]:
     """Replay accepted events; the first terminal event by coordinator sequence wins.
 
-    Duplicate event IDs with identical kind/payload are idempotent. Conflicting
-    reuse of an event ID marks evidence contradictory. Provider timestamps are
+    Duplicate event IDs with identical coordinator sequence, kind, and payload are
+    idempotent. Conflicting reuse of an event ID marks evidence contradictory. Provider timestamps are
     intentionally ignored for ordering.
     """
     by_id: dict[str, tuple[str, Any]] = {}
