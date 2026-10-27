@@ -8,6 +8,7 @@ from __future__ import annotations
 import base64
 import hashlib
 import json
+import re
 import unicodedata
 from typing import Any, Iterable, Mapping
 
@@ -228,22 +229,85 @@ class OutputBudget:
         self.aggregate_cap = aggregate_cap
         self.observed = {"stdout": 0, "stderr": 0}
         self.retained = {"stdout": bytearray(), "stderr": bytearray()}
+        self.redactors = {"stdout": StreamingRedactor(), "stderr": StreamingRedactor()}
         self.exceeded = False
 
     def add(self, stream: str, chunk: bytes) -> None:
         if stream not in self.retained or not isinstance(chunk, bytes):
             raise ValueError("stream must be stdout/stderr and chunk must be bytes")
+        previous_stream = self.observed[stream]
+        previous_total = sum(self.observed.values())
         self.observed[stream] += len(chunk)
         if self.exceeded:
             return
 
-        stream_room = max(0, self.per_stream_cap - len(self.retained[stream]))
-        aggregate_used = sum(len(value) for value in self.retained.values())
-        aggregate_room = max(0, self.aggregate_cap - aggregate_used)
-        keep = min(len(chunk), stream_room, aggregate_room)
-        self.retained[stream].extend(chunk[:keep])
-        if len(chunk) > keep or len(self.retained[stream]) > self.per_stream_cap:
+        stream_room = max(0, self.per_stream_cap - previous_stream)
+        aggregate_room = max(0, self.aggregate_cap - previous_total)
+        allowed = min(len(chunk), stream_room, aggregate_room)
+        safe_chunk = self.redactors[stream].feed(chunk[:allowed])
+        self.retained[stream].extend(safe_chunk[:max(
+            0, min(self.per_stream_cap - len(self.retained[stream]),
+                   self.aggregate_cap - sum(len(value) for value in self.retained.values()))
+        )])
+        if len(chunk) > allowed:
             self.exceeded = True
+            for redactor in self.redactors.values():
+                redactor.reset()
+
+    def finish(self) -> None:
+        """Flush safe redacted tails unless a cap breach discarded pending data."""
+        if self.exceeded:
+            return
+        for stream, redactor in self.redactors.items():
+            safe_tail = redactor.finish()
+            room = max(0, min(
+                self.per_stream_cap - len(self.retained[stream]),
+                self.aggregate_cap - sum(len(value) for value in self.retained.values()),
+            ))
+            self.retained[stream].extend(safe_tail[:room])
 
     def retained_bytes(self, stream: str) -> bytes:
         return bytes(self.retained[stream])
+
+
+class StreamingRedactor:
+    """Best-effort bounded token-pattern redaction across chunk boundaries.
+
+    Replacements preserve byte length so the safe output cutoff maps to the
+    original input cutoff. This covers configured patterns only, not all secrets.
+    """
+    CARRY_BYTES = 768
+    PATTERNS = (
+        re.compile(rb"(?i)\\bBearer\\s+[A-Za-z0-9._~+/-]{8,256}\\b"),
+        re.compile(rb"(?i)\\b(?:api[_-]?key|access[_-]?token|password|secret)\\s*[:=]\\s*[^\\s,;]{1,256}"),
+        re.compile(rb"\\b(?:sk-[A-Za-z0-9_-]{16,128}|gh[pousr]_[A-Za-z0-9]{20,128}|AKIA[0-9A-Z]{16})\\b"),
+    )
+
+    def __init__(self) -> None:
+        self.pending = bytearray()
+
+    @classmethod
+    def _redact(cls, data: bytes) -> bytes:
+        result = data
+        for pattern in cls.PATTERNS:
+            result = pattern.sub(lambda match: b"*" * len(match.group(0)), result)
+        return result
+
+    def feed(self, chunk: bytes) -> bytes:
+        combined = bytes(self.pending) + chunk
+        if len(combined) <= self.CARRY_BYTES:
+            self.pending = bytearray(combined)
+            return b""
+        cutoff = len(combined) - self.CARRY_BYTES
+        redacted = self._redact(combined)
+        safe_prefix = redacted[:cutoff]
+        self.pending = bytearray(combined[cutoff:])
+        return safe_prefix
+
+    def finish(self) -> bytes:
+        result = self._redact(bytes(self.pending))
+        self.pending.clear()
+        return result
+
+    def reset(self) -> None:
+        self.pending.clear()
