@@ -292,3 +292,10 @@ See the detailed grouped register in [PASS0_REPOSITORY_AUDIT.md](PASS0_REPOSITOR
 - Highest-risk edge cases: execution success with cleanup failure; late completion racing timeout/cancel; missing or contradictory provider-policy evidence; placeholder limits confused with enforceable controls; stale capability declarations; tenant authorization across every operation; and report formatting that could falsely elevate status.
 - Proposed invariant: preserve execution outcome separately from overall service disposition; overall PASS requires confirmed mandatory policy, authoritative completion, exit 0, no limit/timeout/cancel/output truncation, valid artifacts, and cleanup success. Exact status vocabulary remains a design decision.
 - Static review only. No tests executed, no provider tested, no production API frozen, and no implementation/spend authorized.
+
+
+### 2026-10-27 — Scoped Gemini independent-review handoff (ChatGPT)
+
+- Added [GEMINI_REVIEW_REQUEST.md](GEMINI_REVIEW_REQUEST.md), a compact, evidence-first review request covering cross-document contradictions, critical security cases, test coverage, provider source/version claims, product falsification, and approval gates.
+- It explicitly requires Gemini to distinguish inspected evidence from assumptions, tests actually run from proposed tests, and blockers from offline work. It prohibits provider accounts/workloads/spend/merge/deployment and asks for a copyable review rather than repository changes.
+- This is a prepared handoff only. Gemini has not been confirmed to have received or completed it.
