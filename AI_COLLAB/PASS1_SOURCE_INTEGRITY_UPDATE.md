@@ -42,7 +42,7 @@
 
 - Public pages were searched/opened on 2026-10-27. This checks the wording visible in current pages, not an account-specific plan, configured policy, billing ceiling, or runtime behavior.
 - No security controls were exercised. Provider documentation, configured state, and tested behavior remain separate evidence categories.
-- Modal's documentation page fetch returned an upstream 502 when opened directly during this pass; its current search result still showed the documented default network posture. Re-fetch that page before any approved provider-specific design decision.
+- Modal's documentation page returned an upstream 502 when opened directly, but the current search-indexed official guide was rechecked on 2026-10-27 and explicitly states DNS is unrestricted except when all outbound traffic is blocked. `block_network=True` drops all outbound traffic; domain allowlisting is Beta/TLS 443 and dynamic updates are Alpha. This closes the prior documentation ambiguity about DNS wording, not the runtime-verification gap. Recheck again before any approved provider-specific design decision.
 - No provider selected. Strict $0 remains binding; no accounts, card entry, workloads, consent requests, or spend were made.
 
 ## Actionable correction
