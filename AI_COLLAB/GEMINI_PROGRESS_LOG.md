@@ -70,3 +70,10 @@
 - Example variable CPU/memory arithmetic: Modal Sandbox+Notebooks about $0.00158 per 60s active at 1 vCPU-equivalent/1 GiB (about $0.00317 if a full 60s idle tail is billed); Daytona and E2B about $0.00111 per 60s at 1 vCPU/1 GiB; Cloudflare's standard-2 example is within included resource quotas but still requires the $5/month Workers Paid base plan. These are lower-bound illustrations, not all-in estimates.
 - Material risks: free credits do not guarantee a $0 ceiling; Modal can bill beyond included compute, Daytona network controls depend on tier, Cloudflare has a base fee and component charges, and E2B requires prior written consent before tests.
 - No accounts, credentials, live workloads, or spend. Budget remains $0. This is ChatGPT's partial workstream H, not Gemini completion; full cost/operations and Pass 1 remain incomplete.
+
+### 2026-10-27 — ChatGPT public user/problem evidence subpass (not Gemini completion)
+- Added [PASS1_USER_PROBLEM_EVIDENCE.md](PASS1_USER_PROBLEM_EVIDENCE.md), synthesizing six public discussions with explicit caveats and counterevidence.
+- Findings are mixed: quick phone-based scripts and no-computer access appear in anecdotes, but local runtimes, Termux, remote IDEs, screen/keyboard friction, setup costs, and low willingness to pay may defeat the proposed product.
+- Added an exploratory 5–8 person behavior-based interview plan, fixed Python+CSV task comparison, metrics, and proposed pre-registered stop/re-scope/continue rules. No sessions or benchmarks have been run.
+- No app installed, no account/provider workload created, no spend, and no provider selected. Strict $0 gate preserved.
+- This is ChatGPT's partial Pass 1 workstream A contribution. Gemini's required Pass 0–7 and workstreams A–H remain pending unless independently recorded by Gemini.
