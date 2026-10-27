@@ -25,6 +25,8 @@ These are working labels only. Before schema freeze, decide whether CANCELLED is
 
 Use one per-job atomic terminalization/decision record (compare-and-set or equivalent transaction) with a monotonically increasing decision version. The first eligible authoritative decision wins for the current execution attempt; later events are still recorded but cannot silently overwrite it.
 
+**Determinism qualification:** atomic compare-and-set guarantees a single committed winner, but does not by itself guarantee that two concurrent signals will choose the same winner across repeated runs. Assign a monotonic coordinator-ingress sequence to accepted events and define the decision from that sequence, or explicitly choose a conservative precedence rule. Provider timestamps alone may be skewed or absent. Offline tests should assert one committed decision, retained competing evidence, and exactly-once cleanup; tests that demand the same winner across race permutations require an explicit precedence rule first.
+
 - Cancellation request and client deadline are not proof of termination.
 - A timeout decision requires trusted deadline evidence and the defined timeout enforcement result. If process termination is still unknown, report that explicitly; do not claim the process is stopped.
 - A late zero-exit event after a committed timeout/cancel is diagnostic evidence. Reconcile only if the contract defines an authoritative provider sequence proving the earlier decision was provisional; otherwise disposition remains INCOMPLETE/PROVIDER_ERROR, never silently PASS.
