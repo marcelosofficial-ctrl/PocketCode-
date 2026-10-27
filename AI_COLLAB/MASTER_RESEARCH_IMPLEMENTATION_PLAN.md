@@ -330,3 +330,8 @@ See the detailed grouped register in [PASS0_REPOSITORY_AUDIT.md](PASS0_REPOSITOR
 - Aligned the draft contract, offline acceptance matrix, lifecycle resolution note, and decision register with the six-item owner decision packet. Direct links now make the pending approval boundary visible at the relevant design/test decision points.
 - Tightened event-ordering language: provider timestamps alone are not authoritative; replayable decisions require coordinator-ingress ordering and a single committed terminal decision, with competing evidence retained.
 - The next action is owner review of the packet. No lifecycle tests should be implemented until expected outcomes are agreed and implementation is explicitly authorized. All tests remain NOT RUN; strict $0 and provider-consent gates remain binding.
+
+
+## 2026-10-27 delegated lifecycle decision update
+
+The owner delegated the six lifecycle decisions to ChatGPT after reviewing the packet. The selected baseline and official research rationale are in [PASS1_OWNER_DECISIONS_RESEARCH_20261027.md](PASS1_OWNER_DECISIONS_RESEARCH_20261027.md). The draft execution contract, lifecycle policy, decision register, and checkpoint now reflect the selection. Provider-neutral helpers and synthetic tests were added under `scripts/lifecycle_contract.py` and `scripts/test_lifecycle_contract.py`; **they have not been run**. Do not treat this as production implementation or security proof. Numeric budgets are provisional offline-test defaults; strict $0, provider-neutrality, and no-live-workload guardrails remain in force.
