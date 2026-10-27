@@ -40,10 +40,13 @@ def derive_disposition(
     contradictory_evidence: bool = False,
 ) -> str:
     """Derive a conservative job disposition from trusted evidence fields."""
-    if execution_outcome == "NOT_STARTED":
-        return "REJECTED"
+    # Evidence contradiction takes precedence over every nominal outcome,
+    # including NOT_STARTED: a contradictory record cannot be treated as a
+    # clean policy rejection or as evidence of a trustworthy terminal state.
     if contradictory_evidence:
         return "INCOMPLETE"
+    if execution_outcome == "NOT_STARTED":
+        return "REJECTED"
     if execution_outcome == "UNKNOWN":
         return "PROVIDER_ERROR"
     if execution_outcome == "TIMED_OUT":
