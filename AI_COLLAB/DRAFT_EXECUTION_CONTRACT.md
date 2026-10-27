@@ -66,6 +66,8 @@ The example is not a public API commitment. Limit values are discussion defaults
 
 ## Proposed lifecycle
 
+> **Do not implement this diagram as a normative state machine yet.** It is internally inconsistent: the diagram places execution success before cleanup, while the prose below requires cleanup success for `SUCCEEDED`. The leading resolution is to separate execution outcome from overall job disposition, but the canonical enum, reconciliation rules, and artifact-release policy remain owner-review items. See [PASS1_CONTRACT_COHERENCE_RESOLUTION.md](PASS1_CONTRACT_COHERENCE_RESOLUTION.md) and [PASS1_LIFECYCLE_IDEMPOTENCY_ARTIFACT_POLICY_20261027.md](PASS1_LIFECYCLE_IDEMPOTENCY_ARTIFACT_POLICY_20261027.md). Both are proposals, not API freeze.
+
     RECEIVED
       -> REJECTED
       -> QUEUED
