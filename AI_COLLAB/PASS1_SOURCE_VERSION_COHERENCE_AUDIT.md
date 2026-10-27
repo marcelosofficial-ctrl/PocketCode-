@@ -44,4 +44,4 @@ This audit is an evidence-quality check, not a provider recommendation.
 
 ## Next safe action
 
-Correct the source/version wording in the provider gate and main provider research; update the checkpoint and Gemini review request links. Then do a final pass for stale claims and internal-link integrity. Keep PR #3 draft/unmerged and PR #2 untouched.
+Source/version wording in the provider gate and main provider research has been corrected, the Gemini read-first list includes the lifecycle/test/source audits, and a checkpoint addendum records the latest status. Remaining source task: re-fetch Modal networking docs after the upstream 502, then perform a final stale-claim/internal-link pass. Keep PR #3 draft/unmerged and PR #2 untouched.
