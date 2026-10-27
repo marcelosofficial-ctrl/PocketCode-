@@ -181,6 +181,15 @@ def canonical_request_fingerprint(
     if not all(isinstance(value, str) and value for value in
                (contract_version, tenant_id, runtime, entrypoint)):
         raise ValueError("contract, tenant, runtime, and entrypoint are required")
+    # Runtime is canonicalized below, so validate the canonical value rather
+    # than accepting whitespace-only input that fingerprints as an empty runtime.
+    if not runtime.strip():
+        raise ValueError("runtime must not be blank after normalization")
+    # Preserve identifiers/entrypoint exactly in the fingerprint, but reject
+    # values that contain only whitespace. Allowlisting and tenant authentication
+    # remain responsibilities of the upstream request-validation layer.
+    if not contract_version.strip() or not tenant_id.strip() or not entrypoint.strip():
+        raise ValueError("contract version, tenant, and entrypoint must not be blank")
     if not isinstance(source, bytes):
         raise TypeError("source must be decoded bytes")
 
