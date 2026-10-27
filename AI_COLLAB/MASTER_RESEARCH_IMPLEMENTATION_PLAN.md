@@ -299,3 +299,12 @@ See the detailed grouped register in [PASS0_REPOSITORY_AUDIT.md](PASS0_REPOSITOR
 - Added [GEMINI_REVIEW_REQUEST.md](GEMINI_REVIEW_REQUEST.md), a compact, evidence-first review request covering cross-document contradictions, critical security cases, test coverage, provider source/version claims, product falsification, and approval gates.
 - It explicitly requires Gemini to distinguish inspected evidence from assumptions, tests actually run from proposed tests, and blockers from offline work. It prohibits provider accounts/workloads/spend/merge/deployment and asks for a copyable review rather than repository changes.
 - This is a prepared handoff only. Gemini has not been confirmed to have received or completed it.
+
+
+### 2026-10-27 — Lifecycle and artifact-policy proposal
+
+- Added [PASS1_LIFECYCLE_IDEMPOTENCY_ARTIFACT_POLICY_20261027.md](PASS1_LIFECYCLE_IDEMPOTENCY_ARTIFACT_POLICY_20261027.md) to make the next offline design increment concrete: append-only execution evidence and derived disposition; deterministic race/idempotency semantics; conservative artifact quarantine through cleanup; integrity-checked manifests; bounded output/redaction; and separate observed telemetry from estimated/unavailable cost.
+- Updated [OFFLINE_ACCEPTANCE_TEST_MATRIX.md](OFFLINE_ACCEPTANCE_TEST_MATRIX.md) with corresponding proposed test IDs and [DECISION_REGISTER.md](DECISION_REGISTER.md) with the remaining owner decisions.
+- This is a design proposal, not API freeze or implementation authorization. The key open owner decisions are artifact release after cleanup failure, event reconciliation, idempotency retention/canonical fingerprint, and stream overflow behavior.
+- No code/tests executed; no provider selected or tested; strict $0 gate remains. User validation and Gemini's full Pass 0–7 remain incomplete.
+- Current PR #3 head should be checked live rather than inferred from older checkpoint SHAs. Keep PR #3 draft/unmerged and PR #2 untouched.
