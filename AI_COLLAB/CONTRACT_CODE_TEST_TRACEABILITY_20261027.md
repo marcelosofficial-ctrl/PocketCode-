@@ -50,3 +50,6 @@ Next safe step: execute the exact checked-in files in an offline local interpret
 
 
 | Idempotency reservation rejects blank/non-string fields | `reserve_idempotency` | `test_idempotency_rejects_blank_or_non_string_identity_values` | Static source change; suite remains NOT RUN. Non-blank whitespace-padded values are preserved as supplied; normalization/authentication remain upstream policy decisions. |
+
+
+| Malformed event evidence is retained | `reduce_terminal_events` | `test_malformed_events_are_preserved_and_force_incomplete` | Static source/test change on audit branch; suite remains NOT RUN. Invalid records are exposed separately from accepted events and prevent PASS through the contradiction flag. |
