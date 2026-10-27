@@ -251,3 +251,11 @@ See the detailed grouped register in [PASS0_REPOSITORY_AUDIT.md](PASS0_REPOSITOR
 - Proposed segment A remains a test-first choice only: people who recently wanted to verify a short AI-generated Python script plus small text/CSV input from a phone. Local IDEs and existing remote workflows are explicit counter-hypotheses.
 - Added a fixed-task comparison, behavior-based interview prompts, observable metrics, and exploratory stop/re-scope/continue rules. This is a proposed protocol, not executed research; no interviews, app installs, benchmark, account creation, provider workload, or spend occurred.
 - Product implication: do not expand into agent orchestration or native-app complexity until this narrow task is shown to be frequent and underserved. No provider/name/architecture decision was made; budget remains $0.
+
+### 2026-10-27 — Pass 1 execution security/abuse subpass (ChatGPT, workstream D)
+
+- Added [PASS1_SECURITY_ABUSE_RESEARCH.md](PASS1_SECURITY_ABUSE_RESEARCH.md), a provider-neutral threat model and minimum acceptance-test matrix grounded in current Docker and OWASP guidance.
+- Critical boundary: containers, unit tests, and vendor security statements alone do not prove hostile-code isolation. The first proof needs fresh per-job isolation, enforceable default-deny egress/metadata protection, hard CPU/memory/process/disk/time/output limits, safe artifact handling, tenant-aware quotas, cancellation, cleanup, and authoritative lifecycle evidence.
+- Narrow initial scope excludes arbitrary packages, network, secrets, persistent jobs, public job ports, and repo-wide agents. If a zero-payment provider tier cannot enforce the mandatory controls, it is not eligible for the proof.
+- Added adversarial acceptance tests for timeout, resource exhaustion, egress/metadata, cross-job access, traversal, output truncation, false PASS, cancellation/cleanup, queue abuse, unsafe rendering, and secret exposure.
+- No provider selected, no live execution or security test, no accounts/workloads, no spend, and no security claim upgraded. $0 gate remains binding.
