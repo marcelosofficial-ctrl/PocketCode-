@@ -39,6 +39,13 @@ class LifecycleTests(unittest.TestCase):
         ])
         self.assertEqual(result["execution_outcome"], "TIMED_OUT")
         self.assertEqual(result["winning_event_id"], "timeout")
+        self.assertTrue(result["contradictory_evidence"])
+        self.assertEqual([event["event_id"] for event in result["conflicts"]], ["exit"])
+        self.assertEqual(derive_disposition(
+            result["execution_outcome"], "CONFIRMED", policy_confirmed=True,
+            termination_confirmed=True, artifacts_valid=True,
+            tenant_job_authorized=True,
+            contradictory_evidence=result["contradictory_evidence"]), "INCOMPLETE")
 
     def test_duplicate_event_is_idempotent_but_conflict_is_marked(self):
         event = {"event_id": "e1", "sequence": 1, "kind": "exit_zero", "payload": {"exit": 0}}
