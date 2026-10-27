@@ -4,7 +4,7 @@ import unittest
 from lifecycle_contract import (
     IdempotencyConflict, OutputBudget, artifact_release_allowed,
     canonical_request_fingerprint, derive_disposition,
-    reduce_terminal_events, reserve_idempotency,
+    reduce_terminal_events, reserve_idempotency, StreamingRedactor,
 )
 
 
@@ -111,10 +111,11 @@ class LifecycleTests(unittest.TestCase):
 
     def test_redaction_does_not_leak_a_match_split_at_carry_boundary(self):
         redactor = StreamingRedactor()
-        prefix = b"x" * (StreamingRedactor.CARRY_BYTES - 10)
+        prefix = b"x" * 750
         secret = b" secret=alpha-beta-token"
-        first = redactor.feed(prefix + secret[:15])
-        second = redactor.feed(secret[15:] + b"y" * 900)
+        first = redactor.feed(prefix + secret[:10])
+        # This chunk makes the carry cutoff land inside the secret match.
+        second = redactor.feed(secret[10:] + b"y" * 749)
         tail = redactor.finish()
         retained = first + second + tail
         self.assertNotIn(b"alpha-beta-token", retained)
