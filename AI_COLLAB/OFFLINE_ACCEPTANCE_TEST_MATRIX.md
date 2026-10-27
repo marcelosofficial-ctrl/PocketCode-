@@ -126,7 +126,7 @@ Detailed proposed semantics and test IDs are in [PASS1_LIFECYCLE_IDEMPOTENCY_ART
 
 ## Current next safe step
 
-Owner-review the lifecycle/result-exposure and idempotency rules, then implement pure state-machine/report tests only if authorized. Provider-dependent tests remain blocked by strict $0 and consent requirements. Do not claim fake-adapter tests prove provider isolation, egress, cleanup, or billing.
+The lifecycle decisions are selected and initial helper/test files are added. Next: run the offline test module in a local interpreter if available, review failures and source, then record exact results. Provider-dependent tests remain blocked by strict $0 and consent requirements. Do not claim fake-adapter tests prove provider isolation, egress, cleanup, or billing.
 
 
 ## Delegated decision update — 2026-10-27
