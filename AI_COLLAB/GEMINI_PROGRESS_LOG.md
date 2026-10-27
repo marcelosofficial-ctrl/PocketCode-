@@ -102,3 +102,10 @@
 - Highest-value next offline work: cross-audit the draft execution contract against the threat model and report contract; map mandatory controls to tests and observable evidence; verify external links and version/date caveats.
 - User validation remains unperformed; no provider selected, no accounts, credentials, live workloads, tests, spend, merge, or deployment. Strict $0 gate preserved.
 - This is ChatGPT's independent contribution. Do not mark Gemini's required passes complete without Gemini's own evidence.
+
+
+### 2026-10-27 — ChatGPT contract coherence audit (not Gemini completion)
+- Added [CONTRACT_COHERENCE_AUDIT.md](CONTRACT_COHERENCE_AUDIT.md), a static cross-review of the draft contract, security/abuse requirements, and provider feasibility gate.
+- Flagged ten contract edges, including cleanup failure after successful execution, late events after timeout/cancel, missing/contradictory policy evidence, limit enforcement, capability freshness, tenant authorization, egress scope, artifact safety, and report integrity.
+- Proposed offline tests but ran none; no provider tested and no production semantics frozen. Provider tests remain blocked under the current $0 gate and consent requirements.
+- This is ChatGPT's independent review, not Gemini completion.
