@@ -340,3 +340,12 @@ The owner delegated the six lifecycle decisions to ChatGPT after reviewing the p
 ## 2026-10-27 offline-test evidence qualification
 
 Eight synthetic tests passed in a temporary Python run of a reconstructed copy of the lifecycle helper and test module. The exact checked-in files have not been executed from a repository checkout, and the full existing repository suite remains unrun. This does not validate provider behavior or production security. Next verification: run the exact files in an offline checkout without dispatching GitHub Actions.
+
+
+## 2026-10-27 — Lifecycle contract coherence checkpoint
+
+The owner-delegated six lifecycle choices are selected as a provider-neutral baseline; they are not production authorization, provider proof, or a frozen public API. The current canonical decision/rationale files are [PASS1_OWNER_DECISIONS_RESEARCH_20261027.md](PASS1_OWNER_DECISIONS_RESEARCH_20261027.md), [PASS1_LIFECYCLE_IDEMPOTENCY_ARTIFACT_POLICY_20261027.md](PASS1_LIFECYCLE_IDEMPOTENCY_ARTIFACT_POLICY_20261027.md), [DRAFT_EXECUTION_CONTRACT.md](DRAFT_EXECUTION_CONTRACT.md), and [OFFLINE_ACCEPTANCE_TEST_MATRIX.md](OFFLINE_ACCEPTANCE_TEST_MATRIX.md).
+
+The crosswalk aligned named-input fingerprint canonicalization (unordered mapping sorted by normalized name), lifecycle vocabulary, timeout/cancel reconciliation wording, provisional 30-day post-deletion tombstone wording, and the remaining open questions. A further code/test static review found contradictory evidence could be hidden by the `NOT_STARTED` shortcut; the pure helper now returns `INCOMPLETE` whenever the contradiction flag is set, with a synthetic regression test. The lifecycle test module contains 20 methods.
+
+**Verification state:** exact checked-in helper/test pair and full repository suite remain NOT RUN. Do not use earlier reconstructed-copy 8/8 results as current evidence. No Actions, provider/account/workload, spend, deployment, or merge. PR #3 remains draft/unmerged; PR #2 remains untouched. Next: finish requirement-to-code-to-test traceability, then run exact checked-in tests offline when a local interpreter is available; add true transactional/concurrent acceptance only as implementation requirements, not simulated proof.
