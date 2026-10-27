@@ -122,7 +122,7 @@ Detailed proposed semantics and test IDs are in [PASS1_LIFECYCLE_IDEMPOTENCY_ART
 | COST-SEM-01 | Resource metrics exist but invoice data is delayed/missing | Keep observed telemetry distinct; cost is ESTIMATED or UNAVAILABLE, never falsely FINAL/$0 |
 | NET-SEM-01 | Required policy revision changes between prepare and execute | Revalidate at the execution barrier; mismatch prevents task start |
 
-**Additional proposed decisions still open:** whether artifacts remain quarantined until cleanup confirmation; authoritative event ordering/reconciliation; idempotency retention coupled to report retention; stream-overflow termination vs drain-and-discard; canonical request fingerprint fields; and exact output byte/time budgets. See [PASS1_OWNER_DECISION_PACKET_20261027.md](PASS1_OWNER_DECISION_PACKET_20261027.md) for recommendations and trade-offs. No fixed TTL or 1 MiB output cap is adopted.
+**Decision status:** the six lifecycle choices are selected under owner delegation. The 30-day post-deletion tombstone and 1-second drain window are provisional policy defaults for offline tests, not production commitments. See [PASS1_OWNER_DECISIONS_RESEARCH_20261027.md](PASS1_OWNER_DECISIONS_RESEARCH_20261027.md) for rationale and source links.
 
 ## Current next safe step
 
