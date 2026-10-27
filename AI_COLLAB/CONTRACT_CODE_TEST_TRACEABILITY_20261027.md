@@ -37,6 +37,6 @@
 
 ## Current evidence and next step
 
-The checked-in `scripts/test_lifecycle_contract.py` contains **23 test methods**, but neither that exact file/helper pair nor the full repository suite has been executed in this environment. Prior 8/8 results came from a reconstructed copy and are not evidence for the current branch.
+The checked-in `scripts/test_lifecycle_contract.py` contains **24 test methods**, but neither that exact file/helper pair nor the full repository suite has been executed in this environment. Prior 8/8 results came from a reconstructed copy and are not evidence for the current branch.
 
 Next safe step: execute the exact checked-in files in an offline local interpreter when one is available, capture the exact command/runtime/exit code, then address any failures. Keep true transaction/concurrency, process drain/termination, provider policy enforcement, storage durability, and provider security as implementation-level requirements—not claims proven by these pure models.
