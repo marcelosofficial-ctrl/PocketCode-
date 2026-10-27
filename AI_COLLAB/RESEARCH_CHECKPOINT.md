@@ -156,3 +156,10 @@ Continue Pass 1 with a fuller user/problem falsification and task-based comparis
 - Rechecked the current official search-indexed [Modal networking guide](https://modal.com/docs/guide/sandbox-networking) after direct page retrieval returned 502. The indexed guide explicitly states DNS traffic is unrestricted except when all outbound traffic is blocked; block_network=True drops all outbound traffic. Domain allowlisting remains Beta/TLS 443, and dynamic policy updates remain Alpha.
 - Updated [PASS1_PROVIDER_RESEARCH.md](PASS1_PROVIDER_RESEARCH.md), [PASS1_RUNTIME_PROVIDER_GATE.md](PASS1_RUNTIME_PROVIDER_GATE.md), [PASS1_SOURCE_INTEGRITY_UPDATE.md](PASS1_SOURCE_INTEGRITY_UPDATE.md), and [PASS1_SOURCE_VERSION_COHERENCE_AUDIT.md](PASS1_SOURCE_VERSION_COHERENCE_AUDIT.md) to replace the prior DNS-wording uncertainty.
 - This closes a documentation wording gap only. It is not runtime proof; metadata/private-address paths, exact configuration, plan eligibility, and billing controls remain unverified. No provider is selected; strict $0 remains.
+
+
+## 2026-10-27 continuation — race determinism refinement
+
+A static review found one subtle ambiguity in the lifecycle proposal: atomic compare-and-set guarantees one committed winner, but does not by itself guarantee the same winner across repeated concurrent timeout/cancel races. The lifecycle proposal now distinguishes single-winner safety from replay determinism and recommends a monotonic coordinator-ingress sequence or an explicitly chosen precedence rule. The acceptance matrix now requires replayable ordering evidence and does not assume identical winners across race permutations unless a precedence rule is approved.
+
+This is documentation/specification work only. No tests were run. Before schema freeze, decide the authoritative event-ordering rule; keep provider timestamps alone from silently overriding the committed decision. Strict $0 remains; PR #3 stays draft/unmerged and PR #2 untouched.
