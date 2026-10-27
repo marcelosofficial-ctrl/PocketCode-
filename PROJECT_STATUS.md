@@ -183,3 +183,10 @@ The same Python truthiness flaw existed in `artifact_release_allowed`: truthy ma
 The research/implementation master now includes a durable operating-method addendum: inspect repo evidence before acting; work in coherent risk-proportionate passes; reuse existing code/dependencies; delegate bounded non-overlapping AI roles; preserve discovery-first/provider-neutral/security requirements; report only executed verification; respect $0/no-provider/no-deploy/no-merge boundaries; and keep continuity in repository records. This supplements rather than replaces product, architecture, security, roadmap, and decision documents.
 
 **Current branch-specific state:** lifecycle helper/test module contains 24 test methods; exact checked-in pair and full repository suite remain NOT RUN. PR #3 is draft/open/unmerged; PR #2 is unchanged. No Actions, provider workload, spend, deployment, or merge.
+
+
+### Continuity artifacts added — 2026-10-27
+- [Complete chat handoff](AI_COLLAB/CHAT_HANDOFF_20261027.md) captures the current PocketCode goal, owner constraints, three-AI division of labor, PR/branch state, lifecycle decisions and recent changes, test-status caveats, research links, and next acceptance criteria.
+- [Master workflow efficiency rules](AI_COLLAB/MASTER_WORKFLOW_EFFICIENCY_RULES_20261027.md) preserves the owner's 18-section operating-method guidance as a durable repository reference. It supplements, and does not supersede, product/architecture/security/roadmap/decision documents.
+- If a future chat cannot access/read the workflow file or is unsure it has captured the owner's intent, ask the owner to paste the original workflow again before substantial work. Do not request a repeat when the file is accessible and sufficient.
+- Handoff is based on last observed evidence; verify current branch/head and files before continuing. The lifecycle tests remain NOT RUN.
