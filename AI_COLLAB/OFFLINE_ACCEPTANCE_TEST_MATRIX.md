@@ -196,3 +196,8 @@ Static crosswalk found that `derive_disposition` returned `REJECTED` for `NOT_ST
 | LIFE-16 | Event stream contains malformed mapping fields or a non-mapping record | Preserve malformed records in an explicit invalid-evidence collection and force contradictory evidence; derived disposition must not PASS |
 
 | IDEM-04 | Tombstone add/lookup receives blank or non-string tenant/key/fingerprint values or an invalid epoch | Reject malformed inputs before changing or reading retention state |
+
+
+## Audit branch checkpoint (2026-10-27)
+
+Static source count is now 28 test methods. This is not a passing test result. The exact checked-in pair and full repository suite remain **NOT RUN**. Recent additions cover blank canonical fingerprint identities, malformed event evidence retention, idempotency reservation validation, and tombstone identity/epoch validation. Audit branch: `pocketcode-lifecycle-fingerprint-audit-2026-10-27`.
