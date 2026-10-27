@@ -52,16 +52,18 @@ def derive_disposition(
     if execution_outcome == "UNKNOWN":
         return "PROVIDER_ERROR"
     if execution_outcome == "TIMED_OUT":
-        return "TIMED_OUT" if termination_confirmed else "INCOMPLETE"
+        return "TIMED_OUT" if termination_confirmed is True else "INCOMPLETE"
     if execution_outcome == "CANCELLED":
-        return "CANCELLED" if termination_confirmed else "INCOMPLETE"
+        return "CANCELLED" if termination_confirmed is True else "INCOMPLETE"
     if execution_outcome == "EXIT_NONZERO":
         return "FAILED"
     if execution_outcome != "EXIT_ZERO":
         return "INCOMPLETE"
     if cleanup_state != "CONFIRMED":
         return "INCOMPLETE"
-    if not all((policy_confirmed, termination_confirmed, artifacts_valid, tenant_job_authorized)):
+    if not all(value is True for value in (
+            policy_confirmed, termination_confirmed, artifacts_valid, tenant_job_authorized,
+    )):
         return "INCOMPLETE"
     return "PASS"
 
