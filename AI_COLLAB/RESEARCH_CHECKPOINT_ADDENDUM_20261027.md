@@ -118,3 +118,7 @@ The traceability document and acceptance matrix now record these cases. The help
 Another static consistency pass found that `derive_disposition` checked timeout/cancellation/provider-error outcomes before the output-limit flags. A confirmed output cap breach could therefore be hidden by a concurrent timeout observation, despite the selected rule that cap overflow yields `LIMIT_EXCEEDED`. The reducer now checks contradiction first, preserves `NOT_STARTED` as rejection when there is no contradiction, then prioritizes an explicit cap breach before ordinary timeout/cancel/provider-error outcomes. A combined timeout-plus-output-truncation assertion and matrix case OUT-02 were added.
 
 The exact checked-in tests and full repository suite remain **NOT RUN**. This is static source/test-fixture review only; no Actions, provider, account, workload, spend, deployment, or merge. PR #3 remains draft/unmerged; PR #2 remains untouched.
+
+
+## Follow-on static audit — malformed evidence types (2026-10-27)
+A PASS-gate review found that truthy non-boolean values (for example, `"false"` or integer `1`) could satisfy Python's prior `all(...)` check. The helper now requires identity with literal `True` for PASS gates and for timeout/cancel termination confirmation. Added `test_malformed_truthy_gate_values_never_produce_pass`, matrix case LC-15, and a traceability update. The lifecycle test module contains 23 test methods. Exact checked-in tests and full repository suite remain NOT RUN.
