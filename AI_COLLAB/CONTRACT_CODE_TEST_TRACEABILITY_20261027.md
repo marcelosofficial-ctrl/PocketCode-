@@ -1,0 +1,37 @@
+# Contract → Code → Test Traceability — 2026-10-27
+
+**Purpose:** Static crosswalk of the selected provider-neutral lifecycle contract against the pure helper and synthetic test source.  
+**Status:** Source inspection only. The exact checked-in helper/test pair and full repository suite are **NOT RUN**.  
+**Scope guard:** No provider selection, account, workload, spend, Actions run, deployment, merge, or production implementation is authorized.
+
+## Traceability table
+
+| Requirement / decision | Current code seam | Checked-in synthetic coverage | Remaining gap / evidence class |
+|---|---|---|---|
+| Contradictory evidence must never produce PASS, including nominal `NOT_STARTED` | `derive_disposition` | `test_contradictory_evidence_takes_precedence_over_not_started`; `test_coordinator_sequence_wins_over_provider_timestamp` | Pure decision logic only; exact tests not run. |
+| PASS requires exit-zero, confirmed cleanup, policy confirmation, termination evidence, valid artifacts, and tenant/job authorization | `derive_disposition` | `test_exit_zero_needs_cleanup_policy_termination_artifact_and_tenant_gates`; `test_timeout_unknown_termination_and_output_violation_never_pass` | Boolean fixtures do not prove the underlying evidence is authoritative or correctly associated. |
+| Coordinator sequence controls replay; provider timestamps do not; duplicate/conflicting terminal evidence is retained and cannot silently override the first decision | `reduce_terminal_events` | `test_coordinator_sequence_wins_over_provider_timestamp`; `test_duplicate_event_is_idempotent_but_conflict_is_marked`; `test_duplicate_event_id_with_changed_sequence_is_conflict`; `test_duplicate_coordinator_sequence_has_deterministic_replay_order` | No durable append-only event store or atomic terminalization transaction. Reducer input is synthetic and must be validated at ingress. |
+| Versioned canonical request fingerprint binds schema, tenant, runtime, entrypoint, decoded source/input bytes, and effective policy | `canonical_request_fingerprint` | `test_fingerprint_binds_source_policy_and_canonical_inputs` | Named inputs are sorted as an unordered mapping. The helper is not the request validator; runtime/entrypoint allowlisting and effective-policy construction must be enforced upstream. |
+| Same tenant/key/fingerprint replays; changed fingerprint conflicts; tenants are isolated | `reserve_idempotency`, `reserve_idempotency_batch` | `test_idempotency_replay_conflict_and_tenant_scope`; `test_same_key_same_fingerprint_race_has_one_created_job_and_replays`; `test_same_key_different_fingerprint_race_conflicts_after_first_reservation` | Batch helper is a serial-order simulation, not concurrency. Production needs an atomic transaction/unique constraint and simultaneous-request tests. |
+| Post-deletion idempotency tombstone is tenant-scoped and lasts 30 days (provisional offline default) | `DeletionTombstones` | `test_deletion_tombstone_is_tenant_scoped_and_expires_at_30_days` | In-memory only; no actual deletion flow, durable retention, privacy review, or TTL service. |
+| Artifact bytes remain unavailable until cleanup, digest, job association, and tenant authorization gates all pass | `artifact_release_allowed` | `test_artifact_and_output_gates`; `test_artifact_release_requires_each_gate_independently` | Gate model only. No artifact storage transaction, read-back digest verification, quarantine store, or per-request authorization endpoint. |
+| Report recovery appends a new immutable report version and never mutates prior versions | `ReportHistory` | `test_cleanup_reconciliation_appends_new_report_version_without_rewriting_history`; `test_report_history_versions_are_per_job_and_require_evidence_reference` | In-memory snapshots only; no durable append-only persistence, transactional version allocation, or validation of referenced evidence. |
+| Output retention respects per-stream and aggregate byte caps; exact cap is allowed, cap+1 triggers overflow, and further retention stops | `OutputBudget` | `test_artifact_and_output_gates`; `test_output_budget_counts_observed_bytes_and_stops_retaining_on_overflow`; `test_aggregate_cap_triggers_when_each_stream_is_below_its_own_cap` | Accounting model only. It does not launch/terminate a process, drain pipes concurrently, enforce a one-second deadline, or confirm process-tree termination. |
+| Configured token-shaped patterns are redacted across chunk boundaries before retention | `StreamingRedactor`, `OutputBudget` | `test_configured_secret_pattern_is_redacted_across_chunks_before_retention`; `test_bearer_and_provider_key_patterns_are_redacted`; `test_redaction_does_not_leak_a_match_split_at_carry_boundary` | Best-effort configured patterns only; not universal secret detection and not a substitute for excluding secrets from task environments. |
+| Exact mandatory network-policy revision is confirmed applied before user code starts | Not implemented in helper | `NET-SEM-01` is a proposed matrix case | Needs a future adapter/barrier with authoritative applied-policy evidence and a fail-closed test. No provider runtime proof. |
+| Request schema, safe names, tenant authentication, package/network/persistence restrictions, and client-claim rejection | Not implemented in helper | Proposed cases in `DRAFT_EXECUTION_CONTRACT.md` and `OFFLINE_ACCEPTANCE_TEST_MATRIX.md` | Requires a separate request validator/orchestrator contract and adversarial unit tests; do not infer validation from fingerprint helper behavior. |
+| Cost telemetry distinguishes observed resource metrics from invoice cost and never infers $0 from missing data | Not implemented in helper | `COST-SEM-01` is a proposed matrix case | Needs a separate evidence model; provider-specific cost behavior is unverified and provider work remains blocked. |
+
+## Static audit findings closed in this pass
+
+1. Aligned the fingerprint rationale with implementation: named inputs are an unordered mapping sorted by normalized canonical name for fingerprint version 1. Any future order-sensitive workflow needs a new contract/fingerprint version.
+2. Aligned lifecycle outcome/disposition vocabulary and removed stale text that described the six delegated decisions as still awaiting owner review.
+3. Aligned timeout/cancel reconciliation and provisional 30-day tombstone wording with the selected baseline.
+4. Changed disposition precedence so contradictory evidence yields `INCOMPLETE` even when the nominal outcome is `NOT_STARTED`; added a synthetic regression test.
+5. Added explicit acceptance coverage for aggregate-cap+1 when each stream is still below its individual cap, plus matrix cases for contradiction precedence and non-confirmed cleanup states.
+
+## Current evidence and next step
+
+The checked-in `scripts/test_lifecycle_contract.py` contains **21 test methods**, but neither that exact file/helper pair nor the full repository suite has been executed in this environment. Prior 8/8 results came from a reconstructed copy and are not evidence for the current branch.
+
+Next safe step: execute the exact checked-in files in an offline local interpreter when one is available, capture the exact command/runtime/exit code, then address any failures. Keep true transaction/concurrency, process drain/termination, provider policy enforcement, storage durability, and provider security as implementation-level requirements—not claims proven by these pure models.
