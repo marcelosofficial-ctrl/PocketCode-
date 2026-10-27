@@ -316,3 +316,10 @@ See the detailed grouped register in [PASS0_REPOSITORY_AUDIT.md](PASS0_REPOSITOR
 - Updated the acceptance matrix with RACE-SEM-04 and corrected literal newline escapes that were rendering as backslash-n text.
 - Ran a focused internal Markdown-link audit across 12 current research/contract documents against the live branch tree: 0 missing relative file targets and 0 broken anchors among the inspected documents. This is a focused audit, not a guarantee for every file or external URL.
 - Current next step: complete the remaining owner decision packet and static consistency pass. Offline tests remain NOT RUN until expected semantics are approved; no provider-dependent test is authorized.
+
+
+### 2026-10-27 — Owner decision packet
+
+- Prepared [PASS1_OWNER_DECISION_PACKET_20261027.md](PASS1_OWNER_DECISION_PACKET_20261027.md) with explicit recommendations, trade-offs, and pending approval fields for artifact quarantine, event ordering, idempotency retention, output overflow, canonical request fingerprints, and outcome/disposition separation.
+- This packet is a review aid, not authorization or a recorded decision. Do not freeze the schema or implement lifecycle tests until the expected outcomes are agreed.
+- Next: owner review, then a single coordinated contract/matrix update and pure offline test implementation. Strict $0 and provider-consent gates remain unchanged.
