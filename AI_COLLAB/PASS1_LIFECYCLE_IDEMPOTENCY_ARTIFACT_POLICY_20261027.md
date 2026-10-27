@@ -1,0 +1,120 @@
+# Lifecycle, Idempotency, and Artifact Policy — Decision Proposal
+
+**Status:** Proposed semantics for owner review; not a frozen API or implementation authorization.  
+**Date:** 2026-10-27  
+**Scope:** Offline orchestration/report contract only. Strict $0; no provider, accounts, workloads, or tests run.
+
+## Why this proposal exists
+
+The execution contract and lifecycle-resolution note identify the same unresolved edges from different angles. This note turns those edges into deterministic rules that can be implemented and tested later without selecting a provider. It deliberately leaves external status names and numeric resource caps open.
+
+## 1. Separate immutable observations from derived disposition
+
+Store an append-only event/evidence record for facts such as request accepted/rejected, policy revision confirmed, execution started, output bytes observed, termination reason/exit code, artifact digest verified, cleanup attempted, and cleanup confirmed/failed. Each record should carry a job ID, event ID, source/provenance, and timestamp or sequence when available.
+
+Derive the user-facing disposition from the evidence record and a versioned policy. Do not treat one mutable status field as the history. Corrections append reconciliation evidence and create a new report version; they do not rewrite a previously issued report in place.
+
+Proposed minimum separation:
+- **Execution outcome:** NOT_STARTED | RUNNING | EXITED_ZERO | EXITED_NONZERO | TIMEOUT_OBSERVED | CANCEL_REQUESTED | TERMINATION_CONFIRMED | TERMINATION_UNCONFIRMED | UNKNOWN.
+- **Service disposition:** REJECTED | IN_PROGRESS | PASS | FAIL | INCOMPLETE | LIMIT_EXCEEDED | PROVIDER_ERROR | CLEANUP_FAILED.
+- **Evidence quality:** COMPLETE | MISSING | CONTRADICTORY | STALE.
+
+These are working labels only. Before schema freeze, decide whether CANCELLED is a disposition or a request/event, and whether timeout is an observed outcome or a termination reason. Never use a label to imply stronger evidence than exists.
+
+## 2. Deterministic race rule
+
+Use one per-job atomic terminalization/decision record (compare-and-set or equivalent transaction) with a monotonically increasing decision version. The first eligible authoritative decision wins for the current execution attempt; later events are still recorded but cannot silently overwrite it.
+
+- Cancellation request and client deadline are not proof of termination.
+- A timeout decision requires trusted deadline evidence and the defined timeout enforcement result. If process termination is still unknown, report that explicitly; do not claim the process is stopped.
+- A late zero-exit event after a committed timeout/cancel is diagnostic evidence. Reconcile only if the contract defines an authoritative provider sequence proving the earlier decision was provisional; otherwise disposition remains INCOMPLETE/PROVIDER_ERROR, never silently PASS.
+- Duplicate events with the same provider event ID are idempotent. Conflicting events with the same ID or impossible sequence are evidence contradictions.
+- Cleanup is single-flight per job/attempt. Duplicate cleanup requests attach to the same operation or safely retry an idempotent operation; they must not create multiple contradictory terminal results.
+
+**Open design choice:** whether timeout/cancel may be reversed after later authoritative evidence. Default proposal: no reversal in-place; create a versioned reconciliation record and report. Owner review required.
+
+## 3. Cleanup failure and result exposure
+
+A successful process exit and valid output may be preserved as execution facts even when cleanup fails. Overall disposition must not be PASS while cleanup is failed or unconfirmed.
+
+Default conservative proposal:
+- Keep collected artifacts quarantined and unavailable to normal download/report handoff while cleanup is unconfirmed or failed.
+- The status report may disclose that execution evidence exists, but must not include artifact contents, live provider URLs, credentials, or claims that the environment was destroyed.
+- Release artifacts only after cleanup is confirmed and artifact validation plus tenant authorization pass. If the product later chooses provisional artifact access, it needs an explicit owner decision, separate API field/status, short-lived authorization, warning UX, and threat review.
+- If cleanup eventually succeeds on retry, append the retry evidence and derive a new disposition/report version. Preserve the original cleanup failure event and report history. Do not call the original report “PASS” retroactively.
+
+This is intentionally stricter than returning output immediately: user convenience does not justify exposing results while the execution boundary may still be alive.
+
+## 4. Idempotency semantics
+
+Before implementing idempotency, define canonicalization precisely: validated schema version, authenticated tenant, normalized task/runtime/entrypoint, decoded source/input bytes, and effective server-enforced policy participate in the canonical request fingerprint. Exclude transport-only fields such as retry timestamps. Never trust a client-supplied fingerprint.
+
+For a key scoped to an authenticated tenant:
+1. Same key + same canonical fingerprint + active job: return the existing job reference/status; do not launch another attempt.
+2. Same key + same fingerprint + completed job: return the same job/report version reference subject to current authorization and retention rules; do not rerun implicitly.
+3. Same key + different fingerprint: deterministic conflict; do not start a job and do not return the previous job's result as if it matched.
+4. Same textual key from different tenants: independent namespaces, with no cross-tenant existence or timing leak.
+5. Concurrent first submissions: atomic unique-key reservation determines one winner; losers re-read and apply the same-key rules above.
+6. Explicit rerun: use a new attempt ID and an explicit rerun operation/policy; do not overload network retries as rerun intent.
+
+TTL/retention is **not decided**. Do not hard-code a 24-hour TTL by assumption. A key record must not expire while its job/report remains addressable in a way that permits an accidental duplicate execution; coordinate key retention with report retention and deletion. Document behavior after deletion/expiry before API freeze.
+
+## 5. Artifact integrity and safe handoff
+
+Treat artifact storage as a transaction:
+1. Stream to a private temporary object with enforced per-file and aggregate byte limits.
+2. Count actual bytes while streaming; stop or safely drain according to a documented policy when caps are exceeded.
+3. Finalize only after the write completes; compute a digest over the final stored bytes and verify it by reading back or using an equally authoritative storage integrity result.
+4. Atomically publish a manifest entry only when size, digest, generated storage ID, display-name validation, content-type policy, and job/tenant association are valid.
+5. Interrupted write, digest mismatch, incomplete readback, unknown owner, or cleanup gate failure leaves the artifact quarantined/invalid and the overall job non-PASS.
+6. Storage paths are generated from server-side opaque IDs, never constructed from client filenames. A display name is metadata only. Download authorization checks authenticated tenant and job ownership on every request.
+
+A hash proves byte identity relative to the recorded digest, not safety of the content or truth of the execution claim. Keep those claims separate.
+
+## 6. Bounded streaming and redaction
+
+Do not accumulate unbounded stdout/stderr in memory before truncating. Process chunks through a bounded pipeline; enforce separate stream limits and, if needed, a combined budget. Track observed byte counts separately from retained bytes. The report states whether output is complete or truncated.
+
+Secret redaction is defense-in-depth, not a guarantee. A detector must preserve enough overlap across chunks to detect configured patterns split between chunks, without buffering an unbounded stream. Tests should use synthetic token-shaped fixtures only. Do not pass service credentials into the task environment; redaction cannot make secret injection safe.
+
+If a stream exceeds its cap, record the limit event and follow the defined termination policy. Do not report PASS if the contract says a cap violation invalidates successful completion. Decide whether the adapter terminates immediately or continues draining to avoid pipe deadlock; document and test the choice.
+
+## 7. Cost and telemetry evidence
+
+Keep provider-observed CPU/RAM/time/process metrics separate from provider invoice/usage cost. Use a cost evidence state such as FINAL | ESTIMATED | UNAVAILABLE, with source, observation time, currency, and scope. If the provider has not returned cost, show “unavailable” (or “estimated” with an explicit method); never infer $0 from missing data or free credits.
+
+No live cost endpoint should be queried as part of offline tests. Synthetic fixtures should verify missing, delayed, stale, and contradictory usage records.
+
+## 8. Proposed offline acceptance cases (NOT RUN)
+
+| ID | Fixture | Required assertion |
+|---|---|---|
+| LIFE-SEM-01 | Exit-zero evidence then cleanup failure | Preserve exit-zero fact; disposition not PASS; artifact remains quarantined |
+| LIFE-SEM-02 | Cleanup retry succeeds after initial failure | Append retry event; preserve first failure; create new report version; release only after all gates pass |
+| RACE-SEM-01 | Timeout and cancel arrive in either order, same logical tick | Atomic decision version gives deterministic result; both events retained; no duplicate cleanup |
+| RACE-SEM-02 | Duplicate event ID with same payload / conflicting payload | Same payload idempotent; conflict marks evidence contradictory |
+| RACE-SEM-03 | Late success after timeout decision | No silent PASS; reconcile only under explicit authoritative ordering rule |
+| IDEM-SEM-01 | Same tenant/key and same canonical request | One job/attempt; retries return existing reference |
+| IDEM-SEM-02 | Same tenant/key, changed source/input/effective policy | Conflict before allocation; no second job; no first-result substitution |
+| IDEM-SEM-03 | Concurrent same-key submissions | Exactly one reservation wins; other observes canonical existing-job rule |
+| IDEM-SEM-04 | Same key in two tenant namespaces | Independent jobs; no cross-tenant response/existence leak |
+| ART-SEM-01 | Interrupted write or digest mismatch | No manifest publication; artifact invalid/quarantined; no PASS |
+| ART-SEM-02 | Display name contains traversal/Unicode lookalikes | Generated storage ID remains isolated; reject or safely normalize display metadata |
+| ART-SEM-03 | Artifact belongs to other job/tenant | Deny status and download; do not disclose metadata |
+| STREAM-SEM-01 | Many chunks exceed output cap | Memory bounded by design; retained bytes capped; observed count and truncation recorded |
+| STREAM-SEM-02 | Synthetic secret-shaped pattern spans chunk boundary | Configured detector catches fixture; no claim of universal detection |
+| COST-SEM-01 | Resource metrics exist, invoice data delayed/missing | Telemetry remains observed; cost ESTIMATED or UNAVAILABLE, never falsely FINAL/$0 |
+| NET-SEM-01 | Required policy revision changes between prepare and execute | Revalidate immediately before start; mismatch prevents execution |
+
+All are proposed specifications, not executed tests. A fake adapter validates deterministic control logic only, not real provider behavior.
+
+## 9. Decision requests and next step
+
+Owner review is needed for:
+1. Whether the default artifact quarantine rule is acceptable.
+2. The authoritative event ordering and reconciliation policy.
+3. Idempotency key retention coupled to report/data retention.
+4. Stream overflow behavior: terminate task or drain while discarding excess.
+5. Canonical payload fingerprint fields and policy-version binding.
+
+Until reviewed, keep these as proposals. No implementation, provider selection, account creation, spend, live security testing, merge, or deployment is authorized. Keep PR #3 draft/unmerged and PR #2 untouched.
