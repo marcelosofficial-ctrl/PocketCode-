@@ -37,7 +37,7 @@ Missing, stale, contradictory, or merely requested (not confirmed) evidence must
 ## Race and retry rules
 
 - Timeout and cancellation are requests until termination evidence confirms the process is stopped. A client deadline/disconnect alone is not proof of termination.
-- A late provider event must not silently turn an already reported timeout/cancel into PASS. Reconcile events using provider event identity/sequence or timestamps where available; record ambiguity as incomplete/provider error.
+- A late provider event must not silently turn an already reported timeout/cancel into PASS. Prefer a monotonic coordinator-ingress sequence assigned to accepted events and a single atomic terminal decision per attempt; preserve competing/late events append-only. Provider timestamps alone do not establish authoritative ordering. If replayable order cannot be established, record ambiguity as incomplete/provider error.
 - Cleanup must be idempotent. A retry may add evidence of eventual cleanup but must not erase the initial cleanup failure or alter the historical execution result.
 - A repeated client request ID must not permit cross-tenant result reuse. Define idempotency scope and conflict behavior before implementation.
 - Terminal *facts* are append-only; a derived disposition may move from incomplete to resolved only through an explicit reconciliation event with supporting evidence. Never rewrite prior reports without versioning.
@@ -79,4 +79,6 @@ These tests can validate pure orchestration/report logic with a fake adapter and
 
 ## Decision boundary
 
-Recommended next step is offline schema/state-machine/report tests only, after owner review of the two-field semantic model. No production implementation, provider SDK, account, live execution, paid service, security test, merge, or deployment is authorized by this note.
+The detailed six-item recommendation and approval checklist is consolidated in [PASS1_OWNER_DECISION_PACKET_20261027.md](PASS1_OWNER_DECISION_PACKET_20261027.md). All items remain pending; this resolution note does not itself approve them.
+
+Recommended next step is owner review of the packet, then a coordinated contract/matrix update. Implement offline schema/state-machine/report tests only after the expected outcomes are agreed and implementation is explicitly authorized. No production implementation, provider SDK, account, live execution, paid service, security test, merge, or deployment is authorized by this note.
