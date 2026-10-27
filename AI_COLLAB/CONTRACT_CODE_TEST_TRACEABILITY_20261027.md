@@ -47,3 +47,6 @@ Next safe step: execute the exact checked-in files in an offline local interpret
 - Found that the fingerprint helper checked identity strings before normalization but did not reject a whitespace-only runtime, allowing it to canonicalize to an empty string. Contract version, tenant identifier, and entrypoint also accepted whitespace-only values.
 - Added strict non-blank checks for the canonical runtime and whitespace-only checks for the other identity fields while preserving their exact fingerprint representation. Runtime whitespace/case canonicalization remains unchanged.
 - Added synthetic test coverage and acceptance rows FP-02 through FP-04. These are source changes only; the exact checked-in test pair and full repository suite remain NOT RUN. Upstream tenant authentication and runtime/entrypoint allowlisting remain outside this pure helper.
+
+
+| Idempotency reservation rejects blank/non-string fields | `reserve_idempotency` | `test_idempotency_rejects_blank_or_non_string_identity_values` | Static source change; suite remains NOT RUN. Non-blank whitespace-padded values are preserved as supplied; normalization/authentication remain upstream policy decisions. |
