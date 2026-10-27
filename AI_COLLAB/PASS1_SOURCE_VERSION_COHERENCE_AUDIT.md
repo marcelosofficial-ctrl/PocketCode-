@@ -42,6 +42,6 @@ This audit is an evidence-quality check, not a provider recommendation.
 - No market validation or hands-on competitor benchmark has occurred.
 - Gemini's independent Pass 1 review was received from the user on 2026-10-27 and triaged in `GEMINI_PASS1_REVIEW_INTEGRATION_20261027.md`. This does not establish completion of Gemini's full Pass 0–7 protocol.
 
-## Next safe action
+## Next safe action (status reconciled 2026-10-27)
 
-Source/version wording in the provider gate and main provider research has been corrected, and the indexed Modal guide clarifies the DNS statement despite the direct-fetch 502. Remaining source task: perform a final stale-claim/internal-link pass and re-open the primary page before any provider decision. Keep PR #3 draft/unmerged and PR #2 untouched.
+The focused internal-link audit completed for 13 current documents with zero missing relative targets; the cross-document status pass also reconciled the current contract, matrix, lifecycle note, decision register, checkpoint, and master plan. This is not a full external-link availability audit. The Modal networking page still returned an upstream 502 on direct retrieval, so its indexed official text remains a source limitation to recheck before any provider decision. No provider decision is pending or authorized now: the current action is owner review of [PASS1_OWNER_DECISION_PACKET_20261027.md](PASS1_OWNER_DECISION_PACKET_20261027.md). Keep PR #3 draft/unmerged and PR #2 untouched.
