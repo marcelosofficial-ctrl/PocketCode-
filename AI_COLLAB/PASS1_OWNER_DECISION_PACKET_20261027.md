@@ -81,3 +81,6 @@ No choices are approved by this document. Record any owner-approved deviations h
 ## Delegated selection status — 2026-10-27
 
 The owner explicitly delegated selection to ChatGPT after reviewing this packet. The six recommended options are selected as the baseline for provider-neutral contract alignment and offline tests. This does not authorize provider use, spending, live execution, production implementation, merge, or deployment. Numeric output limits remain provisional offline-test defaults. Rationale and references will be recorded separately.
+
+
+**Status clarification (supersedes earlier pending-status wording):** The owner delegated the six choices to ChatGPT on 2026-10-27, and the options in the approval table are selected. The earlier “recommendations only” and “After approval” wording is historical and should not be read as saying the decisions are still pending. The selections authorize only documentation alignment and provider-neutral offline tests; all provider, spend, live execution, production implementation, merge, and deployment gates remain closed.
