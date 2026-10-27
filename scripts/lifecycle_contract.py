@@ -329,3 +329,85 @@ class StreamingRedactor:
 
     def reset(self) -> None:
         self.pending.clear()
+
+
+class ReportHistory:
+    """Pure append-only report-version model; persistence/atomicity are external.
+
+    A new disposition after cleanup reconciliation creates a new version. Existing
+    entries are never edited or replaced by this helper.
+    """
+    def __init__(self) -> None:
+        self._versions: dict[str, list[dict[str, Any]]] = {}
+
+    def append(self, job_id: str, *, disposition: str, cleanup_state: str,
+               evidence_ref: str) -> dict[str, Any]:
+        if not all(isinstance(value, str) and value for value in
+                   (job_id, disposition, cleanup_state, evidence_ref)):
+            raise ValueError("job, disposition, cleanup state, and evidence reference are required")
+        versions = self._versions.setdefault(job_id, [])
+        report = {"job_id": job_id, "version": len(versions) + 1,
+                  "disposition": disposition, "cleanup_state": cleanup_state,
+                  "evidence_ref": evidence_ref}
+        versions.append(dict(report))
+        return dict(report)
+
+    def versions(self, job_id: str) -> tuple[dict[str, Any], ...]:
+        return tuple(dict(item) for item in self._versions.get(job_id, []))
+
+
+class DeletionTombstones:
+    """Pure 30-day post-deletion key-retention model, not a storage implementation."""
+    RETENTION_SECONDS = 30 * 24 * 60 * 60
+
+    def __init__(self) -> None:
+        self._records: dict[tuple[str, str], tuple[str, int]] = {}
+
+    def add(self, *, tenant_id: str, key: str, fingerprint: str, deleted_at: int) -> None:
+        if not tenant_id or not key or not fingerprint:
+            raise ValueError("tenant, key, and fingerprint are required")
+        if not isinstance(deleted_at, int) or isinstance(deleted_at, bool) or deleted_at < 0:
+            raise ValueError("deleted_at must be a non-negative integer epoch")
+        self._records[(tenant_id, key)] = (fingerprint, deleted_at + self.RETENTION_SECONDS)
+
+    def lookup(self, *, tenant_id: str, key: str, now: int) -> tuple[str, str] | None:
+        """Return a tombstone while retained; expire at the exact deadline."""
+        record_key = (tenant_id, key)
+        record = self._records.get(record_key)
+        if record is None:
+            return None
+        fingerprint, expires_at = record
+        if now >= expires_at:
+            del self._records[record_key]
+            return None
+        return ("TOMBSTONE", fingerprint)
+
+
+def reserve_idempotency_batch(
+    records: dict[tuple[str, str], tuple[str, str]],
+    submissions: Iterable[Mapping[str, str]],
+) -> list[dict[str, str]]:
+    """Deterministic serializable model for racing submissions; NOT atomic storage.
+
+    The first submission in coordinator order reserves the key. Later submissions
+    replay or conflict. Production must enforce this with a unique constraint or
+    transaction; this function only tests intended outcomes.
+    """
+    results = []
+    for item in submissions:
+        tenant_id = item.get("tenant_id", "")
+        key = item.get("key", "")
+        fingerprint = item.get("fingerprint", "")
+        proposed_job_id = item.get("proposed_job_id", "")
+        if not all((tenant_id, key, fingerprint, proposed_job_id)):
+            raise ValueError("each submission needs tenant, key, fingerprint, and proposed job ID")
+        try:
+            status, job_id = reserve_idempotency(
+                records, tenant_id=tenant_id, key=key,
+                fingerprint=fingerprint, proposed_job_id=proposed_job_id,
+            )
+        except IdempotencyConflict:
+            results.append({"status": "CONFLICT", "job_id": "", "proposed_job_id": proposed_job_id})
+        else:
+            results.append({"status": status, "job_id": job_id, "proposed_job_id": proposed_job_id})
+    return results
