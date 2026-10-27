@@ -63,12 +63,12 @@ No choices are approved by this document. Record any owner-approved deviations h
 
 | Decision | Approved option / deviation | Date |
 |---|---|---|
-| 1. Artifact quarantine | Pending | — |
-| 2. Event ordering | Pending | — |
-| 3. Idempotency retention | Pending | — |
-| 4. Output overflow | Pending | — |
-| 5. Canonical fingerprint | Pending | — |
-| 6. Outcome/disposition model | Pending | — |
+| 1. Artifact quarantine | Selected: quarantine until cleanup, integrity, and tenant/job authorization pass; version reports on recovery | 2026-10-27 |
+| 2. Event ordering | Selected: coordinator-ingress sequence + atomic terminalization; ambiguity is non-PASS | 2026-10-27 |
+| 3. Idempotency retention | Selected: tenant-scoped key/fingerprint; retain while addressable; 30-day deletion tombstone; new key for rerun | 2026-10-27 |
+| 4. Output overflow | Selected: terminate at cap; bounded 1-second drain/discard; no PASS; limits provisional | 2026-10-27 |
+| 5. Canonical fingerprint | Selected: versioned server-side canonical request/policy fingerprint over exact decoded bytes | 2026-10-27 |
+| 6. Outcome/disposition model | Selected: immutable execution facts, separate cleanup state, versioned derived disposition | 2026-10-27 |
 
 ## After approval
 
