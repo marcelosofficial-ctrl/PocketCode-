@@ -97,3 +97,10 @@ See [PASS1_LIFECYCLE_IDEMPOTENCY_ARTIFACT_POLICY_20261027.md](PASS1_LIFECYCLE_ID
 This proposal narrows implementation ambiguity but does **not** freeze the schema. Owner review remains needed for artifact release after cleanup failure, event reconciliation, idempotency retention, canonical fingerprint fields, and stream overflow behavior. The expanded cases in [OFFLINE_ACCEPTANCE_TEST_MATRIX.md](OFFLINE_ACCEPTANCE_TEST_MATRIX.md) are NOT RUN.
 
 **Next priority (current, after the 2026-10-27 static link and status pass):** owner review of [PASS1_OWNER_DECISION_PACKET_20261027.md](PASS1_OWNER_DECISION_PACKET_20261027.md), followed by one coordinated contract/matrix update if the recommendations are approved. Do not implement lifecycle tests while expected outcomes remain undecided. PR #3 remains draft/unmerged and PR #2 untouched. No provider selection, spend, accounts, live workloads, merge, or deployment; PR #3 stays draft/unmerged and PR #2 untouched.
+
+
+## Delegated lifecycle decision — 2026-10-27
+
+The owner delegated the six lifecycle choices to ChatGPT after reviewing the decision packet. The selected baseline and research rationale are recorded in [PASS1_OWNER_DECISION_PACKET_20261027.md](PASS1_OWNER_DECISION_PACKET_20261027.md) and [PASS1_OWNER_DECISIONS_RESEARCH_20261027.md](PASS1_OWNER_DECISIONS_RESEARCH_20261027.md). The draft contract now reflects the selected outcome/disposition split and idempotency, ordering, artifact, and output-limit rules. Numeric output budgets are provisional offline-test defaults. No provider, spend, live workload, production implementation, merge, or deployment is authorized.
+
+**Next:** implement synthetic provider-neutral contract/state-machine/report tests; record exact results only after execution. Provider-specific testing remains blocked by strict $0 and any applicable consent requirements.
