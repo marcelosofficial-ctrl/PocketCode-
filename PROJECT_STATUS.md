@@ -153,3 +153,12 @@ Ran 8 synthetic unit tests in a temporary Python environment using a reconstruct
 - Event replay now has a deterministic event-ID tie-break for malformed duplicate coordinator sequences; such sequences remain contradictory and cannot support PASS.
 - Added tests for deterministic replay, each artifact release gate independently, and output observed-byte accounting plus no additional retention after overflow.
 - Test module count is now 14. Exact checked-in tests and full repository suite remain NOT RUN.
+
+
+## 2026-10-27 — report recovery, tombstones, and idempotency race model
+
+- Added pure in-memory ReportHistory: cleanup reconciliation appends a new version rather than rewriting an earlier disposition; stored and returned snapshots are copied. It rejects PASS when cleanup is not CONFIRMED.
+- Added DeletionTombstones with tenant-scoped keys and a provisional 30-day retention window after deletion, expiring at the exact deadline.
+- Added reserve_idempotency_batch to model coordinator-ordered outcomes for racing submissions: same key/fingerprint becomes one CREATED plus REPLAY; different fingerprint conflicts without replacing the first reservation.
+- Added five synthetic tests (19 lifecycle test methods total). These models do not provide durable storage, transactional atomicity, or a real concurrency test. Production atomicity remains an implementation/acceptance requirement.
+- **Verification remains NOT RUN** for the exact checked-in lifecycle helper/test pair and the full repository suite. Do not treat this as passing code. No GitHub Actions, provider, workload, spend, deployment, or merge was used.
