@@ -2,9 +2,10 @@
 import unittest
 
 from lifecycle_contract import (
-    IdempotencyConflict, OutputBudget, artifact_release_allowed,
-    canonical_request_fingerprint, derive_disposition,
-    reduce_terminal_events, reserve_idempotency, StreamingRedactor,
+    DeletionTombstones, IdempotencyConflict, OutputBudget, ReportHistory,
+    artifact_release_allowed, canonical_request_fingerprint, derive_disposition,
+    reduce_terminal_events, reserve_idempotency, reserve_idempotency_batch,
+    StreamingRedactor,
 )
 
 
@@ -159,6 +160,63 @@ class LifecycleTests(unittest.TestCase):
         budget.add("stderr", b"more bytes after overflow")
         budget.finish()
         self.assertEqual((budget.retained_bytes("stdout"), budget.retained_bytes("stderr")), before)
+
+    def test_cleanup_reconciliation_appends_new_report_version_without_rewriting_history(self):
+        history = ReportHistory()
+        original = history.append("job-1", disposition="INCOMPLETE",
+                                  cleanup_state="UNKNOWN", evidence_ref="evidence-v1")
+        corrected = history.append("job-1", disposition="PASS",
+                                   cleanup_state="CONFIRMED", evidence_ref="evidence-v2")
+        self.assertEqual(original["version"], 1)
+        self.assertEqual(corrected["version"], 2)
+        self.assertEqual(original["disposition"], "INCOMPLETE")
+        versions = history.versions("job-1")
+        self.assertEqual([v["disposition"] for v in versions], ["INCOMPLETE", "PASS"])
+        corrected["disposition"] = "TAMPERED"
+        versions[0]["disposition"] = "TAMPERED"
+        self.assertEqual([v["disposition"] for v in history.versions("job-1")],
+                         ["INCOMPLETE", "PASS"])
+
+    def test_report_history_versions_are_per_job_and_require_evidence_reference(self):
+        history = ReportHistory()
+        self.assertEqual(history.append("a", disposition="FAILED", cleanup_state="CONFIRMED",
+                                        evidence_ref="e1")["version"], 1)
+        self.assertEqual(history.append("b", disposition="FAILED", cleanup_state="CONFIRMED",
+                                        evidence_ref="e2")["version"], 1)
+        with self.assertRaises(ValueError):
+            history.append("a", disposition="INCOMPLETE", cleanup_state="UNKNOWN", evidence_ref="")
+
+    def test_deletion_tombstone_is_tenant_scoped_and_expires_at_30_days(self):
+        tombstones = DeletionTombstones()
+        tombstones.add(tenant_id="t1", key="k", fingerprint="f1", deleted_at=100)
+        deadline = 100 + DeletionTombstones.RETENTION_SECONDS
+        self.assertEqual(tombstones.lookup(tenant_id="t1", key="k", now=deadline - 1),
+                         ("TOMBSTONE", "f1"))
+        self.assertIsNone(tombstones.lookup(tenant_id="t2", key="k", now=deadline - 1))
+        self.assertIsNone(tombstones.lookup(tenant_id="t1", key="k", now=deadline))
+        self.assertIsNone(tombstones.lookup(tenant_id="t1", key="k", now=deadline + 1))
+
+    def test_same_key_same_fingerprint_race_has_one_created_job_and_replays(self):
+        records = {}
+        submissions = [
+            {"tenant_id": "t1", "key": "k", "fingerprint": "f", "proposed_job_id": "j1"},
+            {"tenant_id": "t1", "key": "k", "fingerprint": "f", "proposed_job_id": "j2"},
+            {"tenant_id": "t1", "key": "k", "fingerprint": "f", "proposed_job_id": "j3"},
+        ]
+        result = reserve_idempotency_batch(records, submissions)
+        self.assertEqual([item["status"] for item in result], ["CREATED", "REPLAY", "REPLAY"])
+        self.assertEqual({item["job_id"] for item in result}, {"j1"})
+        self.assertEqual(len(records), 1)
+
+    def test_same_key_different_fingerprint_race_conflicts_after_first_reservation(self):
+        records = {}
+        result = reserve_idempotency_batch(records, [
+            {"tenant_id": "t1", "key": "k", "fingerprint": "f1", "proposed_job_id": "j1"},
+            {"tenant_id": "t1", "key": "k", "fingerprint": "f2", "proposed_job_id": "j2"},
+        ])
+        self.assertEqual([item["status"] for item in result], ["CREATED", "CONFLICT"])
+        self.assertEqual(records[("t1", "k")], ("f1", "j1"))
+        self.assertEqual(len(records), 1)
 
 
 if __name__ == "__main__":
