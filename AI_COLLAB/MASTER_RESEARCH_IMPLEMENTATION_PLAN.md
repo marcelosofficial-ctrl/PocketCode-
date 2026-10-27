@@ -284,3 +284,11 @@ See the detailed grouped register in [PASS0_REPOSITORY_AUDIT.md](PASS0_REPOSITOR
 - Prioritized offline work first: contract coherence, source/link integrity, threat-to-test traceability, and cross-document state consistency. User interviews and task comparison remain unperformed; provider proof remains blocked by the strict $0 gate and mandatory security requirements.
 - Explicit no-go list covers provider accounts/credentials, billing changes/spend, live execution, tests requiring consent, security downgrades, merge/deployment, public claims, and rename without owner approval.
 - This is a decision-control document, not product validation or approval to implement. Gemini completion remains unverified/pending.
+
+
+### 2026-10-27 — Draft contract coherence audit (ChatGPT, static review only)
+
+- Added [CONTRACT_COHERENCE_AUDIT.md](CONTRACT_COHERENCE_AUDIT.md) mapping ten ambiguities to proposed resolutions and offline tests.
+- Highest-risk edge cases: execution success with cleanup failure; late completion racing timeout/cancel; missing or contradictory provider-policy evidence; placeholder limits confused with enforceable controls; stale capability declarations; tenant authorization across every operation; and report formatting that could falsely elevate status.
+- Proposed invariant: preserve execution outcome separately from overall service disposition; overall PASS requires confirmed mandatory policy, authoritative completion, exit 0, no limit/timeout/cancel/output truncation, valid artifacts, and cleanup success. Exact status vocabulary remains a design decision.
+- Static review only. No tests executed, no provider tested, no production API frozen, and no implementation/spend authorized.
