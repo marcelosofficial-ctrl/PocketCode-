@@ -139,11 +139,25 @@ def reduce_terminal_events(events: Iterable[Mapping[str, Any]]) -> dict[str, Any
 
 
 def _canonical_input_name(name: str) -> str:
+    """Canonicalize a portable basename; not a substitute for request validation."""
     if not isinstance(name, str) or not name:
         raise ValueError("input name must be a non-empty string")
     normalized = unicodedata.normalize("NFC", name)
-    if normalized in {".", ".."} or "/" in normalized or "\\" in normalized or "\x00" in normalized:
-        raise ValueError("input name must be a safe basename")
+    # Apply portable Windows/POSIX rules because clients and eventual workers may
+    # use different operating systems. Reject control/Windows-reserved characters,
+    # path separators, drive syntax, and trailing dots/spaces before fingerprinting.
+    if (
+        normalized in {".", ".."}
+        or any(ord(char) < 32 or char in '<>:"/\\\\|?*' for char in normalized)
+        or normalized.endswith((".", " "))
+    ):
+        raise ValueError("input name must be a portable safe basename")
+    # Windows device names remain reserved even when an extension is present.
+    device_stem = normalized.split(".", 1)[0].rstrip(" ").upper()
+    if device_stem in {"CON", "PRN", "AUX", "NUL"} or re.fullmatch(
+        r"(?:COM|LPT)[1-9]", device_stem
+    ):
+        raise ValueError("input name uses a reserved device name")
     return normalized
 
 
