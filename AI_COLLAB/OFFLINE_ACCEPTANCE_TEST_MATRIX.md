@@ -162,3 +162,10 @@ The pure lifecycle helper now models append-only report history, the provisional
 - Same tenant/key with a changed fingerprint conflicts without replacing the first reservation.
 
 **Important limit:** reserve_idempotency_batch is a deterministic serial-order model, not a concurrency primitive. Production must enforce uniqueness with an atomic database transaction/unique constraint and test actual simultaneous requests. ReportHistory and DeletionTombstones are in-memory pure models, not durable storage. The 30-day duration remains provisional. The test module now has 19 methods, but the exact checked-in pair and full repository suite remain **NOT RUN**; no test pass is claimed.
+
+
+## Conflicting terminal evidence — 2026-10-27
+
+A further static review found the reducer preserved the first terminal event but did not mark a later distinct terminal event as contradictory. This did not fully enforce the selected rule that one attempt has one terminal decision and contradictory evidence must not yield PASS.
+
+The reducer now retains the accepted events, keeps the earliest coordinator-sequenced terminal event as the recorded winner, and marks later distinct terminal events as conflicts. The caller's conservative disposition reducer therefore produces INCOMPLETE when the evidence is contradictory. A regression assertion covers timeout followed by a later zero-exit event: the timeout remains the first event, the later event is retained as conflicting evidence, and the derived disposition is INCOMPLETE. This is static/test-source verification only; tests remain NOT RUN.
