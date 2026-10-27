@@ -48,6 +48,11 @@ def derive_disposition(
     if execution_outcome == "NOT_STARTED":
         return "REJECTED"
     if execution_outcome == "LIMIT_EXCEEDED" or limit_violated or output_truncated:
+        # The cap breach is an execution observation, not proof that the process
+        # stopped or that cleanup completed. Only finalize this disposition when
+        # both are confirmed; otherwise preserve the unresolved lifecycle state.
+        if termination_confirmed is not True or cleanup_state != "CONFIRMED":
+            return "INCOMPLETE"
         return "LIMIT_EXCEEDED"
     if execution_outcome == "UNKNOWN":
         return "PROVIDER_ERROR"
