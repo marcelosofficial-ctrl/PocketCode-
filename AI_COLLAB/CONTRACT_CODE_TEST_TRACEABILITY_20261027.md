@@ -53,3 +53,6 @@ Next safe step: execute the exact checked-in files in an offline local interpret
 
 
 | Malformed event evidence is retained | `reduce_terminal_events` | `test_malformed_events_are_preserved_and_force_incomplete` | Static source/test change on audit branch; suite remains NOT RUN. Invalid records are exposed separately from accepted events and prevent PASS through the contradiction flag. |
+
+
+| Tombstone identity/epoch validation | `DeletionTombstones.add`, `DeletionTombstones.lookup` | `test_tombstones_reject_blank_identity_and_invalid_epoch_values` | Static source/test change; exact suite remains NOT RUN. In-memory tombstones still do not prove durable deletion or TTL enforcement. |
