@@ -132,3 +132,7 @@ Static review found that artifact release authorization also relied on truthines
 The owner's research-backed operating workflow has been summarized into the final section of `AI_COLLAB/MASTER_RESEARCH_IMPLEMENTATION_PLAN.md`, preserving the existing project specifications as higher authority. It records repo-first verification, coherent risk-proportionate passes, reuse-first research, bounded three-AI roles, product/security discipline, honest test reporting, owner-control/$0 constraints, and durable handoffs. This is an operating-method addendum, not a product/architecture decision.
 
 Current lifecycle state: strict literal-boolean PASS and artifact-release gates are implemented in the pure helper; negative synthetic tests and matrix rows LC-15 and ART-SEM-02 are recorded. The checked-in lifecycle module contains 24 test methods; exact checked-in tests and full suite remain NOT RUN.
+
+
+## Complete chat handoff + workflow master saved — 2026-10-27
+Added `AI_COLLAB/CHAT_HANDOFF_20261027.md` and `AI_COLLAB/MASTER_WORKFLOW_EFFICIENCY_RULES_20261027.md` to the working branch. The handoff directs future chats to verify current repository state, preserve the existing product/security/roadmap authority, respect owner constraints and the three-AI role split, continue the lifecycle audit, and never overclaim test execution. It tells future chats to ask the owner to repost the original workflow only if the durable file is inaccessible or its meaning is uncertain. Exact checked-in tests/full suite remain NOT RUN.
