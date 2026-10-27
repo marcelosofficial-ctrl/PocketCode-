@@ -83,6 +83,8 @@ class LifecycleTests(unittest.TestCase):
             with self.subTest(unsafe_name=unsafe_name):
                 with self.assertRaises(ValueError):
                     fp(inputs=[(unsafe_name, "text/plain", b"x")])
+        with self.assertRaises(ValueError):
+            fp(inputs=[("valid.txt", "   ", b"x")])
 
     def test_idempotency_replay_conflict_and_tenant_scope(self):
         records = {}
