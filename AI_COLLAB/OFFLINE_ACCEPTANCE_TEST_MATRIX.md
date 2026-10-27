@@ -71,7 +71,11 @@ These additional cases trace [PASS1_CONTRACT_COHERENCE_RESOLUTION.md](PASS1_CONT
 | LC-11 | Same idempotency key from two tenants | No cross-tenant collision or disclosure |
 | LC-12 | Cleanup success event belongs to another job | Reject evidence association; no PASS |
 
-\n\n*CSV-01 is conditional on owner confirmation that CSV is the initial supported workflow. The proposed 1 MiB inline cap is not adopted; choose it only after payload and memory budgets are reviewed. Secret redaction is best-effort defense-in-depth and cannot guarantee that all secrets are detected. Tests using fake adapters verify orchestration logic only.\n\n## Provider-dependent tests — not authorized
+
+
+*CSV-01 is conditional on owner confirmation that CSV is the initial supported workflow. The proposed 1 MiB inline cap is not adopted; choose it only after payload and memory budgets are reviewed. Secret redaction is best-effort defense-in-depth and cannot guarantee that all secrets are detected. Tests using fake adapters verify orchestration logic only.
+
+## Provider-dependent tests — not authorized
 
 These need explicit owner approval, an eligible exact plan, required permissions, and a proven spending ceiling. E2B also requires prior written consent according to the reviewed documentation.
 
