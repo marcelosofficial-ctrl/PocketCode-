@@ -161,3 +161,14 @@ Acceptance criteria:
 
 
 Latest source-count refresh: 30 test methods in `scripts/test_lifecycle_contract.py`, confirmed by fetching the current branch file. Exact tests remain NOT RUN.
+
+
+## Follow-up checkpoint — report-history PASS gate audit (2026-10-27)
+
+- New isolated branch: `pocketcode-report-pass-gate-hardening-2026-10-27`, based on `pocketcode-lifecycle-fingerprint-audit-2026-10-27`. This branch is not PR #3's source branch.
+- Static review found `ReportHistory.append` accepted PASS when only five gates were present. It now requires nine explicit consistency gates: exit zero, policy confirmed, termination confirmed, artifacts valid, tenant/job authorized, no limit violation, no output truncation, evidence consistent, and evidence associated.
+- The helper now rejects whitespace-only job IDs and evidence references. Added two regression test methods: `test_report_history_rejects_whitespace_only_identity_fields` and `test_report_history_pass_requires_complete_limit_and_evidence_gates`.
+- Updated the acceptance matrix with REPORT-03 and REPORT-04 and extended the code/test traceability table.
+- Current `scripts/test_lifecycle_contract.py` count: 32 test methods by source inspection only. **The exact checked-in test module and full repository suite remain NOT RUN.** No GitHub Actions, provider, spend, deployment, merge, or PR update.
+- Important limitation: the additional booleans are a pure-model consistency guard, not authenticated evidence. Production must derive gates from authoritative job-bound observations, not trust caller-provided booleans.
+- Next: static diff review and consistency check across helper, test fixtures, matrix, and traceability. Do not claim test success without executing the exact checked-in files in an offline checkout.
