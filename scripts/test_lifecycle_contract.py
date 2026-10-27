@@ -199,8 +199,13 @@ class LifecycleTests(unittest.TestCase):
         history = ReportHistory()
         original = history.append("job-1", disposition="INCOMPLETE",
                                   cleanup_state="UNKNOWN", evidence_ref="evidence-v1")
-        corrected = history.append("job-1", disposition="PASS",
-                                   cleanup_state="CONFIRMED", evidence_ref="evidence-v2")
+        corrected = history.append(
+            "job-1", disposition="PASS", cleanup_state="CONFIRMED",
+            evidence_ref="evidence-v2", pass_gates={
+                "exit_zero": True, "policy_confirmed": True,
+                "termination_confirmed": True, "artifacts_valid": True,
+                "tenant_job_authorized": True,
+            })
         self.assertEqual(original["version"], 1)
         self.assertEqual(corrected["version"], 2)
         self.assertEqual(original["disposition"], "INCOMPLETE")
@@ -220,7 +225,21 @@ class LifecycleTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             history.append("a", disposition="INCOMPLETE", cleanup_state="UNKNOWN", evidence_ref="")
         with self.assertRaises(ValueError):
-            history.append("a", disposition="PASS", cleanup_state="UNKNOWN", evidence_ref="e3")
+            history.append("a", disposition="PASS", cleanup_state="UNKNOWN", evidence_ref="e3",
+                           pass_gates={"exit_zero": True, "policy_confirmed": True,
+                                       "termination_confirmed": True, "artifacts_valid": True,
+                                       "tenant_job_authorized": True})
+        gates = {"exit_zero": True, "policy_confirmed": True,
+                 "termination_confirmed": True, "artifacts_valid": True,
+                 "tenant_job_authorized": True}
+        for gate in gates:
+            broken = dict(gates)
+            broken[gate] = False
+            with self.subTest(pass_gate=gate), self.assertRaises(ValueError):
+                history.append("a", disposition="PASS", cleanup_state="CONFIRMED",
+                               evidence_ref="e4", pass_gates=broken)
+        with self.assertRaises(ValueError):
+            history.append("a", disposition="PASS", cleanup_state="CONFIRMED", evidence_ref="e5")
 
     def test_deletion_tombstone_is_tenant_scoped_and_expires_at_30_days(self):
         tombstones = DeletionTombstones()
