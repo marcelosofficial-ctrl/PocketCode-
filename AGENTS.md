@@ -50,6 +50,16 @@ Inspect relevant files and the current branch before claiming knowledge of proje
 - Resolve conflicts through documented decisions, not by having multiple agents overwrite the same file.
 - Keep CLAUDE.md and GEMINI.md aligned with this file.
 
+## Current AI role split
+
+Use this role split as the default unless the owner explicitly assigns a different task:
+
+- **Claude: lead implementer.** Own focused implementation tasks, substantial code changes, and implementation checkpoints. Inspect repository state first and hand off exact artifacts and evidence for independent review.
+- **Gemini: co-developer and independent design/spec auditor.** Own multi-pass research, architecture alternatives, contract and test-matrix review, and skeptical review of Claude's proposed implementation. Avoid duplicating the same implementation unless specifically assigned.
+- **ChatGPT: continuity and integration coordinator.** Maintain concise recovery context, reconcile research and decisions, cross-check acceptance claims and diffs, coordinate the next task, and prepare deployment/portfolio work only when appropriate and authorized. Do not imply direct inter-model messaging; the owner carries artifacts between agents.
+
+For every cross-agent handoff, include: exact branch/commit and paths; task and acceptance criteria; changed or proposed result; evidence actually collected; verification status; limitations/open questions; and the single requested next action. Mark work **proposed**, **completed-unverified**, **verified**, **blocked**, or **superseded** as appropriate. A source inspection or method count is not an executed test.
+
 ## Product discipline
 
 - Treat product direction as a hypothesis until validated.
