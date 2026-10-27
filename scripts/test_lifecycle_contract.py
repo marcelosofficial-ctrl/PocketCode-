@@ -81,6 +81,26 @@ class LifecycleTests(unittest.TestCase):
             tenant_job_authorized=True,
             contradictory_evidence=result["contradictory_evidence"]), "INCOMPLETE")
 
+    def test_malformed_events_are_preserved_and_force_incomplete(self):
+        malformed = [
+            {"event_id": "", "sequence": 1, "kind": "exit_zero", "payload": {}},
+            {"event_id": "bad-sequence", "sequence": True, "kind": "exit_zero", "payload": {}},
+            {"event_id": "bad-kind", "sequence": 2, "kind": "", "payload": {}},
+            ["not", "a", "mapping"],
+        ]
+        result = reduce_terminal_events([
+            {"event_id": "valid", "sequence": 0, "kind": "exit_zero", "payload": {}},
+            *malformed,
+        ])
+        self.assertTrue(result["contradictory_evidence"])
+        self.assertEqual(result["invalid_events"], malformed)
+        self.assertEqual(len(result["events"]), 1)
+        self.assertEqual(derive_disposition(
+            result["execution_outcome"], "CONFIRMED", policy_confirmed=True,
+            termination_confirmed=True, artifacts_valid=True,
+            tenant_job_authorized=True,
+            contradictory_evidence=result["contradictory_evidence"]), "INCOMPLETE")
+
     def test_duplicate_event_is_idempotent_but_conflict_is_marked(self):
         event = {"event_id": "e1", "sequence": 1, "kind": "exit_zero", "payload": {"exit": 0}}
         result = reduce_terminal_events([event, dict(event)])
