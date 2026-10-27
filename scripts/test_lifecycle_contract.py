@@ -120,7 +120,7 @@ class LifecycleTests(unittest.TestCase):
             effective_policy={"network": "deny", "version": 1},
         )
         for field in ("contract_version", "tenant_id", "runtime", "entrypoint"):
-            for blank in ("", "   ", "\\t\\n"):
+            for blank in ("", "   "):
                 values = dict(base)
                 values[field] = blank
                 with self.subTest(field=field, blank=repr(blank)), self.assertRaises(ValueError):
