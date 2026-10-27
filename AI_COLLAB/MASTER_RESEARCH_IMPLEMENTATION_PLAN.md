@@ -315,21 +315,17 @@ See the detailed grouped register in [PASS0_REPOSITORY_AUDIT.md](PASS0_REPOSITOR
 - Refined the lifecycle proposal after identifying that compare-and-set alone guarantees a single winner, not a repeatable winner across concurrent timeout/cancel permutations. The proposal now requires a monotonic coordinator-ingress sequence or an explicit precedence rule; tests must distinguish single-winner safety from replay determinism.
 - Updated the acceptance matrix with RACE-SEM-04 and corrected literal newline escapes that were rendering as backslash-n text.
 - Ran a focused internal Markdown-link audit across 12 current research/contract documents against the live branch tree: 0 missing relative file targets and 0 broken anchors among the inspected documents. This is a focused audit, not a guarantee for every file or external URL.
-- Current next step: complete the remaining owner decision packet and static consistency pass. Offline tests remain NOT RUN until expected semantics are approved; no provider-dependent test is authorized.
+- Historical note: this checkpoint preceded the owner-delegated lifecycle decisions recorded later in this file. Current status is the lifecycle traceability checkpoint below; exact offline tests remain NOT RUN, and no provider-dependent test is authorized.
 
 
 ### 2026-10-27 — Owner decision packet
 
-- Prepared [PASS1_OWNER_DECISION_PACKET_20261027.md](PASS1_OWNER_DECISION_PACKET_20261027.md) with explicit recommendations, trade-offs, and pending approval fields for artifact quarantine, event ordering, idempotency retention, output overflow, canonical request fingerprints, and outcome/disposition separation.
-- This packet is a review aid, not authorization or a recorded decision. Do not freeze the schema or implement lifecycle tests until the expected outcomes are agreed.
-- Next: owner review, then a single coordinated contract/matrix update and pure offline test implementation. Strict $0 and provider-consent gates remain unchanged.
+- Historical note: the packet began as a review aid with pending approval fields. The owner subsequently delegated these six provider-neutral lifecycle choices, and the selected baseline is recorded in [PASS1_OWNER_DECISIONS_RESEARCH_20261027.md](PASS1_OWNER_DECISIONS_RESEARCH_20261027.md). The schema and production limits remain draft; strict $0 and provider-consent gates remain unchanged.
 
 
 ### 2026-10-27 — Cross-document decision/status alignment
 
-- Aligned the draft contract, offline acceptance matrix, lifecycle resolution note, and decision register with the six-item owner decision packet. Direct links now make the pending approval boundary visible at the relevant design/test decision points.
-- Tightened event-ordering language: provider timestamps alone are not authoritative; replayable decisions require coordinator-ingress ordering and a single committed terminal decision, with competing evidence retained.
-- The next action is owner review of the packet. No lifecycle tests should be implemented until expected outcomes are agreed and implementation is explicitly authorized. All tests remain NOT RUN; strict $0 and provider-consent gates remain binding.
+- Historical note: this alignment preceded the owner's delegation of the six lifecycle choices. The current selected baseline and traceability status are documented below. Exact tests remain NOT RUN; strict $0 and provider-consent gates remain binding.
 
 
 ## 2026-10-27 delegated lifecycle decision update
@@ -346,6 +342,6 @@ Eight synthetic tests passed in a temporary Python run of a reconstructed copy o
 
 The owner-delegated six lifecycle choices are selected as a provider-neutral baseline; they are not production authorization, provider proof, or a frozen public API. The current canonical decision/rationale files are [PASS1_OWNER_DECISIONS_RESEARCH_20261027.md](PASS1_OWNER_DECISIONS_RESEARCH_20261027.md), [PASS1_LIFECYCLE_IDEMPOTENCY_ARTIFACT_POLICY_20261027.md](PASS1_LIFECYCLE_IDEMPOTENCY_ARTIFACT_POLICY_20261027.md), [DRAFT_EXECUTION_CONTRACT.md](DRAFT_EXECUTION_CONTRACT.md), and [OFFLINE_ACCEPTANCE_TEST_MATRIX.md](OFFLINE_ACCEPTANCE_TEST_MATRIX.md).
 
-The crosswalk aligned named-input fingerprint canonicalization (unordered mapping sorted by normalized name), lifecycle vocabulary, timeout/cancel reconciliation wording, provisional 30-day post-deletion tombstone wording, and the remaining open questions. A further code/test static review found contradictory evidence could be hidden by the `NOT_STARTED` shortcut; the pure helper now returns `INCOMPLETE` whenever the contradiction flag is set, with a synthetic regression test. The lifecycle test module contains 21 methods, including aggregate-only output overflow.
+The crosswalk aligned named-input fingerprint canonicalization (unordered mapping sorted by normalized name), lifecycle vocabulary, timeout/cancel reconciliation wording, and provisional 30-day post-deletion tombstone wording. Static hardening ensures contradictory evidence takes precedence over `NOT_STARTED`, rejects non-portable input basenames and blank media types, and requires confirmed cleanup plus every explicit execution/policy/termination/artifact/tenant gate before ReportHistory can append PASS. The lifecycle test module contains 21 methods, including aggregate-only output overflow and the additional negative subcases.
 
 **Verification state:** exact checked-in helper/test pair and full repository suite remain NOT RUN. Do not use earlier reconstructed-copy 8/8 results as current evidence. No Actions, provider/account/workload, spend, deployment, or merge. PR #3 remains draft/unmerged; PR #2 remains untouched. Next: finish requirement-to-code-to-test traceability, then run exact checked-in tests offline when a local interpreter is available; add true transactional/concurrent acceptance only as implementation requirements, not simulated proof.
