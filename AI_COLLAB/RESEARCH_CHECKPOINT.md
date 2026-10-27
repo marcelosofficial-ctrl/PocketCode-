@@ -135,7 +135,7 @@ Continue Pass 1 with a fuller user/problem falsification and task-based comparis
 - Not adopted automatically: Modal as default provider, blanket rejection of local Android execution, fixed 24-hour idempotency TTL, fixed 1 MiB inline output cap, universal CSV schema checks, or project rename.
 - Official E2B pricing checked 2026-10-27 lists free Hobby with a one-time $100 usage credit and Pro at $150/month plus usage. Credits do not satisfy a hard $0 ceiling. E2B test consent remains required.
 - Draft contract now states that asynchronous mandatory network policy must be confirmed applied to the exact required revision before execution. Proposed tests remain NOT RUN; no provider accessed and no spending.
-- Current Modal docs do not fully settle DNS behavior under every allowlist combination; do not assume a guarantee.
+- At the time of this earlier note, DNS wording was unresolved. The later 2026-10-27 source clarification below records that the current indexed official guide says DNS is unrestricted except when all outbound traffic is blocked; runtime behavior remains unverified.
 - Next: resolve remaining lifecycle/idempotency/report semantics, finish link/source integrity, and keep PR #3 draft/unmerged with PR #2 untouched.
 
 
