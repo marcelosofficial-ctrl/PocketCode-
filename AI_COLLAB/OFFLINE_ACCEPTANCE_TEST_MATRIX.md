@@ -208,3 +208,15 @@ Static source count is now 30 test methods. This is not a passing test result. T
 
 
 Current source count refresh: 30 test methods defined; exact checked-in tests remain NOT RUN.
+
+
+## Report-history PASS-gate hardening (2026-10-27)
+
+The pure `ReportHistory` model previously accepted PASS with only five positive gates. That could let a caller append a PASS report while omitting explicit evidence that no output limit was breached, no truncation occurred, evidence was consistent, and evidence belonged to the job. The helper now requires all nine gates as a secondary consistency check. These booleans are still synthetic assertions, not production evidence; a future implementation must derive them from authenticated, job-bound evidence.
+
+| ID | Setup | Required result |
+|---|---|---|
+| REPORT-03 | Attempt to append PASS with any required gate absent or false, including no-limit-breach, no-truncation, consistency, or job-association evidence | Reject PASS; no report version is appended |
+| REPORT-04 | Append report with whitespace-only job ID or evidence reference | Reject before mutating report history |
+
+Current audit branch `pocketcode-report-pass-gate-hardening-2026-10-27` contains 32 test methods by source inspection. The exact checked-in tests remain **NOT RUN**. This is not a test pass count.
