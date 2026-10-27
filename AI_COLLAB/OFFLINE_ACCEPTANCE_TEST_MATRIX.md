@@ -190,3 +190,5 @@ Static crosswalk found that `derive_disposition` returned `REJECTED` for `NOT_ST
 | FP-02 | Runtime contains only whitespace and would normalize to an empty string | Reject before producing a fingerprint |
 | FP-03 | Contract version, tenant identifier, or entrypoint is empty or whitespace-only | Reject before producing a fingerprint; upstream authentication and allowlisting remain separately required |
 | FP-04 | Valid runtime differs only by surrounding whitespace or ASCII case | Produce the same canonical runtime fingerprint |
+
+| IDEM-03 | Tenant ID, key, fingerprint, or proposed job ID is blank/whitespace-only or not a string | Reject before reserving or replaying a key |
