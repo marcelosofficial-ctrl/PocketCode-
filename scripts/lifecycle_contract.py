@@ -72,6 +72,7 @@ def reduce_terminal_events(events: Iterable[Mapping[str, Any]]) -> dict[str, Any
     """
     by_id: dict[str, tuple[str, Any]] = {}
     accepted: list[dict[str, Any]] = []
+    conflicts: list[dict[str, Any]] = []
     contradictory = False
 
     for raw in events:
@@ -93,6 +94,7 @@ def reduce_terminal_events(events: Iterable[Mapping[str, Any]]) -> dict[str, Any
         if event_id in by_id:
             if by_id[event_id] != signature:
                 contradictory = True
+                conflicts.append(event)
             continue
         by_id[event_id] = signature
         accepted.append(event)
@@ -112,6 +114,7 @@ def reduce_terminal_events(events: Iterable[Mapping[str, Any]]) -> dict[str, Any
 
     return {
         "events": accepted,
+        "conflicts": conflicts,
         "execution_outcome": terminal_outcome,
         "winning_event_id": winning_event_id,
         "contradictory_evidence": contradictory,
