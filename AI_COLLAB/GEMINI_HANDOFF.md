@@ -72,11 +72,12 @@ Own compact recovery context, synthesis of research and decisions, independent a
 Every handoff must state: (1) exact repository, branch, and commit; (2) exact changed/proposed paths; (3) task and acceptance criteria; (4) results and evidence actually collected; (5) verification status, including commands actually run or explicitly not run; (6) limitations, risks, and open questions; and (7) one clear requested next action. Use statuses **proposed**, **in progress**, **completed-unverified**, **verified**, **blocked**, or **superseded**. The owner remains the approval authority for paid services, live workloads, releases, deployments, and irreversible actions.
 
 ### Review loop
-1. Gemini researches and delivers a sourced, multi-pass specification or reviews an implementation proposal.
-2. Claude implements only tasks that are sufficiently specified and explicitly assigned, or identifies blockers.
-3. ChatGPT reconciles artifacts, cross-checks claims against available evidence, and prepares the next task/handoff.
-4. Gemini reviews material implementation changes for requirements, architecture, security, edge cases, and test adequacy.
-5. The owner carries artifacts between agents and approves owner-gated actions. Do not claim this loop occurred until each named step actually happened.
+1. Gemini researches and delivers a sourced specification, keeping AI_COLLAB/GEMINI_PROGRESS_LOG.md current and consolidating mature findings in the master plan.
+2. For substantial research/design work, complete at least two substantive research/review passes. ChatGPT or Claude should challenge omissions, unsafe shortcuts, unsupported claims, cost surprises, contradictions, and implementability; Gemini should mark each material finding resolved, disputed with rationale, or blocked. If a second pass is not useful for a narrowly scoped task, explain why rather than pretending it happened.
+3. Claude implements only tasks that are sufficiently specified and explicitly assigned, or identifies blockers.
+4. ChatGPT reconciles artifacts, cross-checks claims against available evidence, and prepares the next task/handoff.
+5. Gemini reviews material implementation changes for requirements, architecture, security, edge cases, and test adequacy.
+6. The owner carries artifacts between agents and approves owner-gated actions. Do not claim this loop occurred until each named step actually happened.
 
 ## Workstreams — all required
 
