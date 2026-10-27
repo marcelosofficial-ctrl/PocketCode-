@@ -47,6 +47,7 @@ class LifecycleTests(unittest.TestCase):
             "event_id": "e1", "sequence": 2, "kind": "timeout", "payload": {"exit": 0}
         }])
         self.assertTrue(conflict["contradictory_evidence"])
+        self.assertEqual(len(conflict["conflicts"]), 1)
 
     def test_fingerprint_binds_source_policy_and_canonical_inputs(self):
         def fp(source=b"print(1)", inputs=None, policy=None):
