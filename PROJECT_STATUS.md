@@ -123,3 +123,5 @@ Discovery, competitive research, and MVP definition. No production architecture,
 ## 2026-10-27 lifecycle contract update
 
 The owner delegated selection of the six lifecycle decisions to ChatGPT after reviewing the decision packet. The selected provider-neutral baseline is documented in [AI_COLLAB/PASS1_OWNER_DECISIONS_RESEARCH_20261027.md](AI_COLLAB/PASS1_OWNER_DECISIONS_RESEARCH_20261027.md). Added a pure lifecycle helper and synthetic tests under `scripts/lifecycle_contract.py` and `scripts/test_lifecycle_contract.py`; these do not execute submitted code or contact a provider. **These new tests have not yet been run**, and no claim is made that they pass. Existing simulated prototype/report tests remain separate. Strict $0 remains in force; no provider, account, workload, production implementation, deployment, or merge is authorized.
+
+The lifecycle helper also includes a bounded, configured-pattern streaming redactor before output retention. It is explicitly best-effort and does not establish that arbitrary secrets will always be detected. The new test module includes a chunk-boundary redaction fixture, but the repository tests remain unrun.
