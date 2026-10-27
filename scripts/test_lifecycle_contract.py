@@ -63,6 +63,20 @@ class LifecycleTests(unittest.TestCase):
             "TIMED_OUT", "CONFIRMED", policy_confirmed=True,
             termination_confirmed=True, artifacts_valid=True,
             tenant_job_authorized=True, output_truncated=True), "LIMIT_EXCEEDED")
+        # A cap breach does not prove termination or cleanup. Preserve the
+        # unresolved disposition while the immutable cap-breach observation remains recorded.
+        self.assertEqual(derive_disposition(
+            "EXIT_ZERO", "CONFIRMED", policy_confirmed=True,
+            termination_confirmed=False, artifacts_valid=True,
+            tenant_job_authorized=True, output_truncated=True), "INCOMPLETE")
+        self.assertEqual(derive_disposition(
+            "EXIT_ZERO", "PENDING", policy_confirmed=True,
+            termination_confirmed=True, artifacts_valid=True,
+            tenant_job_authorized=True, output_truncated=True), "INCOMPLETE")
+        self.assertEqual(derive_disposition(
+            "LIMIT_EXCEEDED", "CONFIRMED", policy_confirmed=True,
+            termination_confirmed=True, artifacts_valid=True,
+            tenant_job_authorized=True), "LIMIT_EXCEEDED")
 
     def test_coordinator_sequence_wins_over_provider_timestamp(self):
         result = reduce_terminal_events([
