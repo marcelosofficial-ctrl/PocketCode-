@@ -200,14 +200,14 @@ Static crosswalk found that `derive_disposition` returned `REJECTED` for `NOT_ST
 
 ## Audit branch checkpoint (2026-10-27)
 
-Static source count is now 30 test methods. This is not a passing test result. The exact checked-in pair and full repository suite remain **NOT RUN**. Recent additions cover blank canonical fingerprint identities, malformed event evidence retention, idempotency reservation validation, and tombstone identity/epoch validation. Audit branch: `pocketcode-lifecycle-fingerprint-audit-2026-10-27`.
+At the lifecycle-audit checkpoint, the static source count was 30 test methods. This is not a passing test result. The exact checked-in pair and full repository suite remain **NOT RUN**. Recent additions cover blank canonical fingerprint identities, malformed event evidence retention, idempotency reservation validation, and tombstone identity/epoch validation. Audit branch: `pocketcode-lifecycle-fingerprint-audit-2026-10-27`.
 
 | LIFE-17 | Terminal event has blank event ID/kind or missing/non-mapping payload | Reject it into invalid evidence, mark the event stream contradictory, and ensure disposition cannot PASS |
 
 | IDEM-05 | Repeated tombstone insertion uses an older deletion time or a different fingerprint | Same fingerprint is idempotent and never shortens retention; conflicting fingerprint is rejected |
 
 
-Current source count refresh: 30 test methods defined; exact checked-in tests remain NOT RUN.
+Latest source-count refresh on `pocketcode-report-pass-gate-hardening-2026-10-27`: 33 test methods defined by source inspection; exact checked-in tests remain NOT RUN.
 
 
 ## Report-history PASS-gate hardening (2026-10-27)
