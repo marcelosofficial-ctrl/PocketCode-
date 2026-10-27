@@ -47,3 +47,14 @@
 ## Next task
 
 Continue Pass 1 with a fuller user/problem falsification and task-based comparison, then research remaining workstreams A–H. Keep all decisions provisional and all live tests blocked pending explicit owner approval.
+
+## 2026-10-27 continuation — user/problem evidence
+
+**Latest completed subpass:** [PASS1_USER_PROBLEM_EVIDENCE.md](PASS1_USER_PROBLEM_EVIDENCE.md)
+
+- Public anecdotes are mixed and non-representative: some phone users run small scripts; others prefer local IDEs/Termux or remote environments and cite touch/screen/setup friction.
+- Narrow target to test first: users with a recent real need to verify a short AI-generated Python script plus small text/CSV input on a phone. This is a test sequencing choice, not validated market selection.
+- Added a proposed no-cost validation protocol: 5–8 behavior-based interviews, same deterministic Python+CSV task across available tools, observable setup/result/report-handoff measures, and pre-registered exploratory decision rules.
+- No interviews, hands-on app comparisons, live provider tests, accounts, credentials, workloads, deployments, or spend. Prototype remains simulated. $0 gate unchanged.
+- Master plan and Gemini progress log now link this subpass. Gemini completion remains pending; this is ChatGPT's independent work.
+- Next: continue remaining Pass 1 workstreams, especially implementation/runtime feasibility and security/abuse requirements; then consolidate a skeptical synthesis without selecting a provider or renaming the project.
