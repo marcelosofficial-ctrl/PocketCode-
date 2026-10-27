@@ -143,3 +143,10 @@ A static review of the checked-in pure helper found and corrected two issues: by
 Regression tests were added for Bearer and provider-key shapes, a match crossing the carry cutoff, and duplicate event IDs with changed sequence. The test module now contains 11 tests. **These updated tests have NOT RUN against the exact checked-in helper/test pair.** The prior 8/8 result was from a reconstructed copy and does not validate this revision. The full repository suite also remains NOT RUN. No GitHub Actions or provider workload was run.
 
 Next: execute the exact checked-in pair in an offline interpreter, then add tests for artifact quarantine/release, immutable report versions, deletion tombstones, output-overflow/drain policy, and atomic concurrent idempotency. Static regex redaction remains best-effort, not a guarantee that arbitrary secrets are detected.
+
+
+## Additional deterministic replay and gate tests — 2026-10-27
+
+The pure event reducer now sorts accepted events by coordinator sequence, then event ID as a deterministic tie-break when malformed input reuses a sequence. Duplicate sequence values still mark the evidence contradictory; the tie-break is only to make replay output stable, not to legitimize the evidence.
+
+Three further synthetic tests were added: deterministic replay under duplicate sequence, independent artifact-release gate checks, and output accounting/retention behavior after overflow. The checked-in test module now contains 14 test methods. **They remain NOT RUN against the exact checked-in pair.** No live provider or GitHub Actions execution was used.
