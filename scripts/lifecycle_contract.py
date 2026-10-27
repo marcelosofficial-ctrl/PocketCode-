@@ -78,21 +78,30 @@ def reduce_terminal_events(events: Iterable[Mapping[str, Any]]) -> dict[str, Any
     by_id: dict[str, tuple[int, str, Any]] = {}
     accepted: list[dict[str, Any]] = []
     conflicts: list[dict[str, Any]] = []
+    invalid_events: list[Any] = []
     contradictory = False
 
     for raw in events:
+        if not isinstance(raw, Mapping):
+            # Keep malformed input observable instead of silently dropping it.
+            invalid_events.append(raw)
+            contradictory = True
+            continue
         event = dict(raw)
         event_id = event.get("event_id")
         sequence = event.get("sequence")
         kind = event.get("kind")
         payload = event.get("payload")
         if not isinstance(event_id, str) or not event_id:
+            invalid_events.append(event)
             contradictory = True
             continue
         if not isinstance(sequence, int) or isinstance(sequence, bool) or sequence < 0:
+            invalid_events.append(event)
             contradictory = True
             continue
         if not isinstance(kind, str) or not kind:
+            invalid_events.append(event)
             contradictory = True
             continue
         signature = (sequence, kind, payload)
@@ -134,6 +143,7 @@ def reduce_terminal_events(events: Iterable[Mapping[str, Any]]) -> dict[str, Any
     return {
         "events": accepted,
         "conflicts": conflicts,
+        "invalid_events": invalid_events,
         "execution_outcome": terminal_outcome,
         "winning_event_id": winning_event_id,
         "contradictory_evidence": contradictory,
