@@ -72,3 +72,13 @@ Next safe step: execute the exact checked-in files in an offline local interpret
 
 
 Current count refresh: `scripts/test_lifecycle_contract.py` contains 30 test methods by source inspection. This is not execution evidence; the exact suite remains NOT RUN.
+
+
+## Report-history PASS gate audit — 2026-10-27
+
+| Requirement / decision | Current code seam | Synthetic coverage | Remaining gap / evidence class |
+|---|---|---|---|
+| PASS report history requires exit-zero, policy, termination, artifact, tenant/job, no-limit-breach, no-truncation, consistency, and evidence-association gates | `ReportHistory.append` | `test_report_history_pass_requires_complete_limit_and_evidence_gates`; `test_cleanup_reconciliation_appends_new_report_version_without_rewriting_history`; `test_report_history_versions_are_per_job_and_require_evidence_reference` | Static source inspection only; tests NOT RUN. Boolean gates are not proof of evidence provenance. Production must derive them from authoritative evidence bound to the job and policy revision. |
+| Report-history job IDs and evidence references reject whitespace-only strings | `ReportHistory.append` | `test_report_history_rejects_whitespace_only_identity_fields` | Pure in-memory model only; durable atomic append/versioning remains unimplemented. |
+
+Current branch `pocketcode-report-pass-gate-hardening-2026-10-27`: 32 test methods defined by source inspection. No tests run.
