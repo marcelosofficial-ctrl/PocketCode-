@@ -99,6 +99,35 @@ class LifecycleTests(unittest.TestCase):
         self.assertNotIn(b"alpha-beta-token", retained)
         self.assertIn(b"*" * len(b"secret=alpha-beta-token"), retained)
 
+    def test_bearer_and_provider_key_patterns_are_redacted(self):
+        raw = (b"Authorization: Bearer abcdefghijklmnop "
+               b" sk-1234567890abcdef "
+               b" ghp_123456789012345678901234567890")
+        redacted = StreamingRedactor._redact(raw)
+        self.assertNotIn(b"abcdefghijklmnop", redacted)
+        self.assertNotIn(b"sk-1234567890abcdef", redacted)
+        self.assertNotIn(b"ghp_123456789012345678901234567890", redacted)
+        self.assertEqual(len(raw), len(redacted))
+
+    def test_redaction_does_not_leak_a_match_split_at_carry_boundary(self):
+        redactor = StreamingRedactor()
+        prefix = b"x" * (StreamingRedactor.CARRY_BYTES - 10)
+        secret = b" secret=alpha-beta-token"
+        first = redactor.feed(prefix + secret[:15])
+        second = redactor.feed(secret[15:] + b"y" * 900)
+        tail = redactor.finish()
+        retained = first + second + tail
+        self.assertNotIn(b"alpha-beta-token", retained)
+        self.assertIn(b"*" * len(secret), retained)
+
+    def test_duplicate_event_id_with_changed_sequence_is_conflict(self):
+        event = {"event_id": "same", "sequence": 1, "kind": "exit_zero", "payload": {}}
+        result = reduce_terminal_events([event, {
+            "event_id": "same", "sequence": 2, "kind": "exit_zero", "payload": {}
+        }])
+        self.assertTrue(result["contradictory_evidence"])
+        self.assertEqual(len(result["conflicts"]), 1)
+
 
 if __name__ == "__main__":
     unittest.main()
