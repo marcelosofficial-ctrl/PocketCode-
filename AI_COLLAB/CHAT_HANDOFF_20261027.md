@@ -154,3 +154,5 @@ Acceptance criteria:
 - Acceptance matrix and traceability crosswalk updated with FP-02..FP-04, IDEM-03..IDEM-04, and LIFE-16.
 - Exact helper/test suite and full repository suite remain **NOT RUN**. No GitHub Actions, provider workload, merge, deployment, account setup, or spend was initiated.
 - Next: verify the final branch files and test syntax/behavior using an approved offline Python runtime. Continue static review only until executable verification is available.
+
+- Additional event-schema audit: terminal-event reduction now rejects whitespace-only event IDs/kinds and missing or non-mapping payloads into `invalid_events`, marking evidence contradictory. Acceptance case LIFE-17 and regression test added. Source/test suite remains NOT RUN.
