@@ -12,7 +12,8 @@
 - [Offline acceptance-test matrix](OFFLINE_ACCEPTANCE_TEST_MATRIX.md) — proposed deterministic tests, including LC-01 through LC-12. **Not run.** Fake adapters cannot establish provider isolation, real termination, effective egress enforcement, or billing behavior.
 - [Source/version coherence audit](PASS1_SOURCE_VERSION_COHERENCE_AUDIT.md) — records provider-document version and source-integrity follow-ups.
 - [Runtime/provider gate](PASS1_RUNTIME_PROVIDER_GATE.md) — provider-neutral gate; no provider approved for live tests under the current strict $0 budget.
-- [Gemini review request](GEMINI_REVIEW_REQUEST.md) — prepared for external copy/paste. It has **not** been sent to Gemini by ChatGPT, and Gemini review is not complete.
+- [Gemini Pass 1 review integration](GEMINI_PASS1_REVIEW_INTEGRATION_20261027.md) — received review triage, verified provider-source corrections, and non-adopted recommendations.
+- [Gemini review request](GEMINI_REVIEW_REQUEST.md) — prepared for external copy/paste. Gemini's independent review was subsequently returned by the user and integrated in [Gemini Pass 1 review integration](GEMINI_PASS1_REVIEW_INTEGRATION_20261027.md). ChatGPT has no direct Gemini messaging connector; the review was relayed by the user.
 
 ## Source/version corrections to preserve
 
@@ -20,7 +21,7 @@
    - v0 network limits: https://www.daytona.io/docs/en/network-limits/
    - v2 alpha network limits: https://www.daytona.io/docs/en/v2/network-limits/
    - v2 alpha limits: https://www.daytona.io/docs/en/v2/limits/
-   The v2 alpha network documentation says egress is open by default and requested policy may differ from applied policy. A configured request alone is not proof of effective enforcement. These are documentation findings, not runtime verification.
+   The v2 alpha network documentation says egress is open by default and requested policy may differ from applied policy; the current official page exposes desired/applied policy, pending/applied/failed status and revisions. User code must not start until the exact required policy is confirmed applied. ETag is a revision/concurrency token, not itself proof of enforcement. These are documentation findings, not runtime verification.
 
 2. **E2B security/testing permission:** current reviewed page is https://e2b.dev/security. It says to contact E2B before running tests because prior written consent is required. No testing was attempted.
 
@@ -42,6 +43,7 @@ This separation is a candidate model, not an approved schema. Before implementat
 ## Product validation and limits
 
 - The prototype remains simulated; no real execution backend exists.
+- Gemini's review has been received; its recommendation to adopt Modal by default and to reject local Android execution is not adopted. Neither is justified under current evidence and strict $0 constraints.
 - The Python+CSV quick-run verifier remains a hypothesis, not validated demand.
 - No representative interviews or hands-on task benchmark has been completed.
 - PocketCode naming collision risk remains unresolved; no legal conclusion or rename decision.
@@ -53,8 +55,8 @@ At checkpoint creation, PR #3 was open, draft, unmerged, with branch head c7c1a6
 
 ## Next actions
 
-1. Obtain Gemini's independent review using the handoff request; do not mark it complete until actual findings are returned.
-2. Reconcile provider-version wording in the main provider research document with the source/version audit.
-3. Verify internal links and source claims; reopen Modal networking documentation directly before any provider decision, since the search-indexed result was available but the direct page fetch returned 502.
-4. Update the decision register/checkpoint after the review, preserving explicit proposal-versus-decision labels.
-5. Only after review, decide whether the contract is coherent enough for an offline-only implementation plan. No provider selection or live test without separate approval.
+1. Continue source/link verification and re-open the Modal networking primary page before any provider decision; the search-indexed page was available but direct retrieval returned 502.
+2. Resolve the remaining two-axis lifecycle semantics, idempotency conflict behavior, output/secret-redaction policy, and provisional artifact handling before freezing the contract.
+3. Add deterministic offline tests for policy-application barrier, cancel/timeout race, process-tree handling, streaming limits, artifact hash failure, and cost telemetry. All remain NOT RUN.
+4. Perform low-cost, behavior-based user validation only when the owner can recruit participants; no trial has yet occurred.
+5. Keep provider selection, accounts, live tests, spending, deployment and merge blocked without separate approval. PR #3 remains draft/unmerged; PR #2 untouched.
