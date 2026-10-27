@@ -118,3 +118,75 @@ Discovery, competitive research, and MVP definition. No production architecture,
 - 2026-10-20: Added `PRODUCT/USER_VALIDATION_SCRIPT.md` with a 10–15 minute, behavior-first interview flow, non-identifying notes template, and directional continue/narrow/pause criteria. Linked it from the README. This is preparation only; no user interviews or customer validation have occurred. No Actions workflow was triggered because the changes do not touch the prototype HTML or workflow.
 
 - 2026-10-23: Added `scripts/report_contract.py` and `scripts/test_report_contract.py` as dependency-free, pure report-contract helpers and unit tests. The helper classifies verdicts only from supplied execution status/exit-code evidence, marks simulated reports explicitly, distinguishes empty from unavailable output, labels check provenance, bounds report content, and escapes control characters in user-provided text. Ran the 12 unit tests locally in a temporary workspace; all passed. These tests cover formatting/verdict rules only: no submitted code, runner, provider, live workload, backend, or GitHub Actions workflow was used. The helper is not a source of trusted execution evidence and is not integrated into the static prototype.
+
+
+## 2026-10-27 lifecycle contract update
+
+The owner delegated selection of the six lifecycle decisions to ChatGPT after reviewing the decision packet. The selected provider-neutral baseline is documented in [AI_COLLAB/PASS1_OWNER_DECISIONS_RESEARCH_20261027.md](AI_COLLAB/PASS1_OWNER_DECISIONS_RESEARCH_20261027.md). Added a pure lifecycle helper and synthetic tests under `scripts/lifecycle_contract.py` and `scripts/test_lifecycle_contract.py`; these do not execute submitted code or contact a provider. **These new tests have not yet been run**, and no claim is made that they pass. Existing simulated prototype/report tests remain separate. Strict $0 remains in force; no provider, account, workload, production implementation, deployment, or merge is authorized.
+
+The lifecycle helper also includes a bounded, configured-pattern streaming redactor before output retention. It is explicitly best-effort and does not establish that arbitrary secrets will always be detected. The new test module includes a chunk-boundary redaction fixture, but the repository tests remain unrun.
+
+
+### Offline test evidence clarification — 2026-10-27
+
+Ran 8 synthetic unit tests in a temporary Python environment using a reconstructed copy of the checked-in helper and test module: 8 passed, 0 failures, 0 errors. This included disposition gates, coordinator-sequence replay, idempotency/fingerprint behavior, artifact release gates, output caps, and a chunk-boundary redaction fixture. This was not a test run from a checkout of the repository, and the full existing repository suite was not run. No GitHub Actions, provider, submitted code, or live workload was used. Before treating this as verified branch evidence, run the exact checked-in files in an offline local checkout when available.
+
+
+### Offline test evidence clarification — 2026-10-27
+
+Ran 8 synthetic unit tests in a temporary Python environment using a reconstructed copy of the checked-in helper and test module: 8 passed, 0 failures, 0 errors. This included disposition gates, coordinator-sequence replay, idempotency/fingerprint behavior, artifact release gates, output caps, and a chunk-boundary redaction fixture. This was not a test run from a checkout of the repository, and the full existing repository suite was not run. No GitHub Actions, provider, submitted code, or live workload was used. Before treating this as verified branch evidence, run the exact checked-in files in an offline local checkout when available.
+
+
+## 2026-10-27 — lifecycle helper static review follow-up
+
+- Reviewed `scripts/lifecycle_contract.py` and its synthetic tests on the PR branch.
+- Corrected over-escaped byte-regex patterns, protected configured matches crossing the streaming carry cutoff, and made duplicate event identity sensitive to coordinator sequence.
+- Expanded the test module to 11 test cases, including redaction boundary/provider-token fixtures and changed-sequence duplicate event conflict.
+- Reconciled the offline acceptance matrix with the six delegated lifecycle decisions and refreshed PR #3's body to reflect current scope/status.
+- **Verification is NOT RUN for the exact updated checked-in helper/test pair and the full repository suite.** The earlier 8/8 reconstructed-copy result is historical and must not be used as evidence for this revision.
+- No GitHub Actions, provider, workload, paid service, deployment, or merge. PR #3 remains draft/open; PR #2 remains untouched.
+- Next offline work: run exact files when an interpreter is available; then cover artifact quarantine/release, immutable report versions, deletion tombstones, output overflow/drain behavior, and atomic concurrent idempotency.
+
+
+### Additional offline coverage — 2026-10-27
+
+- Event replay now has a deterministic event-ID tie-break for malformed duplicate coordinator sequences; such sequences remain contradictory and cannot support PASS.
+- Added tests for deterministic replay, each artifact release gate independently, and output observed-byte accounting plus no additional retention after overflow.
+- Historical count at this checkpoint was 14 test methods. The current count is recorded in the latest status entry below; exact checked-in tests and full repository suite remain NOT RUN.
+
+
+## 2026-10-27 — report recovery, tombstones, and idempotency race model
+
+- Added pure in-memory ReportHistory: cleanup reconciliation appends a new version rather than rewriting an earlier disposition; stored and returned snapshots are copied. It rejects PASS when cleanup is not CONFIRMED.
+- Added DeletionTombstones with tenant-scoped keys and a provisional 30-day retention window after deletion, expiring at the exact deadline.
+- Added reserve_idempotency_batch to model coordinator-ordered outcomes for racing submissions: same key/fingerprint becomes one CREATED plus REPLAY; different fingerprint conflicts without replacing the first reservation.
+- Added five synthetic tests (19 lifecycle test methods at that checkpoint). These models do not provide durable storage, transactional atomicity, or a real concurrency test. Production atomicity remains an implementation/acceptance requirement.
+- **Verification remains NOT RUN** for the exact checked-in lifecycle helper/test pair and the full repository suite. Do not treat this as passing code. No GitHub Actions, provider, workload, spend, deployment, or merge was used.
+
+
+## 2026-10-27 — conflicting terminal-event correction
+
+Static review identified a mismatch: replay selected the first terminal event but did not flag a second distinct terminal event. The helper now preserves both, keeps the earliest coordinator-sequenced event as the recorded winner, marks later terminal evidence contradictory, and tests that timeout followed by late zero-exit evidence derives INCOMPLETE rather than PASS. This closes a design inconsistency in the pure model; the exact checked-in tests remain NOT RUN.
+
+A further coherence pass found contradictory-evidence handling occurred after the `NOT_STARTED` shortcut in `derive_disposition`. The helper now prioritizes contradiction and returns `INCOMPLETE` rather than hiding contradictory evidence behind `REJECTED`. A regression test was added; the current checked-in lifecycle test module contains 21 test methods, including aggregate-only output overflow. Later static hardening also added portable input-name/media-type rejection and required all explicit PASS gates before ReportHistory can append PASS. Exact checked-in tests and the full repository suite remain NOT RUN.
+
+
+### Latest lifecycle evidence hardening — 2026-10-27
+Static review found that Python truthiness could allow malformed values such as the string `"false"` or integer `1` to satisfy PASS gates in `derive_disposition`. The helper now requires literal boolean `True` for policy, termination, artifact, and tenant/job authorization gates, and for timeout/cancel termination confirmation. Added negative synthetic coverage and acceptance case LC-15. The checked-in lifecycle test module contains 23 test methods. This is a source-level change only: the exact checked-in helper/test pair and full repository suite remain NOT RUN; no Actions run or provider workload occurred.
+
+
+### Follow-on artifact gate hardening — 2026-10-27
+The same Python truthiness flaw existed in `artifact_release_allowed`: truthy malformed values could satisfy digest, job-association, or tenant-authorization checks. Those gates now require literal boolean `True`; added `test_artifact_release_rejects_truthy_non_boolean_evidence` and acceptance case ART-SEM-02. The checked-in lifecycle test module contains 24 test methods. Exact checked-in tests and full repository suite remain NOT RUN.
+
+
+### Operating workflow now recorded in the master plan — 2026-10-27
+The research/implementation master now includes a durable operating-method addendum: inspect repo evidence before acting; work in coherent risk-proportionate passes; reuse existing code/dependencies; delegate bounded non-overlapping AI roles; preserve discovery-first/provider-neutral/security requirements; report only executed verification; respect $0/no-provider/no-deploy/no-merge boundaries; and keep continuity in repository records. This supplements rather than replaces product, architecture, security, roadmap, and decision documents.
+
+**Current branch-specific state:** lifecycle helper/test module contains 24 test methods; exact checked-in pair and full repository suite remain NOT RUN. PR #3 is draft/open/unmerged; PR #2 is unchanged. No Actions, provider workload, spend, deployment, or merge.
+
+
+### Continuity artifacts added — 2026-10-27
+- [Complete chat handoff](AI_COLLAB/CHAT_HANDOFF_20261027.md) captures the current PocketCode goal, owner constraints, three-AI division of labor, PR/branch state, lifecycle decisions and recent changes, test-status caveats, research links, and next acceptance criteria.
+- [Master workflow efficiency rules](AI_COLLAB/MASTER_WORKFLOW_EFFICIENCY_RULES_20261027.md) preserves the owner's 18-section operating-method guidance as a durable repository reference. It supplements, and does not supersede, product/architecture/security/roadmap/decision documents.
+- If a future chat cannot access/read the workflow file or is unsure it has captured the owner's intent, ask the owner to paste the original workflow again before substantial work. Do not request a repeat when the file is accessible and sufficient.
+- Handoff is based on last observed evidence; verify current branch/head and files before continuing. The lifecycle tests remain NOT RUN.
