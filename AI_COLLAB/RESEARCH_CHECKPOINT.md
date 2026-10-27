@@ -170,3 +170,12 @@ This is documentation/specification work only. No tests were run. Before schema 
 Added [PASS1_OWNER_DECISION_PACKET_20261027.md](PASS1_OWNER_DECISION_PACKET_20261027.md) to turn the remaining lifecycle questions into six explicit review decisions with conservative defaults and trade-offs: artifact quarantine, event ordering, idempotency retention, output overflow, canonical request fingerprint, and outcome/disposition separation. All decisions remain pending; this file does not imply approval.
 
 Next safe step is owner review of the packet. After agreement, update the draft contract/matrix and implement pure offline tests. No tests have been run in this pass; provider-dependent work remains blocked by strict $0 and consent gates.
+
+
+## 2026-10-27 continuation — cross-document decision/status alignment
+
+- Reconciled the current contract, offline acceptance matrix, lifecycle resolution note, and decision register with [PASS1_OWNER_DECISION_PACKET_20261027.md](PASS1_OWNER_DECISION_PACKET_20261027.md).
+- Added direct links to the owner packet at contract/matrix decision points and expanded the contract's open questions to cover replayable timeout/cancel ordering, tenant-scoped idempotency and retention, server-side request fingerprinting, and byte/time/stream overflow budgets.
+- Corrected the lifecycle resolution note: provider timestamps alone do not establish authoritative event ordering; accepted coordinator-ingress sequence plus one atomic terminal decision is the proposed replayable approach. Ambiguous ordering remains non-PASS.
+- Updated the decision register's current next action to owner review, then one coordinated contract/matrix update only if approved. The packet remains recommendations only; all six decisions are pending.
+- Static document changes only. No tests were implemented or run, no provider was selected or accessed, and no spending/deployment/merge occurred. PR #3 remains draft/unmerged; PR #2 remains untouched.
