@@ -1,8 +1,8 @@
 # Pass 1 — Runtime/provider feasibility gate
 
-**Status:** Desk comparison only; not a benchmark, security audit, or provider selection.
-**Prepared:** 2026-10-27
-**Owner:** ChatGPT independent contribution; not Gemini completion.
+**Status:** Desk comparison only; not a benchmark, security audit, or provider selection.  
+**Prepared:** 2026-10-27  
+**Owner:** ChatGPT independent contribution; not Gemini completion.  
 **Budget:** $0. No account creation, live workload, paid plan, or test authorization.
 
 ## Decision summary
@@ -10,9 +10,9 @@
 **No candidate is approved for a live proof under the current constraints.** The gate is not “which one is cheapest per minute?” but “can mandatory controls be enforced on a plan that costs nothing, and can they be verified before accepting hostile code?”
 
 - **Cloudflare Containers/Sandboxes** has the clearest paper fit for per-job Linux execution: current docs say Containers run inside separate Firecracker microVMs and internet access defaults off. But Containers require Workers Paid at $5/month; this fails the strict $0 rule. Future candidate only if the owner explicitly changes the budget.
-- **Daytona** documents per-sandbox network policy and CPU/memory/disk limits, but tier restrictions matter. Current v2 docs (marked alpha) describe tier 1/2 organization restrictions that cannot be overridden per sandbox; v0 docs describe a different parameter model. Exact plan/version needs confirmation, and there is no verified hard $0 spend cap.
+- **Daytona** documents per-sandbox network policy, but **v0 and v2 alpha are materially different documentation surfaces**. The v0 Network Limits page describes tier-based organization restrictions: Tier 1/2 restrictions cannot be overridden at sandbox level, while Tier 3/4 permit sandbox-level controls. The current v2 alpha page instead says egress is open by default, policy must be explicitly applied, and desired/applied policy may differ during updates; it also states network policies apply to Linux/macOS, not Windows/GPU sandboxes. Do not combine these as one API/plan behavior. Exact product version, plan, applied policy, and billing controls remain unverified.
 - **Modal** documents sandbox creation and a network-blocking option, but the reviewed credit model is not a guaranteed spend ceiling. Exact current configuration and adversarial validation are required.
-- **E2B** documents per-sandbox microVM isolation, but its security page requires prior written consent before testing. Do not run tests without consent. Plan/concurrency/base terms and a hard spend cap remain unverified.
+- **E2B** documents per-sandbox microVM isolation, but its current security page requires prior written consent before testing. Do not run tests without consent. Plan/concurrency/base terms and a hard spend cap remain unverified.
 
 No provider has been tested. This is a documentation comparison, not a security certification or a claim that any provider is insecure.
 
@@ -21,9 +21,9 @@ No provider has been tested. This is a documentation comparison, not a security 
 | Candidate | Isolation documented | Network control documented | Cost constraint | Current decision |
 |---|---|---|---|---|
 | Cloudflare Containers / Sandboxes | Container sandbox in separate Firecracker microVM; own kernel/network per current docs | Container internet access defaults off; outbound handlers/allowed hosts can constrain traffic | Containers require Workers Paid $5/month; no free Container tier | **Not eligible at $0**; best paper candidate if budget is later approved |
-| Daytona | Container and VM sandbox types; limits per sandbox | Per-sandbox allowlist/block-all documented; behavior depends on API version and organization tier | Free trial/credits are not a hard spend ceiling; tier upgrades require payment/top-ups | **Hold** pending exact free-tier policy, billing guard, and isolation review |
+| Daytona | Container and VM sandbox types; limits per sandbox | v0 tier-based restrictions; v2 alpha explicit network policy with open egress by default; version and OS scope matter | Free trial/credits are not a hard spend ceiling; tier upgrades require payment/top-ups | **Hold** pending exact version/tier, applied-policy evidence, billing guard, and isolation review |
 | Modal | Disposable Sandbox API documented; exact isolation boundary/settings need current plan-specific verification | Network-blocking API documented; default network and exceptions need exact config review | Starter credits can offset compute but are not a hard $0 cap | **Hold** pending cost guard and adversarial egress/lifecycle proof |
-| E2B | MicroVM per sandbox documented | Network policy and metadata reachability need provider-specific proof | Pricing/concurrency terms and a hard cap not verified; prior written consent required before tests | **Do not test yet**; written consent and cost/security review first |
+| E2B | MicroVM per sandbox documented | Egress policy and metadata reachability need provider-specific proof | Pricing/concurrency terms and a hard cap not verified; prior written consent required before tests | **Do not test yet**; written consent and cost/security review first |
 
 ## Important qualifications
 
@@ -34,16 +34,19 @@ No provider has been tested. This is a documentation comparison, not a security 
 - Container pricing states Workers Paid costs $5/month; included resource quotas do not remove the base fee. Incompatible with the current strict $0 budget.
 
 ### Daytona
-- The v2 Network Limits page is explicitly marked alpha and says tier 1/2 organization restrictions cannot be overridden per sandbox; higher tiers can apply sandbox-level block-all/allowlist policies. The v0 page documents tier-based policies and a different parameter model. Do not mix code examples or assume a control exists on every tier/version.
+- **v0 source:** https://www.daytona.io/docs/en/network-limits/ — tier-based network restrictions and the older network-settings parameter model.
+- **v2 alpha source:** https://www.daytona.io/docs/en/v2/network-limits/ — egress open by default, explicit policy, desired versus applied state, and Linux/macOS scope (not Windows/GPU). The page is marked alpha.
+- The v2 page does not substantiate the older precise Tier 1/2 override wording. Keep that claim attributed to v0, not v2.
 - Per-sandbox resource caps and organization pool quotas are separate; a per-sandbox cap does not prove a global spend ceiling or prevent queue abuse.
-- A zero-egress test must confirm DNS, IPv4/IPv6, loopback, private/link-local/metadata, and redirects behavior under the exact plan.
+- A zero-egress test must confirm DNS, IPv4/IPv6, loopback, private/link-local/metadata, and redirects behavior under the exact plan. Documentation alone is not proof.
 
 ### Modal
 - Treat network blocking as a required configuration to verify, not a security guarantee by name. Confirm whether every process/protocol is covered and whether the chosen plan can enforce resource, lifecycle, and egress limits.
 - Credits are a subsidy, not a billing kill switch. Without an owner-approved hard ceiling and automatic fail-closed billing guard, no workload should run.
+- The current networking documentation fetch returned an upstream 502 during the latest desk review; re-fetch before any provider-specific design decision.
 
 ### E2B
-- Prior written consent is a precondition for tests according to the reviewed E2B security page. Do not run even a small harmless proof before permission is obtained.
+- Current security page: https://e2b.dev/security. Prior written consent is a precondition for tests according to the reviewed page. Do not run even a small harmless proof before permission is obtained.
 - Pricing arithmetic alone is insufficient to establish plan base fees, concurrency caps, overage behavior, cancellation charges, and a hard stop-spend control.
 
 ## Provider-neutral minimum contract
@@ -86,10 +89,11 @@ A provider adapter is not ready for implementation acceptance until it can retur
 - Cloudflare Containers pricing: https://developers.cloudflare.com/containers/platform/pricing/
 - Daytona v2 Network Limits (explicitly alpha): https://www.daytona.io/docs/en/v2/network-limits/
 - Daytona v0 Network Limits: https://www.daytona.io/docs/en/network-limits/
-- Daytona limits: https://www.daytona.io/docs/limits
+- Daytona v2 limits (explicitly alpha): https://www.daytona.io/docs/en/v2/limits/
+- Daytona general limits: https://www.daytona.io/docs/en/limits/
 - Modal Sandboxes guide: https://modal.com/docs/guide/sandboxes
 - Modal Sandbox API: https://modal.com/docs/reference/modal.Sandbox
-- E2B security: https://e2b.dev/docs/security
+- E2B current security page: https://e2b.dev/security
 - E2B pricing: https://e2b.dev/pricing
 
 Source statements are documentation snapshots, not independently verified runtime behavior. Re-check plan details immediately before any approved proof.
