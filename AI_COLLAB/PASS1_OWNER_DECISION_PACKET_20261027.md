@@ -1,7 +1,7 @@
 # PocketCode — Owner Decision Packet (2026-10-27)
 
 **Purpose:** resolve the minimum product/contract choices needed before writing deterministic offline state-machine/report tests.  
-**Status:** recommendations only; no decision is presumed approved.  
+**Status:** selected baseline after owner delegation on 2026-10-27; see the selection record below.  
 **Guardrails:** strict $0; no provider, account, workload, paid service, merge, or deployment. PR #3 stays draft; PR #2 stays untouched.
 
 Read with [PASS1_LIFECYCLE_IDEMPOTENCY_ARTIFACT_POLICY_20261027.md](PASS1_LIFECYCLE_IDEMPOTENCY_ARTIFACT_POLICY_20261027.md), [DRAFT_EXECUTION_CONTRACT.md](DRAFT_EXECUTION_CONTRACT.md), and [OFFLINE_ACCEPTANCE_TEST_MATRIX.md](OFFLINE_ACCEPTANCE_TEST_MATRIX.md).
