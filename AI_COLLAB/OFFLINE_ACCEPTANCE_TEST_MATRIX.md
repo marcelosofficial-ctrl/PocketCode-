@@ -119,6 +119,7 @@ Detailed proposed semantics and test IDs are in [PASS1_LIFECYCLE_IDEMPOTENCY_ART
 | ART-SEM-03 | Artifact requested by wrong job/tenant | Deny access and avoid metadata leakage |
 | STREAM-SEM-01 | Chunked output exceeds cap | Bounded retention; observed byte count and truncation are explicit |
 | STREAM-SEM-02 | Synthetic secret-shaped pattern crosses chunk boundary | Configured detector catches fixture; no claim of universal detection |
+| STREAM-SEM-03 | Aggregate cap + 1 while both individual streams remain below per-stream cap | Exactly-at-aggregate-cap is allowed; next byte triggers LIMIT_EXCEEDED behavior and further retention stops |
 | COST-SEM-01 | Resource metrics exist but invoice data is delayed/missing | Keep observed telemetry distinct; cost is ESTIMATED or UNAVAILABLE, never falsely FINAL/$0 |
 | NET-SEM-01 | Required policy revision changes between prepare and execute | Revalidate at the execution barrier; mismatch prevents task start |
 
@@ -173,4 +174,4 @@ The reducer now retains the accepted events, keeps the earliest coordinator-sequ
 
 ## Disposition precedence coherence check — 2026-10-27
 
-Static crosswalk found that `derive_disposition` returned `REJECTED` for `NOT_STARTED` before checking the global contradictory-evidence flag. That ordering could hide contradictory records behind a nominal rejection. The helper now gives contradictory evidence precedence and derives `INCOMPLETE`; a new synthetic regression test covers this edge. The checked-in lifecycle module now has 20 test methods. **No tests have run against the exact checked-in pair or full repository suite.**
+Static crosswalk found that `derive_disposition` returned `REJECTED` for `NOT_STARTED` before checking the global contradictory-evidence flag. That ordering could hide contradictory records behind a nominal rejection. The helper now gives contradictory evidence precedence and derives `INCOMPLETE`; a new synthetic regression test covers this edge. The checked-in lifecycle module now has 21 test methods, including aggregate-only output overflow. **No tests have run against the exact checked-in pair or full repository suite.**
