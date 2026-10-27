@@ -27,6 +27,7 @@
 - Legal/trademark/name clearance for “PocketCode”; collision risk is a reason to investigate, not a legal conclusion.
 - Native app distribution requirements, provider-specific real isolation, egress controls, cancellation/cleanup, tenant isolation, and total operating cost.
 - Gemini’s required Pass 0–7 and cross-review completion. ChatGPT’s work is separately attributed and is not evidence that Gemini completed it.
+- Gemini Pass 1 review has now been received from the user and triaged in GEMINI_PASS1_REVIEW_INTEGRATION_20261027.md; this does not imply all recommendations are adopted.
 
 ## 2. Decision register
 
@@ -34,16 +35,22 @@
 |---|---|---|---|---|
 | D1 | First workflow to investigate | Short Python + small CSV/text input → authoritative bounded result/report | Yes | Research-only hypothesis |
 | D2 | Product scope | Exclude arbitrary packages, network, secrets, persistent jobs, public ports, and broad agent orchestration from first proof | Yes | Revisit only with threat model and evidence |
-| D3 | Provider | None selected | Yes | No account/workload until mandatory controls and $0 hard cap are proven and owner explicitly approves |
+| D3 | Provider | None selected; Gemini's Modal-default recommendation not adopted | Yes | No account/workload until mandatory controls and $0 hard cap are proven and owner explicitly approves |
 | D4 | Budget | Strict $0 | No implicit relaxation | Explicit owner approval required to change |
 | D5 | Runtime security | Fail closed when mandatory control is unsupported or unverified | Safety invariant | Cannot weaken merely to fit a free tier |
-| D6 | Contract limits/state semantics | Draft only; numeric limits and semantics provisional | Yes | Review against product needs and provider-enforced limits before implementation |
+| D6 | Contract limits/state semantics | Draft only; two-axis execution outcome/disposition is leading proposal, not frozen schema | Yes | Resolve cleanup/result exposure, timeout-cancel races, idempotency conflicts, network-policy barrier evidence, output/redaction limits, and cost telemetry before implementation |
 | D7 | Project name | “PocketCode” collision risk flagged | Yes | Research legal/name options; no rename without owner approval |
 | D8 | Code/runtime implementation | Not authorized by this research PR | Yes | Separate implementation plan and approval |
 | D9 | Merge/deploy/public release | Not authorized by this register | N/A | Explicit owner approval |
 | D10 | Gemini attribution | Pending independent evidence | N/A | Log only verified Gemini artifacts/results |
 
 ## 3. Research gaps and next actions
+
+### Gemini Pass 1 review — received 2026-10-27
+- **Adopt as findings:** lifecycle axis separation, fail-closed network-policy applied-state barrier, deterministic race/process-tree/output/artifact/idempotency/cost tests.
+- **Not adopted automatically:** Modal as default provider, blanket rejection of local Android execution, a fixed 24-hour idempotency TTL, 1 MiB inline output cap, universal CSV semantic validation, or a project rename.
+- **Source correction:** E2B official pricing lists a free Hobby tier with one-time $100 usage credit and a $150/month Pro tier plus usage; Pro is not a universal entry requirement. Credits still do not satisfy a hard $0 cap. See the review integration note for current official URLs and remaining uncertainty.
+- **Network barrier:** Daytona v2 alpha exposes desired/applied policy, status and revision; no user task should start until the exact mandatory policy is confirmed applied. This remains a design invariant, not runtime proof.
 
 ### Priority P0 — can be advanced offline, without accounts or spend
 1. **Contract coherence audit:** compare request validation, lifecycle states, report evidence, cleanup semantics, and proposed limits across the draft contract, security matrix, and prototype report contract. Output: conflict list and acceptance tests.
