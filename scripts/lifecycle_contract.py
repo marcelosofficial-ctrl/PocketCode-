@@ -443,7 +443,16 @@ class DeletionTombstones:
             raise ValueError("tenant, key, and fingerprint must be non-blank strings")
         if not isinstance(deleted_at, int) or isinstance(deleted_at, bool) or deleted_at < 0:
             raise ValueError("deleted_at must be a non-negative integer epoch")
-        self._records[(tenant_id, key)] = (fingerprint, deleted_at + self.RETENTION_SECONDS)
+        record_key = (tenant_id, key)
+        new_expiry = deleted_at + self.RETENTION_SECONDS
+        existing = self._records.get(record_key)
+        if existing is not None:
+            old_fingerprint, old_expiry = existing
+            if old_fingerprint != fingerprint:
+                raise IdempotencyConflict("tombstone key already belongs to a different request")
+            # Repeated deletion events are idempotent and must not shorten retention.
+            new_expiry = max(old_expiry, new_expiry)
+        self._records[record_key] = (fingerprint, new_expiry)
 
     def lookup(self, *, tenant_id: str, key: str, now: int) -> tuple[str, str] | None:
         """Return a tombstone while retained; expire at the exact deadline."""
