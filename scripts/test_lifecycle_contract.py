@@ -27,6 +27,29 @@ class LifecycleTests(unittest.TestCase):
         for cleanup_state in ("PENDING", "FAILED", "UNKNOWN"):
             self.assertEqual(derive_disposition("EXIT_ZERO", cleanup_state, **args), "INCOMPLETE")
 
+    def test_malformed_truthy_gate_values_never_produce_pass(self):
+        valid = dict(policy_confirmed=True, termination_confirmed=True,
+                     artifacts_valid=True, tenant_job_authorized=True)
+        for field in valid:
+            for malformed in ("false", 1, None):
+                broken = dict(valid)
+                broken[field] = malformed
+                with self.subTest(field=field, malformed=malformed):
+                    self.assertEqual(
+                        derive_disposition("EXIT_ZERO", "CONFIRMED", **broken),
+                        "INCOMPLETE",
+                    )
+        for malformed in ("true", 1, None):
+            with self.subTest(termination=malformed):
+                self.assertEqual(
+                    derive_disposition(
+                        "TIMED_OUT", "CONFIRMED", policy_confirmed=True,
+                        termination_confirmed=malformed, artifacts_valid=True,
+                        tenant_job_authorized=True,
+                    ),
+                    "INCOMPLETE",
+                )
+
     def test_timeout_unknown_termination_and_output_violation_never_pass(self):
         self.assertEqual(derive_disposition(
             "TIMED_OUT", "CONFIRMED", policy_confirmed=True,
