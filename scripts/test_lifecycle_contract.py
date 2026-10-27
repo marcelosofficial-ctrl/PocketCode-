@@ -112,7 +112,7 @@ class LifecycleTests(unittest.TestCase):
     def test_redaction_does_not_leak_a_match_split_at_carry_boundary(self):
         redactor = StreamingRedactor()
         prefix = b"x" * 750
-        secret = b" secret=alpha-beta-token"
+        secret = b"secret=alpha-beta-token"
         first = redactor.feed(prefix + secret[:10])
         # This chunk makes the carry cutoff land inside the secret match.
         second = redactor.feed(secret[10:] + b"y" * 749)
