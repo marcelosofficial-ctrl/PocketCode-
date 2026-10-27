@@ -24,7 +24,8 @@ class LifecycleTests(unittest.TestCase):
             broken = dict(args)
             broken[field] = False
             self.assertEqual(derive_disposition("EXIT_ZERO", "CONFIRMED", **broken), "INCOMPLETE")
-        self.assertEqual(derive_disposition("EXIT_ZERO", "UNKNOWN", **args), "INCOMPLETE")
+        for cleanup_state in ("PENDING", "FAILED", "UNKNOWN"):
+            self.assertEqual(derive_disposition("EXIT_ZERO", cleanup_state, **args), "INCOMPLETE")
 
     def test_timeout_unknown_termination_and_output_violation_never_pass(self):
         self.assertEqual(derive_disposition(
