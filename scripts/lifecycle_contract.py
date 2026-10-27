@@ -376,6 +376,15 @@ class ReportHistory:
         if not all(isinstance(value, str) and value for value in
                    (job_id, disposition, cleanup_state, evidence_ref)):
             raise ValueError("job, disposition, cleanup state, and evidence reference are required")
+        allowed_dispositions = {
+            "REJECTED", "PASS", "FAILED", "TIMED_OUT", "CANCELLED",
+            "LIMIT_EXCEEDED", "INCOMPLETE", "PROVIDER_ERROR",
+        }
+        allowed_cleanup_states = {"PENDING", "CONFIRMED", "FAILED", "UNKNOWN"}
+        if disposition not in allowed_dispositions:
+            raise ValueError("unsupported job disposition")
+        if cleanup_state not in allowed_cleanup_states:
+            raise ValueError("unsupported cleanup state")
         if disposition == "PASS":
             required_gates = {"exit_zero", "policy_confirmed", "termination_confirmed",
                               "artifacts_valid", "tenant_job_authorized"}
