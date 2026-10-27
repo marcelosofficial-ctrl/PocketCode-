@@ -95,3 +95,10 @@
 - Added [DRAFT_EXECUTION_CONTRACT.md](DRAFT_EXECUTION_CONTRACT.md), translating user-problem, security, and provider research into an offline-testable proposal: request shape, lifecycle, adapter contract, report trust model, and fake-adapter test matrix.
 - Proposed values and state semantics are review items, not implementation commitments. No provider SDK, real execution, accounts, workloads, or spend.
 - Fake adapter tests cannot establish runtime isolation, egress enforcement, cleanup, tenant isolation, or billing.
+
+
+### 2026-10-27 — ChatGPT evidence/decision register (not Gemini completion)
+- Added [DECISION_REGISTER.md](DECISION_REGISTER.md) to make evidence status, hypotheses, open questions, reversible decisions, approval gates, research priorities, stop/continue/pivot criteria, and no-go actions explicit.
+- Highest-value next offline work: cross-audit the draft execution contract against the threat model and report contract; map mandatory controls to tests and observable evidence; verify external links and version/date caveats.
+- User validation remains unperformed; no provider selected, no accounts, credentials, live workloads, tests, spend, merge, or deployment. Strict $0 gate preserved.
+- This is ChatGPT's independent contribution. Do not mark Gemini's required passes complete without Gemini's own evidence.
