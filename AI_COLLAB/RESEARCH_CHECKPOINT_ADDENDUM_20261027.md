@@ -79,3 +79,10 @@ The older PR-head SHA and next-action list above are historical checkpoint value
 The official search-indexed Modal networking guide was rechecked after direct page retrieval returned 502. It explicitly states DNS traffic is unrestricted except when all outbound traffic is blocked, and block_network=True drops all outbound traffic. Domain allowlisting is Beta/TLS 443; dynamic policy updates are Alpha.
 
 The related provider research, runtime gate, source-integrity note, and source/version audit now reflect this wording. This closes the documentation wording gap only; it does not establish runtime enforcement, metadata/private-path behavior, exact-plan suitability, or a hard $0 cap. Re-open the primary page before a provider decision.
+
+
+## Delegated decision status — 2026-10-27
+
+The owner subsequently delegated the six lifecycle decisions to ChatGPT. The earlier owner-review next-action lists above are historical and superseded by this section. The selected baseline and rationale are in [PASS1_OWNER_DECISION_PACKET_20261027.md](PASS1_OWNER_DECISION_PACKET_20261027.md) and [PASS1_OWNER_DECISIONS_RESEARCH_20261027.md](PASS1_OWNER_DECISIONS_RESEARCH_20261027.md); the draft contract and lifecycle proposal have been aligned. The acceptance matrix records additional tests now required by these choices. None of those tests has been run yet.
+
+**Current next step:** implement provider-neutral schema/state-machine/report tests with synthetic inputs and fake adapters, then run and record exact commands/results if the available tooling permits. No provider accounts, workloads, spend, production implementation, merge, or deployment. PR #3 remains draft/unmerged; PR #2 remains untouched. The existing PR description may still contain the older next-action text; do not treat this checkpoint update as proof the PR body was changed.
