@@ -47,14 +47,14 @@ def derive_disposition(
         return "INCOMPLETE"
     if execution_outcome == "NOT_STARTED":
         return "REJECTED"
+    if execution_outcome == "LIMIT_EXCEEDED" or limit_violated or output_truncated:
+        return "LIMIT_EXCEEDED"
     if execution_outcome == "UNKNOWN":
         return "PROVIDER_ERROR"
     if execution_outcome == "TIMED_OUT":
         return "TIMED_OUT" if termination_confirmed else "INCOMPLETE"
     if execution_outcome == "CANCELLED":
         return "CANCELLED" if termination_confirmed else "INCOMPLETE"
-    if execution_outcome == "LIMIT_EXCEEDED" or limit_violated or output_truncated:
-        return "LIMIT_EXCEEDED"
     if execution_outcome == "EXIT_NONZERO":
         return "FAILED"
     if execution_outcome != "EXIT_ZERO":
