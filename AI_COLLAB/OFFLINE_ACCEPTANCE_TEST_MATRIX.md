@@ -194,3 +194,5 @@ Static crosswalk found that `derive_disposition` returned `REJECTED` for `NOT_ST
 | IDEM-03 | Tenant ID, key, fingerprint, or proposed job ID is blank/whitespace-only or not a string | Reject before reserving or replaying a key |
 
 | LIFE-16 | Event stream contains malformed mapping fields or a non-mapping record | Preserve malformed records in an explicit invalid-evidence collection and force contradictory evidence; derived disposition must not PASS |
+
+| IDEM-04 | Tombstone add/lookup receives blank or non-string tenant/key/fingerprint values or an invalid epoch | Reject malformed inputs before changing or reading retention state |
