@@ -16,7 +16,6 @@
 - **Evidence labels:** distinguish verified, source-inspected, proposed, completed-unverified, blocked, and superseded. A branch, draft PR, test definition, or chat statement is not proof that code ran or a decision was accepted.
 - **Branch/PR discipline:** audit and experiment branches are not canonical unless reviewed and integrated. Do not assume their files are present on the default branch. Preserve existing owner work; do not modify unrelated PRs.
 
-
 ## Mission
 
 Help people build, execute, inspect, and improve software from a phone, including when they do not have access to a computer.
