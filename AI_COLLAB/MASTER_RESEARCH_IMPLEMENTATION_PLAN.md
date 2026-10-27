@@ -243,3 +243,11 @@ See the detailed grouped register in [PASS0_REPOSITORY_AUDIT.md](PASS0_REPOSITOR
 - The calculations are lower-bound illustrations, not a fair performance comparison or an all-in cost estimate. Modal's idle tail, Daytona's tier-dependent network policy, Cloudflare's $5/month Workers Paid base and additional components, and E2B's testing-consent requirement are material.
 - No provider is “safe and free” on the strength of a free allowance. Under the strict $0 constraint, no live provider test is authorized; no accounts/workloads were created.
 - This is ChatGPT's partial cost research, not Gemini completing workstream H or Pass 1. A–H research and the normalized best/expected/adverse model remain incomplete.
+
+### 2026-10-27 — Pass 1 public user/problem evidence subpass (ChatGPT)
+
+- Added [PASS1_USER_PROBLEM_EVIDENCE.md](PASS1_USER_PROBLEM_EVIDENCE.md) using public Reddit discussions as directional anecdotes, with source dates, limitations, counterevidence, segment hypotheses, and a zero-cost task-based validation protocol.
+- Mixed signal: some people use phones for quick Python/CSV tasks or because they lack a computer; others report touch/screen friction, setup/package limitations, or prefer local tools/remote desktops. These discussions cannot estimate prevalence, retention, willingness to pay, or product-market fit.
+- Proposed segment A remains a test-first choice only: people who recently wanted to verify a short AI-generated Python script plus small text/CSV input from a phone. Local IDEs and existing remote workflows are explicit counter-hypotheses.
+- Added a fixed-task comparison, behavior-based interview prompts, observable metrics, and exploratory stop/re-scope/continue rules. This is a proposed protocol, not executed research; no interviews, app installs, benchmark, account creation, provider workload, or spend occurred.
+- Product implication: do not expand into agent orchestration or native-app complexity until this narrow task is shown to be frequent and underserved. No provider/name/architecture decision was made; budget remains $0.
