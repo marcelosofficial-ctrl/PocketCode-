@@ -185,6 +185,8 @@ class LifecycleTests(unittest.TestCase):
                                         evidence_ref="e2")["version"], 1)
         with self.assertRaises(ValueError):
             history.append("a", disposition="INCOMPLETE", cleanup_state="UNKNOWN", evidence_ref="")
+        with self.assertRaises(ValueError):
+            history.append("a", disposition="PASS", cleanup_state="UNKNOWN", evidence_ref="e3")
 
     def test_deletion_tombstone_is_tenant_scoped_and_expires_at_30_days(self):
         tombstones = DeletionTombstones()
