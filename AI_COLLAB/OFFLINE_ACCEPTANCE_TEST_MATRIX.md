@@ -150,3 +150,15 @@ Next: execute the exact checked-in pair in an offline interpreter, then add test
 The pure event reducer now sorts accepted events by coordinator sequence, then event ID as a deterministic tie-break when malformed input reuses a sequence. Duplicate sequence values still mark the evidence contradictory; the tie-break is only to make replay output stable, not to legitimize the evidence.
 
 Three further synthetic tests were added: deterministic replay under duplicate sequence, independent artifact-release gate checks, and output accounting/retention behavior after overflow. The checked-in test module now contains 14 test methods. **They remain NOT RUN against the exact checked-in pair.** No live provider or GitHub Actions execution was used.
+
+
+## Append-only recovery and deletion cases — 2026-10-27
+
+The pure lifecycle helper now models append-only report history, the provisional 30-day tenant-scoped deletion tombstone, and deterministic outcomes for a batch of racing idempotency submissions. New synthetic coverage includes:
+- Cleanup reconciliation appends version 2 and preserves version 1; returned copies cannot mutate stored history.
+- A report marked PASS is rejected by the history model unless cleanup is CONFIRMED.
+- Tombstones are tenant-scoped and expire at the exact 30-day deadline.
+- Same tenant/key/fingerprint submissions produce one CREATED reservation followed by REPLAY results.
+- Same tenant/key with a changed fingerprint conflicts without replacing the first reservation.
+
+**Important limit:** reserve_idempotency_batch is a deterministic serial-order model, not a concurrency primitive. Production must enforce uniqueness with an atomic database transaction/unique constraint and test actual simultaneous requests. ReportHistory and DeletionTombstones are in-memory pure models, not durable storage. The 30-day duration remains provisional. The test module now has 19 methods, but the exact checked-in pair and full repository suite remain **NOT RUN**; no test pass is claimed.
