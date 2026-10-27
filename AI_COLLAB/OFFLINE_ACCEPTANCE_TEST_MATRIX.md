@@ -92,3 +92,33 @@ For tests actually run, record test ID, source commit, exact command, runtime ve
 ## Next safe step
 
 Resolve the lifecycle contradiction and the open questions in the contract audit before implementation. The two-axis outcome/disposition model is a proposal only and requires review before schema freeze. Provider integration remains blocked by the strict $0 gate.
+
+
+## 2026-10-27 lifecycle/idempotency/artifact expansion
+
+Detailed proposed semantics and test IDs are in [PASS1_LIFECYCLE_IDEMPOTENCY_ARTIFACT_POLICY_20261027.md](PASS1_LIFECYCLE_IDEMPOTENCY_ARTIFACT_POLICY_20261027.md). These cases are specifications only and remain **NOT RUN**.
+
+| ID | Synthetic scenario | Required assertion |
+|---|---|---|
+| LIFE-SEM-01 | Exit-zero evidence followed by cleanup failure | Preserve execution fact; disposition is not PASS; artifact remains quarantined |
+| LIFE-SEM-02 | Cleanup retry succeeds after initial failure | Append retry evidence; preserve first failure; version report; release only after all gates pass |
+| RACE-SEM-01 | Timeout/cancel in either order at same logical tick | Atomic decision version is deterministic; both events retained; no duplicate cleanup |
+| RACE-SEM-02 | Duplicate event ID with same vs conflicting payload | Same payload is idempotent; conflicting payload marks evidence contradictory |
+| RACE-SEM-03 | Late success after timeout decision | No silent PASS; reconciliation requires an explicit authoritative ordering rule |
+| IDEM-SEM-01 | Same tenant/key and same canonical request | One job/attempt; retry returns existing reference |
+| IDEM-SEM-02 | Same tenant/key but changed source, input, or effective policy | Deterministic conflict before allocation; no second job or first-result substitution |
+| IDEM-SEM-03 | Concurrent submissions with same tenant/key | Exactly one atomic reservation wins; loser applies same-key rules |
+| IDEM-SEM-04 | Same key in different tenant namespaces | Independent jobs; no cross-tenant disclosure |
+| ART-SEM-01 | Interrupted artifact write or final digest mismatch | No valid manifest publication; artifact quarantined; no PASS |
+| ART-SEM-02 | Traversal/Unicode-lookalike display name | Storage identity remains server-generated; unsafe metadata rejected or normalized |
+| ART-SEM-03 | Artifact requested by wrong job/tenant | Deny access and avoid metadata leakage |
+| STREAM-SEM-01 | Chunked output exceeds cap | Bounded retention; observed byte count and truncation are explicit |
+| STREAM-SEM-02 | Synthetic secret-shaped pattern crosses chunk boundary | Configured detector catches fixture; no claim of universal detection |
+| COST-SEM-01 | Resource metrics exist but invoice data is delayed/missing | Keep observed telemetry distinct; cost is ESTIMATED or UNAVAILABLE, never falsely FINAL/$0 |
+| NET-SEM-01 | Required policy revision changes between prepare and execute | Revalidate at the execution barrier; mismatch prevents task start |
+
+**Additional proposed decisions still open:** whether artifacts remain quarantined until cleanup confirmation; authoritative event ordering/reconciliation; idempotency retention coupled to report retention; stream-overflow termination vs drain-and-discard; and canonical request fingerprint fields. No fixed TTL or 1 MiB output cap is adopted.
+
+## Current next safe step
+
+Owner-review the lifecycle/result-exposure and idempotency rules, then implement pure state-machine/report tests only if authorized. Provider-dependent tests remain blocked by strict $0 and consent requirements. Do not claim fake-adapter tests prove provider isolation, egress, cleanup, or billing.
