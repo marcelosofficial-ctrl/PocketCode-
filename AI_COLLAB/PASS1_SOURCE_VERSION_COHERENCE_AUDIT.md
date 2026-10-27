@@ -28,7 +28,7 @@ This audit is an evidence-quality check, not a provider recommendation.
 - Daytona v0 Network Limits: https://www.daytona.io/docs/en/network-limits/ — contains tier-based restrictions: Tier 1/2 organization restrictions cannot be overridden per sandbox; Tier 3/4 permit sandbox-level controls. Keep this attributed to v0.
 - Daytona v2 Limits: https://www.daytona.io/docs/en/v2/limits/ — page is marked alpha and documents per-sandbox CPU/memory/disk limits separately from organization and API rate limits. These are not a global spend ceiling.
 - E2B current security page: https://e2b.dev/security — says prior written consent is required before testing.
-- Modal networking: https://modal.com/docs/guide/sandbox-networking — source refresh noted direct-fetch 502 in this review; current search result described public outbound IP access as allowed by default and a block option. Re-fetch before reliance.
+- Modal networking: https://modal.com/docs/guide/sandbox-networking — direct page retrieval returned an upstream 502, but a current search-indexed result was available on 2026-10-27. It says public outbound IP access is allowed by default, `block_network=True` blocks all outbound traffic including DNS, ordinary allowlist configurations allow DNS without restriction, and domain allowlisting is Beta/TLS port 443 only. Re-open the primary page before a provider decision; documentation is not runtime proof.
 - Cloudflare Containers pricing: https://developers.cloudflare.com/containers/platform/pricing/ — reviewed notes state no Free-plan allocation; Workers Paid base plan is $5/month plus possible metered usage/egress.
 
 ## Cross-document status truth
