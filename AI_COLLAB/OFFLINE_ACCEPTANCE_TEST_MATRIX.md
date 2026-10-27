@@ -3,13 +3,13 @@
 **Date:** 2026-10-27  
 **Owner:** ChatGPT independent contribution  
 **Status:** Proposed test specification only. No tests were implemented or executed in this pass; no provider was tested.  
-**Related:** [Draft execution contract](DRAFT_EXECUTION_CONTRACT.md), [Security research](PASS1_SECURITY_ABUSE_RESEARCH.md), [Contract audit](CONTRACT_COHERENCE_AUDIT.md), [Lifecycle resolution proposal](PASS1_CONTRACT_COHERENCE_RESOLUTION.md), [Decision register](DECISION_REGISTER.md).
+**Related:** [Draft execution contract](DRAFT_EXECUTION_CONTRACT.md), [Security research](PASS1_SECURITY_ABUSE_RESEARCH.md), [Contract audit](CONTRACT_COHERENCE_AUDIT.md), [Lifecycle resolution proposal](PASS1_CONTRACT_COHERENCE_RESOLUTION.md), [Decision register](DECISION_REGISTER.md), [Lifecycle/idempotency/artifact proposal](PASS1_LIFECYCLE_IDEMPOTENCY_ARTIFACT_POLICY_20261027.md), [Owner decision packet](PASS1_OWNER_DECISION_PACKET_20261027.md).
 
 ## Contract blocker
 
 The draft lifecycle places SUCCEEDED before CLEANUP_PENDING and CLEANED/CLEANUP_FAILED, but also says SUCCEEDED requires cleanup success. These statements conflict unless execution outcome and overall job disposition are separate concepts. Do not implement the state machine verbatim.
 
-**Proposed resolution for review, not yet adopted:** keep execution outcome separate from service disposition. Preserve a successful process exit as an observation, but set overall status to non-PASS if cleanup or required evidence is missing. Choose final field names and statuses before freezing the schema.
+**Proposed resolution for review, not yet adopted:** keep execution outcome separate from service disposition. Preserve a successful process exit as an observation, but set overall status to non-PASS if cleanup or required evidence is missing. Choose final field names and statuses before freezing the schema. The six open decision areas and recommended defaults are consolidated in [PASS1_OWNER_DECISION_PACKET_20261027.md](PASS1_OWNER_DECISION_PACKET_20261027.md); every approval remains pending.
 
 ## Proposed offline tests
 
@@ -122,7 +122,7 @@ Detailed proposed semantics and test IDs are in [PASS1_LIFECYCLE_IDEMPOTENCY_ART
 | COST-SEM-01 | Resource metrics exist but invoice data is delayed/missing | Keep observed telemetry distinct; cost is ESTIMATED or UNAVAILABLE, never falsely FINAL/$0 |
 | NET-SEM-01 | Required policy revision changes between prepare and execute | Revalidate at the execution barrier; mismatch prevents task start |
 
-**Additional proposed decisions still open:** whether artifacts remain quarantined until cleanup confirmation; authoritative event ordering/reconciliation; idempotency retention coupled to report retention; stream-overflow termination vs drain-and-discard; and canonical request fingerprint fields. No fixed TTL or 1 MiB output cap is adopted.
+**Additional proposed decisions still open:** whether artifacts remain quarantined until cleanup confirmation; authoritative event ordering/reconciliation; idempotency retention coupled to report retention; stream-overflow termination vs drain-and-discard; canonical request fingerprint fields; and exact output byte/time budgets. See [PASS1_OWNER_DECISION_PACKET_20261027.md](PASS1_OWNER_DECISION_PACKET_20261027.md) for recommendations and trade-offs. No fixed TTL or 1 MiB output cap is adopted.
 
 ## Current next safe step
 
