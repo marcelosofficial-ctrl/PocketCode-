@@ -72,3 +72,10 @@ The older PR-head SHA and next-action list above are historical checkpoint value
 - Still unresolved: event reconciliation policy; idempotency fingerprint and retention; stream overflow behavior; whether provisional artifact exposure is ever allowed.
 - No provider, account, workload, spend, code/test execution, merge, or deployment. PR #3 remains draft/unmerged and PR #2 untouched.
 - Next: static internal-link and source freshness review, then owner review before any schema freeze or offline test implementation.
+
+
+## 2026-10-27 continuation — Modal networking documentation clarified
+
+The official search-indexed Modal networking guide was rechecked after direct page retrieval returned 502. It explicitly states DNS traffic is unrestricted except when all outbound traffic is blocked, and block_network=True drops all outbound traffic. Domain allowlisting is Beta/TLS 443; dynamic policy updates are Alpha.
+
+The related provider research, runtime gate, source-integrity note, and source/version audit now reflect this wording. This closes the documentation wording gap only; it does not establish runtime enforcement, metadata/private-path behavior, exact-plan suitability, or a hard $0 cap. Re-open the primary page before a provider decision.
