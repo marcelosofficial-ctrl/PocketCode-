@@ -24,7 +24,7 @@
 
 2. **E2B security/testing permission:** current reviewed page is https://e2b.dev/security. It says to contact E2B before running tests because prior written consent is required. No testing was attempted.
 
-3. **Modal networking:** current documentation URL is https://modal.com/docs/guide/sandbox-networking. A direct page retrieval failed with an upstream 502 during the source refresh; re-fetch before relying on nuanced provider-specific behavior. Pricing: https://modal.com/pricing. Included credits are not a guaranteed hard $0 ceiling.
+3. **Modal networking:** https://modal.com/docs/guide/sandbox-networking. Direct page retrieval returned an upstream 502, but a current search-indexed result was available on 2026-10-27: public outbound access is allowed by default; `block_network=True` blocks all outbound traffic including DNS; ordinary allowlist configurations allow DNS without restriction; domain allowlisting is Beta and limited to TLS/443. Re-open the primary page before a provider decision. Pricing: https://modal.com/pricing. Included credits are not a guaranteed hard $0 ceiling.
 
 4. **Cloudflare Containers pricing:** https://developers.cloudflare.com/containers/platform/pricing/ lists the Workers Paid base plan at $5/month. That conflicts with the current strict $0 constraint absent an explicit owner-approved budget change.
 
@@ -55,6 +55,6 @@ At checkpoint creation, PR #3 was open, draft, unmerged, with branch head c7c1a6
 
 1. Obtain Gemini's independent review using the handoff request; do not mark it complete until actual findings are returned.
 2. Reconcile provider-version wording in the main provider research document with the source/version audit.
-3. Verify internal links and source claims; re-fetch Modal networking documentation.
+3. Verify internal links and source claims; reopen Modal networking documentation directly before any provider decision, since the search-indexed result was available but the direct page fetch returned 502.
 4. Update the decision register/checkpoint after the review, preserving explicit proposal-versus-decision labels.
 5. Only after review, decide whether the contract is coherent enough for an offline-only implementation plan. No provider selection or live test without separate approval.
