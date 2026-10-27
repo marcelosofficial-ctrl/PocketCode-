@@ -345,3 +345,44 @@ The owner-delegated six lifecycle choices are selected as a provider-neutral bas
 The crosswalk aligned named-input fingerprint canonicalization (unordered mapping sorted by normalized name), lifecycle vocabulary, timeout/cancel reconciliation wording, and provisional 30-day post-deletion tombstone wording. Static hardening ensures contradictory evidence takes precedence over `NOT_STARTED`, rejects non-portable input basenames and blank media types, and requires confirmed cleanup plus every explicit execution/policy/termination/artifact/tenant gate before ReportHistory can append PASS. The lifecycle test module contains 21 methods, including aggregate-only output overflow and the additional negative subcases.
 
 **Verification state:** exact checked-in helper/test pair and full repository suite remain NOT RUN. Do not use earlier reconstructed-copy 8/8 results as current evidence. No Actions, provider/account/workload, spend, deployment, or merge. PR #3 remains draft/unmerged; PR #2 remains untouched. Next: finish requirement-to-code-to-test traceability, then run exact checked-in tests offline when a local interpreter is available; add true transactional/concurrent acceptance only as implementation requirements, not simulated proof.
+
+---
+
+## 2026-10-27 — Master operating workflow addendum
+
+This addendum governs **working methods only**. It does not supersede repository instructions, product/architecture/security specifications, roadmap, adopted decisions, or verified implementation state.
+
+### Source of truth and start-of-pass check
+1. Inspect the current branch/commit and relevant repository instructions, status/checkpoint, product/architecture/security/roadmap, decisions, code, tests, and existing PR/issue/research before significant work.
+2. Use this order, subject to repository-specific instructions: verified repository contents/history and implementation evidence; status/checkpoint; product/architecture/security/roadmap; decisions; research/PR/test evidence; chat recollection.
+3. Label facts, assumptions, proposals, unresolved decisions, and blockers separately. A chat statement or test file is not proof of a committed change or passing test.
+4. If access is unavailable, state that limitation and continue only with work that can be reliably completed.
+
+### Coherent, risk-proportionate passes
+Each substantial pass should establish state, choose the highest-value task that can actually move forward, define observable acceptance criteria, inspect existing implementations/dependencies before inventing new ones, implement or research a coherent unit, verify it, inspect the diff, and record evidence/risks/next step. Batch related code, tests, and documentation when safe; split when security, rollback, review, or independent verification benefits. Do not create plans or summaries that duplicate existing records without reducing uncertainty.
+
+For small low-risk changes, keep planning light. For cross-cutting or security-sensitive changes, inspect dependencies and interfaces first, compare viable alternatives, define failure cases and approval boundaries, then implement and verify against those criteria.
+
+### Reuse and research
+Search repository code and existing dependencies before adding a custom utility, abstraction, parser, or framework. Add a dependency only when its maintenance, license, security, compatibility, portability, and cost are justified. Research should answer a decision-relevant question, prefer primary sources, distinguish verified facts from anecdotes, compare alternatives consistently, and stop when evidence is sufficient or returns diminish. Reopen settled research only when new evidence or changed constraints justify it.
+
+### Three-AI coordination
+Default roles when access and tools permit: Claude is primary implementer; ChatGPT handles research, clarification, continuity, integration planning, and evidence-based acceptance review; Gemini provides independent architecture/specification/security review and focused co-development. These are flexible defaults subordinate to current instructions and owner decisions. Delegate bounded, non-overlapping deliverables; do not have all AIs repeat the same research or implement the same feature by default. Reconcile disagreements against evidence, assumptions, security, compatibility, and cost.
+
+### PocketCode product and execution discipline
+Keep existing product and architecture records authoritative and discovery-first. Distinguish validated user needs from hypotheses, adopted decisions from options, and demos from reliable end-to-end behavior. Preserve the provider-neutral direction unless an explicit decision changes it. API acceptance, process start, missing output, and synthetic tests must never be represented as proof of successful execution. Do not claim production isolation or security from a pure helper or unit test.
+
+Security is a design and release requirement: assess isolation, least privilege, per-user authorization, resource caps, network/metadata access, file/archive handling, credential separation, dependency installation, cleanup, retention, abuse controls, and recovery as applicable. Public arbitrary-code execution must not be enabled without the existing release gates being reviewed and tested. Follow the existing security specification and relevant OWASP/NIST guidance.
+
+### Verification and change hygiene
+For each meaningful change, define appropriate acceptance criteria and run the relevant available checks. Inspect the complete diff, callers/interfaces, failure paths, compatibility, security, secrets, and unrelated edits. Report exact checks actually executed and their outcomes. Use precise states: implemented/not tested; targeted tests passed; integration verified; device behavior verified; security review scoped/completed; or blocked/partial. Written-but-unrun tests have not passed; mocks do not prove provider behavior; browser previews do not prove device behavior.
+
+Follow repository branch/PR practices. Do not rewrite history, force-push, delete owner content, change visibility, publish releases, enable paid infrastructure, run provider workloads, deploy, merge, or perform other consequential external actions without explicit authorization. Maintain the $0/provider-neutral constraints and phone-first owner workflow; do not ask the owner to run commands or inspect files when available tools can do it. If owner input is essential, request the smallest specific item and explain why.
+
+### Continuity and completion
+Use existing status, checkpoint, decision, research, and test records as the durable source of truth. Update them when meaningful state changes; avoid contradictory duplicate trackers. A handoff should preserve exact branch/commit, changed paths, decisions/rationale, checks and outcomes, sources, unresolved risks/blockers, and the next action. At the end of a substantial pass, report: **Outcome, Evidence, Decisions, Limitations, Risks/blockers, Next action**.
+
+Optimize for verified progress, not code volume, message count, or number of AIs. When a recurring failure appears, address its root cause with targeted tests, better acceptance criteria, stronger traceability, or a more reliable checkpoint—not another generic rule. Keep rules that measurably improve reliability, security, continuity, or useful progress.
+
+### Current application to this branch
+The lifecycle helper/test work is still a pure provider-neutral model. The checked-in lifecycle module has 24 test methods; the exact checked-in helper/test pair and full repository suite remain **NOT RUN**. Prior reconstructed-copy test results do not establish current branch correctness. Next priority is exact-source offline execution when an appropriate local environment is available, then resolve failures and inspect the diff. Do not use GitHub Actions if it could trigger deployment; do not use paid/provider infrastructure. PR #3 remains draft/unmerged and PR #2 remains untouched.
