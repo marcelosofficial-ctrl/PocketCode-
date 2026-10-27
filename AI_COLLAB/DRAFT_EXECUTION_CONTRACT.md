@@ -162,22 +162,20 @@ These tests may use a deterministic fake adapter and synthetic data only. They r
 ### Limits of offline tests
 They cannot prove kernel/microVM isolation, egress enforcement, metadata denial, CPU/memory/process quotas, real process-tree termination, billing behavior, provider cleanup, or deployed tenant isolation. These remain blocked until a provider, plan, budget, permissions where required, and adversarial test environment are approved.
 
-## Open questions before implementation
+## Remaining questions before any implementation or schema freeze
 
-1. Is the initial input limited to one source file plus CSV/text, or should a tiny multi-file bundle be allowed?
+The six delegated lifecycle decisions are selected as a provider-neutral baseline; they are not live-execution authorization or a frozen public API. The following remain unresolved:
+
+1. Is the first supported request one source file plus CSV/text, or a small multi-file bundle?
 2. Which output artifact types are necessary for the first validated user task?
-3. Should cleanup failure after a completed run expose results with a prominent warning, or withhold them until cleanup is confirmed?
-4. What is the minimum retention policy and how is deletion confirmed?
-5. Is authentication required before the first closed beta? Recommended: yes, unless a carefully reviewed abuse model justifies otherwise.
-6. What owner-approved spend ceiling, if any, can replace the current $0 gate? Until explicitly changed, none.
-7. What exact provider evidence proves asynchronous network policy application, including policy identity/revision, status, and fail-closed timeout behavior?
-8. How should timeout/cancel event ordering and reconciliation be made replayable when concurrent signals race?
-9. What tenant-scoped idempotency rule applies to same-key/same-payload retries, same-key/different-payload conflicts, explicit reruns, and retention/deletion?
-10. What canonical server-side request fields determine the idempotency fingerprint?
-11. What byte/time budgets and aggregate-vs-per-stream rule apply to output overflow, termination, and bounded drain/discard?
-12. What report fields distinguish observed CPU/RAM/process telemetry from provider-invoice cost, and how are ESTIMATED, FINAL, and UNAVAILABLE defined?
+3. What retention/deletion behavior applies to full reports and artifacts, and what evidence confirms deletion? The selected 30-day idempotency tombstone is only a provisional offline-test default.
+4. What exact provider evidence proves the required network policy revision is applied to the intended boundary immediately before execution?
+5. What authentication/abuse controls are required before any closed beta?
+6. What report fields distinguish observed CPU/RAM/process telemetry from provider-invoice cost, and how are ESTIMATED, FINAL, and UNAVAILABLE defined?
+7. Which exact API field names and schema version should represent the selected execution outcome, cleanup state, evidence quality, and derived disposition?
+8. What validated resource limits and cleanup budget are appropriate for a real provider? Current numeric limits are provisional offline-test defaults only.
 
-Before implementation, review the consolidated [owner decision packet](PASS1_OWNER_DECISION_PACKET_20261027.md); all six decisions remain pending.
+The selected rules for artifact quarantine, coordinator-sequenced terminalization, tenant-scoped idempotency/fingerprinting, and bounded output overflow are recorded in the owner decision packet and research rationale. No provider, account, spend, live execution, production implementation, merge, or deployment is authorized.
 
 ## Decision
 
