@@ -364,6 +364,20 @@ class LifecycleTests(unittest.TestCase):
         self.assertIsNone(tombstones.lookup(tenant_id="t1", key="k", now=deadline))
         self.assertIsNone(tombstones.lookup(tenant_id="t1", key="k", now=deadline + 1))
 
+    def test_tombstone_retries_do_not_shorten_retention_or_change_fingerprint(self):
+        tombstones = DeletionTombstones()
+        tombstones.add(tenant_id="t1", key="k", fingerprint="f1", deleted_at=100)
+        original_deadline = 100 + DeletionTombstones.RETENTION_SECONDS
+        tombstones.add(tenant_id="t1", key="k", fingerprint="f1", deleted_at=1)
+        self.assertEqual(tombstones.lookup(
+            tenant_id="t1", key="k", now=original_deadline - 1), ("TOMBSTONE", "f1"))
+        tombstones.add(tenant_id="t1", key="k", fingerprint="f1", deleted_at=200)
+        extended_deadline = 200 + DeletionTombstones.RETENTION_SECONDS
+        self.assertEqual(tombstones.lookup(
+            tenant_id="t1", key="k", now=extended_deadline - 1), ("TOMBSTONE", "f1"))
+        with self.assertRaises(IdempotencyConflict):
+            tombstones.add(tenant_id="t1", key="k", fingerprint="f2", deleted_at=300)
+
     def test_tombstones_reject_blank_identity_and_invalid_epoch_values(self):
         tombstones = DeletionTombstones()
         for field in ("tenant_id", "key", "fingerprint"):
