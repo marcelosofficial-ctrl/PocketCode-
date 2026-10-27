@@ -67,3 +67,5 @@ Next safe step: execute the exact checked-in files in an offline local interpret
 - Acceptance cases added: FP-02..FP-04, IDEM-03..IDEM-04, LIFE-16. No live execution, Actions, provider workload, merge, or deployment.
 
 | Terminal event shape must include nonblank ID/kind and mapping payload | `reduce_terminal_events` | `test_terminal_events_require_nonblank_identity_and_mapping_payload` | Static source/test change only; exact suite remains NOT RUN. This protects the pure decision model, not the authenticity of upstream events. |
+
+| Tombstone retries preserve the original fingerprint and cannot shorten retention | `DeletionTombstones.add` | `test_tombstone_retries_do_not_shorten_retention_or_change_fingerprint` | Static source/test change; exact suite remains NOT RUN. In-memory model only. |
