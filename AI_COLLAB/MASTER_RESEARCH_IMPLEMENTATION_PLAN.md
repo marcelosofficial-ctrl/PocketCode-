@@ -259,3 +259,11 @@ See the detailed grouped register in [PASS0_REPOSITORY_AUDIT.md](PASS0_REPOSITOR
 - Narrow initial scope excludes arbitrary packages, network, secrets, persistent jobs, public job ports, and repo-wide agents. If a zero-payment provider tier cannot enforce the mandatory controls, it is not eligible for the proof.
 - Added adversarial acceptance tests for timeout, resource exhaustion, egress/metadata, cross-job access, traversal, output truncation, false PASS, cancellation/cleanup, queue abuse, unsafe rendering, and secret exposure.
 - No provider selected, no live execution or security test, no accounts/workloads, no spend, and no security claim upgraded. $0 gate remains binding.
+
+### 2026-10-27 — Runtime/provider feasibility gate (ChatGPT, workstream D/E)
+
+- Added [PASS1_RUNTIME_PROVIDER_GATE.md](PASS1_RUNTIME_PROVIDER_GATE.md) and clarified [PASS1_PROVIDER_RESEARCH.md](PASS1_PROVIDER_RESEARCH.md) with current plan/version nuances.
+- No candidate is approved for live testing under the strict $0 constraint. Cloudflare Containers has the clearest paper fit in current docs (per-sandbox Firecracker microVM, internet disabled by default) but requires Workers Paid at $5/month, so it is not currently eligible. Daytona v2 network restrictions are tier-sensitive and its v2 page is marked alpha; do not conflate it with v0 behavior. Modal credits are not a hard spending cap. E2B testing requires prior written consent per its security documentation.
+- Added provider-neutral adapter requirements for job isolation, confirmed network policy, hard limits, lifecycle/cleanup, authoritative outputs, tenant authorization, spend controls, and retention.
+- Implementation should expose capability states (supported / unsupported / not_verified / blocked_by_plan) and fail closed rather than silently weakening security. Fake adapters may validate orchestration only, not sandbox isolation.
+- No provider selected, no account/workload/live test/spend, no architecture claim upgraded. $0 gate remains binding.
