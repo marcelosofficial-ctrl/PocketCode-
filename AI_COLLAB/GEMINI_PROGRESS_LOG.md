@@ -90,3 +90,8 @@
 - Paper-only comparison: Cloudflare has strong documented isolation/default-egress posture but requires a $5/month paid plan; Daytona's network control depends on API version and billing tier; Modal credits are not a hard spend ceiling; E2B requires prior written consent before testing.
 - Added provider-neutral adapter acceptance requirements and fail-closed capability states. No live test, provider account, workload, or spend. This is not a provider selection.
 - Gemini's required research passes remain pending; this is ChatGPT's independent contribution.
+
+### 2026-10-27 — ChatGPT draft execution contract (not Gemini completion)
+- Added [DRAFT_EXECUTION_CONTRACT.md](DRAFT_EXECUTION_CONTRACT.md), translating user-problem, security, and provider research into an offline-testable proposal: request shape, lifecycle, adapter contract, report trust model, and fake-adapter test matrix.
+- Proposed values and state semantics are review items, not implementation commitments. No provider SDK, real execution, accounts, workloads, or spend.
+- Fake adapter tests cannot establish runtime isolation, egress enforcement, cleanup, tenant isolation, or billing.
