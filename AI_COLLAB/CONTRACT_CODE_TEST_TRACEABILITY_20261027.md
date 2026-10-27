@@ -37,7 +37,7 @@
 
 ## Current evidence and next step
 
-The checked-in `scripts/test_lifecycle_contract.py` contains **30 test methods**, but neither that exact file/helper pair nor the full repository suite has been executed in this environment. Prior 8/8 results came from a reconstructed copy and are not evidence for the current branch.
+At the earlier lifecycle-audit checkpoint, `scripts/test_lifecycle_contract.py` contained **30 test methods**. Neither that exact file/helper pair nor the full repository suite has been executed in this environment. Prior 8/8 results came from a reconstructed copy and are not evidence for the current branch.
 
 Next safe step: execute the exact checked-in files in an offline local interpreter when one is available, capture the exact command/runtime/exit code, then address any failures. Keep true transaction/concurrency, process drain/termination, provider policy enforcement, storage durability, and provider security as implementation-level requirements—not claims proven by these pure models.
 
@@ -61,7 +61,7 @@ Next safe step: execute the exact checked-in files in an offline local interpret
 ## Current audit checkpoint — 2026-10-27
 
 - Audit branch: `pocketcode-lifecycle-fingerprint-audit-2026-10-27` (separate from PR #3's source branch).
-- Current static source count: 30 test methods. This is a text/source count only; the exact checked-in test module and full repository suite remain **NOT RUN**.
+- At that historical checkpoint, the static source count was 30 test methods. This is a text/source count only; the exact checked-in test module and full repository suite remain **NOT RUN**.
 - Added input validation for blank canonical fingerprint identities, blank/non-string idempotency reservation values, and tombstone identities/epochs.
 - Added explicit preservation of malformed event records in `invalid_events`; malformed evidence sets `contradictory_evidence` and therefore cannot produce PASS when disposition derivation consumes the flag.
 - Acceptance cases added: FP-02..FP-04, IDEM-03..IDEM-04, LIFE-16. No live execution, Actions, provider workload, merge, or deployment.
@@ -71,7 +71,7 @@ Next safe step: execute the exact checked-in files in an offline local interpret
 | Tombstone retries preserve the original fingerprint and cannot shorten retention | `DeletionTombstones.add` | `test_tombstone_retries_do_not_shorten_retention_or_change_fingerprint` | Static source/test change; exact suite remains NOT RUN. In-memory model only. |
 
 
-Current count refresh: `scripts/test_lifecycle_contract.py` contains 30 test methods by source inspection. This is not execution evidence; the exact suite remains NOT RUN.
+Latest source-count refresh on `pocketcode-report-pass-gate-hardening-2026-10-27`: `scripts/test_lifecycle_contract.py` contains 33 test methods by source inspection. This is not execution evidence; the exact suite remains NOT RUN.
 
 
 ## Report-history PASS gate audit — 2026-10-27
