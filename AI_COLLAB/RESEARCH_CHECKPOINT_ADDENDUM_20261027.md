@@ -96,3 +96,12 @@ Added `scripts/lifecycle_contract.py` and `scripts/test_lifecycle_contract.py` a
 ## Temporary offline test result — 2026-10-27
 
 A temporary Python run of 8 synthetic tests using a reconstructed copy of the current helper and test module reported **8 passed, 0 failures, 0 errors**. This was not run from a repository checkout, and the complete repository test suite remains unrun. No GitHub Actions, provider, submitted program, or live workload was used. Re-run the exact checked-in files in an offline checkout before treating this as branch-level test evidence.
+
+
+## Current coherence status — 2026-10-27
+
+The earlier lifecycle-open statements in this checkpoint are historical and superseded by the delegated decision record. The selected baseline and rationale are in [PASS1_OWNER_DECISIONS_RESEARCH_20261027.md](PASS1_OWNER_DECISIONS_RESEARCH_20261027.md); the draft execution contract, lifecycle policy, acceptance matrix, decision register, project status, and PR description have been aligned.
+
+The crosswalk confirmed that named inputs are an unordered mapping sorted by normalized canonical name for fingerprint v1; a future order-sensitive workflow needs a new contract/fingerprint version. It also aligned timeout/cancel reconciliation and the provisional 30-day tombstone language. A static helper review corrected disposition precedence so contradictory evidence yields `INCOMPLETE` even when the nominal outcome is `NOT_STARTED`. The checked-in synthetic lifecycle test module now has 20 test methods.
+
+**Verification remains NOT RUN** for the exact checked-in helper/test pair and full repository suite. The earlier 8/8 reconstructed-copy run is historical only. No GitHub Actions, provider, account, live workload, spend, deployment, or merge. PR #3 remains open/draft/unmerged; PR #2 remains untouched. Next safe step: finish requirement-to-code-to-test traceability, then run exact checked-in tests offline when an interpreter is available.
