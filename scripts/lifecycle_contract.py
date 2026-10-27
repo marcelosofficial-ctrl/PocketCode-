@@ -70,7 +70,7 @@ def reduce_terminal_events(events: Iterable[Mapping[str, Any]]) -> dict[str, Any
     idempotent. Conflicting reuse of an event ID marks evidence contradictory. Provider timestamps are
     intentionally ignored for ordering.
     """
-    by_id: dict[str, tuple[str, Any]] = {}
+    by_id: dict[str, tuple[int, str, Any]] = {}
     accepted: list[dict[str, Any]] = []
     conflicts: list[dict[str, Any]] = []
     contradictory = False
