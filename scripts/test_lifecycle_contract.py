@@ -89,5 +89,15 @@ class LifecycleTests(unittest.TestCase):
                              len(budget.retained_bytes("stderr")), 6)
 
 
+    def test_configured_secret_pattern_is_redacted_across_chunks_before_retention(self):
+        budget = OutputBudget(per_stream_cap=4096, aggregate_cap=8192)
+        budget.add("stdout", b"prefix secret=alpha-")
+        budget.add("stdout", b"beta-token suffix")
+        budget.finish()
+        retained = budget.retained_bytes("stdout")
+        self.assertNotIn(b"alpha-beta-token", retained)
+        self.assertIn(b"*" * len(b"secret=alpha-beta-token"), retained)
+
+
 if __name__ == "__main__":
     unittest.main()
