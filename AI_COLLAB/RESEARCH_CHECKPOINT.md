@@ -96,3 +96,13 @@ Continue Pass 1 with a fuller user/problem falsification and task-based comparis
 - Consolidates supported evidence vs hypotheses vs unknowns; reversible decisions vs approval-required actions; prioritized offline/user-dependent/blocked gaps; exploratory stop/continue/pivot criteria; and a strict no-go list.
 - Next highest-value offline pass: contract coherence audit plus threat-to-test traceability and external-link/version integrity. Avoid starting a real provider integration while $0/security gates remain unresolved.
 - User interviews/task comparison have not happened. No provider/account/workload/credentials/live tests/spend, no rename, no merge/deployment. PR #3 remains research-only and should remain draft/unmerged.
+
+
+## 2026-10-27 continuation — contract coherence audit
+
+**Latest artifact:** [CONTRACT_COHERENCE_AUDIT.md](CONTRACT_COHERENCE_AUDIT.md)
+
+- Static cross-review of the draft contract, security/abuse requirements, and provider gate found ten areas to settle before implementation: cleanup-failure semantics, terminal-state races, field-level evidence rules, honest cleanup claims, limit enforcement, capability freshness, artifact safety, tenant authorization, exact egress model, and report/evidence integrity.
+- Added minimum proposed state/evidence rules and mapped offline tests separately from provider tests that remain blocked.
+- No code or tests executed. No provider, account, live workload, spend, API freeze, merge, or deployment. Strict $0 gate unchanged.
+- Next: verify source/link/version integrity and ensure the decision register, checkpoint, master plan, and PR description remain aligned.
