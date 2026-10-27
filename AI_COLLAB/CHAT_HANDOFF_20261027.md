@@ -144,3 +144,13 @@ Acceptance criteria:
 - The status/checkpoint/traceability/matrix docs were fetched for review in the last pass; verify current blob SHAs and contents after this handoff commit because this handoff itself changes branch head.
 - Last verified PR #2 state: draft/open/unmerged, head `eb8b7ea83cb0e8fe1880351276c485b761431791`.
 - Exact source hashes/SHAs are blob identifiers, not commits. Do not confuse them with the PR head commit.
+
+
+## Follow-up checkpoint — lifecycle static audit (2026-10-27)
+
+- Separate branch: `pocketcode-lifecycle-fingerprint-audit-2026-10-27`. PR #3 remains open/draft/unmerged; this audit branch has not been merged or promoted to a PR.
+- Latest source inspection finds 28 test methods in `scripts/test_lifecycle_contract.py`; no exact test execution has occurred, so this is not a pass count.
+- Additional static changes: reject blank canonical fingerprint identity values; reject blank/non-string idempotency reservation fields; preserve malformed event inputs under `invalid_events` and mark evidence contradictory; validate tombstone identity fields and epoch inputs.
+- Acceptance matrix and traceability crosswalk updated with FP-02..FP-04, IDEM-03..IDEM-04, and LIFE-16.
+- Exact helper/test suite and full repository suite remain **NOT RUN**. No GitHub Actions, provider workload, merge, deployment, account setup, or spend was initiated.
+- Next: verify the final branch files and test syntax/behavior using an approved offline Python runtime. Continue static review only until executable verification is available.
