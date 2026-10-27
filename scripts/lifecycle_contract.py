@@ -345,6 +345,8 @@ class ReportHistory:
         if not all(isinstance(value, str) and value for value in
                    (job_id, disposition, cleanup_state, evidence_ref)):
             raise ValueError("job, disposition, cleanup state, and evidence reference are required")
+        if disposition == "PASS" and cleanup_state != "CONFIRMED":
+            raise ValueError("PASS requires confirmed cleanup")
         versions = self._versions.setdefault(job_id, [])
         report = {"job_id": job_id, "version": len(versions) + 1,
                   "disposition": disposition, "cleanup_state": cleanup_state,
