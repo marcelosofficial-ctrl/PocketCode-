@@ -26,13 +26,16 @@ The shortlist remains viable for further comparison, but none can be called “s
 
 ### Daytona Sandboxes
 
-**Sources checked:** [pricing](https://www.daytona.io/pricing), [network limits](https://www.daytona.io/docs/en/network-limits/), [limits/tiers](https://www.daytona.io/docs/limits), [isolation documentation](https://www.daytona.io/docs/en/v2/isolation/).
+**Sources checked:** [pricing](https://www.daytona.io/pricing), [v0 network limits](https://www.daytona.io/docs/en/network-limits/), [v0 limits/tiers](https://www.daytona.io/docs/limits), [v2 alpha network limits](https://www.daytona.io/docs/en/v2/network-limits/), [v2 alpha limits](https://www.daytona.io/docs/en/v2/limits/), [v2 isolation documentation](https://www.daytona.io/docs/en/v2/isolation/).
 
-- **Isolation:** current docs describe Firecracker microVMs with separate kernel, filesystem, and network stack. Treat this as vendor documentation until validated against the exact product/plan and independent evidence.
-- **Network policy:** the current network-limits docs describe tier-based organization restrictions. Tier 1 and Tier 2 policies cannot be overridden at sandbox level; Tier 3 and Tier 4 permit sandbox-level allowlists or `networkBlockAll`, with strict enforcement. The policy/plan combination matters more than the existence of the API parameter.
-- **Pricing:** the pricing page lists $0.0504/vCPU-hour, $0.0162/GiB-hour memory, and $0.000108/GiB-hour storage after the first 5 GiB; it advertises $200 in free compute and a free trial without a credit card. The limits page says Tier 2 requires a linked credit card plus a $25 top-up, Tier 3 a $500 top-up, and Tier 4 a $2,000 top-up every 30 days.
-- **Implication:** a free allowance does not prove the plan exposes the network controls needed for the threat model. Verify tier defaults, whether the no-network control is available on the zero-payment tier, and the exact version before considering a test.
-- **Unresolved:** default organization policy on the intended free tier, whether essential services remain reachable, exact sandbox lifecycle/cancellation/cleanup, region/retention, and real cold-start/cost behavior.
+**Version warning:** the tier-based organization restrictions below are from the v0 documentation and must not be represented as v2 alpha behavior. The v2 alpha docs are a separate product/version context.
+
+- **Isolation:** v2 documentation describes Firecracker microVMs with separate kernel, filesystem, and network stack. Treat this as a vendor description, not PocketCode's own proof of isolation.
+- **v0 network policy:** the v0 network-limits page describes tier-based organization restrictions. Tier 1 and Tier 2 policies cannot be overridden at sandbox level; Tier 3 and Tier 4 permit sandbox-level allowlists or `networkBlockAll`, with strict enforcement. These claims apply to the documented v0 context only; verify current plan/API semantics before use.
+- **v2 alpha network policy:** the v2 alpha network-limits page says egress is open by default and describes explicit policy configuration. The requested/desired policy may differ from the applied policy, so a request parameter alone is not evidence that the intended policy is effective. The docs describe this feature as alpha and list platform limitations. Do not merge these statements with the v0 tier model.
+- **Pricing:** the pricing page lists $0.0504/vCPU-hour, $0.0162/GiB-hour memory, and $0.000108/GiB-hour storage after the first 5 GiB; it advertises $200 in free compute and a free trial without a credit card. The limits page says Tier 2 requires a linked credit card plus a $25 top-up, Tier 3 a $500 top-up, and Tier 4 a $2,000 top-up every 30 days. Reconfirm current plan terms before relying on them.
+- **Implication:** a free allowance does not prove the intended plan exposes network controls that satisfy the threat model. Under the current strict $0 rule, do not create an account, link a card, top up, or launch a workload.
+- **Unresolved:** intended API/version/tier, default organization policy, whether essential services remain reachable, exact lifecycle/cancellation/cleanup behavior, region/retention, and real cold-start/cost behavior.
 
 ### Cloudflare Containers / Sandboxes
 
