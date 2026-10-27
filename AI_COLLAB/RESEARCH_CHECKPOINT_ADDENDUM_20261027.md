@@ -25,7 +25,7 @@
 
 2. **E2B security/testing permission:** current reviewed page is https://e2b.dev/security. It says to contact E2B before running tests because prior written consent is required. No testing was attempted.
 
-3. **Modal networking:** https://modal.com/docs/guide/sandbox-networking. Direct page retrieval returned an upstream 502, but a current search-indexed result was available on 2026-10-27: public outbound access is allowed by default; `block_network=True` blocks outbound traffic; domain allowlisting is Beta and limited to TLS/443. The current primary page does not fully settle DNS behavior under every allowlist combination; do not assume it is safe. Re-open the primary page before a provider decision. Pricing: https://modal.com/pricing. Included credits are not a guaranteed hard $0 ceiling.
+3. **Modal networking:** https://modal.com/docs/guide/sandbox-networking. Direct page retrieval returned an upstream 502, but the current official search-indexed result was rechecked on 2026-10-27: public outbound access is allowed by default; DNS is unrestricted except when all outbound traffic is blocked; `block_network=True` drops all outbound traffic; domain allowlisting is Beta/TLS 443. This is documentation, not runtime proof; re-open the primary page before a provider decision. Pricing: https://modal.com/pricing. Included credits are not a guaranteed hard $0 ceiling.
 
 4. **Cloudflare Containers pricing:** https://developers.cloudflare.com/containers/platform/pricing/ lists the Workers Paid base plan at $5/month. That conflicts with the current strict $0 constraint absent an explicit owner-approved budget change.
 
@@ -55,7 +55,7 @@ At checkpoint creation, PR #3 was open, draft, unmerged, with branch head c7c1a6
 
 ## Next actions
 
-1. Continue source/link verification and re-open the Modal networking primary page before any provider decision; the search-indexed page was available but direct retrieval returned 502.
+1. Continue static internal-link/source freshness verification; the current indexed Modal guide's DNS statement is recorded in the later source-clarification section below, but re-open the primary page before any provider decision.
 2. Resolve the remaining two-axis lifecycle semantics, idempotency conflict behavior, output/secret-redaction policy, and provisional artifact handling before freezing the contract.
 3. Add deterministic offline tests for policy-application barrier, cancel/timeout race, process-tree handling, streaming limits, artifact hash failure, and cost telemetry. All remain NOT RUN.
 4. Perform low-cost, behavior-based user validation only when the owner can recruit participants; no trial has yet occurred.
