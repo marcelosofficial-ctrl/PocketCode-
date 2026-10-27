@@ -109,3 +109,9 @@
 - Flagged ten contract edges, including cleanup failure after successful execution, late events after timeout/cancel, missing/contradictory policy evidence, limit enforcement, capability freshness, tenant authorization, egress scope, artifact safety, and report integrity.
 - Proposed offline tests but ran none; no provider tested and no production semantics frozen. Provider tests remain blocked under the current $0 gate and consent requirements.
 - This is ChatGPT's independent review, not Gemini completion.
+
+
+### 2026-10-27 — ChatGPT prepared scoped Gemini review request (not Gemini activity)
+- Added [GEMINI_REVIEW_REQUEST.md](GEMINI_REVIEW_REQUEST.md) with a bounded independent-review scope and evidence standards.
+- The request asks for blockers, offline work, approval-gated work, contradictions, and unverified items; it explicitly forbids claiming tests or provider capabilities without evidence.
+- This file is a handoff artifact only. It does not mean Gemini has received, reviewed, or completed anything.
