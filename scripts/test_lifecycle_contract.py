@@ -53,7 +53,7 @@ class LifecycleTests(unittest.TestCase):
             return canonical_request_fingerprint(
                 contract_version="pc-run/0.1", tenant_id="t1", runtime="Python",
                 entrypoint="main.py", source=source,
-                inputs=inputs or [("input.csv", "TEXT/CSV", b"a,b\n1,2\n")],
+                inputs=inputs if inputs is not None else [("input.csv", "TEXT/CSV", b"a,b\n1,2\n")],
                 effective_policy=policy or {"network": "deny", "version": 1})
         self.assertEqual(fp(), fp())
         self.assertNotEqual(fp(), fp(source=b"print(2)"))
