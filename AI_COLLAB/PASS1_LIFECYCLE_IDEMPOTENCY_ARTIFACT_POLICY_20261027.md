@@ -93,7 +93,7 @@ No live cost endpoint should be queried as part of offline tests. Synthetic fixt
 |---|---|---|
 | LIFE-SEM-01 | Exit-zero evidence then cleanup failure | Preserve exit-zero fact; disposition not PASS; artifact remains quarantined |
 | LIFE-SEM-02 | Cleanup retry succeeds after initial failure | Append retry event; preserve first failure; create new report version; release only after all gates pass |
-| RACE-SEM-01 | Timeout and cancel arrive in either order, same logical tick | Atomic decision version gives deterministic result; both events retained; no duplicate cleanup |
+| RACE-SEM-01 | Timeout and cancel arrive in either order, same logical tick | Exactly one atomic decision commits; both events retained; no duplicate cleanup. Reproducible winner requires recorded coordinator-ingress sequence or an explicitly approved precedence rule |
 | RACE-SEM-02 | Duplicate event ID with same payload / conflicting payload | Same payload idempotent; conflict marks evidence contradictory |
 | RACE-SEM-03 | Late success after timeout decision | No silent PASS; reconcile only under explicit authoritative ordering rule |
 | IDEM-SEM-01 | Same tenant/key and same canonical request | One job/attempt; retries return existing reference |
@@ -113,10 +113,11 @@ All are proposed specifications, not executed tests. A fake adapter validates de
 ## 9. Decision requests and next step
 
 Owner review is needed for:
-1. Whether the default artifact quarantine rule is acceptable.
-2. The authoritative event ordering and reconciliation policy.
-3. Idempotency key retention coupled to report/data retention.
-4. Stream overflow behavior: terminate task or drain while discarding excess.
+1. Whether the default artifact quarantine rule is acceptable and whether any provisional artifact exposure is allowed.
+2. The authoritative event ordering and reconciliation policy, including whether a committed timeout/cancel can ever be reconciled by later evidence.
+3. Idempotency key retention coupled to report/data retention, including post-deletion reuse behavior.
+4. Stream overflow behavior, concrete byte/time budgets, and aggregate-versus-per-stream caps.
 5. Canonical payload fingerprint fields and policy-version binding.
+6. The final execution-outcome versus service-disposition fields, terminal labels, and permitted versioned reconciliation path.
 
 Until reviewed, keep these as proposals. No implementation, provider selection, account creation, spend, live security testing, merge, or deployment is authorized. Keep PR #3 draft/unmerged and PR #2 untouched.
