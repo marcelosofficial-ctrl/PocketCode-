@@ -175,3 +175,12 @@ Latest source-count refresh for the earlier lifecycle-audit branch: 30 test meth
 
 
 - Additional follow-up: added `test_report_history_pass_rejects_truthy_non_boolean_gates`, covering `1`, `"true"`, and `None` for each of the nine PASS gates; added acceptance case REPORT-05. Static source count is now 33 test methods; exact tests remain NOT RUN.
+
+
+## Follow-up checkpoint — limit-breach termination/cleanup coherence (2026-10-27)
+
+- Cross-contract audit found that `derive_disposition` returned `LIMIT_EXCEEDED` for a cap breach even when process termination was unconfirmed or cleanup remained pending/unknown. That could make a terminal-looking disposition conceal unresolved lifecycle state.
+- The helper now preserves the cap breach as an execution observation but returns disposition `LIMIT_EXCEEDED` only when termination and cleanup are both confirmed. Otherwise it returns `INCOMPLETE`; contradictory evidence still takes precedence and returns `INCOMPLETE`.
+- Extended the existing synthetic regression test for both unconfirmed termination and pending cleanup, plus the confirmed limit-exceeded path. Updated OUT-02 and the code/test traceability caveat to match.
+- This is a static source/document review and test-source change only. Exact checked-in tests and the full suite remain **NOT RUN**. Do not treat these cases as executed or production enforcement.
+- Branch remains isolated and unmerged. No Actions, provider workload, spend, deployment, or PR #2/#3 changes.
