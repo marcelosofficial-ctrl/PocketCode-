@@ -87,3 +87,12 @@ Continue Pass 1 with a fuller user/problem falsification and task-based comparis
 - Distinguishes requested policy, provider-confirmed policy, observed execution, and formatter output. Missing evidence cannot produce PASS.
 - No real adapter, provider SDK, execution backend, account, workload, test, or spend. No provider selected.
 - Master plan and progress log updated. Continue with research-gap/link audit and consolidate the PR scope; do not merge.
+
+
+## 2026-10-27 continuation — evidence and decision register
+
+**Latest artifact:** [DECISION_REGISTER.md](DECISION_REGISTER.md)
+
+- Consolidates supported evidence vs hypotheses vs unknowns; reversible decisions vs approval-required actions; prioritized offline/user-dependent/blocked gaps; exploratory stop/continue/pivot criteria; and a strict no-go list.
+- Next highest-value offline pass: contract coherence audit plus threat-to-test traceability and external-link/version integrity. Avoid starting a real provider integration while $0/security gates remain unresolved.
+- User interviews/task comparison have not happened. No provider/account/workload/credentials/live tests/spend, no rename, no merge/deployment. PR #3 remains research-only and should remain draft/unmerged.
