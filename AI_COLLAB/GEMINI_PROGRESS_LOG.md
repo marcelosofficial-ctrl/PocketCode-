@@ -84,3 +84,9 @@
 - Added a pre-proof adversarial acceptance-test matrix. These are requirements, not tests run; no sandbox or provider was deployed.
 - No provider selected, no accounts/credentials/workloads, no live security test, and no spend. Strict $0 gate preserved.
 - This is ChatGPT's partial workstream D contribution. Gemini's required passes remain pending.
+
+### 2026-10-27 — ChatGPT runtime/provider feasibility gate (not Gemini completion)
+- Added [PASS1_RUNTIME_PROVIDER_GATE.md](PASS1_RUNTIME_PROVIDER_GATE.md) and clarified [PASS1_PROVIDER_RESEARCH.md](PASS1_PROVIDER_RESEARCH.md).
+- Paper-only comparison: Cloudflare has strong documented isolation/default-egress posture but requires a $5/month paid plan; Daytona's network control depends on API version and billing tier; Modal credits are not a hard spend ceiling; E2B requires prior written consent before testing.
+- Added provider-neutral adapter acceptance requirements and fail-closed capability states. No live test, provider account, workload, or spend. This is not a provider selection.
+- Gemini's required research passes remain pending; this is ChatGPT's independent contribution.
