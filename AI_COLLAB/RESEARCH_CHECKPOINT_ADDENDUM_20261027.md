@@ -25,7 +25,7 @@
 
 2. **E2B security/testing permission:** current reviewed page is https://e2b.dev/security. It says to contact E2B before running tests because prior written consent is required. No testing was attempted.
 
-3. **Modal networking:** https://modal.com/docs/guide/sandbox-networking. Direct page retrieval returned an upstream 502, but a current search-indexed result was available on 2026-10-27: public outbound access is allowed by default; `block_network=True` blocks all outbound traffic including DNS; ordinary allowlist configurations allow DNS without restriction; domain allowlisting is Beta and limited to TLS/443. Re-open the primary page before a provider decision. Pricing: https://modal.com/pricing. Included credits are not a guaranteed hard $0 ceiling.
+3. **Modal networking:** https://modal.com/docs/guide/sandbox-networking. Direct page retrieval returned an upstream 502, but a current search-indexed result was available on 2026-10-27: public outbound access is allowed by default; `block_network=True` blocks outbound traffic; domain allowlisting is Beta and limited to TLS/443. The current primary page does not fully settle DNS behavior under every allowlist combination; do not assume it is safe. Re-open the primary page before a provider decision. Pricing: https://modal.com/pricing. Included credits are not a guaranteed hard $0 ceiling.
 
 4. **Cloudflare Containers pricing:** https://developers.cloudflare.com/containers/platform/pricing/ lists the Workers Paid base plan at $5/month. That conflicts with the current strict $0 constraint absent an explicit owner-approved budget change.
 
