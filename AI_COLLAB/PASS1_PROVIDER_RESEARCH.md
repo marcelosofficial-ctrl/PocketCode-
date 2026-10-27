@@ -74,3 +74,15 @@ Prices and plan terms are snapshots checked 2026-10-26, not a quote or promise. 
 3. Build a normalized cost worksheet for one short run, a repeat-use user, and an adverse/abuse scenario. Keep unknowns explicit.
 4. Review data processing, region, retention/deletion, logging, and terms for the chosen product.
 5. Keep all live tests BLOCKED pending explicit owner approval; E2B additionally requires prior written consent before tests.
+
+## 2026-10-27 runtime feasibility clarification
+
+The provider-neutral decision matrix is in [PASS1_RUNTIME_PROVIDER_GATE.md](PASS1_RUNTIME_PROVIDER_GATE.md). No candidate is approved for live testing under the current $0 constraint.
+
+Important distinctions from the current official docs:
+- Cloudflare Sandboxes documentation describes Containers running in separate Firecracker microVMs and Container internet access defaulting off, but Containers require the $5/month Workers Paid plan. This makes it a paper candidate for a later explicitly approved budget, not a current zero-cost option. Processes within a single sandbox still share files/processes/localhost and root-level capabilities.
+- Daytona's v2 network page is explicitly alpha and says Tier 1/2 organization restrictions cannot be overridden at sandbox level. Its v0 page documents a different network-policy model; exact API/version/tier must be verified rather than combining claims.
+- Modal credits are not a hard billing ceiling. Network blocking and lifecycle/resource settings require exact configuration and adversarial validation.
+- E2B's reviewed security documentation requires prior written consent before testing. No test should be run before permission and a cost/security review.
+
+No account, provider, workload, or spend occurred. Documentation statements are not runtime verification.
