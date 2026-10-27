@@ -163,3 +163,10 @@ Continue Pass 1 with a fuller user/problem falsification and task-based comparis
 A static review found one subtle ambiguity in the lifecycle proposal: atomic compare-and-set guarantees one committed winner, but does not by itself guarantee the same winner across repeated concurrent timeout/cancel races. The lifecycle proposal now distinguishes single-winner safety from replay determinism and recommends a monotonic coordinator-ingress sequence or an explicitly chosen precedence rule. The acceptance matrix now requires replayable ordering evidence and does not assume identical winners across race permutations unless a precedence rule is approved.
 
 This is documentation/specification work only. No tests were run. Before schema freeze, decide the authoritative event-ordering rule; keep provider timestamps alone from silently overriding the committed decision. Strict $0 remains; PR #3 stays draft/unmerged and PR #2 untouched.
+
+
+## 2026-10-27 continuation — owner decision packet prepared
+
+Added [PASS1_OWNER_DECISION_PACKET_20261027.md](PASS1_OWNER_DECISION_PACKET_20261027.md) to turn the remaining lifecycle questions into six explicit review decisions with conservative defaults and trade-offs: artifact quarantine, event ordering, idempotency retention, output overflow, canonical request fingerprint, and outcome/disposition separation. All decisions remain pending; this file does not imply approval.
+
+Next safe step is owner review of the packet. After agreement, update the draft contract/matrix and implement pure offline tests. No tests have been run in this pass; provider-dependent work remains blocked by strict $0 and consent gates.
