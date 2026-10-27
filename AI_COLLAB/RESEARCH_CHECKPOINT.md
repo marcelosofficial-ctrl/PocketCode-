@@ -149,3 +149,10 @@ Continue Pass 1 with a fuller user/problem falsification and task-based comparis
 - Added corresponding test IDs to [OFFLINE_ACCEPTANCE_TEST_MATRIX.md](OFFLINE_ACCEPTANCE_TEST_MATRIX.md). All are proposed and NOT RUN.
 - No code/tests executed, no provider/account/workload, no spend, no security claim, no merge/deploy. Strict $0 gate remains binding; PR #3 remains draft/unmerged; PR #2 untouched.
 - **Next:** continue static cross-document/link integrity audit, correct any stale next-step text, and ensure all research status and decision boundaries are consistent. Owner review is needed before schema freeze or implementation.
+
+
+## 2026-10-27 continuation — Modal networking source clarification
+
+- Rechecked the current official search-indexed [Modal networking guide](https://modal.com/docs/guide/sandbox-networking) after direct page retrieval returned 502. The indexed guide explicitly states DNS traffic is unrestricted except when all outbound traffic is blocked; block_network=True drops all outbound traffic. Domain allowlisting remains Beta/TLS 443, and dynamic policy updates remain Alpha.
+- Updated [PASS1_PROVIDER_RESEARCH.md](PASS1_PROVIDER_RESEARCH.md), [PASS1_RUNTIME_PROVIDER_GATE.md](PASS1_RUNTIME_PROVIDER_GATE.md), [PASS1_SOURCE_INTEGRITY_UPDATE.md](PASS1_SOURCE_INTEGRITY_UPDATE.md), and [PASS1_SOURCE_VERSION_COHERENCE_AUDIT.md](PASS1_SOURCE_VERSION_COHERENCE_AUDIT.md) to replace the prior DNS-wording uncertainty.
+- This closes a documentation wording gap only. It is not runtime proof; metadata/private-address paths, exact configuration, plan eligibility, and billing controls remain unverified. No provider is selected; strict $0 remains.
