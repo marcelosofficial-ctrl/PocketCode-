@@ -129,6 +129,37 @@ class LifecycleTests(unittest.TestCase):
         self.assertTrue(result["contradictory_evidence"])
         self.assertEqual(len(result["conflicts"]), 1)
 
+    def test_duplicate_coordinator_sequence_has_deterministic_replay_order(self):
+        first = {"event_id": "z-event", "sequence": 7, "kind": "timeout", "payload": {}}
+        second = {"event_id": "a-event", "sequence": 7, "kind": "exit_zero", "payload": {}}
+        left = reduce_terminal_events([first, second])
+        right = reduce_terminal_events([second, first])
+        self.assertTrue(left["contradictory_evidence"])
+        self.assertTrue(right["contradictory_evidence"])
+        self.assertEqual(left["events"], right["events"])
+        self.assertEqual(left["execution_outcome"], right["execution_outcome"])
+
+    def test_artifact_release_requires_each_gate_independently(self):
+        valid = dict(cleanup_state="CONFIRMED", digest_valid=True,
+                     job_association_valid=True, tenant_authorized=True)
+        self.assertTrue(artifact_release_allowed(**valid))
+        for field in valid:
+            broken = dict(valid)
+            broken[field] = "UNKNOWN" if field == "cleanup_state" else False
+            self.assertFalse(artifact_release_allowed(**broken))
+
+    def test_output_budget_counts_observed_bytes_and_stops_retaining_on_overflow(self):
+        budget = OutputBudget(per_stream_cap=4, aggregate_cap=6)
+        budget.add("stdout", b"1234")
+        budget.add("stderr", b"56")
+        budget.add("stdout", b"789")
+        self.assertTrue(budget.exceeded)
+        self.assertEqual(budget.observed, {"stdout": 7, "stderr": 2})
+        before = (budget.retained_bytes("stdout"), budget.retained_bytes("stderr"))
+        budget.add("stderr", b"more bytes after overflow")
+        budget.finish()
+        self.assertEqual((budget.retained_bytes("stdout"), budget.retained_bytes("stderr")), before)
+
 
 if __name__ == "__main__":
     unittest.main()
