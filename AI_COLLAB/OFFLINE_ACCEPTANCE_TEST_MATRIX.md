@@ -220,3 +220,6 @@ The pure `ReportHistory` model previously accepted PASS with only five positive 
 | REPORT-04 | Append report with whitespace-only job ID or evidence reference | Reject before mutating report history |
 
 Current audit branch `pocketcode-report-pass-gate-hardening-2026-10-27` contains 32 test methods by source inspection. The exact checked-in tests remain **NOT RUN**. This is not a test pass count.
+
+
+| REPORT-05 | Report history receives truthy but non-boolean PASS gate values (for example, `1`, `"true"`, or `null`) | Reject PASS; do not append a report version |
