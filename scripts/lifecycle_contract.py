@@ -372,12 +372,18 @@ class ReportHistory:
         self._versions: dict[str, list[dict[str, Any]]] = {}
 
     def append(self, job_id: str, *, disposition: str, cleanup_state: str,
-               evidence_ref: str) -> dict[str, Any]:
+               evidence_ref: str, pass_gates: Mapping[str, bool] | None = None) -> dict[str, Any]:
         if not all(isinstance(value, str) and value for value in
                    (job_id, disposition, cleanup_state, evidence_ref)):
             raise ValueError("job, disposition, cleanup state, and evidence reference are required")
-        if disposition == "PASS" and cleanup_state != "CONFIRMED":
-            raise ValueError("PASS requires confirmed cleanup")
+        if disposition == "PASS":
+            required_gates = {"exit_zero", "policy_confirmed", "termination_confirmed",
+                              "artifacts_valid", "tenant_job_authorized"}
+            if cleanup_state != "CONFIRMED":
+                raise ValueError("PASS requires confirmed cleanup")
+            if (not isinstance(pass_gates, Mapping) or set(pass_gates) != required_gates
+                    or any(value is not True for value in pass_gates.values())):
+                raise ValueError("PASS requires all explicit evidence gates")
         versions = self._versions.setdefault(job_id, [])
         report = {"job_id": job_id, "version": len(versions) + 1,
                   "disposition": disposition, "cleanup_state": cleanup_state,
