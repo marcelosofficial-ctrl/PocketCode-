@@ -36,6 +36,10 @@ class LifecycleTests(unittest.TestCase):
             "EXIT_ZERO", "CONFIRMED", policy_confirmed=True,
             termination_confirmed=True, artifacts_valid=True,
             tenant_job_authorized=True, output_truncated=True), "LIMIT_EXCEEDED")
+        self.assertEqual(derive_disposition(
+            "TIMED_OUT", "CONFIRMED", policy_confirmed=True,
+            termination_confirmed=True, artifacts_valid=True,
+            tenant_job_authorized=True, output_truncated=True), "LIMIT_EXCEEDED")
 
     def test_coordinator_sequence_wins_over_provider_timestamp(self):
         result = reduce_terminal_events([
