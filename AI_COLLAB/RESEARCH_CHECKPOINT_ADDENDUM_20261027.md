@@ -60,3 +60,15 @@ At checkpoint creation, PR #3 was open, draft, unmerged, with branch head c7c1a6
 3. Add deterministic offline tests for policy-application barrier, cancel/timeout race, process-tree handling, streaming limits, artifact hash failure, and cost telemetry. All remain NOT RUN.
 4. Perform low-cost, behavior-based user validation only when the owner can recruit participants; no trial has yet occurred.
 5. Keep provider selection, accounts, live tests, spending, deployment and merge blocked without separate approval. PR #3 remains draft/unmerged; PR #2 untouched.
+
+
+## 2026-10-27 continuation — lifecycle/idempotency/artifact policy
+
+The older PR-head SHA and next-action list above are historical checkpoint values, not current branch status. The latest live PR metadata should be used for the current head.
+
+- New proposal: [PASS1_LIFECYCLE_IDEMPOTENCY_ARTIFACT_POLICY_20261027.md](PASS1_LIFECYCLE_IDEMPOTENCY_ARTIFACT_POLICY_20261027.md).
+- Matrix expanded with LIFE-SEM, RACE-SEM, IDEM-SEM, ART-SEM, STREAM-SEM, COST-SEM, and NET-SEM cases; all remain NOT RUN.
+- Proposed default: keep artifacts quarantined until cleanup confirmation and validation gates pass. This is not yet an owner-approved product/API decision.
+- Still unresolved: event reconciliation policy; idempotency fingerprint and retention; stream overflow behavior; whether provisional artifact exposure is ever allowed.
+- No provider, account, workload, spend, code/test execution, merge, or deployment. PR #3 remains draft/unmerged and PR #2 untouched.
+- Next: static internal-link and source freshness review, then owner review before any schema freeze or offline test implementation.
