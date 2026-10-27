@@ -14,12 +14,13 @@ Store an append-only event/evidence record for facts such as request accepted/re
 
 Derive the user-facing disposition from the evidence record and a versioned policy. Do not treat one mutable status field as the history. Corrections append reconciliation evidence and create a new report version; they do not rewrite a previously issued report in place.
 
-Proposed minimum separation:
-- **Execution outcome:** NOT_STARTED | RUNNING | EXITED_ZERO | EXITED_NONZERO | TIMEOUT_OBSERVED | CANCEL_REQUESTED | TERMINATION_CONFIRMED | TERMINATION_UNCONFIRMED | UNKNOWN.
-- **Service disposition:** REJECTED | IN_PROGRESS | PASS | FAIL | INCOMPLETE | LIMIT_EXCEEDED | PROVIDER_ERROR | CLEANUP_FAILED.
-- **Evidence quality:** COMPLETE | MISSING | CONTRADICTORY | STALE.
+Selected baseline field vocabulary (working contract labels; exact public API/schema is not frozen):
+- **Execution outcome:** NOT_STARTED | EXIT_ZERO | EXIT_NONZERO | TIMED_OUT | CANCELLED | LIMIT_EXCEEDED | UNKNOWN.
+- **Cleanup state:** PENDING | CONFIRMED | FAILED | UNKNOWN, with append-only cleanup-attempt evidence.
+- **Job disposition:** REJECTED | PASS | FAILED | TIMED_OUT | CANCELLED | LIMIT_EXCEEDED | INCOMPLETE | PROVIDER_ERROR.
+- **Evidence quality:** COMPLETE | MISSING | CONTRADICTORY | STALE, retained as evidence metadata rather than a replacement for the three fields above.
 
-These are working labels only. Before schema freeze, decide whether CANCELLED is a disposition or a request/event, and whether timeout is an observed outcome or a termination reason. Never use a label to imply stronger evidence than exists.
+The pure helper uses this execution-outcome/disposition vocabulary. A provider adapter must not infer termination from a timeout or cancellation request; the separate termination-confirmed evidence gate remains mandatory. Exact external field names may change before schema freeze, but semantics must remain aligned.
 
 ## 2. Deterministic race rule
 
@@ -110,17 +111,11 @@ No live cost endpoint should be queried as part of offline tests. Synthetic fixt
 
 All are proposed specifications, not executed tests. A fake adapter validates deterministic control logic only, not real provider behavior.
 
-## 9. Decision requests and next step
+## 9. Historical decision requests and next step
 
-Owner review is needed for:
-1. Whether the default artifact quarantine rule is acceptable and whether any provisional artifact exposure is allowed.
-2. The authoritative event ordering and reconciliation policy, including whether a committed timeout/cancel can ever be reconciled by later evidence.
-3. Idempotency key retention coupled to report/data retention, including post-deletion reuse behavior.
-4. Stream overflow behavior, concrete byte/time budgets, and aggregate-versus-per-stream caps.
-5. Canonical payload fingerprint fields and policy-version binding.
-6. The final execution-outcome versus service-disposition fields, terminal labels, and permitted versioned reconciliation path.
+The six owner-delegated decisions below supersede the review requests recorded when this proposal was first drafted. The selected provider-neutral baseline is recorded in [PASS1_OWNER_DECISIONS_RESEARCH_20261027.md](PASS1_OWNER_DECISIONS_RESEARCH_20261027.md): artifact quarantine until cleanup/integrity/authorization pass; coordinator-sequenced terminalization with conflicting terminal evidence treated as INCOMPLETE; tenant-scoped fingerprinted idempotency with a provisional 30-day post-deletion tombstone; bounded output with a provisional 1-second drain/discard window; versioned canonical fingerprinting; and separate execution outcome, cleanup state, and immutable versioned disposition.
 
-Until reviewed, keep these as proposals. No implementation, provider selection, account creation, spend, live security testing, merge, or deployment is authorized. Keep PR #3 draft/unmerged and PR #2 untouched.
+Remaining work is implementation-independent contract/test traceability and exact offline test execution when a local interpreter is available. Production retention, numeric limits, provider semantics, public schema names, and cost telemetry still require review before implementation. No provider selection, account creation, spend, live security testing, merge, or deployment is authorized. Keep PR #3 draft/unmerged and PR #2 untouched.
 
 
 ## 10. Selected decision record — 2026-10-27
