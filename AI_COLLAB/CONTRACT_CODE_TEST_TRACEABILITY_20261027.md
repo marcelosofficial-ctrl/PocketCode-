@@ -40,3 +40,10 @@
 The checked-in `scripts/test_lifecycle_contract.py` contains **24 test methods**, but neither that exact file/helper pair nor the full repository suite has been executed in this environment. Prior 8/8 results came from a reconstructed copy and are not evidence for the current branch.
 
 Next safe step: execute the exact checked-in files in an offline local interpreter when one is available, capture the exact command/runtime/exit code, then address any failures. Keep true transaction/concurrency, process drain/termination, provider policy enforcement, storage durability, and provider security as implementation-level requirements—not claims proven by these pure models.
+
+
+## Additional static audit — blank canonical identity values (2026-10-27)
+
+- Found that the fingerprint helper checked identity strings before normalization but did not reject a whitespace-only runtime, allowing it to canonicalize to an empty string. Contract version, tenant identifier, and entrypoint also accepted whitespace-only values.
+- Added strict non-blank checks for the canonical runtime and whitespace-only checks for the other identity fields while preserving their exact fingerprint representation. Runtime whitespace/case canonicalization remains unchanged.
+- Added synthetic test coverage and acceptance rows FP-02 through FP-04. These are source changes only; the exact checked-in test pair and full repository suite remain NOT RUN. Upstream tenant authentication and runtime/entrypoint allowlisting remain outside this pure helper.
