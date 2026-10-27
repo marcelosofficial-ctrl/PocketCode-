@@ -88,3 +88,12 @@ Until explicitly approved by the owner: no provider accounts or credentials; no 
 5. Update this register/checkpoint/master plan/progress log only when state actually changes.
 6. Never represent fake-adapter results as proof of real isolation or billing.
 7. Preserve strict $0, keep PR #3 draft/unmerged, and leave PR #2 untouched.
+
+
+## 7. 2026-10-27 lifecycle semantics follow-up
+
+See [PASS1_LIFECYCLE_IDEMPOTENCY_ARTIFACT_POLICY_20261027.md](PASS1_LIFECYCLE_IDEMPOTENCY_ARTIFACT_POLICY_20261027.md) for a consolidated proposal. It recommends append-only evidence plus a derived disposition, deterministic atomic terminalization, quarantining artifacts until cleanup confirmation, same-key/different-payload conflict, server-generated artifact identities with digest verification, bounded streaming, and explicit ESTIMATED/UNAVAILABLE cost states.
+
+This proposal narrows implementation ambiguity but does **not** freeze the schema. Owner review remains needed for artifact release after cleanup failure, event reconciliation, idempotency retention, canonical fingerprint fields, and stream overflow behavior. The expanded cases in [OFFLINE_ACCEPTANCE_TEST_MATRIX.md](OFFLINE_ACCEPTANCE_TEST_MATRIX.md) are NOT RUN.
+
+**Next priority:** finish static internal-link/source freshness review and reconcile stale “next action” text across research docs and PR description. After that, the only implementation-adjacent work should be pure offline schema/state-machine/report tests if explicitly authorized. No provider selection, spend, accounts, live workloads, merge, or deployment; PR #3 stays draft/unmerged and PR #2 untouched.
