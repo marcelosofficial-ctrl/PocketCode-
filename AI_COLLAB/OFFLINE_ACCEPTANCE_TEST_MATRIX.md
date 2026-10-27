@@ -35,6 +35,7 @@ All tests below use synthetic inputs and a fake adapter. They do not run submitt
 | EVID-01 | Exit code zero but policy/termination evidence missing | Overall status is not PASS |
 | EVID-02 | Client claim conflicts with provider evidence | Ignore client execution claims; preserve contradiction |
 | OUT-01 | Output and artifacts at cap and cap+1 | Enforce byte/count limits and disclose truncation |
+| OUT-02 | Output cap is exceeded while timeout/cancellation/provider-error evidence also exists | Derive LIMIT_EXCEEDED for a confirmed cap breach unless evidence is contradictory; do not let timeout/provider error hide the cap breach |
 | ART-01 | Unsafe artifact name, unknown ID, or cross-tenant ID | Deny access; never derive storage path from display name |
 | UI-01 | HTML/script-like strings in output or filenames | Display inertly and escape untrusted content |
 | REDACT-01 | Synthetic secret-like text in source/output | Do not inject service secrets; verify report redaction |
