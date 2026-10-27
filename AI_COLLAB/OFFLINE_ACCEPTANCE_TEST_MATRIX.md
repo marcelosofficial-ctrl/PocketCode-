@@ -5,7 +5,7 @@
 **Status:** Selected test specification plus initial pure helper/test files. The repository test suite is NOT RUN; no provider was tested.  
 **Related:** [Draft execution contract](DRAFT_EXECUTION_CONTRACT.md), [Security research](PASS1_SECURITY_ABUSE_RESEARCH.md), [Contract audit](CONTRACT_COHERENCE_AUDIT.md), [Lifecycle resolution proposal](PASS1_CONTRACT_COHERENCE_RESOLUTION.md), [Decision register](DECISION_REGISTER.md), [Lifecycle/idempotency/artifact proposal](PASS1_LIFECYCLE_IDEMPOTENCY_ARTIFACT_POLICY_20261027.md), [Owner decision packet](PASS1_OWNER_DECISION_PACKET_20261027.md).
 
-## Contract blocker
+## Contract status
 
 The draft lifecycle places SUCCEEDED before CLEANUP_PENDING and CLEANED/CLEANUP_FAILED, but also says SUCCEEDED requires cleanup success. These statements conflict unless execution outcome and overall job disposition are separate concepts. Do not implement the state machine verbatim.
 
