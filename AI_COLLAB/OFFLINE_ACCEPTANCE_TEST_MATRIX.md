@@ -102,9 +102,10 @@ Detailed proposed semantics and test IDs are in [PASS1_LIFECYCLE_IDEMPOTENCY_ART
 |---|---|---|
 | LIFE-SEM-01 | Exit-zero evidence followed by cleanup failure | Preserve execution fact; disposition is not PASS; artifact remains quarantined |
 | LIFE-SEM-02 | Cleanup retry succeeds after initial failure | Append retry evidence; preserve first failure; version report; release only after all gates pass |
-| RACE-SEM-01 | Timeout/cancel in either order at same logical tick | Atomic decision version is deterministic; both events retained; no duplicate cleanup |
+| RACE-SEM-01 | Timeout/cancel signals arrive concurrently or in either order | Exactly one decision commits using documented coordinator ordering/precedence; both events retained; no duplicate cleanup. Same winner across permutations is required only if an explicit precedence rule is adopted |
 | RACE-SEM-02 | Duplicate event ID with same vs conflicting payload | Same payload is idempotent; conflicting payload marks evidence contradictory |
 | RACE-SEM-03 | Late success after timeout decision | No silent PASS; reconciliation requires an explicit authoritative ordering rule |
+| RACE-SEM-04 | Replay accepted events with coordinator sequence numbers | Decision is reproducible from the recorded sequence; provider timestamps alone cannot silently reorder the committed result |
 | IDEM-SEM-01 | Same tenant/key and same canonical request | One job/attempt; retry returns existing reference |
 | IDEM-SEM-02 | Same tenant/key but changed source, input, or effective policy | Deterministic conflict before allocation; no second job or first-result substitution |
 | IDEM-SEM-03 | Concurrent submissions with same tenant/key | Exactly one atomic reservation wins; loser applies same-key rules |
