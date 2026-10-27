@@ -76,3 +76,8 @@ No choices are approved by this document. Record any owner-approved deviations h
 2. Implement pure offline tests with synthetic events and fake adapters; record exact commands/results only after execution.
 3. Keep provider-dependent tests blocked until explicit approval, exact-plan review, vendor consent where required, and a proven $0 spending ceiling.
 4. Do not treat offline tests as proof of egress enforcement, process isolation, cleanup, tenant isolation in deployment, or billing.
+
+
+## Delegated selection status — 2026-10-27
+
+The owner explicitly delegated selection to ChatGPT after reviewing this packet. The six recommended options are selected as the baseline for provider-neutral contract alignment and offline tests. This does not authorize provider use, spending, live execution, production implementation, merge, or deployment. Numeric output limits remain provisional offline-test defaults. Rationale and references will be recorded separately.
