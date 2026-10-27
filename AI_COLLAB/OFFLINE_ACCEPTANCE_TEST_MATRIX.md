@@ -169,3 +169,8 @@ The pure lifecycle helper now models append-only report history, the provisional
 A further static review found the reducer preserved the first terminal event but did not mark a later distinct terminal event as contradictory. This did not fully enforce the selected rule that one attempt has one terminal decision and contradictory evidence must not yield PASS.
 
 The reducer now retains the accepted events, keeps the earliest coordinator-sequenced terminal event as the recorded winner, and marks later distinct terminal events as conflicts. The caller's conservative disposition reducer therefore produces INCOMPLETE when the evidence is contradictory. A regression assertion covers timeout followed by a later zero-exit event: the timeout remains the first event, the later event is retained as conflicting evidence, and the derived disposition is INCOMPLETE. This is static/test-source verification only; tests remain NOT RUN.
+
+
+## Disposition precedence coherence check — 2026-10-27
+
+Static crosswalk found that `derive_disposition` returned `REJECTED` for `NOT_STARTED` before checking the global contradictory-evidence flag. That ordering could hide contradictory records behind a nominal rejection. The helper now gives contradictory evidence precedence and derives `INCOMPLETE`; a new synthetic regression test covers this edge. The checked-in lifecycle module now has 20 test methods. **No tests have run against the exact checked-in pair or full repository suite.**
