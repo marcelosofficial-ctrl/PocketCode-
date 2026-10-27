@@ -19,8 +19,9 @@ All tests below use synthetic inputs and a fake adapter. They do not run submitt
 |---|---|---|
 | REQ-01 | Unsupported schema version | Reject before adapter allocation |
 | REQ-02 | Input at byte limit and one byte over; multibyte text | Enforce decoded byte count, not character count |
-| REQ-03 | Traversal, absolute path, duplicate normalized names, NUL | Reject ambiguous or unsafe paths |
+| REQ-03 | Traversal, absolute/drive-relative path, Windows-reserved basename, trailing dot/space, duplicate normalized names, NUL | Reject ambiguous or non-portable names before allocation/fingerprinting |
 | REQ-04 | Archive or unsupported media type | Reject under initial allowlist |
+| FP-01 | Input name contains a Windows-reserved character/device name, trailing dot/space, or input media type is blank | Reject before canonical fingerprint is produced |
 | POL-01 | Client requests more permissions or larger limits than server policy | Never grant extra permissions |
 | AUTH-01 | Missing tenant or client-supplied tenant spoof | Reject or ignore spoof; bind owner from authenticated context |
 | AUTH-02 | Another tenant requests status, cancellation, report, or artifact | Deny access without leaking protected content |
