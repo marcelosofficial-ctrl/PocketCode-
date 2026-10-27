@@ -137,3 +137,15 @@ Continue Pass 1 with a fuller user/problem falsification and task-based comparis
 - Draft contract now states that asynchronous mandatory network policy must be confirmed applied to the exact required revision before execution. Proposed tests remain NOT RUN; no provider accessed and no spending.
 - Current Modal docs do not fully settle DNS behavior under every allowlist combination; do not assume a guarantee.
 - Next: resolve remaining lifecycle/idempotency/report semantics, finish link/source integrity, and keep PR #3 draft/unmerged with PR #2 untouched.
+
+
+## 2026-10-27 continuation — lifecycle/idempotency/artifact semantics proposal
+
+**Latest artifact:** [PASS1_LIFECYCLE_IDEMPOTENCY_ARTIFACT_POLICY_20261027.md](PASS1_LIFECYCLE_IDEMPOTENCY_ARTIFACT_POLICY_20261027.md)
+
+- Consolidated deterministic proposals for append-only execution evidence vs derived disposition, timeout/cancel event races, cleanup failure and result quarantine, same-key/different-payload idempotency conflicts, concurrent key reservation, artifact write/hash integrity, bounded streaming/redaction, and observed telemetry vs estimated/unavailable cost.
+- Default proposed result-exposure rule is conservative: artifacts stay quarantined until cleanup is confirmed and artifact/tenant gates pass. This is a proposal for owner review, not a frozen product/API decision.
+- Idempotency key TTL remains undecided; no fixed 24-hour TTL adopted. No fixed 1 MiB inline output cap adopted. Canonical fingerprint fields and stream overflow behavior remain open.
+- Added corresponding test IDs to [OFFLINE_ACCEPTANCE_TEST_MATRIX.md](OFFLINE_ACCEPTANCE_TEST_MATRIX.md). All are proposed and NOT RUN.
+- No code/tests executed, no provider/account/workload, no spend, no security claim, no merge/deploy. Strict $0 gate remains binding; PR #3 remains draft/unmerged; PR #2 untouched.
+- **Next:** continue static cross-document/link integrity audit, correct any stale next-step text, and ensure all research status and decision boundaries are consistent. Owner review is needed before schema freeze or implementation.
