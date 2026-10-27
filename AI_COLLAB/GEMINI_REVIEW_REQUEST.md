@@ -10,13 +10,14 @@
 3. [DRAFT_EXECUTION_CONTRACT.md](DRAFT_EXECUTION_CONTRACT.md) — provider-neutral draft, not production API.
 4. [PASS1_CONTRACT_COHERENCE_RESOLUTION.md](PASS1_CONTRACT_COHERENCE_RESOLUTION.md) — proposed separation of execution outcome and overall disposition; not adopted.
 5. [OFFLINE_ACCEPTANCE_TEST_MATRIX.md](OFFLINE_ACCEPTANCE_TEST_MATRIX.md) — proposed deterministic test inventory, including LC-01–LC-12; tests are NOT RUN.
-6. [PASS1_SECURITY_ABUSE_RESEARCH.md](PASS1_SECURITY_ABUSE_RESEARCH.md) — threat model and mandatory gates.
-7. [PASS1_RUNTIME_PROVIDER_GATE.md](PASS1_RUNTIME_PROVIDER_GATE.md) — provider feasibility and plan/version constraints.
-8. [PASS1_PROVIDER_RESEARCH.md](PASS1_PROVIDER_RESEARCH.md) — provider comparison; check its v0/v2 version distinctions.
-9. [PASS1_SOURCE_INTEGRITY_UPDATE.md](PASS1_SOURCE_INTEGRITY_UPDATE.md) — recent official-source refresh.
-10. [PASS1_SOURCE_VERSION_COHERENCE_AUDIT.md](PASS1_SOURCE_VERSION_COHERENCE_AUDIT.md) — cross-document source/version conflicts to verify independently.
-11. [PASS1_USER_PROBLEM_EVIDENCE.md](PASS1_USER_PROBLEM_EVIDENCE.md) — mixed public anecdotes and proposed user-validation protocol.
-12. [MASTER_RESEARCH_IMPLEMENTATION_PLAN.md](MASTER_RESEARCH_IMPLEMENTATION_PLAN.md) and [RESEARCH_CHECKPOINT.md](RESEARCH_CHECKPOINT.md) — project continuity.
+6. [PASS1_LIFECYCLE_IDEMPOTENCY_ARTIFACT_POLICY_20261027.md](PASS1_LIFECYCLE_IDEMPOTENCY_ARTIFACT_POLICY_20261027.md) — newest lifecycle, race, idempotency, artifact, streaming, and cost proposal; not frozen.
+7. [PASS1_SECURITY_ABUSE_RESEARCH.md](PASS1_SECURITY_ABUSE_RESEARCH.md) — threat model and mandatory gates.
+8. [PASS1_RUNTIME_PROVIDER_GATE.md](PASS1_RUNTIME_PROVIDER_GATE.md) — provider feasibility and plan/version constraints.
+9. [PASS1_PROVIDER_RESEARCH.md](PASS1_PROVIDER_RESEARCH.md) — provider comparison; check its v0/v2 version distinctions.
+10. [PASS1_SOURCE_INTEGRITY_UPDATE.md](PASS1_SOURCE_INTEGRITY_UPDATE.md) — recent official-source refresh.
+11. [PASS1_SOURCE_VERSION_COHERENCE_AUDIT.md](PASS1_SOURCE_VERSION_COHERENCE_AUDIT.md) — cross-document source/version conflicts to verify independently.
+12. [PASS1_USER_PROBLEM_EVIDENCE.md](PASS1_USER_PROBLEM_EVIDENCE.md) — mixed public anecdotes and proposed user-validation protocol.
+13. [MASTER_RESEARCH_IMPLEMENTATION_PLAN.md](MASTER_RESEARCH_IMPLEMENTATION_PLAN.md) and [RESEARCH_CHECKPOINT.md](RESEARCH_CHECKPOINT.md) — project continuity.
 
 Review the current branch content rather than relying on summaries or old snapshots. If you cannot access the branch links, state that limitation and review only what is provided.
 
