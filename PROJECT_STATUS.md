@@ -146,3 +146,10 @@ Ran 8 synthetic unit tests in a temporary Python environment using a reconstruct
 - **Verification is NOT RUN for the exact updated checked-in helper/test pair and the full repository suite.** The earlier 8/8 reconstructed-copy result is historical and must not be used as evidence for this revision.
 - No GitHub Actions, provider, workload, paid service, deployment, or merge. PR #3 remains draft/open; PR #2 remains untouched.
 - Next offline work: run exact files when an interpreter is available; then cover artifact quarantine/release, immutable report versions, deletion tombstones, output overflow/drain behavior, and atomic concurrent idempotency.
+
+
+### Additional offline coverage — 2026-10-27
+
+- Event replay now has a deterministic event-ID tie-break for malformed duplicate coordinator sequences; such sequences remain contradictory and cannot support PASS.
+- Added tests for deterministic replay, each artifact release gate independently, and output observed-byte accounting plus no additional retention after overflow.
+- Test module count is now 14. Exact checked-in tests and full repository suite remain NOT RUN.
