@@ -197,6 +197,15 @@ class LifecycleTests(unittest.TestCase):
             broken[field] = "UNKNOWN" if field == "cleanup_state" else False
             self.assertFalse(artifact_release_allowed(**broken))
 
+    def test_artifact_release_rejects_truthy_non_boolean_evidence(self):
+        for field in ("digest_valid", "job_association_valid", "tenant_authorized"):
+            for malformed in ("false", 1, None):
+                args = dict(cleanup_state="CONFIRMED", digest_valid=True,
+                            job_association_valid=True, tenant_authorized=True)
+                args[field] = malformed
+                with self.subTest(field=field, malformed=malformed):
+                    self.assertFalse(artifact_release_allowed(**args))
+
     def test_aggregate_cap_triggers_when_each_stream_is_below_its_own_cap(self):
         budget = OutputBudget(per_stream_cap=5, aggregate_cap=6)
         budget.add("stdout", b"abc")
