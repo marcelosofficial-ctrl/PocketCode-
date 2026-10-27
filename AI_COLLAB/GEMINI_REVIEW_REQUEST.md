@@ -8,17 +8,22 @@
 1. [DECISION_REGISTER.md](DECISION_REGISTER.md) — current evidence ledger and decision gates.
 2. [CONTRACT_COHERENCE_AUDIT.md](CONTRACT_COHERENCE_AUDIT.md) — ten contract ambiguities and proposed tests.
 3. [DRAFT_EXECUTION_CONTRACT.md](DRAFT_EXECUTION_CONTRACT.md) — provider-neutral draft, not production API.
-4. [PASS1_SECURITY_ABUSE_RESEARCH.md](PASS1_SECURITY_ABUSE_RESEARCH.md) — threat model and mandatory gates.
-5. [PASS1_RUNTIME_PROVIDER_GATE.md](PASS1_RUNTIME_PROVIDER_GATE.md) — provider feasibility and plan/version constraints.
-6. [PASS1_USER_PROBLEM_EVIDENCE.md](PASS1_USER_PROBLEM_EVIDENCE.md) — mixed public anecdotes and proposed user-validation protocol.
-7. [MASTER_RESEARCH_IMPLEMENTATION_PLAN.md](MASTER_RESEARCH_IMPLEMENTATION_PLAN.md) and [RESEARCH_CHECKPOINT.md](RESEARCH_CHECKPOINT.md) — project continuity.
+4. [PASS1_CONTRACT_COHERENCE_RESOLUTION.md](PASS1_CONTRACT_COHERENCE_RESOLUTION.md) — proposed separation of execution outcome and overall disposition; not adopted.
+5. [OFFLINE_ACCEPTANCE_TEST_MATRIX.md](OFFLINE_ACCEPTANCE_TEST_MATRIX.md) — proposed deterministic test inventory, including LC-01–LC-12; tests are NOT RUN.
+6. [PASS1_SECURITY_ABUSE_RESEARCH.md](PASS1_SECURITY_ABUSE_RESEARCH.md) — threat model and mandatory gates.
+7. [PASS1_RUNTIME_PROVIDER_GATE.md](PASS1_RUNTIME_PROVIDER_GATE.md) — provider feasibility and plan/version constraints.
+8. [PASS1_PROVIDER_RESEARCH.md](PASS1_PROVIDER_RESEARCH.md) — provider comparison; check its v0/v2 version distinctions.
+9. [PASS1_SOURCE_INTEGRITY_UPDATE.md](PASS1_SOURCE_INTEGRITY_UPDATE.md) — recent official-source refresh.
+10. [PASS1_SOURCE_VERSION_COHERENCE_AUDIT.md](PASS1_SOURCE_VERSION_COHERENCE_AUDIT.md) — cross-document source/version conflicts to verify independently.
+11. [PASS1_USER_PROBLEM_EVIDENCE.md](PASS1_USER_PROBLEM_EVIDENCE.md) — mixed public anecdotes and proposed user-validation protocol.
+12. [MASTER_RESEARCH_IMPLEMENTATION_PLAN.md](MASTER_RESEARCH_IMPLEMENTATION_PLAN.md) and [RESEARCH_CHECKPOINT.md](RESEARCH_CHECKPOINT.md) — project continuity.
 
 Review the current branch content rather than relying on summaries or old snapshots. If you cannot access the branch links, state that limitation and review only what is provided.
 
 ## Requested review — in this order
 
 ### A. Critical contradictions
-Find contradictions or unsafe gaps between contract, threat model, provider gate, report contract, and decision register. Prioritize issues that could permit false PASS, cross-tenant access, network/metadata access, unbounded resource use, or cleanup uncertainty.
+Find contradictions or unsafe gaps between contract, threat model, provider gate, report contract, source/version audit, and decision register. Prioritize issues that could permit false PASS, cross-tenant access, network/metadata access, unbounded resource use, or cleanup uncertainty. Pay special attention to whether the proposed two-axis lifecycle semantics actually resolve the contradiction without creating a new one.
 
 ### B. Test coverage
 For each critical issue, provide:
@@ -32,7 +37,7 @@ For each critical issue, provide:
 Do not say a test passed unless you actually ran it and can state the exact command/environment/result. Do not treat a proposed test as executed.
 
 ### C. Provider evidence
-Check only primary vendor sources for claims that can change by plan, API version, or date. Identify missing/contradictory source links and clearly distinguish documented claims from verified configuration or tested behavior. Do not select a provider merely because its marketing documentation sounds strong.
+Check only primary vendor sources for claims that can change by plan, API version, or date. Specifically reconcile Daytona v0 tier-based network restrictions versus Daytona v2 alpha policy behavior; verify source links and distinguish documented claims from verified configuration or tested behavior. Identify missing/contradictory source links. Do not select a provider merely because its marketing documentation sounds strong.
 
 ### D. Product falsification
 Challenge the narrow Python+CSV verifier hypothesis. Identify strongest competing explanations and what observation would change the recommendation. Do not infer market size or demand from anecdotes.
