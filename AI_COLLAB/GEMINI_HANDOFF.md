@@ -57,21 +57,26 @@ Do not merely restate these docs. Find stale claims, gaps, contradictions, and q
 
 ## Division of labor
 
-This is the proposed division. Gemini and ChatGPT do not have direct inter-model messaging; the owner carries artifacts between them. GitHub is the durable source of truth.
+This is the default division of responsibility, consistent with AGENTS.md. Gemini and ChatGPT do not have direct inter-model messaging; the owner carries artifacts between them. GitHub is the durable source of truth. A role assignment in a specific owner request can override these defaults.
 
-### Gemini — research and design lead
-Own broad competitor research; user/problem hypotheses and validation plans; implementation-ready product requirements; execution provider research; security threat model; architecture alternatives; API/data contracts; UX states and errors; test plans; cost/operations model; marketing/naming validation; and one consolidated master plan.
+### Claude — lead implementer
+Own focused implementation tasks and substantial code changes when assigned. Inspect the current repository state and acceptance criteria first; make reviewable changes; report exact branch, commit, paths, test commands/results, and remaining risks. Do not claim tests passed without running them.
 
-### ChatGPT — integration and execution lead
-Own canonical repo integration; independent verification of critical claims; conflict resolution; turning approved plans into implementation tasks; code/proof implementation where feasible; running tests and reporting evidence; security and acceptance-criteria review; status/decision-log maintenance; and concise progress reporting to the owner.
+### Gemini — co-developer and independent design/spec auditor
+Own multi-pass research, architecture alternatives, provider and security comparisons, product/API contracts, acceptance criteria, test matrices, and skeptical review of Claude's proposed changes. Identify contradictions, unsupported claims, edge cases, and missing evidence. Avoid independently implementing the same task unless explicitly assigned. Keep the master plan marked incomplete until its required research and review actually exist.
+
+### ChatGPT — continuity and integration coordinator
+Own compact recovery context, synthesis of research and decisions, independent acceptance/diff cross-checks, task sequencing, status/decision-log upkeep, and deployment/portfolio preparation when relevant and explicitly authorized. ChatGPT should not claim local execution or direct access it does not have.
+
+### Required handoff payload
+Every handoff must state: (1) exact repository, branch, and commit; (2) exact changed/proposed paths; (3) task and acceptance criteria; (4) results and evidence actually collected; (5) verification status, including commands actually run or explicitly not run; (6) limitations, risks, and open questions; and (7) one clear requested next action. Use statuses **proposed**, **in progress**, **completed-unverified**, **verified**, **blocked**, or **superseded**. The owner remains the approval authority for paid services, live workloads, releases, deployments, and irreversible actions.
 
 ### Review loop
-1. Gemini researches and delivers a sourced master plan.
-2. ChatGPT reviews it for omissions, unsafe shortcuts, unsupported claims, cost surprises, contradictions, and implementability.
-3. Gemini addresses each review comment in a revision, marking it resolved, disputed with rationale, or blocked.
-4. ChatGPT verifies critical evidence and implements approved tasks.
-5. Repeat for at least two substantive research/review passes; if a pass is unnecessary, justify why.
-6. Do not claim this loop occurred until the other agent actually reviewed the artifact.
+1. Gemini researches and delivers a sourced, multi-pass specification or reviews an implementation proposal.
+2. Claude implements only tasks that are sufficiently specified and explicitly assigned, or identifies blockers.
+3. ChatGPT reconciles artifacts, cross-checks claims against available evidence, and prepares the next task/handoff.
+4. Gemini reviews material implementation changes for requirements, architecture, security, edge cases, and test adequacy.
+5. The owner carries artifacts between agents and approves owner-gated actions. Do not claim this loop occurred until each named step actually happened.
 
 ## Workstreams — all required
 
