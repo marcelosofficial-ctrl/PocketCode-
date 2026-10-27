@@ -101,6 +101,25 @@ class LifecycleTests(unittest.TestCase):
             tenant_job_authorized=True,
             contradictory_evidence=result["contradictory_evidence"]), "INCOMPLETE")
 
+    def test_terminal_events_require_nonblank_identity_and_mapping_payload(self):
+        malformed = [
+            {"event_id": "   ", "sequence": 1, "kind": "exit_zero", "payload": {}},
+            {"event_id": "blank-kind", "sequence": 2, "kind": "   ", "payload": {}},
+            {"event_id": "missing-payload", "sequence": 3, "kind": "exit_zero"},
+            {"event_id": "scalar-payload", "sequence": 4, "kind": "exit_zero", "payload": "invalid"},
+            {"event_id": "null-payload", "sequence": 5, "kind": "exit_zero", "payload": None},
+        ]
+        result = reduce_terminal_events(malformed)
+        self.assertEqual(result["events"], [])
+        self.assertEqual(result["invalid_events"], malformed)
+        self.assertTrue(result["contradictory_evidence"])
+        self.assertEqual(result["execution_outcome"], "UNKNOWN")
+        self.assertEqual(derive_disposition(
+            result["execution_outcome"], "CONFIRMED", policy_confirmed=True,
+            termination_confirmed=True, artifacts_valid=True,
+            tenant_job_authorized=True,
+            contradictory_evidence=result["contradictory_evidence"]), "INCOMPLETE")
+
     def test_duplicate_event_is_idempotent_but_conflict_is_marked(self):
         event = {"event_id": "e1", "sequence": 1, "kind": "exit_zero", "payload": {"exit": 0}}
         result = reduce_terminal_events([event, dict(event)])
