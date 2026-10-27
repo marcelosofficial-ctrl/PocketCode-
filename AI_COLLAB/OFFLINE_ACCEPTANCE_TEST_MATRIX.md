@@ -75,6 +75,7 @@ These additional cases trace [PASS1_CONTRACT_COHERENCE_RESOLUTION.md](PASS1_CONT
 | LC-13 | Contradictory evidence exists alongside NOT_STARTED | Contradiction takes precedence; derive INCOMPLETE, not a clean REJECTED result |
 | LC-14 | Exit-zero evidence with cleanup PENDING, FAILED, or UNKNOWN | Preserve execution fact; disposition is non-PASS until cleanup is CONFIRMED |
 | LC-15 | PASS gate supplied as truthy non-boolean value (e.g. `"false"` or `1`) | Fail closed; malformed evidence flags cannot produce PASS |
+| ART-SEM-02 | Artifact digest, job association, or tenant authorization flag is a truthy non-boolean value | Keep artifact quarantined; malformed flags must not authorize release |
 
 
 
