@@ -109,11 +109,22 @@ def reduce_terminal_events(events: Iterable[Mapping[str, Any]]) -> dict[str, Any
 
     terminal_outcome = "UNKNOWN"
     winning_event_id = None
+    terminal_events = []
     for event in accepted:
         outcome = TERMINAL_EVENTS.get(event["kind"])
-        if outcome is not None and winning_event_id is None:
-            terminal_outcome = outcome
-            winning_event_id = event["event_id"]
+        if outcome is not None:
+            terminal_events.append((event, outcome))
+            if winning_event_id is None:
+                terminal_outcome = outcome
+                winning_event_id = event["event_id"]
+
+    # Only one terminal decision is valid per attempt. Preserve all evidence,
+    # keep the earliest coordinator-sequenced terminal event as the winner, and
+    # mark any additional distinct terminal event as contradictory. The caller
+    # must derive INCOMPLETE rather than PASS from contradictory evidence.
+    if len(terminal_events) > 1:
+        contradictory = True
+        conflicts.extend(event for event, _ in terminal_events[1:])
 
     return {
         "events": accepted,
