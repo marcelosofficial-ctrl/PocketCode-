@@ -149,7 +149,7 @@ Acceptance criteria:
 ## Follow-up checkpoint — lifecycle static audit (2026-10-27)
 
 - Separate branch: `pocketcode-lifecycle-fingerprint-audit-2026-10-27`. PR #3 remains open/draft/unmerged; this audit branch has not been merged or promoted to a PR.
-- Latest source inspection finds 28 test methods in `scripts/test_lifecycle_contract.py`; no exact test execution has occurred, so this is not a pass count.
+- Latest source inspection finds 30 test methods in `scripts/test_lifecycle_contract.py`; no exact test execution has occurred, so this is not a pass count.
 - Additional static changes: reject blank canonical fingerprint identity values; reject blank/non-string idempotency reservation fields; preserve malformed event inputs under `invalid_events` and mark evidence contradictory; validate tombstone identity fields and epoch inputs.
 - Acceptance matrix and traceability crosswalk updated with FP-02..FP-04, IDEM-03..IDEM-04, and LIFE-16.
 - Exact helper/test suite and full repository suite remain **NOT RUN**. No GitHub Actions, provider workload, merge, deployment, account setup, or spend was initiated.
@@ -158,3 +158,6 @@ Acceptance criteria:
 - Additional event-schema audit: terminal-event reduction now rejects whitespace-only event IDs/kinds and missing or non-mapping payloads into `invalid_events`, marking evidence contradictory. Acceptance case LIFE-17 and regression test added. Source/test suite remains NOT RUN.
 
 - Tombstone retry audit: repeated insertion for the same tenant/key/fingerprint now preserves the later expiry and cannot shorten retention; a different fingerprint conflicts. Added IDEM-05 regression and matrix/crosswalk entries. Exact suite remains NOT RUN.
+
+
+Latest source-count refresh: 30 test methods in `scripts/test_lifecycle_contract.py`, confirmed by fetching the current branch file. Exact tests remain NOT RUN.
