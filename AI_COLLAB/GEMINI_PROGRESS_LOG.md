@@ -120,3 +120,11 @@
 - The user pasted Gemini's review report into the PocketCode conversation. ChatGPT added [GEMINI_PASS1_REVIEW_INTEGRATION_20261027.md](GEMINI_PASS1_REVIEW_INTEGRATION_20261027.md), triaged the recommendations, and updated the draft contract's network-policy barrier, offline test matrix, cost model, decision register, and checkpoints.
 - Gemini's lifecycle separation and pre-execution policy-application barrier are retained as high-priority design findings. Modal-as-default, blanket local Android rejection, fixed idempotency TTL, fixed output cap, universal CSV validation, and rename are not adopted without more evidence/approval.
 - No provider accounts/workloads, code execution, tests, spending, merge, or deployment occurred. Full Gemini Pass 0–7 remains pending; do not mark all passes complete based on one review report.
+
+
+### 2026-10-27 — Lifecycle/idempotency/artifact proposal (ChatGPT)
+
+- Added [PASS1_LIFECYCLE_IDEMPOTENCY_ARTIFACT_POLICY_20261027.md](PASS1_LIFECYCLE_IDEMPOTENCY_ARTIFACT_POLICY_20261027.md) and expanded [OFFLINE_ACCEPTANCE_TEST_MATRIX.md](OFFLINE_ACCEPTANCE_TEST_MATRIX.md) with proposed deterministic cases for cleanup failure/quarantine, race linearization, idempotency conflicts/concurrency, artifact digest/write failures, bounded streaming, and cost telemetry.
+- Updated the decision register and checkpoint; PR #3 description now reflects the actual review and open questions.
+- This is ChatGPT's documentation contribution, not Gemini work. The user-supplied Gemini Pass 1 review remains the only newly received Gemini artifact; full Gemini Pass 0–7 is still pending. The prepared scoped review request has not been directly sent by ChatGPT.
+- All new tests are specifications and remain NOT RUN. No provider, account, workload, spend, merge, or deployment. Strict $0 gate and PR #2 isolation remain.
