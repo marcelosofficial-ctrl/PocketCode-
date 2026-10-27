@@ -38,7 +38,7 @@
 | D3 | Provider | None selected; Gemini's Modal-default recommendation not adopted | Yes | No account/workload until mandatory controls and $0 hard cap are proven and owner explicitly approves |
 | D4 | Budget | Strict $0 | No implicit relaxation | Explicit owner approval required to change |
 | D5 | Runtime security | Fail closed when mandatory control is unsupported or unverified | Safety invariant | Cannot weaken merely to fit a free tier |
-| D6 | Contract limits/state semantics | Draft only; two-axis execution outcome/disposition is leading proposal, not frozen schema | Yes | Resolve cleanup/result exposure, timeout-cancel races, idempotency conflicts, network-policy barrier evidence, output/redaction limits, and cost telemetry before implementation |
+| D6 | Contract limits/state semantics | Six lifecycle decisions selected as provider-neutral baseline; public schema and production limits remain draft | Yes, except safety invariants | Selected: quarantine artifacts until cleanup/integrity/authorization pass; coordinator-ingress sequence governs replay; contradictory terminal evidence is INCOMPLETE; tenant-scoped canonical idempotency; provisional 30-day tombstone and 1-second drain window; immutable report versions. Remaining: exact API names, validated production limits, provider policy evidence, cost telemetry, retention/deletion details. |
 | D7 | Project name | “PocketCode” collision risk flagged | Yes | Research legal/name options; no rename without owner approval |
 | D8 | Code/runtime implementation | Not authorized by this research PR | Yes | Separate implementation plan and approval |
 | D9 | Merge/deploy/public release | Not authorized by this register | N/A | Explicit owner approval |
@@ -92,11 +92,9 @@ Until explicitly approved by the owner: no provider accounts or credentials; no 
 
 ## 7. 2026-10-27 lifecycle semantics follow-up
 
-See [PASS1_LIFECYCLE_IDEMPOTENCY_ARTIFACT_POLICY_20261027.md](PASS1_LIFECYCLE_IDEMPOTENCY_ARTIFACT_POLICY_20261027.md) for a consolidated proposal. It recommends append-only evidence plus a derived disposition, deterministic atomic terminalization, quarantining artifacts until cleanup confirmation, same-key/different-payload conflict, server-generated artifact identities with digest verification, bounded streaming, and explicit ESTIMATED/UNAVAILABLE cost states.
+See [PASS1_LIFECYCLE_IDEMPOTENCY_ARTIFACT_POLICY_20261027.md](PASS1_LIFECYCLE_IDEMPOTENCY_ARTIFACT_POLICY_20261027.md) and [PASS1_OWNER_DECISIONS_RESEARCH_20261027.md](PASS1_OWNER_DECISIONS_RESEARCH_20261027.md) for the selected provider-neutral lifecycle baseline and rationale. The helper/test module models disposition gates, coordinator-sequenced event replay, canonical fingerprinting, tenant-scoped idempotency, artifact release gates, output retention/redaction, append-only report versions, deletion tombstones, and serial-order race outcomes. These are pure models, not durable storage, true concurrent transactions, process control, or provider proof.
 
-This proposal narrows implementation ambiguity but does **not** freeze the schema. Owner review remains needed for artifact release after cleanup failure, event reconciliation, idempotency retention, canonical fingerprint fields, and stream overflow behavior. The expanded cases in [OFFLINE_ACCEPTANCE_TEST_MATRIX.md](OFFLINE_ACCEPTANCE_TEST_MATRIX.md) are NOT RUN.
-
-**Next priority (current, after the 2026-10-27 static link and status pass):** owner review of [PASS1_OWNER_DECISION_PACKET_20261027.md](PASS1_OWNER_DECISION_PACKET_20261027.md), followed by one coordinated contract/matrix update if the recommendations are approved. Do not implement lifecycle tests while expected outcomes remain undecided. PR #3 remains draft/unmerged and PR #2 untouched. No provider selection, spend, accounts, live workloads, merge, or deployment; PR #3 stays draft/unmerged and PR #2 untouched.
+The six owner-delegated choices are selected, but the public schema and production limits remain unfrozen. The exact checked-in lifecycle tests and full repository suite are NOT RUN. **Next priority:** complete requirement-to-code-to-test traceability, identify any missing negative cases, then run exact checked-in tests offline when a local interpreter is available. Provider integration remains blocked by the strict $0 gate. PR #3 stays draft/unmerged and PR #2 untouched.
 
 
 ## Delegated lifecycle decision — 2026-10-27
