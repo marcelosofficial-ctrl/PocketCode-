@@ -3,7 +3,7 @@
 **Date:** 2026-10-27  
 **Owner:** ChatGPT independent contribution  
 **Status:** Proposed test specification only. No tests were implemented or executed in this pass; no provider was tested.  
-**Related:** [Draft execution contract](DRAFT_EXECUTION_CONTRACT.md), [Security research](PASS1_SECURITY_ABUSE_RESEARCH.md), [Contract audit](CONTRACT_COHERENCE_AUDIT.md), [Decision register](DECISION_REGISTER.md).
+**Related:** [Draft execution contract](DRAFT_EXECUTION_CONTRACT.md), [Security research](PASS1_SECURITY_ABUSE_RESEARCH.md), [Contract audit](CONTRACT_COHERENCE_AUDIT.md), [Lifecycle resolution proposal](PASS1_CONTRACT_COHERENCE_RESOLUTION.md), [Decision register](DECISION_REGISTER.md).
 
 ## Contract blocker
 
@@ -43,6 +43,25 @@ All tests below use synthetic inputs and a fake adapter. They do not run submitt
 | CLEAN-01 | Successful exit followed by failed or unknown cleanup | Preserve execution observation; overall status is not PASS |
 | LIMIT-01 | Limit configured but enforcement not observed | Do not claim the limit was enforced |
 
+## Lifecycle-resolution cases (proposed; not run)
+
+These additional cases trace [PASS1_CONTRACT_COHERENCE_RESOLUTION.md](PASS1_CONTRACT_COHERENCE_RESOLUTION.md). They refine the generic cases above and should be implemented together when offline tests are authorized. They are **not executed tests**.
+
+| ID | Synthetic scenario | Required assertion |
+|---|---|---|
+| LC-01 | Exit code 0, cleanup pending | No PASS while cleanup is pending |
+| LC-02 | Exit code 0, cleanup fails | Preserve exit-zero execution fact; disposition is non-PASS and exposes cleanup failure |
+| LC-03 | Timeout requested, termination unknown | Do not claim process stopped; no PASS |
+| LC-04 | Cancel requested, late success event arrives | No silent PASS; reconcile chronology or mark incomplete |
+| LC-05 | Duplicate/out-of-order provider events | Idempotent processing; no unsafe regression to PASS |
+| LC-06 | Cleanup retry eventually succeeds | Append recovery evidence; preserve initial failure event; apply explicit disposition rule |
+| LC-07 | Exit code 0 but policy confirmation missing/stale | No PASS |
+| LC-08 | Exit code 0 but artifact manifest missing/contradictory | No PASS |
+| LC-09 | Client supplies PASS or fabricated exit code | Client fields cannot influence authoritative outcome |
+| LC-10 | Provider cost observation absent | Report cost as unknown, not zero |
+| LC-11 | Same idempotency key from two tenants | No cross-tenant collision or disclosure |
+| LC-12 | Cleanup success event belongs to another job | Reject evidence association; no PASS |
+
 ## Provider-dependent tests — not authorized
 
 These need explicit owner approval, an eligible exact plan, required permissions, and a proven spending ceiling. E2B also requires prior written consent according to the reviewed documentation.
@@ -63,4 +82,4 @@ For tests actually run, record test ID, source commit, exact command, runtime ve
 
 ## Next safe step
 
-Resolve the lifecycle contradiction and the open questions in the contract audit before implementation. Provider integration remains blocked by the strict $0 gate.
+Resolve the lifecycle contradiction and the open questions in the contract audit before implementation. The two-axis outcome/disposition model is a proposal only and requires review before schema freeze. Provider integration remains blocked by the strict $0 gate.
