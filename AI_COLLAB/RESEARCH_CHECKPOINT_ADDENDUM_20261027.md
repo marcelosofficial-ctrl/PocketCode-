@@ -91,3 +91,8 @@ The owner subsequently delegated the six lifecycle decisions to ChatGPT. The ear
 ## Implementation checkpoint — provider-neutral contract helpers
 
 Added `scripts/lifecycle_contract.py` and `scripts/test_lifecycle_contract.py` as pure provider-neutral decision helpers and synthetic regression tests. Coverage includes evidence-derived disposition, coordinator-sequence event replay, canonical request fingerprints, idempotency replay/conflict, artifact release gates, byte-bounded output, and configured-pattern redaction across chunk boundaries. These files do not launch submitted code or contact providers. **The repository test suite has not been run**; the next step is offline syntax/test execution and review. A focused isolated check of the redaction pattern across a chunk boundary succeeded, but that is not a full test run. PR #3 remains draft/unmerged, PR #2 untouched, strict $0 unchanged.
+
+
+## Temporary offline test result — 2026-10-27
+
+A temporary Python run of 8 synthetic tests using a reconstructed copy of the current helper and test module reported **8 passed, 0 failures, 0 errors**. This was not run from a repository checkout, and the complete repository test suite remains unrun. No GitHub Actions, provider, submitted program, or live workload was used. Re-run the exact checked-in files in an offline checkout before treating this as branch-level test evidence.
