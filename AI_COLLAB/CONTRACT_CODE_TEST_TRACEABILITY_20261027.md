@@ -65,3 +65,5 @@ Next safe step: execute the exact checked-in files in an offline local interpret
 - Added input validation for blank canonical fingerprint identities, blank/non-string idempotency reservation values, and tombstone identities/epochs.
 - Added explicit preservation of malformed event records in `invalid_events`; malformed evidence sets `contradictory_evidence` and therefore cannot produce PASS when disposition derivation consumes the flag.
 - Acceptance cases added: FP-02..FP-04, IDEM-03..IDEM-04, LIFE-16. No live execution, Actions, provider workload, merge, or deployment.
+
+| Terminal event shape must include nonblank ID/kind and mapping payload | `reduce_terminal_events` | `test_terminal_events_require_nonblank_identity_and_mapping_payload` | Static source/test change only; exact suite remains NOT RUN. This protects the pure decision model, not the authenticity of upstream events. |
