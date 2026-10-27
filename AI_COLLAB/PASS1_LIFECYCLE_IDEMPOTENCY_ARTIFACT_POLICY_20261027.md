@@ -34,7 +34,7 @@ Use one per-job atomic terminalization/decision record (compare-and-set or equiv
 - Duplicate events with the same provider event ID are idempotent. Conflicting events with the same ID or impossible sequence are evidence contradictions.
 - Cleanup is single-flight per job/attempt. Duplicate cleanup requests attach to the same operation or safely retry an idempotent operation; they must not create multiple contradictory terminal results.
 
-**Open design choice:** whether timeout/cancel may be reversed after later authoritative evidence. Default proposal: no reversal in-place; create a versioned reconciliation record and report. Owner review required.
+**Selected reconciliation rule:** do not reverse a committed timeout/cancel execution decision in place. Later or conflicting evidence is retained; unless a future contract version defines authoritative evidence that proves the earlier decision was provisional, derive INCOMPLETE/PROVIDER_ERROR as appropriate and issue a new versioned report rather than silently replacing the decision.
 
 ## 3. Cleanup failure and result exposure
 
@@ -60,7 +60,7 @@ For a key scoped to an authenticated tenant:
 5. Concurrent first submissions: atomic unique-key reservation determines one winner; losers re-read and apply the same-key rules above.
 6. Explicit rerun: use a new attempt ID and an explicit rerun operation/policy; do not overload network retries as rerun intent.
 
-TTL/retention is **not decided**. Do not hard-code a 24-hour TTL by assumption. A key record must not expire while its job/report remains addressable in a way that permits an accidental duplicate execution; coordinate key retention with report retention and deletion. Document behavior after deletion/expiry before API freeze.
+**Selected provisional policy:** retain the full idempotency record while the job/report remains addressable; after deletion, retain a tenant-scoped one-way tombstone for 30 days and reject key reuse during that window. This 30-day period is an offline-test default, not a production/privacy commitment. Clients must not intentionally reuse keys, and the server does not guarantee detection after tombstone expiry. Full report/artifact retention, deletion evidence, and coordination with privacy obligations remain unresolved and must be defined before API freeze.
 
 ## 5. Artifact integrity and safe handoff
 
