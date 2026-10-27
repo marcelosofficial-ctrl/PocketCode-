@@ -4,6 +4,19 @@
 **Project name:** PocketCode is provisional; brand and repository naming are not validated.  
 **Repository:** https://github.com/marcelosofficial-ctrl/PocketCode-
 
+## Quick recovery state (2026-10-27)
+
+**Use this section first when resuming from a new chat or another AI.** It is a navigation snapshot, not a substitute for checking the live repository.
+
+- **Phase:** discovery, competitive research, and MVP definition. The product and name remain hypotheses; there is no approved production architecture, execution provider, pricing model, or final brand.
+- **Implementation truth:** no production execution backend or real end-to-end code execution has been validated. Simulated prototype output must remain clearly labelled. The master research/implementation plan is still a scaffold, not a completed research result.
+- **Budget and safety:** $0 unless the owner explicitly approves otherwise. Do not create provider accounts, run live workloads, deploy, trigger GitHub Actions, or make irreversible/publication changes without explicit approval.
+- **Default AI roles:** Claude leads implementation; Gemini co-develops and independently audits research, architecture, specifications, and test matrices; ChatGPT coordinates continuity, research integration, acceptance cross-checks, and authorized deployment/portfolio preparation. See [AGENTS.md](AGENTS.md).
+- **Recovery order:** (1) inspect the current branch, commit, open PRs, and working diff; (2) read [AGENTS.md](AGENTS.md) and this status snapshot; (3) read [DECISIONS.md](DECISIONS.md) plus relevant product/security/architecture docs; (4) check the [master research plan](AI_COLLAB/MASTER_RESEARCH_IMPLEMENTATION_PLAN.md) and [Gemini handoff](AI_COLLAB/GEMINI_HANDOFF.md); (5) identify the smallest unfinished task and its acceptance criteria; (6) verify only what can actually be run, then update this status and provide an exact handoff.
+- **Evidence labels:** distinguish verified, source-inspected, proposed, completed-unverified, blocked, and superseded. A branch, draft PR, test definition, or chat statement is not proof that code ran or a decision was accepted.
+- **Branch/PR discipline:** audit and experiment branches are not canonical unless reviewed and integrated. Do not assume their files are present on the default branch. Preserve existing owner work; do not modify unrelated PRs.
+
+
 ## Mission
 
 Help people build, execute, inspect, and improve software from a phone, including when they do not have access to a computer.
