@@ -1,6 +1,6 @@
 # Gemini Instructions for PocketCode
 
-Read AGENTS.md first for shared rules and the default AI role split. Then read AI_COLLAB/GEMINI_HANDOFF.md and follow its multi-pass research and skeptical-review protocol. Do not stop after a one-pass summary.
+Read AGENTS.md first for shared rules and the default AI role split. Then read AI_COLLAB/GEMINI_HANDOFF.md and follow its multi-pass research and skeptical-review protocol. Do not stop after a one-pass summary. Keep AI_COLLAB/GEMINI_PROGRESS_LOG.md updated as work progresses, and consolidate mature research into AI_COLLAB/MASTER_RESEARCH_IMPLEMENTATION_PLAN.md.
 
 ## Default role
 
