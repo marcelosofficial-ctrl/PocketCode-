@@ -115,3 +115,13 @@ Continue Pass 1 with a fuller user/problem falsification and task-based comparis
 - Prepared a narrow independent review request so the second AI can inspect current artifacts without duplicating broad research or making unverified completion claims.
 - Requested outputs: critical contradictions, deterministic offline tests, primary-source/provider version issues, product falsification, and approval-gated work.
 - The request has not itself been delivered to or completed by Gemini. No repo changes by Gemini are claimed. Strict $0 gate and draft/unmerged PR status remain.
+
+
+## 2026-10-27 continuation — offline acceptance-test traceability
+
+**Latest artifact:** [OFFLINE_ACCEPTANCE_TEST_MATRIX.md](OFFLINE_ACCEPTANCE_TEST_MATRIX.md)
+
+- Added a proposed test inventory covering request validation, policy authority, tenant checks, lifecycle races, evidence integrity, output limits, artifacts, report status, cleanup, and cost unknowns.
+- Found a contract consistency issue during static review: the lifecycle puts SUCCEEDED before cleanup, while the prose requires cleanup success for SUCCEEDED. The contract needs separate execution-outcome and overall-disposition semantics before implementation.
+- This is a test specification and static review only; no tests were run and no provider was tested.
+- Next: reconcile the proposed lifecycle semantics, then check source links and plan/version statements. Keep PR #3 draft/unmerged and the $0 gate binding.
