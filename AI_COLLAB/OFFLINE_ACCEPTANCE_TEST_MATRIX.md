@@ -127,3 +127,10 @@ Detailed proposed semantics and test IDs are in [PASS1_LIFECYCLE_IDEMPOTENCY_ART
 ## Current next safe step
 
 Owner-review the lifecycle/result-exposure and idempotency rules, then implement pure state-machine/report tests only if authorized. Provider-dependent tests remain blocked by strict $0 and consent requirements. Do not claim fake-adapter tests prove provider isolation, egress, cleanup, or billing.
+
+
+## Delegated decision update — 2026-10-27
+
+The owner delegated selection of the six lifecycle decisions to ChatGPT. The selected defaults and research rationale are recorded in [PASS1_OWNER_DECISION_PACKET_20261027.md](PASS1_OWNER_DECISION_PACKET_20261027.md) and [PASS1_OWNER_DECISIONS_RESEARCH_20261027.md](PASS1_OWNER_DECISIONS_RESEARCH_20261027.md). These decisions resolve the design-level ambiguity: execution observations, cleanup state, and derived disposition are separate; artifacts remain quarantined until cleanup and integrity/authorization gates pass; event ordering uses coordinator-ingress sequence plus atomic terminalization; idempotency is tenant-scoped and fingerprinted; output caps terminate the attempt with bounded drain/discard; each report version is immutable.
+
+Additional selected-decision tests are required for cleanup quarantine/release, report versioning, coordinator sequence replay, same-key/different-fingerprint conflicts, 30-day deletion tombstones, aggregate output cap plus 1-second drain deadline, and canonicalized input-name collisions. All are **NOT RUN**. Numeric limits are provisional offline-test defaults only. Provider tests, spend, deployment, and merge remain unauthorized.
