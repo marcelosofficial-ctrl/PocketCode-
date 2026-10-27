@@ -434,14 +434,19 @@ class DeletionTombstones:
         self._records: dict[tuple[str, str], tuple[str, int]] = {}
 
     def add(self, *, tenant_id: str, key: str, fingerprint: str, deleted_at: int) -> None:
-        if not tenant_id or not key or not fingerprint:
-            raise ValueError("tenant, key, and fingerprint are required")
+        identity = (tenant_id, key, fingerprint)
+        if not all(isinstance(value, str) and value.strip() for value in identity):
+            raise ValueError("tenant, key, and fingerprint must be non-blank strings")
         if not isinstance(deleted_at, int) or isinstance(deleted_at, bool) or deleted_at < 0:
             raise ValueError("deleted_at must be a non-negative integer epoch")
         self._records[(tenant_id, key)] = (fingerprint, deleted_at + self.RETENTION_SECONDS)
 
     def lookup(self, *, tenant_id: str, key: str, now: int) -> tuple[str, str] | None:
         """Return a tombstone while retained; expire at the exact deadline."""
+        if not all(isinstance(value, str) and value.strip() for value in (tenant_id, key)):
+            raise ValueError("tenant and key must be non-blank strings")
+        if not isinstance(now, int) or isinstance(now, bool) or now < 0:
+            raise ValueError("now must be a non-negative integer epoch")
         record_key = (tenant_id, key)
         record = self._records.get(record_key)
         if record is None:
