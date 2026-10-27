@@ -78,6 +78,11 @@ class LifecycleTests(unittest.TestCase):
                          fp(inputs=[("a.csv", "text/csv", b"A"), ("b.txt", "text/plain", b"B")]))
         with self.assertRaises(ValueError):
             fp(inputs=[("café.csv", "text/csv", b"A"), ("cafe\u0301.csv", "text/csv", b"B")])
+        for unsafe_name in ("../escape.txt", r"C:drive-relative.txt", "bad:name.txt",
+                            "trailing-dot.", "trailing-space ", "CON", "nul.txt", "COM1.csv"):
+            with self.subTest(unsafe_name=unsafe_name):
+                with self.assertRaises(ValueError):
+                    fp(inputs=[(unsafe_name, "text/plain", b"x")])
 
     def test_idempotency_replay_conflict_and_tenant_scope(self):
         records = {}
