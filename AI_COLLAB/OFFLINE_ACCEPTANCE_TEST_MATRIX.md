@@ -181,3 +181,12 @@ The reducer now retains the accepted events, keeps the earliest coordinator-sequ
 ## Disposition precedence coherence check — 2026-10-27
 
 Static crosswalk found that `derive_disposition` returned `REJECTED` for `NOT_STARTED` before checking the global contradictory-evidence flag. That ordering could hide contradictory records behind a nominal rejection. The helper now gives contradictory evidence precedence and derives `INCOMPLETE`; a new synthetic regression test covers this edge. The checked-in lifecycle module now has 21 test methods, including aggregate-only output overflow. **No tests have run against the exact checked-in pair or full repository suite.**
+
+
+## Canonical fingerprint identity audit (2026-10-27)
+
+| ID | Setup | Required result |
+|---|---|---|
+| FP-02 | Runtime contains only whitespace and would normalize to an empty string | Reject before producing a fingerprint |
+| FP-03 | Contract version, tenant identifier, or entrypoint is empty or whitespace-only | Reject before producing a fingerprint; upstream authentication and allowlisting remain separately required |
+| FP-04 | Valid runtime differs only by surrounding whitespace or ASCII case | Produce the same canonical runtime fingerprint |
