@@ -276,3 +276,11 @@ See the detailed grouped register in [PASS0_REPOSITORY_AUDIT.md](PASS0_REPOSITOR
 - Capability states distinguish supported, unsupported, not_verified, and blocked_by_plan. Any mandatory control not verified blocks execution; no silent security downgrade.
 - Offline fake-adapter tests may validate orchestration/report behavior only. They cannot prove real isolation, egress blocking, cleanup, tenant isolation, or billing.
 - No production implementation/provider SDK, account, workload, test, spend, or provider selection.
+
+
+### 2026-10-27 — Evidence and decision register (ChatGPT)
+
+- Added [DECISION_REGISTER.md](DECISION_REGISTER.md) to separate evidence-supported facts, hypotheses, unknowns, reversible decisions, approval gates, and research priorities.
+- Prioritized offline work first: contract coherence, source/link integrity, threat-to-test traceability, and cross-document state consistency. User interviews and task comparison remain unperformed; provider proof remains blocked by the strict $0 gate and mandatory security requirements.
+- Explicit no-go list covers provider accounts/credentials, billing changes/spend, live execution, tests requiring consent, security downgrades, merge/deployment, public claims, and rename without owner approval.
+- This is a decision-control document, not product validation or approval to implement. Gemini completion remains unverified/pending.
