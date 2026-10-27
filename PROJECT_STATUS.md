@@ -160,10 +160,12 @@ Ran 8 synthetic unit tests in a temporary Python environment using a reconstruct
 - Added pure in-memory ReportHistory: cleanup reconciliation appends a new version rather than rewriting an earlier disposition; stored and returned snapshots are copied. It rejects PASS when cleanup is not CONFIRMED.
 - Added DeletionTombstones with tenant-scoped keys and a provisional 30-day retention window after deletion, expiring at the exact deadline.
 - Added reserve_idempotency_batch to model coordinator-ordered outcomes for racing submissions: same key/fingerprint becomes one CREATED plus REPLAY; different fingerprint conflicts without replacing the first reservation.
-- Added five synthetic tests (19 lifecycle test methods total). These models do not provide durable storage, transactional atomicity, or a real concurrency test. Production atomicity remains an implementation/acceptance requirement.
+- Added five synthetic tests (19 lifecycle test methods at that checkpoint). These models do not provide durable storage, transactional atomicity, or a real concurrency test. Production atomicity remains an implementation/acceptance requirement.
 - **Verification remains NOT RUN** for the exact checked-in lifecycle helper/test pair and the full repository suite. Do not treat this as passing code. No GitHub Actions, provider, workload, spend, deployment, or merge was used.
 
 
 ## 2026-10-27 — conflicting terminal-event correction
 
 Static review identified a mismatch: replay selected the first terminal event but did not flag a second distinct terminal event. The helper now preserves both, keeps the earliest coordinator-sequenced event as the recorded winner, marks later terminal evidence contradictory, and tests that timeout followed by late zero-exit evidence derives INCOMPLETE rather than PASS. This closes a design inconsistency in the pure model; the exact checked-in tests remain NOT RUN.
+
+A further coherence pass found contradictory-evidence handling occurred after the `NOT_STARTED` shortcut in `derive_disposition`. The helper now prioritizes contradiction and returns `INCOMPLETE` rather than hiding contradictory evidence behind `REJECTED`. A regression test was added; the current checked-in lifecycle test module contains 20 test methods. Exact checked-in tests and the full repository suite remain NOT RUN.
