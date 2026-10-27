@@ -126,3 +126,9 @@ A PASS-gate review found that truthy non-boolean values (for example, `"false"` 
 
 ## Follow-on artifact-release gate review — 2026-10-27
 Static review found that artifact release authorization also relied on truthiness for digest, job-association, and tenant-authorization flags. It now requires literal boolean `True` for all three flags; added a synthetic negative test and acceptance case ART-SEM-02. The lifecycle test module contains 24 test methods. This change is not test-executed; exact checked-in helper/test pair and full repository suite remain NOT RUN.
+
+
+## Master workflow continuity update — 2026-10-27
+The owner's research-backed operating workflow has been summarized into the final section of `AI_COLLAB/MASTER_RESEARCH_IMPLEMENTATION_PLAN.md`, preserving the existing project specifications as higher authority. It records repo-first verification, coherent risk-proportionate passes, reuse-first research, bounded three-AI roles, product/security discipline, honest test reporting, owner-control/$0 constraints, and durable handoffs. This is an operating-method addendum, not a product/architecture decision.
+
+Current lifecycle state: strict literal-boolean PASS and artifact-release gates are implemented in the pure helper; negative synthetic tests and matrix rows LC-15 and ART-SEM-02 are recorded. The checked-in lifecycle module contains 24 test methods; exact checked-in tests and full suite remain NOT RUN.
