@@ -307,7 +307,9 @@ class LifecycleTests(unittest.TestCase):
             evidence_ref="evidence-v2", pass_gates={
                 "exit_zero": True, "policy_confirmed": True,
                 "termination_confirmed": True, "artifacts_valid": True,
-                "tenant_job_authorized": True,
+                "tenant_job_authorized": True, "no_limit_violation": True,
+                "no_output_truncation": True, "evidence_consistent": True,
+                "evidence_associated": True,
             })
         self.assertEqual(original["version"], 1)
         self.assertEqual(corrected["version"], 2)
@@ -318,6 +320,37 @@ class LifecycleTests(unittest.TestCase):
         versions[0]["disposition"] = "TAMPERED"
         self.assertEqual([v["disposition"] for v in history.versions("job-1")],
                          ["INCOMPLETE", "PASS"])
+
+    def test_report_history_rejects_whitespace_only_identity_fields(self):
+        history = ReportHistory()
+        for field in ("job_id", "evidence_ref"):
+            args = {"job_id": "job", "disposition": "FAILED",
+                    "cleanup_state": "CONFIRMED", "evidence_ref": "evidence"}
+            args[field] = "   "
+            with self.subTest(field=field), self.assertRaises(ValueError):
+                history.append(**args)
+        self.assertEqual(history.versions("job"), ())
+
+    def test_report_history_pass_requires_complete_limit_and_evidence_gates(self):
+        history = ReportHistory()
+        gates = {
+            "exit_zero": True, "policy_confirmed": True,
+            "termination_confirmed": True, "artifacts_valid": True,
+            "tenant_job_authorized": True, "no_limit_violation": True,
+            "no_output_truncation": True, "evidence_consistent": True,
+            "evidence_associated": True,
+        }
+        with self.assertRaises(ValueError):
+            history.append("job", disposition="PASS", cleanup_state="CONFIRMED",
+                           evidence_ref="e1", pass_gates={k: v for k, v in gates.items()
+                                                         if k != "no_limit_violation"})
+        for gate in gates:
+            broken = dict(gates)
+            broken[gate] = False
+            with self.subTest(pass_gate=gate), self.assertRaises(ValueError):
+                history.append("job", disposition="PASS", cleanup_state="CONFIRMED",
+                               evidence_ref="e2", pass_gates=broken)
+        self.assertEqual(history.versions("job"), ())
 
     def test_report_history_rejects_unknown_disposition_and_cleanup_state(self):
         history = ReportHistory()
@@ -341,7 +374,9 @@ class LifecycleTests(unittest.TestCase):
             history.append("a", disposition="PASS", cleanup_state="UNKNOWN", evidence_ref="e3",
                            pass_gates={"exit_zero": True, "policy_confirmed": True,
                                        "termination_confirmed": True, "artifacts_valid": True,
-                                       "tenant_job_authorized": True})
+                                       "tenant_job_authorized": True, "no_limit_violation": True,
+                                       "no_output_truncation": True, "evidence_consistent": True,
+                                       "evidence_associated": True})
         gates = {"exit_zero": True, "policy_confirmed": True,
                  "termination_confirmed": True, "artifacts_valid": True,
                  "tenant_job_authorized": True}
