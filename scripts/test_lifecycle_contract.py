@@ -113,6 +113,24 @@ class LifecycleTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             fp(inputs=[("valid.txt", "   ", b"x")])
 
+    def test_fingerprint_rejects_blank_canonical_identity_fields(self):
+        base = dict(
+            contract_version="pc-run/0.1", tenant_id="t1", runtime="Python",
+            entrypoint="main.py", source=b"print(1)", inputs=[],
+            effective_policy={"network": "deny", "version": 1},
+        )
+        for field in ("contract_version", "tenant_id", "runtime", "entrypoint"):
+            for blank in ("", "   ", "\\t\\n"):
+                values = dict(base)
+                values[field] = blank
+                with self.subTest(field=field, blank=repr(blank)), self.assertRaises(ValueError):
+                    canonical_request_fingerprint(**values)
+        # Whitespace around a valid runtime remains canonicalized consistently.
+        self.assertEqual(
+            canonical_request_fingerprint(**base),
+            canonical_request_fingerprint(**{**base, "runtime": "  PYTHON  "}),
+        )
+
     def test_idempotency_replay_conflict_and_tenant_scope(self):
         records = {}
         self.assertEqual(reserve_idempotency(records, tenant_id="t1", key="k",
