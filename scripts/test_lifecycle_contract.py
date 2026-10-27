@@ -352,6 +352,24 @@ class LifecycleTests(unittest.TestCase):
                                evidence_ref="e2", pass_gates=broken)
         self.assertEqual(history.versions("job"), ())
 
+    def test_report_history_pass_rejects_truthy_non_boolean_gates(self):
+        history = ReportHistory()
+        gates = {
+            "exit_zero": True, "policy_confirmed": True,
+            "termination_confirmed": True, "artifacts_valid": True,
+            "tenant_job_authorized": True, "no_limit_violation": True,
+            "no_output_truncation": True, "evidence_consistent": True,
+            "evidence_associated": True,
+        }
+        for gate in gates:
+            for malformed in (1, "true", None):
+                broken = dict(gates)
+                broken[gate] = malformed
+                with self.subTest(pass_gate=gate, malformed=malformed), self.assertRaises(ValueError):
+                    history.append("job", disposition="PASS", cleanup_state="CONFIRMED",
+                                   evidence_ref="e1", pass_gates=broken)
+        self.assertEqual(history.versions("job"), ())
+
     def test_report_history_rejects_unknown_disposition_and_cleanup_state(self):
         history = ReportHistory()
         with self.assertRaises(ValueError):
