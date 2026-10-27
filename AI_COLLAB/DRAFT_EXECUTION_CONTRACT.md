@@ -46,6 +46,8 @@ Illustrative JSON shape; exact schema/version remains to be reviewed:
         "max_input_bytes": 262144,
         "max_stdout_bytes": 32768,
         "max_stderr_bytes": 32768,
+        "max_output_total_bytes": 65536,
+        "max_output_drain_seconds": 1,
         "max_artifact_count": 10,
         "max_artifact_bytes_each": 262144,
         "max_artifact_bytes_total": 1048576,
@@ -64,29 +66,41 @@ The example is not a public API commitment. Limit values are discussion defaults
 - Bind requests to an authenticated tenant server-side. Client request IDs are idempotency hints, not identity.
 - Validate decoded byte counts after decoding; encoded length alone is insufficient.
 
-## Proposed lifecycle
+## Selected lifecycle and evidence model
 
-> **Do not implement this diagram as a normative state machine yet.** It is internally inconsistent: the diagram places execution success before cleanup, while the prose below requires cleanup success for `SUCCEEDED`. The leading resolution is to separate execution outcome from overall job disposition, but the canonical enum, reconciliation rules, and artifact-release policy remain owner-review items. See [PASS1_CONTRACT_COHERENCE_RESOLUTION.md](PASS1_CONTRACT_COHERENCE_RESOLUTION.md) and [PASS1_LIFECYCLE_IDEMPOTENCY_ARTIFACT_POLICY_20261027.md](PASS1_LIFECYCLE_IDEMPOTENCY_ARTIFACT_POLICY_20261027.md). Both are proposals, not API freeze. The six recommended owner decisions and pending approval fields are consolidated in [PASS1_OWNER_DECISION_PACKET_20261027.md](PASS1_OWNER_DECISION_PACKET_20261027.md); do not infer approval from the existence of that packet.
+The owner delegated the six decisions in [PASS1_OWNER_DECISION_PACKET_20261027.md](PASS1_OWNER_DECISION_PACKET_20261027.md) to ChatGPT; the selected baseline and rationale are recorded in [PASS1_OWNER_DECISIONS_RESEARCH_20261027.md](PASS1_OWNER_DECISIONS_RESEARCH_20261027.md). This is a provider-neutral contract direction, not an API freeze or permission to run user code.
 
-    RECEIVED
-      -> REJECTED
-      -> QUEUED
-      -> STARTING
-      -> RUNNING
-      -> SUCCEEDED | FAILED | TIMED_OUT | CANCELLED | LIMIT_EXCEEDED | PROVIDER_ERROR
-      -> CLEANUP_PENDING
-      -> CLEANED | CLEANUP_FAILED
+Do not model execution and cleanup as one flat linear state. Keep these separate:
 
-Rules:
-- REJECTED has no execution evidence and no sandbox allocation.
-- SUCCEEDED requires authoritative runner termination evidence, exit code zero, complete policy confirmation, no output-limit violation, and cleanup success. If future policy allows returning results before cleanup is confirmed, cleanup must remain a separate warning/state.
-- FAILED requires execution evidence with nonzero exit or a defined runtime failure.
-- TIMED_OUT requires observed timeout enforcement and termination; client-side timeout alone is insufficient.
-- CANCELLED requires provider-confirmed termination; until then the job remains cancellation-pending.
-- LIMIT_EXCEEDED identifies the limit and whether termination is confirmed.
-- PROVIDER_ERROR must not imply the user code itself failed.
-- CLEANUP_FAILED is an operations/security signal, not a successful completion.
-- Terminal states are immutable. Corrections append an event rather than silently rewriting history.
+- `execution_outcome`: `NOT_STARTED | EXIT_ZERO | EXIT_NONZERO | TIMED_OUT | CANCELLED | LIMIT_EXCEEDED | UNKNOWN`, with evidence source and event references.
+- `cleanup_state`: `PENDING | CONFIRMED | FAILED | UNKNOWN`, retaining every cleanup attempt.
+- `job_disposition`: `REJECTED | PASS | FAILED | TIMED_OUT | CANCELLED | LIMIT_EXCEEDED | INCOMPLETE | PROVIDER_ERROR`, derived from immutable observations by a versioned policy.
+- `report_version`: monotonically increasing; each issued report is immutable. Reconciliation or later cleanup evidence creates a new version and preserves the earlier one.
+
+### Terminalization and event order
+
+- Assign a monotonically increasing sequence when the coordinator accepts each event for a job attempt. Record the event and its sequence append-only.
+- Atomically commit at most one terminal execution decision per attempt. The first eligible decision serialized by the coordinator wins; later evidence cannot silently replace it.
+- Provider timestamps alone never reorder or overturn a committed decision. If authoritative order or evidence association is ambiguous, disposition is `INCOMPLETE` or `PROVIDER_ERROR`, never `PASS`.
+- Deduplicate cleanup actions by attempt/action identity and make cleanup idempotent; an atomic status update alone does not guarantee exactly-once side effects.
+
+### PASS and result-release gates
+
+`PASS` requires authoritative zero exit, confirmation of the exact mandatory policy revision before execution, termination evidence, no prohibited timeout/cancel/limit/truncation, validated artifact manifest and hashes, correct tenant/job association, and confirmed cleanup. Missing or contradictory evidence never becomes PASS.
+
+Artifacts remain quarantined until cleanup is confirmed and integrity plus per-request tenant/job authorization checks pass. While cleanup is uncertain, expose status/evidence metadata only—no artifact bytes, live provider URLs, or raw stdout/stderr. A later successful cleanup may produce a new report version; never overwrite a report already issued.
+
+### Idempotency and request fingerprint
+
+- Scope idempotency keys to the authenticated tenant.
+- Same key and same server-computed canonical fingerprint returns the existing job/report reference; same key with a different fingerprint conflicts before allocation.
+- Explicit reruns require a new key and create a distinct attempt.
+- Retain idempotency records while the job/report is addressable. After deletion, retain a tenant-scoped one-way tombstone for 30 days and reject reuse during that window. Clients must never intentionally reuse a key; after tombstone expiry, server detection is not guaranteed.
+- Compute a versioned server-side fingerprint over schema version, authenticated tenant namespace, normalized allowlisted runtime/fixed entrypoint, exact decoded source bytes, canonical input names and normalized media types plus exact decoded input bytes, and effective server policy identity/version and execution-affecting values. Exclude transport metadata, retry timestamps, and client-supplied fingerprints. Use unambiguous canonical encoding before hashing.
+
+### Output limits
+
+For offline tests only, use the provisional profile in the request example: 32 KiB retained stdout, 32 KiB retained stderr, 64 KiB aggregate retained output, and a separate 1-second drain/discard window after an output cap triggers termination. Count bytes, not characters. On either per-stream or aggregate cap breach, stop retaining output, request termination, and drain/discard only to avoid pipe deadlock within the separate bounded window. Mark `LIMIT_EXCEEDED`; never PASS. If termination or stream closure remains unconfirmed, preserve that uncertainty. These are not validated production limits; the server sets effective limits and clients cannot raise them.
 
 ## Proposed provider adapter contract
 
