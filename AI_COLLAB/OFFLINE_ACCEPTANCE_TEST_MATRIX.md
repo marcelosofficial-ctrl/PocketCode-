@@ -42,6 +42,15 @@ All tests below use synthetic inputs and a fake adapter. They do not run submitt
 | REPORT-02 | Documented capability compared with configured and tested behavior | Keep evidence categories distinct |
 | CLEAN-01 | Successful exit followed by failed or unknown cleanup | Preserve execution observation; overall status is not PASS |
 | LIMIT-01 | Limit configured but enforcement not observed | Do not claim the limit was enforced |
+| NET-BARRIER-01 | Fake provider reports required network policy as pending, wrong revision, failed, missing, or applied only after a deterministic scheduler event | No task-start call until exact required policy/revision is confirmed applied; timeout/mismatch fails closed |
+| RACE-01 | Deterministic scheduler delivers cancel and timeout signals in both possible orders, including same logical tick | One authoritative execution outcome is committed; duplicate terminal events do not cause duplicate cleanup; chronology remains recorded |
+| PROC-TREE-01 | Local test harness creates a parent and descendant process under the test OS | Harness records whether descendants terminate before cleanup is considered confirmed; label OS-specific behavior and do not infer provider process-tree guarantees |
+| STREAM-01 | Synthetic stdout/stderr arrives in chunks much larger than the inline cap | Memory use remains bounded by implementation design; inline report is capped with explicit truncation and total observed-byte metadata |
+| REDACT-02 | Synthetic token-shaped strings appear across chunk boundaries in stdout/stderr | Configured detector catches the fixture across chunks, emits redaction marker and redaction metadata; test must not imply universal secret detection |
+| ARTIFACT-02 | Artifact write is interrupted or computed digest differs from final stored bytes | Artifact marked invalid/incomplete; no PASS and no valid manifest entry for corrupted bytes |
+| TELEMETRY-01 | Provider invoice/cost endpoint is delayed while local CPU/RAM observations exist | Report separates observed resource telemetry from estimated cost; cost status is ESTIMATED or UNAVAILABLE per defined rule, never falsely final or $0 |
+| IDEM-02 | Same tenant submits same idempotency key with a different canonical payload | Return a deterministic conflict; do not launch a second job or return the first job's result as if it matched |
+| CSV-01* | If CSV is confirmed as the first workflow: unsupported encoding, malformed header, or size above configured limit | Reject before sandbox allocation according to the documented CSV policy; this is workflow-specific, not a universal execution-contract rule |
 
 ## Lifecycle-resolution cases (proposed; not run)
 
@@ -62,7 +71,7 @@ These additional cases trace [PASS1_CONTRACT_COHERENCE_RESOLUTION.md](PASS1_CONT
 | LC-11 | Same idempotency key from two tenants | No cross-tenant collision or disclosure |
 | LC-12 | Cleanup success event belongs to another job | Reject evidence association; no PASS |
 
-## Provider-dependent tests — not authorized
+\n\n*CSV-01 is conditional on owner confirmation that CSV is the initial supported workflow. The proposed 1 MiB inline cap is not adopted; choose it only after payload and memory budgets are reviewed. Secret redaction is best-effort defense-in-depth and cannot guarantee that all secrets are detected. Tests using fake adapters verify orchestration logic only.\n\n## Provider-dependent tests — not authorized
 
 These need explicit owner approval, an eligible exact plan, required permissions, and a proven spending ceiling. E2B also requires prior written consent according to the reviewed documentation.
 
