@@ -99,7 +99,10 @@ def reduce_terminal_events(events: Iterable[Mapping[str, Any]]) -> dict[str, Any
         by_id[event_id] = signature
         accepted.append(event)
 
-    accepted.sort(key=lambda item: item["sequence"])
+    # A coordinator sequence should be unique. If malformed input reuses one,
+    # mark the evidence contradictory above and use event ID as a stable tie-break
+    # so replay output is deterministic regardless of input iteration order.
+    accepted.sort(key=lambda item: (item["sequence"], item["event_id"]))
     sequences = [item["sequence"] for item in accepted]
     if len(sequences) != len(set(sequences)):
         contradictory = True
