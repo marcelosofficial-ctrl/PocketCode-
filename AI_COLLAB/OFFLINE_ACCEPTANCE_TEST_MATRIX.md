@@ -7,7 +7,7 @@
 
 ## Contract status
 
-The draft lifecycle places SUCCEEDED before CLEANUP_PENDING and CLEANED/CLEANUP_FAILED, but also says SUCCEEDED requires cleanup success. These statements conflict unless execution outcome and overall job disposition are separate concepts. Do not implement the state machine verbatim.
+The design-level lifecycle contradiction is resolved by separating immutable execution observations, cleanup state, and versioned derived job disposition. The contract remains a draft and the selected decisions authorize provider-neutral offline tests only.
 
 **Proposed resolution for review, not yet adopted:** keep execution outcome separate from service disposition. Preserve a successful process exit as an observation, but set overall status to non-PASS if cleanup or required evidence is missing. Choose final field names and statuses before freezing the schema. The six open decision areas and recommended defaults are consolidated in [PASS1_OWNER_DECISION_PACKET_20261027.md](PASS1_OWNER_DECISION_PACKET_20261027.md); every approval remains pending.
 
