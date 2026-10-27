@@ -239,8 +239,9 @@ def reserve_idempotency(
     proposed_job_id: str,
 ) -> tuple[str, str]:
     """Pure single-process reservation model; not a concurrency implementation."""
-    if not tenant_id or not key or not fingerprint or not proposed_job_id:
-        raise ValueError("tenant, key, fingerprint, and job ID are required")
+    values = (tenant_id, key, fingerprint, proposed_job_id)
+    if not all(isinstance(value, str) and value.strip() for value in values):
+        raise ValueError("tenant, key, fingerprint, and job ID must be non-blank strings")
     record_key = (tenant_id, key)
     existing = records.get(record_key)
     if existing is None:
