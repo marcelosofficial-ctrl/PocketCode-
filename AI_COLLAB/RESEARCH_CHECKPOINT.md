@@ -1,7 +1,7 @@
 # PocketCode Research Checkpoint — Provider, competitor, and cost subpasses
 
 **Checkpoint ID:** PC-RESEARCH-CP-2026-10-26-003  
-**Status:** CHATGPT PASS 0 AUDIT + PASS 1 PROVIDER/COMPETITOR/COST SUBPASSES RECORDED / GEMINI RESEARCH STILL PENDING  
+**Status:** CHATGPT PASS 0 AUDIT + PASS 1 SUBPASSES RECORDED / GEMINI INDEPENDENT PASS 1 REVIEW RECEIVED; FULL GEMINI PASS 0–7 STILL PENDING  
 **Date:** 2026-10-26  
 **Repository:** https://github.com/marcelosofficial-ctrl/PocketCode-  
 **Branch:** `pocketcode-pass0-audit-2026-10-26`  
@@ -125,3 +125,15 @@ Continue Pass 1 with a fuller user/problem falsification and task-based comparis
 - Found a contract consistency issue during static review: the lifecycle puts SUCCEEDED before cleanup, while the prose requires cleanup success for SUCCEEDED. The contract needs separate execution-outcome and overall-disposition semantics before implementation.
 - This is a test specification and static review only; no tests were run and no provider was tested.
 - Next: reconcile the proposed lifecycle semantics, then check source links and plan/version statements. Keep PR #3 draft/unmerged and the $0 gate binding.
+
+## 2026-10-27 continuation — Gemini independent Pass 1 review received
+
+**Latest artifact:** [GEMINI_PASS1_REVIEW_INTEGRATION_20261027.md](GEMINI_PASS1_REVIEW_INTEGRATION_20261027.md)
+
+- The user supplied Gemini's independent review. ChatGPT integrated it as review evidence; this is not evidence that Gemini completed the full Pass 0–7 protocol.
+- Accepted as high-priority issues: separate process outcome from overall disposition; add a fail-closed network-policy applied-state barrier before user code starts; expand deterministic tests for cancellation/timeout races, process trees, streaming/output bounds, artifact integrity, idempotency conflicts, and cost telemetry.
+- Not adopted automatically: Modal as default provider, blanket rejection of local Android execution, fixed 24-hour idempotency TTL, fixed 1 MiB inline output cap, universal CSV schema checks, or project rename.
+- Official E2B pricing checked 2026-10-27 lists free Hobby with a one-time $100 usage credit and Pro at $150/month plus usage. Credits do not satisfy a hard $0 ceiling. E2B test consent remains required.
+- Draft contract now states that asynchronous mandatory network policy must be confirmed applied to the exact required revision before execution. Proposed tests remain NOT RUN; no provider accessed and no spending.
+- Current Modal docs do not fully settle DNS behavior under every allowlist combination; do not assume a guarantee.
+- Next: resolve remaining lifecycle/idempotency/report semantics, finish link/source integrity, and keep PR #3 draft/unmerged with PR #2 untouched.
