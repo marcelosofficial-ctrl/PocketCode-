@@ -111,3 +111,10 @@ The crosswalk confirmed that named inputs are an unordered mapping sorted by nor
 Static review found two additional contract gaps. First, the fingerprint helper described names as safe basenames but allowed Windows-reserved characters/device names, trailing dots/spaces, and blank media types. It now rejects these portable-name hazards and blank media types before producing a fingerprint; negative fixtures cover traversal/drive syntax, reserved names, trailing characters, normalized collisions, and blank media type. Second, `ReportHistory` could append a PASS report after cleanup confirmation alone. It now requires confirmed cleanup plus explicit true values for exit-zero, policy confirmation, termination confirmation, artifact validity, and tenant/job authorization; synthetic negative subcases exercise each missing gate.
 
 The traceability document and acceptance matrix now record these cases. The helper/test pair and full repository suite remain **NOT RUN**; this is static source/test-fixture review, not runtime verification. No Actions, provider, account, workload, spend, deployment, or merge. PR #3 remains draft/unmerged and PR #2 untouched.
+
+
+## 2026-10-27 — Output-cap disposition precedence
+
+Another static consistency pass found that `derive_disposition` checked timeout/cancellation/provider-error outcomes before the output-limit flags. A confirmed output cap breach could therefore be hidden by a concurrent timeout observation, despite the selected rule that cap overflow yields `LIMIT_EXCEEDED`. The reducer now checks contradiction first, preserves `NOT_STARTED` as rejection when there is no contradiction, then prioritizes an explicit cap breach before ordinary timeout/cancel/provider-error outcomes. A combined timeout-plus-output-truncation assertion and matrix case OUT-02 were added.
+
+The exact checked-in tests and full repository suite remain **NOT RUN**. This is static source/test-fixture review only; no Actions, provider, account, workload, spend, deployment, or merge. PR #3 remains draft/unmerged; PR #2 remains untouched.
