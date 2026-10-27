@@ -253,9 +253,9 @@ def artifact_release_allowed(
     """Artifacts are releasable only when every cleanup/integrity/auth gate passes."""
     return (
         cleanup_state == "CONFIRMED"
-        and digest_valid
-        and job_association_valid
-        and tenant_authorized
+        and digest_valid is True
+        and job_association_valid is True
+        and tenant_authorized is True
     )
 
 
