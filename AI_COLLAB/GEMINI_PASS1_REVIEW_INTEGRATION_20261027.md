@@ -76,3 +76,8 @@ The original checklist above describes the immediate work after Gemini's review 
 - Gemini report received in the PocketCode conversation on 2026-10-27.
 - Provider source checks above were performed by ChatGPT independently; they are not claims that Gemini's sources were independently validated by Gemini.
 - No source code was implemented, no tests were run, no provider was accessed, no billing changed, and no PR was merged.
+
+
+## Delegated decision update — 2026-10-27
+
+The owner subsequently delegated the six lifecycle decisions to ChatGPT. The older “owner review” next-action wording in this document is historical and superseded by the selected baseline in [PASS1_OWNER_DECISION_PACKET_20261027.md](PASS1_OWNER_DECISION_PACKET_20261027.md) and [PASS1_OWNER_DECISIONS_RESEARCH_20261027.md](PASS1_OWNER_DECISIONS_RESEARCH_20261027.md). Provider-neutral lifecycle helpers and synthetic tests are now present but remain **NOT RUN**. Gemini attribution is unchanged: the review was supplied by the user; no additional Gemini work is claimed. PR #3 description may still have stale next-action wording; it was not changed in this pass.
