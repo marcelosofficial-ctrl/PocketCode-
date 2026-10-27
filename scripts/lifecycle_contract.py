@@ -90,7 +90,7 @@ def reduce_terminal_events(events: Iterable[Mapping[str, Any]]) -> dict[str, Any
         if not isinstance(kind, str) or not kind:
             contradictory = True
             continue
-        signature = (kind, payload)
+        signature = (sequence, kind, payload)
         if event_id in by_id:
             if by_id[event_id] != signature:
                 contradictory = True
@@ -281,9 +281,9 @@ class StreamingRedactor:
     """
     CARRY_BYTES = 768
     PATTERNS = (
-        re.compile(rb"(?i)\\bBearer\\s+[A-Za-z0-9._~+/-]{8,256}\\b"),
-        re.compile(rb"(?i)\\b(?:api[_-]?key|access[_-]?token|password|secret)\\s*[:=]\\s*[^\\s,;]{1,256}"),
-        re.compile(rb"\\b(?:sk-[A-Za-z0-9_-]{16,128}|gh[pousr]_[A-Za-z0-9]{20,128}|AKIA[0-9A-Z]{16})\\b"),
+        re.compile(rb"(?i)\bBearer\s+[A-Za-z0-9._~+/-]{8,256}\b"),
+        re.compile(rb"(?i)\b(?:api[_-]?key|access[_-]?token|password|secret)\s*[:=]\s*[^\s,;]{1,256}"),
+        re.compile(rb"\b(?:sk-[A-Za-z0-9_-]{16,128}|gh[pousr]_[A-Za-z0-9]{20,128}|AKIA[0-9A-Z]{16})\b"),
     )
 
     def __init__(self) -> None:
@@ -302,6 +302,18 @@ class StreamingRedactor:
             self.pending = bytearray(combined)
             return b""
         cutoff = len(combined) - self.CARRY_BYTES
+        # Never split a configured match at the raw carry boundary: doing so
+        # would leave an unredacted suffix in pending after the prefix is emitted.
+        while True:
+            earlier = [
+                match.start()
+                for pattern in self.PATTERNS
+                for match in pattern.finditer(combined)
+                if match.start() < cutoff < match.end()
+            ]
+            if not earlier:
+                break
+            cutoff = min(earlier)
         redacted = self._redact(combined)
         safe_prefix = redacted[:cutoff]
         self.pending = bytearray(combined[cutoff:])
