@@ -70,6 +70,8 @@ These additional cases trace [PASS1_CONTRACT_COHERENCE_RESOLUTION.md](PASS1_CONT
 | LC-10 | Provider cost observation absent | Report cost as unknown, not zero |
 | LC-11 | Same idempotency key from two tenants | No cross-tenant collision or disclosure |
 | LC-12 | Cleanup success event belongs to another job | Reject evidence association; no PASS |
+| LC-13 | Contradictory evidence exists alongside NOT_STARTED | Contradiction takes precedence; derive INCOMPLETE, not a clean REJECTED result |
+| LC-14 | Exit-zero evidence with cleanup PENDING, FAILED, or UNKNOWN | Preserve execution fact; disposition is non-PASS until cleanup is CONFIRMED |
 
 
 
