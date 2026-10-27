@@ -92,7 +92,7 @@ def reduce_terminal_events(events: Iterable[Mapping[str, Any]]) -> dict[str, Any
         sequence = event.get("sequence")
         kind = event.get("kind")
         payload = event.get("payload")
-        if not isinstance(event_id, str) or not event_id:
+        if not isinstance(event_id, str) or not event_id.strip():
             invalid_events.append(event)
             contradictory = True
             continue
@@ -100,7 +100,11 @@ def reduce_terminal_events(events: Iterable[Mapping[str, Any]]) -> dict[str, Any
             invalid_events.append(event)
             contradictory = True
             continue
-        if not isinstance(kind, str) or not kind:
+        if not isinstance(kind, str) or not kind.strip():
+            invalid_events.append(event)
+            contradictory = True
+            continue
+        if not isinstance(payload, Mapping):
             invalid_events.append(event)
             contradictory = True
             continue
