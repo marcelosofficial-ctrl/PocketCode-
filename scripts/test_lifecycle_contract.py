@@ -220,6 +220,16 @@ class LifecycleTests(unittest.TestCase):
         self.assertEqual([v["disposition"] for v in history.versions("job-1")],
                          ["INCOMPLETE", "PASS"])
 
+    def test_report_history_rejects_unknown_disposition_and_cleanup_state(self):
+        history = ReportHistory()
+        with self.assertRaises(ValueError):
+            history.append("job", disposition="SUCCESS", cleanup_state="CONFIRMED",
+                           evidence_ref="e1")
+        with self.assertRaises(ValueError):
+            history.append("job", disposition="FAILED", cleanup_state="CLEAN_ENOUGH",
+                           evidence_ref="e2")
+        self.assertEqual(history.versions("job"), ())
+
     def test_report_history_versions_are_per_job_and_require_evidence_reference(self):
         history = ReportHistory()
         self.assertEqual(history.append("a", disposition="FAILED", cleanup_state="CONFIRMED",
