@@ -58,3 +58,13 @@ Continue Pass 1 with a fuller user/problem falsification and task-based comparis
 - No interviews, hands-on app comparisons, live provider tests, accounts, credentials, workloads, deployments, or spend. Prototype remains simulated. $0 gate unchanged.
 - Master plan and Gemini progress log now link this subpass. Gemini completion remains pending; this is ChatGPT's independent work.
 - Next: continue remaining Pass 1 workstreams, especially implementation/runtime feasibility and security/abuse requirements; then consolidate a skeptical synthesis without selecting a provider or renaming the project.
+
+## 2026-10-27 continuation — execution security and abuse
+
+**Latest completed subpass:** [PASS1_SECURITY_ABUSE_RESEARCH.md](PASS1_SECURITY_ABUSE_RESEARCH.md)
+
+- Added provider-neutral threat model and mandatory controls for hostile user code, input/output files, multi-tenant isolation, network/metadata, resource exhaustion, artifact access, lifecycle evidence, abuse, and cost ceilings.
+- Added adversarial acceptance matrix. It is a proposed test plan only; no live sandbox or provider test occurred.
+- Current design rule: if a free tier cannot enforce mandatory controls, do not weaken requirements to fit it. No provider chosen, no live execution, no accounts, no spend; $0 gate unchanged.
+- Master plan and Gemini progress log updated. This is ChatGPT research, not Gemini completion.
+- Next: compare candidate runtime options against the security/operational requirements and narrow the implementation proof without assuming provider capability.
