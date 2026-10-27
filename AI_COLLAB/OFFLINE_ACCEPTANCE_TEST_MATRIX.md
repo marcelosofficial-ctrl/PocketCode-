@@ -95,7 +95,7 @@ For tests actually run, record test ID, source commit, exact command, runtime ve
 
 ## Next safe step
 
-The lifecycle contradiction now has two linked resolution proposals: [PASS1_CONTRACT_COHERENCE_RESOLUTION.md](PASS1_CONTRACT_COHERENCE_RESOLUTION.md) and [PASS1_LIFECYCLE_IDEMPOTENCY_ARTIFACT_POLICY_20261027.md](PASS1_LIFECYCLE_IDEMPOTENCY_ARTIFACT_POLICY_20261027.md). They narrow the semantics but do not settle owner decisions or freeze the schema. Next is owner review of artifact quarantine/release, event reconciliation, idempotency retention/fingerprint, and stream-overflow behavior; implement pure offline tests only after those expected outcomes are agreed. Provider integration remains blocked by the strict $0 gate.
+The earlier resolution proposals are superseded on the six delegated lifecycle choices by the selected baseline in [PASS1_OWNER_DECISIONS_RESEARCH_20261027.md](PASS1_OWNER_DECISIONS_RESEARCH_20261027.md) and [PASS1_LIFECYCLE_IDEMPOTENCY_ARTIFACT_POLICY_20261027.md](PASS1_LIFECYCLE_IDEMPOTENCY_ARTIFACT_POLICY_20261027.md). The public schema and production limits remain unfrozen. Current safe work is contract/test traceability and running the exact checked-in tests offline when a local interpreter is available. Provider integration remains blocked by the strict $0 gate.
 
 
 ## 2026-10-27 lifecycle/idempotency/artifact expansion
