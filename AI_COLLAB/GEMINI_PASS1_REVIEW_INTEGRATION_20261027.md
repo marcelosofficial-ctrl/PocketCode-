@@ -67,13 +67,9 @@ All proposed. **No tests were implemented or run.**
 
 Gemini's recommendation for a 10-user behavior-based trial is useful as a low-cost proposal, but no trial has been run and its sample is qualitative, not statistically representative. Prefer asking users about a recent real task, then compare the same fixed task against tools they already use. Record completion, setup time, errors, artifact access, and handoff friction. Do not ask only whether they “would use” the product.
 
-## Next actions
+## Next actions (historical checklist; status reconciled 2026-10-27)
 
-1. Keep the contract in proposal status; extend the test matrix and write a focused decision note for the unresolved semantics.
-2. Verify cost and provider lifecycle claims from current primary sources; keep the strict $0 provider gate.
-3. Add a source-backed network-policy barrier invariant to the provider-neutral contract and tests without choosing a provider.
-4. Keep product validation and naming research separate from runtime/security proof.
-5. Update checkpoint and PR description to record Gemini review received, its adopted findings, and the unadopted recommendations.
+The original checklist above describes the immediate work after Gemini's review arrived. Since then, the lifecycle proposal, expanded test matrix, source-backed network-policy barrier, checkpoint, and decision register have been updated. The owner decision packet is also linked from the contract and matrix. The remaining current step is owner review of [PASS1_OWNER_DECISION_PACKET_20261027.md](PASS1_OWNER_DECISION_PACKET_20261027.md); only after decisions are approved should the contract and test matrix be updated together. The PR description still does not mention the packet, and a prior attempt to update it was blocked; do not claim the PR body is synchronized. Product validation and naming remain separate, uncompleted research tracks.
 
 ## Evidence status
 
