@@ -77,3 +77,13 @@ Continue Pass 1 with a fuller user/problem falsification and task-based comparis
 - Added a provider-neutral adapter contract and fail-closed capability states; fake adapters can prove report/orchestration logic only.
 - Updated provider research, master plan, and cross-agent log. No account, workload, live test, provider selection, or spend.
 - Next: convert the combined user/problem, security, and provider gates into a small implementation-neutral contract and test plan, then audit remaining research gaps and link integrity. Keep PR draft and do not merge.
+
+## 2026-10-27 continuation — draft execution contract
+
+**Latest artifact:** [DRAFT_EXECUTION_CONTRACT.md](DRAFT_EXECUTION_CONTRACT.md)
+
+- Translates the combined research into a provider-neutral request/lifecycle/report contract and offline test plan.
+- Explicitly labels request limits and semantics as proposals, not production commitments.
+- Distinguishes requested policy, provider-confirmed policy, observed execution, and formatter output. Missing evidence cannot produce PASS.
+- No real adapter, provider SDK, execution backend, account, workload, test, or spend. No provider selected.
+- Master plan and progress log updated. Continue with research-gap/link audit and consolidate the PR scope; do not merge.
