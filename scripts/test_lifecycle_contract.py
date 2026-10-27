@@ -345,6 +345,27 @@ class LifecycleTests(unittest.TestCase):
         self.assertIsNone(tombstones.lookup(tenant_id="t1", key="k", now=deadline))
         self.assertIsNone(tombstones.lookup(tenant_id="t1", key="k", now=deadline + 1))
 
+    def test_tombstones_reject_blank_identity_and_invalid_epoch_values(self):
+        tombstones = DeletionTombstones()
+        for field in ("tenant_id", "key", "fingerprint"):
+            for invalid in ("", "   ", None, 1):
+                values = dict(tenant_id="t1", key="k", fingerprint="f", deleted_at=1)
+                values[field] = invalid
+                with self.subTest(field=field, invalid=repr(invalid)), self.assertRaises(ValueError):
+                    tombstones.add(**values)
+        for invalid in (-1, True, "1", None):
+            with self.subTest(deleted_at=repr(invalid)), self.assertRaises(ValueError):
+                tombstones.add(tenant_id="t1", key="k", fingerprint="f", deleted_at=invalid)
+        for invalid in (-1, True, "1", None):
+            with self.subTest(now=repr(invalid)), self.assertRaises(ValueError):
+                tombstones.lookup(tenant_id="t1", key="k", now=invalid)
+        for field in ("tenant_id", "key"):
+            for invalid in ("", "   ", None, 1):
+                values = dict(tenant_id="t1", key="k", now=1)
+                values[field] = invalid
+                with self.subTest(lookup_field=field, invalid=repr(invalid)), self.assertRaises(ValueError):
+                    tombstones.lookup(**values)
+
     def test_same_key_same_fingerprint_race_has_one_created_job_and_replays(self):
         records = {}
         submissions = [
