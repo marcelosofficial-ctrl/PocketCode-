@@ -7,7 +7,7 @@
 
 **Manual evaluation companion:** [AI Workflow Director — Offline Evaluation Kit](AI_WORKFLOW_DIRECTOR_EVALUATION_KIT_20261028.md) supplies eight fixed task fixtures, paired baseline/Director instructions, a scoring rubric, and an evidence record. It is a test protocol only; no assistant runs or benchmark results are claimed.
 
-**Reference fixtures:** [Expected-output examples for four priority cases](AI_WORKFLOW_DIRECTOR_REFERENCE_FIXTURES_20261028.md) make scoring more consistent; these are human-authored examples, not test results.
+**Reference fixtures:** [Expected-output examples for four priority cases](AI_WORKFLOW_DIRECTOR_REFERENCE_FIXTURES_20261028.md) make scoring more consistent; these are human-authored examples for EVAL-01, 02, 04, 06, and 08, not test results.
 
 **Phone-friendly run sheet:** [Manual paired-run procedure](AI_WORKFLOW_DIRECTOR_MANUAL_RUN_SHEET_20261028.md) gives exact baseline/Director prototype prompts, canonical profile mapping, five copy-paste task fixtures, and a per-run evidence record. It is still an unexecuted protocol.
 
