@@ -91,9 +91,20 @@ The portable capsule should contain:
 - next_action
 - unknowns
 
-The capsule should be short by default and expandable if needed. Do not include secrets, credentials, full logs, or large source files. Redact only when a known pattern is detected; tell the user that automatic redaction is best-effort. Keep source claims and AI/user assertions distinct from independently verified facts.
+The capsule should be short by default and expandable if needed. Do not include secrets, credentials, full logs, or large source files. Redact only when a known pattern is detected; tell the user that automatic redaction is best-effort. Keep source claims and AI/user assertions distinct from independently verified facts. If a prior checkpoint says a fact was verified but the supporting artifact is not included, preserve its attribution (for example, “prior checkpoint reports…”) and do not imply that the current operator independently rechecked it. An unsupported claim must not be promoted into \`verified_facts\` merely because it was repeated.
 
-DONE_VERIFIED is allowed only when the capsule includes concrete verification evidence. If a check was not run or cannot be independently confirmed, use DONE_UNVERIFIED or READY_TO_VERIFY as appropriate. A model's statement that it ran tests is a claim until evidence supports it.
+### Proposed status semantics
+
+| Status | Use when |
+|---|---|
+| \`NOT_STARTED\` | No implementation/work has been reported as started. |
+| \`IN_PROGRESS\` | Work is underway and the goal is not complete. |
+| \`BLOCKED\` | A missing input, permission, artifact, or decision prevents the next meaningful step. |
+| \`READY_TO_VERIFY\` | The relevant implementation/artifact is available and the next step is verification; do not use this to imply that unseen code exists. |
+| \`DONE_UNVERIFIED\` | Work is reported complete, but the required acceptance evidence is absent or incomplete. |
+| \`DONE_VERIFIED\` | Required acceptance checks have concrete, reviewable evidence tied to the relevant artifact/revision. |
+
+\`DONE_VERIFIED\` is allowed only when the capsule includes concrete verification evidence. If a check was not run or cannot be independently confirmed, choose the status that matches the actual work state; do not use \`READY_TO_VERIFY\` as a generic synonym for “unknown.” A model's statement that it ran tests is a claim until evidence supports it.
 
 ## 6. Proposed portable profile kernel
 
