@@ -69,6 +69,7 @@ The proposed AI Workflow Director aims to help users hand off compact tasks and 
 - [Execution-contract cross-branch audit](AI_COLLAB/EXECUTION_CONTRACT_CROSS_BRANCH_AUDIT_20261028.md) (static main/PR #2/PR #3 comparison; no tests claimed)
 - [Phone-only competitor scan addendum](AI_COLLAB/PHONE_ONLY_COMPETITOR_SCAN_ADDENDUM_20261028.md) (2026-10-28 public-source delta; not a hands-on benchmark)
 - [Product hypothesis card](AI_COLLAB/PRODUCT_HYPOTHESIS_CARD_20261028.md) (provisional job, alternatives, falsification and evidence criteria)
+- [Fixed-task comparison worksheet](AI_COLLAB/PRODUCT_FIXED_TASK_COMPARISON_WORKSHEET_20261028.md) (synthetic CSV-to-JSON comparison; design only)
 - [Initial independent provider review](AI_COLLAB/CHATGPT_INITIAL_PROVIDER_REVIEW.md)
 - [MVP execution-provider decision brief](AI_COLLAB/MVP_DECISION_BRIEF.md)
 - [Independent review of Gemini's architecture proposal](AI_COLLAB/CHATGPT_REVIEW_OF_GEMINI_PLAN.md)
