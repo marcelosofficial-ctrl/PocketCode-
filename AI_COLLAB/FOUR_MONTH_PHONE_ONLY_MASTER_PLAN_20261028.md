@@ -194,7 +194,17 @@ A positive result from a desk-research exercise, one user anecdote, one AI pair,
 
 This plan and the Continuity Hub are documentation artifacts on the isolated AI Workflow Director research branch. They do not change main or PR #2/#3. No live execution, provider test, spending, AI benchmark, merge, deployment, or Actions run is authorized by this plan.
 
+**Completed during the first coordination passes (2026-10-28):**
+- Added the read-first [Continuity Hub](POCKETCODE_CONTINUITY_HUB_20261028.md) and this four-month plan.
+- Completed a static [cross-branch execution-contract audit](EXECUTION_CONTRACT_CROSS_BRANCH_AUDIT_20261028.md) using exact source refs and blob SHAs. It identified a user-facing verdict projection gap and a policy-revision-before-execution refinement; it did not edit either PR or run tests.
+- Added a dated [phone-only competitor scan addendum](PHONE_ONLY_COMPETITOR_SCAN_ADDENDUM_20261028.md), supplementing rather than repeating the existing PR #3 competitor research.
+- Added a [falsifiable product hypothesis card](PRODUCT_HYPOTHESIS_CARD_20261028.md) with counter-hypotheses and proposed decision criteria.
+- Rechecked PR #2 and PR #3 metadata; both remain open, draft, unmerged, and their known head SHAs were unchanged. Counts and SHAs must be rechecked before consequential action.
+
 **Next pass sequence:**
-1. Do a focused cross-branch contract consistency audit (main product/SECURITY/EXECUTION_CONTRACT against the exact PR #3 draft contract, matrix, helper, and test source).
-2. Refresh the existing competitor matrix and user-problem evidence with current mobile agent/local-vs-remote alternatives, including evidence against PocketCode.
-3. Create a concise product hypothesis/decision card and only then adjust the longer-term roadmap if new evidence warrants it.
+1. Reconcile the audit and new scan with the existing main-branch documents, editing only this isolated documentation branch and only where it resolves stale/contradictory navigation or status. Do not promote PR #3 decisions to main or overwrite their branch.
+2. Refresh the existing competitor matrix with only the dated high-value delta, plus a link to the richer PR #3 competitor study; avoid a second competing full matrix.
+3. Review the hypothesis card against the product spec, user evidence, and fixed-task comparison protocol. Keep the first task candidate provisional until compared against actual alternatives.
+4. Draft a compact PC-return runbook that starts with exact branch/hash verification and offline tests, and keeps provider/live execution as a separate gated step.
+5. Stop creating new high-level masters once navigation and decision gaps are closed. Focus remaining phone-only work on resolving a decision or preserving clear evidence, not producing more paperwork.
+
