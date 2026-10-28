@@ -208,7 +208,7 @@ The review covered 141 relative Markdown links; zero pointed to a file path abse
 - Refined finding: PR #2's formatter is a presentation helper, so its narrow status/exit-code classification is not by itself proof of a defect. The risk is a caller bypassing the PR #3-style trusted disposition derivation. The intended sequence is authoritative observations → versioned disposition derivation → report formatting. Execution outcome and job disposition are separate axes.
 - PR #3's lifecycle tests include assertions for cleanup, policy, termination, artifact validity and tenant/job authorization gates; PR #2's report tests cover lifecycle states, missing/invalid exit codes, simulated reports and bounded output. These are source-level test definitions only; no tests were executed in this pass.
 - Rechecked GitHub PR metadata through the API: PR #2 remains open/draft, head `chat-continuity-report-regressions-2026-10-26`, head SHA `eb8b7ea83cb0e8fe1880351276c485b761431791`; PR #3 remains open/draft, head `pocketcode-pass0-audit-2026-10-26`, head SHA `0ddcc0bc97bac5d446aefedf3d71f99411bd841d`. Neither PR was changed.
-- The isolated research branch now compares as 140 commits ahead of `main`, zero behind, before this checkpoint entry. Recheck after the commit below for the resulting exact count.
+- The last verified comparison before this checkpoint update was 145 commits ahead of `main`, zero behind. This checkpoint update adds another commit, so future chats must recheck the current count instead of treating 145 as current.
 
 **Next pass:** define a minimal versioned vocabulary/projection table as a proposal inside the existing audit, then audit the product fixed-task protocol and the external-source evidence boundary. Do not merge, change either PR, run provider workloads, or imply any code/test execution.
 
@@ -230,3 +230,10 @@ The review covered 141 relative Markdown links; zero pointed to a file path abse
 - No app was installed, no fixed-task run was performed, no timing/correctness scores were recorded, and no market/user validation occurred. All such fields remain NOT RUN.
 
 **Next pass:** re-verify the exact research branch and PR boundaries, then prepare a compact decision-ready summary of what is settled, what remains unknown, and which next tasks can be done without owner action. Do not create another master document or ask for broad approvals prematurely.
+
+## Final verification for this work session (2026-10-28)
+
+- Latest pre-checkpoint-update GitHub comparison: research branch was 145 commits ahead of `main`, zero behind. Recompute after this commit before quoting a current count.
+- PR #2 remains open/draft on `chat-continuity-report-regressions-2026-10-26` at head `eb8b7ea83cb0e8fe1880351276c485b761431791`; PR #3 remains open/draft on `pocketcode-pass0-audit-2026-10-26` at head `0ddcc0bc97bac5d446aefedf3d71f99411bd841d`. Neither was modified.
+- Current research work is confined to the isolated research branch. No merge, deployment, GitHub Actions run, app install, provider workload, implementation test, or user research occurred.
+- Next batch is ready: complete the remaining scoped anchor/external-link checks; challenge the proposed two-axis disposition projection against reviewer feedback if available; then turn the product alternatives into a one-at-a-time, evidence-preserving fixed-task protocol. The hands-on comparison remains NOT RUN and needs an explicit owner action only when the exact phone/app test is selected.
