@@ -127,7 +127,7 @@ def format_user_label(user):
 
 Task prompt:
 ```text
-Review this toy Python snippet for security and correctness. Do not rewrite it. Report only findings supported by the snippet, with severity and a concise rationale: query = "SELECT * FROM users WHERE name = '" + name + "'".
+Review this toy Python snippet for security and correctness. Do not rewrite it. Report only findings supported by the snippet, with severity and a concise rationale: `query = "SELECT * FROM users WHERE name = '" + name + "'"`.
 ```
 
 Provided context: the snippet in the task prompt. No surrounding database library, schema, or calling code is supplied.
