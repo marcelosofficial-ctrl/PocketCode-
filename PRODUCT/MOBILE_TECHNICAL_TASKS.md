@@ -90,3 +90,28 @@ The durable shared layer should be the execution request, lifecycle, result sche
 - Program failure is distinguishable from timeout and platform failure.
 - The workflow can be tested without mandatory paid AI integration.
 - No private file or secret is silently included in the copied report.
+
+
+## AI Efficiency Coach and cross-app handoff (candidate feature, 2026-10-28)
+
+The owner wants PocketCode to help any AI assistant—free or paid, on mobile or later PC—use its available capability efficiently and preserve useful progress across long sessions. This is a product hypothesis, not an implemented integration.
+
+Cross-project research master: [AI Workflow Efficiency and Cross-App Orchestration Master](https://github.com/marcelosofficial-ctrl/DevRelay-Missions/blob/review/revdev-adaptive-ai-workshare-2026-10-27/resume/revdev/AI_WORKFLOW_EFFICIENCY_AND_CROSS_APP_ORCHESTRATION_MASTER_2026-10-28.md).
+
+Candidate phone flow:
+1. User chooses a compact profile (Lean, Balanced, Deep Verify, Research/3-pass, Repair/Recovery, Continue/Checkpoint), or uses a sensible task-based default.
+2. PocketCode creates a concise, provider-neutral task packet with goal, acceptance criteria, relevant evidence, constraints, known/unknown facts and a requested response shape.
+3. User copies or shares the packet into the chosen AI app using an OS-supported user action.
+4. User shares/pastes the AI's script, error or answer back into PocketCode.
+5. PocketCode runs only the separate, approved execution path when available, then returns bounded execution evidence and a targeted next-step prompt.
+
+Requirements:
+- Must remain useful without an AI API, account link, paid tier or provider-specific feature. Supported native integrations may improve convenience, but are optional adapters.
+- Make no claim that prompt instructions unlock hidden reasoning, additional quota, unavailable tools or a bigger context window.
+- Respect the usage limits and terms displayed by the selected provider. Do not rotate accounts, evade caps, or silently retry to bypass limits.
+- Use Android Sharesheet/intents and iOS Share Sheet/App Intents where appropriate; no background clipboard polling or private cross-app conversation interception.
+- Label simulated assistant and execution content clearly. No universal control of other apps is assumed.
+- Persist a small checkpoint with durable pointers, not a dump of the full chat. Use relevant evidence slices and local deterministic checks to avoid repetitive model work.
+- A prompt/profile is behavior guidance, never execution authorization. PocketCode's future remote adapter still needs independent isolation, egress, quota, cleanup and access-control evidence.
+
+No direct AI integration, native-app strategy, API, provider, backend, account, live workload or spending is approved. Prototype the flow with synthetic content first.
