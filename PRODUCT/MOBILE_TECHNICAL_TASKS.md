@@ -97,6 +97,7 @@ The durable shared layer should be the execution request, lifecycle, result sche
 The owner wants PocketCode to help any AI assistant—free or paid, on mobile or later PC—use its available capability efficiently and preserve useful progress across long sessions. This is a product hypothesis, not an implemented integration.
 
 Cross-project research master: [AI Workflow Efficiency and Cross-App Orchestration Master](https://github.com/marcelosofficial-ctrl/DevRelay-Missions/blob/review/revdev-adaptive-ai-workshare-2026-10-27/resume/revdev/AI_WORKFLOW_EFFICIENCY_AND_CROSS_APP_ORCHESTRATION_MASTER_2026-10-28.md).
+Evaluation companion: [Compact prompt and zero-cost evaluation protocol](https://github.com/marcelosofficial-ctrl/DevRelay-Missions/blob/review/revdev-adaptive-ai-workshare-2026-10-27/resume/revdev/AI_WORK_COACH_ABLATION_AND_COMPACT_PROMPT_V0_1.md). Use synthetic fixtures first; no token-savings claims without paired evidence.
 
 Candidate phone flow:
 1. User chooses a compact profile (Lean, Balanced, Deep Verify, Research/3-pass, Repair/Recovery, Continue/Checkpoint), or uses a sensible task-based default.
