@@ -2,6 +2,8 @@
 
 This roadmap is provisional. Work should advance through evidence and tested milestones rather than assumed dates.
 
+For the current phone-only work sequence through February 2027, see the [four-month coordination plan](AI_COLLAB/FOUR_MONTH_PHONE_ONLY_MASTER_PLAN_20261028.md) and its [continuity hub](AI_COLLAB/POCKETCODE_CONTINUITY_HUB_20261028.md). This overlay coordinates discovery and PC-return preparation; it does not change the roadmap phase gates or approve live execution.
+
 ## Phase 0: Discovery and validation
 
 - [ ] Define the initial target user and top use cases.
