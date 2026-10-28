@@ -42,7 +42,20 @@ The current sources expose different levels of status:
 
 This is primarily a **contract projection gap**, not proof that the approaches are inherently inconsistent. The newer model intentionally preserves a valid process exit as an observation even when cleanup or required evidence blocks overall PASS. That is more informative than flattening everything to one terminal state.
 
-**Recommended next contract action (not an approved schema):** define one versioned projection from PR #3's detailed outcome/cleanup/disposition record to the simpler user-facing verdict. A conservative candidate is: PASS only for job_disposition PASS; FAIL only for a confirmed program failure/FAILED disposition; INCOMPLETE for rejection, timeout, cancellation, limit exceeded, provider error, unknown, contradictory, or missing evidence. Keep detailed state fields available separately; do not lose cleanup or reason codes in the summary.
+**Recommended next contract action (not an approved schema):** define one versioned projection from PR #3's detailed outcome/cleanup/disposition record to the simpler user-facing verdict. A conservative candidate is:
+
+| Detailed job disposition (PR #3 draft) | Candidate user-facing verdict | Required explanation / preserved detail |
+|---|---|---|
+| PASS | PASS | Only after every mandatory policy, termination, artifact, tenant/job, output-limit, and cleanup gate is confirmed; show the exact execution evidence. |
+| FAILED | FAIL | Use only for a confirmed program/process failure represented by the detailed contract; preserve exit code and relevant error evidence when available. |
+| REJECTED | INCOMPLETE | Say the task did not start/was rejected; do not imply a program failure or success. |
+| TIMED_OUT | INCOMPLETE | Show timeout and whether termination was confirmed; do not claim the process stopped if evidence is missing. |
+| CANCELLED | INCOMPLETE | Show cancellation and termination evidence separately; never render it as successful execution. |
+| LIMIT_EXCEEDED | INCOMPLETE | Name the reached limit and disclose truncation/discarded output; never summarize partial evidence as a complete result. |
+| PROVIDER_ERROR | INCOMPLETE | State that execution/service outcome is unconfirmed; do not invent an exit code or program result. |
+| INCOMPLETE | INCOMPLETE | Preserve missing/contradictory evidence, cleanup state, and the next required reconciliation step. |
+
+Example: `execution_outcome=EXIT_ZERO` plus `cleanup_state=UNKNOWN` must preserve the observed zero exit as a fact but render the overall verdict as **INCOMPLETE**, not PASS. The summary must not hide the cleanup blocker. A confirmed nonzero program exit may render FAIL while retaining the exact exit/error evidence. The final field names, reason codes, and display text remain open and need owner/reviewer approval before a schema is frozen.
 
 ### F3 — PR #3 adds mandatory policy-revision evidence that main does not yet spell out
 
