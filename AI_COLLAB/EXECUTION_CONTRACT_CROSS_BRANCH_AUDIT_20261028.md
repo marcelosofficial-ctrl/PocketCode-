@@ -122,3 +122,49 @@ These principles are consistent across the inspected sources and should remain i
 4. Keep provider tests blocked until the owner authorizes the exact test, cost path, source data, safety plan, and prerequisites.
 
 **Audit limits:** read-only static document/source inspection; no executable test was run, no live provider or browser workload was performed, and no security guarantee was verified.
+
+## Follow-up proposal: trusted verdict projection (2026-10-28)
+
+**Status:** Review proposal only. This section does not approve a schema, change main/PR #2/PR #3, or establish that any gate is implemented.
+
+The integration question is not whether the pure report formatter can map a status and exit code to a verdict. It can. The question is which trusted component has already established all mandatory job-level gates before that formatter is allowed to display PASS.
+
+| Gate / fact | Required evidence before overall PASS | Trusted owner boundary (proposed) | If missing, false, stale, or contradictory |
+|---|---|---|---|
+| Request accepted and authorized | Server-side authenticated principal, validated request and policy decision tied to this job/attempt | API/coordinator, not client fields | Reject before execution or INCOMPLETE if discovered after allocation |
+| Exact mandatory execution policy applied before start | Authoritative provider/boundary evidence identifies the required policy revision and confirms it was applied before process start; request acknowledgement/ETag alone is insufficient | Coordinator verifies provider/boundary evidence before releasing start | Do not start if not confirmed; otherwise INCOMPLETE/provider error, never PASS |
+| Execution outcome and exit | Attempt-bound terminal event from authoritative runner/provider, with exit code and event association | Execution adapter/coordinator | INCOMPLETE if absent or ambiguous; confirmed nonzero program exit can be FAIL |
+| Termination | Authoritative terminal/termination evidence appropriate to the outcome | Adapter/coordinator | Timeout/cancel cannot be described as stopped if termination is unconfirmed; overall result remains incomplete |
+| Output limits and truncation | Trusted byte counts, limit outcome, and explicit truncation/discard metadata | Adapter/coordinator; formatter only renders supplied evidence | Limit breach is not PASS; disclose discarded/truncated evidence |
+| Artifact manifest and integrity | Manifest bound to the job/attempt, validated names, sizes and hashes, with no path escape | Artifact gate/service | Do not release artifacts; overall PASS blocked |
+| Tenant/job authorization | Server-side ownership check on each artifact/report reference | API/artifact service | Deny access; never trust a client-supplied tenant/job claim |
+| Cleanup | Authoritative cleanup confirmation for the relevant boundary and attempt | Cleanup controller/coordinator | INCOMPLETE; preserve zero exit as an observation but do not elevate overall verdict |
+| Derived disposition | Versioned, deterministic projection from the above immutable observations and policy decisions | Coordinator/domain layer; formatter must not recompute missing security facts | INCOMPLETE or PROVIDER_ERROR where evidence is absent or contradictory |
+| Human/AI report | Bounded, redacted report containing the derived disposition plus provenance, uncertainty and visible blockers | Pure formatter, given an already-derived trusted report model | Never upgrade status; never imply a simulated example is real |
+
+### Conservative display mapping to validate
+
+| Trusted detailed disposition | Candidate simple verdict | Required retained detail |
+|---|---|---|
+| PASS | PASS | All mandatory gates confirmed; show provenance and applicable policy/termination/artifact/cleanup evidence |
+| Confirmed program failure (FAILED, or main's confirmed program_failed) | FAIL | Exact exit/error evidence; do not claim infrastructure or policy failure without evidence |
+| REJECTED | INCOMPLETE | State that execution did not start and provide the rejection reason where safe |
+| TIMED_OUT / CANCELLED | INCOMPLETE | Preserve outcome and whether termination was confirmed |
+| LIMIT_EXCEEDED | INCOMPLETE | Name the limit; expose truncation/discard status |
+| PROVIDER_ERROR / UNKNOWN / INCOMPLETE | INCOMPLETE | State what is unknown, what evidence conflicts or is missing, and the next reconciliation step |
+
+This projection is intentionally conservative and needs owner/reviewer review. In particular, the final mapping for a confirmed nonzero exit when cleanup later fails must be specified carefully: the report may preserve the observed process failure while still withholding artifacts and separately showing that cleanup/security completion is unconfirmed. Do not flatten those facts into an invented single cause.
+
+### Acceptance checks for a future implementation (not run)
+
+1. EXIT_ZERO + confirmed policy + confirmed termination + valid artifact/authorization gates + cleanup_state=CONFIRMED may derive PASS.
+2. EXIT_ZERO + cleanup_state=UNKNOWN derives INCOMPLETE, not PASS.
+3. EXIT_ZERO + missing/stale/mismatched mandatory policy revision never starts user code; if discovered retrospectively, no PASS is issued.
+4. A client-supplied PASS, exit code, artifact manifest or policy acknowledgement cannot satisfy a trusted gate.
+5. EXIT_NONZERO preserves the process failure observation and cannot become PASS, even if program output prints “success”.
+6. Timeout/cancellation with unconfirmed termination does not claim the process stopped.
+7. Limit overflow, missing manifest, wrong tenant/job association, hash mismatch or cleanup failure blocks artifact release and overall PASS.
+8. Later reconciliation appends a new report version rather than silently rewriting an already issued report.
+9. The formatter receives a derived report model and remains incapable of upgrading an incomplete disposition based only on execution_status and exit_code.
+
+**Decision needed before provider implementation:** approve a versioned canonical disposition model and its gate ownership, then define a versioned projection to the simpler UI/report verdict. Until then, keep PR #2's formatter as a pure presentation helper and PR #3's lifecycle model as a separate draft contract.
