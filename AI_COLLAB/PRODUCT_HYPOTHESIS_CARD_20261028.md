@@ -2,7 +2,7 @@
 
 **Status:** Provisional research instrument; no user study, hands-on competitor benchmark, implementation, or owner-approved scope decision has occurred.  
 **Product authority:** [PRODUCT_SPEC.md](../PRODUCT_SPEC.md), [PROJECT_STATUS.md](../PROJECT_STATUS.md), [ROADMAP.md](../ROADMAP.md), and [execution-loop acceptance](../PRODUCT/EXECUTION_LOOP_ACCEPTANCE.md).  
-**Evidence inputs:** [main mobile-coding user evidence](../RESEARCH/MOBILE_CODING_USER_EVIDENCE.md), [PR #3 user/problem evidence](https://github.com/marcelosofficial-ctrl/PocketCode-/blob/pocketcode-pass0-audit-2026-10-26/AI_COLLAB/PASS1_USER_PROBLEM_EVIDENCE.md), [PR #3 competitor research](https://github.com/marcelosofficial-ctrl/PocketCode-/blob/pocketcode-pass0-audit-2026-10-26/AI_COLLAB/PASS1_COMPETITOR_RESEARCH.md), and [phone-only competitor scan addendum](PHONE_ONLY_COMPETITOR_SCAN_ADDENDUM_20261028.md).
+**Evidence inputs:** [main mobile-coding user evidence](../RESEARCH/MOBILE_CODING_USER_EVIDENCE.md), [PR #3 user/problem evidence](https://github.com/marcelosofficial-ctrl/PocketCode-/blob/pocketcode-pass0-audit-2026-10-26/AI_COLLAB/PASS1_USER_PROBLEM_EVIDENCE.md), [PR #3 competitor research](https://github.com/marcelosofficial-ctrl/PocketCode-/blob/pocketcode-pass0-audit-2026-10-26/AI_COLLAB/PASS1_COMPETITOR_RESEARCH.md), and [phone-only competitor scan addendum](PHONE_ONLY_COMPETITOR_SCAN_ADDENDUM_20261028.md). The proposed comparison task is defined in the [fixed-task worksheet](PRODUCT_FIXED_TASK_COMPARISON_WORKSHEET_20261028.md); its results are NOT RUN.
 
 ## 1. Candidate user and moment
 
