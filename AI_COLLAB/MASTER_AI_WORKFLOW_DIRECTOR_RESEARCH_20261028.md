@@ -7,6 +7,8 @@
 
 **Manual evaluation companion:** [AI Workflow Director — Offline Evaluation Kit](AI_WORKFLOW_DIRECTOR_EVALUATION_KIT_20261028.md) supplies eight fixed task fixtures, paired baseline/Director instructions, a scoring rubric, and an evidence record. It is a test protocol only; no assistant runs or benchmark results are claimed.
 
+**Conformance-test companion:** [Deterministic AWD-01–16 test specification](AI_WORKFLOW_DIRECTOR_CONFORMANCE_TEST_SPEC_20261028.md) converts the proposed acceptance cases into required assertions, forbidden behaviors, cross-case invariants, and explicit open contracts. It is design-only; none of the cases have been executed.
+
 **Reference fixtures:** [Expected-output examples for five priority cases](AI_WORKFLOW_DIRECTOR_REFERENCE_FIXTURES_20261028.md) make scoring more consistent; these are human-authored examples for EVAL-01, 02, 04, 06, and 08, not test results.
 
 **Phone-friendly run sheet:** [Manual paired-run procedure](AI_WORKFLOW_DIRECTOR_MANUAL_RUN_SHEET_20261028.md) gives exact baseline/Director prototype prompts, canonical profile mapping, five copy-paste task fixtures, and a per-run evidence record. It is still an unexecuted protocol.
