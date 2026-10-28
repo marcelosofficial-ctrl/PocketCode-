@@ -211,3 +211,12 @@ The review covered 141 relative Markdown links; zero pointed to a file path abse
 - The isolated research branch now compares as 140 commits ahead of `main`, zero behind, before this checkpoint entry. Recheck after the commit below for the resulting exact count.
 
 **Next pass:** define a minimal versioned vocabulary/projection table as a proposal inside the existing audit, then audit the product fixed-task protocol and the external-source evidence boundary. Do not merge, change either PR, run provider workloads, or imply any code/test execution.
+
+## Follow-up pass: explicit two-axis projection and fixed-task sanity check (2026-10-28)
+
+- Added a proposed two-axis vocabulary/projection table to the existing [Execution Contract Cross-Branch Audit](EXECUTION_CONTRACT_CROSS_BRANCH_AUDIT_20261028.md). It distinguishes execution observations (`NOT_STARTED`, `EXIT_ZERO`, `EXIT_NONZERO`, `TIMED_OUT`, `CANCELLED`, `LIMIT_EXCEEDED`, `UNKNOWN`) from derived job dispositions (`REJECTED`, `PASS`, `FAILED`, `TIMED_OUT`, `CANCELLED`, `LIMIT_EXCEEDED`, `PROVIDER_ERROR`, `INCOMPLETE`) and maps the latter conservatively to a simple user-facing verdict.
+- This proposal remains unapproved. It explicitly preserves nonzero-exit observations when cleanup is uncertain, separates artifact release from process outcome, and requires the formatter to render an already-derived disposition rather than infer security gates.
+- Sanity-checked the existing fixed task: notebook subtotal `2 × 3.50 = 7.00`, pen subtotal `3 × 1.25 = 3.75`, grand total `10.75`, two line items. The malformed-input case requires a clear error and no misleading valid summary. The arithmetic and success/failure distinction are internally consistent; no worksheet change was needed.
+- No tests were run, no mobile runner or provider was exercised, and no product alternative has been hands-on compared. PR #2 and PR #3 remain untouched.
+
+**Next pass:** do a focused external-source refresh on the few alternatives most likely to falsify the current product hypothesis (local iOS Python/WASM, Android-local coding workspaces, and remote-PC control), then record only material changes to the existing competitor matrix/addendum. Keep documented claims separate from observed results; no install or execution claim without a real attempt.
