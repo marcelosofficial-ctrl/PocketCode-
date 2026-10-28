@@ -235,6 +235,11 @@ These are **ideas to evaluate, not approved scope**.
 10. **Phone-first reliability/accessibility:** interrupted-session recovery, resumable drafts, large touch targets, keyboard-aware layout, clear errors, screen-reader-friendly status, and low-bandwidth behavior.
 11. **User-owned reusable recipes and profiles:** reusable prompts, constraints, verification checklists, and copy/paste setup instructions; no background app interception.
 12. **Interoperable execution receipt format:** a versioned, provider-neutral receipt for code run/result/cleanup/artifact state that can eventually be compared with RevDev. Only after the contracts are reconciled from actual source revisions.
+13. **Environment and trust preflight:** before a task starts, show the selected execution location, supported runtime/packages, file permissions, network policy, resource limits, persistence/cleanup behavior and any unknowns. Every claim should carry a source or be labelled unknown; this must not be a marketing-only “secure” badge.
+14. **Diff-first AI repair loop:** let the user preview a suggested code change as a diff, accept/reject it explicitly, preserve the prior version, run the same fixture again and compare results. No silent overwrite or automatic change application in the first version.
+15. **Run-to-run regression view:** compare exit/outcome, bounded logs, output manifest and file diffs between attempts so users can see whether a fix changed the result rather than relying on an AI's assertion.
+16. **Portable workspace/evidence bundle:** export/import a clearly scoped project snapshot containing source, selected inputs, outputs, report, version metadata and manifest, while excluding credentials and unrelated files. This supports handoff and PC-return without mandatory cloud sync.
+17. **Offline-first task recipes:** a small library of narrow, deterministic workflows (for example CSV/JSON validation, text/metadata inspection and file conversion) that can be useful before a general code runner or provider is viable.
 
 ### Tier C — Defer until demand, security, and operating cost justify them
 - Full desktop IDE replacement or broad autonomous multi-agent orchestration.
