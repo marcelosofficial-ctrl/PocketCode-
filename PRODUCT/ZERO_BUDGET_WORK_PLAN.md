@@ -60,7 +60,9 @@ Zero-cost next steps allowed:
 - Compare the feature with documented OS/provider surfaces through public documentation only.
 - Record user-visible behavior and open questions in GitHub.
 
-Do not add model API calls, accounts, paid tools, backend code execution, silent message submission or real cross-app automation as part of this work. “Free-mode optimization” means more verified useful progress within legitimate current limits, never bypassing limits or skipping necessary validation.
+Do not add model API calls, accounts, paid tools, backend code execution, silent message submission or real cross-app automation as part of this work.
+
+Use the [portable AI Work Coach prompt](https://github.com/marcelosofficial-ctrl/DevRelay-Missions/blob/review/revdev-adaptive-ai-workshare-2026-10-27/resume/revdev/AI_WORK_COACH_PORTABLE_PROMPT_V0_1.md) for synthetic/manual validation. Do not measure or claim token savings from prompt length alone; task completeness and verification must remain equal or better. “Free-mode optimization” means more verified useful progress within legitimate current limits, never bypassing limits or skipping necessary validation.
 
 ## Current next action
 
