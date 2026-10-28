@@ -74,3 +74,26 @@ Use this addendum with the existing PR #3 competitor research; do not rewrite or
 3. For AndroidHarness and PhoneCode, record that local execution and agent orchestration are already combined in existing products. PocketCode must show a concrete advantage in task setup, truthful evidence/reporting, cross-platform continuity, or safety—not simply claim “AI coding on a phone.”
 4. Keep Pairlet in the remote-host category. Its broader agent support does not remove the requirement for a running host, and encryption is not the same as sandboxing or independent security assurance.
 5. All task runs, timing, output correctness, user preference, and security behavior remain **NOT RUN / NOT VERIFIED**. Public documentation cannot fill those worksheet fields.
+
+
+## Source refresh — execution limits and evidence implications (2026-10-28)
+
+**Evidence class:** Current official/maintainer documentation reviewed on 2026-10-28. These are documented claims, not hands-on observations or independent safety validation. This section refines the comparison questions; it does not change the fixed-task result from NOT RUN.
+
+| Source | Current documented fact | What it means for PocketCode research |
+|---|---|---|
+| [Pyodios FAQ](https://pyodios.caffeinatedmath.com/faq) and [current app page](https://pyodios.caffeinatedmath.com/) | Pyodios v1.1 describes CPython 3.14.2/Pyodide 314.0.5, requires iOS/iPadOS 26+, and runs Python locally. The FAQ says the first launch/updated environment may need initialization, a fresh Python session starts each app launch, files persist in app storage and can be imported/exported through Files, and Python has about 300 MB available. | The standard-library CSV task is a credible local-first candidate, not a reason to build a hosted runner. Direct task execution, export, and malformed-input behavior are still NOT RUN. |
+| [Pyodios FAQ — interrupting code](https://pyodios.caffeinatedmath.com/faq) | The FAQ says code cannot currently be interrupted while executing; a run times out after 120 seconds, but code continues in the background and later runs wait until the Python session is restarted. | Record timeout/cancellation semantics and recovery as a separate reliability dimension. A timeout message must not be mistaken for confirmed process termination. For arbitrary or untrusted code, this is a material limitation to understand, not proof of a specific exploit. |
+| [Pyodios App Store listing](https://apps.apple.com/us/app/pyodios/id6762922366) | The listing says “Data Not Collected” based on developer-provided privacy information and notes that the information has not been verified by Apple. | Attribute privacy statements to the developer; do not present the store label as an independent audit or proof of every execution/data-flow property. |
+| [Pyodide browser file-access FAQ](https://pyodide.org/en/stable/usage/faq.html), [file-system docs](https://pyodide.org/en/stable/usage/file-system.html), and [file access quick reference](https://pyodide.org/en/stable/usage/accessing-files.html) | Browser-local Python needs an explicit browser file-transfer or file-system integration. The native File System Access API is described as experimental and limited to Chromium-based browsers; local-file access is constrained by browser security rules. | A browser/WASM implementation needs a real target-browser input/output design and test. Do not assume that running Python in WASM automatically grants convenient iPhone file access or hard resource/security boundaries. |
+| [AndroidHarness Google Play listing](https://play.google.com/store/apps/details?id=com.androidharness.app) and [repository](https://github.com/Sanuu7/AndroidHarness) | Current public descriptions claim on-device project editing, shell, Git, browser tools, and Python/Node execution without a PC; the store listing shows the app is available as an Android product. | Treat it as a serious local-first substitute for the broader Android coding-agent idea. Claims do not establish comparative usability, complete isolation, or the user's exact device compatibility. |
+
+### Updated comparison priorities
+
+1. **For the fixed CSV task:** prioritize real input selection, actual `summary.json` creation/export, malformed-header behavior, and whether the report truthfully distinguishes observed status from unavailable exit evidence. Avoid adding third-party package setup to this standard-library task.
+2. **For general product scope:** separately capture interruption, timeout, and recovery behavior. Do not infer termination from a timeout label.
+3. **For privacy:** separate app-store developer disclosures, architecture descriptions, direct observations, and independent verification. These are different evidence classes.
+4. **For browser/WASM:** test the intended target browser's explicit input/output flow before claiming a usable local-first PWA.
+5. **For all alternatives:** execution correctness on one task does not prove isolation, abuse resistance, or security; keep those claims UNKNOWN unless independently established.
+
+No apps were installed, no code was run in a competitor, no accounts were created, and no live provider or paid service was used. All fixed-task scenarios remain NOT RUN.
