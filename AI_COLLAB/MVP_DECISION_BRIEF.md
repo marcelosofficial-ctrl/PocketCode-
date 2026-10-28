@@ -4,6 +4,8 @@
 **Status:** Independent desk-research recommendation; not an approved provider or stack decision.  
 **Scope:** Decide what to prove next, not design the entire future platform.
 
+**Superseding discovery note (2026-10-28):** This is a dated provider-comparison brief, not the current next-step selection. Public sources now describe [Pyodios](https://pyodios.caffeinatedmath.com/) running Python locally on iOS via Pyodide/WebAssembly, and browser-local Pyodide is another potential bounded path. Compare those options with this hosted-provider shortlist using the [fixed-task worksheet](PRODUCT_FIXED_TASK_COMPARISON_WORKSHEET_20261028.md) before selecting any remote provider. Recheck all vendor pricing, terms, network controls, and product behavior at the time of a future authorized test. No provider is selected or approved.
+
 ## Executive recommendation
 
 Keep the first product proof narrow: a phone-browser workflow that runs a small Python script with optional input files, shows genuine execution evidence, allows output download, and creates a useful report that can be pasted into any AI assistant.
