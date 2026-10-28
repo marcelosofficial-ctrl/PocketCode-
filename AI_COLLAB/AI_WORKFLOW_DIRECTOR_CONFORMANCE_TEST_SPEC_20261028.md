@@ -256,7 +256,7 @@ Apply these checks to every relevant fixture:
 
 **Fixture input:** a valid packet is previewed, then a test share adapter returns an explicit cancel result.
 
-**Required assertions (adapter-level)**
+**Required assertions** (adapter-level)
 - No successful transfer is claimed.
 - The generated packet remains available locally for preview/copy/retry.
 - The UI distinguishes cancellation from success and failure.
@@ -276,6 +276,9 @@ Apply these checks to every relevant fixture:
 - No label claims tokens, token savings, or predicted cost.
 
 **Open contract:** define the counting convention before freezing exact numeric assertions. Include ASCII and non-ASCII cases so code-point vs UTF-16 behavior cannot differ silently.
+
+**Forbidden behavior**
+- Displaying the count as tokens, implying it predicts cost, or retaining a stale count after the preview changes.
 
 ### AWD-16 — Project constraints override profile
 
