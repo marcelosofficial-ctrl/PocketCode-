@@ -118,6 +118,37 @@ For every command, record one row with:
 
 Use NOT RUN when not executed. Use BLOCKED when a prerequisite or approval is missing. Use INCONCLUSIVE when output/evidence cannot establish the expectation. Do not convert unavailable evidence to zero, success, or a guessed value.
 
+### 4A. Compact evidence record — copy once per test batch
+
+Use this record in the existing checkpoint/evidence notes; do not create a separate report file unless the batch produces enough evidence to justify one.
+
+```text
+BATCH ID / DATE:
+WORKSTREAM: main | PR #2 | PR #3 | Director branch
+EXACT REF + COMMIT SHA:
+SOURCE FILES + BLOB SHAs:
+ENVIRONMENT: OS / architecture / Python / Git:
+COMMAND(S), EXACTLY AS RUN:
+EXIT CODE:
+TEST TOTALS: passed / failed / skipped / errors (copy actual output)
+RESULT LABEL: PASS | FAIL | BLOCKED | INCONCLUSIVE | NOT RUN
+DIRECT OBSERVATIONS:
+EXPECTED VS ACTUAL:
+ARTIFACT/LOG LOCATION:
+WHAT THIS PROVES:
+WHAT THIS DOES NOT PROVE:
+WARNINGS / FAILURES / UNKNOWN:
+STOP CONDITION HIT?:
+NETWORK / PROVIDER / BILLING / ACTIONS USED?:
+NEXT ACTION + REQUIRED APPROVAL:
+```
+
+Rules:
+- Use PASS only for the named offline assertion that actually passed; do not generalize to security or production readiness.
+- Keep reported claims separate from direct output. If the environment or exit code is unavailable, write UNKNOWN rather than guessing.
+- If a command could contact a provider, change remote state, deploy, trigger Actions, or incur cost, do not run it under the first-session checklist.
+- Preserve full stdout/stderr where safe; redact private data before saving or sharing.
+
 ## 5. Review findings before any integration
 
 After offline tests:
