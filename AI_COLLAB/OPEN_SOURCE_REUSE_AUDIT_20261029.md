@@ -254,3 +254,34 @@ The seven-case map identifies gaps, but “missing” alone is not a reason to a
 **Important adjacent invariant:** regardless of the FAILED-versus-INCOMPLETE projection for a nonzero exit, artifact release is a separate gate and must remain denied unless cleanup, integrity, job association, and authorization are all confirmed. The reviewed PR #3 pure helper has an explicit artifact_release_allowed function with those checks; that is model coverage, not proof of a real artifact store or quarantine boundary.
 
 **Disposition:** next spec-only work should clarify wrapper/child provenance and diagnostic-collection provenance, while preserving the unresolved two-axis decision (execution observation vs job disposition). Do not change the canonical contract, test matrix, PR #2, or PR #3 without explicit implementation authorization. This ranking is a proposal based on the current product scope, not an owner-approved decision; no tests were run.
+
+
+## Minimal provenance truth table and current report-vocabulary fit — 2026-10-29
+
+This pass mapped the two P1 review topics to the exact PR #2 report vocabulary and tests. The report helper currently has one execution_status, one optional exit_code, stdout/stderr where None renders as “unavailable” and an empty string renders as “(empty)”, boolean stdout_truncated/stderr_truncated, a free-text notes list, and evidence_source. Tests cover missing versus empty output, truncation, malformed values, and uncertainty. It has no structured representation for both wrapper and child exit facts, nor for partial diagnostic collection failure versus ordinary unavailability. Free-text notes can disclose a problem but cannot make the distinction machine-checkable.
+
+### Minimal synthetic truth table (semantic expectations, not field names)
+
+| Observation from a future adapter | Execution fact to preserve | Overall report/verdict constraint | Diagnostic constraint |
+|---|---|---|---|
+| Child exit 0; wrapper/collector succeeds | Child exit is confirmed zero; wrapper success is separate provenance | May be PASS only if all other required terminal/policy/cleanup/artifact gates are independently satisfied | Report collected streams and their collection status |
+| Child exit nonzero; wrapper succeeds | Child nonzero is the program's failure evidence | FAIL only when the child failure is authoritative and the lifecycle is terminal; never substitute wrapper exit 0 | Preserve actual stderr/stdout, including valid empty streams |
+| Child exit 0; wrapper/collector fails before reliable completion evidence | Preserve child observation and wrapper failure separately | Do not infer overall PASS from child exit alone; classify according to authoritative lifecycle/gates, otherwise INCOMPLETE | Mark collection failure/unavailability and retain only the known prefix |
+| Wrapper exit 0; child exit missing | Wrapper exit 0 is not child exit evidence | Child exit remains unknown; no inferred PASS | State why diagnostics are missing if the adapter knows |
+| Child exit nonzero; wrapper/collector also fails | Preserve each trustworthy observation and their provenance | Do not let wrapper failure erase a confirmed child failure; overall disposition still follows the unresolved FAILED-vs-INCOMPLETE gate policy | Distinguish captured prefix from unknown remainder |
+| Stream successfully collected with zero bytes | Known empty stream | Does not independently determine verdict | Render as empty, not unavailable |
+| Stream unavailable before collection | No claim that stream was empty | Does not independently determine verdict | Render unavailable with known reason if available |
+| Stream collection fails after some bytes | Prefix is observed; remainder is unknown | If required evidence is consequently insufficient, do not upgrade verdict | Preserve prefix and mark partial collection failure, not ordinary empty or ordinary policy truncation |
+| Stream intentionally capped by policy | Collected prefix and policy cap are known | Apply existing limit policy; never disguise it as collector failure | Mark truncation and the policy-limit cause distinctly from collection failure |
+
+### Fit against current source
+
+- **Already representable:** empty vs unavailable stream; output truncation; single authoritative lifecycle status and one exit code; bounded free-text uncertainty notes.
+- **Not structurally representable:** wrapper exit and child exit simultaneously with distinct provenance; collector completion state (complete, unavailable, partial failure) independently of content; a machine-readable reason for a missing stream.
+- **Do not overreact:** this is a schema-capability finding, not a demand to add fields immediately. The actual adapter may not have a separate wrapper/child process layer. Confirm the execution boundary first; then decide whether the contract needs typed fields or whether a narrower trusted lifecycle mapping suffices.
+- **Do not infer:** evidence_source alone identifies provenance only at a broad level; it does not prove which process produced an exit code. A free-text note can inform a human but cannot serve as an authoritative machine gate.
+- **Current tests:** PR #2 test source covers formatting behavior for supplied metadata, not real collection. Exact tests were NOT RUN in this pass.
+
+### Smallest next decision
+
+Before changing any schema, define the selected adapter's process boundary and answer: (1) can wrapper and child exit independently differ? (2) can stdout/stderr collection fail after partial capture? (3) what source can authoritatively report each fact? If answer (1) is no, do not add wrapper/child fields. If answer (2) is yes, define a structured collection outcome and cause in the adapter contract before formatter changes. Keep canonical contract and PRs unchanged pending explicit implementation authorization.
