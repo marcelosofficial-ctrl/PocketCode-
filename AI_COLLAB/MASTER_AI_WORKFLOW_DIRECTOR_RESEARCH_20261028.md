@@ -13,6 +13,8 @@
 
 **Contract reconciliation and decision gate:** [Decision register](AI_WORKFLOW_DIRECTOR_CONTRACT_DECISION_REGISTER_20261028.md) compares eight proposed defaults against MVP requirements, marks safe semantic assertions, and records unresolved decisions without treating recommendations as accepted.
 
+**Pre-implementation readiness audit:** [Focused audit](AI_WORKFLOW_DIRECTOR_READINESS_AUDIT_20261028.md) reviews AWD-08, AWD-11, AWD-12, and AWD-14, prioritizes blockers versus deferrable work, and proposes a minimal offline builder scope. It is static analysis only; implementation remains unauthorized.
+
 **Reference fixtures:** [Expected-output examples for five priority cases](AI_WORKFLOW_DIRECTOR_REFERENCE_FIXTURES_20261028.md) make scoring more consistent; these are human-authored examples for EVAL-01, 02, 04, 06, and 08, not test results.
 
 **Phone-friendly run sheet:** [Manual paired-run procedure](AI_WORKFLOW_DIRECTOR_MANUAL_RUN_SHEET_20261028.md) gives exact baseline/Director prototype prompts, canonical profile mapping, five copy-paste task fixtures, and a per-run evidence record. It is still an unexecuted protocol.
