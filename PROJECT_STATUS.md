@@ -72,6 +72,9 @@ The active queue is maintained in the [current checkpoint](AI_COLLAB/POCKETCODE_
 
 ## Progress log
 
+- 2026-10-28: Reconciled the status/spec/architecture wording with the phone-only hypothesis. Execution location remains undecided while local phone, browser/WASM, remote-PC, hosted and manual alternatives are compared on one task. Reorganized the AI continuity hub and start-here route, added dated gates to the existing four-month plan, refreshed the new-chat handoff/checkpoint, labelled hosted/remote architecture as one candidate rather than the only shape, and removed a duplicated RevDev compatibility section in PRODUCT_SPEC.md. Documentation-only work on the isolated research branch; no execution/provider tests, implementation, deployment, Actions run, merge or spend occurred.
+
+
 - 2026-10-23: Expanded `PRODUCT/EXECUTION_CONTRACT.md` with a versioned, plain-text copyable report example, explicit provenance labels for runner evidence versus script-reported checks, honest handling of unknown values and truncation, and 10 report-formatting checks. The sample is marked illustrative, not a real run. Design-only change; no runtime, provider, live workload, paid service, or Actions workflow was used.
 
 
