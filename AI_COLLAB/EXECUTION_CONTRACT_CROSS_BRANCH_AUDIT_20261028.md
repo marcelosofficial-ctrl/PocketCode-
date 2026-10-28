@@ -168,3 +168,29 @@ This projection is intentionally conservative and needs owner/reviewer review. I
 9. The formatter receives a derived report model and remains incapable of upgrading an incomplete disposition based only on execution_status and exit_code.
 
 **Decision needed before provider implementation:** approve a versioned canonical disposition model and its gate ownership, then define a versioned projection to the simpler UI/report verdict. Until then, keep PR #2's formatter as a pure presentation helper and PR #3's lifecycle model as a separate draft contract.
+
+## Follow-up evidence: acceptance tests clarify the integration seam (2026-10-28)
+
+**Status:** Static source inspection of exact branch files and test definitions. The tests below were not executed in this pass; file contents are not proof that tests pass in a runtime.
+
+### Exact reviewed sources
+
+- `main` `PRODUCT/EXECUTION_CONTRACT.md`, blob `3861e51ae4f9e45a263b677402f26c41b240959d`; lines 171–180 describe proposed formatter checks, including confirmed zero exit plus confirmed terminal success for PASS and INCOMPLETE for timeout/cancel/rejection/missing terminal evidence/infrastructure uncertainty. Lines 203 onward explicitly state the listed tests are proposed and none is marked passed until implemented and executed in a controlled environment.
+- PR #2 branch `chat-continuity-report-regressions-2026-10-26`, `scripts/report_contract.py`, blob `e9d944a722c2fac5279952696528da72a7011af3`; `classify_verdict` uses the supplied `execution_status` and `exit_code`. Its module/docstring says it formats supplied metadata and does not execute submitted code. Companion `scripts/test_report_contract.py`, blob `39f3a3ef865ed55f333a1edc208096d99197d023`, has 146 lines and includes lifecycle-state, missing-exit, boolean-exit, simulated-report and bounded-report cases.
+- PR #3 branch `pocketcode-pass0-audit-2026-10-26`, `AI_COLLAB/DRAFT_EXECUTION_CONTRACT.md`, blob `02ad9934cc40c84f7e8cd7f6c982d5d8ed7d1b70`; lines 73–91 define separate `execution_outcome`, `cleanup_state`, derived `job_disposition`, report versions, PASS gates, and artifact quarantine. `scripts/lifecycle_contract.py`, blob `ba8d4d0b217c90513bed020e298029ef4e16f164`, derives disposition using cleanup, policy, termination, artifact and tenant/job authorization gates. Companion `scripts/test_lifecycle_contract.py`, blob `39db87d9f44f5e8474f33cff60136e529364199a`, includes cases requiring those gates and checking cleanup reconciliation/history; PR #3's `scripts/test_report_contract.py` is blob `85109f056009d65a274e9306deb39b68e1fefbd2`.
+
+### Refined conclusion
+
+The isolated formatter is not, by itself, evidence of an implementation defect: it is a presentation helper that accepts supplied metadata. The integration risk is at the call boundary. If a caller maps a raw execution status plus exit code directly into the user-facing verdict, without first deriving the trusted PR #3-style disposition, it can bypass mandatory policy, termination, cleanup, artifact-integrity and tenant/job-authorization gates. Therefore the canonical flow must be explicit: **authoritative observations → versioned disposition derivation → report formatting**. The formatter must render, not upgrade, the disposition.
+
+The two-axis model is important: `execution_outcome` records what execution did (or whether it started/ended); `job_disposition` records what the system is permitted to conclude after applying all evidence and safety gates. These fields are related but not interchangeable. Keep a nonzero process outcome visible even if cleanup is later uncertain; cleanup uncertainty must separately block artifact release and a clean final disposition rather than erase the process observation.
+
+### Required follow-up before integration approval
+
+1. Define a versioned, explicit projection from PR #3 lifecycle observations/disposition to the main/PR #2 report vocabulary; do not assume a one-to-one enum rename.
+2. Require report generation to consume the derived disposition and evidence references, not re-derive PASS from client-controlled or partial fields.
+3. Add an integration-level regression case: zero exit + success-like raw status but missing/stale policy confirmation, termination evidence, cleanup confirmation, artifact integrity, or tenant/job authorization must not produce PASS or release artifacts.
+4. Add a history/reconciliation case proving later cleanup evidence creates a new immutable report version without rewriting the earlier report.
+5. Reconcile terminology for `program_failed`/`FAILED`, `infrastructure_failed`/`PROVIDER_ERROR`, and terminal status versus disposition before freezing the external schema.
+
+These are proposed acceptance requirements only. No source code changed on PR #2 or PR #3, no test was run, and no integration is claimed.
