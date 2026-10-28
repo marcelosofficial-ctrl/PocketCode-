@@ -82,6 +82,7 @@ If documents disagree, identify the exact files, branches, dates, and claims; re
 - [Phone-only competitor scan addendum](PHONE_ONLY_COMPETITOR_SCAN_ADDENDUM_20261028.md) — dated new alternatives only; supplements rather than duplicates the PR #3 research.
 - [Product hypothesis card](PRODUCT_HYPOTHESIS_CARD_20261028.md) — one falsifiable candidate job, alternatives, evidence limits, and proposed continue/pivot criteria.
 - [PC-return checklist draft](PC_RETURN_CHECKLIST_DRAFT_20261028.md) — exact-ref verification, separate offline test worktrees, evidence capture, and a distinct approval-gated provider path.
+- [Fixed-task comparison worksheet](PRODUCT_FIXED_TASK_COMPARISON_WORKSHEET_20261028.md) — a synthetic CSV-to-JSON task and evidence form for local iOS, browser/WASM, remote-PC, hosted, and manual alternatives; design-only.
 
 ## 6. Current evidence boundary
 
@@ -117,4 +118,4 @@ The roles are defaults, not a demand to use all three for every task. Assign one
 
 ## 9. Next work sequence
 
-Use [the four-month phone-only master plan](FOUR_MONTH_PHONE_ONLY_MASTER_PLAN_20261028.md) as the active plan. The latest pass completed a static cross-branch contract audit, added a dated competitor scan addendum and falsifiable hypothesis card, and prepared the [PC-return checklist](PC_RETURN_CHECKLIST_DRAFT_20261028.md). Next, reconcile these findings against existing source docs and audit the new links/status. Do not start implementation, provider tests, or PR changes merely because a plan exists.
+Use [the four-month phone-only master plan](FOUR_MONTH_PHONE_ONLY_MASTER_PLAN_20261028.md) as the active plan. The current phone-only pass has a static cross-branch audit, dated competitor delta, falsifiable hypothesis card, PC-return checklist, and fixed-task comparison worksheet. Next, review the worksheet against the local-first finding and finish a scoped link/status audit; do not start implementation, provider tests, or PR changes merely because plans exist.
