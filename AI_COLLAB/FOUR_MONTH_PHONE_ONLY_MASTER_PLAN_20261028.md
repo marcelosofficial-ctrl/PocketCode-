@@ -195,6 +195,7 @@ A positive result from a desk-research exercise, one user anecdote, one AI pair,
 This plan and the Continuity Hub are documentation artifacts on the isolated AI Workflow Director research branch. They do not change main or PR #2/#3. No live execution, provider test, spending, AI benchmark, merge, deployment, or Actions run is authorized by this plan.
 
 **Completed during the first coordination passes (2026-10-28):**
+- Prepared the [PC-return checklist draft](PC_RETURN_CHECKLIST_DRAFT_20261028.md) with exact-ref verification, separate worktrees, offline test sequence, evidence template, and an independently approval-gated provider path.
 - Added the read-first [Continuity Hub](POCKETCODE_CONTINUITY_HUB_20261028.md) and this four-month plan.
 - Completed a static [cross-branch execution-contract audit](EXECUTION_CONTRACT_CROSS_BRANCH_AUDIT_20261028.md) using exact source refs and blob SHAs. It identified a user-facing verdict projection gap and a policy-revision-before-execution refinement; it did not edit either PR or run tests.
 - Added a dated [phone-only competitor scan addendum](PHONE_ONLY_COMPETITOR_SCAN_ADDENDUM_20261028.md), supplementing rather than repeating the existing PR #3 competitor research.
