@@ -29,7 +29,7 @@ PocketCode should first prove a small, phone-friendly loop:
 
 **Provide code and input → run it in a suitably isolated environment → inspect truthful status/output/files → copy an evidence-rich report → use the report to correct the task with any AI assistant → rerun.**
 
-The first useful product is not necessarily a full mobile IDE, general-purpose coding agent, remote-control cockpit, or multi-agent platform. The hypothesis to validate is that a focused “run, inspect, report, iterate” workflow is easier and more trustworthy for a particular mobile task than existing free or familiar alternatives.
+The first useful product is not necessarily a full mobile IDE, general-purpose coding agent, remote-control cockpit, or multi-agent platform. The hypothesis to validate is that a focused “run, inspect, report, iterate” workflow is easier and more trustworthy for a particular mobile task than existing free or familiar alternatives. The execution location is deliberately unresolved: compare local device apps, browser-embedded WebAssembly, a user's remote PC, and hosted execution. Do not assume a remote provider is required merely because the product goal includes running code.
 
 ### Supporting feature: AI Workflow Director
 
@@ -39,7 +39,7 @@ The Director's **AWD-01–AWD-16** are proposed conformance cases and remain **N
 
 ### Competitive caution discovered during this review
 
-A quick public scan on 2026-10-28 surfaced active projects in adjacent categories: [AndroidHarness](https://github.com/Sanuu7/AndroidHarness) describes an Android-native coding agent that works without a PC; [PhoneCode](https://github.com/dttdrv/phonecode) describes a local Android coding environment; [Pairlet](https://github.com/heypandax/pairlet) focuses on steering coding agents running on another machine; and [Atlan](https://github.com/Atlansdaddy/atlan) describes an on-phone development cockpit based on Termux. These are maintainer-described capabilities, not hands-on comparative results.
+A public-source scan on 2026-10-28 surfaced local and remote alternatives: [AndroidHarness](https://github.com/Sanuu7/AndroidHarness), [PhoneCode](https://github.com/dttdrv/phonecode), [Atlan](https://github.com/Atlansdaddy/atlan), and [Pairlet](https://github.com/heypandax/pairlet). A more consequential iOS-specific finding is [Pyodios](https://pyodios.caffeinatedmath.com/), which describes local Python 3.14 via Pyodide/WebAssembly on iOS/iPadOS 26+ with no server. The relevant limitations and sources are documented in the [competitor addendum](PHONE_ONLY_COMPETITOR_SCAN_ADDENDUM_20261028.md). These are maintainer/public-page claims, not hands-on results.
 
 **Implication:** “AI coding from a phone” alone is unlikely to be a sufficiently sharp differentiator. Revalidate the landscape before making product claims. Compare alternatives on the actual job, where code runs, whether a PC is required, iOS/Android support, execution evidence, file flow, privacy, setup burden, price, and portability—not feature counts or popularity alone.
 
@@ -77,7 +77,7 @@ Do not work on all streams in every pass. Prefer one high-value workstream per p
 Work to complete:
 1. Use this [Continuity Hub](POCKETCODE_CONTINUITY_HUB_20261028.md) as the orientation index. Verify branch and PR metadata before consequential work; treat PR #2, PR #3, and the Director branch as separate streams.
 2. Cross-read the current main product spec/status/roadmap and the PR #3 research handoff. Note genuine contradictions only; do not copy whole files into a new master.
-3. Refresh the existing [competitor matrix](../RESEARCH/COMPETITOR_MATRIX.md) and [competitive analysis](../RESEARCH/COMPETITIVE_ANALYSIS.md) against today's phone coding options and local/remote/cloud execution alternatives. Use the new projects above as leads, not as a complete benchmark.
+3. Keep the [competitor matrix](../RESEARCH/COMPETITOR_MATRIX.md) and [competitive analysis](../RESEARCH/COMPETITIVE_ANALYSIS.md) current. Compare local-on-device, browser/WASM, remote-PC, hosted, and plain copy/paste paths; include Pyodios as a serious iOS local-run comparator. The 2026-10-28 delta is recorded in the [competitor scan addendum](PHONE_ONLY_COMPETITOR_SCAN_ADDENDUM_20261028.md); no hands-on comparison has been run.
 4. Reuse [mobile-coding user evidence](../RESEARCH/MOBILE_CODING_USER_EVIDENCE.md) and the PR #3 [user/problem evidence protocol](https://github.com/marcelosofficial-ctrl/PocketCode-/blob/pocketcode-pass0-audit-2026-10-26/AI_COLLAB/PASS1_USER_PROBLEM_EVIDENCE.md). Do not repeat the same search unless the evidence is outdated or the decision changed.
 5. Prepare a compact “problem hypothesis card”: target user, last-mile situation, current workaround, proposed advantage, strongest counter-hypothesis, evidence quality, and the result that would change the recommendation.
 6. Revisit naming collision risk before public brand/domain investments; do not rename the repository as a side effect.
@@ -107,7 +107,7 @@ Work to complete:
 2. Build a bounded phone usability protocol around one synthetic task, with observable completion steps and failure points. If the owner can voluntarily review the published preview on their phone, record their observations; do not make that a prerequisite.
 3. For the AI Workflow Director, if free-tier capacity is available, prioritize **one** baseline-vs-Director EVAL-06 pair in the same AI app/model and fresh comparable chats. Save the complete prompts/outputs and mark incomplete conditions. Stop at the free-tier limit; no quota evasion or paid completion.
 4. Do not attempt all eight evaluations by default. If a paired run cannot be completed under the available limits, record it as NOT RUN and use the offline fixtures for design review.
-5. Compare low-risk deterministic tasks that may work locally (for example, basic text/JSON/CSV validation or simple conversions) with tasks that need a real Python environment. WebAssembly is a potential future tool for bounded local work, not a blanket answer: its sandbox still depends on the APIs and permissions exposed by the embedding application ([official security model](https://webassembly.org/docs/security/)).
+5. Compare local-on-device Python (for example Pyodios), browser-local Pyodide/WASM, remote-PC, and hosted execution against the same synthetic task. Pyodide is promising for a bounded compatible subset, but package support is limited to pure-Python wheels or supported WASM builds ([official package docs](https://micropip.pyodide.org/en/latest/project/usage.html)); WebAssembly confinement also depends on the APIs and policies exposed by the embedding application ([security model](https://webassembly.org/docs/security/)). Do not treat local WASM as general-purpose CPython or an automatic hard resource/security boundary.
 6. Create no new native app, remote agent, API adapter, local-model integration, or backend feature merely because an alternative supports it.
 
 **Exit gate:** one documented UX/evaluation result—or an honest NOT RUN record—changes or confirms a specific decision. Do not claim an efficiency gain from one anecdotal pair.
@@ -200,12 +200,14 @@ This plan and the Continuity Hub are documentation artifacts on the isolated AI 
 - Completed a static [cross-branch execution-contract audit](EXECUTION_CONTRACT_CROSS_BRANCH_AUDIT_20261028.md) using exact source refs and blob SHAs. It identified a user-facing verdict projection gap and a policy-revision-before-execution refinement; it did not edit either PR or run tests.
 - Added a dated [phone-only competitor scan addendum](PHONE_ONLY_COMPETITOR_SCAN_ADDENDUM_20261028.md), supplementing rather than repeating the existing PR #3 competitor research.
 - Added a [falsifiable product hypothesis card](PRODUCT_HYPOTHESIS_CARD_20261028.md) with counter-hypotheses and proposed decision criteria.
+- Added a [fixed-task comparison worksheet](PRODUCT_FIXED_TASK_COMPARISON_WORKSHEET_20261028.md) that defines one synthetic CSV-to-JSON success/failure task and a record/scoring template across local, browser/WASM, remote-PC, hosted, and manual-chat paths. It is design-only and NOT RUN.
+- Refreshed the existing competitor matrix and competitive analysis on this branch with the new alternatives and the local-first/WASM question; did not edit PR #3.
 - Rechecked PR #2 and PR #3 metadata; both remain open, draft, unmerged, and their known head SHAs were unchanged. Counts and SHAs must be rechecked before consequential action.
 
 **Next pass sequence:**
-1. Complete the cross-branch audit review with a compact candidate projection table for execution outcome, cleanup/evidence state, detailed disposition, and user-facing verdict. Keep it advisory; do not freeze a schema or edit PR #2/#3.
-2. Prepare the single fixed-task comparison worksheet and scoring boundaries (setup burden, truthful evidence, report usefulness, failure handling, cost/privacy). Reuse the existing PR #3 task idea; do not run accounts, providers, or workloads.
-3. Use the worksheet to improve the research decision, not to add features: if no existing alternative gap can be described precisely, narrow or stop the hosted-runner hypothesis.
-4. Avoid creating more high-level masters. Update existing matrix/analysis/checkpoint only when a material source or decision changes.
+1. Review the fixed-task worksheet and cross-branch audit together. Make the candidate user-facing verdict projection explicit as a proposal and preserve the distinction between program outcome, cleanup/evidence and overall disposition.
+2. Recheck whether Pyodios/browser-WASM covers the candidate task before considering a remote provider; only source-backed/observed gaps should justify remote-runner work.
+3. If owner input later becomes necessary, ask one short question about the real task/context that changes the product choice. Until then, continue with public-source and contract reconciliation.
+4. Do not create further high-level masters. Prefer updating the existing decision card, matrix, and checkpoint when new evidence changes a decision.
 
-The matrix and competitive analysis on this isolated research branch now link to the dated competitor delta; the PR #3 branch remains untouched.
+The existing matrix and competitive analysis on this isolated branch include the dated competitor delta. PR #2 and PR #3 remain untouched.
