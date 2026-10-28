@@ -128,3 +128,15 @@ That combination is a research question, not a claimed market gap. Existing prod
 If the existing tool supplies equivalent evidence and the separate report does not improve correction or portability, narrow or stop the runner/report-product hypothesis. Keep all of these comparisons **NOT RUN** until observed.
 
 No app installs, task runs, accounts, paid services, deployments, or provider workloads occurred in this source review.
+
+
+## Comparator relevance — direct iPhone substitutes versus adjacent products (2026-10-28)
+
+A fair comparison must distinguish “challenges the broad product positioning” from “can directly complete this user's fixed task on the target platform.”
+
+- **Direct iPhone candidates for the current CSV task:** ordinary AI chat + manual copy/paste; Pyodios on a compatible iOS/iPadOS 26+ device; browser-local Pyodide/WASM only if a real target-browser file workflow is available; and cross-platform hosted/remote paths only when their account, host, cost and mobile requirements are actually satisfied.
+- **Adjacent but not direct iPhone execution substitutes:** AndroidHarness, PhoneCode, and Atlan are described as Android products; their feature breadth challenges the general “AI coding on a phone” positioning, but does not establish that they can execute this task on the user's iPhone. Keep them in broad competitor research, not in the iPhone task score unless a supported iOS path is evidenced.
+- **Host-dependent adjacent option:** Pairlet documents iPhone/iPad clients but the coding agent runs on a separate computer with its daemon. It is not an available no-PC execution path when no reachable host exists; compare it only under a separately recorded host-available condition.
+- **Hosted IDEs:** can be accessible from mobile browsers, but are not a fair “free/easy” winner until current plan limits, account setup, file flow and mobile friction are observed.
+
+This tiering avoids both mistakes: dismissing a broad competitor because it targets another platform, and treating an Android-only or host-dependent product as if it directly solves the current iPhone-only task. The fixed-task results remain NOT RUN.
