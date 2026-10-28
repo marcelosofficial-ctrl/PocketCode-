@@ -269,3 +269,23 @@ Keep the two axes explicit:
 
 **Reviewer conclusion:** the current advisory projection is directionally conservative, but it is not yet precise enough to freeze the FAILED vs INCOMPLETE rule when nonzero exit coexists with a failed or unconfirmed security/lifecycle gate. Do not modify PR #2 or PR #3 as part of this documentation pass. Ask Claude and Gemini for independent opinions on this exact question before integration approval; no owner decision is inferred.
 
+## Follow-up: artifact-release boundary is explicitly separate; policy revision is not encoded in the pure gate (2026-10-28)
+
+A targeted read of PR #3's exact DRAFT_EXECUTION_CONTRACT.md (blob 02ad9934cc40c84f7e8cd7f6c982d5d8ed7d1b70), lifecycle helper (blob ba8d4d0b217c90513bed020e298029ef4e16f164), and test helper (blob 39db87d9f44f5e8474f33cff60136e529364199a) narrows the previous concern:
+
+- **Artifact release is explicitly separate.** The draft contract says artifacts remain quarantined until cleanup is confirmed and integrity plus per-request tenant/job authorization pass. The pure artifact_release_allowed helper checks cleanup_state == CONFIRMED, digest_valid is exactly True, job_association_valid is exactly True, and tenant_authorized is exactly True. Tests cover unknown cleanup and each independent release gate. This is a strong contract/test-design point, not proof of a real provider's isolation or cleanup.
+- **PASS gates exist in both contract and helper.** The draft requires authoritative zero exit, exact mandatory policy revision confirmation before execution, termination evidence, no prohibited timeout/cancel/limit/truncation, validated manifest/hashes, tenant/job association, and confirmed cleanup. The pure derive_disposition helper checks the policy/termination/artifact/tenant booleans and cleanup on the EXIT_ZERO path; its interface does not carry the policy revision identifier or prove when the policy was applied.
+- **The remaining disposition ambiguity is narrow but real.** Current tests require EXIT_ZERO to meet every gate, but there is no visible test in the reviewed test file asserting how EXIT_NONZERO should be classified when cleanup is unknown or policy/tenant authorization is false. The helper returns FAILED before those checks. The contract preserves the nonzero execution observation, but its versioned job-disposition policy still needs to define this combination explicitly.
+- **Offline-only boundary remains clear.** The contract and helper describe synthetic/fake-adapter logic. Their presence does not prove real termination, egress, cleanup, policy application, tenant isolation, artifact safety, or billing behavior.
+
+### Recommended smallest follow-up
+
+Before integration or schema freeze, add reviewer-approved semantic cases (not necessarily new enum values) for:
+1. EXIT_NONZERO + cleanup UNKNOWN;
+2. EXIT_NONZERO + policy revision missing/mismatched or not confirmed before start;
+3. EXIT_NONZERO + tenant/job authorization false;
+4. artifact_release_allowed false for each corresponding gate even when disposition is FAILED;
+5. EXIT_ZERO + policy revision absent or confirmed only after start.
+
+Expected invariant: retain trustworthy execution observations; never let a process verdict bypass security gates or release artifacts; represent job disposition and release eligibility separately. The exact FAILED-versus-INCOMPLETE display for cases 1–3 remains an explicit contract decision, not a conclusion inferred from this static review.
+
