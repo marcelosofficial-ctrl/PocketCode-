@@ -2,7 +2,7 @@
 
 **Status:** Draft for validation  
 **Product name:** Provisional  
-**Last reviewed:** 2026-10-20
+**Last reviewed:** 2026-10-28
 
 **Phone-only research note (2026-10-28):** The “one remote runtime” below remains an MVP candidate, not an approved architecture. New desk research surfaced local iOS Python via Pyodios/Pyodide and browser-local WASM as alternatives to compare against the fixed task before the project commits to a hosted runtime. See [the fixed-task worksheet](AI_COLLAB/PRODUCT_FIXED_TASK_COMPARISON_WORKSHEET_20261028.md) and [four-month phone-only plan](AI_COLLAB/FOUR_MONTH_PHONE_ONLY_MASTER_PLAN_20261028.md).
 
@@ -38,13 +38,13 @@ The AI handoff may initially be copy/paste rather than direct integrations. This
 - Responsive mobile UI usable in iOS Safari and Android browsers.
 - One supported runtime/task slice, provisionally Python; execution location remains undecided until the fixed-task comparison supports a choice among local device, browser/WASM, remote PC and hosted options.
 - Code entry and a small project file list.
-- Run, cancel, and server-enforced timeout.
+- Run with task-appropriate limits; expose cancellation or timeout only where the selected path genuinely supports and verifies it.
 - Streaming or promptly refreshed stdout/stderr, where supported.
 - Exit code and clear distinction between success, program failure, timeout, cancellation, and infrastructure failure.
 - Output-file listing and download for safe supported file types.
 - Recent execution history with timestamps and execution status.
 - Copyable execution report with relevant source/runtime metadata and redaction.
-- Basic authentication and per-user resource limits before private workspaces are offered.
+- If the selected path is hosted or persists private workspaces, require authentication, per-user resource limits and owner-scoped result access before exposing it.
 - Automated tests for the execution contract and major failure modes.
 
 ## 6. Explicit non-goals for the first MVP
@@ -64,7 +64,7 @@ The AI handoff may initially be copy/paste rather than direct integrations. This
 - Evidence over claims: show what actually ran and the result.
 - Provider-neutral: support useful workflows with any AI assistant, even without API integration.
 - Mobile-first: primary flows must work with touch, small screens, and unreliable connections.
-- Secure by default: user code is untrusted, resource-constrained, and isolated.
+- Secure by design: treat user code as untrusted, choose a boundary and limits that can be demonstrated, and disclose what cannot be enforced.
 - Honest capability boundaries: communicate unsupported APIs, packages, networking, and platform behavior.
 - Portable ownership: users should be able to export their code and data.
 - Incremental complexity: add runtimes only when there is a real user case and a safe execution strategy.
@@ -102,8 +102,6 @@ The long-term product vision is to offer the same trustworthy script-execution a
 A result should use an evidence-based verdict: **PASS** only for a confirmed completed run with exit code 0; **FAIL** for a confirmed program/runtime failure; and **INCOMPLETE** for timeout, cancellation, rejection, or missing trustworthy execution evidence. The exact execution status must remain visible. Reports should include actual bounded stdout/stderr, runtime/version, exit code and duration only when known, output files, and explicit truncation or uncertainty notes. The prominent result block may use RevDev-inspired pink styling, but copied content must remain readable plain text in any AI assistant.
 
 The phone flow should prioritize one Run action and one obvious Copy result action. See [RevDev + PocketCode shared-core proposal](PRODUCT/REVDEV_POCKETCODE_SHARED_CORE.md). RevDev implementation details and report compatibility still need to be inspected; shared code, a unified app, and repository migration remain undecided.
-
-
 
 ## 11. AI Workflow Director (feature hypothesis; research master)
 
