@@ -32,6 +32,9 @@ Owner constraints for all future work:
 - [PocketCode Continuity Hub](POCKETCODE_CONTINUITY_HUB_20261028.md) — read-first project map, source-of-truth order, branch separation, AI roles, and evidence boundaries.
 - [Four-month phone-only master plan](FOUR_MONTH_PHONE_ONLY_MASTER_PLAN_20261028.md) — dated workstreams, monthly exits, zero-budget constraints, future feature tiers, and PC-return readiness.
 - [PC-return checklist draft](PC_RETURN_CHECKLIST_DRAFT_20261028.md) — exact-ref verification, isolated offline test sequence, evidence template, and a separately gated provider path.
+- [Execution-contract cross-branch audit](EXECUTION_CONTRACT_CROSS_BRANCH_AUDIT_20261028.md) — current/main vs PR #2 and PR #3 status semantics; static-only, no tests run.
+- [Phone-only competitor scan addendum](PHONE_ONLY_COMPETITOR_SCAN_ADDENDUM_20261028.md) — additional current project claims, source caveats, and task-comparison questions.
+- [Product hypothesis card](PRODUCT_HYPOTHESIS_CARD_20261028.md) — provisional target user/job, alternatives, evidence gaps, and falsification criteria.
 - [Master AI Workflow Director research](MASTER_AI_WORKFLOW_DIRECTOR_RESEARCH_20261028.md) — research synthesis and product proposal.
 - [First testable feature slice](AI_WORKFLOW_DIRECTOR_MVP_SLICE_20261028.md) — proposed profiles, task packet, continuation capsule, static acceptance tests, and implementation sequence.
 - [Deterministic AWD conformance test specification](AI_WORKFLOW_DIRECTOR_CONFORMANCE_TEST_SPEC_20261028.md) — assertion-level design for AWD-01–16, forbidden behaviors, cross-case invariants, and eight recommended v1 contract defaults; not implemented or run.  
@@ -102,8 +105,10 @@ Owner constraints for all future work:
 - [x] Audit main product/security/execution contracts against PR #3 source on exact refs; findings are in the cross-branch audit document.
 - [x] Add a dated delta for newly surfaced local-phone/remote-agent competitors without copying PR #3's broader research.
 - [x] Create a product hypothesis card with alternatives and falsification criteria; no market validation claimed.
-- [ ] Reconcile the audit and research deltas against existing main-branch docs, updating only where it removes genuine stale navigation or contradiction. Do not promote PR #3 decisions to main.
-- [x] Draft the PC-return checklist at [PC_RETURN_CHECKLIST_DRAFT_20261028.md](PC_RETURN_CHECKLIST_DRAFT_20261028.md). The checklist is preparation only; exact current SHAs and all approvals must be rechecked when a PC is available.
+- [x] Reconcile dated competitor deltas into the existing matrix and competitive analysis on this isolated branch; add source caveats and links. The PR #3 branch remains untouched.
+- [x] Draft the compact PC-return checklist; exact branch/blob verification, offline tests first, test output capture, and a separately gated provider test are documented. Provider/spend/merge/deployment/Actions gates remain closed.
+- [ ] Create a compact fixed-task comparison worksheet, reusing PR #3's proposed example and defining evidence fields without running any provider or claiming a benchmark.
+
 
 ### Pass D — Manual AI evaluation when feasible
 1. If only one pair can be afforded, run EVAL-06 baseline and Director prototype in the same AI app/model in fresh chats.
