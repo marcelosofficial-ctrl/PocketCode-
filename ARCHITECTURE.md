@@ -31,15 +31,15 @@ Worker
 Structured result
   -> stdout, stderr, exit status, timing, allowed output files
 
-### Trust boundaries for Candidate A
+#### Trust boundaries for Candidate A
 
-### Client
+##### Client
 - Treat displayed output and filenames as untrusted data.
 - Never contain execution-provider secrets.
 - Make running, queued, cancelled, timed-out, and failed states explicit.
 - Do not interpret an API acceptance response as proof that execution succeeded.
 
-### Application API
+##### Application API
 - Authenticate and authorize every project, run, and result access.
 - Enforce per-user quotas and request-size limits.
 - Validate runtime identifiers and environment configuration against allowlists.
@@ -47,7 +47,7 @@ Structured result
 - Issue short-lived job-scoped credentials only when unavoidable.
 - Redact secrets from logs and user-facing reports.
 
-### Execution worker
+##### Execution worker
 - Assume submitted code is malicious or buggy.
 - Use a disposable sandbox/VM/container arrangement whose isolation guarantees are reviewed, not assumed.
 - Run unprivileged with no host mounts or privileged capabilities.
@@ -56,13 +56,13 @@ Structured result
 - Avoid access to cloud metadata endpoints, internal services, and control-plane credentials.
 - Destroy the workspace after the configured retention window.
 
-### Storage
+##### Storage
 - Keep project files and results separate by user and project.
 - Use explicit retention and deletion behavior.
 - Do not persist arbitrary worker state unless a documented product need exists.
 - Public repository files must not contain real user code or production secrets.
 
-### Example lifecycle for Candidate A only
+#### Example lifecycle for Candidate A only
 
 A hosted/remote run should have a stable identifier and a terminal outcome from a defined set:
 - succeeded
@@ -83,7 +83,7 @@ In a local candidate, code may run in an on-device interpreter or in a browser/W
 - Keep the same honest report vocabulary where it fits, but do not invent a remote job ID, provider status, cleanup event or server-side control when no such thing exists.
 - Treat the browser/native embedding API and its permissions as part of the security boundary. WebAssembly alone is not proof of a complete sandbox.
 
-### Open technical decisions
+## Open technical decisions
 
 - Execution location: local device, browser/WASM, remote PC, hosted service, or a combination only if evidence justifies it.
 - PWA framework and hosting.
