@@ -249,3 +249,36 @@ Overall scenario: PASS | FAIL | BLOCKED | INCONCLUSIVE | NOT RUN
 
 **Current status remains NOT RUN.** This is a more reproducible protocol, not a benchmark result or permission to start testing.
 
+
+
+## 5B. Report-layer falsification protocol — native evidence versus portable receipt
+
+**Status: design only; NOT RUN.** This section follows the 2026-10-28 source review showing that some adjacent tools already document run history, logs, error handoff, diagnostic exports, file export, or session continuity. Do not score a competitor as lacking a feature merely because it is named differently or the desk-research page does not mention it.
+
+For each feasible path and each of the success and malformed-input scenarios, capture two evidence bundles:
+
+1. **Native baseline:** the best ordinary evidence that the existing path itself makes available (logs, tool events, process status, diagnostic report, output file, or raw error text). Record the exact retrieval/export steps.
+2. **Portable-receipt candidate:** a proposed compact report assembled from only the evidence actually observed in that run. Keep it separate from the native baseline and do not invent fields that the path does not expose.
+
+Minimum receipt fields to evaluate—not an implementation commitment:
+
+- task/run identifier and timestamp, if genuinely available;
+- input identity or a synthetic-input digest, and source/script revision or digest if available;
+- execution location and runtime/version, or explicit UNKNOWN;
+- observed process exit/status and its source, or UNAVAILABLE;
+- stdout/stderr references or bounded excerpts with truncation flags;
+- generated artifact names and content/digest evidence, distinguishing a displayed JSON answer from a real exported file;
+- failure/timeout/cancel/interruption observations, including whether termination is confirmed or unknown;
+- job disposition and artifact-release decision kept separate where the path supports them; otherwise label them not available;
+- explicit evidence provenance for every material claim, plus unknowns and next bounded diagnostic action.
+
+**Paired correction test:** Give a separate AI assistant the same task and same source/input context in two fresh conditions: (A) the competitor's best native evidence/raw error and (B) the portable receipt. Record whether each proposed correction addresses the actual observed failure, whether it introduces unsupported claims, and whether the next step is actionable. If the evidence differs in amount or content beyond the format/provenance change, mark the pair CONFOUNDED. Do not treat one pair as a benchmark; repeat at least three comparable pairs if free usage permits, stopping at any usage cap without quota evasion.
+
+**Decision rules:**
+
+- A receipt has no demonstrated value if it merely reformats evidence already equally easy to export and use.
+- A report is not “truthful” merely because it is structured JSON; provenance and unknown-state handling must be supported by evidence.
+- Do not award a path a PASS if real output-file creation/export, failure behavior, or critical status evidence is unknown.
+- If the receipt improves correction but adds material steps, record both effects and ask whether users value the tradeoff.
+- If existing native evidence is equally useful and portable enough, prefer the simpler existing workflow or an interoperable small utility over a separate execution product.
+- The task remains NOT RUN until the same approved procedure is actually exercised on a real alternative.
