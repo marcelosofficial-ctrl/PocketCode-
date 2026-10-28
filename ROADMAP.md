@@ -19,7 +19,9 @@ For the current phone-only work sequence through February 2027, see the [four-mo
 
 ## Phase 1: Technical proof
 
-- [ ] Demonstrate one real Python execution in a disposable isolated worker.
+- [ ] Compare one fixed task across local-on-device Python, browser-local Pyodide/WASM, and remote/hosted options before choosing an execution architecture.
+- [ ] If a local path meets the target task and evidence requirements, prefer it for the first bounded proof and defer hosted execution unless a concrete requirement remains unmet.
+- [ ] If remote execution is still necessary, demonstrate one real Python execution in a disposable isolated worker, with all provider/security/cost gates approved.
 - [ ] Verify success, stderr, exit status, timeout, cancellation, and cleanup.
 - [ ] Test resource limits and blocked or controlled networking.
 - [ ] Measure cold-start and repeat-run latency.
