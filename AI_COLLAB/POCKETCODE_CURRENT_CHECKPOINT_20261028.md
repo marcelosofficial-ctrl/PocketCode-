@@ -100,14 +100,24 @@ This schedule is a sequence of evidence gates, not a promise of PC availability 
 
 ## 6. Immediate next queue
 
-**Completed in this pass:** scoped structure/link verification; exact-ref policy-barrier and disposition source trace; static prototype review; adversarial product-hypothesis review; source-to-test traceability map; and PC-return checklist crosswalk. Do not repeat these unless source refs change.
+**Completed in this pass:** scoped structure/link verification; exact-ref policy-barrier and disposition source trace; static prototype review; adversarial product-hypothesis review; source-to-test traceability map; PC-return blocker crosswalk; and compact evidence-record template. Do not repeat these unless source refs change.
 
-1. **Finish the first-PC-session evidence packet.** The PC-return checklist now names exact offline commands, worktree separation, source blobs, hard stops and the contract blockers. The next documentation-only improvement is to add a one-page result-record template that makes each claim's source, test evidence, limits and follow-up explicit; do not create a new master file.
-2. **Prepare a bounded independent-review prompt** for Gemini or Claude to challenge the strongest counterargument/falsification conditions and the claimed value of a portable evidence/continuity layer against local-first alternatives. Require concrete counterexamples and cited sources; ask for a decision recommendation, not more broad research. Do not treat silence as approval.
+1. **Get one independent challenge, when convenient.** The copy-ready prompt below asks Gemini or Claude to attack the product hypothesis with concrete counterexamples rather than produce another broad research report. No reviewer response is assumed.
+2. **Reconcile only material reviewer findings.** Update the existing hypothesis card, competitor addendum or checkpoint only if the reviewer supplies verifiable counter-evidence, identifies a specific missing alternative, or exposes a false assumption.
 3. **Preserve implementation boundaries.** The prototype status-color mismatch is a small source-reviewed polish issue; do not change source in this documentation/continuity pass. Any later UI change needs explicit authorization and must preserve the simulated-execution labels.
 4. **When PC returns, follow the checklist in order.** Re-fetch exact refs, run safe offline tests in separate clean worktrees, capture command/environment/exit/results, and stop at any missing prerequisite. Provider tests remain a separate, explicit owner-approval gate.
 
-No owner action is required to continue documentation-only work. Ask only when a specific task truly requires a phone observation, independent reviewer response or an explicit cost/safety decision.
+### Ready-to-send independent review prompt
+
+> Independently challenge PocketCode's current product hypothesis using the existing AI_COLLAB/PRODUCT_HYPOTHESIS_CARD_20261028.md, AI_COLLAB/PHONE_ONLY_COMPETITOR_SCAN_ADDENDUM_20261028.md, and RESEARCH/COMPETITOR_MATRIX.md.
+>
+> Do not repeat broad mobile-coding research. Focus on one decision: **is a provider-neutral, portable evidence/report/continuity loop a meaningfully differentiated phone-first product, or can strong local-first alternatives plus ordinary copy/paste already do it well enough?**
+>
+> Return: (1) the strongest counterexample/product substitute and the exact capability that undermines the hypothesis; (2) any concrete feature gap supported by current primary sources; (3) one same-task comparison that could falsify the hypothesis; (4) missing assumptions or misleading claims in our current card; (5) a concise continue/narrow/pivot/stop recommendation.
+>
+> Cite exact public sources or repository paths. Label each statement DOCUMENTED CLAIM, DIRECT OBSERVATION, INFERENCE, or UNKNOWN. Do not claim hands-on testing unless you actually performed it. Do not install apps, create accounts, run providers, trigger Actions, change repository files, spend money, or recommend a paid path. Return findings only; PocketCode remains in discovery and the budget remains $0.
+
+No owner action is required to continue documentation-only work. If you send this to another AI, bring its complete answer back for evidence reconciliation; do not treat silence or unsupported opinion as approval.
 
 ## 7. Canonical links for the next chat
 
