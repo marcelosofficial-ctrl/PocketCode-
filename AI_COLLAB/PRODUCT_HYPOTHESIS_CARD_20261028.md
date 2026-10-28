@@ -121,3 +121,16 @@ Continue the narrow workflow only if one supported task is actually completed, t
 
 **Continue discovery; do not choose a provider or implement a general runner.** Treat the report/continuity layer as a possible differentiator to test, not a proven product advantage. The next useful evidence is a same-task comparison using the existing worksheet and at least one strong local-first alternative. This is a research recommendation only, not implementation or spending authorization.
 
+
+
+## 10. Competitive falsification update — evidence handoff already exists (2026-10-28)
+
+**Evidence class:** Public-source review only; no competitor was installed or run.
+
+The differentiator needs to be narrower than “trustworthy logs and AI handoff.” Current documentation for AndroidHarness describes inspectable tool events, actual process outcomes, run history/recovery, build-test status, failed-run handoff, and explicit diagnostic export. Atlan describes error logs automatically attached to the agent's next turn. Pairlet describes streamed tool events, session replay/continuity, file diffs and usage context. Pyodios supports real local execution and file export. These are material counterexamples to a broad claim of novelty; see the [competitor evidence-handoff addendum](PHONE_ONLY_COMPETITOR_SCAN_ADDENDUM_20261028.md).
+
+**Narrowed hypothesis to test:** PocketCode might provide a *portable, execution-location-neutral run receipt* that preserves run/input/source/artifact association and clearly separates observed facts, unavailable evidence, process outcome, job disposition and artifact-release eligibility—then makes that receipt useful to a different AI assistant. This is not established as a competitor gap or product advantage.
+
+**Falsification test:** For the fixed CSV success and malformed-input cases, compare the best existing tool's native logs/report and ordinary copy/paste against the proposed receipt. If native evidence is equally easy to retrieve and sufficiently truthful, and the receipt does not improve the next correction or cross-tool portability, the standalone runner/report direction should be narrowed, pivoted to a small interoperable utility, or stopped.
+
+The fixed-task study, correction comparison, and any user preference observation remain **NOT RUN**. This source review does not authorize implementation or a product decision.
