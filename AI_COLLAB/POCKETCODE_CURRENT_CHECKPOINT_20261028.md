@@ -256,3 +256,10 @@ Static crosswalk completed against the exact canonical acceptance/contract files
 **When implementation/test changes are separately authorized:** map existing `CASE-13` to four assertions: (1) same key + same canonical request resolves to the original run reference, (2) authoritative current run state is queried/recovered, (3) no second dispatch occurs, and (4) missing/ambiguous current state stays `INCOMPLETE`. A fake-adapter test can establish modelled call order and no second dispatch; durable storage, atomicity, and provider behavior need separate evidence. Until then, record this as a traceability/semantic precision gap only. The open-source audit contains the exact blob SHAs and seam analysis.
 
 No protected PR #2/#3 branches, canonical contracts, or implementation files were edited. Exact tests remain NOT RUN; no provider, deployment, merge, or spend occurred.
+
+
+### CASE-13 crosswalk follow-up — 2026-10-29
+
+A consolidated source pass confirmed the existing acceptance ID should be reused. The matrix has generic idempotency rows IDEM-01/02 and IDEM-SEM-01..04, and the traceability document maps those to the pure reservation helper and synthetic tests, but neither explicitly maps the response-loss recovery boundary to CASE-13. The helper returns an existing job reference for a matching replay; it does not establish authoritative current state or prove no second adapter dispatch after a lost response. PR #2's report formatter consumes supplied metadata and cannot fill that gap.
+
+When implementation is explicitly authorized, map CASE-13 to four assertions: original run reference, authoritative current-state lookup, zero duplicate dispatch, and INCOMPLETE when state remains unknown. Reuse existing CASE-13/IDEM IDs; do not add a generic receipt-loss test unless a distinct external side-effect boundary enters the MVP. Static source review only; tests remain NOT RUN. Protected PR #2/#3 and their files were not changed.
