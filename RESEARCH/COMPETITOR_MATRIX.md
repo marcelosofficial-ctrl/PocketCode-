@@ -15,6 +15,7 @@
 | Pairlet | Phone/tablet client for coding agents that remain on a user's running computer/server | Strong substitute when a reachable host already exists; less useful when the user truly has no PC/host | Whether target use occurs with a PC unavailable, network/host setup burden, session continuity |
 | Derle | Phone-based IDE marketed with terminal, Git, preview, and AI assistance; iOS and Android advertised | Direct overlap with mobile IDE positioning | Execution architecture, languages, pricing, limitations |
 | Kodo | iPhone/iPad code editor with AI and remote-development-related features | Relevant iOS-first alternative | Whether each workflow executes locally, remotely, or via SSH |
+| Pyodios | iPhone/iPad Python editor, notebooks and REPL based on local Pyodide/WebAssembly; current listing says iOS/iPadOS 26+, no server, app listed free | Direct local execution substitute for supported Python tasks; challenges assumption that a hosted runner is necessary | Package support/memory/task file flows/AI handoff; distinguish local execution from full CPython OS/server capabilities |
 | Rish | Experimental open-source mobile workspace and multi-provider AI integrations | Open-source and provider-flexibility reference | Maturity, supported platforms, security, activity |
 | Paseo | Open-source/mobile-oriented coding and AI workflow | Alternative architecture and UX reference | Maintenance, runtimes, setup burden |
 | Pockode | Mobile-oriented coding tool | Similar user need and naming proximity | Platform, runtime, persistence, pricing, active status |
@@ -60,5 +61,8 @@ Links and product claims must be rechecked before decisions. This is not a featu
 - [ ] Interview target users and test alternatives with realistic tasks.
 
 ## Dated research delta — 2026-10-28
+
+New iOS-specific finding: [Pyodios](https://pyodios.caffeinatedmath.com/) says its current release runs Python 3.14 via Pyodide/WebAssembly locally on iOS/iPadOS 26+, without a server. Its FAQ documents limitations around initialization, memory, session persistence, and packages. [Official Pyodide docs](https://github.com/pyodide/pyodide) explain that package support depends on pure-Python wheels or Pyodide-compatible WASM builds. This raises a local-first/browser-WASM option for a narrow MVP; it does not prove the app or a PocketCode embedding will satisfy the full task/security needs.
+
 
 The new alternatives above are based on current project/official pages, not independent product tests. Details and source caveats are centralized in [PHONE_ONLY_COMPETITOR_SCAN_ADDENDUM_20261028.md](../AI_COLLAB/PHONE_ONLY_COMPETITOR_SCAN_ADDENDUM_20261028.md). The broad conclusion remains a hypothesis: the differentiator to test is a narrow, trustworthy run/inspect/report/iterate loop, not generic AI coding from a phone. Do not claim a competitor gap until the same task is compared with real alternatives.
