@@ -185,3 +185,10 @@ Sources, qualifications, and the revised falsification questions are recorded in
 The new portable-receipt falsification protocol was cross-checked against the existing [proposed execution contract](../PRODUCT/EXECUTION_CONTRACT.md) and [execution-loop acceptance criteria](../PRODUCT/EXECUTION_LOOP_ACCEPTANCE.md). These already define the core report requirements: lifecycle status, exit evidence only when available, runtime/version and duration when known, bounded stdout/stderr with truncation, output-file metadata, and explicit missing evidence. Acceptance separates user-facing PASS/FAIL/INCOMPLETE from exact lifecycle status and keeps script-reported checks distinct from independently verified facts.
 
 **Constraint for future work:** do not create a competing report schema. Treat the existing proposed PocketCode report as the candidate format and compare it with each alternative's native report/logs and raw-error handoff. The research question is whether its provenance, unknown-state and cross-tool portability semantics improve the next correction enough to matter. This is a source consistency check only; no report implementation or task comparison was run.
+
+
+## 4D. Remaining report-contract question — run/input/source binding
+
+A closer read of [PRODUCT/EXECUTION_CONTRACT.md](../PRODUCT/EXECUTION_CONTRACT.md) confirms the proposed report currently calls for a run ID, runtime/version, final status, exit/duration when known, bounded stdout/stderr, output filenames/sizes, and explicit uncertainty. It does **not** explicitly require an input digest, source/script revision, or output-content digest.
+
+Do not silently treat those extra identifiers as already accepted. The fixed-task study may test whether run-to-input/source/artifact binding improves repeatability or the next AI correction; record its value and privacy/collection cost. If evidence supports adding it, propose a versioned change to the canonical contract. Otherwise keep the simpler report. No implementation or comparison has been run.
