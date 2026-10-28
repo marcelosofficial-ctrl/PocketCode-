@@ -49,6 +49,19 @@ If any cost or billing condition is uncertain, do not run the workload. Continue
 ### Gate C — Revisit the budget only by choice
 If real execution eventually cannot be demonstrated at $0, stop at that boundary and explain the trade-off. Do not silently spend money or pressure the owner to pay. The owner decides whether to wait, find a different free path, or change the budget.
 
+## AI Efficiency Coach research path (2026-10-28)
+
+The [AI Efficiency Coach & Handoff proposal](AI_EFFICIENCY_COACH_HANDOFF_PROPOSAL_2026-10-28.md) adds a candidate no-provider feature. The shared research master is [AI Workflow Efficiency and Cross-App Orchestration](https://github.com/marcelosofficial-ctrl/DevRelay-Missions/blob/review/revdev-adaptive-ai-workshare-2026-10-27/resume/revdev/AI_WORKFLOW_EFFICIENCY_AND_CROSS_APP_ORCHESTRATION_MASTER_2026-10-28.md).
+
+Zero-cost next steps allowed:
+- Refine the proposal and profile/task-packet wording.
+- Create deterministic synthetic fixtures for prompt generation and checkpointing.
+- Test that unsupported integration falls back to copy/share and that examples stay labelled SIMULATED.
+- Compare the feature with documented OS/provider surfaces through public documentation only.
+- Record user-visible behavior and open questions in GitHub.
+
+Do not add model API calls, accounts, paid tools, backend code execution, silent message submission or real cross-app automation as part of this work. “Free-mode optimization” means more verified useful progress within legitimate current limits, never bypassing limits or skipping necessary validation.
+
 ## Current next action
 
 Use `RESEARCH/MOBILE_CODING_USER_EVIDENCE.md` to guide desk research and narrow the proposed user job. Improve only the static prototype and its source-level checks; do not start provider implementation. The interview script is optional if relevant participants become available later.
