@@ -194,3 +194,44 @@ The two-axis model is important: `execution_outcome` records what execution did 
 5. Reconcile terminology for `program_failed`/`FAILED`, `infrastructure_failed`/`PROVIDER_ERROR`, and terminal status versus disposition before freezing the external schema.
 
 These are proposed acceptance requirements only. No source code changed on PR #2 or PR #3, no test was run, and no integration is claimed.
+
+## Follow-up proposal: two-axis vocabulary and conservative display projection (2026-10-28)
+
+**Proposal only:** This table is a discussion aid to make the integration seam reviewable. It is not an approved schema, implementation, or assertion that all states currently exist on every branch.
+
+### Axis A — execution observation (what happened)
+
+| Candidate `execution_outcome` | Meaning | Minimum evidence expectation |
+|---|---|---|
+| `NOT_STARTED` | No user program started | Authoritative validation/policy rejection or provider-preparation evidence; distinguish from missing start evidence |
+| `EXIT_ZERO` | Process reported a zero exit | Attempt-bound authoritative exit/terminal evidence; does not by itself mean the job passed |
+| `EXIT_NONZERO` | Process reported a nonzero exit | Attempt-bound authoritative exit evidence; retain exit code and relevant bounded error output |
+| `TIMED_OUT` | Deadline outcome was reported | Trusted deadline/limit event; separately record whether process-tree termination is confirmed |
+| `CANCELLED` | Cancellation outcome was reported | Cancellation request and separate termination confirmation; request alone is not proof of stopped process |
+| `LIMIT_EXCEEDED` | An enforced execution/output limit was hit | Trusted limit event, byte counts where applicable, and truncation/discard evidence |
+| `UNKNOWN` | Execution outcome cannot be established reliably | Missing, malformed, contradictory, stale, or incorrectly associated provider evidence |
+
+### Axis B — derived job disposition (what may safely be concluded)
+
+| Candidate `job_disposition` | Required derivation | Candidate simple report verdict | Important retained facts |
+|---|---|---|---|
+| `REJECTED` | Authoritative pre-start validation/policy rejection; no contradictory execution evidence | `INCOMPLETE` | Explicitly say not started; safe rejection reason |
+| `PASS` | Zero exit plus all mandatory policy, termination, artifact-integrity, tenant/job authorization and cleanup gates confirmed | `PASS` | Gate provenance and report version |
+| `FAILED` | Confirmed program failure/nonzero exit, with no evidence that contradicts the failure observation | `FAIL` | Preserve exit/error evidence even if a separate cleanup issue remains |
+| `TIMED_OUT` | Timeout outcome and termination confirmed | `INCOMPLETE` | Deadline evidence and termination status |
+| `CANCELLED` | Cancellation outcome and termination confirmed | `INCOMPLETE` | Cancellation and termination status separately |
+| `LIMIT_EXCEEDED` | Trusted limit breach or required output evidence was truncated/discarded | `INCOMPLETE` | Exact limit and what evidence may be missing |
+| `PROVIDER_ERROR` | Provider/execution evidence is unavailable, malformed, contradictory, or untrustworthy | `INCOMPLETE` | Unknowns, conflicting evidence and reconciliation path |
+| `INCOMPLETE` | A required gate/evidence item is missing, stale, or unconfirmed; or outcome cannot safely support a stronger conclusion | `INCOMPLETE` | Gate(s) not met and any known execution observations |
+
+### Projection invariants
+
+1. `execution_outcome` and `job_disposition` must be separate fields; neither is an alias for the other.
+2. The simple verdict is a lossy display summary, not the source of truth. Preserve the detailed disposition, outcome, reason codes, evidence references, policy revision, cleanup state, artifact gate state, and report version in the canonical model.
+3. A zero exit never implies `PASS` by itself. A formatter must consume an already-derived disposition and may not infer security gates from client-supplied status strings.
+4. A confirmed nonzero exit remains an observed program failure even if cleanup is later uncertain. Artifact release remains independently blocked until cleanup/integrity/authorization gates pass; do not erase one fact to represent another.
+5. Timeout/cancellation without confirmed termination cannot claim that execution stopped. It remains `INCOMPLETE` or an equivalent explicitly uncertain disposition until reconciled.
+6. Unknown or contradictory evidence never becomes `PASS` through retries, formatting, or report-version replacement. Later authoritative evidence appends a new report version and retains prior history.
+7. Names and mappings (`FAILED` vs `program_failed`; `PROVIDER_ERROR` vs `infrastructure_failed`; UI `FAIL` vs `INCOMPLETE`) require owner/reviewer approval before the external schema is frozen.
+
+**Recommended next review:** have Claude and Gemini independently challenge this mapping against the exact PR #2 and PR #3 branches. Only after review should an authorized integration task change authoritative contracts or tests. No code or tests were changed/run by adding this proposal.
