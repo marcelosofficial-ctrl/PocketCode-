@@ -177,7 +177,7 @@ Sources, qualifications, and the revised falsification questions are recorded in
 
 **Revised hypothesis only:** test whether a portable, execution-location-neutral receipt that binds evidence to a particular run/input/source/artifact and explicitly represents unknown evidence improves a separate AI's next correction or cross-tool portability beyond competitors' native logs/reports and raw-error copy/paste. This is not a demonstrated gap.
 
-**Next bounded task:** update the fixed-task worksheet's report-layer comparison criteria to compare each alternative's native evidence against the proposed receipt, including whether the separate AI correction actually improves. Keep every path NOT RUN until a real, approved attempt. Do not select an execution location, implement the receipt, or change PR #2/#3 on the basis of desk research alone.
+**Next bounded task:** map the open-source-derived adversarial cases in [Open-Source Reuse Audit](OPEN_SOURCE_REUSE_AUDIT_20261029.md) against the exact main / PR #2 / PR #3 contract and test sources. Mark each behavior already covered, missing, conflicting, or platform-specific; only propose minimal missing test expectations. Do not edit PR #2/#3, change the canonical execution contract, select an execution location, or copy competitor code without a separate authorized decision. All live task comparisons remain NOT RUN.
 
 
 ## 4C. Report-contract alignment check — 2026-10-28
