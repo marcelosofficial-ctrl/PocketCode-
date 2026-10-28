@@ -274,12 +274,14 @@ This plan and the Continuity Hub are documentation artifacts on the isolated AI 
 - Refreshed the existing competitor matrix and competitive analysis on this branch with the new alternatives and the local-first/WASM question; did not edit PR #3. The dated scan now includes Pyodios, whose current public pages claim local Python via Pyodide/WASM on iOS 26+; package/memory/file-flow suitability remains unverified.
 - Rechecked PR #2 and PR #3 metadata; both remain open, draft, unmerged, and their known head SHAs were unchanged. Counts and SHAs must be rechecked before consequential action.
 
-**Recent status reconciliation (2026-10-28):** a source-of-truth pass found stale wording in PROJECT_STATUS.md that treated remote execution as the starting direction. The current plan correctly keeps the execution location open. The continuity navigation and active queue are being reorganized so future chats do not repeat completed link audits or mistake an advisory contract proposal for an accepted decision.
+**Latest structure/direction pass (2026-10-28):** aligned README, Project Status, Product Spec, Architecture, Continuity Hub, new-chat handoff and checkpoint. Remote execution is now explicitly one candidate, not the chosen MVP path; the duplicate RevDev compatibility section was removed from Product Spec. The existing plan now includes ordered Gates A–H and five additional gated future ideas (trust preflight, diff-first repair, run comparison, portable workspace/evidence bundle, offline recipes). These are proposals, not scope approvals.
+
+**Static check of the changed navigation set:** 160 relative Markdown links across the six updated orientation/status documents resolved against the research-branch tree with zero missing paths. Their Markdown code-fence counts were balanced. Twenty-five external references were identified but not checked for live availability; there were no fragment-only heading anchors in the scoped files. This is not a repository-wide link audit or rendered-Markdown test.
 
 **Current next-pass sequence:**
-1. Complete the source-of-truth/navigation cleanup on this isolated research branch.
-2. Continue exact-ref contract review for policy revision before start and EXIT_NONZERO combined with missing/failed gates; preserve the difference between process outcome, overall job disposition and artifact-release eligibility.
-3. Use the fixed-task worksheet to inform a decision, not to claim a benchmark. No phone/provider task is performed unless specifically selected and its constraints are met.
-4. Follow Gates A–H above, updating the existing checkpoint after material changes. Do not make another master plan or edit PR #2/#3.
+1. Continue exact-ref contract review for the policy-revision-before-start requirement and EXIT_NONZERO with missing/failed gates. Preserve the difference between process outcome, overall job disposition and artifact-release eligibility.
+2. Reconcile the fixed-task findings against the existing product hypothesis and competitor matrix; make a continue/narrow/pivot recommendation without claiming an unrun benchmark.
+3. Conduct a focused source review of the static prototype's mobile flow and simulated-label correctness; do not trigger deployment/Actions.
+4. Follow Gates A–H above, update only existing authoritative docs/checkpoint when findings materially change, and leave PR #2/#3 untouched.
 
 Progress means reducing uncertainty, increasing evidence quality or improving the next safe action—not document/commit volume.
