@@ -40,6 +40,7 @@ The initial MVP candidate is a mobile-first web app with one remote runtime and 
 - [Prototype static checker](scripts/check_mobile_prototype.py) and [its regression tests](scripts/test_check_mobile_prototype.py) (CI checks source patterns only; no browser execution or submitted-code execution)
 - [Proposed provider-neutral execution contract](PRODUCT/EXECUTION_CONTRACT.md)
 - [Shared run/result conformance matrix v0.1](PRODUCT/SHARED_RUN_RESULT_CONFORMANCE_MATRIX_v0_1.md) (proposal; no shared suite or product integration has passed yet)
+- [Shared run/result conformance gap review](PRODUCT/SHARED_RUN_RESULT_CONFORMANCE_GAP_REVIEW_2026-10-28.md) (proposed additional coverage; no implementation tests passed)
 - [Roadmap](ROADMAP.md)
 - [Architecture proposal](ARCHITECTURE.md)
 - [Safety requirements](SECURITY.md)
