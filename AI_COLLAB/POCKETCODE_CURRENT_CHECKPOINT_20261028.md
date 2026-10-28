@@ -48,6 +48,7 @@ Owner constraints for all future work:
 - Reconciled the eight proposed conformance defaults against the MVP and all 16 fixture meanings in a decision register. Marked existing semantic requirements separately from exact open contracts; no recommendations were treated as accepted decisions.
 - Audited the register against the MVP and fixture catalogue: all eight proposed contracts are represented; AWD-01–AWD-16 each have a traceability row; current MVP-supported semantics are separated from exact open choices. The register remains advisory, and no owner decision or implementation authorization was inferred.
 - Completed a focused readiness audit for AWD-08 (omissions), AWD-11 (unsupported verification claims), AWD-12 (configured redaction), and AWD-14 (cancelled sharing). Separated must-have semantic invariants from open implementation details and explicitly deferred integrations.
+- Linked the readiness audit from the README, master research, canonical fixture catalogue, and checkpoint. Static review of the new feature documents confirms the 16 fixture IDs and 16 register rows align; code fences are balanced. A broad README link scan was inconclusive for older unrelated links because their target files were outside the fetched audit set, so no repository-wide broken-link claim is made.
 
 
 
