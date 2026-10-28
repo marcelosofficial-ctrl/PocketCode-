@@ -33,6 +33,7 @@ Owner constraints for all future work:
 - [First testable feature slice](AI_WORKFLOW_DIRECTOR_MVP_SLICE_20261028.md) — proposed profiles, task packet, continuation capsule, static acceptance tests, and implementation sequence.
 - [Deterministic AWD conformance test specification](AI_WORKFLOW_DIRECTOR_CONFORMANCE_TEST_SPEC_20261028.md) — assertion-level design for AWD-01–16, forbidden behaviors, cross-case invariants, and eight recommended v1 contract defaults; not implemented or run.  
 - [Canonical AWD fixture catalogue](AI_WORKFLOW_DIRECTOR_CANONICAL_FIXTURES_20261028.md) — proposed concrete input envelopes and observable pass/fail boundaries for all 16 IDs, with forbidden behaviors, layer boundaries, traceability, and unresolved contract dependencies; design-only, NOT RUN.
+- [Contract reconciliation and decision register](AI_WORKFLOW_DIRECTOR_CONTRACT_DECISION_REGISTER_20261028.md) — compares all eight proposed defaults with the MVP, separates established semantics from open exact contracts, and recommends a minimal implementation gate; not owner-approved.
 - [Offline evaluation kit](AI_WORKFLOW_DIRECTOR_EVALUATION_KIT_20261028.md) — canonical task profiles, cases EVAL-01 through EVAL-08, scoring rubric, and limitations.
 - [Manual paired-run sheet](AI_WORKFLOW_DIRECTOR_MANUAL_RUN_SHEET_20261028.md) — exact phone-friendly baseline/Director prototype prompts and copyable fixtures.
 - [Reference output fixtures](AI_WORKFLOW_DIRECTOR_REFERENCE_FIXTURES_20261028.md) — human-authored examples; do not show them to an assistant during measured runs.
@@ -43,6 +44,7 @@ Owner constraints for all future work:
 - Authored a deterministic conformance-test specification for all 16 proposed AWD acceptance cases, including required assertions, forbidden behaviors, boundary variants, capsule validation cases, and explicit unresolved contracts. The document is design-only; no test code was created or executed.
 - Added eight recommended v1 defaults for unresolved contracts (input normalization, packet serialization, character counting, oversized-context behavior, configured redaction, capsule validation, share-adapter results, and component boundaries). These are recommendations, not frozen decisions.
 - Authored the canonical fixture catalogue with proposed repeatable input envelopes, observable pass/fail rules, forbidden behaviors, traceability, layer boundaries, and unresolved dependencies for AWD-01–AWD-16. This is design-only; no test code was created or executed.
+- Reconciled the eight proposed conformance defaults against the MVP and all 16 fixture meanings in a decision register. Marked existing semantic requirements separately from exact open contracts; no recommendations were treated as accepted decisions.
 
 
 
@@ -79,7 +81,8 @@ Owner constraints for all future work:
 - [x] Link the specification from the MVP slice, master research, evaluation kit, README, and this checkpoint.
 - [ ] After review of the proposed defaults, freeze only the decisions needed for the first local/offline slice.
 - [x] Create a canonical catalogue with proposed fixture inputs and observable pass/fail boundaries for AWD-01–AWD-16; audit coverage and label unresolved dependencies.
-- [ ] Review the catalogue for contract conflicts and decide which semantic assertions can remain open versus which defaults need owner approval before implementation.
+- [x] Reconcile the eight proposed defaults against the MVP and fixture catalogue; record existing semantics, exact open contracts, deferred scope, and the minimum implementation gate. This is analysis, not owner approval.
+- [ ] Audit the decision register for unsupported assumptions and link/traceability consistency before asking for any owner decisions.
 - [ ] Create executable tests only after implementation is authorized.
 
 ### Pass D — Manual AI evaluation when feasible
