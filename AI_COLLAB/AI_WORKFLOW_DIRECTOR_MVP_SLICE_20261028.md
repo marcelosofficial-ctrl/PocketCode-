@@ -7,6 +7,7 @@
 **Manual run sheet:** [Paired baseline/Director prompts and record form](AI_WORKFLOW_DIRECTOR_MANUAL_RUN_SHEET_20261028.md); protocol only, no runs recorded.  
 **Conformance test design:** [Deterministic AWD-01–16 test specification](AI_WORKFLOW_DIRECTOR_CONFORMANCE_TEST_SPEC_20261028.md); proposed assertions only, not implemented or run.  
 **Canonical fixture catalogue:** [AWD-01–AWD-16 repeatable inputs and observable outcomes](AI_WORKFLOW_DIRECTOR_CANONICAL_FIXTURES_20261028.md); proposed harness data only, not production API, tests, or passing results.  
+**Contract reconciliation:** [Decision register](AI_WORKFLOW_DIRECTOR_CONTRACT_DECISION_REGISTER_20261028.md) compares the proposed defaults with existing MVP requirements; recommendations remain unapproved.  
 **Purpose:** Convert the research into the smallest useful, provider-neutral feature slice that can be designed and evaluated without API calls, paid services, or privileged access to other apps.
 
 ## 1. Scope and non-goals
