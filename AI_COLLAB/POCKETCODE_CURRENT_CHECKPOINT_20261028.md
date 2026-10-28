@@ -234,3 +234,16 @@ A second static pass compared the Open-Source Reuse Audit against the exact PR #
 **Next bounded task:** design one synthetic *lost receipt after external side effect* case that is not a duplicate of ordinary idempotency or cleanup recovery. Scenario: external side effect commits; operation receipt is lost; coordinator restarts; recovery must query authoritative state before retrying. If state cannot be inspected, return UNKNOWN/INCOMPLETE and require reconciliation rather than repeat blindly. First verify whether the chosen MVP actually has such external side effects; if not, record this as deferred rather than expanding the stateless execution proof.
 
 Only after that, consider wrapper-vs-child exit provenance if a concrete adapter has distinct process layers. Defer stale-revision compare-and-swap unless workspace/file writes are selected; the current first-proof scope excludes a persistent project workspace. Extend existing matrix IDs where semantics fit; do not add duplicate capability, generic idempotency, cleanup, artifact, or output-cap cases. No PR #2/#3 edits, canonical contract changes, code changes, or test runs are authorized by this note.
+
+
+## 2026-10-29 scope correction — reuse CASE-13 before proposing recovery tests
+
+A final cross-check against the canonical `PRODUCT/EXECUTION_CONTRACT.md` and `PRODUCT/EXECUTION_LOOP_ACCEPTANCE.md` narrows the prior recommendation. The current first proof explicitly excludes persistent project workspaces, arbitrary networking, and broad agent orchestration. Acceptance `CASE-13` already covers retry after an ambiguous network response: supported idempotency must prevent duplicate execution, and uncertain execution must remain uncertain. Therefore, do **not** add a generic receipt-loss case to the current MVP matrix.
+
+Current decision:
+- **Reuse/trace `CASE-13`** against the idempotency contract and make sure its proposed assertions clearly require same-key replay to return the same run reference (or authoritative current state), never start a second run, and remain `INCOMPLETE` when the run state cannot be established. This is a recommendation for traceability, not proof that current code/tests satisfy it.
+- **Defer external-side-effect receipt-loss recovery** until a concrete design introduces multi-step orchestration or a side effect whose commit can be separated from receipt persistence. Then specify the exact operation, authoritative state-inspection mechanism, idempotency identity, and retry rule.
+- **Defer wrapper-vs-child provenance** until the intended adapter has distinct process layers; **defer stale-revision compare-and-swap** unless persistent workspace writes enter the MVP.
+- No new acceptance IDs, canonical schema changes, PR #2/#3 edits, implementation, or test execution are authorized by this research clarification.
+
+This supersedes the previous checkpoint paragraph that described lost-receipt recovery as the immediate next bounded test. The immediate next task is a non-duplicative static traceability check of `CASE-13` and its exact source/test mappings; if the current matrix already expresses the assertions, record reuse and stop rather than adding more documentation.
