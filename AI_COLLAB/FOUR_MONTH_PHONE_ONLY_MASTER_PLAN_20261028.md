@@ -197,17 +197,17 @@ This plan and the Continuity Hub are documentation artifacts on the isolated AI 
 **Completed during the first coordination passes (2026-10-28):**
 - Prepared the [PC-return checklist draft](PC_RETURN_CHECKLIST_DRAFT_20261028.md) with exact-ref verification, separate worktrees, offline test sequence, evidence template, and an independently approval-gated provider path.
 - Added the read-first [Continuity Hub](POCKETCODE_CONTINUITY_HUB_20261028.md) and this four-month plan.
-- Completed a static [cross-branch execution-contract audit](EXECUTION_CONTRACT_CROSS_BRANCH_AUDIT_20261028.md) using exact source refs and blob SHAs. It identified a user-facing verdict projection gap and a policy-revision-before-execution refinement; it did not edit either PR or run tests.
+- Completed a static [cross-branch execution-contract audit](EXECUTION_CONTRACT_CROSS_BRANCH_AUDIT_20261028.md) using exact source refs and blob SHAs. It identified a user-facing verdict projection gap and a policy-revision-before-execution refinement; it did not edit either PR or run tests. Verified all 11 source blob SHAs in the audit against the exact referenced branch/files. Added a proposed PASS/FAIL/INCOMPLETE projection table that preserves execution outcome, cleanup/evidence, and derived disposition; it remains advisory.
 - Added a dated [phone-only competitor scan addendum](PHONE_ONLY_COMPETITOR_SCAN_ADDENDUM_20261028.md), supplementing rather than repeating the existing PR #3 competitor research.
 - Added a [falsifiable product hypothesis card](PRODUCT_HYPOTHESIS_CARD_20261028.md) with counter-hypotheses and proposed decision criteria.
 - Added a [fixed-task comparison worksheet](PRODUCT_FIXED_TASK_COMPARISON_WORKSHEET_20261028.md) that defines one synthetic CSV-to-JSON success/failure task and a record/scoring template across local, browser/WASM, remote-PC, hosted, and manual-chat paths. It is design-only and NOT RUN.
-- Refreshed the existing competitor matrix and competitive analysis on this branch with the new alternatives and the local-first/WASM question; did not edit PR #3.
+- Refreshed the existing competitor matrix and competitive analysis on this branch with the new alternatives and the local-first/WASM question; did not edit PR #3. The dated scan now includes Pyodios, whose current public pages claim local Python via Pyodide/WASM on iOS 26+; package/memory/file-flow suitability remains unverified.
 - Rechecked PR #2 and PR #3 metadata; both remain open, draft, unmerged, and their known head SHAs were unchanged. Counts and SHAs must be rechecked before consequential action.
 
 **Next pass sequence:**
-1. Review the fixed-task worksheet and cross-branch audit together. Make the candidate user-facing verdict projection explicit as a proposal and preserve the distinction between program outcome, cleanup/evidence and overall disposition.
-2. Recheck whether Pyodios/browser-WASM covers the candidate task before considering a remote provider; only source-backed/observed gaps should justify remote-runner work.
-3. If owner input later becomes necessary, ask one short question about the real task/context that changes the product choice. Until then, continue with public-source and contract reconciliation.
+1. Review the proposed verdict projection table in the audit and the evidence boundaries in the fixed-task worksheet. Keep the mapping advisory until the relevant contract owner/reviewer accepts it; do not freeze an API or edit PR #2/#3.
+2. Check local iOS Python and browser-WASM against the fixed task before considering a remote provider. Public docs identify a real alternative, but local file flow, package compatibility, speed, report usefulness and target-device behavior remain untested.
+3. If the owner later chooses a hands-on phone test, ask for one specific approval/observation rather than a general install task. Otherwise continue with desk research and contract reconciliation.
 4. Do not create further high-level masters. Prefer updating the existing decision card, matrix, and checkpoint when new evidence changes a decision.
 
-The existing matrix and competitive analysis on this isolated branch include the dated competitor delta. PR #2 and PR #3 remain untouched.
+The existing matrix and competitive analysis on this isolated branch include the dated competitor delta; the Director master now explicitly identifies itself as a supporting feature. PR #2 and PR #3 remain untouched.
