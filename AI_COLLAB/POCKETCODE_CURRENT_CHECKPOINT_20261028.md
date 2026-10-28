@@ -9,8 +9,8 @@
 - Repository: [marcelosofficial-ctrl/PocketCode-](https://github.com/marcelosofficial-ctrl/PocketCode-)
 - Active isolated research branch: [pocketcode-ai-workflow-director-research-2026-10-28](https://github.com/marcelosofficial-ctrl/PocketCode-/tree/pocketcode-ai-workflow-director-research-2026-10-28)
 - This branch is a research/documentation branch and is not `main`.
-- PR #2 and PR #3 are separate ongoing draft work and must not be changed as part of this feature research. Before this checkpoint was authored, GitHub confirmed both were open, draft, and unmerged; re-check their live state before making any future statement about them.
-- The latest known branch comparison before this checkpoint showed the branch ahead of `main` and not behind it. Re-run the compare after new changes before reporting exact counts.
+- PR #2 and PR #3 are separate ongoing draft work and must not be changed as part of this feature research. Rechecked after this pass: both remain open, draft, and unmerged. PR #2 head is `eb8b7ea83cb0e8fe1880351276c485b761431791` on `chat-continuity-report-regressions-2026-10-26`; PR #3 head is `0ddcc0bc97bac5d446aefedf3d71f99411bd841d` on `pocketcode-pass0-audit-2026-10-26`. Their branches were not modified by this work.
+- Rechecked after this pass, `main...pocketcode-ai-workflow-director-research-2026-10-28` reports **61 commits ahead, 0 behind**. The compare endpoint lists 13 changed paths relative to `main`; the canonical fixture catalogue is a new path. Re-run comparison before relying on these counts in a later session.
 
 ## Product and working constraints
 
