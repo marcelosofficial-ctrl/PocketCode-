@@ -332,7 +332,26 @@ Do not start implementation until these open contracts are explicitly decided or
 7. Share adapter result contract and cancel-state behavior.
 8. Which behaviors are guaranteed by the pure builder versus UI/adapter layers.
 
-## 8. Current evidence status
+## 8. Recommended defaults to unblock a deterministic first slice
+
+These are **recommendations for review, not accepted or frozen decisions**. They minimize hidden behavior, keep the first slice local/offline, and make tests stable.
+
+| Open contract | Recommended v1 default | Why / test consequence |
+|---|---|---|
+| Input envelope and empty values | Typed object; require a non-empty goal and one of the four profile enum values. Treat missing, null, empty, and whitespace-only optional text as absent. Trim ordinary text fields at the edges only. Protected literals/evidence spans are copied byte-for-byte when included. Reject invalid required fields with a visible validation result. | Small input surface; avoids placeholder sections and invented values. Freeze a schema version before serialization tests. |
+| Profile wording and packet serialization | Store the four profile instructions as versioned constants. Emit headings in the MVP-defined order, one blank line between non-empty sections, UTF-8/LF line endings, and no trailing whitespace. Do not snapshot entire profile text until the owner approves the wording. | Enables deterministic output while keeping profile copy reviewable. Semantic tests can precede exact snapshots. |
+| Character count | Count Unicode code points in the exact final preview string, including spaces and line breaks; recompute after any user edit. Label only “characters.” | Consistent cross-platform semantics; avoids JavaScript UTF-16 surprises and token/cost claims. Document the chosen method in implementation tests. |
+| Oversized context | Do not automatically summarize or silently truncate in v1. Preserve required constraints/acceptance/evidence. If a configured size limit is exceeded, show a warning and let the user edit/select excerpts; show an explicit omission notice for any user-approved removal. | Safest deterministic behavior without inventing a relevance-ranking algorithm. Automatic context selection can be a later feature with its own tests. |
+| Sensitive patterns and redaction | Use a small, versioned local pattern list; redact only confirmed matches using a visible marker such as `[REDACTED:pattern-id]`. Show a best-effort warning on the preview. Never claim unmatched content is safe; never transmit from the builder. | Makes fixture results reproducible and avoids implying perfect detection. Pattern list and marker must be versioned test inputs. |
+| Capsule invalid/unknown fields | Validate against a versioned schema. Missing required fields, unknown status enums, and impossible status/evidence combinations produce a visible validation error; do not silently coerce to `DONE_VERIFIED`. Preserve the original input locally for user review. Unknown extra fields trigger a warning and must not be silently discarded; v1 should reject export until the user resolves them. | Strict and auditable. If future forward-compatible preservation is needed, define an explicit extension field and test it separately. |
+| Share adapter results | Keep sharing outside the pure builder. Adapter returns exactly one of `SUCCESS`, `CANCELLED`, `FAILED`, or `UNKNOWN`; report transfer only for explicit `SUCCESS`. Cancellation/failure/unknown keeps the packet available locally and never triggers background retry. | Prevents false “sent” claims and keeps UI behavior testable with a fake adapter. Confirm real OS behavior later on device. |
+| Pure builder vs UI/adapter | Pure builder handles normalized inputs, packet/capsule text, validation, protected-literal preservation, redaction configured by explicit input, and deterministic character count. UI handles preview/edit/copy. Share adapter handles transfer and cancellation. No model call, code execution, repository mutation, or network access in the first slice. | Clear test seams; the 16 cases can be divided into pure-builder and adapter/UI suites. |
+
+### Decision gate
+
+Before implementation, either accept these defaults or explicitly replace individual rows. Until then, tests should enforce only the already stated semantic invariants and must not claim that the recommendations are frozen product behavior.
+
+## 9. Current evidence status
 
 - This specification was authored by reviewing the proposed MVP acceptance table and related project constraints.
 - No implementation code was changed.
