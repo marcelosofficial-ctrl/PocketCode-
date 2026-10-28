@@ -90,6 +90,14 @@ A potentially useful angle is not simply “an IDE on a phone.” It is a **low-
 
 This angle is not yet proven unique. Competitor walkthroughs and user testing must establish whether it is meaningfully better than existing products.
 
+## Local-first execution option surfaced — 2026-10-28
+
+[Pyodios](https://pyodios.caffeinatedmath.com/) now describes an iOS/iPadOS 26+ app that runs Python 3.14 locally through Pyodide/WebAssembly, without a server. The App Store listing describes it as free; that claim and app availability must be rechecked before any recommendation. Its FAQ describes startup initialization, an approximate 300 MB Python memory budget, fresh sessions after relaunch, and network requirements for packages that are not already present.
+
+The [official Pyodide project](https://github.com/pyodide/pyodide) supports Python in browsers/Node.js with a bounded package ecosystem: pure-Python wheels can generally be installed, while compiled extensions need compatible WASM builds. The [micropip documentation](https://micropip.pyodide.org/en/latest/project/usage.html) explains those constraints. WebAssembly is a possible local execution boundary for an explicitly limited task, not proof of an OS-level sandbox or a general-purpose Linux process environment; exposed Web APIs and host policy still matter.
+
+**Strategic effect:** the decision is not simply “which remote provider?” A local-first/hybrid path should be evaluated first: (a) local deterministic tools, (b) browser-embedded Pyodide for compatible small Python tasks, then (c) remote execution only when the fixed task needs capabilities local execution cannot provide and a safe/cost-bounded provider can be demonstrated. This ordering is a hypothesis to test, not an approved architecture. See the [dated scan addendum](../AI_COLLAB/PHONE_ONLY_COMPETITOR_SCAN_ADDENDUM_20261028.md).
+
 ## Risks and unknowns
 
 - Product-name conflict is significant and needs a separate naming review.
