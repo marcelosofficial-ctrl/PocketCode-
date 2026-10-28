@@ -277,3 +277,23 @@ On the research branch tree at commit 5bfe97068168d5e1cbbea9fa22fcee0d89c07a16, 
 3. Keep product comparison as a design protocol until an owner-chosen hands-on phone session is possible. Do not turn desk research into performance claims.
 4. Recheck branch/PR state after material updates. No owner action is required for the static work completed here.
 
+## Follow-up pass — release gate and policy-revision seam checked (2026-10-28)
+
+A targeted follow-up against exact PR #3 draft/helper/test blobs confirmed that artifact release is explicitly separated from disposition and that the pure artifact-release predicate requires confirmed cleanup, valid digest, valid job association, and tenant authorization. The companion tests cover each release gate. This is useful contract/test design, not proof of deployed security.
+
+The remaining integration gap is narrower: the pure disposition helper receives a boolean policy_confirmed, not the exact required policy revision and proof it was applied before execution. The draft contract requires that exact revision barrier, so an eventual provider adapter/coordinator must supply and bind that evidence. Also, the reviewed tests do not explicitly pin the disposition rule for EXIT_NONZERO combined with unknown cleanup, missing/mismatched policy revision, or failed tenant authorization. Add these semantic cases before integration/schema freeze; retain the observed exit separately and never let FAILED imply artifact release. Exact FAILED-vs-INCOMPLETE mapping remains unresolved.
+
+### Verification snapshot before this checkpoint update
+
+- Research branch compared as **150 ahead / 0 behind** main; main/base SHA 555840d8d83342513d9cd353d4d1522d46a5c82d. This count includes the worksheet protocol and cross-branch audit updates and will advance with this checkpoint commit.
+- PR #2 remains open/draft/unmerged at eb8b7ea83cb0e8fe1880351276c485b761431791.
+- PR #3 remains open/draft/unmerged at 0ddcc0bc97bac5d446aefedf3d71f99411bd841d.
+- No PR branches were changed. No tests were run in this pass.
+
+### Next bounded pass (revised)
+
+1. Obtain independent Claude and Gemini review of the specific EXIT_NONZERO + failed/unconfirmed gate combinations; keep this as a reviewer question, not a request to rewrite the contract from memory.
+2. Verify the exact policy-revision evidence flow across the PR #3 adapter/coordinator proposal and its tests; record any missing binding without claiming a live security failure.
+3. If reviewer access is unavailable, continue static contract consistency checks and maintain the open decision explicitly. Do not block all zero-cost research waiting for reviewer responses.
+4. Do not begin hands-on app comparison until a specific phone test is selected; the worksheet is ready but all runs remain NOT RUN.
+
