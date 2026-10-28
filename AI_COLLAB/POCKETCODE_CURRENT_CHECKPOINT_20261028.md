@@ -42,6 +42,9 @@ The Director research branch is isolated and is **not main**. Its head/ahead cou
 
 These were documentation/source-review changes on the isolated research branch. No implementation tests, app installs, provider workload, AI evaluation, merge, deployment, Actions run or spending occurred in the organization pass.
 
+9. Validated the updated navigation/source-of-truth set of eight documents (Continuity Hub, four-month plan, Project Status, README, handoff, checkpoint, Product Spec and Architecture): 158 relative Markdown link targets resolved against the branch tree, with zero missing paths; Markdown fence counts were balanced; no fragment-only anchors occurred in the scoped set. Twenty-five external URL references were identified but not checked for live availability. This is a scoped static check, not a repository-wide or rendered-Markdown audit.
+10. Confirmed at source level that Project Status/Product Spec no longer treat a remote runtime as selected, Architecture documents local/browser and hosted/remote paths as unselected candidates, and Product Spec now has one RevDev compatibility section rather than a duplicate.
+
 ## 4. Critical unresolved contract questions
 
 ### A. Policy revision before start
