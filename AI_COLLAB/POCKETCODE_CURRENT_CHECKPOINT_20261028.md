@@ -237,3 +237,43 @@ The review covered 141 relative Markdown links; zero pointed to a file path abse
 - PR #2 remains open/draft on `chat-continuity-report-regressions-2026-10-26` at head `eb8b7ea83cb0e8fe1880351276c485b761431791`; PR #3 remains open/draft on `pocketcode-pass0-audit-2026-10-26` at head `0ddcc0bc97bac5d446aefedf3d71f99411bd841d`. Neither was modified.
 - Current research work is confined to the isolated research branch. No merge, deployment, GitHub Actions run, app install, provider workload, implementation test, or user research occurred.
 - Next batch is ready: complete the remaining scoped anchor/external-link checks; challenge the proposed two-axis disposition projection against reviewer feedback if available; then turn the product alternatives into a one-at-a-time, evidence-preserving fixed-task protocol. The hands-on comparison remains NOT RUN and needs an explicit owner action only when the exact phone/app test is selected.
+
+## Follow-up pass — fixed-task protocol and lifecycle gate-ordering review (2026-10-28)
+
+### Fixed-task worksheet tightened
+
+Updated [Fixed-Task Comparison Worksheet](PRODUCT_FIXED_TASK_COMPARISON_WORKSHEET_20261028.md) with a reproducible attempt protocol. It now specifies UTF-8/LF inputs, separate fresh workspaces for success and malformed-header scenarios, expected JSON value types, no stale success artifact after failure, ordered evidence capture, actual-file verification, setup/run timing, explicit UNKNOWN/UNAVAILABLE values, disqualifiers, and a copyable per-attempt record.
+
+This is still **DESIGN ONLY / NOT RUN**. No mobile app was installed, no script was executed in a mobile environment, no account/provider was used, and no benchmark result is claimed. The key anti-false-positive is a fresh workspace for the malformed input, so an old summary.json cannot be mistaken for a valid result.
+
+### Lifecycle/disposition review sharpened
+
+Updated [Cross-Branch Execution-Contract Audit](EXECUTION_CONTRACT_CROSS_BRANCH_AUDIT_20261028.md) after inspecting the exact PR #2 and PR #3 helper sources. Static review confirms that PR #3 derive_disposition returns FAILED for EXIT_NONZERO before checking cleanup, policy confirmation, termination confirmation, artifact validity, or tenant/job authorization. Contradictory evidence is checked earlier.
+
+This ordering may intentionally preserve a confirmed process failure, but the helper's output is called a job disposition. The external contract must explicitly decide whether nonzero exit plus an unconfirmed/failed mandatory gate means FAILED with a separate gate warning, or INCOMPLETE with EXIT_NONZERO preserved as a separate observation. Artifact release must remain independently fail-closed either way. The PR #3 pure helper cannot itself prove the provenance of NOT_STARTED or that a policy confirmation is bound to the exact required revision and applied before start.
+
+**Reviewer decision remains open.** Ask Claude and Gemini to independently review this narrow FAILED-vs-INCOMPLETE/gate-ordering question before integration approval. Do not edit PR #2 or PR #3; no tests were run.
+
+### Scoped static documentation link check
+
+On the research branch tree at commit 5bfe97068168d5e1cbbea9fa22fcee0d89c07a16, checked 8 high-priority documents (handoff, continuity hub, four-month plan, this checkpoint, Director MVP slice, Director conformance spec, fixed-task worksheet, and cross-branch contract audit).
+
+- 109 relative Markdown link targets were resolved against the branch tree: **0 missing paths** in this scoped set.
+- 32 external URL references were identified but not fetched/validated as live links.
+- The scoped files contain no fragment-only Markdown anchors; no heading-anchor validation was needed for this set.
+- This is not a repository-wide link audit and does not validate rendered Markdown, every external URL, or uninspected files.
+
+### Repository/PR state rechecked before this checkpoint refresh
+
+- Research branch was 148 commits ahead and 0 behind main; compare base SHA was 555840d8d83342513d9cd353d4d1522d46a5c82d. The branch head at the comparison was 5bfe97068168d5e1cbbea9fa22fcee0d89c07a16. Counts/head will advance with this checkpoint update.
+- PR #2 remains open, draft, unmerged at eb8b7ea83cb0e8fe1880351276c485b761431791.
+- PR #3 remains open, draft, unmerged at 0ddcc0bc97bac5d446aefedf3d71f99411bd841d.
+- Neither PR branch was modified.
+
+### Next bounded pass
+
+1. Ask for independent Claude/Gemini challenge of the exact disposition-ordering issue above, if their review can be obtained without PC access or paid usage.
+2. In parallel, audit the remaining relevant contract definitions and tests for contradictory expectations, focusing on whether artifact release is explicitly independent from verdict and whether policy-revision evidence is bound to the attempt.
+3. Keep product comparison as a design protocol until an owner-chosen hands-on phone session is possible. Do not turn desk research into performance claims.
+4. Recheck branch/PR state after material updates. No owner action is required for the static work completed here.
+
