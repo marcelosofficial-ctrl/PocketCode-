@@ -162,3 +162,19 @@ No owner action is required to continue documentation-only work. If you send thi
 - Reuse existing docs/dependencies before writing new code or creating a new document.
 - One primary task per AI pass; specific adversarial review question for the second AI; consolidate evidence before acting.
 - Keep PocketCode separate from RevDev. Exact source revisions and explicit decisions are required before any mapping.
+
+
+## 4B. Competitor evidence-handoff counterexamples — 2026-10-28
+
+A targeted public-source review found that evidence/log handoff is already described by adjacent tools, so the current differentiator must be narrowed:
+
+- AndroidHarness documents inspectable tool cards, command exit/termination outcomes, run history/recovery, build/test status, failed-run handoff, and a whitelisted diagnostic report.
+- Atlan documents mirrored console logs and automatic attachment of errors to the agent's next turn.
+- Pairlet documents streaming output/tool events, session continuity/replay, file diffs and usage context, subject to per-backend limits.
+- Pyodios documents local execution and file import/export; PhoneCode documents a local agent/workspace and an AI-output-report endpoint.
+
+Sources, qualifications, and the revised falsification questions are recorded in the [competitor addendum](PHONE_ONLY_COMPETITOR_SCAN_ADDENDUM_20261028.md), with a concise delta in the [competitor matrix](../RESEARCH/COMPETITOR_MATRIX.md) and the [product hypothesis card](PRODUCT_HYPOTHESIS_CARD_20261028.md).
+
+**Revised hypothesis only:** test whether a portable, execution-location-neutral receipt that binds evidence to a particular run/input/source/artifact and explicitly represents unknown evidence improves a separate AI's next correction or cross-tool portability beyond competitors' native logs/reports and raw-error copy/paste. This is not a demonstrated gap.
+
+**Next bounded task:** update the fixed-task worksheet's report-layer comparison criteria to compare each alternative's native evidence against the proposed receipt, including whether the separate AI correction actually improves. Keep every path NOT RUN until a real, approved attempt. Do not select an execution location, implement the receipt, or change PR #2/#3 on the basis of desk research alone.
