@@ -6,6 +6,8 @@
 
 **Interim companions:** See [MVP_DECISION_BRIEF.md](MVP_DECISION_BRIEF.md) for the narrow-MVP recommendation and provider shortlist, and [../PRODUCT/EXECUTION_CONTRACT.md](../PRODUCT/EXECUTION_CONTRACT.md) for a proposed provider-neutral execution lifecycle and testable API contract. Neither document selects a provider or claims implementation/test completion. This master research scaffold remains incomplete. Gemini's pasted specification has not been verified as a canonical repository update.
 
+**Related focused master:** [AI Workflow Director research](MASTER_AI_WORKFLOW_DIRECTOR_RESEARCH_20261028.md) consolidates three passes on cross-AI workflow optimization, phone handoffs, free-tier efficiency, and the RevDev shared-contract direction. It is a focused feature research companion, not proof that this broader master plan is complete.
+
 ## 1. Executive summary
 Product hypothesis; strongest evidence for/against; recommendation; confidence; go/pivot/stop recommendation; key uncertainties.
 
