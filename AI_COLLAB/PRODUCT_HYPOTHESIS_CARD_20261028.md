@@ -18,6 +18,8 @@ This candidate is intentionally narrower than “everyone who codes on a phone.�
 
 ## 3. Core promise to test
 
+The **execution location is an open variable**, not a foregone conclusion: compare a local iOS Python app, browser-local Pyodide/WASM, a remote PC, and hosted execution. The first working solution may be local-first for a bounded set of tasks; only choose hosted execution if the actual task needs capabilities that a safe local path cannot provide and the hosted path has a demonstrable advantage and an approved cost/security gate.
+
 One supported task flow:
 
 1. Paste a short script and explicitly select synthetic/small input files.
@@ -33,6 +35,8 @@ This is an acceptance hypothesis, not a statement that any runner or backend alr
 
 | Alternative | Why it may win | What PocketCode must prove to justify itself |
 |---|---|---|
+| Local iOS Python app such as [Pyodios](https://pyodios.caffeinatedmath.com/) | Runs some Python tasks on-device with no server, account or hosted-run cost; public docs claim WebAssembly execution on iOS 26+ | A reusable report/AI correction loop or task/package capability not already met by local execution; do not assume this gap without testing |
+| Browser-local Pyodide/WASM | Could support a narrow local-first PWA task without a server | Actual target-browser package/file behavior, responsiveness, interruption handling and permission boundary; WASM is not proof of hard isolation |
 | Existing local phone IDE/runtime | No hosted execution bill; often keeps files on-device; can be fast | Less setup friction for the specific task, without overstating privacy/security |
 | Termux / local Linux environment | Flexible and powerful for Android users willing to configure it | Meaningfully easier for the candidate novice/occasional user |
 | Remote PC / SSH / remote-agent client | Reuses a user's existing environment and codebase | Works in the important case where a PC/host is unavailable, or reduces setup enough to matter |
@@ -47,7 +51,7 @@ This is an acceptance hypothesis, not a statement that any runner or backend alr
 | Some people want to run/debug small code tasks from phones | Plausible, supported by qualitative anecdotes | Repeated recent examples from a clearly defined user group and observed task completion |
 | A hosted disposable run is easier than existing local/remote alternatives | **UNVERIFIED** | Same-task comparison with setup steps, failure points and user preference |
 | A copyable evidence-rich report improves AI correction | **UNVERIFIED** | Paired tasks comparing raw error vs structured report, preserving full outputs and conditions |
-| A sustainable $0 or approved-cost path exists for safe hosted execution | **UNVERIFIED / NEEDS LIVE TEST** | Current official terms and a hard-enforced spend bound, plus verified isolation/egress/cleanup behavior |
+| A sustainable $0 or explicitly approved-cost path exists for any execution path | **UNVERIFIED / NEEDS LIVE TEST** for hosted execution; local execution is documented but untested here | Compare actual local task/package fit first; hosted cost ceiling, isolation, egress, termination and cleanup still need separate evidence |
 | AI Workflow Director saves time/tokens or improves correctness | **UNVERIFIED** | Complete, comparable paired outputs and measured inputs/outputs; one pair is exploratory only |
 | The project name is distinct enough for launch | **HIGH RISK / UNRESOLVED** | Separate naming options and an appropriate formal brand/trademark/domain review |
 
@@ -85,6 +89,6 @@ No interviews are required to keep the project moving during the phone-only peri
 
 ## 8. Current recommendation
 
-**Continue discovery, narrow the task candidate, do not select a provider or begin backend implementation.** The next useful proof is evidence that one specific phone-only job is materially better with the proposed run/inspect/report loop than the strongest available workaround. If the comparative advantage is absent, pivot toward a more clearly differentiated report/continuity utility—or stop the hosted-runner direction rather than adding features to compensate.
+**Continue discovery, narrow the task candidate, and do not select an execution provider or begin backend implementation.** The next useful proof is evidence that one specific phone-only job is materially better with the proposed run/inspect/report loop than the strongest available workaround. Include local device/browser execution as a first-class option; hosted execution must earn its place rather than being assumed. If the comparative advantage is absent, pivot toward a more clearly differentiated report/continuity utility—or stop the hosted-runner direction rather than adding features to compensate.
 
 This recommendation remains provisional and does not authorize implementation, spending, provider/account setup, live execution, merge, or deployment.
