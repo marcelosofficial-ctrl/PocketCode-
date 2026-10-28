@@ -22,6 +22,10 @@ This is a product hypothesis, not a claim that these capabilities are already im
 
 The initial MVP candidate is a mobile-first web app with one remote runtime and a clear, verifiable run-and-inspect workflow. The scope will be narrowed through competitor research, user feedback, and technical testing.
 
+## Project documents## AI Workflow Director research
+
+The proposed AI Workflow Director aims to help users hand off compact tasks and preserve verified state across AI apps. It is a research proposal, not an implemented feature. See the [master research](AI_COLLAB/MASTER_AI_WORKFLOW_DIRECTOR_RESEARCH_20261028.md), [first testable slice](AI_COLLAB/AI_WORKFLOW_DIRECTOR_MVP_SLICE_20261028.md), [offline evaluation kit](AI_COLLAB/AI_WORKFLOW_DIRECTOR_EVALUATION_KIT_20261028.md), [human-authored reference fixtures](AI_COLLAB/AI_WORKFLOW_DIRECTOR_REFERENCE_FIXTURES_20261028.md), and [phone-friendly paired-run sheet](AI_COLLAB/AI_WORKFLOW_DIRECTOR_MANUAL_RUN_SHEET_20261028.md). No evaluation runs or benchmark results are claimed.
+
 ## Project documents
 
 - [Project status](PROJECT_STATUS.md)
