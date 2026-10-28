@@ -127,6 +127,71 @@ Work to complete:
 
 **Exit gate:** a new session with PC access can follow the checklist from a clean environment and knows the exact status of every gate. If PC access is still unavailable, continue with the next highest-value research task rather than treating the date as a deadline.
 
+
+### Ordered execution board — concrete outputs and gates
+
+Use this sequence alongside the dated Month 1–4 plan. Complete a gate or record why evidence is unavailable, then move on. Do not create a parallel master document.
+
+#### Gate A — orientation and conflict cleanup (now through 2026-11-10)
+- Reconcile root project status with the newer local-first / execution-location-neutral hypothesis.
+- Make the Continuity Hub a clean navigation index and keep the checkpoint as the single current task queue.
+- Verify branch state and preserve PR boundaries.
+- **Output:** one simple start route, one current checkpoint and no contradictory statement that remote execution is already selected.
+- **Exit:** a new chat can find the accepted decisions, current task, source-of-truth rules and next action in a few minutes.
+
+#### Gate B — product/problem decision (2026-11-11 to 2026-11-27)
+- Reuse existing public user evidence and competitor work; research only gaps that could change the decision.
+- Compare manual copy/paste, local phone runtime, browser-local WASM, remote PC and hosted execution using the same fixed task.
+- Review name/discoverability risk without renaming the repository or buying a domain.
+- **Output:** update the existing hypothesis card and competitor matrix with pro/con evidence and a continue/narrow/pivot/stop recommendation.
+- **Exit:** one target job is clearly stated, strongest alternatives are identified, and at least one falsifying observation is specified. Desk research is not representative market validation.
+
+#### Gate C — contract and safety reconciliation (2026-11-28 to 2026-12-13)
+- Reconcile exact main / PR #2 / PR #3 semantics for execution outcome, job disposition, cleanup, report verdict and artifact release.
+- Treat policy-revision-before-start as a concrete evidence/barrier requirement, not a boolean magically proven by a report formatter.
+- Resolve or explicitly preserve the reviewer question for EXIT_NONZERO combined with failed/unknown mandatory gates; FAILED must never implicitly release artifacts.
+- Separate universal invariants from hosted-provider controls and local/WASM-specific boundaries.
+- **Output:** a small discrepancy/decision list with exact refs, test expectation and whether owner/reviewer approval is needed.
+- **Exit:** important lifecycle states and release gates have explicit expected behavior and a test/evidence class.
+
+#### Gate D — test traceability and deterministic protocol (2026-12-14 to 2026-12-27)
+- Trace each material requirement to existing test IDs/helpers and classify it as source-reviewed, offline-executable, device-only or provider-only.
+- If a safe isolated assistant environment is available, run only exact pure-helper/test files from exact branch blobs; record revision, command, interpreter, output and limitations. Otherwise mark NOT RUN and continue with independent work.
+- Keep the CSV/JSON success and malformed-input worksheet as a protocol, not completed evidence.
+- **Output:** test/evidence matrix plus PC-return test/fixture list.
+- **Exit:** no test is called passing unless the exact checked-in revision was actually executed.
+
+#### Gate E — phone UX and Director scope check (2026-12-28 to 2027-01-13)
+- Review the static prototype source for first-action clarity, code/input flow, status legibility, copy-report affordance, simulated labels and failure-state clarity.
+- Do not trigger Pages/Actions to view or validate documentation. Voluntary owner phone observations are helpful but not required for independent source work.
+- Keep the Director a thin supporting feature; its first pure packet/capsule proposal should remain local/offline.
+- **Output:** a short UX issue list, ranked by user impact and evidence quality.
+- **Exit:** each proposed UI change has a task-based reason; no code/runtime claim is inferred.
+
+#### Gate F — minimal evaluation (2027-01-14 to 2027-01-27)
+- Only if the owner chooses and free usage permits, perform at most one baseline-vs-Director pair, prioritizing EVAL-06, using the same app/model and comparable fresh chats.
+- Record complete prompts/outputs and measurement conditions. Stop at any free-tier limit; never evade it.
+- If the pair is not feasible, record NOT RUN and preserve the protocol instead.
+- **Output:** one honestly scoped result or a reasoned NOT RUN record.
+- **Exit:** no broad savings/correctness claim is inferred from a single exploratory pair.
+
+#### Gate G — PC-return preparation (2027-01-28 to 2027-02-13)
+- Refresh exact main and PR heads; inspect differences without modifying PR #2/#3.
+- Prepare the sequence: inspect worktree/branch → verify exact blobs → run pure offline tests → compare expected fixtures → inspect the resulting diff → review permissions → only then consider whether a separate controlled-runtime request is justified.
+- Name any test requiring a real device/provider, prerequisites, cost/safety approvals and expected evidence.
+- **Output:** a clean-session PC-return runbook with explicit stop conditions.
+- **Exit:** the first PC session starts with repository/test inspection, never provider signup or live execution.
+
+#### Gate H — decision and restart handoff (2027-02-14 to 2027-02-28)
+- Choose continue, narrow, pivot or stop, and state evidence for and against.
+- Finalize the first workflow candidate, contract discrepancy list, future-feature ranking and PC-return checklist.
+- Revisit whether formal name review is worthwhile; do not rename or spend as a side effect.
+- **Output:** one updated checkpoint/handoff and an owner-readable decision, not another set of competing master docs.
+- **Exit:** a fresh chat or returning PC session can take the next safe action using exact refs without guessing.
+
+#### Recurring cadence
+Each pass should deliver at least one of: a clearer decision, reconciled evidence conflict, reproducible test/protocol, reviewed risk, or safer next action. Update only the checkpoint every one or two weeks if state or priority changed. Stop polishing docs once navigation is clear; work on the highest-uncertainty decision instead.
+
 ## 6. The repeatable work loop
 
 For every substantial AI pass:
@@ -204,10 +269,12 @@ This plan and the Continuity Hub are documentation artifacts on the isolated AI 
 - Refreshed the existing competitor matrix and competitive analysis on this branch with the new alternatives and the local-first/WASM question; did not edit PR #3. The dated scan now includes Pyodios, whose current public pages claim local Python via Pyodide/WASM on iOS 26+; package/memory/file-flow suitability remains unverified.
 - Rechecked PR #2 and PR #3 metadata; both remain open, draft, unmerged, and their known head SHAs were unchanged. Counts and SHAs must be rechecked before consequential action.
 
-**Next pass sequence:**
-1. Review the proposed verdict projection table in the audit and the evidence boundaries in the fixed-task worksheet. Keep the mapping advisory until the relevant contract owner/reviewer accepts it; do not freeze an API or edit PR #2/#3.
-2. Check local iOS Python and browser-WASM against the fixed task before considering a remote provider. Public docs identify a real alternative, but local file flow, package compatibility, speed, report usefulness and target-device behavior remain untested.
-3. If the owner later chooses a hands-on phone test, ask for one specific approval/observation rather than a general install task. Otherwise continue with desk research and contract reconciliation.
-4. Do not create further high-level masters. Prefer updating the existing decision card, matrix, and checkpoint when new evidence changes a decision.
+**Recent status reconciliation (2026-10-28):** a source-of-truth pass found stale wording in PROJECT_STATUS.md that treated remote execution as the starting direction. The current plan correctly keeps the execution location open. The continuity navigation and active queue are being reorganized so future chats do not repeat completed link audits or mistake an advisory contract proposal for an accepted decision.
 
-The existing matrix and competitive analysis on this isolated branch include the dated competitor delta; the Director master now explicitly identifies itself as a supporting feature. PR #2 and PR #3 remain untouched.
+**Current next-pass sequence:**
+1. Complete the source-of-truth/navigation cleanup on this isolated research branch.
+2. Continue exact-ref contract review for policy revision before start and EXIT_NONZERO combined with missing/failed gates; preserve the difference between process outcome, overall job disposition and artifact-release eligibility.
+3. Use the fixed-task worksheet to inform a decision, not to claim a benchmark. No phone/provider task is performed unless specifically selected and its constraints are met.
+4. Follow Gates A–H above, updating the existing checkpoint after material changes. Do not make another master plan or edit PR #2/#3.
+
+Progress means reducing uncertainty, increasing evidence quality or improving the next safe action—not document/commit volume.
