@@ -4,6 +4,8 @@
 **Product name:** Provisional  
 **Last reviewed:** 2026-10-20
 
+**Phone-only research note (2026-10-28):** The “one remote runtime” below remains an MVP candidate, not an approved architecture. New desk research surfaced local iOS Python via Pyodios/Pyodide and browser-local WASM as alternatives to compare against the fixed task before the project commits to a hosted runtime. See [the fixed-task worksheet](AI_COLLAB/PRODUCT_FIXED_TASK_COMPARISON_WORKSHEET_20261028.md) and [four-month phone-only plan](AI_COLLAB/FOUR_MONTH_PHONE_ONLY_MASTER_PLAN_20261028.md).
+
 ## 1. Problem
 
 People increasingly receive code from AI assistants, but code generation is not the same as successful execution. A user on a phone may have no practical way to install dependencies, run the program, inspect files and errors, or return precise evidence to an AI for correction.
