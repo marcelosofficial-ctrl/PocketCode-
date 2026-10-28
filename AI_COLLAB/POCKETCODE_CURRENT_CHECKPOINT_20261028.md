@@ -220,3 +220,13 @@ The review covered 141 relative Markdown links; zero pointed to a file path abse
 - No tests were run, no mobile runner or provider was exercised, and no product alternative has been hands-on compared. PR #2 and PR #3 remain untouched.
 
 **Next pass:** do a focused external-source refresh on the few alternatives most likely to falsify the current product hypothesis (local iOS Python/WASM, Android-local coding workspaces, and remote-PC control), then record only material changes to the existing competitor matrix/addendum. Keep documented claims separate from observed results; no install or execution claim without a real attempt.
+
+## Follow-up pass: current mobile alternative refresh (2026-10-28)
+
+- Updated the existing [Phone-Only Competitor Scan Addendum](PHONE_ONLY_COMPETITOR_SCAN_ADDENDUM_20261028.md) with current primary-source claims for Pyodios, AndroidHarness, PhoneCode and Pairlet, and added Mobile Harness from F-Droid as a newly surfaced Android-local alternative.
+- Material update: Pairlet's current repository advertises v1.9.4 and six agent backends, but remains host-dependent; its published security page says the custom encrypted channel has not received an independent audit. Encryption does not establish sandboxing.
+- Pyodios remains a strong iOS-local comparator for the fixed standard-library task; its own FAQ documents startup initialization, a roughly 300 MB Python memory budget, and session reset between launches. These are source claims, not independent measurements.
+- AndroidHarness, PhoneCode and Mobile Harness make a generic “AI coding on a phone without a PC” promise less differentiated. The hypothesis must instead show task-specific value in setup friction, truthful execution evidence, portable reports, continuity, or safety.
+- No app was installed, no fixed-task run was performed, no timing/correctness scores were recorded, and no market/user validation occurred. All such fields remain NOT RUN.
+
+**Next pass:** re-verify the exact research branch and PR boundaries, then prepare a compact decision-ready summary of what is settled, what remains unknown, and which next tasks can be done without owner action. Do not create another master document or ask for broad approvals prematurely.
