@@ -98,13 +98,14 @@ This schedule is a sequence of evidence gates, not a promise of PC availability 
 
 ## 6. Immediate next queue
 
-1. **Finish the structure verification pass.** Recheck links and headings for the newly changed Product Spec, Architecture, Project Status, README, Hub, Plan, Handoff and Checkpoint. Confirm the remote-runtime contradiction is gone from authoritative summaries and do not claim external URLs are live unless checked.
-2. **Continue the contract trace.** Follow NET-BARRIER-01/NET-SEM-01 from the PR #3 proposal and matrix to concrete code/test expectations, then document the exact missing proof.
-3. **Close the product decision pack.** Reuse existing competitor/user evidence; update the existing hypothesis card/matrix only if the evidence changes a conclusion. State the best counter-evidence and falsification criterion.
-4. **Review mobile UX from source.** Identify task-based problems in the static prototype and verify all sample states remain visibly simulated. Do not dispatch Pages/Actions to check it.
-5. **Prepare PC-return readiness.** Keep exact refs, offline-only tests, expected fixtures, and provider/security approvals separate. Do not start a provider account or live run.
+**Completed in this pass:** scoped structure/link verification; exact-ref policy-barrier and disposition source trace; static prototype review; adversarial desk-review of the product hypothesis. Their results are recorded above and in the linked specialist docs. Do not repeat them unless source refs change.
 
-No owner action is required to finish the static review. Ask only when a specific task truly requires a phone observation, independent reviewer response or an explicit cost/safety decision.
+1. **Build the PC-return evidence runbook from existing sources.** Crosswalk the fixed-task worksheet, Director evaluation kit, prototype checker/tests, PR #2/PR #3 source refs and offline acceptance matrix into a dependency-ordered checklist. For each item state command/input, expected evidence, what it proves, what it does not prove, stop condition, and whether it requires a real PC, a user phone action, or explicit owner authorization. Do not run Actions or provider tests.
+2. **Create a compact contract-to-test traceability map in the existing audit.** Map each high-risk invariant to exact helper/test evidence and label as source-covered, missing from reviewed source, NOT RUN, or provider-only. Prioritize policy revision before start, EXIT_NONZERO plus gate failures, artifact release, cleanup reconciliation/report versioning and terminal-event ordering. Avoid another master document.
+3. **Prepare the next independent-review request.** One bounded question for Gemini/Claude: challenge the falsification criteria and whether the proposed portable evidence/continuity layer is meaningfully distinct from existing local-first alternatives. Ask for cited source refs and counterexamples, not broad new research. Do not treat silence as approval.
+4. **Only after evidence changes the direction, consider implementation.** The status-color mismatch in the simulated prototype is a small documented polish issue; leave code untouched during this research/continuity pass. Any implementation change must be explicitly authorized and must preserve the simulation labels.
+
+No owner action is required for the documentation-only queue. Ask only when a specific task truly requires a phone observation, independent reviewer response or an explicit cost/safety decision.
 
 ## 7. Canonical links for the next chat
 
