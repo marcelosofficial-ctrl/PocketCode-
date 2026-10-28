@@ -94,6 +94,12 @@ All are **NOT RUN** until implemented in a named harness with recorded evidence.
 | AEC-011 | Share/paste unavailable | Keep packet selectable and explain manual alternative |
 | AEC-012 | User changes chosen profile | Rebuild packet for selected profile and keep the intent clear |
 
+## 8A. Compact prompt and evaluation protocol
+
+To prevent the coach itself from wasting context, use the shorter [AI Work Coach compact prompt and zero-cost evaluation protocol](https://github.com/marcelosofficial-ctrl/DevRelay-Missions/blob/review/revdev-adaptive-ai-workshare-2026-10-27/resume/revdev/AI_WORK_COACH_ABLATION_AND_COMPACT_PROMPT_V0_1.md). It defines an A/B/C comparison (no coach vs compact kernel vs kernel plus selected profile), 18 synthetic acceptance cases, and an evidence-led metric set. It explicitly marks all tests NOT RUN until a real harness records results.
+
+Use progressive disclosure: do not resend a large permanent prompt every turn if the host retains instructions; append only the selected profile and task-specific evidence. Do not claim a token saving until comparable runs at equal task scope show it.
+
 ## 9. Measures of success
 
 Compare the coach with a baseline on fixed tasks. Record: task requirements completed; real checks and outcomes; scope completeness; retry/rework count; model turns/tool calls where visible; exact tokens/cost only if authoritative; estimated values separately; elapsed time; user interventions; safety misses; and whether a fresh session can resume from the checkpoint. A shorter output that misses requirements is a regression.
