@@ -282,3 +282,8 @@ Minimum receipt fields to evaluate—not an implementation commitment:
 - If the receipt improves correction but adds material steps, record both effects and ask whether users value the tradeoff.
 - If existing native evidence is equally useful and portable enough, prefer the simpler existing workflow or an interoperable small utility over a separate execution product.
 - The task remains NOT RUN until the same approved procedure is actually exercised on a real alternative.
+
+
+### Contract-alignment clarification — 2026-10-28
+
+The portable-receipt candidate is an evaluation condition, **not a second report schema**. Map its fields to the existing proposed [execution contract](../PRODUCT/EXECUTION_CONTRACT.md) and [execution-loop acceptance criteria](../PRODUCT/EXECUTION_LOOP_ACCEPTANCE.md) before any implementation discussion. Those documents already call for lifecycle status, exit code only when known, runtime/version, duration when known, bounded stdout/stderr with truncation, output-file metadata, and explicit missing evidence; acceptance also separates PASS/FAIL/INCOMPLETE from exact lifecycle status and distinguishes script-reported checks from independently verified facts. Record any missing field as unknown/unavailable, not as a reason to silently invent a parallel contract.
