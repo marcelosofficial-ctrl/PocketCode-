@@ -178,3 +178,10 @@ Sources, qualifications, and the revised falsification questions are recorded in
 **Revised hypothesis only:** test whether a portable, execution-location-neutral receipt that binds evidence to a particular run/input/source/artifact and explicitly represents unknown evidence improves a separate AI's next correction or cross-tool portability beyond competitors' native logs/reports and raw-error copy/paste. This is not a demonstrated gap.
 
 **Next bounded task:** update the fixed-task worksheet's report-layer comparison criteria to compare each alternative's native evidence against the proposed receipt, including whether the separate AI correction actually improves. Keep every path NOT RUN until a real, approved attempt. Do not select an execution location, implement the receipt, or change PR #2/#3 on the basis of desk research alone.
+
+
+## 4C. Report-contract alignment check — 2026-10-28
+
+The new portable-receipt falsification protocol was cross-checked against the existing [proposed execution contract](../PRODUCT/EXECUTION_CONTRACT.md) and [execution-loop acceptance criteria](../PRODUCT/EXECUTION_LOOP_ACCEPTANCE.md). These already define the core report requirements: lifecycle status, exit evidence only when available, runtime/version and duration when known, bounded stdout/stderr with truncation, output-file metadata, and explicit missing evidence. Acceptance separates user-facing PASS/FAIL/INCOMPLETE from exact lifecycle status and keeps script-reported checks distinct from independently verified facts.
+
+**Constraint for future work:** do not create a competing report schema. Treat the existing proposed PocketCode report as the candidate format and compare it with each alternative's native report/logs and raw-error handoff. The research question is whether its provenance, unknown-state and cross-tool portability semantics improve the next correction enough to matter. This is a source consistency check only; no report implementation or task comparison was run.
