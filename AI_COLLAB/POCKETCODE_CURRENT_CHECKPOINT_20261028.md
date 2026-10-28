@@ -192,3 +192,14 @@ The new portable-receipt falsification protocol was cross-checked against the ex
 A closer read of [PRODUCT/EXECUTION_CONTRACT.md](../PRODUCT/EXECUTION_CONTRACT.md) confirms the proposed report currently calls for a run ID, runtime/version, final status, exit/duration when known, bounded stdout/stderr, output filenames/sizes, and explicit uncertainty. It does **not** explicitly require an input digest, source/script revision, or output-content digest.
 
 Do not silently treat those extra identifiers as already accepted. The fixed-task study may test whether run-to-input/source/artifact binding improves repeatability or the next AI correction; record its value and privacy/collection cost. If evidence supports adding it, propose a versioned change to the canonical contract. Otherwise keep the simpler report. No implementation or comparison has been run.
+
+
+## 4E. Pyodios direct-iPhone comparator — 2026-10-29
+
+Official source review confirms Pyodios is a stronger direct iPhone baseline than previously stated: its v1.1 docs describe local CPython 3.14.2/Pyodide 314.0.5, project working directories, script run controls, CSV and JSON preview, persistent real files, and import/export through the iOS Files/share sheet. A standard-library-only CSV-to-JSON task should not require installing a package (inference only; not run).
+
+Important caveat: Pyodios says a run can time out after 120 seconds while the code keeps executing in the background. The timeout message is therefore not proof of termination. The FAQ also describes a fresh Python session per app launch and about 300 MB of Python memory, with startup susceptible to memory pressure.
+
+The reviewed documentation does not establish whether Pyodios exposes a PocketCode-equivalent structured per-run report, authoritative exit code/terminal lifecycle status, bounded stdout/stderr with truncation metadata, or machine-readable timeout-but-still-running state. Mark these UNKNOWN / NOT DOCUMENTED until a hands-on attempt; do not treat silence in docs as proof of absence.
+
+**Next direct comparator:** Pyodios, then browser-local Pyodide only if an iPhone Safari file-import/export workflow is shown to be practical. Use fresh project folders for success and malformed-input cases, verify real output file and export, capture native evidence, and compare with the existing canonical report. All hands-on work remains NOT RUN; no app was installed and no product or report contract was changed.
