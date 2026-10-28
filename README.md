@@ -22,60 +22,58 @@ This is a product hypothesis, not a claim that these capabilities are already im
 
 The initial MVP candidate is a mobile-first web app with one remote runtime and a clear, verifiable run-and-inspect workflow. The scope will be narrowed through competitor research, user feedback, and technical testing.
 
-## Start here: continuity and the four-month plan
+## Start here — read in this order
 
-- [PocketCode Continuity Hub](AI_COLLAB/POCKETCODE_CONTINUITY_HUB_20261028.md) — read first for source-of-truth rules, branch map, AI roles, and current evidence boundaries.
-- [Four-month phone-only master plan](AI_COLLAB/FOUR_MONTH_PHONE_ONLY_MASTER_PLAN_20261028.md) — workstreams, monthly outcomes, safety gates, and future-feature priorities through February 2027.
-- [PC-return checklist draft](AI_COLLAB/PC_RETURN_CHECKLIST_DRAFT_20261028.md) — exact revisions, safe offline test sequence, evidence capture, and separately gated real execution.
+1. **[PocketCode Continuity Hub](AI_COLLAB/POCKETCODE_CONTINUITY_HUB_20261028.md)** — source-of-truth order, branch/PR map, evidence boundaries, and three-AI collaboration method.
+2. **[Four-month phone-only master plan](AI_COLLAB/FOUR_MONTH_PHONE_ONLY_MASTER_PLAN_20261028.md)** — month-by-month workstreams through February 2027, future-feature priorities, and decisions to defer.
+3. **[Current work checkpoint](AI_COLLAB/POCKETCODE_CURRENT_CHECKPOINT_20261028.md)** — latest pass results, status, open work, and exact next actions.
+4. **[PC-return checklist draft](AI_COLLAB/PC_RETURN_CHECKLIST_DRAFT_20261028.md)** — safe branch/blob verification and offline tests for when a PC becomes available; no live provider testing is authorized by this checklist.
 
-## AI Workflow Director research
+This is an isolated research branch. These documents do not mean the plan or research is integrated into `main`, and they do not authorize implementation, spending, merges, deployment, Actions, or provider workloads.
 
-The proposed AI Workflow Director aims to help users hand off compact tasks and preserve verified state across AI apps. It is a research proposal, not an implemented feature. It supports—rather than replaces—the core goal of trustworthy phone-based execution and evidence. The [current research checkpoint](AI_COLLAB/POCKETCODE_CURRENT_CHECKPOINT_20261028.md) records the active branch, verified boundaries, and next work sequence. The [deterministic conformance test specification](AI_COLLAB/AI_WORKFLOW_DIRECTOR_CONFORMANCE_TEST_SPEC_20261028.md) defines proposed assertions for all 16 static acceptance cases; no tests have been run. See the [master research](AI_COLLAB/MASTER_AI_WORKFLOW_DIRECTOR_RESEARCH_20261028.md), [first testable slice](AI_COLLAB/AI_WORKFLOW_DIRECTOR_MVP_SLICE_20261028.md), [offline evaluation kit](AI_COLLAB/AI_WORKFLOW_DIRECTOR_EVALUATION_KIT_20261028.md), [human-authored reference fixtures](AI_COLLAB/AI_WORKFLOW_DIRECTOR_REFERENCE_FIXTURES_20261028.md), and [phone-friendly paired-run sheet](AI_COLLAB/AI_WORKFLOW_DIRECTOR_MANUAL_RUN_SHEET_20261028.md). No evaluation runs or benchmark results are claimed.
+## Product and execution contracts
 
-## Project documents
+- [Product specification](PRODUCT_SPEC.md) — target-user hypothesis, core workflow, MVP candidate, open decisions.
+- [Project status](PROJECT_STATUS.md) and [roadmap](ROADMAP.md) — current phase and evidence-based exit gates.
+- [Execution contract](PRODUCT/EXECUTION_CONTRACT.md) — proposed request/result/report lifecycle; not an implemented API.
+- [Execution-loop acceptance criteria](PRODUCT/EXECUTION_LOOP_ACCEPTANCE.md) — evidence required for a useful end-to-end proof; not yet implemented or run.
+- [Security requirements](SECURITY.md) — gates that must be satisfied before any public user-code execution.
+- [Architecture proposal](ARCHITECTURE.md) and [decision log](DECISIONS.md) — proposed system boundaries and recorded decisions.
+- [Zero-budget work plan](PRODUCT/ZERO_BUDGET_WORK_PLAN.md) and [controlled Python proof runbook](PRODUCT/CONTROLLED_PYTHON_PROOF_RUNBOOK.md) — cost limits and future proof steps; the runbook is not executed.
+- [Mobile technical task map](PRODUCT/MOBILE_TECHNICAL_TASKS.md) and [first-run workflow](PRODUCT/FIRST_RUN_WORKFLOW.md) — wider opportunities and onboarding flow.
+- [RevDev + PocketCode shared-core proposal](PRODUCT/REVDEV_POCKETCODE_SHARED_CORE.md) — exploratory cross-project alignment only; the repositories and source-of-truth remain separate.
 
-- [Project status](PROJECT_STATUS.md)
-- [Zero-budget work plan](PRODUCT/ZERO_BUDGET_WORK_PLAN.md)
-- [Product specification](PRODUCT_SPEC.md)
-- [RevDev + PocketCode shared-core proposal](PRODUCT/REVDEV_POCKETCODE_SHARED_CORE.md)
-- [Mobile technical task opportunity map](PRODUCT/MOBILE_TECHNICAL_TASKS.md)
-- [First-run workflow](PRODUCT/FIRST_RUN_WORKFLOW.md)
-- [Execution loop acceptance criteria](PRODUCT/EXECUTION_LOOP_ACCEPTANCE.md) (proposed; not yet implemented or run)
-- [Desk research on mobile-coding user feedback](RESEARCH/MOBILE_CODING_USER_EVIDENCE.md)
-- [Optional user validation interview script (not yet conducted)](PRODUCT/USER_VALIDATION_SCRIPT.md)
-- [Controlled Python execution proof runbook (not yet executed)](PRODUCT/CONTROLLED_PYTHON_PROOF_RUNBOOK.md)
-- [Interactive mobile runner prototype source (simulated; no code execution)](prototypes/mobile-runner/index.html)
-- [How to enable and review the phone preview](prototypes/mobile-runner/README.md)
-- [Prototype static checker](scripts/check_mobile_prototype.py) and [its regression tests](scripts/test_check_mobile_prototype.py) (CI checks source patterns only; no browser execution or submitted-code execution)
-- [Proposed provider-neutral execution contract](PRODUCT/EXECUTION_CONTRACT.md)
-- [Roadmap](ROADMAP.md)
-- [Architecture proposal](ARCHITECTURE.md)
-- [Safety requirements](SECURITY.md)
-- [Decision log](DECISIONS.md)
-- [Cross-agent contributor instructions](AGENTS.md)
-- [Marketing and positioning hypothesis](MARKETING/POSITIONING_HYPOTHESIS.md)
-- [Gemini co-developer handoff](AI_COLLAB/GEMINI_HANDOFF.md)
-- [Master research and implementation plan](AI_COLLAB/MASTER_RESEARCH_IMPLEMENTATION_PLAN.md)
-- [Master AI Workflow Director research](AI_COLLAB/MASTER_AI_WORKFLOW_DIRECTOR_RESEARCH_20261028.md) (proposal; not implemented or validated)
-- [AI Workflow Director first testable feature slice](AI_COLLAB/AI_WORKFLOW_DIRECTOR_MVP_SLICE_20261028.md) (proposed profiles, packet/capsule contracts, and acceptance cases)
-- [AI Workflow Director offline evaluation kit](AI_COLLAB/AI_WORKFLOW_DIRECTOR_EVALUATION_KIT_20261028.md) (eight paired-test fixtures and scoring protocol; no results claimed)
-- [AI Workflow Director reference output fixtures](AI_COLLAB/AI_WORKFLOW_DIRECTOR_REFERENCE_FIXTURES_20261028.md) (human-authored scoring examples for five cases; not benchmark results)  
-- [AI Workflow Director canonical conformance fixtures](AI_COLLAB/AI_WORKFLOW_DIRECTOR_CANONICAL_FIXTURES_20261028.md) (16 proposed deterministic inputs and observable assertions; not executed)
-- [AI Workflow Director contract decision register](AI_COLLAB/AI_WORKFLOW_DIRECTOR_CONTRACT_DECISION_REGISTER_20261028.md) (MVP reconciliation, open decisions, and implementation gate; recommendations not approved)
-- [AI Workflow Director pre-implementation readiness audit](AI_COLLAB/AI_WORKFLOW_DIRECTOR_READINESS_AUDIT_20261028.md) (focused risk review; implementation still requires explicit authorization)
-- [AI Workflow Director bounded implementation plan](AI_COLLAB/AI_WORKFLOW_DIRECTOR_BOUNDED_IMPLEMENTATION_PLAN_20261028.md) (staged work packages, acceptance mapping, and evidence gates; not authorization)
-- [PocketCode Continuity Hub](AI_COLLAB/POCKETCODE_CONTINUITY_HUB_20261028.md) (read-first authority/branch map and AI collaboration method)
-- [Four-month phone-only master plan](AI_COLLAB/FOUR_MONTH_PHONE_ONLY_MASTER_PLAN_20261028.md) (dated workstreams and PC-return gates; plan only)
-- [Execution-contract cross-branch audit](AI_COLLAB/EXECUTION_CONTRACT_CROSS_BRANCH_AUDIT_20261028.md) (static main/PR #2/PR #3 comparison; no tests claimed)
-- [Phone-only competitor scan addendum](AI_COLLAB/PHONE_ONLY_COMPETITOR_SCAN_ADDENDUM_20261028.md) (2026-10-28 public-source delta; not a hands-on benchmark)
-- [Product hypothesis card](AI_COLLAB/PRODUCT_HYPOTHESIS_CARD_20261028.md) (provisional job, alternatives, falsification and evidence criteria)
-- [Fixed-task comparison worksheet](AI_COLLAB/PRODUCT_FIXED_TASK_COMPARISON_WORKSHEET_20261028.md) (synthetic CSV-to-JSON comparison; design only)
-- [Initial independent provider review](AI_COLLAB/CHATGPT_INITIAL_PROVIDER_REVIEW.md)
-- [MVP execution-provider decision brief](AI_COLLAB/MVP_DECISION_BRIEF.md)
-- [Independent review of Gemini's architecture proposal](AI_COLLAB/CHATGPT_REVIEW_OF_GEMINI_PLAN.md)
-- [Initial competitor research](RESEARCH/COMPETITOR_MATRIX.md)
-- [Competitive analysis and positioning hypotheses](RESEARCH/COMPETITIVE_ANALYSIS.md)
-- [Code execution backend research](RESEARCH/EXECUTION_PROVIDER_RESEARCH.md)
+## Current decision and research
+
+- **[Product hypothesis card](AI_COLLAB/PRODUCT_HYPOTHESIS_CARD_20261028.md)** — candidate job, alternatives, counter-hypotheses, and falsification criteria; not validated.
+- **[Fixed-task comparison worksheet](AI_COLLAB/PRODUCT_FIXED_TASK_COMPARISON_WORKSHEET_20261028.md)** — synthetic CSV-to-JSON task across local iOS, browser/WASM, remote-PC, hosted, and manual paths; design only, comparison NOT RUN.
+- **[Execution-contract cross-branch audit](AI_COLLAB/EXECUTION_CONTRACT_CROSS_BRANCH_AUDIT_20261028.md)** — static main/PR #2/PR #3 comparison and candidate verdict mapping; no tests run by this audit.
+- **[Phone-only competitor scan addendum](AI_COLLAB/PHONE_ONLY_COMPETITOR_SCAN_ADDENDUM_20261028.md)**, [competitor matrix](RESEARCH/COMPETITOR_MATRIX.md), and [competitive analysis](RESEARCH/COMPETITIVE_ANALYSIS.md) — source-based research, not hands-on performance/security tests.
+- [Mobile-coding user evidence](RESEARCH/MOBILE_CODING_USER_EVIDENCE.md) — preliminary public evidence, not representative research.
+- [Marketing and positioning hypothesis](MARKETING/POSITIONING_HYPOTHESIS.md), [optional interview script](PRODUCT/USER_VALIDATION_SCRIPT.md), and [provider research](RESEARCH/EXECUTION_PROVIDER_RESEARCH.md) — hypotheses and protocols, not validated demand or provider selection.
+- [Historical MVP decision brief](AI_COLLAB/MVP_DECISION_BRIEF.md) — dated hosted-provider comparison from 2026-10-20. It is not a provider selection; local execution must be compared before a remote provider is assumed.
+
+## AI collaboration and workstreams
+
+- Read [AGENTS.md](AGENTS.md) before changing files; [CLAUDE.md](CLAUDE.md) and [GEMINI.md](GEMINI.md) contain role-specific guidance.
+- [Master research/implementation plan](AI_COLLAB/MASTER_RESEARCH_IMPLEMENTATION_PLAN.md), [Gemini handoff](AI_COLLAB/GEMINI_HANDOFF.md), [initial independent provider review](AI_COLLAB/CHATGPT_INITIAL_PROVIDER_REVIEW.md), and [independent architecture review](AI_COLLAB/CHATGPT_REVIEW_OF_GEMINI_PLAN.md) provide earlier research context.
+- [PR #2](https://github.com/marcelosofficial-ctrl/PocketCode-/pull/2) is the report-contract regression stream; [PR #3](https://github.com/marcelosofficial-ctrl/PocketCode-/pull/3) is the evidence/lifecycle research stream. Both were open, draft, and unmerged at the last metadata check. Do not mix their commits or assume their work is integrated.
+
+### Supporting proposal: AI Workflow Director
+
+The Director explores compact prompts, profiles, and continuation capsules to improve work across AI assistants. It is secondary to PocketCode's core run/inspect/report/iterate hypothesis and remains unimplemented. All AWD conformance fixtures remain NOT RUN.
+
+- [Director master research](AI_COLLAB/MASTER_AI_WORKFLOW_DIRECTOR_RESEARCH_20261028.md) and [first testable feature slice](AI_COLLAB/AI_WORKFLOW_DIRECTOR_MVP_SLICE_20261028.md).
+- [Contract decision register](AI_COLLAB/AI_WORKFLOW_DIRECTOR_CONTRACT_DECISION_REGISTER_20261028.md) — D-01–D-08 are recommendations, not owner-approved decisions.
+- [Conformance specification](AI_COLLAB/AI_WORKFLOW_DIRECTOR_CONFORMANCE_TEST_SPEC_20261028.md) and [canonical fixtures](AI_COLLAB/AI_WORKFLOW_DIRECTOR_CANONICAL_FIXTURES_20261028.md) — 16 proposed cases, not implementation or passing tests.
+- [Readiness audit](AI_COLLAB/AI_WORKFLOW_DIRECTOR_READINESS_AUDIT_20261028.md) and [bounded implementation plan](AI_COLLAB/AI_WORKFLOW_DIRECTOR_BOUNDED_IMPLEMENTATION_PLAN_20261028.md) — planning only; implementation requires explicit authorization.
+- [Offline evaluation kit](AI_COLLAB/AI_WORKFLOW_DIRECTOR_EVALUATION_KIT_20261028.md), [manual run sheet](AI_COLLAB/AI_WORKFLOW_DIRECTOR_MANUAL_RUN_SHEET_20261028.md), and [reference output fixtures](AI_COLLAB/AI_WORKFLOW_DIRECTOR_REFERENCE_FIXTURES_20261028.md) — protocols and human-authored examples only; no benchmark runs are claimed.
+
+## Prototype and test limitations
+
+- [Mobile runner prototype source](prototypes/mobile-runner/index.html) and [preview instructions](prototypes/mobile-runner/README.md). The preview is static/simulated; it does not execute submitted code.
+- [Prototype source checker](scripts/check_mobile_prototype.py) and [its tests](scripts/test_check_mobile_prototype.py) validate source patterns only. They do not prove browser interaction, execution isolation, provider security, or billing behavior.
+- [PC-return checklist](AI_COLLAB/PC_RETURN_CHECKLIST_DRAFT_20261028.md) describes the proposed safe first-session checks. No tests are claimed to have run as part of this documentation pass.
 
 ## Principles
 
