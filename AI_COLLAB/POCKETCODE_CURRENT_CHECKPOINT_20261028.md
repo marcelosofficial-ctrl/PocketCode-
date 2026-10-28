@@ -201,3 +201,13 @@ Re-read the existing worksheet. It already has a useful fair-comparison protocol
 The review covered 141 relative Markdown links; zero pointed to a file path absent from the branch tree. Fetches and file-tree comparison are not application tests. Some heading anchors and all external destinations remain outside this pass.
 
 **Next work:** review exact acceptance/provenance semantics across the report lifecycle and Director boundary; do not expand the document set merely to inflate coverage. Then check PR state and update this checkpoint with the next material finding. No PR was edited, no tests were run, and no implementation is authorized by this result.
+
+## Follow-up pass: report/lifecycle integration seam and PR boundary recheck (2026-10-28)
+
+- Expanded the execution-contract audit with exact source and test blob IDs from `main`, PR #2, and PR #3. See [Execution Contract Cross-Branch Audit](EXECUTION_CONTRACT_CROSS_BRANCH_AUDIT_20261028.md), section “Follow-up evidence: acceptance tests clarify the integration seam.”
+- Refined finding: PR #2's formatter is a presentation helper, so its narrow status/exit-code classification is not by itself proof of a defect. The risk is a caller bypassing the PR #3-style trusted disposition derivation. The intended sequence is authoritative observations → versioned disposition derivation → report formatting. Execution outcome and job disposition are separate axes.
+- PR #3's lifecycle tests include assertions for cleanup, policy, termination, artifact validity and tenant/job authorization gates; PR #2's report tests cover lifecycle states, missing/invalid exit codes, simulated reports and bounded output. These are source-level test definitions only; no tests were executed in this pass.
+- Rechecked GitHub PR metadata through the API: PR #2 remains open/draft, head `chat-continuity-report-regressions-2026-10-26`, head SHA `eb8b7ea83cb0e8fe1880351276c485b761431791`; PR #3 remains open/draft, head `pocketcode-pass0-audit-2026-10-26`, head SHA `0ddcc0bc97bac5d446aefedf3d71f99411bd841d`. Neither PR was changed.
+- The isolated research branch now compares as 140 commits ahead of `main`, zero behind, before this checkpoint entry. Recheck after the commit below for the resulting exact count.
+
+**Next pass:** define a minimal versioned vocabulary/projection table as a proposal inside the existing audit, then audit the product fixed-task protocol and the external-source evidence boundary. Do not merge, change either PR, run provider workloads, or imply any code/test execution.
