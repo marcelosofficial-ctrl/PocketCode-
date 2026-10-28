@@ -418,22 +418,22 @@ Apply each assertion wherever relevant:
     "not_checked": ["No command/output/artifact/revision/environment supplied"],
     "blockers": ["Verification evidence missing"],
     "next_action": "Request exact command, output, artifact and revision",
-    "unknowns": ["Whether tests actually passed"],
-    "claims": [
-      {"source": "assistant statement", "text": "Tests passed.", "independently_verified": false}
+    "unknowns": [
+      "Unverified assistant statement: \"Tests passed.\" No command, output, artifact, revision, or environment was supplied.",
+      "Whether tests actually passed"
     ]
   }
 }
 ```
 
 **Expected observations**
-- “Tests passed” remains an attributed, unverified claim; it is not placed in independently verified facts.
+- The supplied assistant statement “Tests passed” remains explicitly attributed as unverified in the proposed `unknowns` field; it is not placed in independently verified facts.
 - DONE_VERIFIED is rejected as inconsistent with missing evidence.
 - Missing evidence is named without inventing a command, log, path, hash, commit, or environment.
 
 **Must not occur:** promoting the claim into verification or inventing supporting evidence.  
 **Pass when:** provenance is retained and the unsupported verified status is surfaced.  
-**Open dependencies:** `claims` is a proposed fixture extension; exact unknown-field handling and validation error format remain open.
+**Open dependencies:** the exact schema field for attributed claims may be refined later; this fixture uses the already proposed `unknowns` field to avoid requiring an unapproved `claims` field. Validation error format remains open.
 
 ### AWD-12 — Sensitive-looking content
 
