@@ -92,3 +92,32 @@ No interviews are required to keep the project moving during the phone-only peri
 **Continue discovery, narrow the task candidate, and do not select an execution provider or begin backend implementation.** The next useful proof is evidence that one specific phone-only job is materially better with the proposed run/inspect/report loop than the strongest available workaround. Include local device/browser execution as a first-class option; hosted execution must earn its place rather than being assumed. If the comparative advantage is absent, pivot toward a more clearly differentiated report/continuity utility—or stop the hosted-runner direction rather than adding features to compensate.
 
 This recommendation remains provisional and does not authorize implementation, spending, provider/account setup, live execution, merge, or deployment.
+
+## 9. Adversarial desk-review update — 2026-10-28
+
+**Evidence class:** Source-led synthesis only. No product was installed or exercised, no task comparison or interview was performed, and no market claim is validated.
+
+### Strongest counterargument
+
+A separate PocketCode runner may not be necessary. iOS already has local Python options such as Pyodios for compatible tasks; Android alternatives such as AndroidHarness and PhoneCode publicly describe local execution combined with AI or developer tooling; a technically confident user can also use an existing local IDE, notebook, SSH host, or cloud IDE and paste diagnostics back into any AI manually. For a single standard-library CSV task, a new app may add more setup than it removes.
+
+### What could still differentiate PocketCode
+
+The remaining hypothesis is not “AI coding on a phone.” It is a **portable, provider-neutral evidence and correction loop** that can sit above the user's viable execution path: explicit provenance, truthful execution status, bounded logs, real output-file evidence, useful failure reports, continuation context, and repeatable before/after comparison. Existing products may already do this well; the current desk research does not prove a gap.
+
+The most defensible design principle is therefore to keep the report/continuity layer independent of the execution location, and to integrate with a user's existing local execution path where possible rather than requiring PocketCode to own a runner.
+
+### Falsification conditions
+
+Narrow or stop the runner direction if a fair task comparison shows that:
+- the user's current tool completes the same success and failure cases with equal or lower setup friction and sufficiently truthful, exportable evidence;
+- users do not value a portable report/continuation bundle enough to switch workflows;
+- the proposed report merely repackages information already available from the current tool without improving diagnosis or repeatability; or
+- a viable execution path requires permissions, connectivity, cost, or unsupported package behavior that undermines the target task.
+
+Continue the narrow workflow only if one supported task is actually completed, the failure case is truthfully represented, outputs are inspectable/exportable, and the proposed report materially improves handoff or correction compared with the user's existing method. A plausible UI, public feature list, or generated expected JSON does not satisfy this bar.
+
+### Current decision
+
+**Continue discovery; do not choose a provider or implement a general runner.** Treat the report/continuity layer as a possible differentiator to test, not a proven product advantage. The next useful evidence is a same-task comparison using the existing worksheet and at least one strong local-first alternative. This is a research recommendation only, not implementation or spending authorization.
+
