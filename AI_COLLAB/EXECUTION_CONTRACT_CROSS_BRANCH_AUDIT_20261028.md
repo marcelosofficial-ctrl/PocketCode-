@@ -235,3 +235,37 @@ These are proposed acceptance requirements only. No source code changed on PR #2
 7. Names and mappings (`FAILED` vs `program_failed`; `PROVIDER_ERROR` vs `infrastructure_failed`; UI `FAIL` vs `INCOMPLETE`) require owner/reviewer approval before the external schema is frozen.
 
 **Recommended next review:** have Claude and Gemini independently challenge this mapping against the exact PR #2 and PR #3 branches. Only after review should an authorized integration task change authoritative contracts or tests. No code or tests were changed/run by adding this proposal.
+
+## Static reviewer challenge: disposition ordering and gate semantics (2026-10-28)
+
+**Exact PR #3 helper reviewed:** scripts/lifecycle_contract.py, blob ba8d4d0b217c90513bed020e298029ef4e16f164, function derive_disposition. **PR #2 formatter reviewed:** scripts/report_contract.py, blob e9d944a722c2fac5279952696528da72a7011af3, function classify_verdict. This is static source inspection only; neither helper nor tests were executed in this pass.
+
+### Confirmed ordering behavior
+
+The PR #3 helper checks contradictory evidence first, then NOT_STARTED, limit conditions, UNKNOWN, timeout/cancellation termination, and then EXIT_NONZERO. The EXIT_NONZERO branch returns FAILED **before** checking cleanup_state, policy_confirmed, termination_confirmed, artifacts_valid, or tenant_job_authorized. Those four booleans plus confirmed cleanup are checked only on the EXIT_ZERO path.
+
+This is not automatically a defect: preserving a confirmed nonzero process observation is important, and artifact release can remain separately blocked. But it leaves a material contract question because the function calls its output a **job disposition**, while a nonzero exit alone does not establish that the job was authorized, that the required policy was applied, or that lifecycle evidence is complete.
+
+### Required clarification before calling the projection settled
+
+Keep the two axes explicit:
+
+- execution_outcome=EXIT_NONZERO can preserve the observed process failure even when another gate is uncertain.
+- The canonical job-level conclusion must state whether FAILED is intentionally allowed when policy/authorization/cleanup gates are missing, or whether those cases require INCOMPLETE (with the observed nonzero exit retained separately).
+- Artifact release/visibility must be a separate fail-closed decision; FAILED must never implicitly authorize artifacts.
+- A NOT_STARTED value must be backed by authoritative pre-start evidence, not merely a caller-supplied enum. The pure helper's signature cannot itself establish that provenance; this is a caller/contract precondition unless the API is redesigned.
+- A boolean such as policy_confirmed=True is not enough for a real provider boundary unless it is bound to the exact required policy revision and confirmed before start. The PR #3 applied-policy/ETag barrier remains an integration evidence requirement, not something this pure helper proves.
+
+### Minimal reviewer matrix to add before integration
+
+| Synthetic observation | Preserve execution outcome | Candidate job disposition question | Artifact release |
+|---|---|---|---|
+| EXIT_NONZERO, all mandatory gates confirmed | EXIT_NONZERO | FAILED / FAIL is appropriate if failure is attributable to the program | Only if artifact policy independently allows release |
+| EXIT_NONZERO, cleanup unknown | EXIT_NONZERO | Decide whether overall disposition is FAILED plus cleanup warning, or INCOMPLETE with failure observation retained | Deny until cleanup/integrity/authorization requirements pass |
+| EXIT_NONZERO, required policy not confirmed or tenant/job authorization false | EXIT_NONZERO if trustworthy evidence exists | Do not silently treat a process exit as proof the job was validly authorized; explicit disposition rule required | Deny |
+| EXIT_ZERO, any required gate missing/stale/false | EXIT_ZERO | INCOMPLETE, not PASS | Deny |
+| Any outcome with contradictory evidence | Preserve individual observations and conflict | INCOMPLETE (or a separately approved conflict disposition), never PASS | Deny |
+| NOT_STARTED without authoritative pre-start evidence | UNKNOWN / unresolved, not a trusted rejection | INCOMPLETE or provider error until reconciled | Deny |
+
+**Reviewer conclusion:** the current advisory projection is directionally conservative, but it is not yet precise enough to freeze the FAILED vs INCOMPLETE rule when nonzero exit coexists with a failed or unconfirmed security/lifecycle gate. Do not modify PR #2 or PR #3 as part of this documentation pass. Ask Claude and Gemini for independent opinions on this exact question before integration approval; no owner decision is inferred.
+
