@@ -88,3 +88,12 @@ See the [dated source review and revised test questions](../AI_COLLAB/PHONE_ONLY
 ## Platform-fit caveat for the fixed-task study — 2026-10-28
 
 Separate **direct task substitutes** from **adjacent market competitors**. For the current iPhone-only scenario, the most relevant first comparison is ordinary copy/paste versus Pyodios on a compatible iOS 26+ device and browser-local Pyodide/WASM if file I/O is practical. AndroidHarness, PhoneCode and Atlan are important market-positioning counterexamples but their Android product descriptions do not make them direct iPhone execution paths. Pairlet has an iOS client but depends on a separate computer running its daemon, so it belongs in a host-available scenario rather than the no-PC scenario. Hosted IDEs require current account/plan/mobile-flow verification before scoring. All hands-on comparisons remain NOT RUN.
+
+
+## Additional direct iPhone local-execution alternatives — 2026-10-29
+
+- **Carnets** is listed as a free standalone offline Jupyter/Python app for iPhone/iPad with many bundled packages. Its listed size is large (1.5 GB for the standard app; 2.2 GB for the scipy variant), a practical phone-storage cost to measure.
+- **Juno** documents local/offline Python, projects, scripts, notebooks, file management and Shortcuts, but says code execution is free to try and then requires a one-time Pro purchase. Treat as trial-only under the strict $0 constraint unless current terms demonstrate otherwise.
+- **Pyroid** describes local/offline CPython and file/project workflows, but its listing limits free execution to five runs before paid Pro. Treat as limited-trial, not sustained $0 execution.
+
+Sources: [Carnets App Store listing](https://apps.apple.com/us/app/carnets-jupyter/id1450994949), [Carnets developer project](https://holzschu.github.io/Carnets_Jupyter/), [Juno App Store listing](https://apps.apple.com/us/app/python-ide-jupyter-juno/id1462586500), [Pyroid App Store listing](https://apps.apple.com/us/app/pyroid/id6758005480). These are product descriptions, not hands-on verification. For the fixed task, compare ordinary chat/copy-paste, Pyodios and Carnets first if approved; all hands-on comparisons remain NOT RUN.
