@@ -206,3 +206,18 @@ Cross-checking the canonical [execution contract](../PRODUCT/EXECUTION_CONTRACT.
 - For the current stateless execution proof, the next safe work is a traceability clarification: link `CASE-13` to the existing idempotency contract and verify its assertions cover “same key after response loss returns the same run reference / queries authoritative state; never launches a second run; if state cannot be established, stays INCOMPLETE.” This is a **proposed assertion-strengthening recommendation**, not a claim that the checked-in implementation/test already satisfies it. Any change to canonical contract/tests still needs explicit implementation authorization.
 
 Thus the immediate decision is **REUSE existing CASE-13 and DEFER external side-effect receipt-loss testing**. Wrapper-versus-child provenance also remains conditional on a concrete adapter with separate process layers; stale-revision CAS remains out of scope unless workspace writes are selected.
+
+
+## CASE-13 traceability result — reuse existing acceptance ID; expose a mapping gap
+
+Static review of the exact checked-in sources confirms that CASE-13 already states the right high-level invariant, but the lower-level mapping is incomplete:
+
+- Canonical acceptance source: `PRODUCT/EXECUTION_LOOP_ACCEPTANCE.md`, blob `c6714c27db52b2962fe8d1c7e6a16829d46a8338`, CASE-13 at line 64: retry after ambiguous network response; prevent duplicate execution where supported; unknown execution state stays unknown.
+- Canonical execution contract: `PRODUCT/EXECUTION_CONTRACT.md`, blob `3861e51ae4f9e45a263b677402f26c41b240959d`, idempotency/retries section requires same user/key not to create multiple billable runs, changed body to conflict, unknown provider result not to become success, and explicit retry policy.
+- PR #3 offline matrix: blob `3a9b214a9ccde9f3abad8dba2d7f14d6c97632ad`, contains IDEM-01/02 and IDEM-SEM-01..04 for key/fingerprint/tenant replay, but no explicit CASE-13 cross-reference or dedicated ambiguous-response assertion was found in the reviewed matrix.
+- PR #3 helper/test pair: `scripts/lifecycle_contract.py` blob `ba8d4d0b217c90513bed020e298029ef4e16f164`; `scripts/test_lifecycle_contract.py` blob `39db87d9f44f5e8474f33cff60136e529364199a`. `reserve_idempotency` stores `(tenant, key) -> (fingerprint, job_id)` and returns the existing job ID for matching replay; the tests verify replay/conflict/tenant scope and a deterministic serial-order batch model. This is not a durable job-state lookup, receipt recovery protocol, or real concurrency primitive.
+- PR #2 report formatter/test pair only formats supplied result metadata; it does not implement run lookup or idempotent dispatch.
+
+**Result:** no reason to add a new acceptance ID. There is a real **traceability/semantic precision gap** between the high-level CASE-13 and the helper's key reservation tests: same-key replay returning an old job ID is necessary but does not by itself prove that the UI/API can recover authoritative current state after the original response is lost.
+
+**Minimal recommended disposition:** retain CASE-13 and IDEM IDs. In the existing traceability/checklist when implementation work is authorized, map CASE-13 to (a) tenant-scoped same-key/same-fingerprint replay, (b) authoritative lookup of the existing run, (c) no second dispatch, and (d) INCOMPLETE when current terminal state cannot be established. A synthetic fake-adapter test can assert call order and zero additional dispatches; durable storage, atomicity, and real provider recovery remain separate implementation-level evidence. This note does not edit the protected PR #2/#3 branches and does not claim the exact tests were run.
