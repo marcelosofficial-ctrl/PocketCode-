@@ -6,9 +6,9 @@
 
 ## 1. Read these first, in order
 
-1. [PocketCode Continuity Hub](POCKETCODE_CONTINUITY_HUB_20261028.md) — repository/branch map, source-of-truth rules, three-AI workflow, and evidence boundaries.
-2. [Four-Month Phone-Only Master Plan](FOUR_MONTH_PHONE_ONLY_MASTER_PLAN_20261028.md) — the operating plan through 2027-02-28.
-3. [Current Checkpoint](POCKETCODE_CURRENT_CHECKPOINT_20261028.md) — what the Director research has already done and the current queue.
+1. [PocketCode Continuity Hub](POCKETCODE_CONTINUITY_HUB_20261028.md) — concise navigation and source-of-truth map.
+2. [Current Checkpoint](POCKETCODE_CURRENT_CHECKPOINT_20261028.md) — latest verified status and next bounded task; treat this as the operational queue.
+3. [Four-Month Phone-Only Master Plan](FOUR_MONTH_PHONE_ONLY_MASTER_PLAN_20261028.md) — dated operating plan and ordered gates through 2027-02-28.
 4. [Cross-Branch Execution-Contract Audit](EXECUTION_CONTRACT_CROSS_BRANCH_AUDIT_20261028.md) — exact-ref comparison of main, PR #2, and PR #3 contract concepts; its verdict mapping is advisory.
 5. [Product Hypothesis Card](PRODUCT_HYPOTHESIS_CARD_20261028.md) — the product problem hypothesis, strongest alternatives, and falsification criteria.
 6. [Fixed-Task Comparison Worksheet](PRODUCT_FIXED_TASK_COMPARISON_WORKSHEET_20261028.md) — one synthetic CSV-to-JSON task and success/failure evidence sheet; design only, not executed.
@@ -105,14 +105,14 @@ Use evidence labels precisely: `VERIFIED_PRIMARY_SOURCE`, `SECONDARY_SOURCE`, `I
 
 ## 9. Exact next pass for the new chat
 
-**Do this first, before expanding scope:**
+1. Re-fetch the current research branch head, main SHA and PR #2/#3 metadata. Counts and SHAs in this handoff are snapshots; re-check before consequential actions.
+2. Continue the exact-ref contract review: PR #3's draft specifies NET-BARRIER-01 / NET-SEM-01 policy-revision checks, but the reviewed pure helper only receives a boolean policy confirmation. Trace that requirement to a concrete coordinator/adapter seam and test design; do not claim a runtime defect or passing control from source review alone.
+3. Clarify EXIT_NONZERO combined with unknown/failed cleanup or authorization. Keep process outcome, job disposition and artifact-release eligibility separate. Artifact release remains fail-closed; do not change PR #2/#3.
+4. Keep the fixed-task worksheet as a protocol, not completed evidence. Hands-on comparisons remain NOT RUN until a concrete attempt is selected and recorded.
+5. Follow the ordered work packages in the four-month plan. Update the existing checkpoint after material progress; do not create another master plan or repeat completed link audits.
+6. By the end of Month 1, make the product hypothesis and strongest alternatives decision-ready without selecting a provider/name/architecture prematurely.
 
-1. Verify the current branch head, compare it with main, and recheck PR #2/#3 states and head SHAs. Do not change them.
-2. Read the current cross-branch audit and fixed-task worksheet. Reconcile the advisory PASS/FAIL/INCOMPLETE projection with the detailed outcome/cleanup/disposition model; identify only genuine contradictions, and keep proposals unapproved.
-3. Run a **scoped static documentation audit** on the research branch: links among the new handoff/hub/checkpoint/plan/hypothesis/worksheet/audit docs; balanced Markdown fences; correct “NOT RUN” labels; no text implying the new branch is main or a simulated result is real. Do not trigger Actions or deployment.
-4. Update the checkpoint and this handoff only if facts materially change. Do not create another master plan.
-5. Then prepare a short decision note: (a) what can be concluded from desk research, (b) what requires a hands-on phone observation, (c) what requires PC/provider access, and (d) which future feature ideas should be deferred. Stop before implementation or provider execution.
-6. End with the next bounded pass and any genuinely required owner action. No need to ask the owner for a broad project decision before completing the static audit.
+Owner action is needed only when a future step genuinely requires a phone observation, another AI's independent review, or explicit cost/safety approval.
 
 ## 10. Future features to keep visible, not add automatically
 
