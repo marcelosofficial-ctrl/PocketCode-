@@ -94,6 +94,32 @@ Score each path on: setup/friction, correctness, truthful status/error, input/ou
 
 Safety/correctness disqualifiers override a high convenience score. A simulated result can inform layout but scores U for real execution and evidence.
 
+## 5A. Cross-path synthesis sheet (fill only after individual attempts)
+
+This is a **blank synthesis template**, not a ranking. Keep each scenario separate until both success and malformed-input records exist. Copy one row per path; leave unknowns as `U` and explain the evidence. Never turn a source claim into a direct observation.
+
+| Path / exact version | Success scenario | Malformed-input scenario | Real file exported? | Trustworthy status / exit? | Report provenance useful? | Setup friction | Data location / network known? | Cost terms verified? | Disqualifier / strongest counter-evidence |
+|---|---|---|---|---|---|---|---|---|---|
+| AI chat + manual copy/paste | NOT RUN | NOT RUN | U | U | U | U | U | U | |
+| Local iOS Python app (name/version) | NOT RUN | NOT RUN | U | U | U | U | U | U | |
+| Browser-local Pyodide/WASM (exact browser/build) | NOT RUN | NOT RUN | U | U | U | U | U | U | |
+| Remote PC / agent (exact client + host conditions) | NOT RUN | NOT RUN | U | U | U | U | U | U | |
+| Hosted coding environment (exact plan/limits) | NOT RUN | NOT RUN | U | U | U | U | U | U | |
+| Other current workaround (name it) | NOT RUN | NOT RUN | U | U | U | U | U | U | |
+
+### Decision record — do not complete before evidence exists
+
+- **Best existing path for this exact task:** NOT DECIDED
+- **Evidence class:** NOT RUN
+- **Observed user/setup friction and conditions:** NOT RUN
+- **Did any path fail the correctness or failure-handling gate?** NOT RUN
+- **Did structured report evidence materially improve a separate AI's next correction versus raw error text?** NOT RUN
+- **Which result would falsify the PocketCode hypothesis?** Existing path is at least as easy for the target user, creates/verifies the required output and failure behavior, and provides sufficient evidence/handoff without a material unmet need.
+- **What remains unknown even if the task passes?** Representative user demand; security/isolation properties; broader package/runtime compatibility; long-run reliability; service economics; legal/name clearance.
+- **Recommendation:** CONTINUE DISCOVERY until evidence supports a narrower conclusion. Do not infer a product advantage from a blank template or one successful run.
+
+**Comparison integrity rules:** Do not average success and failure into one score; a success-case pass cannot compensate for a misleading malformed-input result. Do not rank a path when a critical correctness/evidence dimension is `U`. Compare only like-for-like task conditions, note any unavoidable differences, and report unavailable platforms as `NOT RUN` rather than as failures. A one-task result can eliminate a bad fit or justify another test; it cannot prove market demand or security.
+
 ## 6. Decision rules to consider before any hands-on comparison
 
 These are proposed rules to avoid deciding after seeing whichever result we prefer; they are not accepted product decisions.
