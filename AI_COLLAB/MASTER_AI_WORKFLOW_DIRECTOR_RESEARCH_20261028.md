@@ -3,6 +3,8 @@
 **Status:** Research synthesis and product proposal; not a frozen product/API decision or implementation.  
 **Purpose:** Establish one durable reference for a distinct PocketCode feature that helps different AI assistants work efficiently, preserve project continuity, conserve free-tier usage, and return useful results to the mobile coding workflow. This research extends—not replaces—the existing PocketCode product hypothesis and the separate RevDev project.
 
+**Overall project priority:** This is a supporting feature hypothesis, not the PocketCode master roadmap. Start with the [Continuity Hub](POCKETCODE_CONTINUITY_HUB_20261028.md) and [four-month phone-only master plan](FOUR_MONTH_PHONE_ONLY_MASTER_PLAN_20261028.md). The core product still has to validate a trustworthy run/inspect/report/iterate workflow. Recent research surfaced local iOS Python via [Pyodios](https://pyodios.caffeinatedmath.com/) and browser-local Pyodide/WASM as alternatives; the first workflow must not assume a hosted runner or provider before that comparison. No product choice is finalized.
+
 **Implementation-planning companion:** [AI Workflow Director — First Testable Feature Slice](AI_WORKFLOW_DIRECTOR_MVP_SLICE_20261028.md) defines the proposed four profiles, task-packet and continuation-capsule contracts, 16 static acceptance cases, and an evaluation protocol. It is still a proposal; no implementation or tests are claimed.
 
 **Manual evaluation companion:** [AI Workflow Director — Offline Evaluation Kit](AI_WORKFLOW_DIRECTOR_EVALUATION_KIT_20261028.md) supplies eight fixed task fixtures, paired baseline/Director instructions, a scoring rubric, and an evidence record. It is a test protocol only; no assistant runs or benchmark results are claimed.
