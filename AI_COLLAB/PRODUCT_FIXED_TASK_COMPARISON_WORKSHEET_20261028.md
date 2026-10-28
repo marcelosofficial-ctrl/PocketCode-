@@ -287,3 +287,8 @@ Minimum receipt fields to evaluate—not an implementation commitment:
 ### Contract-alignment clarification — 2026-10-28
 
 The portable-receipt candidate is an evaluation condition, **not a second report schema**. Map its fields to the existing proposed [execution contract](../PRODUCT/EXECUTION_CONTRACT.md) and [execution-loop acceptance criteria](../PRODUCT/EXECUTION_LOOP_ACCEPTANCE.md) before any implementation discussion. Those documents already call for lifecycle status, exit code only when known, runtime/version, duration when known, bounded stdout/stderr with truncation, output-file metadata, and explicit missing evidence; acceptance also separates PASS/FAIL/INCOMPLETE from exact lifecycle status and distinguishes script-reported checks from independently verified facts. Record any missing field as unknown/unavailable, not as a reason to silently invent a parallel contract.
+
+
+### Open contract question: run-to-input/source binding
+
+The existing proposed report includes a run ID, runtime/status, optional exit/duration, bounded output, and output filenames/sizes, but does not explicitly require an input digest, script/source revision, or artifact content digest. The portable-receipt test may examine whether any of these identifiers materially improve reproducibility and cross-tool debugging, but they are **not current contract requirements**. Record whether each alternative exposes such evidence, whether collecting it is privacy-safe and practical, and whether the separate AI correction actually benefits. Any proposed addition belongs in a future versioned review of the canonical report contract—not an undocumented parallel schema.
