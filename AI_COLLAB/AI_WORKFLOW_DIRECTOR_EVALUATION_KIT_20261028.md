@@ -5,6 +5,7 @@
 **Feature slice:** [First testable feature slice](AI_WORKFLOW_DIRECTOR_MVP_SLICE_20261028.md)  
 **Reference fixtures:** [Expected-output examples for EVAL-01, 02, 04, and 08](AI_WORKFLOW_DIRECTOR_REFERENCE_FIXTURES_20261028.md).
 **Phone-friendly run sheet:** [Exact paired prompts, task fixtures, and record form](AI_WORKFLOW_DIRECTOR_MANUAL_RUN_SHEET_20261028.md).
+**Current checkpoint:** [Current research state and next-pass plan](POCKETCODE_CURRENT_CHECKPOINT_20261028.md).
 
 ## 1. Why this kit exists
 
