@@ -169,3 +169,28 @@ These are **design proposals only**. Do not edit PR #2/#3 or the canonical contr
 - `REUSE-WRAP-01`, `REUSE-RECOVERY-01`, and `REUSE-STALE-01` are the three clearest genuinely new cross-boundary expectations. `REUSE-DIAG-01` is a refinement of existing diagnostic/report cases. Capability handling is primarily a coverage clarification of existing CAP cases.
 - Keep every case synthetic/offline until the relevant implementation and exact test environment are authorized. A fake adapter proves only the modeled decision/call ordering, not provider behavior, process termination, durable atomicity, or security isolation.
 - Do not change the canonical report schema merely to store these tests. Any need for separate wrapper/child observations should be reconciled against the existing three-layer model (execution outcome, cleanup/evidence gates, derived disposition) before proposing field names.
+
+
+## Correction after checking the existing offline matrix — 2026-10-29
+
+A deeper reread of the exact PR #3 matrix shows that the previous section's shorthand "missing coverage" needs more precise labels. Several neighboring requirements already exist as proposed synthetic cases. Do not duplicate them or describe a design case as implemented/verified.
+
+| Topic | Existing exact coverage in PR #3 matrix / contract | Corrected gap statement |
+|---|---|---|
+| Unsupported capabilities | `AI_COLLAB/OFFLINE_ACCEPTANCE_TEST_MATRIX.md` cases `CAP-01` and `CAP-02`; `AI_COLLAB/DRAFT_EXECUTION_CONTRACT.md` adapter contract explicitly distinguishes supported, unsupported, not_verified and blocked_by_plan. | **Specified already.** The gap is execution of the exact checked-in tests (NOT RUN) and eventual adapter evidence that enforces zero start calls; do not add duplicate CAP IDs. |
+| Cleanup recovery/report history | Matrix `LIFE-04`, `LC-06`, `LIFE-SEM-02`; lifecycle helper test `test_cleanup_reconciliation_appends_new_report_version_without_rewriting_history`. | **Cleanup recovery specified/modelled.** This does not cover a distinct external side effect that committed before its operation receipt was lost. Only the latter is a candidate new case. |
+| Idempotency and interrupted request replay | Matrix `IDEM-01/02`, `IDEM-SEM-01..04`; helper tests cover same-key replay/conflict and a serial-order batch model. | **Request deduplication specified/modelled.** Not proof of durable atomicity, and not proof that retrying an uncertain external side effect is safe. The receipt-loss scenario should explicitly test inspect/reconcile-before-retry, not duplicate basic idempotency tests. |
+| Artifact interruption/digest mismatch | Matrix `ARTIFACT-02` and `ART-SEM-01`; artifact release gate tests. | **Artifact write integrity specified/modelled.** It is not the same as stale-source revision protection for a future workspace edit. |
+| Output/diagnostic limits | Matrix `OUT-01/02`, `STREAM-01`, `STREAM-SEM-01..03`, `REDACT-01/02`; PR #2 tests distinguish empty/unavailable fields and report truncation. | **Output budget/report presentation substantially specified/modelled.** A separate adapter-level collection-failure provenance case remains a refinement; don't call generic diagnostics wholly missing. |
+| Timeout/cancel and process tree | Matrix `LIFE-01/03`, `LC-03`, `RACE-SEM-01/03/04`, `PROC-TREE-01`. | **Synthetic lifecycle rules specified.** They do not prove real OS/provider termination. |
+| Wrapper exit versus child exit | Main contract names program vs infrastructure failure; PR #2 formatter accepts a single lifecycle status and optional exit code; PR #3 outcome model records an execution outcome. No reviewed test explicitly models both child exit and wrapper/collector exit as separate evidence. | **Candidate new contract/test gap**, if a concrete adapter actually has both process layers. Preserve separate provenance; do not invent child status from wrapper status. |
+| Stale file revision | Request fingerprints bind source/policy/input identity; no reviewed case models read revision R1, concurrent update to R2, then attempted write based on R1. | **Conditional future write-boundary gap.** The current first proof excludes a persistent project workspace, so this is not a reason to expand the current MVP or canonical execution report. Add only if workspace/file editing is selected. |
+
+### Revised smallest-next-step recommendation
+
+1. Do not add another capability, generic idempotency, cleanup-recovery, artifact-integrity, or output-cap test: the matrix already contains those semantics.
+2. If one new synthetic case is approved, prioritize **receipt lost after an external side effect** because it tests a failure mode not equivalent to same-key request replay: side effect commits, receipt disappears, recovery queries authoritative state, and only repeats when safely proven not committed. If state cannot be queried, remain UNKNOWN/INCOMPLETE.
+3. Add **wrapper-versus-child provenance** only once the intended adapter boundary is concrete enough to say which wrapper exists and which exit codes it owns.
+4. Defer **stale-revision compare-and-swap** unless file/workspace writes enter the chosen MVP; it is adjacent to, not part of, the current stateless execution contract.
+5. For diagnostic collection failure, extend an existing report/output case only after defining the adapter evidence shape. No schema field is approved by this note.
+6. The exact PR #3 helper/test files and PR #2 formatter/test files remain **NOT RUN** in this environment. No test or runtime claim is upgraded by this static reread.
