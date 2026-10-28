@@ -5,7 +5,8 @@
 **Scope:** Convert AWD-01 through AWD-16 in the MVP slice into deterministic fixture and assertion requirements for a future local-only packet/capsule builder.  
 **Budget and safety:** $0; no provider/API calls, credentials, account connections, repository execution, merge, deployment, or privileged access.  
 **Source of truth:** [MVP feature slice](AI_WORKFLOW_DIRECTOR_MVP_SLICE_20261028.md). If this document and the MVP slice conflict, record the conflict; do not silently treat either as implemented behavior.  
-**Canonical fixture data:** [AWD-01–AWD-16 fixture catalogue](AI_WORKFLOW_DIRECTOR_CANONICAL_FIXTURES_20261028.md) provides proposed repeatable inputs, observable pass/fail rules, forbidden behaviors, traceability, and unresolved dependencies; it is design-only and all cases remain NOT RUN.
+**Canonical fixture data:** [AWD-01–AWD-16 fixture catalogue](AI_WORKFLOW_DIRECTOR_CANONICAL_FIXTURES_20261028.md) provides proposed repeatable inputs, observable pass/fail rules, forbidden behaviors, traceability, and unresolved dependencies; it is design-only and all cases remain NOT RUN.  
+**Contract reconciliation:** [Decision register](AI_WORKFLOW_DIRECTOR_CONTRACT_DECISION_REGISTER_20261028.md) identifies which semantics are already in the MVP and which exact contracts remain open.
 
 ## 1. What this specification does — and does not do
 
