@@ -83,3 +83,8 @@ These are source-backed maintainer descriptions, not independent verification. T
 **Revised testable gap (still unverified):** a provider- and execution-location-neutral receipt that binds a specific run to its input/source revision and artifacts, explicitly marks unknown or unobserved evidence, distinguishes process outcome from job/artifact-release disposition, and is useful to a separate AI assistant. Compare this directly with each tool's native logs/reports and raw-error copy/paste. If the native path is equally easy and sufficiently truthful, or the receipt does not improve the next correction, narrow or stop this product direction.
 
 See the [dated source review and revised test questions](../AI_COLLAB/PHONE_ONLY_COMPETITOR_SCAN_ADDENDUM_20261028.md). All task comparisons remain **NOT RUN**.
+
+
+## Platform-fit caveat for the fixed-task study — 2026-10-28
+
+Separate **direct task substitutes** from **adjacent market competitors**. For the current iPhone-only scenario, the most relevant first comparison is ordinary copy/paste versus Pyodios on a compatible iOS 26+ device and browser-local Pyodide/WASM if file I/O is practical. AndroidHarness, PhoneCode and Atlan are important market-positioning counterexamples but their Android product descriptions do not make them direct iPhone execution paths. Pairlet has an iOS client but depends on a separate computer running its daemon, so it belongs in a host-available scenario rather than the no-PC scenario. Hosted IDEs require current account/plan/mobile-flow verification before scoring. All hands-on comparisons remain NOT RUN.
