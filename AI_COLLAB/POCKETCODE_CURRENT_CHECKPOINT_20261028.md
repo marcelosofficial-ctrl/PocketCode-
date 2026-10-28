@@ -110,7 +110,8 @@ Owner constraints for all future work:
 - [x] Reconcile dated competitor deltas into the existing matrix and competitive analysis on this isolated branch; add source caveats and links. The PR #3 branch remains untouched.
 - [x] Draft the compact PC-return checklist; exact branch/blob verification, offline tests first, test output capture, and a separately gated provider test are documented. Provider/spend/merge/deployment/Actions gates remain closed.
 - [x] Define the fixed synthetic CSV-to-JSON success/failure task and scoring/evidence fields. No apps were installed; the comparison remains NOT RUN.
-- [ ] Complete a scoped documentation/link/state audit using the [new-chat handoff](NEW_CHAT_HANDOFF_20261028.md), rechecking exact branch/PR state and the verdict-projection evidence boundaries. Do not create more master docs unless they remove a material blocker.
+- [x] Complete the scoped static audit: all 18 relative links in the new handoff resolve on this branch; reviewed Markdown fences are balanced; README start order and handoff navigation are correct. Current branch comparison was 133 ahead/0 behind at the pre-refresh snapshot; recheck because these documentation updates advance HEAD. PR #2/#3 remain open, draft, unmerged with known heads unchanged.
+- [ ] Review the advisory PASS/FAIL/INCOMPLETE projection against the detailed outcome/cleanup/disposition contract, and record only genuine contradictions or open owner decisions. Do not create more master docs unless they remove a material blocker.
 
 
 ### Pass D — Manual AI evaluation when feasible
