@@ -59,6 +59,7 @@ The proposed AI Workflow Director aims to help users hand off compact tasks and 
 - [AI Workflow Director canonical conformance fixtures](AI_COLLAB/AI_WORKFLOW_DIRECTOR_CANONICAL_FIXTURES_20261028.md) (16 proposed deterministic inputs and observable assertions; not executed)
 - [AI Workflow Director contract decision register](AI_COLLAB/AI_WORKFLOW_DIRECTOR_CONTRACT_DECISION_REGISTER_20261028.md) (MVP reconciliation, open decisions, and implementation gate; recommendations not approved)
 - [AI Workflow Director pre-implementation readiness audit](AI_COLLAB/AI_WORKFLOW_DIRECTOR_READINESS_AUDIT_20261028.md) (focused risk review; implementation still requires explicit authorization)
+- [AI Workflow Director bounded implementation plan](AI_COLLAB/AI_WORKFLOW_DIRECTOR_BOUNDED_IMPLEMENTATION_PLAN_20261028.md) (staged work packages, acceptance mapping, and evidence gates; not authorization)
 - [Initial independent provider review](AI_COLLAB/CHATGPT_INITIAL_PROVIDER_REVIEW.md)
 - [MVP execution-provider decision brief](AI_COLLAB/MVP_DECISION_BRIEF.md)
 - [Independent review of Gemini's architecture proposal](AI_COLLAB/CHATGPT_REVIEW_OF_GEMINI_PLAN.md)
