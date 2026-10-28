@@ -107,6 +107,19 @@ Use the [master plan](FOUR_MONTH_PHONE_ONLY_MASTER_PLAN_20261028.md) as the sche
 
 This schedule is a sequence of evidence gates, not a promise of PC availability or a requirement to fill every date. If evidence is unavailable, record NOT RUN/UNKNOWN and progress on an independent task.
 
+### Source-freshness pass — 2026-10-28
+
+Reviewed current official Pyodios FAQ/app page, Pyodide browser file-access documentation, and AndroidHarness public listing/repository. Updated the existing [competitor addendum](PHONE_ONLY_COMPETITOR_SCAN_ADDENDUM_20261028.md) and [fixed-task worksheet](PRODUCT_FIXED_TASK_COMPARISON_WORKSHEET_20261028.md) rather than creating another report.
+
+Material findings:
+- Pyodios is a serious iOS-local comparator for the standard-library CSV task; its official docs describe real file import/export and local execution, but task behavior remains NOT RUN.
+- Its FAQ says running code cannot currently be interrupted directly; a 120-second timeout does not stop the code, and the session may need restarting. Timeout is not proof of termination.
+- Browser-local Pyodide requires explicit file-transfer integration; its native file-system path is experimental and limited in browser support. Do not assume an iPhone PWA has the same file flow as a native local app.
+- Developer/app-store privacy statements are not independent security audits.
+- AndroidHarness is a serious broader local-first alternative; public feature claims are not comparative test evidence.
+
+The worksheet now distinguishes the small fixed-task test from general timeout/recovery and security questions. No app was installed, no code was run in competitor products, no provider workload was used, and no costs were incurred. All task comparisons remain NOT RUN.
+
 ## 6. Immediate next queue
 
 **Completed in this pass:** scoped structure/link verification; exact-ref policy-barrier and disposition source trace; static prototype review; adversarial product-hypothesis review; source-to-test traceability map; PC-return blocker crosswalk; and compact evidence-record template. Do not repeat these unless source refs change.
