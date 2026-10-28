@@ -62,7 +62,7 @@ Discovery, competitive research, and MVP definition. No production architecture,
 ## Immediate next steps
 
 1. Use the owner-reviewed [live mobile prototype](https://marcelosofficial-ctrl.github.io/PocketCode-/) only to refine the core flow; keep sample output clearly marked as simulated.
-2. Finish the provider gate review using the current [MVP decision brief](AI_COLLAB/MVP_DECISION_BRIEF.md). Modal is the leading candidate for evaluation, not an approved selection; Cloudflare remains a fallback.
+2. Compare local-on-device Python, browser-local Pyodide/WASM, remote-PC, and hosted execution against the [fixed-task worksheet](AI_COLLAB/PRODUCT_FIXED_TASK_COMPARISON_WORKSHEET_20261028.md). The [MVP decision brief](AI_COLLAB/MVP_DECISION_BRIEF.md) is a historical hosted-provider shortlist from 2026-10-20; revisit it only if the task demonstrates a need for remote execution. Modal/Cloudflare remain unselected candidates, not the default path.
 3. Review the [controlled Python proof runbook](PRODUCT/CONTROLLED_PYTHON_PROOF_RUNBOOK.md), which defines test fixtures, expected evidence, and safety gates.
 4. Before any provider account or live workload, obtain explicit owner approval, verify billing/budget controls, and confirm the exact network-blocking and termination semantics. If approved, run the proof and record actual evidence rather than assuming success.
 5. Use public firsthand discussions and reviews in [mobile-coding user evidence](RESEARCH/MOBILE_CODING_USER_EVIDENCE.md) to refine the problem hypothesis; user interviews are optional, not a blocker.
