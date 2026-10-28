@@ -35,6 +35,7 @@ Owner constraints for all future work:
 - [Execution-contract cross-branch audit](EXECUTION_CONTRACT_CROSS_BRANCH_AUDIT_20261028.md) — current/main vs PR #2 and PR #3 status semantics; static-only, no tests run.
 - [Phone-only competitor scan addendum](PHONE_ONLY_COMPETITOR_SCAN_ADDENDUM_20261028.md) — additional current project claims, source caveats, and task-comparison questions.
 - [Product hypothesis card](PRODUCT_HYPOTHESIS_CARD_20261028.md) — provisional target user/job, alternatives, evidence gaps, and falsification criteria.
+- [Fixed-task comparison worksheet](PRODUCT_FIXED_TASK_COMPARISON_WORKSHEET_20261028.md) — synthetic CSV-to-JSON success/failure protocol and evidence record; not executed.
 - [Master AI Workflow Director research](MASTER_AI_WORKFLOW_DIRECTOR_RESEARCH_20261028.md) — research synthesis and product proposal.
 - [First testable feature slice](AI_WORKFLOW_DIRECTOR_MVP_SLICE_20261028.md) — proposed profiles, task packet, continuation capsule, static acceptance tests, and implementation sequence.
 - [Deterministic AWD conformance test specification](AI_WORKFLOW_DIRECTOR_CONFORMANCE_TEST_SPEC_20261028.md) — assertion-level design for AWD-01–16, forbidden behaviors, cross-case invariants, and eight recommended v1 contract defaults; not implemented or run.  
@@ -107,7 +108,8 @@ Owner constraints for all future work:
 - [x] Create a product hypothesis card with alternatives and falsification criteria; no market validation claimed.
 - [x] Reconcile dated competitor deltas into the existing matrix and competitive analysis on this isolated branch; add source caveats and links. The PR #3 branch remains untouched.
 - [x] Draft the compact PC-return checklist; exact branch/blob verification, offline tests first, test output capture, and a separately gated provider test are documented. Provider/spend/merge/deployment/Actions gates remain closed.
-- [ ] Create a compact fixed-task comparison worksheet, reusing PR #3's proposed example and defining evidence fields without running any provider or claiming a benchmark.
+- [x] Define the fixed synthetic CSV-to-JSON success/failure task and scoring/evidence fields. No apps were installed; the comparison remains NOT RUN.
+- [ ] Conduct a final scoped documentation/link/state audit, then begin the next decision-focused pass. Do not create more master docs unless they remove a material blocker.
 
 
 ### Pass D — Manual AI evaluation when feasible
