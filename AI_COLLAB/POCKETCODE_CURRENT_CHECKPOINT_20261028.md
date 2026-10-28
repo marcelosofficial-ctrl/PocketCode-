@@ -77,7 +77,9 @@ Owner constraints for all future work:
 - [x] Propose minimal v1 defaults without treating them as accepted/frozen.
 - [x] Link the specification from the MVP slice, master research, evaluation kit, README, and this checkpoint.
 - [ ] After review of the proposed defaults, freeze only the decisions needed for the first local/offline slice.
-- [ ] Convert the agreed semantics into exact fixture inputs and expected outputs; then create actual tests only after implementation is authorized.
+- [x] Create a canonical catalogue with proposed fixture inputs and observable pass/fail boundaries for AWD-01–AWD-16; audit coverage and label unresolved dependencies.
+- [ ] Review the catalogue for contract conflicts and decide which semantic assertions can remain open versus which defaults need owner approval before implementation.
+- [ ] Create executable tests only after implementation is authorized.
 
 ### Pass D — Manual AI evaluation when feasible
 1. If only one pair can be afforded, run EVAL-06 baseline and Director prototype in the same AI app/model in fresh chats.
