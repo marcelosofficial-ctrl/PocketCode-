@@ -84,3 +84,5 @@ See [RevDev + PocketCode Product, Architecture, and Commercial Strategy](../RESE
 ## Conformance matrix (2026-10-28)
 
 The [Shared Run/Result Conformance Matrix v0.1](SHARED_RUN_RESULT_CONFORMANCE_MATRIX_v0_1.md) turns the proposed common seam into 20 cross-product fixture cases, provenance rules, enforcement-boundary requirements, and staged adoption gates. It is a test plan only: no shared suite has been run, and it does not supersede the accepted decision to keep the repositories separate.
+
+The [Shared Run/Result Conformance Gap Review (2026-10-28)](SHARED_RUN_RESULT_CONFORMANCE_GAP_REVIEW_2026-10-28.md) audits v0.1 against the existing PocketCode API, execution-loop, and security requirements. It proposes additional vectors for cross-user access, input limits, egress/secret isolation, quotas, cleanup, terminal-state races, and actual RevDev guard enforcement. These are gaps to test, not claims that any implementation passed.
