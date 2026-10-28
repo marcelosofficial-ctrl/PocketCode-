@@ -191,6 +191,12 @@ Failure case must identify the missing `unit_price` field clearly, return a trus
 8. Record cleanup, persistence, or deletion only if directly observable and relevant; otherwise use `UNKNOWN`. Do not claim sandboxing, isolation, or data deletion based only on a UI label.
 9. Assign `0`, `1`, `2`, or `U` only after the attempt. Attach the observation supporting each non-`U` score.
 
+### Target-device note — iPhone 13 class (source review only)
+
+If the eventual local comparison uses the user's current iPhone 13, this is a meaningful test condition: third-party technical reporting identifies the standard iPhone 13 as having 4 GB RAM, and Pyodios says 4 GB devices are its minimum and the most likely to encounter Python-startup memory pressure. The device is supported by iOS 26, but OS compatibility does not establish reliable runtime startup. Sources: [MacRumors on iPhone 13 RAM](https://www.macrumors.com/2021/09/15/HOW-MUCH-RAM-IN-IPHONE-13/) and [Pyodios FAQ](https://pyodios.caffeinatedmath.com/faq).
+
+**Implication:** if the owner voluntarily chooses a hands-on test later, record the exact device/iOS, close background apps only if naturally part of the recorded setup, and capture startup failure/retry as evidence rather than silently omitting it. Do not install or run anything as part of this desk-research pass. Compatibility and successful execution remain unverified.
+
 ### Source-informed caveats to capture (not test results)
 
 - **Pyodios local candidate:** its current FAQ describes iOS/iPadOS 26+, Python 3.14.2 via Pyodide, persistent files with explicit import/export, a fresh Python session on each app launch, and approximately 300 MB Python memory availability. These are official maintainer claims; verify the specific device and actual task behavior before scoring. See the [official FAQ](https://pyodios.caffeinatedmath.com/faq).
