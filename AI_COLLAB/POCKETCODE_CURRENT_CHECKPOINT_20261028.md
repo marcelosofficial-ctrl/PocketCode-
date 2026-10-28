@@ -189,3 +189,15 @@ Re-read the existing worksheet. It already has a useful fair-comparison protocol
 1. Finish a branch-specific relative-link and heading-anchor audit for the core continuity and Director documents.
 2. Keep product alternative evidence and execution-contract review separate.
 3. Continue non-blocking phone-only research; do not request implementation decisions until a concrete decision changes the next work, and do not imply that any manual comparison has run.
+
+## Follow-up pass: expanded relative-link integrity check (2026-10-28)
+
+**Result:** PASS for relative Markdown file-target existence across the 14 documents listed below. This is a static path check against the research branch's recursive Git tree; it does not verify external URLs, every heading anchor, rendered Markdown, or semantic correctness.
+
+- Core continuity: `NEW_CHAT_HANDOFF`, `POCKETCODE_CONTINUITY_HUB`, `FOUR_MONTH_PHONE_ONLY_MASTER_PLAN`, `POCKETCODE_CURRENT_CHECKPOINT`.
+- Director contract/test design: `AI_WORKFLOW_DIRECTOR_MVP_SLICE`, `AI_WORKFLOW_DIRECTOR_CONFORMANCE_TEST_SPEC`, `AI_WORKFLOW_DIRECTOR_CONTRACT_DECISION_REGISTER`, `AI_WORKFLOW_DIRECTOR_CANONICAL_FIXTURES`, `AI_WORKFLOW_DIRECTOR_REFERENCE_FIXTURES`, `AI_WORKFLOW_DIRECTOR_EVALUATION_KIT`, `AI_WORKFLOW_DIRECTOR_MANUAL_RUN_SHEET`.
+- Product and readiness: `PRODUCT_FIXED_TASK_COMPARISON_WORKSHEET`, `PC_RETURN_CHECKLIST_DRAFT`, `PRODUCT_HYPOTHESIS_CARD`.
+
+The review covered 141 relative Markdown links; zero pointed to a file path absent from the branch tree. Fetches and file-tree comparison are not application tests. Some heading anchors and all external destinations remain outside this pass.
+
+**Next work:** review exact acceptance/provenance semantics across the report lifecycle and Director boundary; do not expand the document set merely to inflate coverage. Then check PR state and update this checkpoint with the next material finding. No PR was edited, no tests were run, and no implementation is authorized by this result.
