@@ -109,7 +109,7 @@ Provided context: none.
 
 Task prompt:
 ```text
-Update format_user_label(user) to use the existing normalize_space(text) helper for the display name. Preserve the current fallback to ‘Unknown’. Do not invent a second whitespace-normalization implementation.
+Update `format_user_label(user)` to use the existing `normalize_space(text)` helper for the display name. Preserve the current fallback to ‘Unknown’. Do not invent a second whitespace-normalization implementation.
 ```
 
 Provided toy context:
