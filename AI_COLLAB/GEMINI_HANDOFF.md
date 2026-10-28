@@ -148,6 +148,10 @@ The owner has requested a deep three-pass investigation of Ponytail and related 
 https://github.com/marcelosofficial-ctrl/DevRelay-Missions/blob/review/revdev-adaptive-ai-workshare-2026-10-27/resume/revdev/AI_WORKFLOW_EFFICIENCY_AND_CROSS_APP_ORCHESTRATION_MASTER_2026-10-28.md
 
 PocketCode-specific proposal:
+Additional current artifacts:
+- [Portable AI Work Coach prompt v0.1](https://github.com/marcelosofficial-ctrl/DevRelay-Missions/blob/review/revdev-adaptive-ai-workshare-2026-10-27/resume/revdev/AI_WORK_COACH_PORTABLE_PROMPT_V0_1.md)
+- [PocketCode AI Efficiency Coach & Handoff proposal](../PRODUCT/AI_EFFICIENCY_COACH_HANDOFF_PROPOSAL_2026-10-28.md)
+
 `PRODUCT/AI_EFFICIENCY_COACH_HANDOFF_PROPOSAL_2026-10-28.md`
 
 Current research already inspected Ponytail's portable skill and its self-published Claude Code benchmark (promising but limited to one host/model and a small set of tasks); Superpowers; Everything Claude Code; Claude Code's skills/rules/hooks/subagents; Gemini CLI extensions/hooks; OpenAI/Codex skills/plugins; Cursor rules/hooks; and (in an additional comparison) Cline hooks, Roo Code custom modes, OpenCode agents/skills, and Continue slash commands/share/MCP. It found no universal supported API for controlling every consumer AI chat app. The baseline is user-mediated copy/share/paste; native CLI/IDE integrations are optional per-host adapters.
