@@ -4,6 +4,14 @@
 **Status:** Documentation/research branch only. No feature implementation or AI evaluation runs have occurred in this work pass.  
 **Purpose:** Give a new chat or another AI enough verified state to continue without relying on old conversation context.
 
+## Current operator dashboard (2026-10-28)
+
+**Project direction:** validate a narrow phone-first run → inspect → report → correct → rerun job. Execution location remains undecided. The AI Workflow Director is a supporting hypothesis, not the core product.
+
+**This pass:** reorganization of the navigation and four-month operating plan. A stale remote-runtime assumption in PROJECT_STATUS.md is being corrected to match the execution-location-neutral hypothesis. The active checkpoint remains the single current task queue. No code/runtime/provider testing is authorized or performed by this documentation task.
+
+**Next task after this pass:** continue exact-ref contract traceability for policy revision before start and EXIT_NONZERO combined with missing/failed gates; then finish the product/alternative decision package. PR #2 and PR #3 remain untouched.
+
 ## Repository and branch state
 
 - Repository: [marcelosofficial-ctrl/PocketCode-](https://github.com/marcelosofficial-ctrl/PocketCode-)
