@@ -74,3 +74,8 @@ Separate four conceptual layers: (1) phone and PC clients; (2) shared run/report
 ## Current reality
 
 PocketCode's current prototype is static and simulated. No backend or real execution path exists. The execution contract and provider research are proposals. RevDev implementation details have not been inspected here, so compatibility is a target to compare, not a verified fact. No provider has been selected or tested; this proposal authorizes no cloud workload.
+
+
+## Related product strategy research (2026-10-28)
+
+See [RevDev + PocketCode Product, Architecture, and Commercial Strategy](../RESEARCH/REVDEV_POCKETCODE_PRODUCT_STRATEGY_2026-10-28.md) for the current research synthesis on competitor positioning, naming collision, App Store constraints, commercial hypotheses, and convergence options. This is research only: it does not override accepted decision D-001 (keep repositories separate), approve a rename/merge/provider/backend, or change the $0 budget. The recommended next seam remains a versioned, conformance-tested run/result/report contract; execution adapters and trust boundaries remain distinct.
