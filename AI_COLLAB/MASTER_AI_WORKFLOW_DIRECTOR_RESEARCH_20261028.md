@@ -3,6 +3,8 @@
 **Status:** Research synthesis and product proposal; not a frozen product/API decision or implementation.  
 **Purpose:** Establish one durable reference for a distinct PocketCode feature that helps different AI assistants work efficiently, preserve project continuity, conserve free-tier usage, and return useful results to the mobile coding workflow. This research extends—not replaces—the existing PocketCode product hypothesis and the separate RevDev project.
 
+**Implementation-planning companion:** [AI Workflow Director — First Testable Feature Slice](AI_WORKFLOW_DIRECTOR_MVP_SLICE_20261028.md) defines the proposed four profiles, task-packet and continuation-capsule contracts, 16 static acceptance cases, and an evaluation protocol. It is still a proposal; no implementation or tests are claimed.
+
 ## Executive conclusion
 
 PocketCode should develop a distinct feature provisionally named **AI Workflow Director**. It should not try to secretly control every AI app or pretend all assistants expose the same integration interface. Instead, it should generate small, context-aware instructions and task handoffs, then use the safest communication channel each platform actually supports.
