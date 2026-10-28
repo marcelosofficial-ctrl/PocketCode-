@@ -25,7 +25,7 @@ Potential users include beginners, students, hobbyists, and developers who need 
 1. Create a workspace or open a small project.
 2. Paste code or add files.
 3. Choose a supported runtime and environment.
-4. Run the code in an isolated execution environment.
+4. Run the code through a clearly described, task-appropriate execution boundary; do not claim isolation or resource controls that the chosen path does not demonstrate.
 5. Inspect stdout, stderr, exit status, timing, and output files.
 6. Share a compact, redacted execution report with the AI assistant of the user's choice.
 7. Apply a proposed change, review what changed, and rerun.
@@ -36,7 +36,7 @@ The AI handoff may initially be copy/paste rather than direct integrations. This
 ## 5. MVP scope candidate
 
 - Responsive mobile UI usable in iOS Safari and Android browsers.
-- One remote runtime, provisionally Python.
+- One supported runtime/task slice, provisionally Python; execution location remains undecided until the fixed-task comparison supports a choice among local device, browser/WASM, remote PC and hosted options.
 - Code entry and a small project file list.
 - Run, cancel, and server-enforced timeout.
 - Streaming or promptly refreshed stdout/stderr, where supported.
@@ -51,7 +51,7 @@ The AI handoff may initially be copy/paste rather than direct integrations. This
 
 - A complete desktop IDE replacement.
 - Every programming language or arbitrary operating-system access.
-- Running arbitrary code directly on the phone with no sandbox limitations.
+- Unrestricted arbitrary-code execution; any local/native/browser route must describe its actual capability, permission and resource limits.
 - An AI model of our own.
 - Required integration with one specific AI provider.
 - Unrestricted outbound network access from executed code.
@@ -71,16 +71,16 @@ The AI handoff may initially be copy/paste rather than direct integrations. This
 
 ## 8. MVP acceptance criteria
 
-A first vertical slice is not complete until tests demonstrate that:
-- a supported program executes in an isolated worker;
-- successful output and generated files can be retrieved;
-- syntax/runtime errors return useful stderr and a non-success status;
-- excessive or infinite work is stopped by enforced limits;
-- cancellation and timeout are distinguishable;
-- one user's workspace and results cannot be read by another user;
-- worker cleanup occurs after completion or failure;
-- logs and reports do not expose configured secrets;
-- the UI handles lost connections and infrastructure errors without falsely claiming success.
+A first vertical slice is not complete until task-appropriate tests demonstrate that:
+- the selected, documented execution path runs the supported task for real and states where the code ran;
+- successful output and generated files can be retrieved as real artifacts, not just displayed as guessed text;
+- syntax/runtime errors produce a truthful non-success signal and useful diagnostics where the path exposes them;
+- time/resource/network constraints are defined and tested to the extent the chosen path can enforce them, with limitations plainly disclosed;
+- timeout/cancellation are distinguished only where the path actually supports and verifies them;
+- any hosted or persisted workspace/results are correctly scoped to the user; local-only paths instead document their local data/permission boundary;
+- cleanup, persistence and deletion behavior are tested or explicitly marked unknown;
+- logs/reports avoid leaking configured secrets and clearly label truncation or unavailable evidence;
+- the UI handles interruption and infrastructure uncertainty without falsely claiming success.
 
 ## 9. Open decisions
 
@@ -103,13 +103,7 @@ A result should use an evidence-based verdict: **PASS** only for a confirmed com
 
 The phone flow should prioritize one Run action and one obvious Copy result action. See [RevDev + PocketCode shared-core proposal](PRODUCT/REVDEV_POCKETCODE_SHARED_CORE.md). RevDev implementation details and report compatibility still need to be inspected; shared code, a unified app, and repository migration remain undecided.
 
-## 10. RevDev compatibility and shared-core direction
 
-The long-term product vision is to offer the same trustworthy script-execution and diagnostics workflow on PC and phone. RevDev is the reference for the existing PC experience; PocketCode explores the mobile-first experience. The shared foundation to evaluate first is the run lifecycle, result semantics, and copyable report format—not a premature repository merge or frontend rewrite.
-
-A result should use an evidence-based verdict: **PASS** only for a confirmed completed run with exit code 0; **FAIL** for a confirmed program/runtime failure; and **INCOMPLETE** for timeout, cancellation, rejection, or missing trustworthy execution evidence. The exact execution status must remain visible. Reports should include actual bounded stdout/stderr, runtime/version, exit code and duration only when known, output files, and explicit truncation or uncertainty notes. The prominent result block may use RevDev-inspired pink styling, but copied content must remain readable plain text in any AI assistant.
-
-The phone flow should prioritize one Run action and one obvious Copy result action. See [RevDev + PocketCode shared-core proposal](PRODUCT/REVDEV_POCKETCODE_SHARED_CORE.md). RevDev implementation details and report compatibility still need to be inspected; shared code, a unified app, and repository migration remain undecided.
 
 ## 11. AI Workflow Director (feature hypothesis; research master)
 
