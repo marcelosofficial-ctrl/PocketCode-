@@ -2,11 +2,15 @@
 
 **Status:** Conceptual only. No stack or provider has been selected.
 
-## Provisional shape
+## Candidate architectures (none selected)
 
-The proposed provider-neutral request/result lifecycle and file/security constraints are documented in [PRODUCT/EXECUTION_CONTRACT.md](PRODUCT/EXECUTION_CONTRACT.md). That contract is a design proposal, not an implemented or approved public API.
+The remote-runner diagram below is only one candidate. No runtime location, app framework, backend, cloud provider or sandbox has been selected. Compare the alternatives on the same bounded task before implementing this shape.
 
-A mobile-first web client communicates with an application API. The API authenticates the user, validates a run request, stores the minimum necessary metadata, and dispatches execution to a disposable isolated worker. The worker returns structured results. The API exposes a bounded result stream or polling endpoint to the client.
+### Candidate A — hosted/remote execution
+
+The proposed provider-neutral request/result lifecycle and file/security constraints are documented in [PRODUCT/EXECUTION_CONTRACT.md](PRODUCT/EXECUTION_CONTRACT.md). That contract is a design proposal for a server-backed runner, not an implemented or approved public API.
+
+In this candidate, a mobile-first web client communicates with an application API. The API authenticates the user, validates a run request, stores minimum necessary metadata, and dispatches execution to a disposable isolated worker. The worker returns structured results. The API exposes a bounded result stream or polling endpoint to the client.
 
 Mobile browser
   -> HTTPS authenticated requests
@@ -27,7 +31,7 @@ Worker
 Structured result
   -> stdout, stderr, exit status, timing, allowed output files
 
-## Responsibilities and trust boundaries
+### Trust boundaries for Candidate A
 
 ### Client
 - Treat displayed output and filenames as untrusted data.
@@ -58,9 +62,9 @@ Structured result
 - Do not persist arbitrary worker state unless a documented product need exists.
 - Public repository files must not contain real user code or production secrets.
 
-## Execution contract
+### Example lifecycle for Candidate A only
 
-A run should have a stable identifier and a terminal outcome from a defined set:
+A hosted/remote run should have a stable identifier and a terminal outcome from a defined set:
 - succeeded
 - program_failed
 - timed_out
@@ -70,8 +74,18 @@ A run should have a stable identifier and a terminal outcome from a defined set:
 
 A result should include runtime/image version, start and end times, duration, exit status when available, bounded stdout/stderr, generated file metadata, and truncation/limit indicators. A missing exit status must not be fabricated.
 
-## Open technical decisions
+### Candidate B — local device or browser-local execution
 
+In a local candidate, code may run in an on-device interpreter or in a browser/WASM runtime rather than on a PocketCode server. That removes or changes some server/provider assumptions; it does not automatically establish sandboxing or hard resource limits.
+
+- Test file access/export, package compatibility, app/browser API exposure, network behavior, persistence and interruption on the target device.
+- State which CPU/memory/time/output controls are truly enforced, which are cooperative, and which are unavailable.
+- Keep the same honest report vocabulary where it fits, but do not invent a remote job ID, provider status, cleanup event or server-side control when no such thing exists.
+- Treat the browser/native embedding API and its permissions as part of the security boundary. WebAssembly alone is not proof of a complete sandbox.
+
+### Open technical decisions
+
+- Execution location: local device, browser/WASM, remote PC, hosted service, or a combination only if evidence justifies it.
 - PWA framework and hosting.
 - API language/framework.
 - Sandbox provider and isolation level.
