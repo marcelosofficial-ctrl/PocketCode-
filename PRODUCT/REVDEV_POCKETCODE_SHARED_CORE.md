@@ -79,3 +79,8 @@ PocketCode's current prototype is static and simulated. No backend or real execu
 ## Related product strategy research (2026-10-28)
 
 See [RevDev + PocketCode Product, Architecture, and Commercial Strategy](../RESEARCH/REVDEV_POCKETCODE_PRODUCT_STRATEGY_2026-10-28.md) for the current research synthesis on competitor positioning, naming collision, App Store constraints, commercial hypotheses, and convergence options. This is research only: it does not override accepted decision D-001 (keep repositories separate), approve a rename/merge/provider/backend, or change the $0 budget. The recommended next seam remains a versioned, conformance-tested run/result/report contract; execution adapters and trust boundaries remain distinct.
+
+
+## Conformance matrix (2026-10-28)
+
+The [Shared Run/Result Conformance Matrix v0.1](SHARED_RUN_RESULT_CONFORMANCE_MATRIX_v0_1.md) turns the proposed common seam into 20 cross-product fixture cases, provenance rules, enforcement-boundary requirements, and staged adoption gates. It is a test plan only: no shared suite has been run, and it does not supersede the accepted decision to keep the repositories separate.
