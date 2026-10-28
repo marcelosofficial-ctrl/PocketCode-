@@ -115,3 +115,97 @@ A single phone attempt or paired AI prompt is exploratory, not representative ma
 - No implementation, provider workload, account creation, paid service, merge, deployment, or Actions run is authorized.
 
 Next, use this worksheet to challenge the product hypothesis and decide what evidence would change the recommendation. If a hands-on test is later chosen, make one specific owner request and capture the full evidence record rather than running all alternatives indiscriminately.
+
+## 8. Reproducible attempt protocol (added 2026-10-28; still design-only)
+
+This section tightens the task so two paths cannot pass merely by displaying a plausible answer. It does not authorize installs, accounts, uploads, provider runs, or any hands-on test.
+
+### Canonical inputs
+
+Use UTF-8 text with LF line endings and no byte-order mark. Each scenario starts in a **fresh, empty workspace**. Do not reuse an output directory between success and failure.
+
+Success input, exact logical contents of `items.csv`:
+
+```csv
+item,quantity,unit_price
+notebook,2,3.50
+pen,3,1.25
+```
+
+Failure input, exact logical contents of `items.csv` (required header removed):
+
+```csv
+item,quantity
+notebook,2
+pen,3
+```
+
+Use the standard-library decimal type (or demonstrably equivalent decimal-safe arithmetic); binary floating-point formatting is not an acceptable reason to change the expected decimal strings.
+
+Success output must be a real created file named `summary.json` with these parsed values:
+
+- `grand_total`: string `10.75`
+- `line_items`: integer `2`
+- `totals_by_item.notebook`: string `7.00`
+- `totals_by_item.pen`: string `3.75`
+
+Whitespace/key order may vary, but value types and values must match. No timestamps, random IDs, machine paths, or other nondeterministic fields should be added. Record the actual file bytes or a copy of the complete file content; a chat answer that merely prints the expected JSON is not proof that the file was created or exportable.
+
+Failure case must identify the missing `unit_price` field clearly, return a trustworthy non-success process status if the environment exposes one, and leave **no valid `summary.json`** in the fresh workspace. If the platform cannot expose a process status, record that limitation as `UNAVAILABLE`; do not infer a failure exit code from the displayed error.
+
+### Per-attempt capture sequence
+
+1. Record path/app/version and platform/browser version where visible. If a value is unavailable, write `UNKNOWN`.
+2. Start from a fresh workspace; capture the exact input method and every setup/action step. Do not count a step from memory after the attempt.
+3. Start a timer immediately before the first required setup action; stop when the real output file is available for inspection/export. Record elapsed time only for a real attempt; distinguish setup time from run time if both can be measured.
+4. Run the success case. Capture the actual `summary.json`, any reported status/exit code, stdout/stderr if available, and whether the file can be saved/exported.
+5. Reset to a separate fresh workspace and run the malformed-header case. Capture the exact error and status, then inspect whether a misleading `summary.json` exists.
+6. Record whether execution was on-device, in browser-local WASM, on a user-controlled remote host, provider-hosted, or unknown. Record whether network access was required or observed; do not infer offline operation from marketing text.
+7. Record what survives into a copyable report: exact values, source/provenance, unavailable fields, truncation, file name/size, and any explicit simulated/demo label.
+8. Record cleanup, persistence, or deletion only if directly observable and relevant; otherwise use `UNKNOWN`. Do not claim sandboxing, isolation, or data deletion based only on a UI label.
+9. Assign `0`, `1`, `2`, or `U` only after the attempt. Attach the observation supporting each non-`U` score.
+
+### Stop / disqualifier rules
+
+- Stop if the path requires payment, a paid trial, billing activation, credential setup, or a provider workload not explicitly approved.
+- Do not upload private or real user data; this protocol uses only synthetic inputs.
+- Mark correctness `0` if the produced file has wrong values/types, is fabricated rather than created, or cannot be distinguished from a demo.
+- Mark failure handling `0` if the malformed input is presented as successful or a valid-looking output is left in the fresh workspace.
+- Mark evidence quality `0` if the report asserts execution without traceable observations, or silently substitutes guessed exit/status data.
+- Mark security/privacy `U` unless the relevant property is directly established by a suitable test or authoritative evidence; one successful task is not a sandbox/security test.
+- If an attempt is interrupted, ambiguous, or missing a required observation, use `INCONCLUSIVE` for that scenario; do not fill gaps with another path's evidence.
+- The static PocketCode prototype remains ineligible for execution/correctness scoring because its run result is simulated.
+
+### Minimum attempt record (copy/paste)
+
+```text
+Path / app + version:
+Date:
+Platform / browser:
+Scenario: SUCCESS | MALFORMED_HEADER
+Evidence class: DIRECTLY OBSERVED | SOURCE REVIEW | BLOCKED | NOT RUN
+Workspace fresh: YES | NO | UNKNOWN
+Setup steps (ordered):
+Setup time:
+Run time:
+Execution location:
+Input method:
+Actual output file created: YES | NO | UNKNOWN
+Actual output content / file hash (if available):
+Reported status:
+Exit code (actual or UNAVAILABLE):
+stdout / stderr:
+Malformed case error:
+Valid summary.json present after malformed case: YES | NO | UNKNOWN | NOT APPLICABLE
+Output export/save verified:
+Report evidence and provenance:
+Network required/observed:
+Persistence / cleanup observation:
+Cost/account prerequisites:
+Score + evidence (each dimension):
+Disqualifier or uncertainty:
+Overall scenario: PASS | FAIL | BLOCKED | INCONCLUSIVE | NOT RUN
+```
+
+**Current status remains NOT RUN.** This is a more reproducible protocol, not a benchmark result or permission to start testing.
+
