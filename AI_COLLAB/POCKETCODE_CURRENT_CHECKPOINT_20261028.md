@@ -133,3 +133,39 @@ Owner constraints for all future work:
 - This checkpoint is a handoff, not a declaration that any future step has been completed.
 - The research branch can contain proposed work that is not in `main`; never state otherwise.
 - Before continuing, reread the current versions of the linked documents and verify branch/PR state rather than trusting the counts in this checkpoint.
+
+## Follow-up pass — static link and contract projection findings (2026-10-28)
+
+**Status:** Static GitHub-source review only. No code was executed, no tests were run, and no PR #2/#3 or main-branch files were changed.
+
+### Continuity-link check
+
+- Re-fetched the handoff, Continuity Hub, Four-Month Plan, Current Checkpoint, Execution-Contract Audit, Product Hypothesis Card, Fixed-Task Worksheet, PC-Return Checklist, and Competitor Scan Addendum from this branch.
+- Compared relative Markdown file links in those nine documents against the branch's recursive Git tree. All checked relative file targets exist (0 missing file targets across the checked documents).
+- This check did not validate URL availability, fragment/heading anchors, links in every other Director specification, or rendering. Do not describe it as a full repository link audit.
+
+### Material contract-projection finding
+
+Exact source blobs rechecked:
+
+- main `PRODUCT/EXECUTION_CONTRACT.md`: `3861e51ae4f9e45a263b677402f26c41b240959d`
+- PR #2 `scripts/report_contract.py`: `e9d944a722c2fac5279952696528da72a7011af3`
+- PR #3 `AI_COLLAB/DRAFT_EXECUTION_CONTRACT.md`: `02ad9934cc40c84f7e8cd7f6c982d5d8ed7d1b70`
+- PR #3 `scripts/lifecycle_contract.py`: `ba8d4d0b217c90513bed020e298029ef4e16f164`
+
+PR #2's pure formatter classifies `execution_status == "succeeded"` plus a valid exit code of zero as `PASS`. It does not itself receive or evaluate the PR #3 draft's separate mandatory policy-revision confirmation, termination evidence, artifact-manifest/integrity checks, tenant/job association, or cleanup state. The formatter docstring correctly says it does not verify the trustworthiness of its input, so this is not proof of a bug in the isolated formatter; it is an integration/projection gap if a caller treats its status and exit-code inputs as sufficient for the overall job verdict.
+
+PR #3 explicitly requires those additional gates before overall `PASS`; for example, zero exit with `cleanup_state != CONFIRMED` derives `INCOMPLETE`. Main's current contract describes a simpler lifecycle/reporting model and does not yet define a complete versioned projection from the PR #3 multi-axis record into the PR #2 verdict. Preserve the earlier audit recommendation: define the trusted caller boundary and versioned projection before any provider integration or schema freeze. Never infer that PR #3 helper behavior has been integrated into main or PR #2.
+
+### Evidence boundaries
+
+- Fixed-task worksheet remains design-only: no app install, mobile execution, benchmark, or user study.
+- PR #2's prior reported pure-helper test evidence is branch-specific and does not establish live runner/security behavior.
+- PR #3 helper/test pair remains recorded as NOT RUN in its draft evidence; a test-method count is not a pass result.
+- AWD-01–AWD-16 remain design-only and NOT RUN.
+
+### Next highest-value work
+
+1. Complete relative-link and anchor validation for the remaining Director specifications and source-of-truth documents on the exact research branch.
+2. Draft a compact projection table that explicitly identifies which trusted component owns each gate, the evidence required, the displayed verdict, and what details must remain visible. Treat it as a proposal, not an approved schema.
+3. Keep product-alternative comparison separate from the execution-contract audit; no architecture/provider choice follows from this static finding alone.
