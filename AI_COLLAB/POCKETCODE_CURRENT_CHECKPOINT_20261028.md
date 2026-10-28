@@ -54,6 +54,8 @@ Owner constraints for all future work:
 - Added a bounded implementation plan with G0–G8 work packages and acceptance mappings. G0–G5 describe the proposed core sequence; redaction, real sharing, and manual AI comparison are separately gated. The plan does not authorize implementation. Added an explicit AWD-01–AWD-16 traceability table so every existing acceptance ID maps to a work package without redefining its meaning.
 - Linked the readiness audit from the README, master research, canonical fixture catalogue, and checkpoint. Static review of the new feature documents confirms the 16 fixture IDs and 16 register rows align; code fences are balanced. A broad README link scan was inconclusive for older unrelated links because their target files were outside the fetched audit set, so no repository-wide broken-link claim is made.
 - Audited the overall project hierarchy, current product goals, zero-budget rules, main-vs-PR branch boundaries, and existing three-AI method. Added a read-first continuity hub and a four-month phone-only plan ending 2027-02-28. Kept the core execution/evidence loop primary and the AI Workflow Director supporting; neither PR #2 nor PR #3 was edited.
+- Completed a static cross-branch execution-contract audit using exact refs/blob SHAs for main, PR #2, and PR #3. Key gap: PR #3's richer execution_outcome/cleanup_state/job_disposition needs a versioned projection into the user-facing PASS/FAIL/INCOMPLETE verdict. Its exact policy-revision barrier is a safety refinement; numeric output/tombstone values remain test-only defaults. No code was changed and no tests were run by the audit.
+- Added [phone-only competitor scan addendum](PHONE_ONLY_COMPETITOR_SCAN_ADDENDUM_20261028.md) for current Android local coding agents and phone steering clients, and [product hypothesis card](PRODUCT_HYPOTHESIS_CARD_20261028.md) with alternative explanations and falsification criteria. These are source-led research inputs, not hands-on testing or market validation.
 
 
 
@@ -96,10 +98,11 @@ Owner constraints for all future work:
 - [ ] Create executable tests only after implementation is authorized.
 
 ### Current phone-only overlay — active next steps
-- [ ] Audit the main product/security/execution contract against PR #3's exact draft contract, helper, acceptance matrix, and code-to-test crosswalk. Record only material discrepancies on this isolated documentation branch; do not edit PR #3.
-- [ ] Refresh the existing competitor matrix and user-problem evidence using current local-phone, remote-PC, and hosted-execution alternatives. Include counter-evidence and avoid duplicating the existing PR #3 research.
-- [ ] Produce a compact product hypothesis card with explicit continue/narrow/pivot criteria. Do not lock a first workflow or provider without sufficient evidence and owner approval.
-- [ ] Prepare the PC-return checklist before the estimated end of the phone-only period; keep provider, spend, merge, deployment, and Actions gates closed.
+- [x] Audit main product/security/execution contracts against PR #3 source on exact refs; findings are in the cross-branch audit document.
+- [x] Add a dated delta for newly surfaced local-phone/remote-agent competitors without copying PR #3's broader research.
+- [x] Create a product hypothesis card with alternatives and falsification criteria; no market validation claimed.
+- [ ] Reconcile the audit and research deltas against existing main-branch docs, updating only where it removes genuine stale navigation or contradiction. Do not promote PR #3 decisions to main.
+- [ ] Draft the compact PC-return runbook: exact branch/blob verification, offline tests first, test output capture, and a separately gated provider test. Keep provider/spend/merge/deployment/Actions gates closed.
 
 ### Pass D — Manual AI evaluation when feasible
 1. If only one pair can be afforded, run EVAL-06 baseline and Director prototype in the same AI app/model in fresh chats.
