@@ -31,13 +31,16 @@ Owner constraints for all future work:
 
 - [Master AI Workflow Director research](MASTER_AI_WORKFLOW_DIRECTOR_RESEARCH_20261028.md) — research synthesis and product proposal.
 - [First testable feature slice](AI_WORKFLOW_DIRECTOR_MVP_SLICE_20261028.md) — proposed profiles, task packet, continuation capsule, static acceptance tests, and implementation sequence.
-- [Deterministic AWD conformance test specification](AI_WORKFLOW_DIRECTOR_CONFORMANCE_TEST_SPEC_20261028.md) — assertion-level design for AWD-01–16, forbidden behaviors, cross-case invariants, and unresolved contracts; not implemented or run.
+- [Deterministic AWD conformance test specification](AI_WORKFLOW_DIRECTOR_CONFORMANCE_TEST_SPEC_20261028.md) — assertion-level design for AWD-01–16, forbidden behaviors, cross-case invariants, and eight recommended v1 contract defaults; not implemented or run.
 - [Offline evaluation kit](AI_WORKFLOW_DIRECTOR_EVALUATION_KIT_20261028.md) — canonical task profiles, cases EVAL-01 through EVAL-08, scoring rubric, and limitations.
 - [Manual paired-run sheet](AI_WORKFLOW_DIRECTOR_MANUAL_RUN_SHEET_20261028.md) — exact phone-friendly baseline/Director prototype prompts and copyable fixtures.
 - [Reference output fixtures](AI_WORKFLOW_DIRECTOR_REFERENCE_FIXTURES_20261028.md) — human-authored examples; do not show them to an assistant during measured runs.
 - [Shared-core proposal](../PRODUCT/REVDEV_POCKETCODE_SHARED_CORE.md) — keep repositories separate and compare report/lifecycle contracts only against actual authoritative RevDev artifacts.
 
 ## Work completed in this pass
+
+- Authored a deterministic conformance-test specification for all 16 proposed AWD acceptance cases, including required assertions, forbidden behaviors, boundary variants, capsule validation cases, and explicit unresolved contracts. The document is design-only; no test code was created or executed.
+- Added eight recommended v1 defaults for unresolved contracts (input normalization, packet serialization, character counting, oversized-context behavior, configured redaction, capsule validation, share-adapter results, and component boundaries). These are recommendations, not frozen decisions.
 
 - Authored a deterministic conformance-test specification for all 16 proposed AWD acceptance cases, including required assertions, forbidden behaviors, boundary variants, capsule validation cases, and explicit unresolved contracts. The document is design-only; no test code was created or executed.
 
@@ -56,30 +59,37 @@ Owner constraints for all future work:
 
 ## Next work sequence
 
-### Pass A — Static protocol QA (completed for the current document set)
-- [x] Verify the run sheet uses canonical task fixtures and profile assignments.
-- [x] Make EVAL-06 the first suggested pair when usage is scarce.
-- [x] Audit relative Markdown links in the touched project documents against the branch tree.
-- [x] Check Markdown fence balance in the touched documents.
-- [x] Recheck branch comparison and PR #2/#3 states; they remain separate and untouched.
+### Pass A — Static protocol QA (completed)
+- [x] Align the manual run sheet with canonical EVAL cases and profile assignments.
+- [x] Prioritize EVAL-06 when usage is scarce.
+- [x] Audit local links and Markdown fence balance across the current document set.
+- [x] Recheck branch comparison and PR #2/#3 states; both remain separate and untouched.
 
-### Pass B — Continuation capsule contract (design pass completed)
-- [x] Define when each of the six proposed status values is appropriate.
-- [x] Define provenance behavior for facts inherited from prior checkpoints.
-- [x] Add explicit EVAL-06/EVAL-08 scoring guidance for missing evidence, unknowns, and `DONE_VERIFIED`.
-- [ ] If scope is expanded later, turn these rules into static input/output fixtures for a deterministic local packet/capsule builder.
+### Pass B — Continuation capsule contract (design complete; not implemented)
+- [x] Define the six proposed status meanings and evidence/provenance rules.
+- [x] Add capsule-integrity scoring guidance for EVAL-06/EVAL-08.
+- [x] Add human-authored reference fixtures without claiming AI performance.
 
-### Pass C — Owner/user evaluation when feasible
+### Pass C — Deterministic AWD conformance design (documented; NOT RUN)
+- [x] Define required assertions and forbidden behavior for AWD-01 through AWD-16.
+- [x] Add cross-case invariants, capsule-validation cases, deterministic test-suite boundaries, and eight open contracts.
+- [x] Propose minimal v1 defaults without treating them as accepted/frozen.
+- [x] Link the specification from the MVP slice, master research, evaluation kit, README, and this checkpoint.
+- [ ] After review of the proposed defaults, freeze only the decisions needed for the first local/offline slice.
+- [ ] Convert the agreed semantics into exact fixture inputs and expected outputs; then create actual tests only after implementation is authorized.
+
+### Pass D — Manual AI evaluation when feasible
 1. If only one pair can be afforded, run EVAL-06 baseline and Director prototype in the same AI app/model in fresh chats.
 2. Save both full outputs and fill one record row per condition; mark any incomplete pair.
-3. Apply the existing evaluation rubric only after both outputs are saved.
-4. Do not claim product benefit from one sample. Repeat only if usage allows.
+3. Score only after both outputs are saved. Keep the result exploratory.
+4. Stop at any free-tier limit; do not evade quotas or pay to finish.
 
-### Pass D — Later implementation review, only after owner review
-1. Review the profile wordings and task/capsule fields in the MVP slice.
-2. Build a deterministic local packet/capsule builder and static tests only after the owner wants implementation to begin.
-3. Treat official provider-specific setup guides and any paid APIs as a separate later decision.
-4. Map PocketCode/RevDev lifecycle/report concepts only after the actual authoritative RevDev artifacts are available for comparison. Do not infer field mappings from memory.
+### Pass E — Implementation review, only after explicit owner approval
+1. Review/freeze the four profile wordings, packet serialization, capsule validation, and local redaction defaults.
+2. Implement a pure deterministic local packet/capsule builder and tests for AWD-01–16.
+3. Add preview/edit/copy UI; test the share adapter separately on real devices later.
+4. Treat provider-specific guides and paid APIs as separate future decisions.
+5. Map PocketCode/RevDev lifecycle/report concepts only after the actual authoritative RevDev artifacts are available. Do not infer field mappings from memory.
 
 ## Evidence boundaries
 
