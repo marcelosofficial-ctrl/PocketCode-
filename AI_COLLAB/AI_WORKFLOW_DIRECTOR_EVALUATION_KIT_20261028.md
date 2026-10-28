@@ -181,4 +181,4 @@ Only calculate paired differences for comparable pairs. Do not translate charact
 
 ## 8. First manual run: smallest useful batch
 
-If time/usage is limited, begin with EVAL-01, EVAL-02, EVAL-04, and EVAL-08. This samples minimality, reuse, review-only boundaries, and evidence honesty. Record one baseline/Director pair for each, mark the results **exploratory**, and do not treat the sample as a benchmark. If a free-tier limit interrupts a run, stop and save the state rather than trying to bypass it.
+If time/usage is limited, begin with **EVAL-06** because compact-checkpoint continuity is the owner's most immediate pain point. If usage permits a small second batch, add EVAL-01 (minimality), EVAL-04 (review-only boundaries), and EVAL-08 (evidence honesty). EVAL-02 (helper reuse) can follow. Record one baseline/Director pair per selected case, mark results **exploratory**, and do not treat the sample as a benchmark. If a free-tier limit interrupts a run, stop and save the state rather than trying to bypass it.
