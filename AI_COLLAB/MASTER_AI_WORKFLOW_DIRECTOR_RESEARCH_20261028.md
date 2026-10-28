@@ -9,7 +9,9 @@
 
 **Reference fixtures:** [Expected-output examples for four priority cases](AI_WORKFLOW_DIRECTOR_REFERENCE_FIXTURES_20261028.md) make scoring more consistent; these are human-authored examples, not test results.
 
-**Phone-friendly run sheet:** [Manual paired-run procedure](AI_WORKFLOW_DIRECTOR_MANUAL_RUN_SHEET_20261028.md) gives exact baseline/Director prompts, four copy-paste task fixtures, and a per-run evidence record. It is still an unexecuted protocol.
+**Phone-friendly run sheet:** [Manual paired-run procedure](AI_WORKFLOW_DIRECTOR_MANUAL_RUN_SHEET_20261028.md) gives exact baseline/Director prototype prompts, canonical profile mapping, five copy-paste task fixtures, and a per-run evidence record. It is still an unexecuted protocol.
+
+**Current continuity checkpoint:** [PocketCode current checkpoint](POCKETCODE_CURRENT_CHECKPOINT_20261028.md) records the working branch, completed audit corrections, explicit evidence boundaries, and ordered next passes.
 
 ## Executive conclusion
 
