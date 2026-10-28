@@ -139,3 +139,27 @@ Pass 7 — ChatGPT review and revision. Deliver master file plus concise questio
 4. A concise owner handoff stating passes completed, top recommendations/confidence, approvals needed, gaps, and what ChatGPT should do next.
 
 Begin with Pass 0 now and continue through all passes. Do not stop after a preliminary plan.
+
+
+## 2026-10-28 additional research assignment — AI Efficiency Coach & cross-app workflow
+
+The owner has requested a deep three-pass investigation of Ponytail and related agent extensions, plus how RevDev (PC) and PocketCode (phone) can direct AI apps to work efficiently within their legitimately available free/paid usage. The canonical research master is here:
+
+https://github.com/marcelosofficial-ctrl/DevRelay-Missions/blob/review/revdev-adaptive-ai-workshare-2026-10-27/resume/revdev/AI_WORKFLOW_EFFICIENCY_AND_CROSS_APP_ORCHESTRATION_MASTER_2026-10-28.md
+
+PocketCode-specific proposal:
+`PRODUCT/AI_EFFICIENCY_COACH_HANDOFF_PROPOSAL_2026-10-28.md`
+
+Current research already inspected Ponytail's portable skill and its self-published Claude Code benchmark (promising but limited to one host/model and a small set of tasks); Superpowers; Everything Claude Code; Claude Code's skills/rules/hooks/subagents; Gemini CLI extensions/hooks; OpenAI/Codex skills/plugins; Cursor rules/hooks; and (in an additional comparison) Cline hooks, Roo Code custom modes, OpenCode agents/skills, and Continue slash commands/share/MCP. It found no universal supported API for controlling every consumer AI chat app. The baseline is user-mediated copy/share/paste; native CLI/IDE integrations are optional per-host adapters.
+
+Please independently audit the master and:
+1. Verify each claim against current primary docs, especially the integration mechanism and host/version scope. Correct expired/misleading URLs or stale descriptions.
+2. Look for additional major agent-efficiency systems only if they add a genuinely different mechanism, not just a longer name list.
+3. Critically assess the Ponytail benchmark's design and limits; do not repeat its headline gains as expected PocketCode/RevDev results.
+4. Review the proposed portable task packet, six profiles (Lean, Balanced, Deep Verify, Research/3-pass, Repair/Recovery, Continue/Checkpoint), telemetry and synthetic AWE-001–AWE-014 tests. Find missing cases, token traps, or complexity that defeats the goal.
+5. Challenge the feasibility of mobile app-to-app “communication”; distinguish universal share/copy from provider-supported API/skills and from brittle UI automation. No clipboard polling or hidden conversation capture.
+6. Propose an ablation test plan that measures useful verified outcomes at equal task scope, not just output length, and clearly separates exact/estimated/unknown token and cost counters.
+7. Preserve all constraints: PocketCode remains separate from RevDev; budget $0; no paid APIs/accounts/workloads/deployment; do not touch draft PR #2; no user PC is available; prompts/hooks/task packets never grant execution permission; RevDev's HOSTED_DENY and SAFE-01 enforcement-boundary rule remain intact.
+8. Update this handoff or the progress log with the exact pass, sources, findings and unresolved items if you can access/edit the repository. Do not claim implementation tests passed or any AI was actually controlled.
+
+This is a research and independent-audit assignment, not approval to implement the feature or change the accepted architecture.
