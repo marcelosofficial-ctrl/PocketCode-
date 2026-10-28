@@ -33,6 +33,7 @@ The initial MVP candidate is a mobile-first web app with one remote runtime and 
 - [Mobile technical task opportunity map](PRODUCT/MOBILE_TECHNICAL_TASKS.md)
 - [AI Efficiency Coach & Handoff proposal](PRODUCT/AI_EFFICIENCY_COACH_HANDOFF_PROPOSAL_2026-10-28.md)
 - [Portable AI Work Coach prompt v0.1](https://github.com/marcelosofficial-ctrl/DevRelay-Missions/blob/review/revdev-adaptive-ai-workshare-2026-10-27/resume/revdev/AI_WORK_COACH_PORTABLE_PROMPT_V0_1.md) (copy/share fallback; not a native integration) (provider-neutral mobile workflow hypothesis; not implemented)
+- [Compact AI Work Coach prompt and evaluation protocol](https://github.com/marcelosofficial-ctrl/DevRelay-Missions/blob/review/revdev-adaptive-ai-workshare-2026-10-27/resume/revdev/AI_WORK_COACH_ABLATION_AND_COMPACT_PROMPT_V0_1.md) (synthetic cases; no benchmark run)
 - [First-run workflow](PRODUCT/FIRST_RUN_WORKFLOW.md)
 - [Execution loop acceptance criteria](PRODUCT/EXECUTION_LOOP_ACCEPTANCE.md) (proposed; not yet implemented or run)
 - [Desk research on mobile-coding user feedback](RESEARCH/MOBILE_CODING_USER_EVIDENCE.md)
