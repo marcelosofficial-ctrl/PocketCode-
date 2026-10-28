@@ -7,6 +7,8 @@
 
 **Manual evaluation companion:** [AI Workflow Director — Offline Evaluation Kit](AI_WORKFLOW_DIRECTOR_EVALUATION_KIT_20261028.md) supplies eight fixed task fixtures, paired baseline/Director instructions, a scoring rubric, and an evidence record. It is a test protocol only; no assistant runs or benchmark results are claimed.
 
+**Reference fixtures:** [Expected-output examples for four priority cases](AI_WORKFLOW_DIRECTOR_REFERENCE_FIXTURES_20261028.md) make scoring more consistent; these are human-authored examples, not test results.
+
 ## Executive conclusion
 
 PocketCode should develop a distinct feature provisionally named **AI Workflow Director**. It should not try to secretly control every AI app or pretend all assistants expose the same integration interface. Instead, it should generate small, context-aware instructions and task handoffs, then use the safest communication channel each platform actually supports.
