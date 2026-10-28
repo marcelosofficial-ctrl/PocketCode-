@@ -3,7 +3,7 @@
 **Date:** 2026-10-28  
 **Status:** Proposed fixture data and observable outcomes; not frozen, implemented, or executed.  
 **Purpose:** Turn AWD-01–AWD-16 into a compact, traceable catalogue of repeatable inputs and expected observations. This is a design artifact only.  
-**Authority:** The [MVP feature slice](AI_WORKFLOW_DIRECTOR_MVP_SLICE_20261028.md) defines the acceptance-case meanings. The [conformance specification](AI_WORKFLOW_DIRECTOR_CONFORMANCE_TEST_SPEC_20261028.md) defines the required invariants and open contracts. This catalogue elaborates those sources; it does not remap IDs or override them.
+**Authority:** The [MVP feature slice](AI_WORKFLOW_DIRECTOR_MVP_SLICE_20261028.md) defines the acceptance-case meanings. The [conformance specification](AI_WORKFLOW_DIRECTOR_CONFORMANCE_TEST_SPEC_20261028.md) defines the required invariants and open contracts. This catalogue elaborates those sources; it does not remap IDs or override them. The [contract decision register](AI_WORKFLOW_DIRECTOR_CONTRACT_DECISION_REGISTER_20261028.md) reconciles the proposed defaults against the MVP, and the [readiness audit](AI_WORKFLOW_DIRECTOR_READINESS_AUDIT_20261028.md) records the final focused review; both are advisory only.
 
 ## 1. How to use this catalogue
 
