@@ -191,6 +191,14 @@ Failure case must identify the missing `unit_price` field clearly, return a trus
 8. Record cleanup, persistence, or deletion only if directly observable and relevant; otherwise use `UNKNOWN`. Do not claim sandboxing, isolation, or data deletion based only on a UI label.
 9. Assign `0`, `1`, `2`, or `U` only after the attempt. Attach the observation supporting each non-`U` score.
 
+### Source-informed caveats to capture (not test results)
+
+- **Pyodios local candidate:** its current FAQ describes iOS/iPadOS 26+, Python 3.14.2 via Pyodide, persistent files with explicit import/export, a fresh Python session on each app launch, and approximately 300 MB Python memory availability. These are official maintainer claims; verify the specific device and actual task behavior before scoring. See the [official FAQ](https://pyodios.caffeinatedmath.com/faq).
+- **Timeout is not termination:** Pyodios documents that a run times out after 120 seconds but the code continues in the background until the Python session is restarted. Record timeout, interruption, subsequent-run behavior, and recovery separately; never treat a timeout message as proof that execution stopped.
+- **Browser-local WASM:** browser file access is not automatically equivalent to local-app file access. Pyodide's [FAQ](https://pyodide.org/en/stable/usage/faq.html) and [file-system documentation](https://pyodide.org/en/stable/usage/file-system.html) describe browser security constraints and experimental native file-system access with limited browser support. Any later comparison must use the actual intended browser and explicit file transfer flow.
+- **Privacy evidence:** a vendor privacy statement or app-store disclosure is not an independent audit of execution boundaries, retention, or every data flow. Record the source and evidence class precisely.
+- These caveats are source-review notes, not hands-on observations. They do not change any path's status from NOT RUN.
+
 ### Stop / disqualifier rules
 
 - Stop if the path requires payment, a paid trial, billing activation, credential setup, or a provider workload not explicitly approved.
