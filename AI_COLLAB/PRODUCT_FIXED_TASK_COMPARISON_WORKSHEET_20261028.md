@@ -292,3 +292,21 @@ The portable-receipt candidate is an evaluation condition, **not a second report
 ### Open contract question: run-to-input/source binding
 
 The existing proposed report includes a run ID, runtime/status, optional exit/duration, bounded output, and output filenames/sizes, but does not explicitly require an input digest, script/source revision, or artifact content digest. The portable-receipt test may examine whether any of these identifiers materially improve reproducibility and cross-tool debugging, but they are **not current contract requirements**. Record whether each alternative exposes such evidence, whether collecting it is privacy-safe and practical, and whether the separate AI correction actually benefits. Any proposed addition belongs in a future versioned review of the canonical report contract—not an undocumented parallel schema.
+
+
+## 5C. Pyodios-specific preflight and evidence capture — source review only
+
+**Priority:** first direct iPhone execution comparator, subject to a future approved hands-on attempt. **Status: NOT RUN.**
+
+Official docs indicate Pyodios supports a project working directory, CSV preview/raw view, Python script run controls, JSON preview, real project files, and import/export through iOS Files/share sheet. Thus a fair test must compare against this complete native path, not merely paste code into a console. The fixed task needs only the Python standard library, so dependency installation is not expected to be necessary (inference, not a run result).
+
+Before scoring, record:
+- exact device, iOS version, Pyodios version and runtime version;
+- cold-start/initialization time and any memory/startup failure;
+- input CSV import and project setup steps;
+- whether the real summary.json appears as a file, whether its exact contents are correct, and whether it can be exported;
+- malformed-input behavior, including whether a valid-looking/stale summary remains from a previous run (use a fresh folder for each scenario);
+- exact console/error output and whether a process exit code, authoritative terminal state, stdout/stderr boundaries, or truncation metadata are exposed;
+- whether any timeout/cancel indicator confirms termination. Pyodios documentation says code may continue after its 120-second timeout; do not infer termination from that message.
+
+Do not mark undocumented report fields as missing until observed; use UNKNOWN / NOT DOCUMENTED before a run. Compare the native evidence bundle with the existing PocketCode proposed report, then perform paired correction attempts only if a real run produces enough evidence. No task, install or correction attempt has occurred.
