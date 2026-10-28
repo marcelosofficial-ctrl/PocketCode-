@@ -24,7 +24,7 @@ One supported task flow:
 
 1. Paste a short script and explicitly select synthetic/small input files.
 2. See the exact runtime and limitations before starting.
-3. Run only in an approved, isolated environment.
+3. Run within the explicitly selected and tested local/browser or remote execution boundary; describe its actual limits rather than assuming local WASM, a native app, or a hosted container all provide the same isolation/resource guarantees.
 4. See truthful terminal/job disposition, stdout/stderr, exit evidence, truncation and output files; distinguish program failure from timeout, cancellation, infrastructure failure, and unconfirmed cleanup.
 5. Copy a bounded report that helps an AI diagnose the next step, without silently including source or secrets.
 6. Apply a correction and rerun.
