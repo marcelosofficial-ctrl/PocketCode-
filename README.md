@@ -25,9 +25,10 @@ The initial MVP candidate is a mobile-first web app with one remote runtime and 
 ## Start here — read in this order
 
 1. **[PocketCode Continuity Hub](AI_COLLAB/POCKETCODE_CONTINUITY_HUB_20261028.md)** — source-of-truth order, branch/PR map, evidence boundaries, and three-AI collaboration method.
-2. **[Four-month phone-only master plan](AI_COLLAB/FOUR_MONTH_PHONE_ONLY_MASTER_PLAN_20261028.md)** — month-by-month workstreams through February 2027, future-feature priorities, and decisions to defer.
-3. **[Current work checkpoint](AI_COLLAB/POCKETCODE_CURRENT_CHECKPOINT_20261028.md)** — latest pass results, status, open work, and exact next actions.
-4. **[PC-return checklist draft](AI_COLLAB/PC_RETURN_CHECKLIST_DRAFT_20261028.md)** — safe branch/blob verification and offline tests for when a PC becomes available; no live provider testing is authorized by this checklist.
+2. **[Complete new-chat handoff](AI_COLLAB/NEW_CHAT_HANDOFF_20261028.md)** — consolidated mission, phone-only plan, exact branch/PR state, constraints, and next actions.
+3. **[Four-month phone-only master plan](AI_COLLAB/FOUR_MONTH_PHONE_ONLY_MASTER_PLAN_20261028.md)** — month-by-month workstreams through February 2027, future-feature priorities, and decisions to defer.
+4. **[Current work checkpoint](AI_COLLAB/POCKETCODE_CURRENT_CHECKPOINT_20261028.md)** — latest pass results, status, open work, and exact next actions.
+5. **[PC-return checklist draft](AI_COLLAB/PC_RETURN_CHECKLIST_DRAFT_20261028.md)** — safe branch/blob verification and offline tests for when a PC becomes available; no live provider testing is authorized by this checklist.
 
 This is an isolated research branch. These documents do not mean the plan or research is integrated into `main`, and they do not authorize implementation, spending, merges, deployment, Actions, or provider workloads.
 
