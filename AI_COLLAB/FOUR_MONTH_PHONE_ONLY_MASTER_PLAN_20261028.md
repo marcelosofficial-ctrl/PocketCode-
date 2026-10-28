@@ -89,14 +89,14 @@ Work to complete:
 **Primary objective:** make sure the contract being discussed is the same contract the helper/tests are meant to express.
 
 Work to complete:
-1. Compare the main branch's [proposed execution contract](../PRODUCT/EXECUTION_CONTRACT.md) and [security requirements](../SECURITY.md) with PR #3's draft execution contract, selected lifecycle baseline, acceptance matrix, helper, and test traceability.
+1. Compare the main branch's [proposed execution contract](../PRODUCT/EXECUTION_CONTRACT.md) and [security requirements](../SECURITY.md) with PR #3's draft execution contract, selected lifecycle baseline, acceptance matrix, helper, and test traceability. Separate invariants that apply to any execution path from provider/server-specific gates; do not assume the PR #3 policy-revision barrier or tenant controls apply unchanged to browser-local WASM.
 2. Preserve the distinction between execution observation, derived job disposition, cleanup state, and permission to release artifacts. Keep uncertain cleanup, contradictory terminal evidence, overflow, cancellation, and malformed evidence from becoming PASS.
 3. Produce a single focused cross-branch discrepancy list only if material conflicts remain. Include each exact file/branch and the smallest correction needed; do not overwrite PR #3.
 4. Review test traceability for each required behavior and mark whether it is: source-reviewed, executed in an isolated test environment, requires a real device, or requires a controlled provider test.
 5. If test execution is possible in an approved offline assistant environment, run only the exact pure helper/test pair from the exact PR #3 head in a temporary reconstruction; record blob SHAs, command, interpreter, output, and limitations. Do not dispatch Actions or use a real provider.
 6. Keep provider/security proof blocked until owner approval, documented cost bound, policy verification plan, and all provider-specific preconditions are satisfied.
 
-**Exit gate:** the project can state precisely which contract rules are selected for the PR #3 offline baseline, which tests actually ran, which remain NOT RUN, and what cannot be proven without real infrastructure. No “secure” or “production-ready” claim is unlocked by static analysis alone.
+**Exit gate:** the project can state which safety/report invariants apply to the selected candidate path, which PR #3 rules remain remote-provider-specific, which tests actually ran, which remain NOT RUN, and what cannot be proven without real infrastructure. If local/WASM remains a candidate, separately define its exposed APIs, worker termination, input/output quotas, package policy, persistence, and report evidence. Static analysis alone does not unlock any “secure” or “production-ready” claim.
 
 ### Month 3 — Test the mobile workflow and the Director hypothesis (2026-12-28 to 2027-01-27)
 
