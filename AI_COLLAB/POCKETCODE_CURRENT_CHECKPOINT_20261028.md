@@ -31,6 +31,7 @@ Owner constraints for all future work:
 
 - [PocketCode Continuity Hub](POCKETCODE_CONTINUITY_HUB_20261028.md) — read-first project map, source-of-truth order, branch separation, AI roles, and evidence boundaries.
 - [Four-month phone-only master plan](FOUR_MONTH_PHONE_ONLY_MASTER_PLAN_20261028.md) — dated workstreams, monthly exits, zero-budget constraints, future feature tiers, and PC-return readiness.
+- [PC-return checklist draft](PC_RETURN_CHECKLIST_DRAFT_20261028.md) — exact-ref verification, isolated offline test sequence, evidence template, and a separately gated provider path.
 - [Master AI Workflow Director research](MASTER_AI_WORKFLOW_DIRECTOR_RESEARCH_20261028.md) — research synthesis and product proposal.
 - [First testable feature slice](AI_WORKFLOW_DIRECTOR_MVP_SLICE_20261028.md) — proposed profiles, task packet, continuation capsule, static acceptance tests, and implementation sequence.
 - [Deterministic AWD conformance test specification](AI_WORKFLOW_DIRECTOR_CONFORMANCE_TEST_SPEC_20261028.md) — assertion-level design for AWD-01–16, forbidden behaviors, cross-case invariants, and eight recommended v1 contract defaults; not implemented or run.  
@@ -102,7 +103,7 @@ Owner constraints for all future work:
 - [x] Add a dated delta for newly surfaced local-phone/remote-agent competitors without copying PR #3's broader research.
 - [x] Create a product hypothesis card with alternatives and falsification criteria; no market validation claimed.
 - [ ] Reconcile the audit and research deltas against existing main-branch docs, updating only where it removes genuine stale navigation or contradiction. Do not promote PR #3 decisions to main.
-- [ ] Draft the compact PC-return runbook: exact branch/blob verification, offline tests first, test output capture, and a separately gated provider test. Keep provider/spend/merge/deployment/Actions gates closed.
+- [x] Draft the PC-return checklist at [PC_RETURN_CHECKLIST_DRAFT_20261028.md](PC_RETURN_CHECKLIST_DRAFT_20261028.md). The checklist is preparation only; exact current SHAs and all approvals must be rechecked when a PC is available.
 
 ### Pass D — Manual AI evaluation when feasible
 1. If only one pair can be afforded, run EVAL-06 baseline and Director prototype in the same AI app/model in fresh chats.
