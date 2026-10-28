@@ -156,6 +156,10 @@ Additional current artifacts:
 
 Current research already inspected Ponytail's portable skill and its self-published Claude Code benchmark (promising but limited to one host/model and a small set of tasks); Superpowers; Everything Claude Code; Claude Code's skills/rules/hooks/subagents; Gemini CLI extensions/hooks; OpenAI/Codex skills/plugins; Cursor rules/hooks; and (in an additional comparison) Cline hooks, Roo Code custom modes, OpenCode agents/skills, and Continue slash commands/share/MCP. It found no universal supported API for controlling every consumer AI chat app. The baseline is user-mediated copy/share/paste; native CLI/IDE integrations are optional per-host adapters.
 
+
+
+A prior desk audit has now been recorded here: https://github.com/marcelosofficial-ctrl/DevRelay-Missions/blob/review/revdev-adaptive-ai-workshare-2026-10-27/resume/revdev/AI_WORK_COACH_PRIMARY_SOURCE_AUDIT_AND_EVALUATION_REVIEW_2026-10-28.md . It is ChatGPT's source/document review, not Gemini's independent review and not an implementation test. Please use it as a falsifiable review target: verify the primary-source claims independently, challenge the evaluation corrections, and add only materially different evidence or unresolved objections. The RevDev master now labels AWE IDs as legacy; PocketCode remains AEC-001–AEC-012.
+
 Please independently audit the master and:
 1. Verify each claim against current primary docs, especially the integration mechanism and host/version scope. Correct expired/misleading URLs or stale descriptions.
 2. Look for additional major agent-efficiency systems only if they add a genuinely different mechanism, not just a longer name list.
