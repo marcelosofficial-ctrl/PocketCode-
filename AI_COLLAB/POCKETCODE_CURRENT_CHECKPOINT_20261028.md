@@ -44,6 +44,8 @@ These were documentation/source-review changes on the isolated research branch. 
 
 9. Latest scoped link check covered ten orientation/product documents (README, Project Status, Product Spec, Architecture, Continuity Hub, four-month plan, handoff, checkpoint, hypothesis card and PC-return checklist): 170 relative Markdown links resolved against the branch tree with zero missing paths; no fragment-only anchors were present in this set. Twenty-eight external URL references were identified but not checked for live availability. This is a static path check, not a repository-wide or rendered-Markdown audit.
 10. Confirmed at source level that Project Status/Product Spec no longer treat a remote runtime as selected, Architecture documents local/browser and hosted/remote paths as unselected candidates, and Product Spec now has one RevDev compatibility section rather than a duplicate.
+11. Added an adversarial product-hypothesis section to the existing [Product Hypothesis Card](PRODUCT_HYPOTHESIS_CARD_20261028.md): strongest counterargument, possible provider-neutral evidence/continuity differentiator, explicit falsification conditions, and current continue-discovery/no-provider recommendation.
+12. Added a source-to-test traceability table to the [Cross-Branch Execution-Contract Audit](EXECUTION_CONTRACT_CROSS_BRANCH_AUDIT_20261028.md) and exact blocker checklist to the [PC-return checklist](PC_RETURN_CHECKLIST_DRAFT_20261028.md). These map policy-before-start, EXIT_NONZERO plus gate failures, artifact release, cleanup history, event ordering and output limits to source/test refs while preserving NOT RUN/provider-only boundaries.
 
 ## 4. Critical unresolved contract questions
 
@@ -98,14 +100,14 @@ This schedule is a sequence of evidence gates, not a promise of PC availability 
 
 ## 6. Immediate next queue
 
-**Completed in this pass:** scoped structure/link verification; exact-ref policy-barrier and disposition source trace; static prototype review; adversarial desk-review of the product hypothesis. Their results are recorded above and in the linked specialist docs. Do not repeat them unless source refs change.
+**Completed in this pass:** scoped structure/link verification; exact-ref policy-barrier and disposition source trace; static prototype review; adversarial product-hypothesis review; source-to-test traceability map; and PC-return checklist crosswalk. Do not repeat these unless source refs change.
 
-1. **Build the PC-return evidence runbook from existing sources.** Crosswalk the fixed-task worksheet, Director evaluation kit, prototype checker/tests, PR #2/PR #3 source refs and offline acceptance matrix into a dependency-ordered checklist. For each item state command/input, expected evidence, what it proves, what it does not prove, stop condition, and whether it requires a real PC, a user phone action, or explicit owner authorization. Do not run Actions or provider tests.
-2. **Create a compact contract-to-test traceability map in the existing audit.** Map each high-risk invariant to exact helper/test evidence and label as source-covered, missing from reviewed source, NOT RUN, or provider-only. Prioritize policy revision before start, EXIT_NONZERO plus gate failures, artifact release, cleanup reconciliation/report versioning and terminal-event ordering. Avoid another master document.
-3. **Prepare the next independent-review request.** One bounded question for Gemini/Claude: challenge the falsification criteria and whether the proposed portable evidence/continuity layer is meaningfully distinct from existing local-first alternatives. Ask for cited source refs and counterexamples, not broad new research. Do not treat silence as approval.
-4. **Only after evidence changes the direction, consider implementation.** The status-color mismatch in the simulated prototype is a small documented polish issue; leave code untouched during this research/continuity pass. Any implementation change must be explicitly authorized and must preserve the simulation labels.
+1. **Finish the first-PC-session evidence packet.** The PC-return checklist now names exact offline commands, worktree separation, source blobs, hard stops and the contract blockers. The next documentation-only improvement is to add a one-page result-record template that makes each claim's source, test evidence, limits and follow-up explicit; do not create a new master file.
+2. **Prepare a bounded independent-review prompt** for Gemini or Claude to challenge the strongest counterargument/falsification conditions and the claimed value of a portable evidence/continuity layer against local-first alternatives. Require concrete counterexamples and cited sources; ask for a decision recommendation, not more broad research. Do not treat silence as approval.
+3. **Preserve implementation boundaries.** The prototype status-color mismatch is a small source-reviewed polish issue; do not change source in this documentation/continuity pass. Any later UI change needs explicit authorization and must preserve the simulated-execution labels.
+4. **When PC returns, follow the checklist in order.** Re-fetch exact refs, run safe offline tests in separate clean worktrees, capture command/environment/exit/results, and stop at any missing prerequisite. Provider tests remain a separate, explicit owner-approval gate.
 
-No owner action is required for the documentation-only queue. Ask only when a specific task truly requires a phone observation, independent reviewer response or an explicit cost/safety decision.
+No owner action is required to continue documentation-only work. Ask only when a specific task truly requires a phone observation, independent reviewer response or an explicit cost/safety decision.
 
 ## 7. Canonical links for the next chat
 
