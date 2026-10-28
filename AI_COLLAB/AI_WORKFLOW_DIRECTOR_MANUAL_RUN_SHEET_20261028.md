@@ -100,7 +100,7 @@ Copy only the task prompt and context. Do not copy scoring checklists or referen
 
 Task prompt:
 ```text
-In Python, write a function is_even(n) that returns True for even integers and False for odd integers. Keep it minimal. Include two example checks.
+In Python, write a function `is_even(n)` that returns True for even integers and False for odd integers. Keep it minimal. Include two example checks.
 ```
 
 Provided context: none.
