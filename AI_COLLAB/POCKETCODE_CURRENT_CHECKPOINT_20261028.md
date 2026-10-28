@@ -35,6 +35,7 @@ Owner constraints for all future work:
 - [Canonical AWD fixture catalogue](AI_WORKFLOW_DIRECTOR_CANONICAL_FIXTURES_20261028.md) — proposed concrete input envelopes and observable pass/fail boundaries for all 16 IDs, with forbidden behaviors, layer boundaries, traceability, and unresolved contract dependencies; design-only, NOT RUN.
 - [Contract reconciliation and decision register](AI_WORKFLOW_DIRECTOR_CONTRACT_DECISION_REGISTER_20261028.md) — compares all eight proposed defaults with the MVP, separates established semantics from open exact contracts, and recommends a minimal implementation gate; not owner-approved.
 - [Pre-implementation readiness audit](AI_WORKFLOW_DIRECTOR_READINESS_AUDIT_20261028.md) — focused review of AWD-08/11/12/14, prioritized decision classes, and a minimal offline-builder scope proposal; static review only.
+- [Bounded implementation plan](AI_WORKFLOW_DIRECTOR_BOUNDED_IMPLEMENTATION_PLAN_20261028.md) — dependency-ordered work packages, AWD mappings, evidence requirements, and the minimal contract gate; proposal only, no implementation authorization.
 - [Offline evaluation kit](AI_WORKFLOW_DIRECTOR_EVALUATION_KIT_20261028.md) — canonical task profiles, cases EVAL-01 through EVAL-08, scoring rubric, and limitations.
 - [Manual paired-run sheet](AI_WORKFLOW_DIRECTOR_MANUAL_RUN_SHEET_20261028.md) — exact phone-friendly baseline/Director prototype prompts and copyable fixtures.
 - [Reference output fixtures](AI_WORKFLOW_DIRECTOR_REFERENCE_FIXTURES_20261028.md) — human-authored examples; do not show them to an assistant during measured runs.
@@ -48,6 +49,7 @@ Owner constraints for all future work:
 - Reconciled the eight proposed conformance defaults against the MVP and all 16 fixture meanings in a decision register. Marked existing semantic requirements separately from exact open contracts; no recommendations were treated as accepted decisions.
 - Audited the register against the MVP and fixture catalogue: all eight proposed contracts are represented; AWD-01–AWD-16 each have a traceability row; current MVP-supported semantics are separated from exact open choices. The register remains advisory, and no owner decision or implementation authorization was inferred.
 - Completed a focused readiness audit for AWD-08 (omissions), AWD-11 (unsupported verification claims), AWD-12 (configured redaction), and AWD-14 (cancelled sharing). Separated must-have semantic invariants from open implementation details and explicitly deferred integrations.
+- Added a bounded implementation plan with G0–G8 work packages and acceptance mappings. G0–G5 describe the proposed core sequence; redaction, real sharing, and manual AI comparison are separately gated. The plan does not authorize implementation.
 - Linked the readiness audit from the README, master research, canonical fixture catalogue, and checkpoint. Static review of the new feature documents confirms the 16 fixture IDs and 16 register rows align; code fences are balanced. A broad README link scan was inconclusive for older unrelated links because their target files were outside the fetched audit set, so no repository-wide broken-link claim is made.
 
 
