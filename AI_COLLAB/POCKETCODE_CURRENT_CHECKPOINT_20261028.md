@@ -115,6 +115,7 @@ Material findings:
 - Pyodios is a serious iOS-local comparator for the standard-library CSV task; its official docs describe real file import/export and local execution, but task behavior remains NOT RUN.
 - Its FAQ says running code cannot currently be interrupted directly; a 120-second timeout does not stop the code, and the session may need restarting. Timeout is not proof of termination.
 - Browser-local Pyodide requires explicit file-transfer integration; its native file-system path is experimental and limited in browser support. Do not assume an iPhone PWA has the same file flow as a native local app.
+- Target-device note: if the eventual comparison uses an iPhone 13, third-party technical reporting lists 4 GB RAM; Pyodios identifies 4 GB as its minimum and says startup memory pressure is more likely at that level. iOS compatibility alone does not establish reliable startup. This is a test condition to capture, not a reason to install/test now.
 - Developer/app-store privacy statements are not independent security audits.
 - AndroidHarness is a serious broader local-first alternative; public feature claims are not comparative test evidence.
 
