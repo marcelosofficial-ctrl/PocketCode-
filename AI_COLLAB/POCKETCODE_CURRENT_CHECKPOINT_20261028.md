@@ -47,6 +47,8 @@ These were documentation/source-review changes on the isolated research branch. 
 11. Added an adversarial product-hypothesis section to the existing [Product Hypothesis Card](PRODUCT_HYPOTHESIS_CARD_20261028.md): strongest counterargument, possible provider-neutral evidence/continuity differentiator, explicit falsification conditions, and current continue-discovery/no-provider recommendation.
 12. Added a source-to-test traceability table to the [Cross-Branch Execution-Contract Audit](EXECUTION_CONTRACT_CROSS_BRANCH_AUDIT_20261028.md) and exact blocker checklist to the [PC-return checklist](PC_RETURN_CHECKLIST_DRAFT_20261028.md). These map policy-before-start, EXIT_NONZERO plus gate failures, artifact release, cleanup history, event ordering and output limits to source/test refs while preserving NOT RUN/provider-only boundaries.
 
+13. Added a blank cross-path synthesis and decision-record template to the [fixed-task worksheet](PRODUCT_FIXED_TASK_COMPARISON_WORKSHEET_20261028.md). It keeps success and malformed-input results separate, records the strongest counter-evidence per path, and prevents rankings while critical evidence is unknown. This is a protocol improvement only; all path comparisons remain NOT RUN.
+
 ## 4. Critical unresolved contract questions
 
 ### A. Policy revision before start
@@ -80,6 +82,13 @@ Reviewed `prototypes/mobile-runner/index.html` at blob `e2c4ece041be95ce9a73bc60
 **Concrete UX issue:** the top workspace status uses the green `.status` style for both sample-success and sample-failure states. The render handler changes its text to “Sample failed” but does not switch the status color/dot to a failure style. The result badge and exit-status metric do change, so this is a visual inconsistency rather than evidence of a false execution claim. Record it as a prototype polish item; no prototype code was changed in this documentation-only pass.
 
 **Review limits:** source inspection only. Browser interactions, clipboard behavior, mobile layout, accessibility and the Python source-check suite were not executed. The static checker itself says it does not run browser JavaScript or submitted code.
+
+
+### Next highest-value pass (after synthesis template)
+
+1. Do a focused primary-source freshness check only for facts that could change the fixed-task candidate set or a disqualifier (especially target-platform availability, first-run/package/file limitations, and current free-tier prerequisites); update existing source notes rather than creating another competitor report.
+2. If an independent Gemini/Claude challenge arrives, reconcile concrete claims against source URLs and this worksheet; otherwise continue without blocking on it.
+3. Do not score paths, claim a winner, or call the task comparison complete until the exact success and malformed-input scenarios have real evidence. Current comparison remains NOT RUN.
 
 ## 5. Four-month plan — operating schedule
 
