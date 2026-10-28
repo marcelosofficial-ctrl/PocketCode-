@@ -310,3 +310,10 @@ Before scoring, record:
 - whether any timeout/cancel indicator confirms termination. Pyodios documentation says code may continue after its 120-second timeout; do not infer termination from that message.
 
 Do not mark undocumented report fields as missing until observed; use UNKNOWN / NOT DOCUMENTED before a run. Compare the native evidence bundle with the existing PocketCode proposed report, then perform paired correction attempts only if a real run produces enough evidence. No task, install or correction attempt has occurred.
+
+
+### Carnets-specific preflight — source review only (2026-10-29)
+
+Carnets is a credible $0 local-execution candidate, but do not score it as a drop-in script IDE without checking its notebook-oriented workflow. Official materials describe local Jupyter execution and directory access; older maintainer guidance describes running a standalone `.py` file from a notebook with `%run file.py` and warns that iOS permission to open one file may not grant access to sibling files unless the containing directory is explicitly selected. Because the latter is historical support guidance, verify the current app behavior rather than treating it as a current limitation.
+
+For any later approved test, record the actual setup path and steps, whether the CSV and script share an accessible directory, whether the script can create a real `summary.json` there, and whether that file can be exported through Files/share. Check malformed-input behavior in a fresh directory. Note the App Store's listed 1.5 GB app size as a material storage cost, but do not infer the user's available storage. Sources: [developer page](https://holzschu.github.io/Carnets_Jupyter/), [App Store](https://apps.apple.com/us/app/carnets-jupyter/id1450994949), [historical .py-file guidance](https://github.com/holzschu/Carnets/issues/38), [directory permission guidance](https://github.com/holzschu/Carnets/issues/101). No install or task run has occurred.
