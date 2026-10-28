@@ -140,3 +140,31 @@ A fair comparison must distinguish “challenges the broad product positioning�
 - **Hosted IDEs:** can be accessible from mobile browsers, but are not a fair “free/easy” winner until current plan limits, account setup, file flow and mobile friction are observed.
 
 This tiering avoids both mistakes: dismissing a broad competitor because it targets another platform, and treating an Android-only or host-dependent product as if it directly solves the current iPhone-only task. The fixed-task results remain NOT RUN.
+
+
+## Direct iPhone substitute deep dive — Pyodios v1.1 (2026-10-29)
+
+**Evidence class:** Current official Pyodios documentation and its developer's release article. This is a source review, not hands-on verification. No installation or task execution occurred.
+
+### What is already documented
+
+- Pyodios v1.1.0 runs CPython 3.14.2 through Pyodide 314.0.5, on-device, and requires iOS/iPadOS 26+. The developer reports first-launch initialization of roughly 5–15 seconds and about 300 MB available to Python. Startup can fail under memory pressure; the FAQ specifically calls out 4 GB devices as the minimum/highest-risk class.
+- The Files tab supports creating and running Python scripts, opening CSV in a table/raw-text preview, opening JSON in a text viewer, and working within a project folder that becomes Python's current working directory.
+- Official docs say scripts can read input files from the project and files written by code appear in the project and Files tab. Import/export uses the iOS document picker and share sheet; files are also visible in the iOS Files app. These are meaningful, real-file workflow capabilities, not merely printed output.
+- Python sessions are fresh each time the app opens; saved source/data files persist in app storage. Notebook export to HTML is documented.
+- The app's documented 120-second timeout does **not** mean the running code was terminated: the FAQ says execution continues in the background and subsequent runs wait until the Python session is restarted. This is a critical caution against treating a timeout message as confirmed process termination.
+- A local script can create a summary.json and fail clearly on missing unit_price; because this task uses only Python's standard library, no package install or provider/network access should be necessary. This is a reasoned compatibility expectation, **not an observed test result**.
+
+### What the documentation does not establish
+
+The reviewed docs establish editor/run controls, a console, saved files, and file export. They do **not** establish that Pyodios provides the exact PocketCode-style, per-run structured report with authoritative process exit code, bounded stdout/stderr and truncation flags, an authoritative terminal lifecycle state, or an explicit “timed out but still running” machine-readable field. Mark these fields **UNKNOWN / NOT DOCUMENTED**, not absent; confirm through a real, permitted task run before scoring.
+
+Likewise, file export and readable JSON are documented, but this review did not verify whether a script can reliably replace/overwrite an existing output in the same way the worksheet requires, or how a syntax/runtime failure is represented in the console and exported evidence.
+
+### Updated relevance judgement
+
+Pyodios is now the **first direct iPhone execution comparator** for the fixed task, ahead of Android-only tools and host-dependent Pairlet. It already appears to cover the basic edit-run-read-file-export loop that the initial PocketCode hypothesis risked overclaiming. The remaining testable question is narrower: does PocketCode's existing report contract materially improve truthfulness, recovery and cross-AI correction compared with Pyodios's native editor/console/files flow, enough to justify another app?
+
+Suggested fair sequence if a hands-on comparison is later approved: (1) record device/iOS/app version and cold-start outcome; (2) import the exact synthetic CSV and run the unchanged success script; (3) verify the actual summary.json file and export it; (4) run malformed input in a fresh output folder and verify the failure plus absence of a valid summary; (5) record precisely what run/status/output evidence Pyodios exposes; (6) compare that native evidence with the existing PocketCode report format in a paired correction test. Do not use timeout as a stop mechanism without confirming process termination.
+
+Sources: [Pyodios FAQ](https://pyodios.caffeinatedmath.com/faq), [Pyodios Files guide](https://pyodios.caffeinatedmath.com/guide/files), [Pyodios developer's v1.1 release article](https://blog.thecoatlessprofessor.com/posts/pyodios-1-1-0-now-available-on-the-app-store/index.html), [Pyodios App Store listing](https://apps.apple.com/us/app/pyodios/id6762922366). The App Store listing and developer-authored pages are not independent product audits.
