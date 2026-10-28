@@ -45,6 +45,7 @@ Owner constraints for all future work:
 - Added eight recommended v1 defaults for unresolved contracts (input normalization, packet serialization, character counting, oversized-context behavior, configured redaction, capsule validation, share-adapter results, and component boundaries). These are recommendations, not frozen decisions.
 - Authored the canonical fixture catalogue with proposed repeatable input envelopes, observable pass/fail rules, forbidden behaviors, traceability, layer boundaries, and unresolved dependencies for AWD-01–AWD-16. This is design-only; no test code was created or executed.
 - Reconciled the eight proposed conformance defaults against the MVP and all 16 fixture meanings in a decision register. Marked existing semantic requirements separately from exact open contracts; no recommendations were treated as accepted decisions.
+- Audited the register against the MVP and fixture catalogue: all eight proposed contracts are represented; AWD-01–AWD-16 each have a traceability row; current MVP-supported semantics are separated from exact open choices. The register remains advisory, and no owner decision or implementation authorization was inferred.
 
 
 
@@ -82,7 +83,7 @@ Owner constraints for all future work:
 - [ ] After review of the proposed defaults, freeze only the decisions needed for the first local/offline slice.
 - [x] Create a canonical catalogue with proposed fixture inputs and observable pass/fail boundaries for AWD-01–AWD-16; audit coverage and label unresolved dependencies.
 - [x] Reconcile the eight proposed defaults against the MVP and fixture catalogue; record existing semantics, exact open contracts, deferred scope, and the minimum implementation gate. This is analysis, not owner approval.
-- [ ] Audit the decision register for unsupported assumptions and link/traceability consistency before asking for any owner decisions.
+- [x] Audit the decision register for unsupported assumptions and traceability: eight contract rows D-01–D-08, all 16 AWD IDs mapped, no recommendation marked owner-approved, and Markdown fences balanced. The register is linked from the MVP, conformance spec, master research, checkpoint, and README.
 - [ ] Create executable tests only after implementation is authorized.
 
 ### Pass D — Manual AI evaluation when feasible
