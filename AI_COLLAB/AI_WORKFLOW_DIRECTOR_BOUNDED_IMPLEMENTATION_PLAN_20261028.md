@@ -31,6 +31,29 @@ This is not a PocketCode app implementation specification for every future execu
 
 G0–G5 are the proposed core. G6–G8 are separately gated and must not be smuggled into the initial implementation.
 
+### Explicit acceptance traceability
+
+| Acceptance ID | Planned work package | Required proof focus |
+|---|---|---|
+| AWD-01 | G1, G2, G4 | Lite packet is concise and preserves the concrete goal |
+| AWD-02 | G1, G2, G4 | Selected context and acceptance criteria preserved; unselected context excluded |
+| AWD-03 | G2, G4 | Careful profile states scope and verification honestly |
+| AWD-04 | G2, G5, G4 | Review only does not authorize edits |
+| AWD-05 | G1, G2, G4 | Empty optional sections omitted |
+| AWD-06 | G1, G2, G4 | Protected literals remain exact |
+| AWD-07 | G2, G4 | No runtime means no claimed PASS |
+| AWD-08 | G2, G4, G5 | Omission is visible; no silent destructive truncation |
+| AWD-09 | G2, G4 | Refuse quota evasion; offer compliant pause/resume |
+| AWD-10 | G3, G4 | Capsule with no executed checks cannot be DONE_VERIFIED |
+| AWD-11 | G3, G4 | Unsupported “tests passed” claim remains unverified |
+| AWD-12 | G6 only, if approved | Configured synthetic match redacted; best-effort limits disclosed |
+| AWD-13 | G2, G4 | Unknown provider capability stays unknown; copy/paste fallback remains |
+| AWD-14 | G7 only, if approved | Cancellation is not success; local packet remains |
+| AWD-15 | G2, G4, G5 | Size label says characters; count updates with the exact preview |
+| AWD-16 | G1, G2, G4 | Explicit constraints take precedence over profile hint |
+
+This mapping preserves the existing MVP IDs and meanings. A case assigned to an optional stage is **not** permission to include that stage in v1; it means the case remains deferred until the relevant scope gate is approved.
+
 ## 3. Proposed dependency order
 
 1. **G0 — Scope gate:** Decide whether v1 includes capsule construction/validation alongside packet generation, and explicitly defer redaction/sharing unless approved.
