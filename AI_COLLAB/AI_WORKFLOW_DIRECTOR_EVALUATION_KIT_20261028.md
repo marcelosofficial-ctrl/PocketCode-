@@ -3,6 +3,7 @@
 **Status:** Test design only. These fixtures have not been run against any AI assistant.  
 **Parent:** [Master AI Workflow Director research](MASTER_AI_WORKFLOW_DIRECTOR_RESEARCH_20261028.md)  
 **Feature slice:** [First testable feature slice](AI_WORKFLOW_DIRECTOR_MVP_SLICE_20261028.md)  
+**Deterministic conformance design:** [AWD-01–16 assertions and open contracts](AI_WORKFLOW_DIRECTOR_CONFORMANCE_TEST_SPEC_20261028.md)  
 **Reference fixtures:** [Expected-output examples for EVAL-01, 02, 04, 06, and 08](AI_WORKFLOW_DIRECTOR_REFERENCE_FIXTURES_20261028.md).  
 **Phone-friendly run sheet:** [Exact paired prompts, task fixtures, and record form](AI_WORKFLOW_DIRECTOR_MANUAL_RUN_SHEET_20261028.md).  
 **Current checkpoint:** [Current research state and next-pass plan](POCKETCODE_CURRENT_CHECKPOINT_20261028.md).
