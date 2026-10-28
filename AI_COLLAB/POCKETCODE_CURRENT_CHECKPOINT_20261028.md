@@ -61,6 +61,24 @@ The PR #3 helper returns FAILED for EXIT_NONZERO before checking cleanup, policy
 
 Full source refs and the next proposed cases are recorded in the [Cross-Branch Execution-Contract Audit](EXECUTION_CONTRACT_CROSS_BRANCH_AUDIT_20261028.md). Do not modify PR #2 or PR #3 to settle the question without explicit authorization.
 
+## 4A. Additional source-review findings (2026-10-28)
+
+### Policy barrier — exact evidence boundary
+
+- Reviewed PR #3 branch tree at head `0ddcc0bc97bac5d446aefedf3d71f99411bd841d` (71 tracked paths). The relevant executable logic found is the pure `scripts/lifecycle_contract.py` helper and `scripts/test_lifecycle_contract.py`; no coordinator/provider-adapter implementation path is present in that tree. This is a scoped repository-tree observation, not proof that no external/private integration exists.
+- `derive_disposition(...)` accepts a boolean `policy_confirmed`. It can fail closed when that value is not exactly `True` for EXIT_ZERO, but the function cannot establish which policy revision was applied or whether application occurred before process start.
+- The draft contract and matrix define the stronger barrier: exact required revision confirmed on the intended boundary before the task-start call; pending, missing, failed, late or mismatched revision must prevent start. NET-BARRIER-01 / NET-SEM-01 are test requirements, not evidence that a coordinator/adapter enforces them.
+- The current pure tests cover false/malformed gate values and EXIT_ZERO gate failures. The source reviewed does not itself prove a test of a real start-call ordering barrier. Exact checked-in tests remain NOT RUN.
+- The nonzero-exit question remains a semantic decision, not a proven bug: the helper returns FAILED for EXIT_NONZERO before checking cleanup/policy/authorization gates. Preserve the nonzero observation, independently deny artifact release when any release gate fails, and obtain reviewer/owner agreement on FAILED versus INCOMPLETE for the overall disposition in those combinations.
+
+### Mobile prototype — static UX source review only
+
+Reviewed `prototypes/mobile-runner/index.html` at blob `e2c4ece041be95ce9a73bc60ff354702b21c33c2`, plus the existing static checker and its test source. The prototype's controls explicitly select fixed sample success/failure examples; the page, report and copy-debugging prompt disclose that submitted code is not executed. It remains ineligible for execution/correctness scoring.
+
+**Concrete UX issue:** the top workspace status uses the green `.status` style for both sample-success and sample-failure states. The render handler changes its text to “Sample failed” but does not switch the status color/dot to a failure style. The result badge and exit-status metric do change, so this is a visual inconsistency rather than evidence of a false execution claim. Record it as a prototype polish item; no prototype code was changed in this documentation-only pass.
+
+**Review limits:** source inspection only. Browser interactions, clipboard behavior, mobile layout, accessibility and the Python source-check suite were not executed. The static checker itself says it does not run browser JavaScript or submitted code.
+
 ## 5. Four-month plan — operating schedule
 
 Use the [master plan](FOUR_MONTH_PHONE_ONLY_MASTER_PLAN_20261028.md) as the schedule; the gates below summarize it.
