@@ -20,14 +20,14 @@ This is not a PocketCode app implementation specification for every future execu
 | Stage | Work package | Cases / evidence | Exit condition |
 |---|---|---|---|
 | G0 | Confirm scope and the few contracts needed by the selected v1 slice | MVP §9; D-01–D-08 | Explicit scope/contract approval; deferred features written down |
-| G1 | Define typed input and pure normalization | AWD-01, 02, 05, 06, 16 | Required goal/profile validation; ordinary edge trimming; optional empties omitted; protected literals unchanged |
-| G2 | Implement deterministic packet builder | AWD-01–09, 13, 15, 16 | MVP section order; selected context only; constraints/acceptance/evidence preserved; omissions disclosed; no fabricated facts; count uses an approved convention |
-| G3 | Implement capsule validator/builder and provenance rules | AWD-10, 11 plus capsule matrix | Six statuses handled; DONE_VERIFIED requires concrete evidence; claims/unknowns are not promoted to verified facts; malformed inputs produce an explicit, non-destructive validation result |
+| G1 | Define typed input and pure normalization | AWD-01, AWD-02, AWD-05, AWD-06, AWD-16 | Required goal/profile validation; ordinary edge trimming; optional empties omitted; protected literals unchanged |
+| G2 | Implement deterministic packet builder | AWD-01–AWD-09, AWD-13, AWD-15, AWD-16 | MVP section order; selected context only; constraints/acceptance/evidence preserved; omissions disclosed; no fabricated facts; count uses an approved convention |
+| G3 | Implement capsule validator/builder and provenance rules | AWD-10, AWD-11, plus capsule matrix | Six statuses handled; DONE_VERIFIED requires concrete evidence; claims/unknowns are not promoted to verified facts; malformed inputs produce an explicit, non-destructive validation result |
 | G4 | Add offline automated tests | AWD-01–16, determinism and protected-literal suites | All required assertions have runnable tests; test command/environment/output are recorded; no network or real external side effects |
-| G5 | Add reviewable preview/edit/copy UI | MVP user journey; AWD-04, 08, 15 | User can inspect and edit exact output before copying; no automatic transfer; size label says characters, not tokens/cost |
+| G5 | Add reviewable preview/edit/copy UI | MVP user journey; AWD-04, AWD-08, AWD-15 | User can inspect and edit exact output before copying; no automatic transfer; size label says characters, not tokens/cost |
 | G6 | Optional local redaction | AWD-12 | Only if explicitly included in scope: synthetic tests, configured patterns, visible redaction, best-effort warning, no false safety guarantee |
 | G7 | Optional user-initiated sharing | AWD-14 | Only after separate approval and device verification; cancellation distinct from success; local copy retained; no automatic retry |
-| G8 | Manual AI comparison | EVAL-01–08, prioritize EVAL-06 | Separate baseline and prototype outputs saved; same app/model/conditions where possible; incomplete pairs marked; no benchmark claims from unsaved recollection |
+| G8 | Manual AI comparison | EVAL-01–EVAL-08; prioritize EVAL-06 | Separate baseline and prototype outputs saved; same app/model/conditions where possible; incomplete pairs marked; no benchmark claims from unsaved recollection |
 
 G0–G5 are the proposed core. G6–G8 are separately gated and must not be smuggled into the initial implementation.
 
