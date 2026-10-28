@@ -247,3 +247,12 @@ Current decision:
 - No new acceptance IDs, canonical schema changes, PR #2/#3 edits, implementation, or test execution are authorized by this research clarification.
 
 This supersedes the previous checkpoint paragraph that described lost-receipt recovery as the immediate next bounded test. The immediate next task is a non-duplicative static traceability check of `CASE-13` and its exact source/test mappings; if the current matrix already expresses the assertions, record reuse and stop rather than adding more documentation.
+
+
+## 2026-10-29 CASE-13 traceability result
+
+Static crosswalk completed against the exact canonical acceptance/contract files and PR #3 helper/test sources. `CASE-13` already covers the high-level ambiguous-response invariant, so no new acceptance ID is warranted. However, the lower-level mapping is incomplete: PR #3 `reserve_idempotency` returns the original job ID for same-tenant/key/fingerprint replay, but it does not itself query the authoritative run state or prove the API avoids a second dispatch after response loss. Existing tests cover key replay, changed-fingerprint conflict, tenant scope, and a serial-order model; they do not prove durable job lookup, provider recovery, or production concurrency. PR #2 formatter is presentation-only.
+
+**When implementation/test changes are separately authorized:** map existing `CASE-13` to four assertions: (1) same key + same canonical request resolves to the original run reference, (2) authoritative current run state is queried/recovered, (3) no second dispatch occurs, and (4) missing/ambiguous current state stays `INCOMPLETE`. A fake-adapter test can establish modelled call order and no second dispatch; durable storage, atomicity, and provider behavior need separate evidence. Until then, record this as a traceability/semantic precision gap only. The open-source audit contains the exact blob SHAs and seam analysis.
+
+No protected PR #2/#3 branches, canonical contracts, or implementation files were edited. Exact tests remain NOT RUN; no provider, deployment, merge, or spend occurred.
