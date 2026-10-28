@@ -169,3 +169,23 @@ PR #3 explicitly requires those additional gates before overall `PASS`; for exam
 1. Complete relative-link and anchor validation for the remaining Director specifications and source-of-truth documents on the exact research branch.
 2. Draft a compact projection table that explicitly identifies which trusted component owns each gate, the evidence required, the displayed verdict, and what details must remain visible. Treat it as a proposal, not an approved schema.
 3. Keep product-alternative comparison separate from the execution-contract audit; no architecture/provider choice follows from this static finding alone.
+
+## Follow-up pass: Director and product comparison review (2026-10-28)
+
+**Status:** Static source review only. No implementation, test execution, AI evaluation, app install, or mobile benchmark was performed.
+
+### AI Workflow Director
+
+Reviewed the MVP slice, AWD-01–16 conformance specification and canonical fixture catalogue, reference outputs, decision register, readiness audit, bounded implementation plan, offline evaluation kit, manual run sheet, and master research document. The documents consistently identify themselves as proposals and keep the AWD IDs/meanings under the MVP's authority. No reason was found to remap fixture IDs or claim implementation/test success.
+
+The remaining bottleneck is a small owner decision gate, not more fixtures: choose the first-slice boundary; define deterministic goal/profile and optional-input handling; settle serialization only to the degree required for tests; preserve protected literals; keep oversize handling non-destructive; and either define capsule invalid/unknown-field behavior or defer capsule import/export. Character count can be deferred. Redaction and real sharing should remain separately scoped. These are recommendations, not approved decisions or implementation authorization.
+
+### Fixed-task comparison worksheet
+
+Re-read the existing worksheet. It already has a useful fair-comparison protocol: one deterministic CSV success case and one malformed-input failure case; separate documented claims from direct observation; record real setup actions and timing; mark unknowns as U rather than zero/free/PASS; let safety/correctness disqualifiers override convenience; and avoid a total score if a critical dimension is unobserved. No additional worksheet or duplicate scorecard is warranted now.
+
+### Next work
+
+1. Finish a branch-specific relative-link and heading-anchor audit for the core continuity and Director documents.
+2. Keep product alternative evidence and execution-contract review separate.
+3. Continue non-blocking phone-only research; do not request implementation decisions until a concrete decision changes the next work, and do not imply that any manual comparison has run.
