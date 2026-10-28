@@ -39,43 +39,40 @@ Owner constraints for all future work:
 ## Work completed in this pass
 
 1. Audited the manual run sheet against the canonical evaluation kit.
-2. Found and corrected a substantive mismatch: the old run sheet forced the Balanced profile for every test even though the canonical kit assigns Lite, Balanced, Review only, and Careful by case.
-3. Aligned the manual fixtures with the canonical EVAL-01, EVAL-02, EVAL-04, EVAL-06, and EVAL-08 tasks and profiles.
-4. Prioritized EVAL-06, the compact-checkpoint continuation case, as the first test if usage allows only one pair.
-5. Added a human-authored EVAL-06 reference response and aligned the reference examples with the canonical task fixtures.
-6. Clarified that the Director prompt is a hand-authored prototype proxy. It does not test an implemented packet builder and does not prove savings.
-7. Added input prompt character count to the run record in addition to output characters, and kept token/cost claims explicitly out of scope.
-8. No AI assistant runs, product tests, code execution, benchmark, deploy, merge, or paid action was performed.
-
-## Key evaluation design rules
-
-- Use the same AI app/model, plan, context, task, and tool availability for both conditions.
-- Start with fresh chats and never show the assistant the reference fixture or scoring checklist.
-- Record interruptions and confounders; do not reconstruct missing outputs.
-- EVAL-06 is the best first case for chat-continuity value. A single pair is exploratory only.
-- A future packet builder must be tested independently with deterministic static/unit tests; these manual AI runs do not replace those tests.
-- Character counts are not tokens. Shorter is not better if correctness or evidence honesty declines.
-- Do not treat assistant claims as execution evidence.
+2. Fixed the profile assignment mismatch: the old sheet had forced Balanced for every test. The current run sheet maps EVAL-01 to Lite, EVAL-02 to Balanced, EVAL-04 to Review only, EVAL-06 to Balanced, and EVAL-08 to Careful.
+3. Aligned the run sheet's test prompts and toy context with the canonical EVAL-01, EVAL-02, EVAL-04, EVAL-06, and EVAL-08 cases.
+4. Prioritized EVAL-06 (compact-checkpoint continuation) as the first pair to try when usage is scarce.
+5. Added the human-authored EVAL-06 reference response; aligned EVAL-02/EVAL-04/EVAL-08 reference semantics with the canonical fixture definitions.
+6. Clarified the Director prompt is a hand-authored prototype proxy, not output from a product implementation; it proves neither a working feature nor efficiency savings.
+7. Added input prompt character count to the measurement form, alongside output characters and turns.
+8. Added capsule provenance rules and proposed definitions for all six status values. Clarified that `READY_TO_VERIFY` is not a generic substitute for an unknown state.
+9. Added a continuation-capsule integrity checklist covering status/evidence honesty, field preservation, provenance, and bounded next actions.
+10. Reclassified the unsupported “tests passed” EVAL-08 reference as `BLOCKED` because the source revision, command, environment, and output needed to proceed are not available.
+11. Added this durable checkpoint and linked it from the project README, master research, and evaluation kit.
+12. No AI assistant runs, product tests, code execution, benchmark, deployment, merge, or paid action occurred in this pass.
 
 ## Next work sequence
 
-### Pass A — finish static protocol QA
-1. Verify the updated run sheet and reference fixture for exact profile/task alignment with the canonical evaluation kit.
-2. Check all relative Markdown links in the touched documents and scan for contradictory language such as “Balanced for every case,” “tested,” “implemented,” or unsupported savings claims.
-3. Verify the branch comparison and confirm PR #2/#3 remain untouched.
+### Pass A — Static protocol QA (completed for the current document set)
+- [x] Verify the run sheet uses canonical task fixtures and profile assignments.
+- [x] Make EVAL-06 the first suggested pair when usage is scarce.
+- [x] Audit relative Markdown links in the touched project documents against the branch tree.
+- [x] Check Markdown fence balance in the touched documents.
+- [x] Recheck branch comparison and PR #2/#3 states; they remain separate and untouched.
 
-### Pass B — strengthen the test plan without spending AI usage
-1. Add a compact continuity-capsule schema checklist to the evaluation notes: required fields, unknown preservation, no secret/log dumping, and status evidence rule.
-2. Decide whether EVAL-07 (limit-reached safe recovery) should be part of a later second batch; don't run it simply to fill a matrix.
-3. Keep future implementation tasks independent from the broader hosted-code-execution provider decision.
+### Pass B — Continuation capsule contract (design pass completed)
+- [x] Define when each of the six proposed status values is appropriate.
+- [x] Define provenance behavior for facts inherited from prior checkpoints.
+- [x] Add explicit EVAL-06/EVAL-08 scoring guidance for missing evidence, unknowns, and `DONE_VERIFIED`.
+- [ ] If scope is expanded later, turn these rules into static input/output fixtures for a deterministic local packet/capsule builder.
 
-### Pass C — owner/user evaluation when feasible
+### Pass C — Owner/user evaluation when feasible
 1. If only one pair can be afforded, run EVAL-06 baseline and Director prototype in the same AI app/model in fresh chats.
 2. Save both full outputs and fill one record row per condition; mark any incomplete pair.
 3. Apply the existing evaluation rubric only after both outputs are saved.
 4. Do not claim product benefit from one sample. Repeat only if usage allows.
 
-### Pass D — later implementation review, only after owner review
+### Pass D — Later implementation review, only after owner review
 1. Review the profile wordings and task/capsule fields in the MVP slice.
 2. Build a deterministic local packet/capsule builder and static tests only after the owner wants implementation to begin.
 3. Treat official provider-specific setup guides and any paid APIs as a separate later decision.
