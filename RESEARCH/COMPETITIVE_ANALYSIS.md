@@ -99,6 +99,17 @@ This angle is not yet proven unique. Competitor walkthroughs and user testing mu
 - Users may prefer existing IDEs or hosted environments instead of a new product.
 - A large multi-language promise would expand implementation and support cost before demand is proven.
 
+## Official-source refresh — 2026-10-28
+
+Newly surfaced alternatives reinforce the existing conclusion that “AI coding from a phone” is not a sufficient differentiator:
+- [AndroidHarness](https://github.com/Sanuu7/AndroidHarness) markets a no-PC Android coding agent with local shell/Git/Python/Node tools.
+- [PhoneCode](https://github.com/dttdrv/phonecode) describes a local Android coding-agent workspace and explicitly documents runtime/release gates.
+- [Atlan](https://github.com/Atlansdaddy/atlan) describes a Termux/proot on-phone development cockpit plus a cloud-client mode, while also documenting platform and sandbox limitations.
+- [Pairlet](https://github.com/heypandax/pairlet) steers agents running on a user's own computer; the host must remain available.
+- The [existing one-word PocketCode IDE](https://www.pocketcodeapp.com/en/about) is a meaningful name and discoverability conflict for this project's provisional name.
+
+These are maintainer/public-page descriptions, not independent performance or security results. See the [dated competitor scan addendum](../AI_COLLAB/PHONE_ONLY_COMPETITOR_SCAN_ADDENDUM_20261028.md) for the exact scope/caveats and the [product hypothesis card](../AI_COLLAB/PRODUCT_HYPOTHESIS_CARD_20261028.md) for the candidate differentiation and falsification criteria. Do not rename the repository, choose a provider, or expand the MVP based on this desk scan alone.
+
 ## Next research actions
 
 - [ ] Build a task-based comparison using the same sample program on the leading alternatives.
