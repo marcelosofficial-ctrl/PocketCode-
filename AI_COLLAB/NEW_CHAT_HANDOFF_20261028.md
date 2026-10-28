@@ -59,8 +59,7 @@ These roles are flexible defaults. Do not force all three AIs onto every task. G
 Repository: `marcelosofficial-ctrl/PocketCode-` (keep the trailing hyphen).
 
 - Current research branch: `pocketcode-ai-workflow-director-research-2026-10-28`
-- Verified branch head at handoff: `e37d5cbb08df47303a3643f241ff1dd9d3e79812`
-- Comparison with `main`: **129 commits ahead, 0 behind** at this check. This branch is not main; the count is a snapshot and must be rechecked before consequential work.
+- Before creating the handoff and navigation updates, branch head was `e37d5cbb08df47303a3643f241ff1dd9d3e79812` (129 ahead, 0 behind). After adding the handoff and updating the hub/checkpoint/README, the latest completed comparison showed head `3b931874ae923df30fd6102d3a8d983899c989d9`, **133 commits ahead, 0 behind**. This handoff/checkpoint refresh itself advances the branch again; treat both SHA/counts as audit snapshots, not live state, and recheck before consequential work.
 - [PR #2](https://github.com/marcelosofficial-ctrl/PocketCode-/pull/2), branch `chat-continuity-report-regressions-2026-10-26): open, draft, unmerged; head `eb8b7ea83cb0e8fe1880351276c485b761431791`. The PR records 25 Python tests passing in a temporary reconstructed tree from exact branch blobs on 2026-10-26 and a prototype static checker. This is limited offline evidence, not a runtime/security/provider test.
 - [PR #3](https://github.com/marcelosofficial-ctrl/PocketCode-/pull/3), branch `pocketcode-pass0-audit-2026-10-26`: open, draft, unmerged; head `0ddcc0bc97bac5d446aefedf3d71f99411bd841d`. Research/lifecycle contract/test source exists; its current checked-in helper/test pair and full suite were reported NOT RUN. No provider/live execution was tested.
 - Both PRs must remain untouched unless the owner explicitly authorizes a specific change. No merge, deployment, GitHub Actions run, or release is authorized.
