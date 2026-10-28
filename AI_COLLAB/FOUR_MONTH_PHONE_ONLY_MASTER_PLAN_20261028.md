@@ -203,9 +203,9 @@ This plan and the Continuity Hub are documentation artifacts on the isolated AI 
 - Rechecked PR #2 and PR #3 metadata; both remain open, draft, unmerged, and their known head SHAs were unchanged. Counts and SHAs must be rechecked before consequential action.
 
 **Next pass sequence:**
-1. Reconcile the audit and new scan with the existing main-branch documents, editing only this isolated documentation branch and only where it resolves stale/contradictory navigation or status. Do not promote PR #3 decisions to main or overwrite their branch.
-2. Refresh the existing competitor matrix with only the dated high-value delta, plus a link to the richer PR #3 competitor study; avoid a second competing full matrix.
-3. Review the hypothesis card against the product spec, user evidence, and fixed-task comparison protocol. Keep the first task candidate provisional until compared against actual alternatives.
-4. Draft a compact PC-return runbook that starts with exact branch/hash verification and offline tests, and keeps provider/live execution as a separate gated step.
-5. Stop creating new high-level masters once navigation and decision gaps are closed. Focus remaining phone-only work on resolving a decision or preserving clear evidence, not producing more paperwork.
+1. Complete the cross-branch audit review with a compact candidate projection table for execution outcome, cleanup/evidence state, detailed disposition, and user-facing verdict. Keep it advisory; do not freeze a schema or edit PR #2/#3.
+2. Prepare the single fixed-task comparison worksheet and scoring boundaries (setup burden, truthful evidence, report usefulness, failure handling, cost/privacy). Reuse the existing PR #3 task idea; do not run accounts, providers, or workloads.
+3. Use the worksheet to improve the research decision, not to add features: if no existing alternative gap can be described precisely, narrow or stop the hosted-runner hypothesis.
+4. Avoid creating more high-level masters. Update existing matrix/analysis/checkpoint only when a material source or decision changes.
 
+The matrix and competitive analysis on this isolated research branch now link to the dated competitor delta; the PR #3 branch remains untouched.
