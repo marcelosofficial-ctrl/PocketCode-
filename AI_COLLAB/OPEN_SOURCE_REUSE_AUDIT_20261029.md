@@ -194,3 +194,15 @@ A deeper reread of the exact PR #3 matrix shows that the previous section's shor
 4. Defer **stale-revision compare-and-swap** unless file/workspace writes enter the chosen MVP; it is adjacent to, not part of, the current stateless execution contract.
 5. For diagnostic collection failure, extend an existing report/output case only after defining the adapter evidence shape. No schema field is approved by this note.
 6. The exact PR #3 helper/test files and PR #2 formatter/test files remain **NOT RUN** in this environment. No test or runtime claim is upgraded by this static reread.
+
+
+## Scope correction — receipt-loss recovery is not a current MVP test gap
+
+Cross-checking the canonical [execution contract](../PRODUCT/EXECUTION_CONTRACT.md) and [acceptance plan](../PRODUCT/EXECUTION_LOOP_ACCEPTANCE.md) changes the immediate recommendation:
+
+- The first proof explicitly excludes a persistent project workspace, arbitrary networking, and broad agent orchestration. A generic external side effect with an independently lost operation receipt is therefore **outside the currently selected proof boundary**, unless the concrete execution adapter introduces such an operation.
+- Existing acceptance case `CASE-13` already addresses retry after an ambiguous network response: idempotency must prevent accidental duplicate execution where supported, and unknown execution state stays unknown. That is the right current run-level recovery baseline; do not add a parallel generic “lost receipt” case without specifying a distinct operation boundary.
+- The proposed `REUSE-RECOVERY-01` should be treated as a **conditional future case**, not one of the immediate MVP gaps. Activate it only if a selected design includes multi-step orchestration or external side effects whose commit can be separated from recording/receiving their operation receipt. Then name the exact side effect, authoritative inspection API, idempotency key/operation identity, and recovery behavior.
+- For the current stateless execution proof, the next safe work is a traceability clarification: link `CASE-13` to the existing idempotency contract and verify its assertions cover “same key after response loss returns the same run reference / queries authoritative state; never launches a second run; if state cannot be established, stays INCOMPLETE.” This is a **proposed assertion-strengthening recommendation**, not a claim that the checked-in implementation/test already satisfies it. Any change to canonical contract/tests still needs explicit implementation authorization.
+
+Thus the immediate decision is **REUSE existing CASE-13 and DEFER external side-effect receipt-loss testing**. Wrapper-versus-child provenance also remains conditional on a concrete adapter with separate process layers; stale-revision CAS remains out of scope unless workspace writes are selected.
