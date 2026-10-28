@@ -317,3 +317,20 @@ Do not mark undocumented report fields as missing until observed; use UNKNOWN / 
 Carnets is a credible $0 local-execution candidate, but do not score it as a drop-in script IDE without checking its notebook-oriented workflow. Official materials describe local Jupyter execution and directory access; older maintainer guidance describes running a standalone `.py` file from a notebook with `%run file.py` and warns that iOS permission to open one file may not grant access to sibling files unless the containing directory is explicitly selected. Because the latter is historical support guidance, verify the current app behavior rather than treating it as a current limitation.
 
 For any later approved test, record the actual setup path and steps, whether the CSV and script share an accessible directory, whether the script can create a real `summary.json` there, and whether that file can be exported through Files/share. Check malformed-input behavior in a fresh directory. Note the App Store's listed 1.5 GB app size as a material storage cost, but do not infer the user's available storage. Sources: [developer page](https://holzschu.github.io/Carnets_Jupyter/), [App Store](https://apps.apple.com/us/app/carnets-jupyter/id1450994949), [historical .py-file guidance](https://github.com/holzschu/Carnets/issues/38), [directory permission guidance](https://github.com/holzschu/Carnets/issues/101). No install or task run has occurred.
+
+
+## Open-source-derived adversarial cases — proposed, not executed (2026-10-29)
+
+Inspired by the [Open-Source Reuse Audit](OPEN_SOURCE_REUSE_AUDIT_20261029.md), add these to the future conformance checklist. They extend the test protocol only; they do not amend the canonical execution contract or PR #2/#3.
+
+| Case | Required observation | Fail condition |
+|---|---|---|
+| Client timeout while execution continues | Record client timeout separately from authoritative execution lifecycle; query/observe actual terminal state if supported | Timeout alone is treated as process termination or PASS |
+| Wrapper/coordinator failure vs child exit | Keep the program exit/result separate from a runner, transport, or coordinator error | Wrapper failure is misreported as the child's exit or a program failure without evidence |
+| Requested capability unsupported | Show capability as unsupported/unknown before or at admission; reject/fail closed as specified | Silent fallback to a weaker/unsafe path or a guessed capability claim |
+| Interruption after side effect, before receipt | On resume, inspect current file/state and determine whether the operation committed before retrying | Completed write is replayed blindly or uncertain outcome is called successful |
+| Partial/missing diagnostic evidence | Mark unavailable logs and collection failures explicitly; retain what is observed | Missing evidence is represented as empty/clean logs or a complete report |
+| Reconnect after event gap (remote path only) | State whether events are replayed/backfilled and disclose any unrecoverable gap | UI implies a complete event history without proving it |
+| Stale file/edit protection | If an operation is based on a prior file revision, detect a conflicting revision before overwrite | Stale content silently overwrites newer user changes |
+
+These are proposed acceptance checks, not results. Keep cases that apply to the selected execution path; the remote reconnect case is conditional. A test is not PASS until the exact implementation/revision is run and evidence is saved.
