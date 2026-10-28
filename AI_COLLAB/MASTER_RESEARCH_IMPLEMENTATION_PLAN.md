@@ -99,3 +99,24 @@ Product, security, engineering, mobile UX, cost/operations review; issues found 
 - [ ] All material claims sourced and dated
 - [ ] No invented tests, interviews, benchmarks, pricing, or repo changes
 - [ ] Owner decisions and paid-service gates explicit
+
+
+## 19. Cross-project AI workflow efficiency and orchestration (2026-10-28)
+
+A research master has been created in the RevDev repository and should be used as the shared reference, without merging repositories: [AI Workflow Efficiency and Cross-App Orchestration Master](https://github.com/marcelosofficial-ctrl/DevRelay-Missions/blob/review/revdev-adaptive-ai-workshare-2026-10-27/resume/revdev/AI_WORKFLOW_EFFICIENCY_AND_CROSS_APP_ORCHESTRATION_MASTER_2026-10-28.md).
+
+It contains three research passes: (1) Ponytail's actual behavior policy, integration mechanisms and benchmark caveats; (2) comparison with Superpowers, Everything Claude Code, Claude Code, Gemini CLI, Codex/ChatGPT skills/plugins, Cursor rules/hooks, and PC/mobile inter-app boundaries; (3) a proposed provider-adaptive Work Coach, profiles, compact task packet, evaluation criteria and staged plan.
+
+### PocketCode implications
+
+- **Candidate feature:** AI Efficiency Coach & Handoff, helping a user create concise instructions, preserve important state, carry selected code/error/evidence between PocketCode and an arbitrary AI assistant, and prepare a targeted next-step prompt.
+- **Universal path:** user-driven copy/share/paste. Do not require paid API access or native provider integration.
+- **Optional future path:** host-specific skills/rules/hooks/MCP only where supported and reviewed. Direct UI automation, APIs, account linking and remote-PC control remain separate proposals requiring explicit review.
+- **Free-mode promise:** maximize useful verified progress within actual account/feature limits; do not evade quota, imply hidden capabilities, or hardcode volatile provider limits. Use compact context, task-appropriate profiles, local checks, capped retries and checkpoints.
+- **Safety boundary:** instructions/AI output cannot authorize execution. Preserve the independent remote runner security requirements and D-001 (separate repositories).
+
+### Evidence status
+
+Ponytail's own Claude Code benchmark is promising but single-host/model, small-run and partially based on size metrics; do not copy its percentages into PocketCode claims. Host integrations documented by a provider do not prove that the corresponding consumer mobile app exposes the same surface. No PocketCode AI integration, backend, app-to-app automation or model/API invocation was implemented or tested by this research.
+
+This section updates the research plan, not an accepted product/architecture decision. The overall PocketCode master research plan remains incomplete until its other workstreams and evidence register are reviewed.
