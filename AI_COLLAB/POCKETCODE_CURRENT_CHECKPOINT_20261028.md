@@ -263,3 +263,16 @@ No protected PR #2/#3 branches, canonical contracts, or implementation files wer
 A consolidated source pass confirmed the existing acceptance ID should be reused. The matrix has generic idempotency rows IDEM-01/02 and IDEM-SEM-01..04, and the traceability document maps those to the pure reservation helper and synthetic tests, but neither explicitly maps the response-loss recovery boundary to CASE-13. The helper returns an existing job reference for a matching replay; it does not establish authoritative current state or prove no second adapter dispatch after a lost response. PR #2's report formatter consumes supplied metadata and cannot fill that gap.
 
 When implementation is explicitly authorized, map CASE-13 to four assertions: original run reference, authoritative current-state lookup, zero duplicate dispatch, and INCOMPLETE when state remains unknown. Reuse existing CASE-13/IDEM IDs; do not add a generic receipt-loss test unless a distinct external side-effect boundary enters the MVP. Static source review only; tests remain NOT RUN. Protected PR #2/#3 and their files were not changed.
+
+
+### MVP-scope-aware adversarial-case priority — 2026-10-29
+
+Re-ranked the existing open-source reuse cases against the actual first-proof boundary to avoid treating every missing cross-boundary case as immediate MVP scope:
+
+1. **Cross-path priority:** wrapper/coordinator failure versus child-program exit provenance (REUSE-WRAP-01).
+2. **Core report priority:** distinguish successfully empty diagnostics, unavailable diagnostics, partial collection failure, and policy truncation (REUSE-DIAG-01). Reuse existing report fields where possible; no invented schema.
+3. **Path-dependent:** reuse CAP-01/CAP-02 for known unsupported, unknown/unavailable, and stale-plan capability evidence; require no adapter start when a concrete adapter is selected.
+4. **Remote/hosted only:** exact applied-policy revision before start and reconnect/event-gap recovery are critical if a remote/coordinator path is chosen, not universal local-WASM requirements.
+5. **Defer:** REUSE-RECOVERY-01 until a concrete external side effect can commit separately from its receipt; REUSE-STALE-01 until persistent workspace/file writes enter scope. Existing CASE-13 remains the run-level ambiguous-response baseline.
+
+Regardless of the nonzero-exit FAILED-vs-INCOMPLETE decision, artifact release remains a separate fail-closed gate. This is static scope-based prioritization only; it does not resolve the owner decision, change contracts/tests, or claim execution evidence.
