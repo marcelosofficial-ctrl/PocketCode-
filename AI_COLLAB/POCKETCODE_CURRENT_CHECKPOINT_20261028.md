@@ -42,8 +42,9 @@ Owner constraints for all future work:
 
 - Authored a deterministic conformance-test specification for all 16 proposed AWD acceptance cases, including required assertions, forbidden behaviors, boundary variants, capsule validation cases, and explicit unresolved contracts. The document is design-only; no test code was created or executed.
 - Added eight recommended v1 defaults for unresolved contracts (input normalization, packet serialization, character counting, oversized-context behavior, configured redaction, capsule validation, share-adapter results, and component boundaries). These are recommendations, not frozen decisions.
+- Authored the canonical fixture catalogue with proposed repeatable input envelopes, observable pass/fail rules, forbidden behaviors, traceability, layer boundaries, and unresolved dependencies for AWD-01–AWD-16. This is design-only; no test code was created or executed.
 
-- Authored a deterministic conformance-test specification for all 16 proposed AWD acceptance cases, including required assertions, forbidden behaviors, boundary variants, capsule validation cases, and explicit unresolved contracts. The document is design-only; no test code was created or executed.
+
 
 1. Audited the manual run sheet against the canonical evaluation kit.
 2. Fixed the profile assignment mismatch: the old sheet had forced Balanced for every test. The current run sheet maps EVAL-01 to Lite, EVAL-02 to Balanced, EVAL-04 to Review only, EVAL-06 to Balanced, and EVAL-08 to Careful.
