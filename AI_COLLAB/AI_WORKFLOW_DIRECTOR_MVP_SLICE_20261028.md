@@ -3,6 +3,7 @@
 **Status:** Proposed specification for validation; not implemented, frozen, or tested.  
 **Parent research:** [Master AI Workflow Director research](MASTER_AI_WORKFLOW_DIRECTOR_RESEARCH_20261028.md)  
 **Evaluation kit:** [Offline Evaluation Kit](AI_WORKFLOW_DIRECTOR_EVALUATION_KIT_20261028.md) (eight fixtures; not yet run).  
+**Reference fixtures:** [Expected-output examples](AI_WORKFLOW_DIRECTOR_REFERENCE_FIXTURES_20261028.md) for four priority cases (not AI-generated benchmark data).  
 **Purpose:** Convert the research into the smallest useful, provider-neutral feature slice that can be designed and evaluated without API calls, paid services, or privileged access to other apps.
 
 ## 1. Scope and non-goals
