@@ -26,6 +26,7 @@ The initial MVP candidate is a mobile-first web app with one remote runtime and 
 
 - [PocketCode Continuity Hub](AI_COLLAB/POCKETCODE_CONTINUITY_HUB_20261028.md) — read first for source-of-truth rules, branch map, AI roles, and current evidence boundaries.
 - [Four-month phone-only master plan](AI_COLLAB/FOUR_MONTH_PHONE_ONLY_MASTER_PLAN_20261028.md) — workstreams, monthly outcomes, safety gates, and future-feature priorities through February 2027.
+- [PC-return checklist draft](AI_COLLAB/PC_RETURN_CHECKLIST_DRAFT_20261028.md) — exact revisions, safe offline test sequence, evidence capture, and separately gated real execution.
 
 ## AI Workflow Director research
 
