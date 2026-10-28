@@ -203,3 +203,10 @@ Important caveat: Pyodios says a run can time out after 120 seconds while the co
 The reviewed documentation does not establish whether Pyodios exposes a PocketCode-equivalent structured per-run report, authoritative exit code/terminal lifecycle status, bounded stdout/stderr with truncation metadata, or machine-readable timeout-but-still-running state. Mark these UNKNOWN / NOT DOCUMENTED until a hands-on attempt; do not treat silence in docs as proof of absence.
 
 **Next direct comparator:** Pyodios, then browser-local Pyodide only if an iPhone Safari file-import/export workflow is shown to be practical. Use fresh project folders for success and malformed-input cases, verify real output file and export, capture native evidence, and compare with the existing canonical report. All hands-on work remains NOT RUN; no app was installed and no product or report contract was changed.
+
+
+## Additional direct iPhone alternatives — 2026-10-29
+
+A source review identified Carnets as another direct $0 local-execution comparator: the App Store describes offline Python/Jupyter on iPhone/iPad, and the developer project describes directory access. Its listed app size is about 1.5 GB (2.2 GB for the scipy variant), so storage is a meaningful cost. Juno documents free execution as a trial before paid Pro; Pyroid lists five free runs before paid Pro. These are product-description claims, not hands-on verification.
+
+If a future comparison is approved, prioritize ordinary AI chat/copy-paste, Pyodios, and Carnets; treat Juno/Pyroid as limited-run alternatives and browser-local Pyodide as conditional on practical iPhone Safari file handling. All task comparisons remain NOT RUN; no apps were installed.
