@@ -9,6 +9,8 @@
 
 **Reference fixtures:** [Expected-output examples for four priority cases](AI_WORKFLOW_DIRECTOR_REFERENCE_FIXTURES_20261028.md) make scoring more consistent; these are human-authored examples, not test results.
 
+**Phone-friendly run sheet:** [Manual paired-run procedure](AI_WORKFLOW_DIRECTOR_MANUAL_RUN_SHEET_20261028.md) gives exact baseline/Director prompts, four copy-paste task fixtures, and a per-run evidence record. It is still an unexecuted protocol.
+
 ## Executive conclusion
 
 PocketCode should develop a distinct feature provisionally named **AI Workflow Director**. It should not try to secretly control every AI app or pretend all assistants expose the same integration interface. Instead, it should generate small, context-aware instructions and task handoffs, then use the safest communication channel each platform actually supports.
