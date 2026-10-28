@@ -4,6 +4,8 @@
 **Project name:** PocketCode is provisional; brand and repository naming are not validated.  
 **Repository:** https://github.com/marcelosofficial-ctrl/PocketCode-
 
+**Phone-only coordination:** [Continuity Hub](AI_COLLAB/POCKETCODE_CONTINUITY_HUB_20261028.md) and [four-month master plan](AI_COLLAB/FOUR_MONTH_PHONE_ONLY_MASTER_PLAN_20261028.md) organize current remote research and PC-return preparation. They do not replace product/security requirements or authorize implementation, provider use, spend, merge, or deployment.
+
 ## Mission
 
 Help people build, execute, inspect, and improve software from a phone, including when they do not have access to a computer.
