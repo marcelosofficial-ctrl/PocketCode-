@@ -1,14 +1,18 @@
 # Competitor and Alternative Research
 
-**Status:** Initial desk research, not a complete or independently verified market study.  
-**Research snapshot:** 2026-10-20  
-**Purpose:** Avoid assuming that coding on a phone with AI is a unique idea.
+**Status:** Desk research refreshed with a narrow public-source addendum; not a complete market study or hands-on benchmark.  
+**Latest snapshot:** 2026-10-28 (initial observations below date from 2026-10-20).  
+**Purpose:** Avoid assuming that coding on a phone with AI is a unique idea. See [the 2026-10-28 phone-only competitor scan addendum](../AI_COLLAB/PHONE_ONLY_COMPETITOR_SCAN_ADDENDUM_20261028.md) and the richer [PR #3 competitor study](https://github.com/marcelosofficial-ctrl/PocketCode-/blob/pocketcode-pass0-audit-2026-10-26/AI_COLLAB/PASS1_COMPETITOR_RESEARCH.md); this matrix is a navigation summary, not a duplicate full study.
 
 ## Initial landscape
 
 | Product / alternative | Positioning observed in initial research | Why it matters | Questions to verify |
 |---|---|---|---|
-| Pocket Code | Android coding environment with multiple language/runtime and AI-related features | Existing product with a very similar name; potential naming confusion | Current runtime support, audience, maintenance, name/trademark risk |
+| PocketCode (one word) | Existing Android IDE with local runtimes, terminal/SSH, Git and multiple AI-provider options, per its official pages | Direct overlap and high naming/discoverability risk; not the same as Catrobat's two-word Pocket Code | Distinctive naming, formal trademark/domain review; actual hands-on feature comparison |
+| AndroidHarness | Android-native coding agent; maintainer says it reads/edits projects and runs shell, Git, Python/Node and browser tools on-device | Directly challenges a no-PC Android coding-agent proposition | Setup friction, reliability, isolation boundary, data handling, exact supported device/runtime behavior |
+| PhoneCode | Local Android coding agent/workspace; README describes on-device agent and local runtime migration/release gates | Local-first agent may beat hosted execution on cost/privacy for some Android users | Current released runtime path, platform/release status, file permissions, which tasks need remote execution |
+| Atlan | Phone development cockpit with a Termux/proot Android path and cloud-client mode; project documentation acknowledges power-user setup and sandbox limitations | Broad coding-agent cockpit overlaps a general mobile workstation promise | Setup effort for novices, real device constraints, actual confinement for tool execution |
+| Pairlet | Phone/tablet client for coding agents that remain on a user's running computer/server | Strong substitute when a reachable host already exists; less useful when the user truly has no PC/host | Whether target use occurs with a PC unavailable, network/host setup burden, session continuity |
 | Derle | Phone-based IDE marketed with terminal, Git, preview, and AI assistance; iOS and Android advertised | Direct overlap with mobile IDE positioning | Execution architecture, languages, pricing, limitations |
 | Kodo | iPhone/iPad code editor with AI and remote-development-related features | Relevant iOS-first alternative | Whether each workflow executes locally, remotely, or via SSH |
 | Rish | Experimental open-source mobile workspace and multi-provider AI integrations | Open-source and provider-flexibility reference | Maturity, supported platforms, security, activity |
@@ -54,3 +58,7 @@ Links and product claims must be rechecked before decisions. This is not a featu
 - [ ] Check whether the proposed evidence/report/fix/rerun workflow is genuinely missing.
 - [ ] Validate PocketCode name for product collisions, trademark risk, and domain/social availability.
 - [ ] Interview target users and test alternatives with realistic tasks.
+
+## Dated research delta — 2026-10-28
+
+The new alternatives above are based on current project/official pages, not independent product tests. Details and source caveats are centralized in [PHONE_ONLY_COMPETITOR_SCAN_ADDENDUM_20261028.md](../AI_COLLAB/PHONE_ONLY_COMPETITOR_SCAN_ADDENDUM_20261028.md). The broad conclusion remains a hypothesis: the differentiator to test is a narrow, trustworthy run/inspect/report/iterate loop, not generic AI coding from a phone. Do not claim a competitor gap until the same task is compared with real alternatives.
