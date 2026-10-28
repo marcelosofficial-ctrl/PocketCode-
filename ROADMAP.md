@@ -11,6 +11,7 @@ This roadmap is provisional. Work should advance through evidence and tested mil
 - [ ] Define a narrow MVP and explicit non-goals.
 - [ ] Compare execution providers, isolation guarantees, regional availability, pricing, and data retention.
 - [ ] Review naming and brand conflicts before investing in public identity.
+- [ ] Evaluate the AI Workflow Director feature hypothesis: compact task profiles, universal copy/paste, provider-specific setup guidance, and continuation capsules; use the research master as the source and validate before implementation.
 
 **Exit gate:** a specific user problem and first workflow are supported by evidence, not just an attractive concept.
 
@@ -31,6 +32,7 @@ This roadmap is provisional. Work should advance through evidence and tested mil
 - [ ] Code/file input and runtime selection for the single supported runtime.
 - [ ] Execution status, output, errors, and generated files.
 - [ ] Useful history and copyable execution report.
+- [ ] If research/user tests justify it, add a user-reviewed AI handoff flow with share-sheet support where available, a universal copy/paste fallback, and a portable continuation capsule.
 - [ ] Authentication and user isolation if persisted user data is enabled.
 - [ ] Automated tests and basic observability.
 - [ ] Test on iOS Safari and Android browsers.
