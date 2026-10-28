@@ -2,7 +2,8 @@
 **Date:** 2026-10-28  
 **Status:** Test design only. These fixtures have not been run against any AI assistant.  
 **Parent:** [Master AI Workflow Director research](MASTER_AI_WORKFLOW_DIRECTOR_RESEARCH_20261028.md)  
-**Feature slice:** [First testable feature slice](AI_WORKFLOW_DIRECTOR_MVP_SLICE_20261028.md)
+**Feature slice:** [First testable feature slice](AI_WORKFLOW_DIRECTOR_MVP_SLICE_20261028.md)  
+**Reference fixtures:** [Expected-output examples for EVAL-01, 02, 04, and 08](AI_WORKFLOW_DIRECTOR_REFERENCE_FIXTURES_20261028.md).
 
 ## 1. Why this kit exists
 
