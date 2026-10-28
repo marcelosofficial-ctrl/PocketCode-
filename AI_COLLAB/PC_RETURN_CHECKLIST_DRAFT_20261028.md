@@ -128,6 +128,18 @@ After offline tests:
 4. Produce a small review summary with exact paths/lines, a severity, and a recommended action. Do not write to PR branches in this step.
 5. Ask for owner authorization only when a specific review/integration/implementation action is ready and all relevant prerequisites are explicit.
 
+### 5A. Exact contract blockers to resolve before integration
+
+Use the [source-to-test traceability map](EXECUTION_CONTRACT_CROSS_BRANCH_AUDIT_20261028.md) as the detailed index. These are review/design gates, not authorization to edit PR #2 or PR #3.
+
+1. **Policy barrier before start:** prove that the coordinator/adapter confirms the exact mandatory policy revision on the intended execution boundary before the task-start call. A boolean `policy_confirmed`, acknowledgement, or ETag by itself is insufficient. The test must assert that the execute/start callback was never called for missing, pending, failed, late, stale, or mismatched policy evidence.
+2. **Nonzero exit plus failed gates:** add a focused semantic case for `EXIT_NONZERO` with cleanup UNKNOWN/FAILED, policy evidence false/missing, and tenant/job authorization false. Preserve the observed process failure; define whether overall disposition is FAILED or INCOMPLETE; block artifact release independently in every unsafe case.
+3. **Artifact release:** test cleanup, digest/integrity, job association and tenant authorization independently, including malformed truthy values. Existing pure-helper cases are useful but do not prove storage quarantine or real authorization.
+4. **Cleanup recovery/history:** prove that later cleanup evidence creates a new report version and does not rewrite the earlier record. Offline model coverage does not prove durable/concurrent persistence.
+5. **Terminal ordering and limits:** retain coordinator sequence, duplicate/conflicting terminal-event cases, and output cap + 1 behavior. Separate pure replay/byte-accounting results from actual process-tree termination, pipe draining and provider enforcement.
+
+For each case, record exact source/test blob SHAs and whether the evidence is SOURCE-REVIEWED, TEST-RUN, NOT RUN, BLOCKED or PROVIDER-ONLY. No cross-branch file mixing; no integration change until the contract and owner/reviewer decisions are explicit.
+
 ## 6. Separate future gate: controlled real execution
 
 This is **not part of the first PC-return session**. Before a provider test, revisit [the controlled Python proof runbook](../PRODUCT/CONTROLLED_PYTHON_PROOF_RUNBOOK.md), [security requirements](../SECURITY.md), and current provider research.
