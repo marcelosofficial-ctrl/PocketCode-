@@ -49,6 +49,7 @@ The initial MVP candidate is a mobile-first web app with one remote runtime and 
 - [Master AI Workflow Director research](AI_COLLAB/MASTER_AI_WORKFLOW_DIRECTOR_RESEARCH_20261028.md) (proposal; not implemented or validated)
 - [AI Workflow Director first testable feature slice](AI_COLLAB/AI_WORKFLOW_DIRECTOR_MVP_SLICE_20261028.md) (proposed profiles, packet/capsule contracts, and acceptance cases)
 - [AI Workflow Director offline evaluation kit](AI_COLLAB/AI_WORKFLOW_DIRECTOR_EVALUATION_KIT_20261028.md) (eight paired-test fixtures and scoring protocol; no results claimed)
+- [AI Workflow Director reference output fixtures](AI_COLLAB/AI_WORKFLOW_DIRECTOR_REFERENCE_FIXTURES_20261028.md) (human-authored scoring examples for four cases; not benchmark results)
 - [Initial independent provider review](AI_COLLAB/CHATGPT_INITIAL_PROVIDER_REVIEW.md)
 - [MVP execution-provider decision brief](AI_COLLAB/MVP_DECISION_BRIEF.md)
 - [Independent review of Gemini's architecture proposal](AI_COLLAB/CHATGPT_REVIEW_OF_GEMINI_PLAN.md)
