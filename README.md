@@ -31,6 +31,7 @@ The initial MVP candidate is a mobile-first web app with one remote runtime and 
 - [RevDev + PocketCode product strategy research](RESEARCH/REVDEV_POCKETCODE_PRODUCT_STRATEGY_2026-10-28.md)
 - [Cross-project AI workflow efficiency master](https://github.com/marcelosofficial-ctrl/DevRelay-Missions/blob/review/revdev-adaptive-ai-workshare-2026-10-27/resume/revdev/AI_WORKFLOW_EFFICIENCY_AND_CROSS_APP_ORCHESTRATION_MASTER_2026-10-28.md) (three-pass research; AI Efficiency Coach/Handoff is a proposal, not an implemented integration) (research only; shared contract, naming, App Store, and monetization remain unresolved)
 - [Mobile technical task opportunity map](PRODUCT/MOBILE_TECHNICAL_TASKS.md)
+- [AI Efficiency Coach & Handoff proposal](PRODUCT/AI_EFFICIENCY_COACH_HANDOFF_PROPOSAL_2026-10-28.md) (provider-neutral mobile workflow hypothesis; not implemented)
 - [First-run workflow](PRODUCT/FIRST_RUN_WORKFLOW.md)
 - [Execution loop acceptance criteria](PRODUCT/EXECUTION_LOOP_ACCEPTANCE.md) (proposed; not yet implemented or run)
 - [Desk research on mobile-coding user feedback](RESEARCH/MOBILE_CODING_USER_EVIDENCE.md)
