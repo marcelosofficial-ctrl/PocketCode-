@@ -66,3 +66,20 @@ New iOS-specific finding: [Pyodios](https://pyodios.caffeinatedmath.com/) says i
 
 
 The new alternatives above are based on current project/official pages, not independent product tests. Details and source caveats are centralized in [PHONE_ONLY_COMPETITOR_SCAN_ADDENDUM_20261028.md](../AI_COLLAB/PHONE_ONLY_COMPETITOR_SCAN_ADDENDUM_20261028.md). The broad conclusion remains a hypothesis: the differentiator to test is a narrow, trustworthy run/inspect/report/iterate loop, not generic AI coding from a phone. Do not claim a competitor gap until the same task is compared with real alternatives.
+
+
+## Dated research delta — evidence/report features are not unique (2026-10-28)
+
+Current public documentation makes the initial “portable evidence and correction loop” hypothesis more competitive than a generic gap statement suggests:
+
+- [AndroidHarness](https://github.com/Sanuu7/AndroidHarness) describes inspectable tool-call cards, real command exit/termination outcomes, saved run history, resume after interruption, build/test status, failed-run handoff to its agent, and a diagnostic report with a fixed whitelist and explicit missing-log reporting.
+- [Atlan](https://github.com/Atlansdaddy/atlan) describes mirrored console logs and automatic attachment of queued errors to the agent's next turn.
+- [Pairlet](https://github.com/heypandax/pairlet) describes streamed output/tool events with timing, session continuity/replay, changed-file diffs, file preview, and usage context (with backend-specific capability gaps).
+- [Pyodios](https://pyodios.caffeinatedmath.com/faq) describes real local execution and import/export of files; notebook export is also supported.
+- [PhoneCode](https://github.com/dttdrv/phonecode) describes a local agent/workspace and an explicitly submitted AI-output-report endpoint.
+
+These are source-backed maintainer descriptions, not independent verification. They rule out treating logs, error handoff, diagnostics, file export, or continuity as an assumed competitor omission. They do not prove that every alternative exports the same normalized run receipt or works as well for the same iPhone CSV task.
+
+**Revised testable gap (still unverified):** a provider- and execution-location-neutral receipt that binds a specific run to its input/source revision and artifacts, explicitly marks unknown or unobserved evidence, distinguishes process outcome from job/artifact-release disposition, and is useful to a separate AI assistant. Compare this directly with each tool's native logs/reports and raw-error copy/paste. If the native path is equally easy and sufficiently truthful, or the receipt does not improve the next correction, narrow or stop this product direction.
+
+See the [dated source review and revised test questions](../AI_COLLAB/PHONE_ONLY_COMPETITOR_SCAN_ADDENDUM_20261028.md). All task comparisons remain **NOT RUN**.
