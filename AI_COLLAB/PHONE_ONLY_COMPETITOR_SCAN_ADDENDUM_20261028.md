@@ -97,3 +97,34 @@ Use this addendum with the existing PR #3 competitor research; do not rewrite or
 5. **For all alternatives:** execution correctness on one task does not prove isolation, abuse resistance, or security; keep those claims UNKNOWN unless independently established.
 
 No apps were installed, no code was run in a competitor, no accounts were created, and no live provider or paid service was used. All fixed-task scenarios remain NOT RUN.
+
+
+## Source review — evidence handoff is already present in adjacent tools (2026-10-28)
+
+**Evidence class:** Current public project documentation, reviewed as maintainer/product claims. No app was installed, no task was run, and no security or usability behavior was independently verified.
+
+This review materially narrows the proposed differentiator: PocketCode must not imply that logs, visible tool events, error handoff, diagnostic exports, or phone-to-agent continuity are generally missing from existing tools.
+
+| Alternative and source | What its public documentation already describes | Consequence for PocketCode |
+|---|---|---|
+| [AndroidHarness README](https://github.com/Sanuu7/AndroidHarness) | Tool-call cards that can be inspected; shell/background jobs with actual exit codes and exit-vs-killed state; saved run history and execution status; interruption/resume cards; build/test output and pass/fail status; failed-run handoff to the agent; and a diagnostic report generated from a fixed whitelist, with missing/unavailable logs reported explicitly. | A broad claim that PocketCode uniquely offers truthful status, diagnostics, or error-to-agent handoff is not supportable from desk research. The narrow CSV task may already be served by a much broader local tool, albeit on Android; task friction and exact evidence export still need direct comparison. |
+| [Atlan README](https://github.com/Atlansdaddy/atlan) | Its phone-oriented development cockpit says console logs are mirrored and errors are queued and automatically attached to the agent's next turn with file/line information; it also describes snapshots saved as real PNGs for visual debugging. | “No more manual copy/paste of errors” is also not a defensible differentiator by itself. Atlan's documented setup/platform assumptions and the user's actual target task need a fair comparison. |
+| [Pairlet README](https://github.com/heypandax/pairlet) | Its phone/tablet client describes streaming output, tool events with timing, background-task state, session replay/reconnect backfill, changed-file diffs, file preview, context and usage; capabilities vary by agent backend. | Remote-host tools already provide rich session visibility and continuity. Pairlet remains dependent on a reachable host and its per-backend capability differences, but the report/continuity concept alone is not novel. |
+| [Pyodios FAQ](https://pyodios.caffeinatedmath.com/faq) | It describes real local Python execution, saved files, file import/export through Files, and notebook export to HTML. | A generated file can already be retrieved through an ordinary local workflow. PocketCode must prove a material advantage in verification/report assembly or correction—not merely that it can export an artifact. |
+| [PhoneCode README](https://github.com/dttdrv/phonecode) | It describes local project workspaces, agent execution, file operations, local Git and an explicitly submitted AI-output-report endpoint. | Local agent workflows and reporting-related concepts already exist; do not assume a unique cross-provider handoff gap without comparing the exact report contract and user journey. |
+
+### Revised differentiation test
+
+The remaining plausible gap is narrower and **unproven**: a small, portable, execution-location-neutral receipt with a stable schema that distinguishes *observed facts* from unavailable evidence, binds outputs to a specific run/input/source revision, preserves failure/timeout/cancellation uncertainty, and can be pasted into a separate AI app without requiring the same integrated agent or host.
+
+That combination is a research question, not a claimed market gap. Existing products may already meet the user need with less friction. The fixed-task study should therefore ask:
+
+1. Can the existing tool create and export the real output and represent the deliberate malformed-input failure truthfully?
+2. Can a user retrieve the relevant evidence without switching into a complex workspace or maintaining a host?
+3. Does a normalized receipt preserve any decision-relevant fact that the existing tool's native logs, diagnostic report, or raw error omits?
+4. In a paired correction attempt, does that receipt improve the next AI correction compared with the competitor's normal report/log/raw error?
+5. Is the advantage large enough to justify a separate app rather than a small interoperable format or workflow layer?
+
+If the existing tool supplies equivalent evidence and the separate report does not improve correction or portability, narrow or stop the runner/report-product hypothesis. Keep all of these comparisons **NOT RUN** until observed.
+
+No app installs, task runs, accounts, paid services, deployments, or provider workloads occurred in this source review.
