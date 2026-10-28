@@ -53,4 +53,4 @@ Do not create accounts, run live provider workloads, submit private data, instal
 
 ## Next action
 
-Use this addendum with the existing PR #3 competitor research; do not rewrite or duplicate that document. The next research pass should compare source-dated facts and then fill a [problem hypothesis card](PRODUCT_HYPOTHESIS_CARD_20261028.md) with one candidate job, strongest alternative explanations, and decision criteria. No market validation has occurred.
+Use this addendum with the existing PR #3 competitor research; do not rewrite or duplicate that document. The [product hypothesis card](PRODUCT_HYPOTHESIS_CARD_20261028.md) and [fixed-task comparison worksheet](PRODUCT_FIXED_TASK_COMPARISON_WORKSHEET_20261028.md) now record one candidate job, the local-first alternative, success/failure outcomes, and evidence criteria. The comparison remains **NOT RUN**. Next, challenge the hypothesis against these alternatives before promoting any architecture or MVP choice. No market validation has occurred.
