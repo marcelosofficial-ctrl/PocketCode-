@@ -32,7 +32,7 @@ Discovery, competitive research, and MVP definition. No production architecture,
 ## Working MVP direction
 
 - Mobile-first responsive web application/PWA as the first testable interface.
-- Start with one real, isolated remote runtime, likely Python.
+- Execution location is undecided. Compare local on-device Python, browser-local Pyodide/WASM, a user-owned remote PC, hosted execution, and manual copy/paste on the same bounded task before selecting an architecture.
 - Paste or upload code and supporting files.
 - Run with explicit timeout and cancellation behavior.
 - Show stdout, stderr, exit status, and generated files where supported.
@@ -61,13 +61,14 @@ Discovery, competitive research, and MVP definition. No production architecture,
 
 ## Immediate next steps
 
-1. Use the owner-reviewed [live mobile prototype](https://marcelosofficial-ctrl.github.io/PocketCode-/) only to refine the core flow; keep sample output clearly marked as simulated.
-2. Compare local-on-device Python, browser-local Pyodide/WASM, remote-PC, and hosted execution against the [fixed-task worksheet](AI_COLLAB/PRODUCT_FIXED_TASK_COMPARISON_WORKSHEET_20261028.md). The [MVP decision brief](AI_COLLAB/MVP_DECISION_BRIEF.md) is a historical hosted-provider shortlist from 2026-10-20; revisit it only if the task demonstrates a need for remote execution. Modal/Cloudflare remain unselected candidates, not the default path.
-3. Review the [controlled Python proof runbook](PRODUCT/CONTROLLED_PYTHON_PROOF_RUNBOOK.md), which defines test fixtures, expected evidence, and safety gates.
-4. Before any provider account or live workload, obtain explicit owner approval, verify billing/budget controls, and confirm the exact network-blocking and termination semantics. If approved, run the proof and record actual evidence rather than assuming success.
-5. Use public firsthand discussions and reviews in [mobile-coding user evidence](RESEARCH/MOBILE_CODING_USER_EVIDENCE.md) to refine the problem hypothesis; user interviews are optional, not a blocker.
-6. Revisit the provisional name before investing in a final brand or domain.
-7. Use public desk research first. The [user validation interview script](PRODUCT/USER_VALIDATION_SCRIPT.md) remains optional; no interviews have been conducted.
+The active queue is maintained in the [current checkpoint](AI_COLLAB/POCKETCODE_CURRENT_CHECKPOINT_20261028.md) and the dated work sequence in the [four-month phone-only plan](AI_COLLAB/FOUR_MONTH_PHONE_ONLY_MASTER_PLAN_20261028.md). Do not restart the broad research list on every chat.
+
+1. Keep source-of-truth/navigation tidy and resolve stale wording; the execution location must stay undecided until the fixed-task comparison provides evidence.
+2. Finish exact-ref lifecycle/report review, especially policy-revision-before-start evidence and disposition versus artifact-release behavior.
+3. Reuse the [fixed-task worksheet](AI_COLLAB/PRODUCT_FIXED_TASK_COMPARISON_WORKSHEET_20261028.md) and existing competitor evidence. Hands-on alternatives have not been compared yet.
+4. Review the static prototype for task-specific mobile-flow issues; sample output must remain labelled simulated. Do not trigger deployment/Actions for this review.
+5. Prepare the PC-return checklist by February 2027. Provider testing remains separate and approval-gated; no provider, account or spend is selected.
+6. Revisit naming risk without renaming the repository or buying a domain as a side effect.
 
 ## Progress log
 
