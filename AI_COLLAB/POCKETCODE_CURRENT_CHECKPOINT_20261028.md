@@ -29,6 +29,8 @@ Owner constraints for all future work:
 
 ## Relevant documents
 
+- [PocketCode Continuity Hub](POCKETCODE_CONTINUITY_HUB_20261028.md) — read-first project map, source-of-truth order, branch separation, AI roles, and evidence boundaries.
+- [Four-month phone-only master plan](FOUR_MONTH_PHONE_ONLY_MASTER_PLAN_20261028.md) — dated workstreams, monthly exits, zero-budget constraints, future feature tiers, and PC-return readiness.
 - [Master AI Workflow Director research](MASTER_AI_WORKFLOW_DIRECTOR_RESEARCH_20261028.md) — research synthesis and product proposal.
 - [First testable feature slice](AI_WORKFLOW_DIRECTOR_MVP_SLICE_20261028.md) — proposed profiles, task packet, continuation capsule, static acceptance tests, and implementation sequence.
 - [Deterministic AWD conformance test specification](AI_WORKFLOW_DIRECTOR_CONFORMANCE_TEST_SPEC_20261028.md) — assertion-level design for AWD-01–16, forbidden behaviors, cross-case invariants, and eight recommended v1 contract defaults; not implemented or run.  
@@ -51,6 +53,7 @@ Owner constraints for all future work:
 - Completed a focused readiness audit for AWD-08 (omissions), AWD-11 (unsupported verification claims), AWD-12 (configured redaction), and AWD-14 (cancelled sharing). Separated must-have semantic invariants from open implementation details and explicitly deferred integrations.
 - Added a bounded implementation plan with G0–G8 work packages and acceptance mappings. G0–G5 describe the proposed core sequence; redaction, real sharing, and manual AI comparison are separately gated. The plan does not authorize implementation. Added an explicit AWD-01–AWD-16 traceability table so every existing acceptance ID maps to a work package without redefining its meaning.
 - Linked the readiness audit from the README, master research, canonical fixture catalogue, and checkpoint. Static review of the new feature documents confirms the 16 fixture IDs and 16 register rows align; code fences are balanced. A broad README link scan was inconclusive for older unrelated links because their target files were outside the fetched audit set, so no repository-wide broken-link claim is made.
+- Audited the overall project hierarchy, current product goals, zero-budget rules, main-vs-PR branch boundaries, and existing three-AI method. Added a read-first continuity hub and a four-month phone-only plan ending 2027-02-28. Kept the core execution/evidence loop primary and the AI Workflow Director supporting; neither PR #2 nor PR #3 was edited.
 
 
 
@@ -86,10 +89,17 @@ Owner constraints for all future work:
 - [x] Propose minimal v1 defaults without treating them as accepted/frozen.
 - [x] Link the specification from the MVP slice, master research, evaluation kit, README, and this checkpoint.
 - [x] Reconciled proposed defaults and completed a focused readiness audit. Do not freeze contracts by implication; minimum decisions still require explicit owner authorization before implementation.
+- [x] Established an overall continuity/source-of-truth map and a four-month phone-only coordination plan; this plan is an overlay, not a replacement for the product roadmap or branch-specific contracts.
 - [x] Create a canonical catalogue with proposed fixture inputs and observable pass/fail boundaries for AWD-01–AWD-16; audit coverage and label unresolved dependencies.
 - [x] Reconcile the eight proposed defaults against the MVP and fixture catalogue; record existing semantics, exact open contracts, deferred scope, and the minimum implementation gate. This is analysis, not owner approval.
 - [x] Audit the decision register for unsupported assumptions and traceability: eight contract rows D-01–D-08, all 16 AWD IDs mapped, no recommendation marked owner-approved, and Markdown fences balanced. The register is linked from the MVP, conformance spec, master research, checkpoint, and README.
 - [ ] Create executable tests only after implementation is authorized.
+
+### Current phone-only overlay — active next steps
+- [ ] Audit the main product/security/execution contract against PR #3's exact draft contract, helper, acceptance matrix, and code-to-test crosswalk. Record only material discrepancies on this isolated documentation branch; do not edit PR #3.
+- [ ] Refresh the existing competitor matrix and user-problem evidence using current local-phone, remote-PC, and hosted-execution alternatives. Include counter-evidence and avoid duplicating the existing PR #3 research.
+- [ ] Produce a compact product hypothesis card with explicit continue/narrow/pivot criteria. Do not lock a first workflow or provider without sufficient evidence and owner approval.
+- [ ] Prepare the PC-return checklist before the estimated end of the phone-only period; keep provider, spend, merge, deployment, and Actions gates closed.
 
 ### Pass D — Manual AI evaluation when feasible
 1. If only one pair can be afforded, run EVAL-06 baseline and Director prototype in the same AI app/model in fresh chats.
