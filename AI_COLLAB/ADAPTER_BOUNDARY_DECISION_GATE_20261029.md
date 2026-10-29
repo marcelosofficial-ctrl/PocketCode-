@@ -108,3 +108,7 @@ Related: FLA-11 in `FUNCTION_LEVEL_CONFORMANCE_AUDIT_20261029.md`; D-05 in `OWNE
 
 ## Cross-decision audit pointer — 2026-10-29
 See [CROSS_DECISION_CONTRADICTION_AUDIT_AND_IMPLEMENTATION_GATES_20261029.md](CROSS_DECISION_CONTRADICTION_AUDIT_AND_IMPLEMENTATION_GATES_20261029.md) for cross-boundary invariants, unresolved interface questions, and the proposed G0-G7 evidence gate sequence. This pointer does not close owner decisions or promote specification/fake-test evidence to provider, persistence, HTTP, or device integration evidence.
+
+
+## Provider-neutral boundary contract sketch — 2026-10-29
+See [PROVIDER_NEUTRAL_BOUNDARY_CONTRACT_SKETCH_20261029.md](PROVIDER_NEUTRAL_BOUNDARY_CONTRACT_SKETCH_20261029.md). It defines proposed operations and typed outcomes for atomic reservation, dispatch-intent/reconciliation, trusted evidence acceptance, append-only report publication, artifact publication/release, retention, and hard stops. It is a review sketch only: not a frozen schema, implementation, provider/store selection, or proof of any guarantee. All integration evidence remains NOT RUN.
