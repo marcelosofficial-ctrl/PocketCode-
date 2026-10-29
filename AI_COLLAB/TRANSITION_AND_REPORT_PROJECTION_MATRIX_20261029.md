@@ -42,7 +42,8 @@ Related documents:
 | Authoritative timeout with confirmed termination | INCOMPLETE | TIMED_OUT | Deny unless separate artifact policy explicitly permits a safe artifact and all gates pass | Exact timeout status; do not use PASS or infer successful completion |
 | Cancellation requested but terminal/termination state unknown | INCOMPLETE | INCOMPLETE | Deny | Cancellation requested is not cancellation confirmed |
 | Authoritative cancellation and confirmed termination | INCOMPLETE | CANCELLED | Deny unless independent release policy proves safe eligibility | Preserve cancellation status and termination evidence |
-| Authoritative enforced execution limit | INCOMPLETE unless an owner-approved canonical verdict rule explicitly says otherwise | LIMIT_EXCEEDED | Deny until termination/cleanup/release gates are established | Identify actual limit event, enforcement source, bounded output and termination state |
+| Trusted limit event confirms the runtime terminated/failed execution because the limit was exceeded | Candidate FAIL if this is a confirmed program/runtime failure under canonical wording; INCOMPLETE if terminal outcome is unknown/contradictory. Exact mapping remains OPEN under D-01 pending owner review. | LIMIT_EXCEEDED | Deny artifact release until termination/cleanup/release gates are established | Preserve limit cause, enforcement source, terminal/exit evidence, and cleanup state | 
+| Collector/retention cap truncates capture while trusted process evidence independently confirms EXIT_ZERO | Derive verdict from terminal facts and case-specific required-output rules; PASS may remain possible only if partial capture is accepted for that case and other gates pass | Preserve cap/collection state separately from execution outcome | Evaluate artifacts independently; do not release if required evidence/integrity is incomplete | Distinguish capped collection from limit-caused process termination |
 | Runtime outcome UNKNOWN; adapter/provider failure is known | INCOMPLETE | PROVIDER_ERROR | Deny | Known cause and missing outcome evidence; no fabricated exit code |
 | Runtime outcome UNKNOWN; cause also unknown | INCOMPLETE | INCOMPLETE | Deny | State exactly which observation is missing |
 | Report renderer shortened stdout/stderr to fit a display budget, but trusted execution result is otherwise complete | Preserve verdict derived from execution facts | Preserve disposition derived from execution facts | Unchanged; independently evaluate release gates | Mark report-display truncation; do not manufacture LIMIT_EXCEEDED |
@@ -79,7 +80,7 @@ PR #2 currently returns only `PASS`, `FAIL`, or `INCOMPLETE` from `classify_verd
 | `succeeded` plus a nonzero exit code | FAIL is the current helper's result, but the envelope must flag the status/exit contradiction for reconciliation | Do not silently claim the source status was consistent; never PASS |
 | Timeout/cancel/rejection/infrastructure failure/nonterminal/unknown | INCOMPLETE | Preserve exact lifecycle status and relevant termination/uncertainty detail |
 | Contradictory terminal evidence | INCOMPLETE | Do not project the reducer's nominal winner as clean success/failure |
-| Runtime limit exceeded | INCOMPLETE verdict plus richer `LIMIT_EXCEEDED` disposition/event | PR #2 has no dedicated status for this; do not map it silently to `program_failed` |
+| Confirmed limit-triggered termination | Richer `LIMIT_EXCEEDED` disposition; user verdict is OPEN under D-01: candidate FAIL when trusted evidence confirms a program/runtime failure, otherwise INCOMPLETE if the result is unknown/contradictory | PR #2 has no dedicated limit status; do not silently map a limit event to `program_failed` without confirming the actual terminal semantics |
 | Display truncation only | Existing execution verdict remains | Add explicit display-truncation marker; never derive runtime-limit status from this alone |
 | Missing exit code with `succeeded` | INCOMPLETE in current helper | Do not synthesize zero |
 
@@ -100,7 +101,7 @@ All are **specified, NOT RUN**. Tests must assert output values, event/evidence 
 | TPM-07 | Same terminal event replayed identically | One logical event; stable disposition and report version | CASE-11/13 |
 | TPM-08 | Same event ID reused with changed payload/sequence | Contradiction; INCOMPLETE | CASE-11/13 |
 | TPM-09 | Late authoritative cleanup update | Append report version; original immutable; recompute release gate | CASE-12 |
-| TPM-10 | Runtime output cap enforced | Preserve limit event and enforcement source; bounded output; not PASS | CASE-07 |
+| TPM-10 | Cap causes termination versus collector-only truncation | Preserve the limit event, actual terminal outcome, and collection state separately; verdict for confirmed limit-caused failure remains pending D-01 | CASE-07 |
 | TPM-11 | Report-only truncation | Keep execution verdict; label display truncation; no LIMIT_EXCEEDED inference | LOOP-07, CASE-12 |
 | TPM-12 | Partial collector failure vs empty stream | Distinct evidence states; no invented output | LOOP-07, CASE-12 |
 | TPM-13 | Lost dispatch acknowledgement and lookup UNKNOWN | Exactly one dispatch attempt; no automatic redispatch; INCOMPLETE | CASE-13 |
