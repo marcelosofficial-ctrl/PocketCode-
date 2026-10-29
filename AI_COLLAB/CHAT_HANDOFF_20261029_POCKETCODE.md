@@ -819,11 +819,12 @@ The PocketCode product-direction documents and the RevDev workflow-efficiency ma
 
 - RevDev repository: `marcelosofficial-ctrl/DevRelay-Missions`
 - Review branch: `review/revdev-adaptive-ai-workshare-2026-10-27`
-- Verified branch HEAD / commit: `893266b52ac83388b7f1796bc443f85aa4011768` — “Reconcile legacy cross-project product wording”.
-- Changed file: `resume/revdev/AI_WORKFLOW_EFFICIENCY_AND_CROSS_APP_ORCHESTRATION_MASTER_2026-10-28.md`
-- Previous blob: `057e623248314214b7a35c296de811f27bd3a1f2`
-- New blob: `ea832fa61c826724bc8281edb23b4cfa46bde942`
-- [Inspect the RevDev commit](https://github.com/marcelosofficial-ctrl/DevRelay-Missions/commit/893266b52ac83388b7f1796bc443f85aa4011768)
+- Master wording-change commit: `893266b52ac83388b7f1796bc443f85aa4011768`.
+- Latest RevDev branch HEAD subsequently checked: `9d352cca7749a67a256e9667f4f711b218d64375` — adds the separate convergence handoff.
+- Changed master: `resume/revdev/AI_WORKFLOW_EFFICIENCY_AND_CROSS_APP_ORCHESTRATION_MASTER_2026-10-28.md`; previous blob `057e623248314214b7a35c296de811f27bd3a1f2`, resulting blob `ea832fa61c826724bc8281edb23b4cfa46bde942`.
+- New RevDev handoff: `resume/revdev/NEW_CHAT_HANDOFF_2026-10-29_REVDEV_POCKETCODE_CONVERGENCE.md`, blob `2bf028c624435409a0d0aa197f1ebabf89a43f89`.
+- [Inspect the wording-change commit](https://github.com/marcelosofficial-ctrl/DevRelay-Missions/commit/893266b52ac83388b7f1796bc443f85aa4011768)
+- [Read the RevDev convergence handoff](https://github.com/marcelosofficial-ctrl/DevRelay-Missions/blob/review/revdev-adaptive-ai-workshare-2026-10-27/resume/revdev/NEW_CHAT_HANDOFF_2026-10-29_REVDEV_POCKETCODE_CONVERGENCE.md)
 
 The edit corrected legacy language around §3.5 / lines 241, 319, 327, 392 and 400. It now states the unified PC-and-phone product direction, preserves separate repositories/implementation streams/acceptance suites/release gates during development, and explicitly does not authorize merge, shared-code migration, shared runtime, or execution/security-boundary changes. The old statement that PocketCode's direction changes were still pending was updated.
 
@@ -832,13 +833,28 @@ RevDev cross-project references:
 - Draft semantic crosswalk: https://github.com/marcelosofficial-ctrl/DevRelay-Missions/blob/review/revdev-adaptive-ai-workshare-2026-10-27/resume/revdev/REVDEV_POCKETCODE_SEMANTIC_CROSSWALK_DRAFT_2026-10-29.md
 - Updated workflow-efficiency master: https://github.com/marcelosofficial-ctrl/DevRelay-Missions/blob/review/revdev-adaptive-ai-workshare-2026-10-27/resume/revdev/AI_WORKFLOW_EFFICIENCY_AND_CROSS_APP_ORCHESTRATION_MASTER_2026-10-28.md
 
+### Timeout verdict precedence — exact cross-branch status
+
+A fresh read-only comparison found that the earlier timeout-precedence finding must be described by branch, not as a blanket claim about every revision:
+
+| Ref | Helper blob | Static behavior |
+|---|---|---|
+| PocketCode `main` and research branch | `2459137b6f8d4b6bfadd6218e5a9bd92e75b0817` | Any valid nonzero exit code returns FAIL before terminal-state handling. Thus `timed_out` + 137 can incorrectly become FAIL relative to canonical CASE-04. Test blob `85109f056009d65a274e9306deb39b68e1fefbd2` lacks that combination. |
+| PR #2 branch `chat-continuity-report-regressions-2026-10-26` | `e9d944a722c2fac5279952696528da72a7011af3` | Candidate fix: nonzero exit influences verdict only when lifecycle status is `succeeded`; other states remain INCOMPLETE unless status is `program_failed`. Test blob `39f3a3ef865ed55f333a1edc208096d99197d023` explicitly tests timeout/137, cancellation/143, infrastructure failure, rejection, running and unknown with nonzero codes. |
+| PR #2 status | Head `eb8b7ea83cb0e8fe1880351276c485b761431791`; open/draft/unmerged | Candidate source/test change exists but is not merged. Tests NOT RUN; no PR changes made in this pass. |
+
+The candidate fix appears to address the specific precedence mismatch, but it does not add explicit exit-code provenance to the helper interface. The next bounded review must decide whether the caller contract adequately guarantees that `exit_code` is the authoritative child-program code when paired with `succeeded`, or whether contradictory/wrapper evidence needs a distinct representation. Do not edit PR #2, tests, canonical acceptance, or implementation.
+
+Research note with this exact comparison: [Execution Verdict Crosswalk Follow-up](EXECUTION_VERDICT_CROSSWALK_FOLLOWUP_20261029.md), current blob after update `700c196a7406273c9ac9992812b09445ebe04500`, commit `45f9b3d14068076a74599ff73f3c4f1a84dfd221`.
+
 ### Exact next work for the new chat
 
-1. Read this addendum first, then the [PocketCode current checkpoint](POCKETCODE_CURRENT_CHECKPOINT_20261028.md), [primary Workflow Director research master](MASTER_AI_WORKFLOW_DIRECTOR_RESEARCH_20261028.md), [shared-core proposal](../PRODUCT/REVDEV_POCKETCODE_SHARED_CORE.md), and [owner decision register](OWNER_DECISION_REGISTER_20261029.md). Do not reread all specialist audits unless a question requires them.
-2. Re-fetch current PocketCode branch/main, the RevDev review branch, and PR #2/#3 refs; do not trust a copied SHA without checking it.
-3. Perform a bounded **draft semantic crosswalk** only: map shared concepts against the exact PocketCode canonical LOOP/CASE contracts and RevDev's own AWC/P8U/P0-D suites. Keep the mapping explicitly draft until actual artifacts from both sides have been compared. PC source/runtime/queue/publication evidence remains unavailable, so do not claim implementation equivalence or that one project's acceptance proves the other.
-4. Keep execution-location research separate: PocketCode's fixed-task comparison (local phone, browser/WASM, user-owned remote PC, hosted, manual copy/paste) remains NOT RUN; $0 default remains binding. No provider selection, account creation, billable workload, or runtime claim.
-5. Then checkpoint the highest-value unresolved question. Do not start a broad research sweep or implement the proposed contract without explicit authorization.
+1. Read this addendum first, then the [PocketCode current checkpoint](POCKETCODE_CURRENT_CHECKPOINT_20261028.md), [primary Workflow Director research master](MASTER_AI_WORKFLOW_DIRECTOR_RESEARCH_20261028.md), [shared-core proposal](../PRODUCT/REVDEV_POCKETCODE_SHARED_CORE.md), [owner decision register](OWNER_DECISION_REGISTER_20261029.md), and [timeout verdict crosswalk follow-up](EXECUTION_VERDICT_CROSSWALK_FOLLOWUP_20261029.md). Use the RevDev convergence handoff linked above for the other repository's latest continuity state.
+2. Re-fetch live PocketCode branch/main, RevDev review branch, and PR #2/#3 refs before making claims. Branches have advanced during this pass.
+3. Perform a narrowly scoped, read-only review of the timeout-precedence finding: compare canonical LOOP-05/CASE-04 with the main/research helper and the candidate helper/test on PR #2. Determine whether the candidate fix is sufficient and whether child-exit versus wrapper/termination-code provenance is guaranteed by callers or remains an interface gap. Produce a small source/contract/test/expected-result table. Do not edit PR #2, tests, canonical acceptance, or implementation.
+4. After that finding is reconciled, do a bounded **draft semantic crosswalk** only: map shared concepts against the exact PocketCode canonical LOOP/CASE contracts and RevDev's own AWC/P8U/P0-D suites. Keep it draft until actual artifacts from both sides have been compared. PC source/runtime/queue/publication evidence remains unavailable, so do not claim implementation equivalence or that one project's acceptance proves the other.
+5. Keep execution-location research separate: PocketCode's fixed-task comparison (local phone, browser/WASM, user-owned remote PC, hosted, manual copy/paste) remains NOT RUN; $0 default remains binding. No provider selection, account creation, billable workload, or runtime claim.
+6. Then checkpoint the highest-value unresolved question. Do not start a broad research sweep or implement the proposed contract without explicit authorization.
 
 ### Copy/paste prompt for the new ChatGPT conversation
 
@@ -850,4 +866,4 @@ Three-AI roles: Claude is lead developer/RelayRef; Gemini is co-developer and in
 
 Current PocketCode research branch: `pocketcode-ai-workflow-director-research-2026-10-28`; fetch its live HEAD before starting, because this handoff has itself been updated since the earlier checkpoint. D-001, Project Status, Product Spec and shared-core proposal now express the unified direction while preserving separate engineering boundaries. The Workflow Director research master is the primary research reference and links the older Coach proposal as historical/source material for AEC-001–AEC-012. PR #2 remains draft/open/unmerged at `eb8b7ea83cb0e8fe1880351276c485b761431791`; PR #3 remains draft/open/unmerged at `0ddcc0bc97bac5d446aefedf3d71f99411bd841d`.
 
-The RevDev wording reconciliation is complete at commit `893266b52ac83388b7f1796bc443f85aa4011768` (changed master blob `ea832fa61c826724bc8281edb23b4cfa46bde942`). Next, re-fetch live refs and do a bounded draft semantic crosswalk against exact PocketCode canonical LOOP/CASE and RevDev AWC/P8U/P0-D suites. Keep it draft because PC artifacts remain unavailable. Do not edit source/tests or touch PR #2/#3. Work efficiently, avoid duplicate research, and ask the owner only for an essential missing decision/action.
+First technical task: read `AI_COLLAB/EXECUTION_VERDICT_CROSSWALK_FOLLOWUP_20261029.md` and its §7. Re-fetch exact live refs, then perform a read-only review of canonical LOOP-05/CASE-04 against `scripts/report_contract.py` and `scripts/test_report_contract.py` on `main` and PR #2. Main/research have the old precedence (`2459137b...`); PR #2 has a candidate fix (`e9d944a...`) and timeout/nonzero regression test (`39f3a3ef...`), but PR #2 is open/draft/unmerged and tests are NOT RUN. Determine whether exit-code provenance (child code vs wrapper/termination code) is adequately guaranteed by callers. Do not edit PR #2, source/tests, or canonical acceptance. Then produce a small draft semantic crosswalk across PocketCode LOOP/CASE and RevDev AWC/P8U/P0-D; do not claim implementation equivalence while PC artifacts are unavailable.
