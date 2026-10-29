@@ -192,3 +192,7 @@ The fake records every call, argument, and sequence number. Tests must assert bo
 - No account, billing, workload, merge, deployment, or production implementation is authorized.
 - Canonical acceptance remains unchanged: 14 LOOP criteria and 16 CASE scenarios remain in force.
 - PR #2 and PR #3 remain separate drafts and are not modified by this artifact.
+
+## D-06 durability boundary cross-reference
+
+FAKE-05/06 specify coordinator behavior only. The full recovery contract is `AI_COLLAB/IDEMPOTENCY_RECOVERY_FALSIFICATION_CHECKLIST_20261029.md` (DR-01..DR-12), including concurrent reservations, crash windows, lease expiry, persistence restart, provider lookup semantics and tombstone retention. Do not infer exactly-once execution from one durable local reservation. If dispatch may have been accepted and authoritative lookup is UNKNOWN/unavailable, keep the original attempt unresolved and forbid automatic redispatch. Any provider guarantee remains unverified until the selected provider contract and integration tests establish it.
