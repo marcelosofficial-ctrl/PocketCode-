@@ -600,3 +600,18 @@ All are research/spec updates only. No code changed, no tests ran, no provider/r
 ## Immediate next pass
 
 Perform a read-only branch/continuity verification: fetch the latest five decision/test artifacts plus this handoff, confirm their latest blobs and current branch HEAD, check that COORD-01..12 and PBR-01..07/PF-01..05 are referenced consistently, and recheck PR #2/#3 plus the canonical blobs. Do not do further broad rewrites unless a concrete conflict is found.
+## 27. Final static verification and PF-01 precision correction — 2026-10-29
+
+PF-01 was tightened to avoid listing ordinary Python lists as mapping keys (lists are unhashable in a normal `dict`). The test now targets non-string keys such as integer, boolean, and null keys, custom Mapping implementations, unsupported/non-finite values and invalid nested values. It explicitly includes `{1: "x"}` versus `{"1": "x"}` as a serialization-coercion regression: separately supplied policy mappings of those shapes can serialize to the same JSON key/value shape unless non-string keys are rejected recursively.
+
+Latest `AI_COLLAB/ADAPTER_BOUNDARY_DECISION_GATE_20261029.md` blob after this correction: `c1057fe74fd77bd6ae1783e0d024b6cad94bbd16`, commit `ce534e85c64b7108629c12eb43815a5fb87a197f`.
+
+Static verification at the current branch head confirmed:
+- Research branch name remains `pocketcode-ai-workflow-director-research-2026-10-28`.
+- Latest head before this handoff append was `83aef486461113cde3f8a8cdcdfdacd1b09cf27b`; this final handoff update advances it.
+- COORD-01..12 and PBR-01..07 / PF-01..05 were present in the intended research files.
+- PR #2 remains open/draft/unmerged at `eb8b7ea83cb0e8fe1880351276c485b761431791`; PR #3 remains open/draft/unmerged at `0ddcc0bc97bac5d446aefedf3d71f99411bd841d`.
+- Canonical `PRODUCT/EXECUTION_CONTRACT.md` is still blob `3861e51ae4f9e45a263b677402f26c41b240959d`; `PRODUCT/EXECUTION_LOOP_ACCEPTANCE.md` is still blob `c6714c27db52b2962fe8d1c7e6a16829d46a8338`.
+- The research tree currently has 45 `AI_COLLAB/*.md` files; the recursive tree fetch was not truncated.
+
+Current truthful state: these are specification/source-audit documents only. No implementation changes, no tests executed, no policy-race integration test, no provider/runtime selection, no account/billing/workload, merge, or deployment. D-01/D-03/D-04 remain owner-open; D-05 remains blocked until the actual policy application/dispatch boundary can be selected and proven.
