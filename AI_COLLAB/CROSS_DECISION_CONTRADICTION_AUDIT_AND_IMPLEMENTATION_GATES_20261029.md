@@ -86,3 +86,7 @@ No direct contradiction found in this documentation pass; residual ambiguities A
 
 ## Provider-neutral boundary contract sketch — 2026-10-29
 See [PROVIDER_NEUTRAL_BOUNDARY_CONTRACT_SKETCH_20261029.md](PROVIDER_NEUTRAL_BOUNDARY_CONTRACT_SKETCH_20261029.md). It defines proposed operations and typed outcomes for atomic reservation, dispatch-intent/reconciliation, trusted evidence acceptance, append-only report publication, artifact publication/release, retention, and hard stops. It is a review sketch only: not a frozen schema, implementation, provider/store selection, or proof of any guarantee. All integration evidence remains NOT RUN.
+
+
+## Boundary proof-level review checklist — 2026-10-29
+See [BOUNDARY_PROOF_LEVEL_REVIEW_CHECKLIST_20261029.md](BOUNDARY_PROOF_LEVEL_REVIEW_CHECKLIST_20261029.md) for the focused proof-level matrix and six concrete blockers covering provider “not created” semantics, the actual policy barrier, report/artifact commit recovery, retention and identity namespaces, release-time authorization/byte integrity, and owner-open D-01..D-04. This is a review aid only; it adds no new approval or implementation evidence.
