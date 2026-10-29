@@ -26,7 +26,9 @@ Non-goals: selecting wire-format field names, defining an HTTP API, claiming exa
 5. **Only the trusted producer can set authoritative fields:** task source, stdout/stderr, generated JSON, filenames, and client-supplied report fields are untrusted data. They may be shown as data but cannot set lifecycle status, exit code, policy state, cleanup state, artifact authority, or tenant ownership.
 6. **Policy before dispatch:** no adapter task-start call occurs until the exact required policy revision is authoritatively confirmed as applied for that attempt immediately before dispatch. **A read-then-dispatch sequence alone does not close a time-of-check/time-of-use race.** A real boundary must either bind the attempt to an immutable policy revision or provide an atomic/conditional dispatch guarantee that rejects a changed revision; if neither is available, the policy barrier remains unproven and the boundary is not acceptable for untrusted code.
 7. **No blind replay:** after an ambiguous acknowledgement, look up the existing attempt. If authoritative state cannot be recovered, return UNKNOWN/INCOMPLETE and do not redispatch automatically.
-8. **Artifact fail-closed:** no artifact is released until final stored-byte integrity, job association, tenant authorization, and cleanup requirements are satisfied.
+8. **Artifact fail-closed:** no artifact is released until final stored-byte integrity, job/attempt association, tenant authorization, and cleanup requirements are satisfied.
+
+   **Release-boundary validation:** immediately before each export/download, re-evaluate current authorization and artifact state rather than inheriting a historical PASS. Validate normalized safe artifact path/name, allowed media type, size/count limits, final stored-byte integrity, and job/attempt/tenant association at the actual release boundary. Deny or quarantine on mismatch, stale/unknown required evidence, or failed validation. A secret-scanning/redaction check may be an additional policy gate if selected, but it is not currently a chosen mechanism and must not be represented as present or verified. Do not rely on regex log redaction as the primary secret-protection mechanism.
 9. **Report is a projection:** report formatting can render a trusted envelope but cannot create missing trust or execution evidence.
 10. **Local and hosted evidence stay separate:** local UX tests cannot pass provider-side isolation, egress, termination, multi-tenant, or durable recovery criteria.
 
@@ -156,6 +158,7 @@ The fake records every call, argument, and sequence number. Tests must assert bo
 | FAKE-14 | Artifact belongs to another job/tenant | Deny release; do not leak filename, digest, or existence beyond authorized response policy | LOOP-10/12; ART-SEM-03 |
 | FAKE-15 | Two runs complete in reverse start order | Each report and artifact retains the correct job/attempt binding | CASE-16 |
 | FAKE-16 | Script prints JSON claiming PASS or forged exit code | Treat as ordinary untrusted output; authoritative envelope unchanged | CASE-09/10; LOOP-11 |
+| FAKE-17 | Historical report is PASS but release-time artifact validation now fails (unsafe path/name, disallowed media type, size/integrity mismatch, changed authorization, or unresolved required gate) | Deny/quarantine export despite historical PASS; record current reason; no cross-job/tenant disclosure | LOOP-10/11/12; CASE-14/15 |
 
 ### Fake test design rules
 
