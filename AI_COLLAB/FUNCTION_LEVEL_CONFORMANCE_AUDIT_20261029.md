@@ -144,3 +144,40 @@ The existing canonical acceptance remains authoritative: all 14 LOOP criteria an
 - PR #2, PR #3, canonical acceptance, and provider/runtime selection were not changed.
 - No account, billing, workload, merge, deployment, or production implementation was initiated.
 - This document is research/continuity only and does not authorize implementation.
+
+
+## 8. Additional evidence-integrity finding
+
+### FLA-06 — terminal-event reducer returns shallow copies of event records
+
+**Classification:** CONFIRMED SOURCE-LEVEL MUTABILITY GAP; INTEGRATION IMPACT DEPENDS ON CALLER  
+**Function:** `reduce_terminal_events()`  
+**Source:** [lifecycle_contract.py](https://github.com/marcelosofficial-ctrl/PocketCode-/blob/pocketcode-pass0-audit-2026-10-26/scripts/lifecycle_contract.py)
+
+The reducer uses `event = dict(raw)`, which copies the outer mapping but retains references to nested values such as `payload`. The returned `events` and `conflicts` therefore can share mutable payload objects with the caller's input. If a caller mutates an original nested payload after reduction, the reducer's returned evidence view changes too, even though its previously computed outcome/contradiction flags do not automatically recompute.
+
+This is not proof of a live audit-log vulnerability. It is a concrete helper-level evidence-immutability gap if callers retain and rely on the returned mappings as an evidence snapshot.
+
+**Minimal regression:**
+1. Reduce an event whose payload is a mutable dictionary.
+2. Mutate the original nested payload after reduction.
+3. Assert that the returned accepted/conflict evidence remains unchanged.
+4. Repeat with nested lists and nested dictionaries if the accepted payload contract permits them.
+
+**Possible fix choices:** require immutable/canonical event payloads at the trust boundary; deep-copy validated payloads; or serialize and validate events into a canonical immutable representation before reduction. Avoid blindly deep-copying arbitrary objects without defining the allowed payload type.
+
+**Canonical anchors:** LOOP-03/09/11; CASE-11/13/16.
+
+This supplements FLA-04: event-to-attempt binding and event-payload immutability are separate requirements. Binding proves which attempt an event claims to describe; immutability prevents the supplied evidence representation from changing after it has been reduced.
+
+## 9. Cross-document implementation-ready test sequence
+
+The companion `AI_COLLAB/COORDINATOR_FAKE_ADAPTER_TEST_PLAN_20261029.md` defines COORD-01..10 for coordinator behavior. The combined next sequence, if later authorized, is:
+
+1. Add pure-helper tests for malformed limit flags, whitespace-only fingerprint inputs, invalid output-budget cap types, and mutable event payload aliasing.
+2. Resolve whether required stdout/stderr collection is a PASS gate for each supported runtime. Do not silently infer that requirement from artifact validity.
+3. Build coordinator tests with exact dispatch counts, same-attempt lookup, policy revision barrier, and release-time authorization checks.
+4. Add persistence/concurrency tests before claiming idempotency or report history is durable.
+5. Run real controlled-boundary acceptance only after a provider/runtime is separately approved.
+
+No tests were run and no code or canonical acceptance was changed as part of this addendum.
