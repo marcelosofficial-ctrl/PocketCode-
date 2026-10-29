@@ -82,3 +82,7 @@ Do not promote one evidence label to another.
 ## Final status
 
 No direct contradiction found in this documentation pass; residual ambiguities A-G remain explicitly unresolved. All new gates are recommendations, not approved implementation decisions. No tests or workloads were run. No provider, store, runtime, account, billing, merge, or deployment action was performed. Canonical acceptance and PR #2/#3 are not modified.
+
+
+## Provider-neutral boundary contract sketch — 2026-10-29
+See [PROVIDER_NEUTRAL_BOUNDARY_CONTRACT_SKETCH_20261029.md](PROVIDER_NEUTRAL_BOUNDARY_CONTRACT_SKETCH_20261029.md). It defines proposed operations and typed outcomes for atomic reservation, dispatch-intent/reconciliation, trusted evidence acceptance, append-only report publication, artifact publication/release, retention, and hard stops. It is a review sketch only: not a frozen schema, implementation, provider/store selection, or proof of any guarantee. All integration evidence remains NOT RUN.
