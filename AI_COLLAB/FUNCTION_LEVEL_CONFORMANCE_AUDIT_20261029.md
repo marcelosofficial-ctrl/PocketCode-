@@ -216,3 +216,39 @@ This does not by itself make a PASS possible if the caller correctly honors the 
 **Canonical anchors:** LOOP-05/07/09; CASE-11/13/16.
 
 These findings are separate from FLA-04 (the reducer has no expected attempt argument) and FLA-06 (nested event payloads remain mutable through shallow copies). Together they identify three distinct concerns: identity binding, duplicate equivalence, and evidence-snapshot integrity/diagnostics.
+
+
+## 9. Idempotency reservation input validation
+
+### FLA-09 — idempotency helper relies on truthiness rather than validating identifier types and normalized values
+
+**Classification:** CONFIRMED SOURCE-LEVEL INPUT-VALIDATION GAP; CALLER IMPACT UNKNOWN  
+**Function:** `reserve_idempotency()`; related boundary: `reserve_idempotency_batch()`  
+**Pinned source:** `scripts/lifecycle_contract.py`, PR #3 branch `pocketcode-pass0-audit-2026-10-26`, blob `ba8d4d0b217c90513bed020e298029ef4e16f164`.
+
+The helper checks `if not tenant_id or not key or not fingerprint or not proposed_job_id`, which only rejects false-like values. It does not enforce that these four values are strings, non-whitespace, or in any documented canonical form. Truthy non-string values can therefore be stored in the reservation record despite the declared `dict[tuple[str, str], tuple[str, str]]` contract. Unhashable tenant/key values can fail later during tuple-key dictionary lookup with a lower-level `TypeError`, rather than the helper's documented-style `ValueError`. Whitespace-only strings are also accepted. The batch wrapper repeats the same truthiness-only validation before calling the helper.
+
+This is a pure-helper contract/robustness gap. It does not establish that an actual API accepts malformed identifiers; a future request validator may reject them. It also does not establish a concurrency or durable-idempotency defect, which remains outside this in-memory model.
+
+**Minimal regression matrix:**
+- Reject non-string values for tenant ID, idempotency key, request fingerprint, and proposed job ID.
+- Reject empty and whitespace-only values after the contract-defined normalization step.
+- Reject unhashable tenant/key values with a clear validation error, not an incidental dictionary exception.
+- Keep tenant scoping and same-key/same-fingerprint replay behavior unchanged for valid canonical strings.
+- Apply equivalent validation through `reserve_idempotency_batch()`; do not let its type annotations stand in for runtime validation.
+
+**Contract decision:** define whether identifiers are opaque case-sensitive strings or normalized strings, and which fields may be trimmed. Do not silently normalize an idempotency key if doing so could merge distinct caller-supplied keys; alternatively reject whitespace-only values without rewriting valid opaque keys.
+
+**Canonical anchors:** LOOP-03/05/09; CASE-08/11/13/16.
+
+### Tombstone review result — existing regression coverage is incomplete
+
+The pinned PR #3 `DeletionTombstones.add()` stores `(fingerprint, deleted_at + RETENTION_SECONDS)` directly at the tenant/key map entry. The current test covers tenant scoping and expiration at the exact 30-day deadline, but does not cover repeated `add()` calls for the same tenant/key with a changed fingerprint or a different `deleted_at`. On this pinned branch, a repeated add replaces the previous fingerprint and expiry; depending on the supplied timestamp, it can change the retained fingerprint or shorten/extend the deadline.
+
+This is recorded as a **cross-branch regression check**, not a new independent FLA ID in this pass, because a separate lifecycle/fingerprint audit branch was previously reported to contain tombstone overwrite/retention work and its current source was not re-verified here. Before adopting any change, compare the exact branch/file revisions and preserve the intended policy: duplicate deletion events should not silently rewrite the original tombstone identity or reset retention unless an explicit contract says so.
+
+### Output-budget follow-up
+
+The pinned constructor still accepts positive non-integer caps because it checks only `<= 0`; the existing test source exercises cap behavior but has no constructor-type matrix. This corroborates FLA-03 and is **not** a separate finding. A future regression should reject booleans, floats, strings, zero, and negative values at construction; valid positive integers should remain accepted.
+
+**Evidence status:** static inspection only. No tests were executed. No implementation or canonical acceptance documents changed.
