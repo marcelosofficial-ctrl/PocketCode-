@@ -297,3 +297,25 @@ This is a pure in-memory model validation gap, not proof of a live report API is
 **Related but distinct:** FLA-02 validates fingerprint identity fields; FLA-09 validates idempotency reservation values. FLA-10 concerns the report-history append boundary and its evidence reference. These can share a common validation utility later, but should remain separately tested at each public helper boundary.
 
 **Evidence status:** static inspection of the separate lifecycle/fingerprint branch only; no tests run. Not assumed merged or integrated.
+
+
+## 12. FLA-11 — policy fingerprint serialization can collapse non-string object keys
+
+**Classification:** CONDITIONAL SOURCE-LEVEL CANONICALIZATION GAP; DEPENDS ON ACCEPTED POLICY SCHEMA  
+**Function:** `canonical_request_fingerprint()` on `pocketcode-lifecycle-fingerprint-audit-2026-10-27`  
+**Pinned source:** `scripts/lifecycle_contract.py`, blob `316345341603848c4a86a6a82e533daa796c7695`.
+
+The helper accepts `effective_policy: Mapping[str, Any]` but performs no recursive runtime validation that mapping keys are strings before serializing `dict(effective_policy)` with `json.dumps(sort_keys=True, ...)`. Python's JSON encoder converts certain non-string mapping keys to JSON strings. For example, a policy mapping with integer key `1` and value `"x"` serializes identically to a mapping with string key `"1"` and the same value. If these policy objects have different meaning at any upstream consumer, they can receive the same request fingerprint. Mixed incomparable key types can instead fail during sorted serialization, creating inconsistent malformed-input behavior.
+
+This is **not evidence of an exploitable fingerprint collision in the product**: the intended policy schema may already require JSON-object string keys and upstream validation may enforce that. The helper itself does not enforce that precondition, and type annotations are not runtime checks.
+
+**Minimal regression matrix:**
+- Define the accepted recursive policy value grammar (JSON object with string keys, arrays, strings, booleans, null, and finite numbers, if that is the intended contract).
+- Reject non-string keys at every mapping depth before fingerprinting; reject unsupported value types and non-finite numbers with deliberate validation errors.
+- Assert that malformed `{1: "x"}` input is rejected rather than fingerprinting identically to `{"1": "x"}`.
+- Preserve deterministic fingerprints for valid string-keyed nested policies with reordered mapping keys.
+- Verify the coordinator fingerprints the same canonical effective policy that the execution boundary actually applies; a helper-only rule cannot establish that binding.
+
+**Canonical anchors:** LOOP-03/05/12/14; CASE-08/13/15.
+
+**Evidence status:** static inspection only; no tests run. Candidate source is on the separate lifecycle/fingerprint branch, not assumed merged or integrated.
