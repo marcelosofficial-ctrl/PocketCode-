@@ -369,3 +369,22 @@ Output-budget cap-type gap corroborates FLA-03; do not duplicate it as a new fin
 **Source pins rechecked:** PR #3 lifecycle source `ba8d4d0b217c90513bed020e298029ef4e16f164`; test source `39db87d9f44f5e8474f33cff60136e529364199a`. Static inspection only; no tests run. PR #2, PR #3, and canonical acceptance remain untouched. No provider, workload, account, billing, merge, Actions, or deployment action was taken.
 
 **Next:** verify the exact current source on `pocketcode-lifecycle-fingerprint-audit-2026-10-27` before resolving tombstone status; inspect canonical request fingerprint validation and policy serialization only for genuinely new gaps beyond FLA-02; then audit batch idempotency and report-history semantics for contract-level type/aliasing gaps. Keep findings conditional where no caller/coordinator is implemented. Claude results remain pending and should be reconciled later without blocking static research.
+
+
+## 12. Cross-branch reconciliation — follow-up completed
+
+Latest audit reconciliation commit: `1c7578e57091842be471f8bf2be50a6d685473f4`. Latest audit blob: `02962190dba372bf67f868f9dc94371d50798651`.
+
+I verified the separate branch `pocketcode-lifecycle-fingerprint-audit-2026-10-27` rather than leaving the tombstone and idempotency findings unresolved by assumption:
+
+- Updated source `scripts/lifecycle_contract.py`, blob `316345341603848c4a86a6a82e533daa796c7695`.
+- Updated test source `scripts/test_lifecycle_contract.py`, blob `ef9a68de632be30c091afe57f0724fd030a513f9`.
+- FLA-02 fingerprint blank-field validation has a source-level fix and test cases on that branch.
+- FLA-09 idempotency validation has a source-level fix requiring nonblank strings and test cases for empty/whitespace/None/integer values on that branch.
+- Tombstone retry behavior has a source-level fix: same key + changed fingerprint conflicts; same fingerprint preserves the maximum expiry so retries do not shorten retention. Test source covers these cases.
+- None of those tests were run in this pass, and no fixes are assumed merged or integrated. The pinned PR #3 blob `ba8d4d0b217c90513bed020e298029ef4e16f164` still exhibits the older behavior described in the original audit.
+- FLA-03 remains open in static review: the newer branch's `OutputBudget.__init__()` still appears to accept positive non-integer caps because it only checks `<= 0`.
+
+Updated audit link: https://github.com/marcelosofficial-ctrl/PocketCode-/blob/pocketcode-ai-workflow-director-research-2026-10-28/AI_COLLAB/FUNCTION_LEVEL_CONFORMANCE_AUDIT_20261029.md
+
+**Next best step:** inspect the newer lifecycle/fingerprint branch's remaining validation and report-history contracts, especially strict output-cap typing and whether `ReportHistory.append()` rejects whitespace-only job/evidence identifiers. Keep findings source-specific; do not treat the branch as merged or its tests as passed. No PR #2/#3 or canonical acceptance changes; no workloads, billing, Actions, merge, or deployment.
