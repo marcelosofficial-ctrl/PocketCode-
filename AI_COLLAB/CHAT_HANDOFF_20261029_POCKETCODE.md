@@ -494,3 +494,12 @@ It also defines evidence labels (VERIFIED IN SOURCE, UNIT TESTED, FAKE-ADAPTER T
 Verified after creation: [control ownership/falsification matrix](https://github.com/marcelosofficial-ctrl/PocketCode-/blob/pocketcode-ai-workflow-director-research-2026-10-28/AI_COLLAB/CONTROL_OWNERSHIP_AND_FALSIFICATION_MATRIX_20261029.md).
 
 No tests run. No implementation code changed. No provider/runtime chosen. PR #2/#3 and canonical acceptance untouched; no account, billing, workload, merge, or deployment action.
+
+
+## 21. Owner decision register — 2026-10-29
+
+Created `AI_COLLAB/OWNER_DECISION_REGISTER_20261029.md` (commit `37d1ba24fd8d9c9e9515b3f27eb792fecf23d12c`). It records eight unresolved decisions, proposed defaults, and tests needed before implementation.
+
+Important consistency check: canonical acceptance defines FAIL as a confirmed program/runtime failure. The semantic and transition matrices lean toward INCOMPLETE for enforced limits unless an owner decides otherwise. A trusted limit event that terminates execution may be a confirmed runtime failure; review this against canonical wording before freezing tests. Proposed for review: confirmed limit-triggered termination -> FAIL verdict plus `LIMIT_EXCEEDED` disposition; collector-only truncation and display-only truncation remain distinct. Do not amend canonical acceptance silently.
+
+Other open decisions: provider failure without child exit; output completeness as a PASS gate; event ID scope; policy revision barrier; ambiguous acknowledgement recovery; release-time artifact checks; durable report history. No tests or code changes; PR #2/#3 and canonical acceptance remain untouched.
