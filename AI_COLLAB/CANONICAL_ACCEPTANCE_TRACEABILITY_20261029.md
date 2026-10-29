@@ -63,7 +63,7 @@ Current execution evidence for this plan: **NOT RUN**. No criterion below should
 
 1. **Boundary selection:** identify the actual environment and what evidence it can expose. No test if unavailable.
 2. **Low-cost workflow signal:** CASE-01 and a clear malformed-input/program-failure case, real file artifact, report copy/paste. Label as smoke evidence only.
-3. **Report correctness:** CASE-02, CASE-03, CASE-07, CASE-09, CASE-10, CASE-12, plus LOOP-06/07/08/11/16-related UI behavior.
+3. **Report correctness:** CASE-02, CASE-03, CASE-07, CASE-09, CASE-10, CASE-12, plus LOOP-06/07/08/11 and CASE-16-related UI behavior.
 4. **Lifecycle/recovery:** CASE-04/05/06/11/13/16. These need trustworthy runtime/service controls; a local app cannot pass them merely by showing a timer or status label.
 5. **Security/artifact boundaries:** CASE-08/14/15 and LOOP-10/12. Use a controlled test environment and evidence independent of the untrusted script.
 6. **Governance and product honesty:** LOOP-13/14 before platform automation or provider workload. Do not create an account or launch a potentially billable workload to learn whether a free tier exists.
