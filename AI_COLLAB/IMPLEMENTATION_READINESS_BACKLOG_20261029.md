@@ -159,3 +159,8 @@ Replace/add rows only when concrete reviewer output exists. Do not invent findin
 - [Owner decision register](OWNER_DECISION_REGISTER_20261029.md)
 - [Cross-decision contradiction audit and gates](CROSS_DECISION_CONTRADICTION_AUDIT_AND_IMPLEMENTATION_GATES_20261029.md)
 - [Canonical acceptance traceability](CANONICAL_ACCEPTANCE_TRACEABILITY_20261029.md)
+
+
+## Owner decision packet pointer
+
+The review-ready decision table and response template for D-01..D-04 are in [OWNER_DECISION_PACKET_D01_D04_20261029.md](OWNER_DECISION_PACKET_D01_D04_20261029.md). This packet frames choices and dependencies only; no checkbox is approved by its creation. Use it before freezing verdict, output-gate or event-identity schemas.
