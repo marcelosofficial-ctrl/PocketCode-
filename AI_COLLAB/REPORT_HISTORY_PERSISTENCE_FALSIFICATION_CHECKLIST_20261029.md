@@ -85,3 +85,7 @@ Do not claim durable append-only history if the only model is in-memory; issued 
 - LOOP-09/10/11; CASE-11/12/13/16.
 
 **Current result:** SPECIFIED ONLY / NOT RUN. No store or implementation selected; no tests, account, billing, workload, merge, or deployment action performed.
+
+
+## Cross-decision audit pointer — 2026-10-29
+See [CROSS_DECISION_CONTRADICTION_AUDIT_AND_IMPLEMENTATION_GATES_20261029.md](CROSS_DECISION_CONTRADICTION_AUDIT_AND_IMPLEMENTATION_GATES_20261029.md) for cross-boundary invariants, unresolved interface questions, and the proposed G0-G7 evidence gate sequence. This pointer does not close owner decisions or promote specification/fake-test evidence to provider, persistence, HTTP, or device integration evidence.
