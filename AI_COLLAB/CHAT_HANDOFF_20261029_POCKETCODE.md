@@ -429,7 +429,7 @@ Added FLA-12 to the function-level audit after inspecting the newer lifecycle/fi
 
 This is a source-level redaction coverage gap, conditional on output sink and input format. It is not evidence of a live leak or comprehensive-secret-protection promise. Proposed tests cover maximum + 1, much longer candidates, chunk/carry boundaries, and a deliberate whole-value suppression/redaction policy. Do not claim regex redaction replaces runtime limits or secret isolation.
 
-Latest audit commit: `a9d656521bbd462890db86ef5101a2e55048bc80`; audit blob: `3897b57b7189fb8c77eec510f283f33331b498d9`.
+Audit latest commit before this pass: `53fa0103addc1f8a8c356c3876f7b9ec3d8a4e35`; audit blob before this pass: `3a416a67d58e2fffd60084fee4cb23603c6fa9b1`.
 
 Source pins inspected: lifecycle source `316345341603848c4a86a6a82e533daa796c7695`; test source `ef9a68de632be30c091afe57f0724fd030a513f9`. No tests run. PR #2/#3 and canonical acceptance untouched.
 
@@ -448,3 +448,19 @@ Regression proposal: reject the six superscript aliases with/without extensions 
 Reviewed `OutputBudget.add()` and `finish()` in lifecycle source blob `316345341603848c4a86a6a82e533daa796c7695`, plus the existing output-budget tests in test blob `ef9a68de632be30c091afe57f0724fd030a513f9`. The helper increments observed-byte counters before retention, computes the allowed input prefix against per-stream and aggregate observed-byte caps, and after any overflow stops retaining further data and clears pending redactor tails. The configured redactor replacements preserve byte length, so in the no-overflow path retained bytes should remain bounded by the same caps; finish flushes pending tails in deterministic stdout-then-stderr order.
 
 No separate accounting defect was established from this static pass. Strict positive-integer/non-boolean cap validation remains FLA-03. Pattern coverage for overlength credential-like values remains FLA-12. Existing tests exercise exact aggregate-cap allowance and post-overflow retention stability, but were not executed here; they do not prove runtime collection, cancellation, or external output enforcement. Next audit pass should focus on whether input-name portability and fingerprint schema constraints are enforced at the actual request/file-creation boundary, without assuming this helper is integrated.
+
+
+## 18. Cross-branch boundary verification — 2026-10-29 follow-on
+
+Latest audit update commit: `aeaf6f63f6e979b391058546ea824c277c63386a`; updated audit blob: `956816ee4f462a232096d28b0f5e5b079b9c11bb`.
+
+The research branch's `scripts/` directory was checked directly and contains only `check_mobile_prototype.py`, `report_contract.py`, and their test modules. It does not contain the lifecycle helper or its tests. The lifecycle source reviewed for FLA-01..FLA-13 remains pinned to the separate `pocketcode-lifecycle-fingerprint-audit-2026-10-27` branch: source blob `316345341603848c4a86a6a82e533daa796c7695`; test blob `ef9a68de632be30c091afe57f0724fd030a513f9`. Treat those as branch-specific pure-helper observations, not integrated product behavior.
+
+The new audit section 15 records these distinctions:
+- Input-name canonicalization/fingerprint generation does not prove the eventual filesystem boundary uses the same names or rejects collisions before creation.
+- The fingerprint helper serializes an `effective_policy` mapping but does not recursively enforce a strict JSON schema; FLA-11 already captures non-string-key serialization ambiguity. No verified coordinator/worker binding proves that the fingerprinted policy is the exact policy actually applied.
+- The terminal-event reducer checks basic fields but does not establish full event authentication/schema or tenant/job/attempt/policy-revision binding. FLA-04/07 cover identity binding; FLA-06 covers nested-payload mutability. Avoid duplicate findings without new source evidence.
+
+Next work: inspect the adapter/coordinator specification for who owns request normalization, policy revision/ETag barrier, event authentication, and job/attempt binding. Create a boundary-by-boundary evidence table labeled VERIFIED IN SOURCE / SPECIFIED ONLY / ABSENT / NOT RUN. Add new findings only if a distinct behavior is source-grounded after reconciliation.
+
+No tests were run. No implementation code changed. PR #2/#3, canonical acceptance, provider selection, deployment, merge, account/billing, and workload state remain untouched/unauthorized.
