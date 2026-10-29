@@ -198,3 +198,6 @@ This is a proposed internal semantic distinction, not a frozen external schema. 
 ### D-06 recovery extension
 
 For the full crash-window, concurrency, persistence and provider-boundary requirements, use `AI_COLLAB/IDEMPOTENCY_RECOVERY_FALSIFICATION_CHECKLIST_20261029.md` (DR-01..DR-12). COORD-07/08 and FAKE-05/06 are only the coordinator/fake subset. A fake dispatch counter cannot prove durable uniqueness, and a durable reservation cannot prove provider exactly-once behavior. Any acknowledgement ambiguity followed by UNKNOWN lookup must leave the original reservation unresolved and must not dispatch again.
+
+## Cross-decision audit pointer — 2026-10-29
+See [CROSS_DECISION_CONTRADICTION_AUDIT_AND_IMPLEMENTATION_GATES_20261029.md](CROSS_DECISION_CONTRADICTION_AUDIT_AND_IMPLEMENTATION_GATES_20261029.md) for cross-boundary invariants, unresolved interface questions, and the proposed G0-G7 evidence gate sequence. This pointer does not close owner decisions or promote specification/fake-test evidence to provider, persistence, HTTP, or device integration evidence.
