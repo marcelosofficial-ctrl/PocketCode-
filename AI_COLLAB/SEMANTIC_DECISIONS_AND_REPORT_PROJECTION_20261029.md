@@ -100,6 +100,10 @@ The in-memory `ReportHistory` helper models append-only versions but does not pr
 
 These are acceptance specifications, not passing tests.
 
+## Related implementation/test reference
+
+Use the [lifecycle transition and report projection matrix](TRANSITION_AND_REPORT_PROJECTION_MATRIX_20261029.md) as the row-by-row reference for mapping these decisions into future synthetic conformance tests.
+
 ## Change-control and evidence status
 
 - This document is on the isolated research branch only.
