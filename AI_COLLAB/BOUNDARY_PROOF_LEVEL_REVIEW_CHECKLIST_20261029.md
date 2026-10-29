@@ -129,3 +129,8 @@ These are ready-to-copy task briefs. They request review only; they do not autho
 ### Reconciliation rule for ChatGPT
 
 Treat both responses as review input. Reconcile every claimed issue against the pinned documents and canonical acceptance; record disagreements and unknowns instead of silently choosing a side. Do not update owner decisions or the implementation contract merely to satisfy either reviewer. A follow-up research edit requires a concrete, source-grounded finding.
+
+
+## Implementation backlog pointer
+
+The dependency-ordered work packages and closure criteria are now in [IMPLEMENTATION_READINESS_BACKLOG_20261029.md](IMPLEMENTATION_READINESS_BACKLOG_20261029.md). Use that backlog to sequence work after the independent reviews; do not treat its work-package names as approved implementation scope.
