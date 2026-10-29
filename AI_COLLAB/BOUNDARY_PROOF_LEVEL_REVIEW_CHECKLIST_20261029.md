@@ -112,3 +112,20 @@ A missing boundary is **BLOCKED/NOT RUN**, not a passing test. Record failures a
 - [D-07 artifact release checklist](ARTIFACT_RELEASE_FALSIFICATION_CHECKLIST_20261029.md)
 - [D-08 report history checklist](REPORT_HISTORY_PERSISTENCE_FALSIFICATION_CHECKLIST_20261029.md)
 - Canonical acceptance on main: `PRODUCT/EXECUTION_LOOP_ACCEPTANCE.md` and `PRODUCT/EXECUTION_CONTRACT.md`.
+
+
+## 6. Suggested independent review tasks
+
+These are ready-to-copy task briefs. They request review only; they do not authorize repository writes, implementation, provider selection, tests that invoke workloads, or changes to canonical acceptance.
+
+### Claude — implementation-readiness review
+
+> Inspect the pinned research-branch documents linked in this checklist, especially the provider-neutral boundary sketch, coordinator/fake-adapter test plan, D-06/D-07/D-08 falsification checklists, and cross-decision gate audit. Do not edit files, select a provider/store/runtime, run workloads, or change canonical acceptance. Return one consolidated review with: (1) any missing state/identity/transition that prevents implementation; (2) exact crash/timeout/ack-loss windows; (3) transaction and reconciliation requirements; (4) a minimum interface and test sequence that avoids premature schema freeze; (5) each claim's required proof boundary; (6) specific blockers and source-document section references. Explicitly separate proposed semantics from implemented code and mark all untested behavior NOT RUN. Preserve D-01..D-04 as owner-open and D-05 as blocked pending actual boundary proof.
+
+### Gemini — independent adversarial audit
+
+> Independently challenge the same pinned documents without assuming the proposed contract is correct. Do not edit files, run workloads, choose a provider/store/runtime, or alter canonical acceptance. Look specifically for: (1) a path to duplicate external execution after ambiguous start; (2) false “definitively not created” conclusions; (3) policy TOCTOU or fake ETag barriers; (4) cross-tenant/job/attempt evidence or artifact confusion; (5) duplicate, lost, mutable, or partially published report versions; (6) expiry combinations that reopen idempotency or orphan dependent evidence; (7) authorization revocation and bytes already sent during streaming; (8) any statement whose evidence level is overstated. Return only concrete counterexamples, missing tests, contradictions, and required boundary evidence, with document/section references. If no defect is found in an area, say what was inspected and what remains unproven. Do not invent or remap canonical LOOP/CASE IDs.
+
+### Reconciliation rule for ChatGPT
+
+Treat both responses as review input. Reconcile every claimed issue against the pinned documents and canonical acceptance; record disagreements and unknowns instead of silently choosing a side. Do not update owner decisions or the implementation contract merely to satisfy either reviewer. A follow-up research edit requires a concrete, source-grounded finding.
