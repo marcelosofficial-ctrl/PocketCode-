@@ -24,7 +24,7 @@ Non-goals: selecting wire-format field names, defining an HTTP API, claiming exa
 3. **Outcome is not disposition:** an observed zero exit is not equivalent to overall PASS. Keep execution outcome and derived disposition separately.
 4. **Unknown is a first-class value:** missing exit, lost acknowledgement, uncertain termination, failed state lookup, or contradictory terminal evidence must remain explicit. Never fill gaps with guessed values.
 5. **Only the trusted producer can set authoritative fields:** task source, stdout/stderr, generated JSON, filenames, and client-supplied report fields are untrusted data. They may be shown as data but cannot set lifecycle status, exit code, policy state, cleanup state, artifact authority, or tenant ownership.
-6. **Policy before dispatch:** no adapter task-start call occurs until the exact required policy revision is authoritatively confirmed as applied for that attempt immediately before dispatch.
+6. **Policy before dispatch:** no adapter task-start call occurs until the exact required policy revision is authoritatively confirmed as applied for that attempt immediately before dispatch. **A read-then-dispatch sequence alone does not close a time-of-check/time-of-use race.** A real boundary must either bind the attempt to an immutable policy revision or provide an atomic/conditional dispatch guarantee that rejects a changed revision; if neither is available, the policy barrier remains unproven and the boundary is not acceptable for untrusted code.
 7. **No blind replay:** after an ambiguous acknowledgement, look up the existing attempt. If authoritative state cannot be recovered, return UNKNOWN/INCOMPLETE and do not redispatch automatically.
 8. **Artifact fail-closed:** no artifact is released until final stored-byte integrity, job association, tenant authorization, and cleanup requirements are satisfied.
 9. **Report is a projection:** report formatting can render a trusted envelope but cannot create missing trust or execution evidence.
@@ -127,6 +127,10 @@ Conceptual operations:
 10. `release_artifact(job_id, attempt_id, artifact_ref, authenticated_tenant) -> allow_or_deny`
 
 The fake records every call, argument, and sequence number. Tests must assert both return values **and call count/order**. A fake can prove coordinator logic and mapping; it cannot prove real provider enforcement, filesystem isolation, egress blocking, termination, or storage durability.
+
+**Durability and dispatch caveat:** `reserve(...)` must be implemented as an atomic, durable uniqueness decision scoped to tenant + idempotency key + request fingerprint, including concurrent requests and coordinator restarts. A successful reservation must be durably associated with the same job/attempt before any dispatch can occur. `dispatch_once(...)` is a coordinator invariant/name, not a magical exactly-once guarantee: if the provider can accept a start request while losing its acknowledgement and cannot authoritatively look up that same attempt, the outcome remains UNKNOWN and automatic redispatch is forbidden. Even a durable coordinator reservation cannot prove exactly-once execution inside a provider that lacks idempotent start or authoritative attempt lookup. The fake can test these intended branches, but cannot establish production atomicity or durability.
+
+**Policy-race caveat:** FAKE-03/04 can prove that the coordinator refuses dispatch when its fake policy revision is missing, pending, or mismatched, and can exercise a simulated policy change. They do not prove the real execution boundary closes the race between the final policy read and task start. Before hosted acceptance, require evidence of immutable per-attempt policy binding or an atomic conditional start; otherwise mark the policy barrier BLOCKED rather than VERIFIED.
 
 ## 6. Required synthetic conformance cases (NOT RUN)
 
