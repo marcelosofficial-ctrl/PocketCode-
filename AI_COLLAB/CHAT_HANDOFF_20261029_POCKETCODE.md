@@ -388,3 +388,25 @@ I verified the separate branch `pocketcode-lifecycle-fingerprint-audit-2026-10-2
 Updated audit link: https://github.com/marcelosofficial-ctrl/PocketCode-/blob/pocketcode-ai-workflow-director-research-2026-10-28/AI_COLLAB/FUNCTION_LEVEL_CONFORMANCE_AUDIT_20261029.md
 
 **Next best step:** inspect the newer lifecycle/fingerprint branch's remaining validation and report-history contracts, especially strict output-cap typing and whether `ReportHistory.append()` rejects whitespace-only job/evidence identifiers. Keep findings source-specific; do not treat the branch as merged or its tests as passed. No PR #2/#3 or canonical acceptance changes; no workloads, billing, Actions, merge, or deployment.
+
+
+## 13. Additional helper-boundary finding — ReportHistory identifiers
+
+Added **FLA-10** to the function-level audit. On the separate lifecycle/fingerprint branch, `ReportHistory.append()` checks that `job_id` and `evidence_ref` are non-empty strings but permits whitespace-only values. The disposition and cleanup allowlists later reject whitespace-only values for those fields, but not for the job/evidence identifiers. This is a source-level helper validation gap, not evidence of a live API issue; the exact contract and upstream validation still matter.
+
+Latest audit commit: `fc33a42933899547f0e7d97f5354641dfb56e83d`. Latest audit blob: `527634a119b184296318faa22ab0ab92cbab2122`.
+
+Current focused audit status:
+- FLA-01: malformed output-limit flags in pinned PR #3 helper.
+- FLA-02: fingerprint blank-field gap on pinned PR #3; candidate fix/test exists on separate lifecycle/fingerprint branch, NOT RUN.
+- FLA-03: output-cap strict integer validation still appears missing in both inspected lifecycle revisions; NOT RUN.
+- FLA-04: coordinator must bind events to the expected job/attempt.
+- FLA-05: report input processing may not be bounded before display truncation.
+- FLA-06: shallow-copy event payload mutability.
+- FLA-07: duplicate-event equivalence may omit identity-bearing fields; depends on final event schema.
+- FLA-08: duplicate sequence contradiction lacks complete collision diagnostics.
+- FLA-09: idempotency input-validation gap on pinned PR #3; candidate fix/test exists on separate branch, NOT RUN.
+- FLA-10: ReportHistory accepts whitespace-only job/evidence identifiers on separate branch, NOT RUN.
+- Tombstone repeated-add overwrite/retention issue on pinned PR #3 has a candidate source fix and tests on the separate lifecycle/fingerprint branch, NOT RUN.
+
+No implementation changes were made. Research branch only received documentation updates. PR #2, PR #3, canonical acceptance, provider selection, runtime selection, and account/billing/workload state remain unchanged/unauthorized.
