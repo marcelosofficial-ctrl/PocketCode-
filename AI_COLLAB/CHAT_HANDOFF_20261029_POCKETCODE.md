@@ -421,3 +421,16 @@ Recommended regression: define the accepted policy value grammar, reject non-str
 Latest audit commit: 688a6b181e68cf36d9d37c6641d4c41bf0f8a55d. Latest audit blob: be719ad6aa3f87c0238bb40b2ae23318715651a7. Output-cap validation remains FLA-03; report-history whitespace identifiers remain FLA-10. Candidate fixes for FLA-02, FLA-09, and tombstone retries remain separate-branch source only and untested.
 
 Next: inspect canonical input-name normalization and StreamingRedactor/OutputBudget together for byte-bound and configured-redaction guarantees. Do not claim broad secret protection: the redactor covers configured patterns only.
+
+
+## 15. Output redaction boundary review — FLA-12
+
+Added FLA-12 to the function-level audit after inspecting the newer lifecycle/fingerprint branch and its tests. `StreamingRedactor` has fixed maximum lengths in its configured patterns: 256 for Bearer and generic key/value values, and 128 for several provider-token forms. No overlength-candidate policy is defined. Long Bearer/provider-like tokens can fail to match if no word boundary occurs before the regex maximum; generic key/value patterns can redact the first 256 bytes while leaving the suffix visible. Existing redaction tests cover short representative tokens and chunk-boundary behavior, not overlength values.
+
+This is a source-level redaction coverage gap, conditional on output sink and input format. It is not evidence of a live leak or comprehensive-secret-protection promise. Proposed tests cover maximum + 1, much longer candidates, chunk/carry boundaries, and a deliberate whole-value suppression/redaction policy. Do not claim regex redaction replaces runtime limits or secret isolation.
+
+Latest audit commit: `a9d656521bbd462890db86ef5101a2e55048bc80`; audit blob: `3897b57b7189fb8c77eec510f283f33331b498d9`.
+
+Source pins inspected: lifecycle source `316345341603848c4a86a6a82e533daa796c7695`; test source `ef9a68de632be30c091afe57f0724fd030a513f9`. No tests run. PR #2/#3 and canonical acceptance untouched.
+
+Next: inspect input-name canonicalization and the exact byte-accounting invariants of `OutputBudget` (especially bytearray retention after redaction and aggregate accounting), then decide whether any further finding is genuinely distinct from FLA-03/FLA-12. Keep source-level observations separate from actual runtime security claims.
