@@ -117,3 +117,6 @@ Approval of a behavior is not automatically authorization to edit code; the owne
 - Canonical acceptance unchanged.
 - No provider, runtime or store selected.
 - No Actions, workloads, account creation, billing, merge or deployment.
+
+
+**G-08 implementation blocker clarified:** the edge-case review identifies an authoritative-time question: `DeletionTombstones.add()` receives `deleted_at`, not necessarily the actual acceptance/current time. Before allowing a different fingerprint after expiry, decide whether supplied timestamps are the authoritative clock, whether the pure API needs an explicit `now`, or whether callers must expire/check records before adding. The same note recommends reusing the existing `IdempotencyConflict` for live-key conflicts.
