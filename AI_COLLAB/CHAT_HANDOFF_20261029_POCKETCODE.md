@@ -579,3 +579,24 @@ Status remains SPECIFIED ONLY / NOT RUN: no provider/runtime has been selected, 
 1. Re-fetch and verify the latest handoff, owner register, adapter envelope, boundary gate, coordinator plan, crosswalk, and current branch head. Ensure the updated COORD-11/12 references and PBR-01..07 links resolve.
 2. Close remaining documentation-only contradictions between the proposed policy fingerprint (`effective_policy`) and the policy revision actually bound to dispatch, using FLA-11 and the adapter envelope; preserve D-05 as BLOCKED until a real boundary is selected and verified.
 3. Keep D-01, D-03, and D-04 explicitly owner-open; no canonical acceptance change, implementation change, or provider action is implied.
+## 26. Fingerprint semantics versus actual policy application — 2026-10-29
+
+This pass addressed FLA-11 and the D-05 integration gap. The pinned lifecycle helper `canonical_request_fingerprint()` serializes `effective_policy` into its hash document with `json.dumps(sort_keys=True, allow_nan=False)`, but source inspection does not establish strict recursive JSON-value/key validation at this helper boundary, and a request fingerprint cannot prove that an execution boundary applied the same policy to an attempt.
+
+Key distinction:
+- **Request fingerprint:** identifies canonical, validated request semantics for idempotency/conflict handling.
+- **Applied-policy binding:** authoritative evidence that the exact required policy revision/configuration is bound to the specific attempt at start.
+A correct hash does not prove that the policy was applied. A revision token alone does not prove a retry had identical request semantics. Both must be linked to the same authenticated tenant/job/attempt.
+
+Added PF-01..PF-05 to `AI_COLLAB/ADAPTER_BOUNDARY_DECISION_GATE_20261029.md` — commit `7a384ae6743d1ce6f9a4a98be7dbe85037c401a4`, blob `df51e68346f4ec7b36ded484e6f7a8d0c477ea3c`. Cases cover recursive policy JSON validation; deterministic fingerprinting for valid canonical values; changed policy/key conflict before second dispatch; policy revision changing after fingerprint and before start; and missing/mismatched applied-revision evidence blocking PASS/release.
+
+Linked this clarification from:
+- `AI_COLLAB/OWNER_DECISION_REGISTER_20261029.md` — commit `49e95404018983779f479b41167749f7b975a727`, blob `e14f7d52d25fe232041c36c4d5f27893addda664`.
+- `AI_COLLAB/SEMANTIC_DECISION_CROSSWALK_20261029.md` — commit `88d8bea9480d5b47fd5cc3d467a02531c2576421`, blob `a3a477512bf0fcbc938765a6956895662119f569`.
+- `AI_COLLAB/CONTROL_OWNERSHIP_AND_FALSIFICATION_MATRIX_20261029.md` — commit `d042c6e2f81d169afd92bbecb21ddbcb7d3014d7`, blob `d52cc82e39e9e3806da78d480f2505b449738f6e`.
+
+All are research/spec updates only. No code changed, no tests ran, no provider/runtime was selected, and no policy race was executed against a real boundary. D-05 remains BLOCKED/NOT RUN pending provider-boundary proof; D-01, D-03, and D-04 remain owner-open.
+
+## Immediate next pass
+
+Perform a read-only branch/continuity verification: fetch the latest five decision/test artifacts plus this handoff, confirm their latest blobs and current branch HEAD, check that COORD-01..12 and PBR-01..07/PF-01..05 are referenced consistently, and recheck PR #2/#3 plus the canonical blobs. Do not do further broad rewrites unless a concrete conflict is found.
