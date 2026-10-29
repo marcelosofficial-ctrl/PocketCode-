@@ -39,6 +39,23 @@ PR #3 separately models execution outcomes (`NOT_STARTED`, `EXIT_ZERO`, `EXIT_NO
 
 There is no adapter in these source files that maps one model to the other. A direct mapping of `EXIT_ZERO` to report status `succeeded` would be unsafe if it bypassed the derived disposition and its gates. This is a pre-integration gap, not proof that either isolated helper is wrong.
 
+
+#### Proposed semantic mapping matrix (not a frozen public schema)
+
+| PR #3 execution outcome | PR #3 disposition / evidence | PR #2 legacy status candidate | Legacy report verdict | Safe interpretation |
+|---|---|---|---|---|
+| `EXIT_ZERO` | `PASS`; cleanup and every required gate confirmed | `succeeded`, exit code `0` | `PASS` | Allowed only after the trusted coordinator has derived PASS. |
+| `EXIT_ZERO` | `INCOMPLETE` because cleanup, policy, termination, artifact, tenant, or contradiction evidence is missing/uncertain | **No safe one-field mapping** | Must remain `INCOMPLETE` | Mapping to `succeeded` + `0` would incorrectly render PASS; mapping to `infrastructure_failed` would misstate the observed execution. The envelope must preserve both raw outcome and disposition. |
+| `EXIT_NONZERO` | `FAILED`, with trusted child exit evidence | `program_failed`; include the observed nonzero code if available | `FAIL` | Correct only when the nonzero exit is truly the program outcome, not stale evidence from a timeout/cancelled attempt. |
+| `TIMED_OUT` | `TIMED_OUT` only when the contract's termination condition is confirmed; otherwise `INCOMPLETE` | `timed_out`; exit code optional and observation-only | `INCOMPLETE` | A nonzero/zero-looking code must not override timeout uncertainty. |
+| `CANCELLED` | `CANCELLED` only when termination is confirmed; otherwise `INCOMPLETE` | `cancelled`; exit code optional | `INCOMPLETE` | A cancellation request alone is not proof of termination. |
+| `NOT_STARTED` | `REJECTED` | `rejected`, no fabricated exit code | `INCOMPLETE` | Preserve rejection as the execution state; do not imply program execution. |
+| `LIMIT_EXCEEDED` | `LIMIT_EXCEEDED` | No exact PR #2 known status | Normally non-PASS; preserve the specific limit outcome | PR #2 currently normalizes unrecognized statuses to `unknown`, which loses the specific outcome. Extend a trusted envelope deliberately rather than mapping a limit event to `program_failed`. |
+| `UNKNOWN` | `PROVIDER_ERROR` / uncertain infrastructure result | `infrastructure_failed` only when that label is supported by authoritative evidence; otherwise `unknown` | `INCOMPLETE` | Never fabricate an exit code or infer that the program failed. |
+| Any outcome | Contradictory terminal evidence | No clean legacy status mapping | `INCOMPLETE` | Keep the contradiction visible; do not present the nominal winner as an unqualified terminal success. |
+
+**Design consequence:** extending the legacy status allowlist alone is insufficient. The eventual trusted result envelope must preserve execution outcome, cleanup state, derived disposition, evidence/provenance, and optional exit code as distinct facts; the report projection then renders them without inventing equivalence. Exact field names remain open until the API/schema is deliberately selected.
+
 **Required contract/test:** specify one translation table before wiring. Preserve the raw execution outcome and the derived disposition separately. Only a disposition that has passed the required trusted gates may project to report verdict `PASS`; `EXIT_ZERO` by itself is not sufficient. Timeout/cancel/unknown/contradictory evidence must not be translated into a clean success or program failure merely because an exit-code-like value exists.
 
 ### G2 — The report formatter documents, but does not enforce, the trusted-input boundary (HIGH)
