@@ -8,7 +8,7 @@ Canonical `PRODUCT/EXECUTION_LOOP_ACCEPTANCE.md` (main blob `c6714c27db52b2962fe
 
 The semantic and transition matrices currently lean toward INCOMPLETE for an enforced limit unless an owner chooses otherwise. That may conflict with the canonical definition when a trusted runtime confirms that the limit caused the run to terminate.
 
-**Proposed interpretation:** limit-triggered termination confirmed by trusted runtime evidence -> FAIL verdict plus `LIMIT_EXCEEDED` disposition; collector-only truncation or ambiguous enforcement -> preserve the actual verdict or INCOMPLETE if terminal evidence is uncertain; renderer-only truncation never implies a runtime limit.
+**Three cases must not be conflated:** (1) trusted evidence confirms the limit caused termination/failure: candidate FAIL if this qualifies as a confirmed program/runtime failure under canonical wording, with `LIMIT_EXCEEDED` disposition; exact verdict mapping remains OPEN for owner review. (2) A collector/retention cap truncates captured bytes while independent trusted process evidence confirms EXIT_ZERO: derive the verdict from terminal facts and the acceptance case's explicit collection requirements; PASS remains possible only if partial collection is accepted for that case and all other gates pass. (3) The report renderer alone truncates presentation: preserve the execution verdict and do not infer a runtime limit. If terminal outcome is unknown or contradictory, use INCOMPLETE. The limit event and cleanup state remain separate.
 
 Tests: confirmed limit termination, collector truncation with exit zero, ambiguous limit evidence, display-only truncation. **OPEN; owner confirmation required.**
 
@@ -18,7 +18,7 @@ Proposed default: user verdict INCOMPLETE; execution outcome UNKNOWN; dispositio
 
 ## D-03 — Is complete output mandatory for PASS?
 
-Canonical PASS wording requires trusted completion and exit zero but does not explicitly make every output stream complete a universal gate. Proposed default: do not add that hidden requirement unless a chosen contract or acceptance case requires it. Keep COMPLETE, PARTIAL, UNAVAILABLE, EMPTY, RUNTIME_LIMIT, and DISPLAY_TRUNCATED distinct; required artifacts may still gate their specific case or release. **OPEN.**
+Canonical PASS wording requires trusted completion and exit zero but does not explicitly make every output stream complete a universal gate. Proposed default: define required streams and accepted partial-capture behavior per acceptance case/runtime; optional diagnostics being unavailable or capped must not become an accidental universal PASS failure. A stream explicitly required by that case must satisfy its stated collection rule; if it does not, PASS is withheld while the raw terminal outcome is preserved. Keep COMPLETE, PARTIAL, UNAVAILABLE, EMPTY, RUNTIME_LIMIT, and DISPLAY_TRUNCATED distinct; artifact-specific release gates remain independent. **OPEN pending owner confirmation before gate/schema freeze.**
 
 ## D-04 — Event identity scope
 
