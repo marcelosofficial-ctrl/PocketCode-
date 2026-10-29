@@ -55,7 +55,7 @@ Atomic result:
 - `EXISTING_SAME(job_id, attempt_id, current_state)` — same tenant/key/fingerprint resolves to the original identity.
 - `CONFLICT` — key already bound to changed semantics; zero new dispatches.
 - `REJECTED` — validation or authorization failed before reservation.
-- `UNAVAILABLE/UNKNOWN` — reservation outcome cannot be established; reconcile by idempotency key/append identity before retrying.
+- `UNAVAILABLE/UNKNOWN` — reservation outcome cannot be established; reconcile by the tenant-scoped idempotency key and reservation identity before retrying. Report append-operation identity is a separate namespace and must not be used to resolve a reservation.
 
 Required atomicity: one durable uniqueness boundary on the documented tenant/key scope, with fingerprint comparison performed against the committed row. A process-local lock/dictionary is not sufficient evidence.
 
