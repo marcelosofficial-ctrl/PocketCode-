@@ -19,7 +19,7 @@ A mobile-first, provider-neutral workspace could make AI-generated code genuinel
 
 The owner described two real situations where a phone AI requested PC-style execution: running Python for a photo-to-Polaroid project while at an airport, and an assistant assuming the user was on PC. These anecdotes motivate a broader hypothesis: help people complete safe technical tasks from their phone when an AI assistant would otherwise require a computer. They do not establish frequency or market demand.
 
-Added [PRODUCT/MOBILE_TECHNICAL_TASKS.md](PRODUCT/MOBILE_TECHNICAL_TASKS.md) to map possible jobs (script execution, file conversion, structured-data validation, tests, artifact generation, and more advanced remote-PC tasks) and to keep risky/high-complexity capabilities out of the first MVP. Immediate focus remains one real, bounded script workflow and a trustworthy copyable result report. Long-term PC/phone convergence remains a goal to evaluate; accounts, synchronized storage, provider choice, and repository merge are not approved decisions. Budget remains $0, and no runtime or account was created.
+Added [PRODUCT/MOBILE_TECHNICAL_TASKS.md](PRODUCT/MOBILE_TECHNICAL_TASKS.md) to map possible jobs (script execution, file conversion, structured-data validation, tests, artifact generation, and more advanced remote-PC tasks) and to keep risky/high-complexity capabilities out of the first MVP. Immediate focus remains one real, bounded script workflow and a trustworthy copyable result report. RevDev and PocketCode are intended to converge into one coherent PC-and-phone product/program; that product direction is settled, while integration topology, accounts, synchronized storage, provider choice, and repository migration remain undecided and approval-gated. Budget remains $0, and no runtime or account was created.
 
 ## Execution-loop acceptance plan
 
@@ -57,7 +57,7 @@ Discovery, competitive research, and MVP definition. No production architecture,
 - Avoid promising every language or unrestricted OS access.
 - No paid infrastructure, external service commitments, or irreversible actions without explicit owner approval.
 - Keep assumptions separate from verified facts.
-- PocketCode is separate from RevDev.
+- RevDev and PocketCode are intended to converge into one coherent PC-and-phone product/program. Keep repositories, roadmaps, implementations, acceptance suites, evidence, and release gates separately managed during discovery and development; this does not authorize a merge, shared-code migration, shared runtime, or execution/security-boundary change.
 
 ## Immediate next steps
 
