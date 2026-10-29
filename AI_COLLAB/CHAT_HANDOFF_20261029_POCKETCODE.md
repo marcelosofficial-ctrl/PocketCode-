@@ -354,3 +354,18 @@ This is an additive continuity note. It does not replace the earlier handoff, ch
 ### Next highest-value work
 
 Continue static review of lifecycle helper invariants and regression coverage, then update this handoff with only novel, source-grounded findings. Before implementation, resolve the event schema (event ID scope, identity fields, payload canonicalization) and the output-collection PASS gate. When Claude returns, reconcile against these exact findings and pinned blobs rather than restarting the audit.
+
+
+## 11. Continuation update — 2026-10-29 (idempotency validation pass)
+
+Latest audit continuation commit: `51c88a8370f4d109450836cd562ed96daff71700`. Updated audit blob: `c0ab7d961880ef5c3f2dff595307cda70eb70261`.
+
+New audit entry **FLA-09**: the pinned PR #3 `reserve_idempotency()` and `reserve_idempotency_batch()` use truthiness-only checks for tenant ID, key, fingerprint, and proposed job ID. They do not enforce runtime string types or reject whitespace-only values; unhashable tenant/key inputs may produce incidental dictionary `TypeError` instead of a deliberate validation error. This is a helper-level validation gap, not proof that a real API accepts malformed requests and not evidence of durable/concurrent idempotency.
+
+Tombstone review: on the pinned PR #3 source, repeated `DeletionTombstones.add()` calls overwrite the stored fingerprint and expiry for the same tenant/key. The current test covers tenant scoping and the exact expiry boundary, but not duplicate-add behavior. This is recorded as a cross-branch regression check rather than a new FLA ID because an earlier separate lifecycle/fingerprint branch was reported to contain tombstone overwrite/retention work; that branch's current source was not verified in this pass. Reconcile exact source revisions before treating it as an unresolved cross-branch defect.
+
+Output-budget cap-type gap corroborates FLA-03; do not duplicate it as a new finding.
+
+**Source pins rechecked:** PR #3 lifecycle source `ba8d4d0b217c90513bed020e298029ef4e16f164`; test source `39db87d9f44f5e8474f33cff60136e529364199a`. Static inspection only; no tests run. PR #2, PR #3, and canonical acceptance remain untouched. No provider, workload, account, billing, merge, Actions, or deployment action was taken.
+
+**Next:** verify the exact current source on `pocketcode-lifecycle-fingerprint-audit-2026-10-27` before resolving tombstone status; inspect canonical request fingerprint validation and policy serialization only for genuinely new gaps beyond FLA-02; then audit batch idempotency and report-history semantics for contract-level type/aliasing gaps. Keep findings conditional where no caller/coordinator is implemented. Claude results remain pending and should be reconciled later without blocking static research.
