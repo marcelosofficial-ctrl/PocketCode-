@@ -181,3 +181,38 @@ The companion `AI_COLLAB/COORDINATOR_FAKE_ADAPTER_TEST_PLAN_20261029.md` defines
 5. Run real controlled-boundary acceptance only after a provider/runtime is separately approved.
 
 No tests were run and no code or canonical acceptance was changed as part of this addendum.
+
+
+## 10. Additional reducer consistency findings
+
+### FLA-07 — duplicate-event identity comparison omits attempt/job binding fields
+
+**Classification:** CONFIRMED SOURCE-LEVEL GAP; CONTRACT DEPENDENT  
+**Function:** `reduce_terminal_events()`
+
+The reducer's duplicate-event signature is exactly `(sequence, kind, payload)`. If the surrounding event contract carries `job_id`, `attempt_id`, tenant scope, policy revision, or evidence-source identity, those fields are not compared when a repeated `event_id` is encountered. Two records with the same event ID, sequence, kind, and payload but different attempt/job identity can therefore be treated as an idempotent duplicate; the later record is silently ignored rather than marking a conflict.
+
+This finding is conditional on those fields being part of the event contract. The current helper does not define a full event schema, so do not claim a live cross-attempt vulnerability. The integration must establish event-ID scope and validate all identity-bearing fields before reduction.
+
+**Minimal regression:** create two records with the same event ID, sequence, kind, and payload but different attempt IDs (and separately different job/tenant identity). If identity fields are required by the chosen event schema, assert contradiction and preserve the conflicting record; alternatively reject/quarantine the event before it reaches this reducer.
+
+**Required contract decision:** define whether event IDs are globally unique or scoped by tenant/job/attempt, and enumerate the immutable fields covered by duplicate equivalence. Provider timestamps may remain excluded from ordering, but that does not imply all other metadata can be ignored.
+
+**Canonical anchors:** LOOP-03/05/09/11; CASE-11/13/16.
+
+### FLA-08 — duplicate coordinator sequence marks contradiction without consistently recording the colliding events
+
+**Classification:** CONFIRMED DIAGNOSTIC-COMPLETENESS GAP  
+**Function:** `reduce_terminal_events()`
+
+After sorting accepted events, the reducer detects repeated coordinator sequence values and sets `contradictory_evidence = True`, but it does not add the records sharing that sequence to `conflicts` at that point. If the collision is between nonterminal events, the later terminal-event check may add nothing either. The result can therefore say evidence is contradictory while the returned conflict list does not identify the sequence-collision records.
+
+This does not by itself make a PASS possible if the caller correctly honors the contradiction flag. It weakens explanation, diagnostics, and later reconciliation.
+
+**Minimal regression:** submit two distinct nonterminal event IDs with the same sequence. Assert contradiction is true and both colliding records (or an explicit structured collision record referencing both) are represented in conflict diagnostics. Repeat with one terminal and one nonterminal event sharing the sequence.
+
+**Possible fix:** collect all sequence groups with cardinality greater than one and record every member in conflict diagnostics, with deterministic ordering and no accidental duplicate entries.
+
+**Canonical anchors:** LOOP-05/07/09; CASE-11/13/16.
+
+These findings are separate from FLA-04 (the reducer has no expected attempt argument) and FLA-06 (nested event payloads remain mutable through shallow copies). Together they identify three distinct concerns: identity binding, duplicate equivalence, and evidence-snapshot integrity/diagnostics.
