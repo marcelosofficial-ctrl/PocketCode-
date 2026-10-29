@@ -867,3 +867,47 @@ Three-AI roles: Claude is lead developer/RelayRef; Gemini is co-developer and in
 Current PocketCode research branch: `pocketcode-ai-workflow-director-research-2026-10-28`; fetch its live HEAD before starting, because this handoff has itself been updated since the earlier checkpoint. D-001, Project Status, Product Spec and shared-core proposal now express the unified direction while preserving separate engineering boundaries. The Workflow Director research master is the primary research reference and links the older Coach proposal as historical/source material for AEC-001–AEC-012. PR #2 remains draft/open/unmerged at `eb8b7ea83cb0e8fe1880351276c485b761431791`; PR #3 remains draft/open/unmerged at `0ddcc0bc97bac5d446aefedf3d71f99411bd841d`.
 
 The timeout-precedence static review is now documented in §8 of `AI_COLLAB/EXECUTION_VERDICT_CROSSWALK_FOLLOWUP_20261029.md` (blob `a57aa70254d70bd373bf150af85c1682ec34e8b9`, commit `52bee593149fd426414f4e649ec2788e40a26dc7`). It found the PR #2 candidate fixes the specific CASE-04 mismatch; child-exit versus wrapper-code provenance remains a caller-contract invariant for future integration. Independent Claude/Gemini review has not been obtained. Do not edit PR #2, source/tests, or canonical acceptance. Next do a bounded draft semantic crosswalk across PocketCode LOOP/CASE and RevDev AWC/P8U/P0-D; do not claim implementation equivalence while PC artifacts are unavailable.
+
+
+---
+
+## 34. Latest verified checkpoint — bounded verdict-precedence recheck (2026-10-29, newest)
+
+This section supersedes stale HEAD statements and describes the latest verified live branch state. Do not treat any static inference below as executed test evidence.
+
+### Live refs rechecked
+
+- PocketCode research branch: `pocketcode-ai-workflow-director-research-2026-10-28`
+- Current HEAD: `74cc7a4297df0b7ebf6dc51bcb67ca5c5194044c` — `docs: record bounded verdict precedence recheck`
+- New document: `AI_COLLAB/EXECUTION_VERDICT_CROSSWALK_RECHECK_20261029.md` (81 lines; added in that commit).
+- Main HEAD: `555840d8d83342513d9cd353d4d1522d46a5c82d` at this check.
+- PR #2 remains open/draft/unmerged: `chat-continuity-report-regressions-2026-10-26`, head `eb8b7ea83cb0e8fe1880351276c485b761431791`.
+- PR #3 remains open/draft/unmerged: `pocketcode-pass0-audit-2026-10-26`, head `0ddcc0bc97bac5d446aefedf3d71f99411bd841d`.
+- RevDev review branch `review/revdev-adaptive-ai-workshare-2026-10-27` currently points to `cf07a4fc61528ff1eaccf660338c66ce19fa9179` — `Update convergence handoff after timeout review`.
+- The RevDev workflow master remains blob `ea832fa61c826724bc8281edb23b4cfa46bde942`. The RevDev handoff was updated in the newest RevDev commit; fetch it before assuming details are unchanged.
+
+### Latest verdict-precedence findings
+
+The read-only recheck fetched exact canonical acceptance, execution contract, helper, tests and decision register. Current key blobs at that check:
+- `PRODUCT/EXECUTION_LOOP_ACCEPTANCE.md`: `c6714c27db52b2962fe8d1c7e6a16829d46a8338`
+- `PRODUCT/EXECUTION_CONTRACT.md`: `128a00a9b2a335514814cab76fb5781fe8f9f858`
+- `scripts/report_contract.py`: `2459137b6f8d4b6bfadd6218e5a9bd92e75b0817`
+- `scripts/test_report_contract.py`: `85109f056009d65a274e9306deb39b68e1fefbd2`
+- `AI_COLLAB/OWNER_DECISION_REGISTER_20261029.md`: `e67b2659cf2d71ef77d8e4619c91143e71062470`
+- `AI_COLLAB/EXECUTION_VERDICT_CROSSWALK_FOLLOWUP_20261029.md`: `a57aa70254d70bd373bf150af85c1682ec34e8b9`
+- `AI_COLLAB/EXECUTION_VERDICT_ARTIFACT_RELEASE_RECONCILIATION_20261029.md`: `8f0d592995a625f9bf47ac15848c92008e15f855`
+
+Static finding: `classify_verdict(execution_status, exit_code)` returns FAIL for a valid nonzero integer exit code before considering lifecycle status. Thus `timed_out + nonzero code` statically maps to FAIL, while canonical LOOP-05 / CASE-04 require a trusted timeout to remain INCOMPLETE / `timed_out`. Existing timeout tests pass `None` as the exit code and do not cover this combination. This is static analysis, not an executed test result.
+
+The separate crosswalk follow-up concludes the PR #2 candidate appears to fix this specific CASE-04 precedence mismatch, but child-exit versus wrapper/termination-code provenance remains a caller-contract invariant to verify at future integration. Independent Claude/Gemini review has not been obtained. Do not change PR #2, source/tests, canonical acceptance or implementation. Do not treat an apparently relevant PR patch as proof that the entire report contract or product is accepted.
+
+### Immediate next work
+
+1. Read `AI_COLLAB/EXECUTION_VERDICT_CROSSWALK_RECHECK_20261029.md` and `AI_COLLAB/EXECUTION_VERDICT_CROSSWALK_FOLLOWUP_20261029.md`, then inspect the exact relevant PR #2 diff read-only if needed. Confirm what the existing PR candidate actually changes; do not edit it.
+2. Resolve the narrow semantic question at the contract/documentation level: what is the provenance and meaning of `exit_code` (child program exit versus wrapper/termination code)? Keep canonical CASE-04 authoritative. If source contract does not distinguish provenance, record that limitation rather than inventing semantics.
+3. After that, continue the bounded draft cross-project semantic crosswalk across PocketCode LOOP/CASE and RevDev AWC/P8U/P0-D. Preserve each suite's IDs and semantics. Keep it draft because RevDev PC/runtime/queue/publication evidence is unavailable; shared concepts or static source review do not prove implementation equivalence.
+4. Re-fetch all refs before further claims. Do not modify PR #2/#3, main, source/tests, canonical acceptance, provider/runtime/queue, or security boundaries. Tests were NOT RUN in the latest read-only verdict-precedence recheck.
+
+### Continuity update to the earlier copy/paste
+
+Use the current HEAD above, not the older `bfb38d1c...` checkpoint. The prior handoff sections remain useful for product direction, three-AI roles, the $0 budget, PC-access limitation, acceptance-suite separation and the completed PocketCode/RevDev wording reconciliation. This §34 addendum is the latest authority where branch status or the next task differs.
