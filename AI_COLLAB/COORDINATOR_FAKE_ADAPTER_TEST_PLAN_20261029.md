@@ -168,16 +168,30 @@ This is a proposed internal semantic distinction, not a frozen external schema. 
 - PR #2, PR #3, and canonical acceptance remain unchanged.
 
 
-### COORD-11 — duplicate identity and sequence-collision diagnostics
+### COORD-11 — scoped event replay, immutable identity, and sequence collisions
 
-**Setup A:** Submit the same event ID, coordinator sequence, kind, and payload twice, but change an identity-bearing field (such as attempt ID, job ID, or tenant) that the finalized event schema says must be immutable.
+**Setup A — exact replay:** Deliver the same source event twice under the same authenticated source namespace and tenant/job/attempt scope, with the same source event ID and matching immutable event fields (kind, coordinator sequence binding, payload/schema version, and relevant policy revision).
 
-**Assertions A:** the changed identity is rejected or recorded as contradictory; it cannot be silently treated as an identical retry; the conflict record preserves enough evidence to diagnose the mismatch. Define event-ID scope explicitly before choosing the expected behavior.
+**Assertions A:** the replay resolves to one logical accepted event and does not create a second terminal outcome, a new attempt, or an unnecessary report version.
 
-**Setup B:** Submit two distinct nonterminal events with the same coordinator sequence, then repeat with one terminal and one nonterminal event.
+**Setup B — source-ID conflict:** Reuse the same scoped source event ID but vary one immutable field at a time: attempt, job, tenant, producer/source, sequence, kind, canonical payload/schema, or relevant policy revision.
 
-**Assertions B:** contradiction is set and every colliding event is identifiable in structured diagnostics; conflict output is deterministic and does not duplicate records accidentally.
+**Assertions B:** the mismatch is rejected or retained as explicit contradictory evidence; it is not silently treated as an identical replay. A reused source ID in a different namespace/scope does not collide with the unrelated source event.
 
-**Boundary:** these are reducer/coordinator evidence-integrity tests. They do not establish provider authenticity or attempt binding unless the trusted caller supplies and verifies the expected job/attempt identity.
+**Setup C — sequence collisions:** Submit two distinct canonical event IDs with the same coordinator sequence within one attempt, first as two nonterminal events and then as a terminal/nonterminal pair.
 
-**Anchors:** LOOP-05/07/09/11; CASE-11/13/16.
+**Assertions C:** contradiction is set and all colliding records (or one structured conflict record referencing every colliding event) are identifiable in deterministic diagnostics. Do not drop nonterminal collisions from the conflict explanation.
+
+**Boundary:** authenticate the source and bind expected tenant/job/attempt/policy before reduction. The current PR #3 pure reducer compares a narrower signature `(sequence, kind, payload)` and has no expected identity argument; this test plan does not claim that helper already enforces the proposed contract.
+
+**Anchors:** LOOP-03/05/07/09/11; CASE-11/13/16.
+
+### COORD-12 — accepted event payload is an immutable snapshot
+
+**Setup:** Supply an otherwise valid event containing nested payload mappings/lists, reduce or accept it through the proposed ingress boundary, then mutate the original caller-owned nested structures after acceptance.
+
+**Assertions:** the accepted evidence/report snapshot and derived outcome do not change because the caller mutated its input object. Use validated canonical serialization or a deep immutable copy at the trust boundary; do not rely on an outer shallow copy. If payloads are intentionally mutable before acceptance, test that no accepted snapshot exists until validation/copy completes.
+
+**Boundary:** pure-helper test can falsify shallow-copy behavior; durable storage immutability and append-only history require separate persistence tests.
+
+**Anchors:** LOOP-03/07/09/11; CASE-11/13/16.
