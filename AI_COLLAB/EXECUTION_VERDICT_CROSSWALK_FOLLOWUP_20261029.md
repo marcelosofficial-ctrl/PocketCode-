@@ -63,3 +63,30 @@ PocketCode PR #2 and PR #3 remain separate and untouched. Canonical acceptance I
 ## 6. Next bounded task
 
 Get independent review of the timeout/nonzero-code precedence issue, then do one exact-ref static scan for other verdict-precedence combinations where lifecycle terminal state and exit-code provenance conflict. Return a compact table of source lines, canonical CASE/LOOP rule, expected outcome, current helper behavior, and whether a source/test change is actually justified. Do not expand into another general architecture review.
+
+
+## 7. Cross-branch follow-up — candidate fix exists in PR #2, not merged (2026-10-29)
+
+A fresh exact-ref comparison changes the next-step framing but does not erase the main-branch finding:
+
+| Ref | Helper blob | Relevant behavior | Test blob/status |
+|---|---|---|---|
+| `main` | `2459137b6f8d4b6bfadd6218e5a9bd92e75b0817` | Any valid nonzero `exit_code` returns FAIL before status-specific handling; `timed_out` + 137 therefore maps to FAIL | Test blob `85109f056009d65a274e9306deb39b68e1fefbd2`; does not test nonzero code with timeout |
+| Research branch `pocketcode-ai-workflow-director-research-2026-10-28` | Same as `main` at this check | Same static discrepancy | Same as `main`; NOT RUN |
+| PR #2 branch `chat-continuity-report-regressions-2026-10-26` | `e9d944a722c2fac5279952696528da72a7011af3` | Candidate classifier returns FAIL for `program_failed`; uses `exit_code` to choose PASS/FAIL only when status is `succeeded`; other states, including `timed_out` with nonzero code, remain INCOMPLETE | Test blob `39f3a3ef865ed55f333a1edc208096d99197d023`; includes `test_nonzero_exit_does_not_override_uncertain_lifecycle`, covering `timed_out/137`, `cancelled/143`, infrastructure failure, rejection, running and unknown states. Tests NOT RUN. |
+
+PR #2 was re-fetched as open/draft/unmerged at head `eb8b7ea83cb0e8fe1880351276c485b761431791`. The candidate fix and regression test exist on that branch but are not merged into `main`; do not describe the main-branch issue as fixed or imply the PR's tests passed. No PR action or source/test edit was performed during this comparison.
+
+### What remains for independent review
+
+The PR #2 candidate appears to fix the specific status-precedence mismatch for timeout/cancellation/rejection/infrastructure/nonterminal states. It does not add exit-code provenance to the helper interface. The review should determine whether that is sufficient under the intended caller contract:
+
+- `exit_code` must be the authoritative child-program exit code when it is used to classify `succeeded`; a wrapper/termination code must not be misrepresented as the child's exit.
+- A trusted `timed_out` terminal state must remain INCOMPLETE / `timed_out`, even if an external wrapper reports a nonzero termination code.
+- `succeeded` + nonzero code is expected FAIL only when the code is the authoritative child-program exit under the contract; contradictory lifecycle/exit evidence must not be silently normalized.
+- `program_failed` is a separate authoritative lifecycle fact and may classify FAIL without a numeric exit code.
+- Preserve raw status and code in the report even when the verdict is INCOMPLETE.
+
+**Next task:** read the exact PR #2 helper/test and canonical CASE-04/LOOP-05 together; provide a narrow static verdict table and proposed additional test only if a real uncovered case remains. Do not edit PR #2, tests, canonical acceptance, or implementation. Independent Claude/Gemini review is optional input; if unavailable, continue read-only and mark it outstanding.
+
+No tests were run. No implementation, PR, provider, runtime, deployment, or canonical acceptance changes occurred.
