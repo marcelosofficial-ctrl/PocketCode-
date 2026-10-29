@@ -813,23 +813,32 @@ Keep the suites separate and preserve their original meanings:
 - Never claim a shared concept, one suite, fake adapter, static inspection, or another project's passing test proves the other project's implementation.
 - No tests were run in this final documentation pass. No source/test code, provider/store/runtime, workload, spending, merge, deployment, or Actions changes occurred.
 
-### Remaining cross-repository wording issue
+### Cross-repository wording reconciliation — completed
 
-The PocketCode research branch's key product-direction documents have been reconciled. One separate residual issue remains in the RevDev repository: the RevDev workflow-efficiency master still has older wording around its §3.5 / lines previously reported near 241, 322 and 327 that describes PocketCode as a separate mobile product/counterpart or frames unified-product direction as undecided. Its newer alignment/addendum already records the clarified unified direction, so the remaining task is to edit those older statements **in place** on the RevDev review branch after refreshing its HEAD/blob SHA, not add another contradictory addendum.
+The PocketCode product-direction documents and the RevDev workflow-efficiency master have now been reconciled in place. The RevDev file was re-fetched at its prior blob SHA, edited with five targeted paragraph replacements, and read back in full.
 
-RevDev cross-project references from the previous audit:
+- RevDev repository: `marcelosofficial-ctrl/DevRelay-Missions`
+- Review branch: `review/revdev-adaptive-ai-workshare-2026-10-27`
+- Verified branch HEAD / commit: `893266b52ac83388b7f1796bc443f85aa4011768` — “Reconcile legacy cross-project product wording”.
+- Changed file: `resume/revdev/AI_WORKFLOW_EFFICIENCY_AND_CROSS_APP_ORCHESTRATION_MASTER_2026-10-28.md`
+- Previous blob: `057e623248314214b7a35c296de811f27bd3a1f2`
+- New blob: `ea832fa61c826724bc8281edb23b4cfa46bde942`
+- [Inspect the RevDev commit](https://github.com/marcelosofficial-ctrl/DevRelay-Missions/commit/893266b52ac83388b7f1796bc443f85aa4011768)
+
+The edit corrected legacy language around §3.5 / lines 241, 319, 327, 392 and 400. It now states the unified PC-and-phone product direction, preserves separate repositories/implementation streams/acceptance suites/release gates during development, and explicitly does not authorize merge, shared-code migration, shared runtime, or execution/security-boundary changes. The old statement that PocketCode's direction changes were still pending was updated.
+
+RevDev cross-project references:
 - Alignment note: https://github.com/marcelosofficial-ctrl/DevRelay-Missions/blob/review/revdev-adaptive-ai-workshare-2026-10-27/resume/revdev/REVDEV_POCKETCODE_CROSS_PROJECT_ALIGNMENT_2026-10-29.md
 - Draft semantic crosswalk: https://github.com/marcelosofficial-ctrl/DevRelay-Missions/blob/review/revdev-adaptive-ai-workshare-2026-10-27/resume/revdev/REVDEV_POCKETCODE_SEMANTIC_CROSSWALK_DRAFT_2026-10-29.md
-- Workflow-efficiency master to re-fetch before editing: https://github.com/marcelosofficial-ctrl/DevRelay-Missions/blob/review/revdev-adaptive-ai-workshare-2026-10-27/resume/revdev/AI_WORKFLOW_EFFICIENCY_AND_CROSS_APP_ORCHESTRATION_MASTER_2026-10-28.md
+- Updated workflow-efficiency master: https://github.com/marcelosofficial-ctrl/DevRelay-Missions/blob/review/revdev-adaptive-ai-workshare-2026-10-27/resume/revdev/AI_WORKFLOW_EFFICIENCY_AND_CROSS_APP_ORCHESTRATION_MASTER_2026-10-28.md
 
 ### Exact next work for the new chat
 
 1. Read this addendum first, then the [PocketCode current checkpoint](POCKETCODE_CURRENT_CHECKPOINT_20261028.md), [primary Workflow Director research master](MASTER_AI_WORKFLOW_DIRECTOR_RESEARCH_20261028.md), [shared-core proposal](../PRODUCT/REVDEV_POCKETCODE_SHARED_CORE.md), and [owner decision register](OWNER_DECISION_REGISTER_20261029.md). Do not reread all specialist audits unless a question requires them.
-2. Re-fetch current PocketCode branch/main and PR #2/#3 refs; do not trust a copied SHA without checking it.
-3. Finish the one remaining cross-repository wording reconciliation in the RevDev workflow-efficiency master on its existing review branch: re-fetch branch/file SHAs, update the stale older paragraphs in place, retain separate engineering boundaries and explicit no-merge/no-shared-runtime/no-security-boundary-change language, read the complete changed file back, and report exact branch/commit/blob SHAs. Do not edit source, tests, queues, PRs, or canonical acceptance.
-4. Then do a short crosswalk-only check that maps the shared concepts against the exact PocketCode canonical LOOP/CASE contracts and RevDev's own AWC/P8U/P0-D suites. Keep the mapping explicitly draft until each side's actual artifacts have been compared; PC evidence is unavailable, so do not claim implementation equivalence.
-5. Keep execution-location research separate: PocketCode's fixed-task comparison (local phone, browser/WASM, user-owned remote PC, hosted, manual copy/paste) remains NOT RUN; $0 default remains binding. No provider selection, account creation, billable workload, or runtime claim.
-6. Only after those documentation conflicts are closed, checkpoint the next research question. Do not start a new broad research sweep or implement the proposed contract without explicit authorization.
+2. Re-fetch current PocketCode branch/main, the RevDev review branch, and PR #2/#3 refs; do not trust a copied SHA without checking it.
+3. Perform a bounded **draft semantic crosswalk** only: map shared concepts against the exact PocketCode canonical LOOP/CASE contracts and RevDev's own AWC/P8U/P0-D suites. Keep the mapping explicitly draft until actual artifacts from both sides have been compared. PC source/runtime/queue/publication evidence remains unavailable, so do not claim implementation equivalence or that one project's acceptance proves the other.
+4. Keep execution-location research separate: PocketCode's fixed-task comparison (local phone, browser/WASM, user-owned remote PC, hosted, manual copy/paste) remains NOT RUN; $0 default remains binding. No provider selection, account creation, billable workload, or runtime claim.
+5. Then checkpoint the highest-value unresolved question. Do not start a broad research sweep or implement the proposed contract without explicit authorization.
 
 ### Copy/paste prompt for the new ChatGPT conversation
 
@@ -841,6 +850,4 @@ Three-AI roles: Claude is lead developer/RelayRef; Gemini is co-developer and in
 
 Current PocketCode research branch at last verification: `pocketcode-ai-workflow-director-research-2026-10-28`, HEAD `bfb38d1c85e9b9f7b750fd816369beb1b3c28b7e`. D-001, Project Status, Product Spec and shared-core proposal now express the unified direction while preserving separate engineering boundaries. The Workflow Director research master is the primary research reference and links the older Coach proposal as historical/source material for AEC-001–AEC-012. PR #2 remains draft/open/unmerged at `eb8b7ea83cb0e8fe1880351276c485b761431791`; PR #3 remains draft/open/unmerged at `0ddcc0bc97bac5d446aefedf3d71f99411bd841d`.
 
-Next task: on the existing RevDev review branch `review/revdev-adaptive-ai-workshare-2026-10-27`, re-fetch current HEAD and the workflow-efficiency master blob, then correct its stale older paragraphs that still call PocketCode a separate mobile product or imply unified direction is undecided. Edit those paragraphs in place, preserve no-merge/no-shared-code/no-shared-runtime/no-security-boundary-change limits, read the full file back, and report exact branch/commit/blob SHAs. Do not edit any source/tests or touch PR #2/#3. Afterward do a bounded draft semantic crosswalk against exact canonical IDs; keep it draft because PC artifacts remain unavailable. Work efficiently, avoid duplicate research, and ask the owner only for an essential missing decision/action.
-
-At the end of the RevDev wording patch, verify the PocketCode branch and PR refs again and provide a compact checkpoint. No tests are needed for documentation-only changes; state tests NOT RUN rather than implying validation.
+The RevDev wording reconciliation is complete at commit `893266b52ac83388b7f1796bc443f85aa4011768` (changed master blob `ea832fa61c826724bc8281edb23b4cfa46bde942`). Next, re-fetch live refs and do a bounded draft semantic crosswalk against exact PocketCode canonical LOOP/CASE and RevDev AWC/P8U/P0-D suites. Keep it draft because PC artifacts remain unavailable. Do not edit source/tests or touch PR #2/#3. Work efficiently, avoid duplicate research, and ask the owner only for an essential missing decision/action.
