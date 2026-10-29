@@ -434,3 +434,10 @@ Latest audit commit: `a9d656521bbd462890db86ef5101a2e55048bc80`; audit blob: `38
 Source pins inspected: lifecycle source `316345341603848c4a86a6a82e533daa796c7695`; test source `ef9a68de632be30c091afe57f0724fd030a513f9`. No tests run. PR #2/#3 and canonical acceptance untouched.
 
 Next: inspect input-name canonicalization and the exact byte-accounting invariants of `OutputBudget` (especially bytearray retention after redaction and aggregate accounting), then decide whether any further finding is genuinely distinct from FLA-03/FLA-12. Keep source-level observations separate from actual runtime security claims.
+
+
+## 16. Input-name portability review — FLA-13
+
+Static review of `_canonical_input_name()` found that it rejects common Windows device stems and ASCII `COM1`–`COM9` / `LPT1`–`LPT9`, but misses Windows superscript-digit aliases `COM¹`/`COM²`/`COM³` and `LPT¹`/`LPT²`/`LPT³`. Those aliases can pass the helper despite its stated cross-platform basename intent. Existing tests include `COM1.csv` but not superscript aliases. This is a narrow source-level portability gap, not evidence of path traversal or a live exploit; downstream behavior depends on target platform and file operations.
+
+Regression proposal: reject the six superscript aliases with/without extensions and case variation; retain neighboring valid names. Latest audit commit is to be confirmed from the verification below; audit source pin remains lifecycle blob `316345341603848c4a86a6a82e533daa796c7695`. No tests run and no implementation/acceptance changes.
