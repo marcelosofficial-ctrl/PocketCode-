@@ -189,3 +189,8 @@ See [G01_G03_RECOMMENDED_BEHAVIOR_AND_PROOF_GATES_20261029.md](G01_G03_RECOMMEND
 ### G-07/G-08 patch-ready follow-up
 
 See [G07_G08_PATCH_READY_TEST_SPEC_20261029.md](G07_G08_PATCH_READY_TEST_SPEC_20261029.md) for bounded regression matrices and proposed tombstone semantics. This remains a design artifact, not implementation; owner approval is needed before changing PR #3.
+
+
+### Consolidated owner decision and patch gate
+
+Use [CONSOLIDATED_OWNER_DECISION_AND_PATCH_GATE_20261029.md](CONSOLIDATED_OWNER_DECISION_AND_PATCH_GATE_20261029.md) as the current compact owner-facing entry point for D-01..D-04 and G-01/G-02/G-03/G-07/G-08. It preserves the distinction between approving semantics and authorizing source edits, recommends splitting patches by concern, and lists required proof gates. It does not close decisions or authorize code changes.
