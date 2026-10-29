@@ -735,3 +735,8 @@ Added [PURE_CONTRACT_TEST_INVENTORY_20261029.md](PURE_CONTRACT_TEST_INVENTORY_20
 ## Pinned-test coverage reconciliation — 2026-10-29
 
 Added [PURE_TEST_COVERAGE_GAP_AUDIT_20261029.md](PURE_TEST_COVERAGE_GAP_AUDIT_20261029.md) after re-fetching the exact PR #2/#3 source and test blobs. The audit identifies specific missing test-source coverage while preserving the distinction between source-level findings and live vulnerability claims. Recommended next task: review G-01..G-09, confirm each intended validation/retention contract, then propose any bounded patch only on the corresponding isolated PR branch after a fresh SHA check. This research branch only holds the audit; PR #2/#3 remain unchanged and tests remain NOT RUN.
+
+
+## G-01..G-03 patch-ready specification — 2026-10-29
+
+Added [G01_G03_PATCH_READY_TEST_SPEC_20261029.md](G01_G03_PATCH_READY_TEST_SPEC_20261029.md). It narrows the first three coverage gaps to exact parameter matrices, proposed strict validation behavior, and acceptance conditions. G-01's malformed-input policy and G-03's surrounding-whitespace normalization need explicit contract choices before assertions can be finalized. G-02 proposes strict positive integer caps excluding bool. No source/test edits or tests were run; PR #2/#3 remain unchanged. Next, owner can authorize a bounded PR #3 patch or request more review; if authorized, re-fetch exact branch/file SHAs before editing.
