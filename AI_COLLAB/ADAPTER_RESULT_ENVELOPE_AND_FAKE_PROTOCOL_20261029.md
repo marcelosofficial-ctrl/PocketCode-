@@ -196,3 +196,6 @@ The fake records every call, argument, and sequence number. Tests must assert bo
 ## D-06 durability boundary cross-reference
 
 FAKE-05/06 specify coordinator behavior only. The full recovery contract is `AI_COLLAB/IDEMPOTENCY_RECOVERY_FALSIFICATION_CHECKLIST_20261029.md` (DR-01..DR-12), including concurrent reservations, crash windows, lease expiry, persistence restart, provider lookup semantics and tombstone retention. Do not infer exactly-once execution from one durable local reservation. If dispatch may have been accepted and authoritative lookup is UNKNOWN/unavailable, keep the original attempt unresolved and forbid automatic redispatch. Any provider guarantee remains unverified until the selected provider contract and integration tests establish it.
+## D-07 artifact-release boundary cross-reference
+
+FAKE-13/14/17 cover coordinator-side decisions only. The full release-time contract is `AI_COLLAB/ARTIFACT_RELEASE_FALSIFICATION_CHECKLIST_20261029.md` (AR-01..AR-14). Execution PASS does not grant permanent download permission; current authorization, exact tenant/job/attempt, trusted manifest, quarantine, immutable object version, exact-byte digest/size, safe response policy and bounded streaming must be enforced at the actual release boundary. A fake or metadata-only test cannot prove filesystem/object-store race resistance or HTTP behavior.
