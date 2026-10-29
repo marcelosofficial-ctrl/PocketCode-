@@ -500,7 +500,7 @@ No tests run. No implementation code changed. No provider/runtime chosen. PR #2/
 
 Created `AI_COLLAB/OWNER_DECISION_REGISTER_20261029.md` (commit `37d1ba24fd8d9c9e9515b3f27eb792fecf23d12c`). It records eight unresolved decisions, proposed defaults, and tests needed before implementation.
 
-Important consistency check: canonical acceptance defines FAIL as a confirmed program/runtime failure. The semantic and transition matrices lean toward INCOMPLETE for enforced limits unless an owner decides otherwise. A trusted limit event that terminates execution may be a confirmed runtime failure; review this against canonical wording before freezing tests. Proposed for review: confirmed limit-triggered termination -> FAIL verdict plus `LIMIT_EXCEEDED` disposition; collector-only truncation and display-only truncation remain distinct. Do not amend canonical acceptance silently.
+Historical note (superseded by section 23): earlier semantic and transition matrix versions used an overly broad INCOMPLETE mapping for enforced limits. The current research note distinguishes limit-caused termination, collection-only truncation with independently confirmed EXIT_ZERO, and display-only truncation. D-01 remains owner-open: a confirmed limit-caused runtime failure is a candidate FAIL under canonical wording, with `LIMIT_EXCEEDED` disposition; do not amend canonical acceptance silently.
 
 Other open decisions: provider failure without child exit; output completeness as a PASS gate; event ID scope; policy revision barrier; ambiguous acknowledgement recovery; release-time artifact checks; durable report history. No tests or code changes; PR #2/#3 and canonical acceptance remain untouched.
 
@@ -509,7 +509,7 @@ Other open decisions: provider failure without child exit; output completeness a
 
 Created `AI_COLLAB/SEMANTIC_DECISION_CROSSWALK_20261029.md` (commit `f5d3fbecc2ada66841fc7259bead8347ec52fa81`). This indexes the current state of PASS, nonzero exit/cleanup, provider failure, execution limits, output completeness, event identity, policy revision, ambiguous acknowledgement, artifact release, report history, and runtime/device evidence across the existing docs.
 
-Priority: resolve D-01, because the research matrices currently lean toward INCOMPLETE for confirmed enforced limits while canonical acceptance defines FAIL for confirmed program/runtime failure. Also resolve D-03 so output completeness is not accidentally made a universal PASS gate. Both are owner decisions; do not change canonical acceptance or implementation implicitly.
+Priority: D-01 remains owner-open even though the test documents now distinguish the three limit cases. D-03 remains owner-open pending confirmation of case-specific required-output/accepted-partial-capture rules. No canonical acceptance or implementation change is authorized or implied.
 
 ## 23. Output-limit and collection-state reconciliation — 2026-10-29
 
