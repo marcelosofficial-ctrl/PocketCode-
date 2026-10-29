@@ -169,3 +169,8 @@ The review-ready decision table and response template for D-01..D-04 are in [OWN
 ## Pure test inventory pointer
 
 The detailed candidate suite and evidence ladder are in [PURE_CONTRACT_TEST_INVENTORY_20261029.md](PURE_CONTRACT_TEST_INVENTORY_20261029.md). It separates test properties that can be specified without D-01..D-04 from verdict/replay expectations blocked on owner decisions, and explicitly separates pure, fake-coordinator, persistence, provider, artifact/API/HTTP and device proof. It is test design only; NOT RUN.
+
+
+## Pinned-test coverage reconciliation
+
+The gap-only static comparison is [PURE_TEST_COVERAGE_GAP_AUDIT_20261029.md](PURE_TEST_COVERAGE_GAP_AUDIT_20261029.md). It re-fetched the exact PR #2/#3 helper and test blobs and distinguishes existing test-source coverage from missing fixtures. Top concrete candidates are malformed limit flags, strict output-budget cap types, whitespace-only fingerprint identity fields, nested event payload mutation, reserved Windows superscript filename aliases, tombstone re-add retention behavior and redaction boundary cases. Tests remain NOT RUN; source changes, if authorized, belong on their own PR branches—not this research branch.
