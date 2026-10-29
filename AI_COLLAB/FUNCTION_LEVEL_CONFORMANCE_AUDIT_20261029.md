@@ -319,3 +319,20 @@ This is **not evidence of an exploitable fingerprint collision in the product**:
 **Canonical anchors:** LOOP-03/05/12/14; CASE-08/13/15.
 
 **Evidence status:** static inspection only; no tests run. Candidate source is on the separate lifecycle/fingerprint branch, not assumed merged or integrated.
+
+
+## 13. FLA-12 — configured secret patterns have length ceilings that can leave credential suffixes unredacted
+
+**Classification:** CONFIRMED SOURCE-LEVEL REDACTION COVERAGE GAP; SECURITY IMPACT DEPENDS ON OUTPUT SINK AND INPUT FORMAT  
+**Functions:** `StreamingRedactor._redact()`, `StreamingRedactor.feed()`, and `OutputBudget.add()`  
+**Pinned source:** `scripts/lifecycle_contract.py`, branch `pocketcode-lifecycle-fingerprint-audit-2026-10-27`, blob `316345341603848c4a86a6a82e533daa796c7695`. Existing tests: `scripts/test_lifecycle_contract.py`, blob `ef9a68de632be30c091afe57f0724fd030a513f9`.
+
+The configured patterns cap credential lengths: Bearer values at 256 characters, generic key/token/password/secret values at 256 characters, and selected provider-token patterns at 128 characters. Those limits are not accompanied by an explicit overlength-token policy. With a longer contiguous value, Bearer and provider-token patterns can fail to match when the maximum is reached before a word boundary; the generic key/value pattern can redact only the first 256 bytes and leave a suffix visible. That suffix can then be retained by `OutputBudget`.
+
+Current tests verify representative short tokens and a short pattern split across chunks, but do not test values exceeding the configured maxima. This is a bounded pattern-coverage gap, not evidence that every secret is exposed or that redaction promises comprehensive secret removal.
+
+**Minimal regression matrix:** test Bearer values at 256, 257, and substantially more characters; test `secret=`, `api_key=`, and `access_token=` values longer than 256; test provider-token-like values one character over each configured maximum; include chunk/carry-boundary cases. Define deliberate overlength behavior: redact through a documented delimiter, suppress/quarantine the affected output, or validate supported formats upstream. Do not silently redact only a prefix. Reassert retained output remains within byte caps and replacement-length assumptions remain valid.
+
+**Possible remediation:** detect an overlength credential candidate and conservatively suppress or redact the whole candidate, or define and enforce strict upstream token formats. Avoid simply expanding regex quantifiers without considering worst-case CPU and memory. Redaction does not replace runtime output limits or excluding secrets from the execution environment.
+
+**Canonical anchors:** LOOP-07/11; CASE-07/12/15. **Evidence:** static source/test inspection only; tests NOT RUN. No implementation or canonical acceptance changes.
