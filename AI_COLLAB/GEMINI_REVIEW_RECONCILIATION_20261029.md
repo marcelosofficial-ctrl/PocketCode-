@@ -65,6 +65,17 @@ The adapter envelope has now been refined to require release-time validation of 
 
 Gemini's example of scanning for a token newly flagged by a scanner is plausible, but “real-time secret scanning” is not automatically the only or best control. Secret scanning/redaction policy, false-positive handling, and whether an artifact is blocked or quarantined need a deliberate decision. Keep this as an open release-policy detail rather than claiming a scanner is already selected or verified.
 
+## Cross-branch helper conformance check (read-only)
+
+After reconciling Gemini's response, I fetched the exact helper/test sources from PR #2 and PR #3 without modifying either branch.
+
+- **PR #2** `scripts/report_contract.py`, blob `e9d944a722c2fac5279952696528da72a7011af3`: `classify_verdict` maps lifecycle status `succeeded` plus an integer exit code to PASS/FAIL, and treats uncertain lifecycle states as INCOMPLETE. It has no collector-quality, cleanup, policy, or artifact gate inputs. Its docstring correctly says this is a formatter and that production callers must supply authoritative evidence. Therefore the caller-side gate requirement remains essential; the helper alone cannot enforce it.
+- **PR #3** `scripts/lifecycle_contract.py`, blob `ba8d4d0b217c90513bed020e298029ef4e16f164`: `derive_disposition` currently maps `output_truncated=True` directly to `LIMIT_EXCEEDED`. The argument does not encode whether truncation was enforced by the runtime or applied only by report/UI presentation. This is the known ambiguity already noted in the semantic decision note; it remains a concrete conformance issue for PR #3 and must not be treated as resolved by the research-doc patch. Keep PR #3 untouched until the owner authorizes work there.
+- PR #3 `derive_disposition` also has no output-collection-state argument. The pure helper cannot currently enforce the newly clarified rule that required `UNAVAILABLE`/`PARTIAL_FAILURE` collection prevents an otherwise zero exit from PASS. This is an implementation/spec conformance gap to address only in a separately authorized PR #3 task.
+- PR #3 `artifact_release_allowed` checks cleanup, digest, job association, and tenant authorization booleans. It does not itself validate safe path/name, media type, size, current per-request authorization, or quarantine state. The new FAKE-17 remains a proposed future conformance case; the current helper does not prove the complete release-boundary checklist.
+
+This is a static source inspection only. The fetched test source contains 24 test methods, but neither the exact PR #3 helper/test pair nor the full suite was executed in this pass. PR #2's historical 25-test result remains limited to its previously documented offline reconstructed tree and does not prove browser/backend/runtime behavior.
+
 ## Coverage and terminology corrections
 
 - `SUP-RUN-04` already explicitly distinguishes runtime-enforced caps from report-display truncation and includes a collector-failure fixture where possible. The envelope now makes the verdict consequence explicit as well.
