@@ -95,3 +95,8 @@ Assert empty/whitespace-only required fields fail. Do not assume surrounding whi
 ## Current state
 
 No patch has been applied. No tests have been run. PR #3 and PR #2 remain unchanged. No user decision is inferred from this document. Canonical acceptance remains unchanged.
+
+
+## Recommended behavior follow-up
+
+See [G01_G03_RECOMMENDED_BEHAVIOR_AND_PROOF_GATES_20261029.md](G01_G03_RECOMMENDED_BEHAVIOR_AND_PROOF_GATES_20261029.md) for a recommended exception policy, illustrative code shape, and explicit proof gates. This companion does not settle the decision on behalf of the owner or authorize implementation.
