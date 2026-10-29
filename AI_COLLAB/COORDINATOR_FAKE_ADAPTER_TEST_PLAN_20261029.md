@@ -166,3 +166,18 @@ This is a proposed internal semantic distinction, not a frozen external schema. 
 - No coordinator/provider adapter has been claimed implemented or verified.
 - No tests, provider workload, account, billing action, merge, or deployment was initiated.
 - PR #2, PR #3, and canonical acceptance remain unchanged.
+
+
+### COORD-11 — duplicate identity and sequence-collision diagnostics
+
+**Setup A:** Submit the same event ID, coordinator sequence, kind, and payload twice, but change an identity-bearing field (such as attempt ID, job ID, or tenant) that the finalized event schema says must be immutable.
+
+**Assertions A:** the changed identity is rejected or recorded as contradictory; it cannot be silently treated as an identical retry; the conflict record preserves enough evidence to diagnose the mismatch. Define event-ID scope explicitly before choosing the expected behavior.
+
+**Setup B:** Submit two distinct nonterminal events with the same coordinator sequence, then repeat with one terminal and one nonterminal event.
+
+**Assertions B:** contradiction is set and every colliding event is identifiable in structured diagnostics; conflict output is deterministic and does not duplicate records accidentally.
+
+**Boundary:** these are reducer/coordinator evidence-integrity tests. They do not establish provider authenticity or attempt binding unless the trusted caller supplies and verifies the expected job/attempt identity.
+
+**Anchors:** LOOP-05/07/09/11; CASE-11/13/16.
