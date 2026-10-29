@@ -139,12 +139,17 @@ As of 2026-10-29, the IETF HTTPAPI working group has an active **Internet-Draft*
 
 **Application to PocketCode:** these protocol sources reinforce—not replace—the project’s stronger run-level requirements. An HTTP header cannot by itself guarantee durable single-dispatch semantics, recover a lost acknowledgement, create an atomic key reservation, or prove provider state. Keep the project key tenant-scoped and fingerprinted; define expiry; separate retry from explicit rerun; and require an authoritative existing-run lookup or conservatively preserve unknown state. Do not declare conformance to an Internet-Draft or adopt its exact wire format before API/schema selection.
 
+## Follow-on specification created
+
+The next provider-neutral step has now been written as [`ADAPTER_RESULT_ENVELOPE_AND_FAKE_PROTOCOL_20261029.md`](ADAPTER_RESULT_ENVELOPE_AND_FAKE_PROTOCOL_20261029.md). It proposes the typed semantic envelope, conservative disposition table, fake-adapter operations, and 16 synthetic conformance cases. This is a specification only: it is not implemented or run, and it does not freeze the public schema.
+
 ## Next work order
 
-1. **Now, provider-neutral:** review this cross-branch gap inventory and freeze a status/disposition mapping table plus trusted result-envelope preconditions. Do not rewrite the canonical contract or acceptance IDs.
-2. **Next, synthetic-only:** define the smallest fake-adapter interface needed to test dispatch count, lost acknowledgement, authoritative lookup, policy revision barrier, cleanup state, and artifact gate. Tests should assert calls and ordering—not just returned labels.
+1. **Review the proposed semantic mapping:** specifically settle how a trusted nonzero program exit is presented when cleanup evidence is also uncertain. Preserve both facts; do not collapse them into a misleading single status.
+2. **If implementation is later authorized:** implement a small pure envelope validator/mapping and fake-adapter tests first, with dispatch call counts and event order asserted. Prioritize false-PASS prevention, lost-acknowledgement recovery, and policy revision barrier.
 3. **At boundary selection:** decide if wrapper and child exit observations are separate; define structured output-collection state only if the selected collector can partially fail.
 4. **Later, explicitly gated:** execute the full first-useful-proof workflow and hosted-security cases only when a real test environment is available and all strict $0/authorization constraints can be met.
+
 
 ### Stop conditions
 
