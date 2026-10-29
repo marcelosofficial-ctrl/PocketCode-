@@ -29,7 +29,7 @@ Current execution evidence for this plan: **NOT RUN**. No criterion below should
 | LOOP-04 | Program error distinct from infrastructure error | Syntax/runtime failure with raw diagnostic and terminal evidence | Partial; app may conflate layers | Yes if service/wrapper failure is in scope |
 | LOOP-05 | Timeout/cancel/rejection/uncertainty never shown as success | Controlled deadline/cancel cases and status evidence | Often cannot prove trusted termination | Yes for hosted untrusted execution |
 | LOOP-06 | Structured checks preserve name/status/source | Fixture with PASS/FAIL/SKIP/WARN and source labels | Yes for report formatting; not check truth | No for formatting; independent validation needed for trusted checks |
-| LOOP-07 | Bounded useful diagnostics | Report plus limits/truncation/unknown evidence | Partial; inspect actual bounds and collection behavior | Yes for server-enforced bounds |
+| LOOP-07 | Bounded useful diagnostics | Report plus limits/truncation/unknown evidence; identify required streams per acceptance case | Partial; inspect actual bounds and collection behavior | Yes for server-enforced bounds |
 | LOOP-08 | One complete bounded copy action; selectable fallback | Copy/paste report and test fallback when clipboard access fails | Yes | No |
 | LOOP-09 | Preserve prior result; edit/rerun; identify runs | Two sequential runs with distinguishable inputs/results | Yes for local run history UX | Server run IDs needed for hosted claim |
 | LOOP-10 | Safe, bounded output files and download | Actual output creation/open/export; unsafe name and size cases | Partial; local export only | Yes for authenticated hosted downloads |
@@ -48,7 +48,7 @@ Current execution evidence for this plan: **NOT RUN**. No criterion below should
 | CASE-04 | Infinite loop/deadline | Enforced deadline and trusted timeout/termination evidence; client timer alone is insufficient | 3 for hosted untrusted code |
 | CASE-05 | Cancellation while active | Request and authoritative result: confirmed, already terminal, or unknown | 3 for hosted untrusted code |
 | CASE-06 | Worker/provider fails before program result | Infrastructure failure evidence; no fabricated exit code | 3 |
-| CASE-07 | Output exceeds cap | Configured cap, observed bounded output, explicit truncation/rejection | 2, then 3 for externally enforced cap |
+| CASE-07 | Output exceeds cap | Configured cap, observed bounded output, explicit truncation/rejection; separate limit-caused termination from collection-only cap with EXIT_ZERO and report-only truncation | 2, then 3 for externally enforced cap. Canonical criterion does not prescribe one verdict for every cap behavior; D-01 remains an owner-review mapping. |
 | CASE-08 | Missing/unsafe input path | Rejection before execution or evidenced program failure; no path escape | 1/2 |
 | CASE-09 | Exit 0 but script reports failed check | Execution PASS kept distinct from task/check correctness; script check visible | 2 |
 | CASE-10 | Prints “PASS” but exits nonzero | FAIL verdict, raw conflicting text and actual nonzero exit | 2 |
