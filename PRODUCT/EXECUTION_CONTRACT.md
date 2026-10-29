@@ -95,6 +95,19 @@ Do not expose raw provider errors, host paths, internal IPs, credentials, stack 
 - If package installation is later required, design a separate allowlisted dependency-fetching strategy; do not silently enable general Internet access.
 - Do not rely on regex log redaction as the primary secret-protection mechanism.
 
+## Execution outcome versus artifact release
+
+Execution verdict and artifact release are separate decisions.
+
+- A process/run may be **PASS** when trusted terminal evidence confirms success and exit code 0, subject to the evidence gates explicitly required by the applicable acceptance case.
+- A task that does not generate files may still PASS. An empty output-file list is not a universal execution-failure condition.
+- If output files exist, report their observed metadata and uncertainty honestly. Do not invent an artifact, manifest, or successful publication.
+- A successful execution does not grant current authorization to download/release an artifact. If an artifact exists and release is requested, re-check the current authorization, exact run/attempt association, trusted manifest, quarantine/lifecycle state, safe object identity, size/type/path policy, and exact immutable bytes at the release boundary.
+- A release denial, missing artifact, quarantined artifact, or stale authorization must not rewrite the historical execution verdict. Report execution outcome and artifact availability/release status separately.
+- If a particular acceptance case requires a named output artifact, that case's explicit condition applies. This is not a universal artifact-presence gate for artifact-free tasks.
+
+This is a proposed contract clarification only. It does not select a store/API/provider, assert implementation, or override canonical LOOP/CASE acceptance.
+
 ## Report format
 
 The user-copyable report should be bounded and human-readable, with fields such as:
