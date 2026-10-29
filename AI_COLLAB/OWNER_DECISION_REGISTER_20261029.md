@@ -26,7 +26,7 @@ Canonical PASS wording requires trusted completion and exit zero but does not ex
 
 ## D-05..D-08 — Other blocking choices
 
-- **Policy binding:** require an atomic/conditional revision barrier or equivalent immutable attempt policy; read-then-act is insufficient.
+- **D-05 Policy binding:** require an enforceable immutable per-attempt policy or atomic/conditional dispatch revision barrier; read-then-act is insufficient. The concrete PBR-01..07 falsification checklist is in `AI_COLLAB/ADAPTER_BOUNDARY_DECISION_GATE_20261029.md`. Provider/runtime enforcement remains unselected and BLOCKED/NOT RUN until verified at the actual boundary.
 - **Ambiguous acknowledgement:** reconcile the original identity; UNKNOWN lookup must not cause blind redispatch; in-memory state does not prove durable uniqueness.
 - **Artifact release:** revalidate current authorization, identity, safe path/type/size, quarantine and exact stored-byte integrity immediately before returning bytes.
 - **Report history:** issued reports remain immutable; later evidence appends a version using atomic persistence. In-memory history is not durable proof.
