@@ -740,3 +740,8 @@ Added [PURE_TEST_COVERAGE_GAP_AUDIT_20261029.md](PURE_TEST_COVERAGE_GAP_AUDIT_20
 ## G-01..G-03 patch-ready specification — 2026-10-29
 
 Added [G01_G03_PATCH_READY_TEST_SPEC_20261029.md](G01_G03_PATCH_READY_TEST_SPEC_20261029.md). It narrows the first three coverage gaps to exact parameter matrices, proposed strict validation behavior, and acceptance conditions. G-01's malformed-input policy and G-03's surrounding-whitespace normalization need explicit contract choices before assertions can be finalized. G-02 proposes strict positive integer caps excluding bool. No source/test edits or tests were run; PR #2/#3 remain unchanged. Next, owner can authorize a bounded PR #3 patch or request more review; if authorized, re-fetch exact branch/file SHAs before editing.
+
+
+## G-01..G-03 recommended behavior and proof gates — 2026-10-29
+
+Added [G01_G03_RECOMMENDED_BEHAVIOR_AND_PROOF_GATES_20261029.md](G01_G03_RECOMMENDED_BEHAVIOR_AND_PROOF_GATES_20261029.md) as a technical recommendation, not an owner decision. Recommended minimal policy: malformed limit flags raise TypeError rather than being truthiness-coerced; output caps reject bool/non-int with TypeError and nonpositive integers with ValueError; required fingerprint fields reject whitespace-only strings while preserving nonblank values and existing field-specific normalization. The document includes an illustrative snippet, exact regression matrix, and bounded test/verification sequence. Not implemented; tests NOT RUN; PR #2/#3 and canonical acceptance untouched.
