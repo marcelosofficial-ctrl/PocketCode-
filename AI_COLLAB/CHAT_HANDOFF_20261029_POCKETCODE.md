@@ -410,3 +410,14 @@ Current focused audit status:
 - Tombstone repeated-add overwrite/retention issue on pinned PR #3 has a candidate source fix and tests on the separate lifecycle/fingerprint branch, NOT RUN.
 
 No implementation changes were made. Research branch only received documentation updates. PR #2, PR #3, canonical acceptance, provider selection, runtime selection, and account/billing/workload state remain unchanged/unauthorized.
+
+
+## 14. Policy fingerprint serialization pass — 2026-10-29
+
+Added FLA-11 to the function-level audit. On the separate lifecycle/fingerprint branch, canonical_request_fingerprint serializes effective_policy with json.dumps(sort_keys=True, allow_nan=False) but does not recursively validate mapping key types. Python JSON serialization can convert some non-string keys to strings; for example, a mapping with integer key 1 and value x can serialize identically to a mapping with string key 1 and value x. If malformed policy objects are accepted and mean different things to the eventual consumer, the fingerprint may fail to distinguish them. This is conditional on the intended schema and upstream validation, not proof of a product-level collision.
+
+Recommended regression: define the accepted policy value grammar, reject non-string keys recursively, reject unsupported/non-finite values deliberately, preserve deterministic fingerprints for valid reordered string-keyed mappings, and ensure the coordinator fingerprints the exact effective policy applied. Static inspection only; no tests run; not assumed merged or integrated.
+
+Latest audit commit: 688a6b181e68cf36d9d37c6641d4c41bf0f8a55d. Latest audit blob: be719ad6aa3f87c0238bb40b2ae23318715651a7. Output-cap validation remains FLA-03; report-history whitespace identifiers remain FLA-10. Candidate fixes for FLA-02, FLA-09, and tombstone retries remain separate-branch source only and untested.
+
+Next: inspect canonical input-name normalization and StreamingRedactor/OutputBudget together for byte-bound and configured-redaction guarantees. Do not claim broad secret protection: the redactor covers configured patterns only.
