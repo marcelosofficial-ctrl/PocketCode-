@@ -347,7 +347,7 @@ This is an additive continuity note. It does not replace the earlier handoff, ch
 - FLA-07 is conditional on the final event schema and event-ID scope; resolve that contract before implementing the expected behavior.
 - FLA-08 is a source-level diagnostic-completeness gap.
 - Existing findings FLA-01..06 remain in the audit. FLA-04 (attempt binding), FLA-06 (shallow-copy payload mutability), FLA-07 (duplicate signature fields), and FLA-08 (sequence collision diagnostics) are distinct.
-- The coordinator plan now contains COORD-01..11.
+- The coordinator plan now contains COORD-01..12; COORD-12 covers immutable event snapshots.
 - PR #2, PR #3, and canonical `PRODUCT/EXECUTION_LOOP_ACCEPTANCE.md` remain unchanged.
 - No provider/runtime selected; no workload, account, billing action, merge, or deployment.
 
