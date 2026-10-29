@@ -37,7 +37,7 @@ The recommended design has three layers:
 
 PocketCode can improve the efficiency of free AI use, but it **cannot guarantee that an AI will always follow the instructions, prevent every usage cap, or bypass provider limits**. Its job is to reduce avoidable waste, retain progress when limits are reached, and make the next useful step easy. It must not evade rate limits or provider restrictions.
 
-The long-term relationship with RevDev should be expressed first through **shared contracts, handoff semantics, lifecycle states, and report evidence**, not a premature repository merge. RevDev remains the PC automation path; PocketCode is the mobile-first workspace and AI workflow director. Both may eventually be front ends to a compatible task/control model, but compatibility is a hypothesis until compared against verified RevDev artifacts.
+RevDev and PocketCode are intended to converge into **one coherent PC-and-phone product/program**. Express convergence first through versioned shared contracts, task/work-plan semantics, lifecycle and disposition distinctions, evidence-backed reports, artifact-release semantics, and continuation capsules—not a premature repository merge. RevDev remains the PC-side guarded operations/control-plane path; PocketCode remains the phone-first path and AI Workflow Director. Repositories, clients, adapters, acceptance suites, and release gates stay separately managed during development. Compatibility is a hypothesis until compared against verified artifacts from both sides; RevDev PC source/runtime/queue state remains UNKNOWN until access returns.
 
 ## 1. Research scope and evidence labels
 
