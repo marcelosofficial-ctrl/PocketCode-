@@ -353,3 +353,18 @@ This is a narrow source-level validation gap. It is not evidence of a path trave
 **Possible remediation:** normalize the device-stem check to a documented Windows-reserved-name grammar that includes superscript ¹/²/³ aliases, rather than relying only on `[1-9]`. Keep Unicode NFC normalization and case-fold duplicate detection tests separate from reserved-device tests.
 
 **Canonical anchors:** LOOP-10/12; CASE-08/14/15. **Evidence:** static inspection only; tests NOT RUN. No implementation or canonical acceptance changes.
+
+
+## 15. Cross-branch enforcement boundary review — no integration claim
+
+**Scope:** repository tree/source-presence check only; no implementation changed and no tests run.
+
+The research branch's `scripts/` directory currently contains `check_mobile_prototype.py`, `report_contract.py`, and their test modules; it does **not** contain `lifecycle_contract.py` or `test_lifecycle_contract.py`. The lifecycle helper reviewed for FLA-01 through FLA-13 is pinned on the separate branch `pocketcode-lifecycle-fingerprint-audit-2026-10-27` (source blob `316345341603848c4a86a6a82e533daa796c7695`; test blob `ef9a68de632be30c091afe57f0724fd030a513f9`). Therefore, those findings describe the pinned helper branch, not an integrated implementation on the research branch or evidence of deployed behavior.
+
+The helper's `canonical_request_fingerprint()` canonicalizes input names and rejects case-folded duplicates before serializing request semantics, but this function alone cannot establish that the same normalized names are used by the eventual filesystem boundary. Likewise, `effective_policy` is copied into the fingerprint document and serialized with `json.dumps(sort_keys=True, allow_nan=False)`, but the helper does not recursively enforce a strict JSON-value/key grammar, and there is no verified coordinator/worker binding here proving that the fingerprinted policy is byte-for-byte/semantically identical to the policy actually applied. FLA-11 covers the key-serialization ambiguity; the remaining point is an **integration evidence gap**, not a separate proven vulnerability.
+
+The reducer similarly accepts mappings and checks basic event ID/sequence/kind/payload shape, but the pinned helper does not validate a complete event schema or bind events to an expected tenant/job/attempt/policy revision. FLA-04 and FLA-07 already capture the identity-binding questions; FLA-06 captures nested-payload mutability. Do not split these into duplicate findings without new evidence. Any production trust boundary must validate identity/scope and canonical immutable evidence before passing records to the pure reducer.
+
+**Next focused work:** (1) inspect the proposed adapter/coordinator documents for explicit ownership of request normalization, policy revision/ETag barrier, event authentication and job/attempt binding; (2) make a boundary-by-boundary evidence table with states VERIFIED IN SOURCE / SPECIFIED ONLY / ABSENT / NOT RUN; (3) add a new finding only if a distinct, source-grounded behavior remains after that reconciliation.
+
+**Evidence limit:** repository/source inspection only. No tests run; no runtime/provider behavior verified; no provider chosen; no PR #2/#3, canonical acceptance, implementation, deployment, merge, account, billing, or workload changes.
