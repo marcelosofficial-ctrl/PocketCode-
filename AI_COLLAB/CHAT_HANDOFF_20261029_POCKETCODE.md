@@ -750,3 +750,8 @@ Added [G01_G03_RECOMMENDED_BEHAVIOR_AND_PROOF_GATES_20261029.md](G01_G03_RECOMME
 ## G-07/G-08 patch-ready test specification — 2026-10-29
 
 Added [G07_G08_PATCH_READY_TEST_SPEC_20261029.md](G07_G08_PATCH_READY_TEST_SPEC_20261029.md). G-07 covers the six Windows superscript device-name aliases (COM¹/²/³, LPT¹/²/³) with extension variants. G-08 covers tombstone repeated-add behavior: same-fingerprint idempotency without shortened expiry, conflicting fingerprint rejected without mutation, tenant isolation and exact expiration. Recommendation only; no source/test edit or test run. Re-fetch source SHAs before any authorized patch.
+
+
+## Consolidated owner decision and patch gate — 2026-10-29
+
+New single entry point: [CONSOLIDATED_OWNER_DECISION_AND_PATCH_GATE_20261029.md](CONSOLIDATED_OWNER_DECISION_AND_PATCH_GATE_20261029.md). It consolidates D-01..D-04 semantic choices and G-01/G-02/G-03/G-07/G-08 bounded helper fixes, recommends a patch grouping, and provides one copy-ready response template. This is a decision aid only. A behavior approval is not code-edit authorization; owner must specify exact scope and branch. No tests/source changes, PR #2/#3 untouched, canonical acceptance unchanged.
