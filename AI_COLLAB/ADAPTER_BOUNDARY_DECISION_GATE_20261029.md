@@ -68,3 +68,40 @@ A run may start only when the exact policy revision approved for the attempt is 
 Stop and mark BLOCKED if the boundary only supports read-then-dispatch without an enforceable revision condition; if the attempt cannot prove which revision it ran under; if the revision can change outside the guarded transaction; or if the only evidence is a unit/fake test, a configuration claim, or an untrusted program-reported value. No provider is selected and no real boundary test is authorized by this checklist.
 
 Related anchors: D-05 in `OWNER_DECISION_REGISTER_20261029.md`; COORD-06; LOOP-12/14; CASE-15. This checklist specifies future falsification work and does not implement or verify the policy barrier.
+## D-05 companion — policy-content fingerprint vs applied-revision binding (specified only; NOT RUN)
+
+These are two distinct invariants and must not be substituted for one another:
+
+- **Semantic request fingerprint:** canonically identifies the request as accepted for idempotency/conflict detection, including the effective policy content under a strict, versioned policy-value schema.
+- **Applied-policy binding:** proves which immutable policy revision/configuration the particular execution attempt actually ran under at the trusted dispatch boundary.
+
+A SHA-256 fingerprint of a request or `effective_policy` value proves only which canonical inputs were hashed. It does **not** prove that the execution boundary applied that policy. Conversely, an applied revision token does not alone prove that a retry with changed request semantics is the same idempotent request. The request fingerprint and applied-revision evidence must be linked to the same authenticated job/attempt without conflating their meanings.
+
+### PF-01..PF-05 — minimal falsification cases
+
+| ID | Setup | Required result | Evidence boundary |
+|---|---|---|---|
+| PF-01 | Pass nested effective-policy values with integer/bool/null/list keys, non-string keys, unsupported object types, non-finite numbers, or keys that collide after any specified normalization | Reject at validation before fingerprint/reservation/dispatch; never rely on JSON serialization coercion to define meaning implicitly. Valid recursively string-keyed JSON values remain accepted. | Pure validation/fingerprint test; does not prove applied policy |
+| PF-02 | Equivalent valid policy mappings with different insertion order, plus semantically different mappings/values | Canonical fingerprint is stable for equivalent accepted policy objects and differs for changed effective policy values under the documented schema/version. Preserve the exact policy schema/fingerprint version. | Pure helper test; does not prove provider enforcement |
+| PF-03 | Reuse tenant + idempotency key with changed policy content, required policy revision, runtime/source/input semantics, or policy-schema version | Conflict; no second dispatch and no substitution of the previous job/report/artifacts for a changed request. | Coordinator + persistent idempotency integration needed for durability/concurrency |
+| PF-04 | Fingerprint request with policy content P1, then the authoritative policy revision changes before the run starts (P1 content but revision R1 becomes stale, or policy content changes to P2/R2) | Actual dispatch boundary must bind the attempt to an immutable allowed revision or reject atomically; expected/applied revision mismatch yields zero start. A successful fingerprint check must not waive this barrier. | Fake can test coordinator branch; actual atomicity requires chosen-boundary race test |
+| PF-05 | Attempt record contains request fingerprint but applied revision is missing/mismatched, or says R1 while authoritative source says R2 | Policy barrier remains UNKNOWN/BLOCKED or failed; no PASS and no artifact release. Preserve both request fingerprint and applied-revision evidence and reconcile the attempt; do not reconstruct the missing applied revision from the fingerprint. | Coordinator projection plus authenticated integration evidence |
+
+### Required attempt linkage
+
+Before a future implementation is called conformant, the trusted record for one attempt must be able to associate, at minimum:
+
+- request fingerprint + fingerprint/schema version;
+- normalized effective policy content or an immutable reference to that exact policy object;
+- required policy revision/token and its source/authority;
+- applied policy revision/token bound to the actual attempt/start operation;
+- tenant/job/attempt identity and dispatch acknowledgement/ambiguity evidence;
+- authenticated evidence provenance and coordinator sequence/version.
+
+This list is a conceptual acceptance contract, not a frozen public schema. Do not store secrets or credentials in the fingerprint record; use a bounded, validated policy schema and non-secret revision/reference metadata.
+
+### Stop rule
+
+If only the request fingerprint is known, report **request semantics identified; applied-policy binding NOT PROVEN**. If only a revision label is present without evidence tying it to the started attempt, likewise mark the barrier NOT PROVEN. A fake test can validate deterministic hashing and coordinator refusal rules, but it cannot prove that a real runtime/provider applied the policy. No provider is selected and no implementation or runtime test is authorized here.
+
+Related: FLA-11 in `FUNCTION_LEVEL_CONFORMANCE_AUDIT_20261029.md`; D-05 in `OWNER_DECISION_REGISTER_20261029.md`; PBR-01..07 above; COORD-06; LOOP-12/14; CASE-15.
