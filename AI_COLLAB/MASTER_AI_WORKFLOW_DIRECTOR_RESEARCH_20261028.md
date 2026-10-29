@@ -1,7 +1,8 @@
 # PocketCode — Master AI Workflow Director Research
 **Research date:** 2026-10-28  
 **Status:** Research synthesis and product proposal; not a frozen product/API decision or implementation.  
-**Purpose:** Establish one durable reference for a distinct PocketCode feature that helps different AI assistants work efficiently, preserve project continuity, conserve free-tier usage, and return useful results to the mobile coding workflow. This research extends—not replaces—the existing PocketCode product hypothesis and the separate RevDev project.
+**Role on this branch:** Primary research reference for the AI Workflow Director. The older [AI Efficiency Coach & Handoff proposal](https://github.com/marcelosofficial-ctrl/PocketCode-/blob/pocketcode-continuity-recovery-2026-10-27/PRODUCT/AI_EFFICIENCY_COACH_HANDOFF_PROPOSAL_2026-10-28.md) is retained as historical/source material for the existing AEC-001–AEC-012 definitions and their provenance. Its older product-boundary wording predates the clarified D-001 direction and is not authoritative for current product direction.  
+**Purpose:** Establish the primary research reference on this branch for PocketCode's AI Workflow Director feature: helping different AI assistants work efficiently, preserve project continuity, conserve free-tier usage, and return useful results to the coding workflow across phone and PC. This feature supports the intended convergence of RevDev and PocketCode into one coherent PC-and-phone product/program; it does not establish a separate product boundary or select an integration topology.
 
 **Overall project priority:** This is a supporting feature hypothesis, not the PocketCode master roadmap. Start with the [Continuity Hub](POCKETCODE_CONTINUITY_HUB_20261028.md) and [four-month phone-only master plan](FOUR_MONTH_PHONE_ONLY_MASTER_PLAN_20261028.md). The core product still has to validate a trustworthy run/inspect/report/iterate workflow. Recent research surfaced local iOS Python via [Pyodios](https://pyodios.caffeinatedmath.com/) and browser-local Pyodide/WASM as alternatives; the first workflow must not assume a hosted runner or provider before that comparison. No product choice is finalized.
 
@@ -261,7 +262,7 @@ Do not append the same project master, all previous messages, or a generic exhau
 
 These principles are recommendations drawn from tool documentation and maintainer reports; their effectiveness in consumer mobile apps still needs testing.
 
-## 7. RevDev convergence: “RevDev for the phone” without premature merger
+## 7. RevDev ↔ PocketCode convergence without premature merger
 
 The existing PocketCode shared-core proposal already recommends comparing the systems through a shared run lifecycle and result/report contract while keeping their repositories separate. Build on that proposal rather than creating a competing architecture.
 
