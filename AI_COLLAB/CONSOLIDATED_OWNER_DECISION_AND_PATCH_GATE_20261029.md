@@ -55,6 +55,8 @@ These decisions affect expected behavior and should be resolved before freezing 
 
 **Owner choice:** `APPROVE` stable tombstone identity and monotonic expiry / `CHANGE` specify whether and when key reuse during retention is allowed / `OPEN`.
 
+Implementation-level edge cases, validation precedence, and expired-tombstone key reuse are analyzed in [G01_G08_EDGE_CASES_AND_PATCH_REVIEW_NOTES_20261029.md](G01_G08_EDGE_CASES_AND_PATCH_REVIEW_NOTES_20261029.md).
+
 Detailed matrices:
 - [G-01..G-03 test specification](G01_G03_PATCH_READY_TEST_SPEC_20261029.md)
 - [G-01..G-03 behavior and proof gates](G01_G03_RECOMMENDED_BEHAVIOR_AND_PROOF_GATES_20261029.md)
