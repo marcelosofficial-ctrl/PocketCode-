@@ -615,3 +615,31 @@ Static verification at the current branch head confirmed:
 - The research tree currently has 45 `AI_COLLAB/*.md` files; the recursive tree fetch was not truncated.
 
 Current truthful state: these are specification/source-audit documents only. No implementation changes, no tests executed, no policy-race integration test, no provider/runtime selection, no account/billing/workload, merge, or deployment. D-01/D-03/D-04 remain owner-open; D-05 remains blocked until the actual policy application/dispatch boundary can be selected and proven.
+## 28. D-06 idempotency and ambiguous-dispatch recovery — 2026-10-29
+
+### Work completed
+
+Created `AI_COLLAB/IDEMPOTENCY_RECOVERY_FALSIFICATION_CHECKLIST_20261029.md` — commit `42ae403928c2aa697bcd4c1927cfe67750bfd358`. It specifies proposed invariants, an illustrative recovery state model, a crash-point matrix, storage/provider questions, stop conditions and DR-01..DR-12 falsification cases. It is SPECIFIED ONLY / NOT RUN and does not freeze a schema.
+
+Updated and linked it from:
+- `AI_COLLAB/OWNER_DECISION_REGISTER_20261029.md` — commit `f08c0c2c0a6a3f1c0f74c90ce7a12a2b3e0d` (recorded as the D-06 proposal; re-fetch exact current blob before editing again).
+- `AI_COLLAB/CONTROL_OWNERSHIP_AND_FALSIFICATION_MATRIX_20261029.md` — commit `b9f1a52e7c8c9b1d2c6f1d6f5a8c` (recorded as the expanded idempotency control row; re-fetch exact current blob before editing again).
+- `AI_COLLAB/COORDINATOR_FAKE_ADAPTER_TEST_PLAN_20261029.md` — commit `0b21e1a765a814f0bad30673f992f232c46dc473`, blob `37c25137b972427771de0d53054b6cd57e211e57`.
+- `AI_COLLAB/ADAPTER_RESULT_ENVELOPE_AND_FAKE_PROTOCOL_20261029.md` — commit `13701de8440012b841a3b21e7952b1f368af41f4`, blob `e9e856d220b3c934867bd147447d0d051c22e776`.
+
+### D-06 proposed core contract
+
+- Atomic durable tenant-scoped reservation; a versioned fingerprint binds the execution-affecting request semantics.
+- Same tenant/key/fingerprint resolves to the original job/attempt; changed semantics conflict before dispatch.
+- Persist dispatch intent before crossing the external start boundary.
+- After a provider call may have been accepted, lost acknowledgement, timeout, process crash, or lease expiry cannot authorize blind redispatch.
+- Reconcile the original identity via authoritative lookup or provider-enforced idempotent start. If lookup is UNKNOWN/unavailable and provider semantics cannot prove whether the operation started, remain UNKNOWN and require reconciliation; no exactly-once claim.
+- Persistent uniqueness, crash recovery, retention and report history require store integration tests. Fake dispatch counters only prove coordinator branch behavior.
+
+DR-01..DR-12 cover concurrent duplicate submissions, changed fingerprints, tenant isolation, crash windows before/after dispatch intent, accepted-but-unacknowledged start, UNKNOWN/definitive lookup, lease expiry, restart recovery, result identity mismatch and tombstone retention.
+
+### Evidence and next work
+
+No implementation was changed, no tests were run, and no provider/store was selected. No account, billing, workload, merge, deployment or canonical acceptance change occurred. PR #2/#3 remain untouched.
+
+Next passes: (1) verify the new D-06 references and actual latest commit/blob SHAs (the commit identifiers for owner register/matrix above were provisional notes and MUST be re-fetched before citation); (2) build D-07 artifact release-time validation checklist; (3) build D-08 durable report-history/append concurrency checklist. Keep owner decisions and real boundary guarantees explicitly open.
