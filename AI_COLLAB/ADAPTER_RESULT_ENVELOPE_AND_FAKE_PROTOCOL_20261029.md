@@ -104,7 +104,10 @@ This table specifies required behavior for the adapter/report seam. It does not 
 
 **Important nuance:** preserving a trusted nonzero program exit as an execution fact does not require claiming cleanup succeeded. The overall disposition must never be PASS when a mandatory safety gate is missing. Whether a known program failure is projected as FAILED or INCOMPLETE when cleanup is also uncertain must be defined consistently: preserve both facts and make the safety uncertainty visible rather than erasing either. Do not let the report's single legacy status field be the only storage of this distinction.
 
-The PR #2 vocabulary currently has no dedicated `limit_exceeded` value and its formatter maps unknown status labels to `unknown`. Do not silently translate a known limit event into `program_failed`; extend or wrap the report envelope deliberately when an integration is authorized.
+**Proposed resolution (see [semantic decision note](SEMANTIC_DECISIONS_AND_REPORT_PROJECTION_20261029.md)):** when a trusted, non-contradictory child exit confirms program failure, preserve the user-facing verdict as FAIL even if cleanup is UNKNOWN/FAILED. Report cleanup uncertainty independently and keep artifacts blocked. Reserve INCOMPLETE for an outcome that is not a confirmed success or confirmed program failure, including contradictory terminal evidence. This follows the canonical verdict definitions; it does not claim cleanup succeeded.
+
+
+The PR #2 vocabulary currently has no dedicated `limit_exceeded` value and its formatter maps unknown status labels to `unknown`. Do not silently translate a known limit event into `program_failed`; extend or wrap the report envelope deliberately when an integration is authorized. Also keep an enforced execution output cap separate from report-rendering truncation: the latter is a presentation fact, not evidence that the runtime limit was exceeded. See the semantic decision note for proposed fields and regression cases.
 
 ## 5. Minimal fake-adapter protocol
 
