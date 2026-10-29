@@ -336,3 +336,20 @@ Current tests verify representative short tokens and a short pattern split acros
 **Possible remediation:** detect an overlength credential candidate and conservatively suppress or redact the whole candidate, or define and enforce strict upstream token formats. Avoid simply expanding regex quantifiers without considering worst-case CPU and memory. Redaction does not replace runtime output limits or excluding secrets from the execution environment.
 
 **Canonical anchors:** LOOP-07/11; CASE-07/12/15. **Evidence:** static source/test inspection only; tests NOT RUN. No implementation or canonical acceptance changes.
+
+
+## 14. FLA-13 — portable input-name validation misses Windows superscript-digit device aliases
+
+**Classification:** CONFIRMED SOURCE-LEVEL PORTABILITY VALIDATION GAP; IMPACT DEPENDS ON TARGET WORKER/FILESYSTEM  
+**Function:** `_canonical_input_name()` in `scripts/lifecycle_contract.py`  
+**Pinned source:** branch `pocketcode-lifecycle-fingerprint-audit-2026-10-27`, blob `316345341603848c4a86a6a82e533daa796c7695`.
+
+The helper says it applies portable Windows/POSIX basename rules and rejects reserved device names. Its reserved-stem check recognizes `CON`, `PRN`, `AUX`, `NUL`, and ASCII `COM1`–`COM9` / `LPT1`–`LPT9`. It does not recognize the Windows-reserved superscript-digit aliases `COM¹`, `COM²`, `COM³`, `LPT¹`, `LPT²`, and `LPT³` (including forms with extensions, because the code checks the stem before the first dot). These names can therefore pass this helper despite its cross-platform portability intent.
+
+This is a narrow source-level validation gap. It is not evidence of a path traversal vulnerability, and actual behavior depends on the downstream platform and how names are created or opened. Existing tests cover `COM1.csv` but not the superscript aliases.
+
+**Minimal regression matrix:** reject `COM¹`, `COM².txt`, `COM³.log`, `LPT¹`, `LPT².csv`, and `LPT³` case-insensitively; retain rejection of ASCII aliases; verify valid neighboring names remain accepted. If the product intentionally does not support Windows device-name semantics, narrow the helper's portability claim and enforce the target platform's rules at the file-creation boundary.
+
+**Possible remediation:** normalize the device-stem check to a documented Windows-reserved-name grammar that includes superscript ¹/²/³ aliases, rather than relying only on `[1-9]`. Keep Unicode NFC normalization and case-fold duplicate detection tests separate from reserved-device tests.
+
+**Canonical anchors:** LOOP-10/12; CASE-08/14/15. **Evidence:** static inspection only; tests NOT RUN. No implementation or canonical acceptance changes.
