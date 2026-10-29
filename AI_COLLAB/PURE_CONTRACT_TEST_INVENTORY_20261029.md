@@ -112,3 +112,8 @@ Reconcile PURE-01..PURE-12 against the actual pinned tests, then produce a gap-o
 ## Provenance
 
 Static review and planning only. No tests or workloads run; no implementation, provider/store/runtime selection, account, billing, merge, or deployment performed. Canonical acceptance and PR #2/#3 remain untouched.
+
+
+## Coverage reconciliation
+
+The follow-up [PURE_TEST_COVERAGE_GAP_AUDIT_20261029.md](PURE_TEST_COVERAGE_GAP_AUDIT_20261029.md) records which candidate tests already have relevant assertions and which gaps remain, based on exact test-source blob hashes fetched from PR #2 and PR #3 branches. “Covered” means assertion exists in source; it does not mean the test was executed.
