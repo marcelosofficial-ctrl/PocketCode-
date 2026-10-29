@@ -643,3 +643,38 @@ DR-01..DR-12 cover concurrent duplicate submissions, changed fingerprints, tenan
 No implementation was changed, no tests were run, and no provider/store was selected. No account, billing, workload, merge, deployment or canonical acceptance change occurred. PR #2/#3 remain untouched.
 
 Next passes: (1) verify the new D-06 references and current branch head after this handoff update; (2) build D-07 artifact release-time validation checklist; (3) build D-08 durable report-history/append concurrency checklist. Keep owner decisions and real boundary guarantees explicitly open.
+## 29. D-07 artifact release and D-08 report history — 2026-10-29
+
+### D-07 artifact release
+
+Created `AI_COLLAB/ARTIFACT_RELEASE_FALSIFICATION_CHECKLIST_20261029.md` — commit `329eb1306676d82a0675d59f2717aa7508b62a72`. AR-01..AR-14 cover authorization revocation, cross-tenant/job/attempt access, byte mutation, TOCTOU/symlink paths, malformed manifests, quarantine/expiry, limits/type mismatch, active content, streaming mutation, ranges/retries, existence side channels, unsafe names, revocation races, and concurrent quarantine/replacement.
+
+Updated links:
+- `AI_COLLAB/OWNER_DECISION_REGISTER_20261029.md` — current blob `fc33e1ceeb533af0825a5370ff4ebe15e3fe1e9f` at the point D-07 was linked; it was updated again for D-08 below, so re-fetch current blob before citing.
+- `AI_COLLAB/CONTROL_OWNERSHIP_AND_FALSIFICATION_MATRIX_20261029.md` — current blob `dcc8b663481b101086f50bb25c2f3cbf40da783f` at the point D-07 was linked; it was updated again for D-08 below, so re-fetch current blob before citing.
+- `AI_COLLAB/ADAPTER_RESULT_ENVELOPE_AND_FAKE_PROTOCOL_20261029.md` — commit `852000546f820a7d8accdee9997210c2d26d2101`, blob `c4655541c5b86b2a573316ae086e11fd3e4e1ca8`.
+
+Key rule: a historical execution PASS does not grant permanent download authorization. Revalidate current caller, exact tenant/job/attempt, trusted manifest, quarantine, immutable object version, exact bytes/digest/size, safe response policy, bounded delivery, and non-disclosure at the actual release boundary. No artifact store/API is selected or tested.
+
+### D-08 durable report history
+
+Created `AI_COLLAB/REPORT_HISTORY_PERSISTENCE_FALSIFICATION_CHECKLIST_20261029.md` — commit `a228b598183e5bc4aa524c8a347446805061fdbe`. RH-01..RH-14 cover restart persistence, concurrent appends, same-ID retries versus conflicting reuse, cleanup reconciliation, late contradictory terminal events, partial writes, lost commit acknowledgements, version races, cross-tenant evidence, projection-schema changes, report/artifact cross-store failures, and authorization/retention races.
+
+Updated links:
+- `AI_COLLAB/OWNER_DECISION_REGISTER_20261029.md` — commit `235de76bdb72e3e8af7bd96ba7723d6b5a55392e`, blob `6120d639621ae053f0719bc29603c4b67bc1ad5c`.
+- `AI_COLLAB/CONTROL_OWNERSHIP_AND_FALSIFICATION_MATRIX_20261029.md` — commit `7ebe8bcdcbd3a0200e398f788ec863de7c52b2cf`, blob `b50ba9b2673c4c065d6ca5eabe523ce0746bd1f4`.
+- `AI_COLLAB/SEMANTIC_DECISION_CROSSWALK_20261029.md` — commit `9564c269c63b06ead8e6de9292e5636728752d2c`, blob `107113d725e283782ffd10a5bf57269756952af7`.
+
+Key rule: issued report versions remain immutable; concurrent/late evidence creates a new durable version; append IDs are idempotent; publication is atomic or explicitly reconciled. In-memory ReportHistory is not durability or tamper-proof evidence.
+
+### Combined D-06..D-08 status
+
+- D-06: durable reservation, ambiguous dispatch, crash/restart, lease expiry and provider lookup/idempotency — DR-01..DR-12.
+- D-07: release-time authorization, exact object integrity and bounded safe download — AR-01..AR-14.
+- D-08: durable append-only report history, concurrency and cross-store consistency — RH-01..RH-14.
+
+These checklists complement rather than replace COORD/FAKE cases. Fake tests establish coordinator decisions only; storage/provider/HTTP guarantees require integration evidence at the selected boundary. No implementation changed, no tests ran, no provider/store selected, and no account/billing/workload/merge/deployment action occurred. Canonical acceptance and PR #2/#3 remain untouched.
+
+## Next pass
+
+Read-only verification of current branch head, latest blobs for D-06/D-07/D-08 documents and crosslinks, plus PR #2/#3 and canonical acceptance blobs. Then do one targeted gap scan for any contradiction between the owner register, falsification matrix, and crosswalk. Do not add implementation until owner decisions and selected boundaries are available.
