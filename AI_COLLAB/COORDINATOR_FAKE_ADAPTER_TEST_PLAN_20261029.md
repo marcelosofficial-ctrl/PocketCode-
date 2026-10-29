@@ -201,3 +201,8 @@ For the full crash-window, concurrency, persistence and provider-boundary requir
 
 ## Cross-decision audit pointer — 2026-10-29
 See [CROSS_DECISION_CONTRADICTION_AUDIT_AND_IMPLEMENTATION_GATES_20261029.md](CROSS_DECISION_CONTRADICTION_AUDIT_AND_IMPLEMENTATION_GATES_20261029.md) for cross-boundary invariants, unresolved interface questions, and the proposed G0-G7 evidence gate sequence. This pointer does not close owner decisions or promote specification/fake-test evidence to provider, persistence, HTTP, or device integration evidence.
+
+
+## Test inventory companion
+
+See [PURE_CONTRACT_TEST_INVENTORY_20261029.md](PURE_CONTRACT_TEST_INVENTORY_20261029.md) for the broader test readiness split: pure contract properties, semantics blocked by D-01..D-04, and integration-only proof boundaries. This companion remains focused on coordinator/fake-adapter tests. Neither document claims any tests were run.
