@@ -51,7 +51,7 @@ This is primarily a **contract projection gap**, not proof that the approaches a
 | REJECTED | INCOMPLETE | Say the task did not start/was rejected; do not imply a program failure or success. |
 | TIMED_OUT | INCOMPLETE | Show timeout and whether termination was confirmed; do not claim the process stopped if evidence is missing. |
 | CANCELLED | INCOMPLETE | Show cancellation and termination evidence separately; never render it as successful execution. |
-| LIMIT_EXCEEDED | INCOMPLETE | Name the reached limit and disclose truncation/discarded output; never summarize partial evidence as a complete result. |
+| LIMIT_EXCEEDED | OPEN under D-01: candidate FAIL for trusted limit-caused runtime failure; INCOMPLETE for unknown/contradictory terminal outcome. Collection-only caps derive from trusted terminal facts and case-specific output requirements. | Preserve exact limit and truncation/discard evidence; never represent partial output as complete. |
 | PROVIDER_ERROR | INCOMPLETE | State that execution/service outcome is unconfirmed; do not invent an exit code or program result. |
 | INCOMPLETE | INCOMPLETE | Preserve missing/contradictory evidence, cleanup state, and the next required reconciliation step. |
 
@@ -150,7 +150,7 @@ The integration question is not whether the pure report formatter can map a stat
 | Confirmed program failure (FAILED, or main's confirmed program_failed) | FAIL | Exact exit/error evidence; do not claim infrastructure or policy failure without evidence |
 | REJECTED | INCOMPLETE | State that execution did not start and provide the rejection reason where safe |
 | TIMED_OUT / CANCELLED | INCOMPLETE | Preserve outcome and whether termination was confirmed |
-| LIMIT_EXCEEDED | INCOMPLETE | Name the limit; expose truncation/discard status |
+| LIMIT_EXCEEDED | OPEN under D-01: candidate FAIL for trusted limit-caused runtime failure; INCOMPLETE for unknown/contradictory terminal outcome. Collection-only caps follow terminal facts and case-specific collection rules. | Name the limit and expose truncation/discard status without inventing execution failure. |
 | PROVIDER_ERROR / UNKNOWN / INCOMPLETE | INCOMPLETE | State what is unknown, what evidence conflicts or is missing, and the next reconciliation step |
 
 This projection is intentionally conservative and needs owner/reviewer review. In particular, the final mapping for a confirmed nonzero exit when cleanup later fails must be specified carefully: the report may preserve the observed process failure while still withholding artifacts and separately showing that cleanup/security completion is unconfirmed. Do not flatten those facts into an invented single cause.
@@ -220,7 +220,7 @@ These are proposed acceptance requirements only. No source code changed on PR #2
 | `FAILED` | Confirmed program failure/nonzero exit, with no evidence that contradicts the failure observation | `FAIL` | Preserve exit/error evidence even if a separate cleanup issue remains |
 | `TIMED_OUT` | Timeout outcome and termination confirmed | `INCOMPLETE` | Deadline evidence and termination status |
 | `CANCELLED` | Cancellation outcome and termination confirmed | `INCOMPLETE` | Cancellation and termination status separately |
-| `LIMIT_EXCEEDED` | Trusted limit breach or required output evidence was truncated/discarded | `INCOMPLETE` | Exact limit and what evidence may be missing |
+| `LIMIT_EXCEEDED` | Trusted limit event; classify limit-caused termination separately from collection-only cap | Verdict OPEN under D-01: candidate FAIL for confirmed runtime failure, INCOMPLETE if terminal outcome is unknown/contradictory | Exact limit, terminal evidence, bounded/truncated output, and required evidence missing |
 | `PROVIDER_ERROR` | Provider/execution evidence is unavailable, malformed, contradictory, or untrustworthy | `INCOMPLETE` | Unknowns, conflicting evidence and reconciliation path |
 | `INCOMPLETE` | A required gate/evidence item is missing, stale, or unconfirmed; or outcome cannot safely support a stronger conclusion | `INCOMPLETE` | Gate(s) not met and any known execution observations |
 
@@ -313,3 +313,8 @@ Expected invariant: retain trustworthy execution observations; never let a proce
 5. Keep real-provider tests blocked until the explicit $0/cost, security, synthetic-input and owner-approval gates in the PC-return checklist are met.
 
 This table is a traceability aid, not a claim that source-covered cases pass, that any coordinator exists, or that offline tests establish live security properties.
+
+
+## Follow-up semantic clarification — 2026-10-29
+
+The earlier conservative LIMIT_EXCEEDED → INCOMPLETE rows in this cross-branch audit are superseded by the more precise, still owner-open D-01 decision. Do not treat `LIMIT_EXCEEDED` alone as sufficient to infer one user verdict. Distinguish trusted limit-caused termination/failure (candidate FAIL under canonical wording), a collection-only cap alongside independently confirmed EXIT_ZERO (verdict depends on case-specific required-output rules), and presentation-only truncation (does not change execution verdict). Unknown or contradictory terminal evidence remains INCOMPLETE. See `OWNER_DECISION_REGISTER_20261029.md`, `SEMANTIC_DECISIONS_AND_REPORT_PROJECTION_20261029.md`, and `SEMANTIC_DECISION_CROSSWALK_20261029.md`.
