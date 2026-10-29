@@ -510,3 +510,26 @@ Other open decisions: provider failure without child exit; output completeness a
 Created `AI_COLLAB/SEMANTIC_DECISION_CROSSWALK_20261029.md` (commit `f5d3fbecc2ada66841fc7259bead8347ec52fa81`). This indexes the current state of PASS, nonzero exit/cleanup, provider failure, execution limits, output completeness, event identity, policy revision, ambiguous acknowledgement, artifact release, report history, and runtime/device evidence across the existing docs.
 
 Priority: resolve D-01, because the research matrices currently lean toward INCOMPLETE for confirmed enforced limits while canonical acceptance defines FAIL for confirmed program/runtime failure. Also resolve D-03 so output completeness is not accidentally made a universal PASS gate. Both are owner decisions; do not change canonical acceptance or implementation implicitly.
+
+## 23. Output-limit and collection-state reconciliation — 2026-10-29
+
+This pass reconciled D-01/D-03 across the semantic decision note, transition matrix, adapter envelope, coordinator test plan, owner register, and crosswalk. The intent is to distinguish three cases rather than assign one verdict to every form of truncation:
+
+1. **Limit-caused termination/failure:** trusted evidence says the runtime stopped/failed execution because a configured limit was exceeded. Candidate user verdict is FAIL if this is a confirmed program/runtime failure under canonical wording, with `LIMIT_EXCEEDED` retained as the richer disposition. The exact mapping remains owner-open under D-01; do not claim the owner approved it.
+2. **Collection/retention cap only:** output capture is capped, but independent trusted process evidence says EXIT_ZERO. Verdict follows that terminal evidence and the specific acceptance case's output requirements. PASS is possible only when partial collection is accepted for that case and all other required gates pass; optional diagnostics must not become an accidental universal gate. Required incomplete evidence still blocks PASS where the case requires it.
+3. **Report/UI-only truncation:** preserve the process verdict and record presentation truncation; do not infer runtime limit enforcement.
+
+Updated research artifacts:
+- `AI_COLLAB/COORDINATOR_FAKE_ADAPTER_TEST_PLAN_20261029.md` — commit `7753694106f0ee47792c53ffdbfaac60dec1a313`, blob `d204e459d02a123f6693ae1c1c42aac40edb3b3d`; COORD-01 now says output requiredness is case-scoped, and COORD-10 tests three distinct limit/truncation cases.
+- `AI_COLLAB/SEMANTIC_DECISIONS_AND_REPORT_PROJECTION_20261029.md` — commit `c2bdbb79d6b0efc5baf3c6e6d7d06ade068e3d1e`, blob `a237e882128865ce6a47651a1f9c6da6901f4994`.
+- `AI_COLLAB/TRANSITION_AND_REPORT_PROJECTION_MATRIX_20261029.md` — commit `12593e94b74acc64d272b079068bd10986625f87`, blob `c4166ad1447e5628c4f4aadd34c864c878d5f795`.
+- `AI_COLLAB/ADAPTER_RESULT_ENVELOPE_AND_FAKE_PROTOCOL_20261029.md` — commit `41601e9945a27c289d38b7b59f2f300434ddb6cf`, blob `ba5c1e2fb408e648ddf2867131ddda30eb33e9e3`.
+- `AI_COLLAB/OWNER_DECISION_REGISTER_20261029.md` — commit `858c5dcd5102aff7e6f25edb37f174047414145d`, blob `aba80a8a2322a2e5fe267af30c13bad3a9b332bf`.
+- `AI_COLLAB/SEMANTIC_DECISION_CROSSWALK_20261029.md` — commit `eb68a5d754ec79d7f597618691a2d78e4b988f1a`, blob `55f7be2a07f7a548173983aea3f6a9e2b9ccdb15`.
+
+Next passes, in order:
+1. Re-fetch the six documents and mechanically check that old broad wording about runtime limits/output completeness does not survive in another research doc.
+2. Review CASE-07 and LOOP-07 traceability: canonical acceptance requires external cap enforcement and explicit truncation/rejection, but does not itself specify the verdict for every limit implementation. Keep verdict mapping conditional on observed terminal facts and D-01.
+3. Then do one focused event-identity/replay reconciliation (D-04 / FLA-04/06/07/08) against the adapter envelope and COORD-05/11; avoid starting another broad audit.
+
+No tests were run. No implementation changed. Canonical acceptance/contract and PR #2/#3 remain unchanged. No provider/runtime selection, workload, account, billing, merge, or deployment.
