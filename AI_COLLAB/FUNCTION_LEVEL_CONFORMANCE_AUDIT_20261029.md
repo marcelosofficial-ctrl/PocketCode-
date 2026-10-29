@@ -172,7 +172,7 @@ This supplements FLA-04: event-to-attempt binding and event-payload immutability
 
 ## 9. Cross-document implementation-ready test sequence
 
-The companion `AI_COLLAB/COORDINATOR_FAKE_ADAPTER_TEST_PLAN_20261029.md` defines COORD-01..10 for coordinator behavior. The combined next sequence, if later authorized, is:
+The companion `AI_COLLAB/COORDINATOR_FAKE_ADAPTER_TEST_PLAN_20261029.md` defines COORD-01..12 for coordinator behavior, including scoped replay/sequence collisions (COORD-11) and immutable event snapshots (COORD-12). The combined next sequence, if later authorized, is:
 
 1. Add pure-helper tests for malformed limit flags, whitespace-only fingerprint inputs, invalid output-budget cap types, and mutable event payload aliasing.
 2. Resolve whether required stdout/stderr collection is a PASS gate for each supported runtime. Do not silently infer that requirement from artifact validity.
