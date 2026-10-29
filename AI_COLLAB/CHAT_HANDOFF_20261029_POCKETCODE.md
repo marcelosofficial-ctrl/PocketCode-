@@ -481,3 +481,16 @@ The adapter specification is explicit that read-then-dispatch is insufficient fo
 Do not add a new FLA solely for these missing integration proofs: current overlaps are captured by FLA-04/06/07/11, while the remaining items are design-vs-implementation evidence gaps. Next pass should map each control to a future owner/interface and write minimal falsification tests for false-PASS, policy TOCTOU, cross-attempt evidence, ambiguous retry/replay, and unsafe artifact release.
 
 No tests or workloads run. No implementation changed. PR #2/#3 and canonical acceptance remain untouched; no provider, account, billing, merge, or deployment action taken.
+
+
+## 20. Control ownership and falsification matrix added — 2026-10-29
+
+Created `AI_COLLAB/CONTROL_OWNERSHIP_AND_FALSIFICATION_MATRIX_20261029.md` on the research branch. Commit: `da9e6fe2b671bef83302353643fed103249703ff`.
+
+The matrix maps 11 control areas to proposed owner boundaries, required invariants, minimal falsification tests, current plan/acceptance anchors, and evidence needed before claiming satisfaction. Areas: request/input validation; fingerprint-to-applied-policy binding; event authentication; job/attempt/tenant/policy binding; immutable event evidence and collision diagnostics; verdict projection; output collection/redaction; idempotency/ambiguous dispatch; durable report history; artifact release; runtime isolation/resource limits; phone-first workflow and $0 gate.
+
+It also defines evidence labels (VERIFIED IN SOURCE, UNIT TESTED, FAKE-ADAPTER TESTED, INTEGRATION TESTED, DEVICE ACCEPTED, SPECIFIED ONLY, NOT RUN/UNKNOWN, BLOCKED), an implementation-authorized test order, and hard stop conditions. This is intended to prevent the common mistake of treating helper tests or a fake adapter as proof of provider enforcement, durable persistence, device behavior, or security isolation.
+
+Verified after creation: [control ownership/falsification matrix](https://github.com/marcelosofficial-ctrl/PocketCode-/blob/pocketcode-ai-workflow-director-research-2026-10-28/AI_COLLAB/CONTROL_OWNERSHIP_AND_FALSIFICATION_MATRIX_20261029.md).
+
+No tests run. No implementation code changed. No provider/runtime chosen. PR #2/#3 and canonical acceptance untouched; no account, billing, workload, merge, or deployment action.
