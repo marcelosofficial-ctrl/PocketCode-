@@ -141,7 +141,7 @@ As of 2026-10-29, the IETF HTTPAPI working group has an active **Internet-Draft*
 
 ## Follow-on specification created
 
-The next provider-neutral step has now been written as [`ADAPTER_RESULT_ENVELOPE_AND_FAKE_PROTOCOL_20261029.md`](ADAPTER_RESULT_ENVELOPE_AND_FAKE_PROTOCOL_20261029.md). It proposes the typed semantic envelope, conservative disposition table, fake-adapter operations, and 16 synthetic conformance cases. This is a specification only: it is not implemented or run, and it does not freeze the public schema.
+The next provider-neutral step has now been written as [`ADAPTER_RESULT_ENVELOPE_AND_FAKE_PROTOCOL_20261029.md`](ADAPTER_RESULT_ENVELOPE_AND_FAKE_PROTOCOL_20261029.md). It proposes the typed semantic envelope, conservative disposition table, fake-adapter operations, and 16 synthetic conformance cases. This is a specification only: it is not implemented or run, and it does not freeze the public schema. A follow-on [semantic decision note](SEMANTIC_DECISIONS_AND_REPORT_PROJECTION_20261029.md) resolves the proposed nonzero-exit/cleanup behavior and separates runtime output-limit events from report-display truncation.
 
 ## Next work order
 
