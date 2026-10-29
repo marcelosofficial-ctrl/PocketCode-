@@ -199,3 +199,6 @@ FAKE-05/06 specify coordinator behavior only. The full recovery contract is `AI_
 ## D-07 artifact-release boundary cross-reference
 
 FAKE-13/14/17 cover coordinator-side decisions only. The full release-time contract is `AI_COLLAB/ARTIFACT_RELEASE_FALSIFICATION_CHECKLIST_20261029.md` (AR-01..AR-14). Execution PASS does not grant permanent download permission; current authorization, exact tenant/job/attempt, trusted manifest, quarantine, immutable object version, exact-byte digest/size, safe response policy and bounded streaming must be enforced at the actual release boundary. A fake or metadata-only test cannot prove filesystem/object-store race resistance or HTTP behavior.
+
+## Cross-decision audit pointer — 2026-10-29
+See [CROSS_DECISION_CONTRADICTION_AUDIT_AND_IMPLEMENTATION_GATES_20261029.md](CROSS_DECISION_CONTRADICTION_AUDIT_AND_IMPLEMENTATION_GATES_20261029.md) for cross-boundary invariants, unresolved interface questions, and the proposed G0-G7 evidence gate sequence. This pointer does not close owner decisions or promote specification/fake-test evidence to provider, persistence, HTTP, or device integration evidence.
