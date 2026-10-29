@@ -911,3 +911,48 @@ The separate crosswalk follow-up concludes the PR #2 candidate appears to fix th
 ### Continuity update to the earlier copy/paste
 
 Use the current HEAD above, not the older `bfb38d1c...` checkpoint. The prior handoff sections remain useful for product direction, three-AI roles, the $0 budget, PC-access limitation, acceptance-suite separation and the completed PocketCode/RevDev wording reconciliation. This §34 addendum is the latest authority where branch status or the next task differs.
+
+
+---
+
+## 35. Final handoff correction — live refs and exit-code provenance (2026-10-29)
+
+This section supersedes any older branch-HEAD statement above. The previous §34 correctly records the bounded analysis, but its stated HEAD was the parent commit that added that checkpoint, not the newest live branch head.
+
+### Live refs checked immediately before handoff
+
+- PocketCode repository: `marcelosofficial-ctrl/PocketCode-`
+- Research branch: `pocketcode-ai-workflow-director-research-2026-10-28`
+- **Current branch HEAD:** `493b0f1dafdc5ef4ecace42491d84cd18f00330d` — `Add latest verdict-precedence checkpoint to handoff`.
+- Handoff file blob: `3834a48a8d318ac76393db28cc73e6d3d86e4db9`.
+- Parent commit: `74cc7a4297df0b7ebf6dc51bcb67ca5c5194044c` — `docs: record bounded verdict precedence recheck`.
+- Main HEAD checked: `555840d8d83342513d9cd353d4d1522d46a5c82d`.
+- PR #2 remains open/draft/unmerged: branch `chat-continuity-report-regressions-2026-10-26`, head `eb8b7ea83cb0e8fe1880351276c485b761431791`.
+- PR #3 remains open/draft/unmerged: branch `pocketcode-pass0-audit-2026-10-26`, head `0ddcc0bc97bac5d446aefedf3d71f99411bd841d`.
+- RevDev review branch: `review/revdev-adaptive-ai-workshare-2026-10-27`, current HEAD `cf07a4fc61528ff1eaccf660338c66ce19fa9179`.
+- RevDev workflow-efficiency master blob remains `ea832fa61c826724bc8281edb23b4cfa46bde942`; live readback found no targeted stale product-boundary phrases.
+
+The handoff was read back at the exact blob above. The newest checkpoint is this §35 plus §34 and the execution-verdict crosswalk documents linked there. Refresh all refs again before further work.
+
+### Narrow provenance conclusion
+
+Read-only reinspection compared the canonical PocketCode acceptance/contract with the main/research helper and the PR #2 candidate:
+
+- Canonical acceptance `PRODUCT/EXECUTION_LOOP_ACCEPTANCE.md`: blob `c6714c27db52b2962fe8d1c7e6a16829d46a8338`; CASE-04 requires a trusted timeout to remain `INCOMPLETE / timed_out`.
+- Execution contract `PRODUCT/EXECUTION_CONTRACT.md`: blob `128a00a9b2a335514814cab76fb5781fe8f9f858`; describes `succeeded` as program exit 0 plus complete provider result, `program_failed` as nonzero exit or language/runtime failure, and `timed_out` as trusted server/provider deadline enforcement. It does **not** define a separate field or rule distinguishing child-program exit codes from wrapper/termination codes.
+- Main/research helper `scripts/report_contract.py`: blob `2459137b6f8d4b6bfadd6218e5a9bd92e75b0817`; a valid nonzero integer wins before lifecycle-state handling, statically allowing `timed_out + 137 => FAIL`, contrary to CASE-04.
+- PR #2 candidate helper: blob `e9d944a722c2fac5279952696528da72a7011af3`; it makes `program_failed` an explicit FAIL and uses exit-code PASS/FAIL only when status is `succeeded`, leaving uncertain statuses INCOMPLETE. PR #2 test source blob `39f3a3ef865ed55f333a1edc208096d99197d023` includes `timed_out/137` and related uncertain-state regressions.
+- This is a **static code/documentation comparison only**. No tests were run, and no production caller/integration path has been established.
+
+**Conclusion:** The narrow expected precedence is clear from canonical CASE-04, but the precise provenance of the `exit_code` field remains unspecified by the execution contract. Do not invent a child-versus-wrapper distinction. Record it as an open contract ambiguity. The PR #2 candidate appears to avoid the specific timeout-precedence mismatch, but it has not been merged or tested in this review, and does not establish the entire report contract as accepted.
+
+### Immediate next task for the new chat
+
+1. Re-fetch current branch/main and PR #2/#3 refs and read the two specialist documents:
+   - `AI_COLLAB/EXECUTION_VERDICT_CROSSWALK_RECHECK_20261029.md`
+   - `AI_COLLAB/EXECUTION_VERDICT_CROSSWALK_FOLLOWUP_20261029.md`
+2. Inspect the exact PR #2 diff read-only to confirm the candidate's scope; do not modify the PR. Keep the main/research helper finding and the PR candidate finding distinct.
+3. Resolve the contract question narrowly: should `exit_code` mean only an authoritative child-program exit code, with wrapper/termination codes represented separately, or is a provenance field required? If existing contract evidence cannot answer it, leave it OPEN and formulate the minimal proposed contract wording—do not freeze schema or edit source/tests.
+4. Then continue the bounded draft semantic crosswalk between PocketCode canonical LOOP/CASE and RevDev AWC/P8U/P0-D. Do not claim implementation equivalence; RevDev PC/runtime/queue/publication state remains UNKNOWN.
+5. Preserve all restrictions: no PR #2/#3 changes, no source/tests/acceptance edits, no provider/runtime/account/workload/spend, no Actions/merge/deploy, no queue mutation, no security-boundary change. Tests remain NOT RUN.
+
