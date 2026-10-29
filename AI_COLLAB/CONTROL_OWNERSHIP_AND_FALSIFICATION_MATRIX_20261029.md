@@ -74,3 +74,7 @@ Stop and do not claim the control is satisfied if any of the following is true:
 - Existing COORD-01..12 cases are design only; no tests were run in this pass.
 - Canonical `PRODUCT/EXECUTION_CONTRACT.md` and `PRODUCT/EXECUTION_LOOP_ACCEPTANCE.md` are not modified.
 - PR #2 and PR #3 are not modified. No implementation, account, billing, workload, merge, or deployment action is authorized by this document.
+
+
+## Cross-decision audit pointer — 2026-10-29
+The cross-boundary consistency review and proposed implementation gate order are in [CROSS_DECISION_CONTRADICTION_AUDIT_AND_IMPLEMENTATION_GATES_20261029.md](CROSS_DECISION_CONTRADICTION_AUDIT_AND_IMPLEMENTATION_GATES_20261029.md). Treat G0-G7 as sequencing guidance only. Evidence boundaries remain strict: unit/fake tests do not prove persistent uniqueness, provider guarantees, artifact-store/HTTP safety, or device acceptance.
