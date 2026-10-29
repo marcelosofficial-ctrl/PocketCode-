@@ -47,6 +47,8 @@ This section refers to execution/lifecycle decisions D-01..D-04 in this owner de
 
 The canonical LOOP/CASE criteria remain authoritative. This reconciliation chooses conservative **working defaults** for research consistency but does not close owner decisions, freeze a schema, create tests, or change canonical acceptance.
 
+See [Execution Verdict and Artifact-Release Reconciliation](EXECUTION_VERDICT_ARTIFACT_RELEASE_RECONCILIATION_20261029.md) for the current CASE-04 timeout crosswalk, artifact-free task analysis, the read-only `report_contract.py` review, and the finding that `scripts/lifecycle_contract.py` was absent from the inspected research branch and `main`.
+
 ## D-05..D-08 — Other blocking choices
 
 - **D-05 Policy binding:** require an enforceable immutable per-attempt policy or atomic/conditional dispatch revision barrier; read-then-act is insufficient. PBR-01..07 test revision race/binding behavior; PF-01..05 separately test fingerprint-schema determinism/idempotency and linkage to the actually applied policy. Both checklists are in `AI_COLLAB/ADAPTER_BOUNDARY_DECISION_GATE_20261029.md`. A request fingerprint is not proof of applied-policy binding. Provider/runtime enforcement remains unselected and BLOCKED/NOT RUN until verified at the actual boundary.
