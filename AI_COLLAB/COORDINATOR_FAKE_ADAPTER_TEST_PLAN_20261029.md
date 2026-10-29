@@ -34,7 +34,7 @@ A fake can validate coordinator logic against a scripted adapter. It cannot prov
 
 ### COORD-01 — PASS is a projection of all required trusted gates
 
-**Setup:** Adapter reports valid completion for attempt A with exit 0; policy revision matches; termination is confirmed; required output collection is complete; artifact digest and association are verified; cleanup is confirmed; tenant authorization is current.
+**Setup:** Adapter reports valid completion for attempt A with exit 0; policy revision matches; termination is confirmed; each output stream required by this acceptance case has the collection state the case requires; artifact digest and association are verified; cleanup is confirmed; tenant authorization is current. This is not a claim that every stream is universally mandatory for every PASS.
 
 **Assertions:** disposition PASS; report verdict PASS; release allowed only after release-time revalidation; event log contains evidence for every required gate; report contains the same job/attempt identity.
 
@@ -118,9 +118,9 @@ A test that merely reads policy twice and then calls dispatch is not an atomic b
 
 ### COORD-10 — report projection preserves outcome, disposition and uncertainty
 
-**Setup:** Produce the same execution observation with multiple dispositions: for example, EXIT_NONZERO with cleanup UNKNOWN versus EXIT_ZERO with cleanup UNKNOWN, and runtime cap versus UI-only display truncation.
+**Setup:** Exercise distinct output-limit cases: (a) a trusted runtime limit event terminates/fails execution; (b) a collector/retention cap truncates captured bytes while independent trusted process evidence says EXIT_ZERO; (c) only the report/UI renderer truncates display. Also compare EXIT_NONZERO with cleanup UNKNOWN against EXIT_ZERO with cleanup UNKNOWN.
 
-**Assertions:** report projection preserves raw execution outcome separately from disposition; FAIL is not converted to PASS because cleanup is uncertain; UI-only truncation cannot create LIMIT_EXCEEDED; required collector failure cannot be treated as complete output; no unsupported status is silently mapped to generic UNKNOWN without preserving original evidence.
+**Assertions:** preserve raw execution outcome separately from disposition; FAIL is not converted to PASS because cleanup is uncertain; UI-only truncation cannot create LIMIT_EXCEEDED; collector truncation cannot be presented as complete output; no unsupported status is silently mapped to UNKNOWN. For case (a), assert authoritative limit evidence and termination/exit facts, but leave the final FAIL-versus-INCOMPLETE projection explicitly pending D-01 until the owner-approved rule is recorded. For case (b), PASS is possible only if partial collection is accepted for that case and all other required gates pass; do not blanket-fail solely because an optional stream was capped. Case (c) must preserve the execution verdict.
 
 **Anchors:** LOOP-03/04/07/11; CASE-03/06/07/09/10/12.
 
@@ -134,7 +134,7 @@ Do not represent output collection with one ambiguous boolean. At minimum, the i
 | PARTIAL | Some output collected, but required stream is incomplete | Must not satisfy a required-complete collection gate |
 | UNAVAILABLE | No reliable output collection evidence | Must not satisfy a required-complete collection gate |
 | EMPTY | Collection completed and stream contains zero bytes | Can be valid complete output |
-| RUNTIME_LIMIT | Runtime/collector enforced a configured output cap | Apply documented limit disposition; preserve bytes/limit evidence |
+| RUNTIME_LIMIT | Runtime or collector enforced a configured output cap | Preserve the cap event and retained/observed-byte evidence; whether the cap terminated execution is a separate fact; verdict mapping for confirmed limit-triggered termination remains open under D-01 |
 | DISPLAY_TRUNCATED | Only report presentation was shortened after collection | Must not alter execution disposition |
 
 This is a proposed internal semantic distinction, not a frozen external schema. Define exactly when a stream is required before implementing PASS gating. A provider's lack of separate stdout/stderr or terminal-flush guarantees may constrain the selected adapter and must be evaluated rather than guessed.
@@ -151,7 +151,7 @@ This is a proposed internal semantic distinction, not a frozen external schema. 
 
 ## 6. Suggested order once implementation is authorized
 
-1. Resolve semantic choices: provider error projection, whether output collection is a required PASS gate for every runtime, and precise policy-barrier semantics.
+1. Resolve provider-error projection and policy-barrier semantics. For output, specify per acceptance case which streams are required and whether bounded partial capture is accepted; do not silently make every stream a universal PASS gate. D-01's limit-triggered verdict and D-03's collection policy remain owner-review items before a schema/gate freeze.
 2. Add pure-helper regression tests for the concrete gaps in the companion function-level audit.
 3. Define the internal coordinator interfaces and deterministic fake-adapter harness, keeping raw execution outcome separate from job disposition and report verdict.
 4. Implement state transition/reconciliation path with exact dispatch-count assertions.
