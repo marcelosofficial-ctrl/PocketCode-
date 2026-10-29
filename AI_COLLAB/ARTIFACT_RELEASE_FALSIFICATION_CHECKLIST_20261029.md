@@ -6,6 +6,17 @@
 
 D-07 defines the evidence needed before PocketCode can safely return output files to a user. A historical execution PASS is not a permanent authorization to download an artifact. Release is a separate decision that must validate the current caller, exact job/attempt/tenant association, quarantine and safety metadata, size/type/path rules, and the exact bytes about to be returned.
 
+## Boundary clarification: no universal artifact gate
+
+The release checks below apply when a concrete artifact exists and a caller requests its release/download. They do **not** require every successful execution to produce an artifact. Artifact-free tasks may have an empty output-file list and still satisfy execution PASS when the applicable execution acceptance criteria are met.
+
+Keep these facts independent:
+- **Execution verdict:** derived from trusted terminal evidence and the relevant LOOP/CASE requirements.
+- **Artifact state:** whether an expected artifact was produced, is absent, unavailable, partial, or quarantined.
+- **Release decision:** whether the exact artifact version is currently authorized and safe to return to this caller.
+
+A historical execution PASS never grants release permission. Conversely, absence of an artifact does not retroactively fail an otherwise valid artifact-free execution. If a particular case explicitly requires a named output, that case-specific requirement controls; do not generalize it into a universal gate.
+
 ## Proposed release invariant — owner review required
 
 An artifact may be released only when all applicable checks succeed for the exact immutable artifact version and requesting principal at the release boundary:
