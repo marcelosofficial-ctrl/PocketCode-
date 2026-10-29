@@ -252,3 +252,29 @@ This is recorded as a **cross-branch regression check**, not a new independent F
 The pinned constructor still accepts positive non-integer caps because it checks only `<= 0`; the existing test source exercises cap behavior but has no constructor-type matrix. This corroborates FLA-03 and is **not** a separate finding. A future regression should reject booleans, floats, strings, zero, and negative values at construction; valid positive integers should remain accepted.
 
 **Evidence status:** static inspection only. No tests were executed. No implementation or canonical acceptance documents changed.
+
+
+## 10. Cross-branch reconciliation — lifecycle fingerprint audit branch
+
+**Checked after FLA-09 was recorded.** The separate branch `pocketcode-lifecycle-fingerprint-audit-2026-10-27` contains a later source revision and test additions. This changes the status of FLA-02/FLA-09 and the tombstone review; it does not change the pinned PR #3 source or establish that these changes are merged or executed.
+
+- Updated `scripts/lifecycle_contract.py` blob: `316345341603848c4a86a6a82e533daa796c7695`.
+- Updated `scripts/test_lifecycle_contract.py` blob: `ef9a68de632be30c091afe57f0724fd030a513f9`.
+
+### FLA-02 — candidate fix exists on the separate branch
+
+The updated fingerprint helper rejects whitespace-only contract version, tenant ID, runtime, and entrypoint while preserving the runtime normalization behavior. Its new test covers empty/whitespace-only fields and confirms equivalent runtime casing/spacing fingerprints identically. Status: **source-level fix present on the separate branch; tests NOT RUN here; not assumed integrated**.
+
+### FLA-09 — candidate fix exists on the separate branch
+
+The updated `reserve_idempotency()` now requires tenant ID, key, fingerprint, and proposed job ID to be nonblank strings. The test source adds empty, whitespace-only, `None`, and integer cases for each field. Status: **source-level fix present on the separate branch; tests NOT RUN here; not assumed integrated**.
+
+### Tombstone overwrite/retention concern — addressed in the separate branch's source
+
+The updated `DeletionTombstones.add()` validates tenant/key/fingerprint as nonblank strings; same-key retries with a changed fingerprint raise `IdempotencyConflict`; same-fingerprint retries preserve the later expiry via `max(old_expiry, new_expiry)`, preventing a retry from shortening retention. Added tests cover shortened/extended timestamps and fingerprint conflict. Status: **source-level fix and regression tests present on the separate branch; tests NOT RUN here; not assumed integrated**. The earlier tombstone note in Section 9 remains accurate for the pinned PR #3 blob, but must not be generalized to the newer branch.
+
+### Remaining audit item
+
+The separate branch's `OutputBudget.__init__()` still appears to validate caps only using `<= 0`; strict positive-integer/non-boolean validation remains a candidate gap unless another revision addresses it. This remains FLA-03, not a new finding.
+
+**Interpretation:** the lifecycle/fingerprint branch provides candidate remediation and tests, not execution evidence. Do not cherry-pick, merge, or describe fixes as integrated without explicit authorization and branch review. PR #2, PR #3, and canonical acceptance remain unchanged; no tests were run in this pass.
