@@ -61,7 +61,7 @@ Gemini's coverage table also introduces `ACC-MOB-01`, `ACC-SEC-02`, `ACC-OUT-03`
 
 The semantic decision note already says a historical report must not be silently changed and that artifact release must be recomputed at the release boundary from current trusted evidence and authorization. The adapter envelope also says release is not authorized by a caller-supplied `artifact_release_allowed` flag and requires stored-byte integrity, job association, tenant authorization, and cleanup requirements.
 
-The remaining useful refinement is to ensure release-time validation explicitly covers the artifact's safe normalized path/display name, media type, size, stored-byte integrity, job/attempt association, and current authorization at the actual export/download boundary. Those checks are distinct from a historical PASS verdict.
+The adapter envelope has now been refined to require release-time validation of the artifact's safe normalized path/name, allowed media type, size/count limits, stored-byte integrity, job/attempt/tenant association, and current authorization at the actual export/download boundary. A new proposed FAKE-17 regression denies/quarantines export despite historical PASS when current validation or authorization fails. Those checks are distinct from a historical PASS verdict.
 
 Gemini's example of scanning for a token newly flagged by a scanner is plausible, but “real-time secret scanning” is not automatically the only or best control. Secret scanning/redaction policy, false-positive handling, and whether an artifact is blocked or quarantined need a deliberate decision. Keep this as an open release-policy detail rather than claiming a scanner is already selected or verified.
 
@@ -84,10 +84,10 @@ Fetched the current branch versions of:
 - `AI_COLLAB/ADAPTER_RESULT_ENVELOPE_AND_FAKE_PROTOCOL_20261029.md` — updated to blob `ffbf9dd600e9fad43990cdd39c68fab5c8adf392`.
 - `AI_COLLAB/GEMINI_INDEPENDENT_REVIEW_PACKET_20261029.md` — blob `6ca6d2960dd1144a66e77be5ce7dcf06d16012c5`.
 
-The prior policy-race clarification is commit `ca360f36ae78eb816b5d92c674254c1f4c55e7cd`; the supplementary test-count correction is commit `94f165d39ecb41c5143baff0bc50560336994c6c`. The collector-integrity/truncation clarification is commit `717a5061fb7ee170b7ef33cbe41b08f5c7218ac3`.
+The prior policy-race clarification is commit `ca360f36ae78eb816b5d92c674254c1f4c55e7cd`; the supplementary test-count correction is commit `94f165d39ecb41c5143baff0bc50560336994c6c`. The collector-integrity/truncation clarification is commit `717a5061fb7ee170b7ef33cbe41b08f5c7218ac3`. The release-time artifact checklist and FAKE-17 case are commit `34e6aee275f50d4ad162e0d819ce6e0a8f488cf4`.
 
 These checks establish document contents and revision identifiers only. They do not establish that code exists or tests pass.
 
-## Recommended next step
+## Next step
 
-Before touching canonical product documents, ask the owner to approve any canonical-contract amendment. In the meantime, refine the research-only adapter proposal with an explicit release-time artifact validation checklist and add one regression row that proves degraded required collection preserves the raw exit fact but prevents PASS. Then reconcile the resulting checklist against LOOP-03, LOOP-07, LOOP-10, LOOP-11, LOOP-12, CASE-07, CASE-12, CASE-14, and CASE-15 without renaming any IDs.
+The research-only clarification pass is complete. The updated adapter proposal now covers degraded required collection, runtime-vs-display truncation, the policy-change race, and release-time artifact validation. Before touching canonical product documents, obtain explicit owner approval for any canonical-contract amendment. Next, compare these proposed rules against the existing PR #2/#3 source only if the relevant repository files can be inspected without changing those PRs; otherwise keep implementation conformance UNKNOWN. No canonical document was changed.
