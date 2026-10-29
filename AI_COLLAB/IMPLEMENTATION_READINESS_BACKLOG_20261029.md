@@ -179,3 +179,8 @@ The gap-only static comparison is [PURE_TEST_COVERAGE_GAP_AUDIT_20261029.md](PUR
 ## G-01..G-03 patch-ready specification
 
 See [G01_G03_PATCH_READY_TEST_SPEC_20261029.md](G01_G03_PATCH_READY_TEST_SPEC_20261029.md) for the exact proposed test matrices and behavior choices for malformed limit flags, OutputBudget cap types, and whitespace-only fingerprint identity fields. It identifies which behavior requires a decision before assertions are written. Design only; no PR branch or source/test file was changed.
+
+
+### G-01..G-03 behavior recommendation
+
+See [G01_G03_RECOMMENDED_BEHAVIOR_AND_PROOF_GATES_20261029.md](G01_G03_RECOMMENDED_BEHAVIOR_AND_PROOF_GATES_20261029.md). Recommendation is validation-focused and intentionally preserves valid disposition semantics and existing fingerprint normalization. It is not an owner decision or patch authorization; tests remain NOT RUN.
