@@ -65,6 +65,10 @@ For each stream independently:
 
 Do not equate an empty complete stream with an unavailable stream, a partial collector failure, or truncation due to the output cap. If a selected adapter cannot encounter partial collection failure, document that limitation rather than inventing unnecessary states. Never buffer an unbounded stream just to compute these fields.
 
+**Verdict interaction:** preserve any trusted child exit code/outcome even when stream collection is degraded; collection failure does not rewrite the raw exit fact. However, if a stream required by the report/acceptance case is `UNAVAILABLE` or `PARTIAL_FAILURE`, or required output is `TRUNCATED_BY_POLICY` without an explicitly accepted partial-output rule, the coordinator must not project an otherwise zero exit as PASS. Use INCOMPLETE (or a more specific non-success disposition if the authoritative cause is established), retain the exit fact, expose the collection state/reason, and deny artifact release whenever its required integrity/evidence gates are unresolved. A genuinely complete empty stream remains distinct and may be valid. Do not conflate a collector failure with `cleanup_state`; record cleanup independently.
+
+**Truncation vocabulary:** keep runtime-enforced output limiting separate from report/UI presentation truncation. At the envelope/report seam, expose distinguishable facts equivalent to `stream_truncated_by_runtime` and `display_truncated_by_ui` (or typed fields with the same unambiguous meaning). Runtime truncation must be supported by trusted enforcement evidence; UI truncation must never be treated as a runtime limit event.
+
 ### 3.4 Safety/control evidence
 
 - `required_policy_revision`: the policy revision expected by the coordinator.
@@ -92,7 +96,7 @@ This table specifies required behavior for the adapter/report seam. It does not 
 |---|---|---|---|
 | NOT_STARTED | Validation/policy rejection confirmed | REJECTED | No |
 | EXIT_ZERO | Required policy barrier, terminal evidence, cleanup, artifact validity/association, and tenant authorization all confirmed; no disqualifying limit/truncation/contradiction | PASS | Yes |
-| EXIT_ZERO | Any mandatory gate missing, stale, contradictory, or unknown | INCOMPLETE (or explicit provider error if the cause is established) | No |
+| EXIT_ZERO | Any mandatory gate missing, stale, contradictory, or unknown, including required output collection being unavailable/partial | INCOMPLETE (or explicit provider error if the cause is established) | No |
 | EXIT_NONZERO | Trusted child failure evidence | FAILED | No |
 | TIMED_OUT | Termination confirmed and timeout evidence authoritative | TIMED_OUT | No |
 | TIMED_OUT | Termination not confirmed or evidence contradictory | INCOMPLETE | No |
