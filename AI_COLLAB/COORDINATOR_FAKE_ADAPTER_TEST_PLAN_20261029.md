@@ -195,3 +195,6 @@ This is a proposed internal semantic distinction, not a frozen external schema. 
 **Boundary:** pure-helper test can falsify shallow-copy behavior; durable storage immutability and append-only history require separate persistence tests.
 
 **Anchors:** LOOP-03/07/09/11; CASE-11/13/16.
+### D-06 recovery extension
+
+For the full crash-window, concurrency, persistence and provider-boundary requirements, use `AI_COLLAB/IDEMPOTENCY_RECOVERY_FALSIFICATION_CHECKLIST_20261029.md` (DR-01..DR-12). COORD-07/08 and FAKE-05/06 are only the coordinator/fake subset. A fake dispatch counter cannot prove durable uniqueness, and a durable reservation cannot prove provider exactly-once behavior. Any acknowledgement ambiguity followed by UNKNOWN lookup must leave the original reservation unresolved and must not dispatch again.
