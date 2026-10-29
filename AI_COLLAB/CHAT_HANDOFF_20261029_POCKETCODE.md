@@ -464,3 +464,20 @@ The new audit section 15 records these distinctions:
 Next work: inspect the adapter/coordinator specification for who owns request normalization, policy revision/ETag barrier, event authentication, and job/attempt binding. Create a boundary-by-boundary evidence table labeled VERIFIED IN SOURCE / SPECIFIED ONLY / ABSENT / NOT RUN. Add new findings only if a distinct behavior is source-grounded after reconciliation.
 
 No tests were run. No implementation code changed. PR #2/#3, canonical acceptance, provider selection, deployment, merge, account/billing, and workload state remain untouched/unauthorized.
+
+
+## 19. Adapter-boundary evidence reconciliation — 2026-10-29
+
+Latest audit commit: `7588ae47ba64e5038c0d6ccec0eaa32f69c6b835`; audit blob: `40bca9bfd0076b1d555d69afe690fa4292956c26`. The audit now has section 16, an explicit evidence-state table based on the adapter decision gate and result-envelope specification.
+
+Key status distinctions:
+- **VERIFIED IN SOURCE, separate helper branch only:** basic pure reducer checks and fingerprint/input-name helper behavior. This is not an integrated coordinator.
+- **SPECIFIED ONLY:** request/file boundary normalization, policy revision barrier, authenticated event provenance and attempt binding, runtime output enforcement, and artifact validation/release.
+- **NOT RUN:** test suites, fake-adapter cases, policy-race checks, coordinator/replay tests, artifact-release tests, and runtime/security trials.
+- **ABSENT from the audited research branch:** `lifecycle_contract.py` and its test module. The source pins remain on `pocketcode-lifecycle-fingerprint-audit-2026-10-27`.
+
+The adapter specification is explicit that read-then-dispatch is insufficient for the policy TOCTOU barrier: the real boundary must bind the attempt to an immutable policy revision or provide atomic/conditional rejection if the revision changes. It also proposes authenticated-producer provenance, event/attempt identity, append-only evidence, fail-closed artifact release, and release-time authorization/integrity checks. None of these requirements has been verified in a live or implemented boundary.
+
+Do not add a new FLA solely for these missing integration proofs: current overlaps are captured by FLA-04/06/07/11, while the remaining items are design-vs-implementation evidence gaps. Next pass should map each control to a future owner/interface and write minimal falsification tests for false-PASS, policy TOCTOU, cross-attempt evidence, ambiguous retry/replay, and unsafe artifact release.
+
+No tests or workloads run. No implementation changed. PR #2/#3 and canonical acceptance remain untouched; no provider, account, billing, merge, or deployment action taken.
