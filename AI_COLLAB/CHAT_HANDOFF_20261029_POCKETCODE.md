@@ -761,3 +761,86 @@ Follow-up static source review: [G01_G08_EDGE_CASES_AND_PATCH_REVIEW_NOTES_20261
 
 
 G-08 nuance: the add API receives `deleted_at`, which may be event time rather than current acceptance time. Do not treat it as proof that a previous tombstone is expired unless the contract guarantees that clock. Owner must choose the authoritative-time rule before coding; the existing `IdempotencyConflict` is the natural conflict exception to reuse.
+
+
+---
+
+## 33. Current-chat final handoff addendum — unified product direction and documentation reconciliation (2026-10-29)
+
+**Authority note:** This section records the newest verified state and supersedes any older, conflicting wording in earlier sections of this long handoff. Older detailed audits/checklists remain useful unless explicitly superseded here. Do not interpret this addendum as proof of implementation or tests.
+
+### Current live PocketCode branch
+
+- Repository: `marcelosofficial-ctrl/PocketCode-`
+- Research branch: `pocketcode-ai-workflow-director-research-2026-10-28`
+- Verified HEAD at handoff: `bfb38d1c85e9b9f7b750fd816369beb1b3c28b7e` — “Align project status with unified PC-and-phone direction”.
+- This is an isolated research branch, not main. Refresh live refs before further edits.
+- PR #2 remains open/draft/unmerged: `chat-continuity-report-regressions-2026-10-26`, head `eb8b7ea83cb0e8fe1880351276c485b761431791`.
+- PR #3 remains open/draft/unmerged: `pocketcode-pass0-audit-2026-10-26`, head `0ddcc0bc97bac5d446aefedf3d71f99411bd841d`.
+- Main was last checked at `555840d8d83342513d9cd353d4d1522d46a5c82d`. Do not assume it has not moved since this check.
+- Do not modify PR #2/#3, main, canonical acceptance/contract files, source/tests, provider/store/runtime, budgets, security/execution boundaries, or deployment/Actions without explicit authorization.
+
+### Settled product direction — not an integration-topology decision
+
+RevDev and PocketCode are intended to converge toward **one coherent PC-and-phone product/program**. RevDev is the PC-side guarded developer-operations/control-plane path; PocketCode is the phone-first path. Separate repositories, roadmaps, implementations, clients, adapters, acceptance suites, evidence, and release gates remain appropriate during development.
+
+This direction does **not** authorize a repository merge, shared-code migration, shared runtime, frontend rewrite, or change to either execution/security boundary. Integration topology remains undecided until the fixed-task PocketCode comparison and verified RevDev artifacts justify a separately reviewed, evidence-backed plan. PC/runtime/installed binary/queue/publication behavior remains UNKNOWN while the owner lacks PC access.
+
+### Documentation reconciliation completed and verified
+
+Latest relevant blobs on the research branch:
+
+- `DECISIONS.md` — `8d54d361546b31a58fb1aee48f4678afc4699856`. D-001 already records the unified product destination, separate engineering boundaries, and the requirement for a separately reviewed integration plan; this wording predated the final three edits below.
+- `PROJECT_STATUS.md` — `30be7d4988db26fcb5c72b3d52e5bd669676365e`. Replaced the stale “convergence remains a goal to evaluate” statement and the assertion that PocketCode is separate from RevDev.
+- `PRODUCT_SPEC.md` — `524479c2b64e47d892de64ace617c84f9e452c59`. It already reflected the clarified direction; no further edit was needed in the final pass.
+- `PRODUCT/REVDEV_POCKETCODE_SHARED_CORE.md` — `35344d54cd7864862797c424686de885a217c70d`. Introduction states the intended unified destination and preserves topology/security boundaries; Stage 4 now selects an evidence-backed integration topology rather than treating convergence itself as undecided.
+- `AI_COLLAB/MASTER_AI_WORKFLOW_DIRECTOR_RESEARCH_20261028.md` — `7b3e7c0f357c979db83a8ec2863621447ed4954a`. Identified as the primary AI Workflow Director research reference on this branch; links the historical [AI Efficiency Coach & Handoff proposal](https://github.com/marcelosofficial-ctrl/PocketCode-/blob/pocketcode-continuity-recovery-2026-10-27/PRODUCT/AI_EFFICIENCY_COACH_HANDOFF_PROPOSAL_2026-10-28.md) as source material for AEC-001–AEC-012; says its older product-boundary wording is not authoritative. The master also states the unified direction in §7.
+- Historical source material remains preserved. Do not rewrite the old AEC proposal merely to erase its historical wording.
+
+Recent documentation commits made in this session:
+1. `eaff2f013d6ecebd592f0d8dd62a88a1b474f0af` — shared-core convergence stage.
+2. `3cc5b9b53085c0ee426e2d2bb21dc8afd2e8b703` — research master role and AEC source.
+3. `bfb38d1c85e9b9f7b750fd816369beb1b3c28b7e` — Project Status clarification.
+
+Other commits already present before those include `d8c9c244336a1200c214339326364d5cf479189d` (D-001 direction), `38d661e1bcf25830461197808e2da3ecf50e88ef` (shared-core vision), `9bb7f532d2914ebd944ea4cc4e88a4d1b52ac158` (Product Spec), and `e13043b125828cbfb85a36a6f7d594a4257765d8` (research-master wording). Fetch live branch state before using any older SHAs as current.
+
+### Acceptance suites and evidence boundaries
+
+Keep the suites separate and preserve their original meanings:
+- PocketCode canonical: `LOOP-01–LOOP-14` and `CASE-01–CASE-16`; canonical acceptance blob checked: `c6714c27db52b2962fe8d1c7e6a16829d46a8338`.
+- PocketCode AI Efficiency Coach historical/source definitions: `AEC-001–AEC-012`.
+- RevDev: `AWC-001–AWC-018`, `P8U-01–P8U-12`, and `P0-D 1–10`.
+- Never claim a shared concept, one suite, fake adapter, static inspection, or another project's passing test proves the other project's implementation.
+- No tests were run in this final documentation pass. No source/test code, provider/store/runtime, workload, spending, merge, deployment, or Actions changes occurred.
+
+### Remaining cross-repository wording issue
+
+The PocketCode research branch's key product-direction documents have been reconciled. One separate residual issue remains in the RevDev repository: the RevDev workflow-efficiency master still has older wording around its §3.5 / lines previously reported near 241, 322 and 327 that describes PocketCode as a separate mobile product/counterpart or frames unified-product direction as undecided. Its newer alignment/addendum already records the clarified unified direction, so the remaining task is to edit those older statements **in place** on the RevDev review branch after refreshing its HEAD/blob SHA, not add another contradictory addendum.
+
+RevDev cross-project references from the previous audit:
+- Alignment note: https://github.com/marcelosofficial-ctrl/DevRelay-Missions/blob/review/revdev-adaptive-ai-workshare-2026-10-27/resume/revdev/REVDEV_POCKETCODE_CROSS_PROJECT_ALIGNMENT_2026-10-29.md
+- Draft semantic crosswalk: https://github.com/marcelosofficial-ctrl/DevRelay-Missions/blob/review/revdev-adaptive-ai-workshare-2026-10-27/resume/revdev/REVDEV_POCKETCODE_SEMANTIC_CROSSWALK_DRAFT_2026-10-29.md
+- Workflow-efficiency master to re-fetch before editing: https://github.com/marcelosofficial-ctrl/DevRelay-Missions/blob/review/revdev-adaptive-ai-workshare-2026-10-27/resume/revdev/AI_WORKFLOW_EFFICIENCY_AND_CROSS_APP_ORCHESTRATION_MASTER_2026-10-28.md
+
+### Exact next work for the new chat
+
+1. Read this addendum first, then the [PocketCode current checkpoint](POCKETCODE_CURRENT_CHECKPOINT_20261028.md), [primary Workflow Director research master](MASTER_AI_WORKFLOW_DIRECTOR_RESEARCH_20261028.md), [shared-core proposal](../PRODUCT/REVDEV_POCKETCODE_SHARED_CORE.md), and [owner decision register](OWNER_DECISION_REGISTER_20261029.md). Do not reread all specialist audits unless a question requires them.
+2. Re-fetch current PocketCode branch/main and PR #2/#3 refs; do not trust a copied SHA without checking it.
+3. Finish the one remaining cross-repository wording reconciliation in the RevDev workflow-efficiency master on its existing review branch: re-fetch branch/file SHAs, update the stale older paragraphs in place, retain separate engineering boundaries and explicit no-merge/no-shared-runtime/no-security-boundary-change language, read the complete changed file back, and report exact branch/commit/blob SHAs. Do not edit source, tests, queues, PRs, or canonical acceptance.
+4. Then do a short crosswalk-only check that maps the shared concepts against the exact PocketCode canonical LOOP/CASE contracts and RevDev's own AWC/P8U/P0-D suites. Keep the mapping explicitly draft until each side's actual artifacts have been compared; PC evidence is unavailable, so do not claim implementation equivalence.
+5. Keep execution-location research separate: PocketCode's fixed-task comparison (local phone, browser/WASM, user-owned remote PC, hosted, manual copy/paste) remains NOT RUN; $0 default remains binding. No provider selection, account creation, billable workload, or runtime claim.
+6. Only after those documentation conflicts are closed, checkpoint the next research question. Do not start a new broad research sweep or implement the proposed contract without explicit authorization.
+
+### Copy/paste prompt for the new ChatGPT conversation
+
+You are continuing the existing PocketCode project, not starting a new project. First read `AI_COLLAB/CHAT_HANDOFF_20261029_POCKETCODE.md`, especially its final §33 addendum, then read the current checkpoint, primary Workflow Director research master, shared-core proposal, and owner decision register on the live research branch. Re-fetch live GitHub branch/commit/blob refs before making claims or edits.
+
+Owner direction: RevDev and PocketCode are intended to converge toward one coherent PC-and-phone product/program. Keep repositories, implementations, clients/adapters, acceptance suites, evidence and release gates separately managed during development. This does not authorize a merge, shared-code migration, shared runtime, frontend rewrite, or any execution/security-boundary change. Topology requires a separately reviewed, evidence-backed plan. PC/runtime/installed binary/queue/publication state is UNKNOWN while the owner lacks PC access. Budget is $0; no provider/account/workload/spend, deployment/Actions, merge, or security-boundary change. Do not touch PR #2 or PR #3, canonical acceptance, source/tests, or execution queues.
+
+Three-AI roles: Claude is lead developer/RelayRef; Gemini is co-developer and independent security/spec auditor; ChatGPT is continuity holder, evidence reconciler, test architect and cross-branch conformance auditor (eventual deployment coordination only if explicitly authorized). Treat proposals as proposals, static inspection as static inspection, and unrun tests as NOT RUN. Preserve acceptance IDs exactly: PocketCode LOOP-01–14 and CASE-01–16; historical AEC-001–012; RevDev AWC-001–018, P8U-01–12 and P0-D 1–10. No suite proves another project's implementation.
+
+Current PocketCode research branch at last verification: `pocketcode-ai-workflow-director-research-2026-10-28`, HEAD `bfb38d1c85e9b9f7b750fd816369beb1b3c28b7e`. D-001, Project Status, Product Spec and shared-core proposal now express the unified direction while preserving separate engineering boundaries. The Workflow Director research master is the primary research reference and links the older Coach proposal as historical/source material for AEC-001–AEC-012. PR #2 remains draft/open/unmerged at `eb8b7ea83cb0e8fe1880351276c485b761431791`; PR #3 remains draft/open/unmerged at `0ddcc0bc97bac5d446aefedf3d71f99411bd841d`.
+
+Next task: on the existing RevDev review branch `review/revdev-adaptive-ai-workshare-2026-10-27`, re-fetch current HEAD and the workflow-efficiency master blob, then correct its stale older paragraphs that still call PocketCode a separate mobile product or imply unified direction is undecided. Edit those paragraphs in place, preserve no-merge/no-shared-code/no-shared-runtime/no-security-boundary-change limits, read the full file back, and report exact branch/commit/blob SHAs. Do not edit any source/tests or touch PR #2/#3. Afterward do a bounded draft semantic crosswalk against exact canonical IDs; keep it draft because PC artifacts remain unavailable. Work efficiently, avoid duplicate research, and ask the owner only for an essential missing decision/action.
+
+At the end of the RevDev wording patch, verify the PocketCode branch and PR refs again and provide a compact checkpoint. No tests are needed for documentation-only changes; state tests NOT RUN rather than implying validation.
