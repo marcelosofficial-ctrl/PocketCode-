@@ -755,3 +755,6 @@ Added [G07_G08_PATCH_READY_TEST_SPEC_20261029.md](G07_G08_PATCH_READY_TEST_SPEC_
 ## Consolidated owner decision and patch gate — 2026-10-29
 
 New single entry point: [CONSOLIDATED_OWNER_DECISION_AND_PATCH_GATE_20261029.md](CONSOLIDATED_OWNER_DECISION_AND_PATCH_GATE_20261029.md). It consolidates D-01..D-04 semantic choices and G-01/G-02/G-03/G-07/G-08 bounded helper fixes, recommends a patch grouping, and provides one copy-ready response template. This is a decision aid only. A behavior approval is not code-edit authorization; owner must specify exact scope and branch. No tests/source changes, PR #2/#3 untouched, canonical acceptance unchanged.
+
+
+Follow-up static source review: [G01_G08_EDGE_CASES_AND_PATCH_REVIEW_NOTES_20261029.md](G01_G08_EDGE_CASES_AND_PATCH_REVIEW_NOTES_20261029.md). It records exact implementation observations (validation precedence in G-01; bool/float cap acceptance in G-02; whitespace runtime normalizing to empty in G-03; exact superscript alias gap in G-07) and adds a necessary G-08 owner choice: whether an expired tombstone may be replaced when no lookup has lazily removed it. Still no source/test changes and no tests run.
