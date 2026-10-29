@@ -278,3 +278,22 @@ The updated `DeletionTombstones.add()` validates tenant/key/fingerprint as nonbl
 The separate branch's `OutputBudget.__init__()` still appears to validate caps only using `<= 0`; strict positive-integer/non-boolean validation remains a candidate gap unless another revision addresses it. This remains FLA-03, not a new finding.
 
 **Interpretation:** the lifecycle/fingerprint branch provides candidate remediation and tests, not execution evidence. Do not cherry-pick, merge, or describe fixes as integrated without explicit authorization and branch review. PR #2, PR #3, and canonical acceptance remain unchanged; no tests were run in this pass.
+
+
+## 11. FLA-10 — report-history model accepts whitespace-only job and evidence identifiers
+
+**Classification:** CONFIRMED SOURCE-LEVEL VALIDATION GAP; CONTRACT/CALLER IMPACT DEPENDS ON USE  
+**Function:** `ReportHistory.append()` on `pocketcode-lifecycle-fingerprint-audit-2026-10-27`  
+**Pinned source:** `scripts/lifecycle_contract.py`, blob `316345341603848c4a86a6a82e533daa796c7695`.
+
+The helper checks that `job_id`, `disposition`, `cleanup_state`, and `evidence_ref` are non-empty strings, but does not reject values that contain only whitespace. The allowlists later reject whitespace-only disposition and cleanup state, but `job_id="   "` and `evidence_ref="   "` pass and are stored. That permits an effectively blank job bucket and an evidence reference that looks present to a truthiness check but does not identify evidence.
+
+This is a pure in-memory model validation gap, not proof of a live report API issue. An upstream validator may enforce stronger constraints, and the helper does not establish persistence or tamper resistance.
+
+**Minimal regression:** assert that whitespace-only job ID and evidence reference are rejected; retain acceptance of valid nonblank opaque strings unless the contract explicitly requires normalization. Add the same cases to any coordinator/API validation boundary that calls this helper.
+
+**Canonical anchors:** LOOP-03/07/09/11; CASE-08/11/12/16.
+
+**Related but distinct:** FLA-02 validates fingerprint identity fields; FLA-09 validates idempotency reservation values. FLA-10 concerns the report-history append boundary and its evidence reference. These can share a common validation utility later, but should remain separately tested at each public helper boundary.
+
+**Evidence status:** static inspection of the separate lifecycle/fingerprint branch only; no tests run. Not assumed merged or integrated.
