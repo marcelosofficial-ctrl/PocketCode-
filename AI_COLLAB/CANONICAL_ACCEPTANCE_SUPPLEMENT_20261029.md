@@ -8,7 +8,7 @@
 
 ## Purpose and guardrails
 
-This file supplies missing test *shapes* identified by the coverage audit. It supplements rather than replaces canonical LOOP-01..14 and CASE-01..16. It is not a schema, implementation, runtime choice, provider approval, or proof of behavior.
+This file supplies 14 proposed supplementary test cases identified by the coverage audit. It supplements rather than replaces canonical LOOP-01..14 and CASE-01..16. It is not a schema, implementation, runtime choice, provider approval, or proof of behavior.
 
 **Execution availability:** user is phone-only; PC/runtime/source state is not available for direct validation. All tests below are proposed and NOT RUN. Tests needing an actual app can be marked BLOCKED until the app is accessible; service/security tests remain BLOCKED until an execution boundary is explicitly selected and authorized. No account, workload, paid/free-tier assumption, or provider setup is authorized.
 
