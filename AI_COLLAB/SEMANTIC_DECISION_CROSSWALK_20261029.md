@@ -23,3 +23,7 @@ Research-only index; no canonical changes, implementation, or tests.
 2. Confirm D-03's per-case default: only streams/artifacts explicitly required by that acceptance case gate PASS/release; optional diagnostics can be incomplete without automatically making every run INCOMPLETE. Keep raw process outcome and collection state separate.
 
 Evidence: static review only. No tests, implementation, provider/runtime selection, workload, account, billing, merge or deployment.
+
+
+## Cross-decision audit and gate sequence — 2026-10-29
+See [CROSS_DECISION_CONTRADICTION_AUDIT_AND_IMPLEMENTATION_GATES_20261029.md](CROSS_DECISION_CONTRADICTION_AUDIT_AND_IMPLEMENTATION_GATES_20261029.md) for D-06/D-07/D-08 consistency results, unresolved interface ambiguities, and the proposed G0-G7 implementation evidence sequence. No owner decision is closed by that audit; canonical acceptance remains unchanged.
