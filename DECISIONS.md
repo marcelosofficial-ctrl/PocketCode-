@@ -2,10 +2,11 @@
 
 Only record decisions that have actually been made. Proposals belong in the open questions section until approved.
 
-## D-001: Keep PocketCode separate from RevDev
+## D-001: Unified PC-and-phone product direction; separate development boundaries
 - **Status:** Accepted
-- **Decision:** PocketCode is a separate product and repository. Do not combine its code, roadmap, or project state with RevDev.
-- **Reason:** Different product purpose and lifecycle.
+- **Decision:** RevDev and PocketCode are intended to converge into one broader PC-and-phone product/program. During discovery and development, keep their repositories, roadmaps, implementations, acceptance suites, evidence, and release gates separately managed. This decision does not authorize a repository merge, shared-code migration, shared runtime, frontend rewrite, or change to either project's execution/security boundary. Those choices require a separately reviewed, evidence-backed integration plan.
+- **Product roles:** RevDev remains the PC-side guarded developer-operations/control-plane path; PocketCode remains the phone-first path.
+- **Reason:** Preserve the owner's unified product vision without prematurely selecting integration topology or treating unverified implementation compatibility as fact.
 
 ## D-002: Use GitHub as durable project source of truth
 - **Status:** Accepted
