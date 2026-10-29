@@ -923,7 +923,7 @@ This section supersedes any older branch-HEAD statement above. The previous §34
 
 - PocketCode repository: `marcelosofficial-ctrl/PocketCode-`
 - Research branch: `pocketcode-ai-workflow-director-research-2026-10-28`
-- **Current branch HEAD:** `493b0f1dafdc5ef4ecace42491d84cd18f00330d` — `Add latest verdict-precedence checkpoint to handoff`.
+- **Latest analysis checkpoint before this handoff correction:** `493b0f1dafdc5ef4ecace42491d84cd18f00330d` — `Add latest verdict-precedence checkpoint to handoff`. The branch also receives this handoff-only documentation commit; re-fetch the live branch HEAD rather than treating the analysis checkpoint SHA as the newest HEAD.
 - Handoff file blob: `3834a48a8d318ac76393db28cc73e6d3d86e4db9`.
 - Parent commit: `74cc7a4297df0b7ebf6dc51bcb67ca5c5194044c` — `docs: record bounded verdict precedence recheck`.
 - Main HEAD checked: `555840d8d83342513d9cd353d4d1522d46a5c82d`.
