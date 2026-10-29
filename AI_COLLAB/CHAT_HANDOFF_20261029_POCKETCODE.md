@@ -564,3 +564,18 @@ Next highest-value passes:
 3. Keep D-01 and D-03 explicitly owner-open; do not change canonical acceptance to avoid asking for a product decision.
 
 No tests or implementations were run. Canonical `PRODUCT/EXECUTION_CONTRACT.md` / `PRODUCT/EXECUTION_LOOP_ACCEPTANCE.md`, PR #2 and PR #3 remain unchanged. No provider/runtime, account, billing, workload, merge or deployment action.
+## 25. Policy revision / dispatch falsification checklist — 2026-10-29
+
+Added PBR-01..07 to `AI_COLLAB/ADAPTER_BOUNDARY_DECISION_GATE_20261029.md` (commit `8983a3e2f9bf6a4e54c3b0ddc3b25610909861f0`, blob `7327ec53c18a9bf074585865e380c3c526a85839`). The checklist covers: contract/primitive inspection; missing/stale/pending/unknown revisions; R1-to-R2 race; revision-token changes/ABA-style races where supported; missing or mismatched applied-revision evidence; concurrent dispatch/policy updates; and lost acknowledgement followed by same-attempt lookup.
+
+Core gate: a request fingerprint or policy read is not proof that the same policy revision was applied at task start. The chosen boundary must bind an immutable policy to the attempt or enforce an atomic/conditional start. A fake can test coordinator decisions and expected dispatch counts but cannot prove a real provider closes the race. If the applied revision cannot be established, the barrier is BLOCKED/unverified; no PASS or safety claim is justified.
+
+Also linked D-05 from `AI_COLLAB/OWNER_DECISION_REGISTER_20261029.md` (commit `52e1255eb2f7d0bbc954b9c71873ecdbaa4aeb17`, blob `032390cc57eb29e1a0ed378daab5d26ccbe57de1`) and updated `AI_COLLAB/SEMANTIC_DECISION_CROSSWALK_20261029.md` (commit `b96085305bbc3892f6149c6f436ee06489c21830`, blob `5eccf7914b5a93b23c00de4d0f689359d9696608`).
+
+Status remains SPECIFIED ONLY / NOT RUN: no provider/runtime has been selected, and no account, billing, workload or actual race test was authorized. D-05 remains a blocking architecture/security decision.
+
+## Current next-pass ordering
+
+1. Re-fetch and verify the latest handoff, owner register, adapter envelope, boundary gate, coordinator plan, crosswalk, and current branch head. Ensure the updated COORD-11/12 references and PBR-01..07 links resolve.
+2. Close remaining documentation-only contradictions between the proposed policy fingerprint (`effective_policy`) and the policy revision actually bound to dispatch, using FLA-11 and the adapter envelope; preserve D-05 as BLOCKED until a real boundary is selected and verified.
+3. Keep D-01, D-03, and D-04 explicitly owner-open; no canonical acceptance change, implementation change, or provider action is implied.
