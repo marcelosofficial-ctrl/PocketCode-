@@ -46,3 +46,8 @@ See [CROSS_DECISION_CONTRADICTION_AUDIT_AND_IMPLEMENTATION_GATES_20261029.md](CR
 
 ## Provider-neutral boundary contract sketch — 2026-10-29
 See [PROVIDER_NEUTRAL_BOUNDARY_CONTRACT_SKETCH_20261029.md](PROVIDER_NEUTRAL_BOUNDARY_CONTRACT_SKETCH_20261029.md). It defines proposed operations and typed outcomes for atomic reservation, dispatch-intent/reconciliation, trusted evidence acceptance, append-only report publication, artifact publication/release, retention, and hard stops. It is a review sketch only: not a frozen schema, implementation, provider/store selection, or proof of any guarantee. All integration evidence remains NOT RUN.
+
+
+## Implementation-readiness backlog — 2026-10-29
+
+See [IMPLEMENTATION_READINESS_BACKLOG_20261029.md](IMPLEMENTATION_READINESS_BACKLOG_20261029.md) for a dependency-ordered plan from independent review and D-01..D-04 owner decisions through pure tests, policy barrier, durable recovery/history, artifact release, and device acceptance. It is a planning aid only and does not close or approve any decision.
