@@ -17,7 +17,7 @@ This audit checks whether TPM-01..TPM-16 actually cover the canonical acceptance
 | LOOP-04 | Program failure distinct from infrastructure failure | TPM-03..05 | **Partial:** separate wrapper/coordinator and child results only if both layers exist in chosen architecture. |
 | LOOP-05 | Timeout/cancel/rejection/uncertainty never shown as success | TPM-06 | **Partial:** cancellation, rejection, and infrastructure-unknown cases need distinct tests. |
 | LOOP-06 | Preserve structured check names/status/source | TPM-15 | **Gap:** forged PASS output does not test PASS/FAIL/SKIP/WARN fidelity or source labels. |
-| LOOP-07 | Bounded useful diagnostics and file metadata | TPM-10..12 | **Partial:** test all required fields, all bounds, file metadata, and collector failure. |
+| LOOP-07 | Bounded useful diagnostics and file metadata | TPM-10..12 | **Partial:** test all required fields, all bounds, file metadata, and collector failure; define required streams per acceptance case instead of assuming every diagnostic stream is a universal PASS gate. |
 | LOOP-08 | Copy result plus selectable-text fallback | None | **Gap:** no copy/paste or clipboard-failure test. |
 | LOOP-09 | Preserve prior result; edit/rerun; identify runs | TPM-09, 14 | **Partial:** report versioning/attempt binding is not correction-loop UX. |
 | LOOP-10 | Safe, bounded output-file listing/download | TPM-16 | **Partial:** release authorization is not path/name/size/list/download validation. |
@@ -36,7 +36,7 @@ This audit checks whether TPM-01..TPM-16 actually cover the canonical acceptance
 | CASE-04 | Infinite loop/enforced deadline | TPM-06, 10 | **Partial:** no enforced deadline/confirmed termination proof. |
 | CASE-05 | Cancellation while active | None | **Gap:** test confirmed stop, already terminal, and unknown termination. |
 | CASE-06 | Worker/provider fails before program result | TPM-04 | **Partial:** contradiction is not a provider failure without a program result. |
-| CASE-07 | Output exceeds configured limit | TPM-10, 11 | **Partial/direct semantics:** prove external enforcement and bounded actual output; keep display truncation separate. |
+| CASE-07 | Output exceeds configured limit | TPM-10 | **Partial/direct semantics:** prove external enforcement and bounded actual output. Test limit-caused termination separately from collection-only cap with trusted EXIT_ZERO and display-only truncation. CASE-07 requires explicit truncation/rejection evidence but does not prescribe one verdict for every cap behavior; D-01 remains open. |
 | CASE-08 | Missing input or unsafe path/name | None | **Gap:** add safe pre-execution rejection/path-boundary cases. |
 | CASE-09 | Exit 0 but script reports failed check | TPM-15 | **Partial:** test a named failed check while keeping process success distinct from task correctness. |
 | CASE-10 | Prints PASS but exits nonzero | TPM-03, 05, 15 | **Direct semantics:** preserve raw text and trusted nonzero exit; still NOT RUN. |
