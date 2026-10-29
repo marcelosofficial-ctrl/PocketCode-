@@ -51,3 +51,8 @@ See [PROVIDER_NEUTRAL_BOUNDARY_CONTRACT_SKETCH_20261029.md](PROVIDER_NEUTRAL_BOU
 ## Implementation-readiness backlog — 2026-10-29
 
 See [IMPLEMENTATION_READINESS_BACKLOG_20261029.md](IMPLEMENTATION_READINESS_BACKLOG_20261029.md) for a dependency-ordered plan from independent review and D-01..D-04 owner decisions through pure tests, policy barrier, durable recovery/history, artifact release, and device acceptance. It is a planning aid only and does not close or approve any decision.
+
+
+## Owner decision packet — 2026-10-29
+
+See [OWNER_DECISION_PACKET_D01_D04_20261029.md](OWNER_DECISION_PACKET_D01_D04_20261029.md) for a compact review of D-01..D-04, proposed defaults, counterexample tests, canonical traceability and a copy-ready response template. It is decision support only: no owner choice is implied or approved.
