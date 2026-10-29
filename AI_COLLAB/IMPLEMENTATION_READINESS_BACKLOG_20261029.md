@@ -194,3 +194,6 @@ See [G07_G08_PATCH_READY_TEST_SPEC_20261029.md](G07_G08_PATCH_READY_TEST_SPEC_20
 ### Consolidated owner decision and patch gate
 
 Use [CONSOLIDATED_OWNER_DECISION_AND_PATCH_GATE_20261029.md](CONSOLIDATED_OWNER_DECISION_AND_PATCH_GATE_20261029.md) as the current compact owner-facing entry point for D-01..D-04 and G-01/G-02/G-03/G-07/G-08. It preserves the distinction between approving semantics and authorizing source edits, recommends splitting patches by concern, and lists required proof gates. It does not close decisions or authorize code changes.
+
+
+Implementation-level clarifications are in [G01_G08_EDGE_CASES_AND_PATCH_REVIEW_NOTES_20261029.md](G01_G08_EDGE_CASES_AND_PATCH_REVIEW_NOTES_20261029.md), including G-01 validation precedence and G-08 expired-key reuse. Resolve the G-08 retention/reuse rule before implementing tombstone changes.
