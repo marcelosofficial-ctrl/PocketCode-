@@ -56,3 +56,8 @@ See [IMPLEMENTATION_READINESS_BACKLOG_20261029.md](IMPLEMENTATION_READINESS_BACK
 ## Owner decision packet — 2026-10-29
 
 See [OWNER_DECISION_PACKET_D01_D04_20261029.md](OWNER_DECISION_PACKET_D01_D04_20261029.md) for a compact review of D-01..D-04, proposed defaults, counterexample tests, canonical traceability and a copy-ready response template. It is decision support only: no owner choice is implied or approved.
+
+
+## Consolidated owner decision and patch gate — 2026-10-29
+
+See [CONSOLIDATED_OWNER_DECISION_AND_PATCH_GATE_20261029.md](CONSOLIDATED_OWNER_DECISION_AND_PATCH_GATE_20261029.md) for one review surface covering D-01..D-04 and G-01/G-02/G-03/G-07/G-08. Existing decisions remain OPEN/proposed until the owner explicitly responds. The patch grouping and suggested behaviors are recommendations, not authorizations.
