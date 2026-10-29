@@ -38,3 +38,7 @@ These require tests at the actual chosen boundary; fake tests alone cannot estab
 Resolve D-01..D-04 before freezing verdict/event tests; D-05 before execution-boundary safety claims; D-06/D-08 before durable recovery/history claims; D-07 before artifact-release claims. Keep all proposals unapproved until the owner confirms them. Do not change canonical acceptance or implementation merely to make tests pass.
 
 **Evidence:** research note only; no tests or implementation changes. No provider/runtime, account, billing, workload, merge, or deployment action. Canonical acceptance and PR #2/#3 remain unchanged.
+
+
+## Cross-decision consistency and implementation sequencing — 2026-10-29
+See [CROSS_DECISION_CONTRADICTION_AUDIT_AND_IMPLEMENTATION_GATES_20261029.md](CROSS_DECISION_CONTRADICTION_AUDIT_AND_IMPLEMENTATION_GATES_20261029.md) for the read-only D-06/D-07/D-08 contradiction audit, residual ambiguities A-G, and proposed G0-G7 evidence gates. No direct logical contradiction was found; provider/store/HTTP/device guarantees remain SPECIFIED ONLY / NOT RUN. D-01..D-04 remain owner-open; D-05 remains BLOCKED pending actual boundary proof. The audit does not approve a provider, store, or implementation.
