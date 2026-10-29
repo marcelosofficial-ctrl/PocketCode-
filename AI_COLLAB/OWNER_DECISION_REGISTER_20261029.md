@@ -22,7 +22,7 @@ Canonical PASS wording requires trusted completion and exit zero but does not ex
 
 ## D-04 — Event identity scope
 
-Define whether IDs are global, producer-scoped, or tenant/job/attempt-scoped. Proposed default: validate expected identity before reduction; same ID with changed immutable identity, sequence, kind, or canonical payload is a conflict. Test exact replay, changed attempt/job/tenant, changed payload, sequence collision, and nested-payload mutation. **OPEN.**
+**Proposed default for owner review:** assign each accepted canonical event a coordinator-owned unique `event_id`; retain any external/provider event ID separately with a documented source namespace. Deduplicate source replays using a scoped key such as `(source_namespace, tenant_ref, job_id, attempt_id, source_event_id)`. Bind and validate tenant/job/attempt/source (and policy revision where relevant) before reduction. A coordinator sequence is unique and monotonic within the attempt/event stream; provider timestamps do not establish ordering. A replay is identical only when its scoped source identity and all immutable observation fields match (event kind, sequence, canonical payload/schema version, binding and relevant policy revision). Only explicitly designated transport-delivery metadata may differ. Changed identity, sequence, kind or payload is a conflict, not an idempotent retry. Keep accepted payloads immutable; distinct events sharing a coordinator sequence must appear in conflict diagnostics. This is a proposed contract, not a frozen schema. Tests: exact replay; changed attempt/job/tenant/source/policy; changed payload; same sequence under different event IDs; nested-payload mutation. **OPEN.**
 
 ## D-05..D-08 — Other blocking choices
 
