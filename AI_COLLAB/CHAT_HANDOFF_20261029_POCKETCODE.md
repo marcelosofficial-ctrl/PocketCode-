@@ -725,3 +725,8 @@ Added [IMPLEMENTATION_READINESS_BACKLOG_20261029.md](IMPLEMENTATION_READINESS_BA
 ## D-01..D-04 owner decision packet — 2026-10-29
 
 Added [OWNER_DECISION_PACKET_D01_D04_20261029.md](OWNER_DECISION_PACKET_D01_D04_20261029.md). It translates the four unresolved/proposed semantic choices into explicit owner choices with canonical anchors, counterexamples, affected LOOP/CASE IDs, proof boundaries and a response template. D-01/D-03/D-04 remain OPEN; D-02 remains a proposed default requiring owner confirmation before schema freeze. The packet does not alter canonical acceptance or authorize implementation.
+
+
+## Pure contract test inventory — 2026-10-29
+
+Added [PURE_CONTRACT_TEST_INVENTORY_20261029.md](PURE_CONTRACT_TEST_INVENTORY_20261029.md). It lists PURE-01..PURE-12 candidate validation/canonicalization/output/file/report tests, SEM-01..SEM-10 tests blocked wholly or partly on D-01..D-04, the coordinator/fake boundary, evidence labels and a gap-only next task. This is design only: tests NOT RUN. Next pass should reconcile each pure candidate against the exact pinned test files and mark existing coverage, missing coverage, or source-change/decision-needed—without modifying PR #2/#3 from this research branch.
