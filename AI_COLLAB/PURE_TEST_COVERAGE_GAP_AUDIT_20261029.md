@@ -113,3 +113,8 @@ These tests do not prove live coordinator behavior, cross-process races, durable
 ## Provenance and limits
 
 Static comparison of four exact source/test blobs fetched from the named branches. No Python tests executed; no workflow/Actions triggered; no source file changed; PR #2 and PR #3 remain untouched; no provider/store/runtime selected; no workloads, accounts or billing. Canonical acceptance on main remains unchanged.
+
+
+## Patch-ready follow-up
+
+The bounded follow-up specification is [G01_G03_PATCH_READY_TEST_SPEC_20261029.md](G01_G03_PATCH_READY_TEST_SPEC_20261029.md). It records exact cases and separates strict input validation from any change to execution verdict semantics or fingerprint normalization. It is a proposal, not an applied patch.
