@@ -174,3 +174,8 @@ The detailed candidate suite and evidence ladder are in [PURE_CONTRACT_TEST_INVE
 ## Pinned-test coverage reconciliation
 
 The gap-only static comparison is [PURE_TEST_COVERAGE_GAP_AUDIT_20261029.md](PURE_TEST_COVERAGE_GAP_AUDIT_20261029.md). It re-fetched the exact PR #2/#3 helper and test blobs and distinguishes existing test-source coverage from missing fixtures. Top concrete candidates are malformed limit flags, strict output-budget cap types, whitespace-only fingerprint identity fields, nested event payload mutation, reserved Windows superscript filename aliases, tombstone re-add retention behavior and redaction boundary cases. Tests remain NOT RUN; source changes, if authorized, belong on their own PR branches—not this research branch.
+
+
+## G-01..G-03 patch-ready specification
+
+See [G01_G03_PATCH_READY_TEST_SPEC_20261029.md](G01_G03_PATCH_READY_TEST_SPEC_20261029.md) for the exact proposed test matrices and behavior choices for malformed limit flags, OutputBudget cap types, and whitespace-only fingerprint identity fields. It identifies which behavior requires a decision before assertions are written. Design only; no PR branch or source/test file was changed.
