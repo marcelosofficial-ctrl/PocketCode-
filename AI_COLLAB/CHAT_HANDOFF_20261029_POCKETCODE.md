@@ -503,3 +503,10 @@ Created `AI_COLLAB/OWNER_DECISION_REGISTER_20261029.md` (commit `37d1ba24fd8d9c9
 Important consistency check: canonical acceptance defines FAIL as a confirmed program/runtime failure. The semantic and transition matrices lean toward INCOMPLETE for enforced limits unless an owner decides otherwise. A trusted limit event that terminates execution may be a confirmed runtime failure; review this against canonical wording before freezing tests. Proposed for review: confirmed limit-triggered termination -> FAIL verdict plus `LIMIT_EXCEEDED` disposition; collector-only truncation and display-only truncation remain distinct. Do not amend canonical acceptance silently.
 
 Other open decisions: provider failure without child exit; output completeness as a PASS gate; event ID scope; policy revision barrier; ambiguous acknowledgement recovery; release-time artifact checks; durable report history. No tests or code changes; PR #2/#3 and canonical acceptance remain untouched.
+
+
+## 22. Cross-document semantic map added — 2026-10-29
+
+Created `AI_COLLAB/SEMANTIC_DECISION_CROSSWALK_20261029.md` (commit `f5d3fbecc2ada66841fc7259bead8347ec52fa81`). This indexes the current state of PASS, nonzero exit/cleanup, provider failure, execution limits, output completeness, event identity, policy revision, ambiguous acknowledgement, artifact release, report history, and runtime/device evidence across the existing docs.
+
+Priority: resolve D-01, because the research matrices currently lean toward INCOMPLETE for confirmed enforced limits while canonical acceptance defines FAIL for confirmed program/runtime failure. Also resolve D-03 so output completeness is not accidentally made a universal PASS gate. Both are owner decisions; do not change canonical acceptance or implementation implicitly.
