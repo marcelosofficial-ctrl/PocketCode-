@@ -106,3 +106,7 @@ Lower evidence levels do not substitute for the actual storage or HTTP boundary.
 - Related helper/source review: FLA-13 covers portable input-name validation; it is not by itself a complete artifact-release audit.
 
 **Current result:** SPECIFIED ONLY / NOT RUN. No implementation, store, provider, account, billing, workload, merge, or deployment action was performed.
+
+
+## Cross-decision audit pointer — 2026-10-29
+See [CROSS_DECISION_CONTRADICTION_AUDIT_AND_IMPLEMENTATION_GATES_20261029.md](CROSS_DECISION_CONTRADICTION_AUDIT_AND_IMPLEMENTATION_GATES_20261029.md) for cross-boundary invariants, unresolved interface questions, and the proposed G0-G7 evidence gate sequence. This pointer does not close owner decisions or promote specification/fake-test evidence to provider, persistence, HTTP, or device integration evidence.
