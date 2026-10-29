@@ -533,3 +533,34 @@ Next passes, in order:
 3. Then do one focused event-identity/replay reconciliation (D-04 / FLA-04/06/07/08) against the adapter envelope and COORD-05/11; avoid starting another broad audit.
 
 No tests were run. No implementation changed. Canonical acceptance/contract and PR #2/#3 remain unchanged. No provider/runtime selection, workload, account, billing, merge, or deployment.
+## 24. CASE-07 traceability and event identity/replay reconciliation — 2026-10-29
+
+### CASE-07 / LOOP-07 audit sweep
+A targeted phrase scan was run across the 45 Markdown files currently in `AI_COLLAB/`. The only older research table found that gave a blanket `LIMIT_EXCEEDED -> INCOMPLETE` mapping was `AI_COLLAB/EXECUTION_CONTRACT_CROSS_BRANCH_AUDIT_20261028.md`; it now marks that mapping as a superseded conservative candidate and points to D-01. The old source-level PR #3 behavior (`output_truncated=True` -> `LIMIT_EXCEEDED`) remains documented as a verified-in-source conformance gap, not as the approved product rule.
+
+CASE-07 and LOOP-07 traceability now explicitly separate limit-caused termination, collection-only cap with independently confirmed EXIT_ZERO, and report/UI-only truncation. The canonical criteria remain unchanged: CASE-07 requires enforcement and explicit truncation/rejection, but does not define one verdict for every implementation of an output cap. D-01 remains open. Output requirements must be case-specific under D-03, not silently universal.
+
+Updated traceability files:
+- `AI_COLLAB/CANONICAL_ACCEPTANCE_TRACEABILITY_20261029.md` — commit `b16e13fbd675ee5b1161f2f8e0c556cf4ff07b07`, blob `d236962b3a58b98e96fad22ef5c2c23a7a61d54b`.
+- `AI_COLLAB/CANONICAL_ACCEPTANCE_SUPPLEMENT_20261029.md` — commit `9cca8d4c9201ae964de7b5b936490ed03208b31d`, blob `193eada4971b03661376130866cc4841acb1c2eb`.
+- `AI_COLLAB/TRANSITION_MATRIX_ACCEPTANCE_COVERAGE_AUDIT_20261029.md` — commit `885e835214b9349352aeee01f9e2987e5d856e97`, blob `b03c5810599e4a893272dea01d0dd91fed58ea33`.
+- `AI_COLLAB/EXECUTION_CONTRACT_CROSS_BRANCH_AUDIT_20261028.md` — commit `d237bc9c84b892815e88dbd60b60daa1ec7455b5`, blob `3aebbb856c9fe6fc5a993c277ba9ace7f1816e00`.
+
+### Event identity/replay proposal
+Static re-fetch confirmed PR #3 source remains pinned at `scripts/lifecycle_contract.py` blob `ba8d4d0b217c90513bed020e298029ef4e16f164`. `reduce_terminal_events()` uses duplicate signature `(sequence, kind, payload)` and has no expected job/attempt argument; nested payloads are only shallow-copied. The helper cannot establish complete event authenticity, source namespace, tenant/job/attempt/policy binding, or immutable snapshots by itself.
+
+Research-only proposed default, still owner-open under D-04:
+- The trusted coordinator assigns a unique canonical event ID; source/provider event IDs are kept separately and deduplicated within an explicit authenticated source + tenant/job/attempt namespace.
+- Bind the expected tenant/job/attempt/source (and relevant policy revision) before reduction.
+- Coordinator sequence is unique within the event stream for one attempt; provider timestamps are retained observations, not ordering authority.
+- Exact replay means all immutable event identity and observation fields match. Reuse of a scoped source ID with changed identity, sequence, kind, policy binding, payload/schema, or canonical payload is a conflict.
+- Accepted payloads are immutable snapshots; sequence collision diagnostics identify every colliding event, including nonterminal events.
+
+Test architecture update: `AI_COLLAB/COORDINATOR_FAKE_ADAPTER_TEST_PLAN_20261029.md` now defines COORD-11 for exact scoped replay, conflicting source-ID reuse, and sequence collisions; COORD-12 covers nested-payload mutation after acceptance. Its current blob is `04cc9dd41496e734d005fdb487bd6cedc8529bf4`. The adapter-envelope latest blob is `5a46ffba5a455a8dcd832dbd6c84c223c2a039bc`; owner register latest blob is `263f09366a4cbc60605201246fda672f50e68ebe`; semantic crosswalk latest blob is `c3679b612ef1c5b8c624f615832fd3634412392c`. No PR source was modified.
+
+Next highest-value passes:
+1. Verify the latest versions of the handoff, owner register, adapter envelope, coordinator test plan and crosswalk against the current branch head; fix any stale COORD count or decision status.
+2. Inspect the policy-revision/dispatch boundary in the same way: turn D-05 into an explicit falsification checklist while keeping real provider enforcement BLOCKED/unverified.
+3. Keep D-01 and D-03 explicitly owner-open; do not change canonical acceptance to avoid asking for a product decision.
+
+No tests or implementations were run. Canonical `PRODUCT/EXECUTION_CONTRACT.md` / `PRODUCT/EXECUTION_LOOP_ACCEPTANCE.md`, PR #2 and PR #3 remain unchanged. No provider/runtime, account, billing, workload, merge or deployment action.
