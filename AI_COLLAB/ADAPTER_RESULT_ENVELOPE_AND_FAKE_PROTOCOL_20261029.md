@@ -15,7 +15,7 @@ The adapter boundary must prevent three different facts from collapsing into one
 
 The existing PR #2 report helper is a formatter/classifier for caller-supplied data; it is not the trusted producer. The PR #3 lifecycle helper is a pure model; it is not durable storage, a runner, or a provider adapter. The envelope below is a proposed join between them.
 
-Non-goals: selecting wire-format field names, defining an HTTP API, claiming exactly-once provider execution, designing production storage, proving sandbox/egr ess controls, or replacing canonical acceptance criteria. (The intended term is **egress** control; no enforcement is established by this document.)
+Non-goals: selecting wire-format field names, defining an HTTP API, claiming exactly-once provider execution, designing production storage, proving sandbox/egress controls, or replacing canonical acceptance criteria. (The intended term is **egress** control; no enforcement is established by this document.)
 
 ## 2. Core invariants
 
