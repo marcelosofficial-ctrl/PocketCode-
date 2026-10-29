@@ -678,3 +678,22 @@ These checklists complement rather than replace COORD/FAKE cases. Fake tests est
 ## Next pass
 
 Read-only verification of current branch head, latest blobs for D-06/D-07/D-08 documents and crosslinks, plus PR #2/#3 and canonical acceptance blobs. Then do one targeted gap scan for any contradiction between the owner register, falsification matrix, and crosswalk. Do not add implementation until owner decisions and selected boundaries are available.
+## 30. D-06..D-08 final static verification — 2026-10-29
+
+Read-only re-fetch at branch head `874be9ee84e69761d785774eb083d0fcdafdb0f7` verified the latest files and cross-links:
+
+- Handoff (this file before this section): blob `4f042e3bad0953eb5b82921aea87fc888e0d91d0`.
+- Owner decision register: blob `6120d639621ae053f0719bc29603c4b67bc1ad5c`; includes D-06/DR-01..12, D-07/AR-01..14, D-08/RH-01..14.
+- Control ownership/falsification matrix: blob `b50ba9b2673c4c065d6ca5eabe523ce0746bd1f4`; includes all three checklists.
+- Semantic decision crosswalk: blob `107113d725e283782ffd10a5bf57269756952af7`; includes all three traceability rows.
+- D-06 recovery checklist: blob `f6346dbc3dba9f97a431043612e5e17d17bfbfc8`.
+- D-07 artifact release checklist: blob `9bea4083b9381271fe952bc108b3a13cb9b97fdb`.
+- D-08 report history checklist: blob `4e5af07b640f23bf0ce8c37d9001709676ecbd52`.
+- Adapter envelope cross-reference: blob `c4655541c5b86b2a573316ae086e11fd3e4e1ca8`.
+- Coordinator/fake test plan cross-reference: blob `37c25137b972427771de0d53054b6cd57e211e57`.
+
+Canonical acceptance remains unchanged: `PRODUCT/EXECUTION_CONTRACT.md` blob `3861e51ae4f9e45a263b677402f26c41b240959d`; `PRODUCT/EXECUTION_LOOP_ACCEPTANCE.md` blob `c6714c27db52b2962fe8d1c7e6a16829d46a8338`.
+
+PR #2 remains open/draft/unmerged at `eb8b7ea83cb0e8fe1880351276c485b761431791`; PR #3 remains open/draft/unmerged at `0ddcc0bc97bac5d446aefedf3d71f99411bd841d`. No changes to either PR.
+
+Current status: D-06/D-07/D-08 requirements and falsification cases are documented only. No tests run, no implementation changes, no store/provider/runtime selected, and no account/billing/workload/merge/deployment action. D-01..D-05 and the D-06..D-08 owner proposals remain unresolved until owner decisions and selected boundary evidence exist.
