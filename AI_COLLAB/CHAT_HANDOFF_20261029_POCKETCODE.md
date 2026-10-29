@@ -697,3 +697,11 @@ Canonical acceptance remains unchanged: `PRODUCT/EXECUTION_CONTRACT.md` blob `38
 PR #2 remains open/draft/unmerged at `eb8b7ea83cb0e8fe1880351276c485b761431791`; PR #3 remains open/draft/unmerged at `0ddcc0bc97bac5d446aefedf3d71f99411bd841d`. No changes to either PR.
 
 Current status: D-06/D-07/D-08 requirements and falsification cases are documented only. No tests run, no implementation changes, no store/provider/runtime selected, and no account/billing/workload/merge/deployment action. D-01..D-05 and the D-06..D-08 owner proposals remain unresolved until owner decisions and selected boundary evidence exist.
+
+## 31. Cross-decision contradiction audit and implementation gate sequence — 2026-10-29
+
+Added [CROSS_DECISION_CONTRADICTION_AUDIT_AND_IMPLEMENTATION_GATES_20261029.md](CROSS_DECISION_CONTRADICTION_AUDIT_AND_IMPLEMENTATION_GATES_20261029.md), commit `7ff52d0fbca3477b3773945d1b6fca8083be345e`. It reviews D-06 idempotency/ambiguous dispatch, D-07 artifact release, D-08 durable report history, the adapter envelope, coordinator/fake test plan, and D-05 policy-boundary gate.
+
+Result: no direct logical contradiction was found in the inspected documents. Seven residual interface/owner ambiguities are explicitly listed: authoritative provider “not created” semantics; authorization revocation during long downloads; integrity failure after streaming begins; report/artifact publication order; retention-horizon alignment; append/evidence/report-version identity separation; and separate execution verdict vs release status. The new document maps proposed G0-G7 gates from owner semantics and $0/boundary approval through pure validation, durable dispatch recovery, report history, artifact release, device acceptance, and full canonical regression.
+
+Status is SPECIFIED ONLY / NOT RUN. No tests or workloads ran, no provider/store/runtime was selected, and no implementation changed. PR #2/#3 and canonical acceptance remain untouched. Current research branch HEAD at time of the new audit commit: `7ff52d0fbca3477b3773945d1b6fca8083be345e`; subsequent continuity-link commits may advance it. Next step: verify all new links and the final branch head, then keep work focused on the highest-value unresolved boundary contract rather than creating another broad checklist.
