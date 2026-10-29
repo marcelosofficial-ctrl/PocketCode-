@@ -184,3 +184,8 @@ See [G01_G03_PATCH_READY_TEST_SPEC_20261029.md](G01_G03_PATCH_READY_TEST_SPEC_20
 ### G-01..G-03 behavior recommendation
 
 See [G01_G03_RECOMMENDED_BEHAVIOR_AND_PROOF_GATES_20261029.md](G01_G03_RECOMMENDED_BEHAVIOR_AND_PROOF_GATES_20261029.md). Recommendation is validation-focused and intentionally preserves valid disposition semantics and existing fingerprint normalization. It is not an owner decision or patch authorization; tests remain NOT RUN.
+
+
+### G-07/G-08 patch-ready follow-up
+
+See [G07_G08_PATCH_READY_TEST_SPEC_20261029.md](G07_G08_PATCH_READY_TEST_SPEC_20261029.md) for bounded regression matrices and proposed tombstone semantics. This remains a design artifact, not implementation; owner approval is needed before changing PR #3.
