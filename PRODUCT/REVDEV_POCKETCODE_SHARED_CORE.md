@@ -4,7 +4,11 @@ Status: proposal only. Budget remains $0 unless the owner explicitly changes it.
 
 ## Vision
 
-The long-term goal could be one script-execution and diagnostics system that works on PC and phone. RevDev is the reference for the PC workflow; PocketCode is the mobile-first path. Keep repositories separate for now. A future shared app is a direction to evaluate, not a decision to merge code today.
+**Intended destination:** RevDev and PocketCode are intended to converge into one coherent PC-and-phone product/program. RevDev remains the PC-side guarded developer-operations/control-plane path; PocketCode remains the phone-first path.
+
+Separate repositories, roadmaps, clients, platform adapters, acceptance suites, and release gates are transitional engineering boundaries—not a rejection of the unified product goal. Align versioned task/work-plan, lifecycle, result/report, evidence, and continuation contracts first. Do not assume shared code or implementation equivalence, and do not merge repositories, migrate shared code, choose a shared runtime, or rewrite the frontend without a separately reviewed integration plan supported by actual evidence.
+
+The integration topology remains undecided until PocketCode's fixed-task comparison and verified RevDev artifacts support a choice. RevDev PC source/runtime/queue/publication behavior remains UNKNOWN while PC access is unavailable.
 
 PocketCode's core loop: receive AI-generated script; paste/import code and input files; execute in a controlled environment; show an evidence-based result; copy a report into any AI assistant; apply a correction and rerun.
 
