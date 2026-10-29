@@ -745,3 +745,8 @@ Added [G01_G03_PATCH_READY_TEST_SPEC_20261029.md](G01_G03_PATCH_READY_TEST_SPEC_
 ## G-01..G-03 recommended behavior and proof gates — 2026-10-29
 
 Added [G01_G03_RECOMMENDED_BEHAVIOR_AND_PROOF_GATES_20261029.md](G01_G03_RECOMMENDED_BEHAVIOR_AND_PROOF_GATES_20261029.md) as a technical recommendation, not an owner decision. Recommended minimal policy: malformed limit flags raise TypeError rather than being truthiness-coerced; output caps reject bool/non-int with TypeError and nonpositive integers with ValueError; required fingerprint fields reject whitespace-only strings while preserving nonblank values and existing field-specific normalization. The document includes an illustrative snippet, exact regression matrix, and bounded test/verification sequence. Not implemented; tests NOT RUN; PR #2/#3 and canonical acceptance untouched.
+
+
+## G-07/G-08 patch-ready test specification — 2026-10-29
+
+Added [G07_G08_PATCH_READY_TEST_SPEC_20261029.md](G07_G08_PATCH_READY_TEST_SPEC_20261029.md). G-07 covers the six Windows superscript device-name aliases (COM¹/²/³, LPT¹/²/³) with extension variants. G-08 covers tombstone repeated-add behavior: same-fingerprint idempotency without shortened expiry, conflicting fingerprint rejected without mutation, tenant isolation and exact expiration. Recommendation only; no source/test edit or test run. Re-fetch source SHAs before any authorized patch.
