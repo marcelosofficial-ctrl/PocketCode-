@@ -42,3 +42,7 @@ Resolve D-01..D-04 before freezing verdict/event tests; D-05 before execution-bo
 
 ## Cross-decision consistency and implementation sequencing — 2026-10-29
 See [CROSS_DECISION_CONTRADICTION_AUDIT_AND_IMPLEMENTATION_GATES_20261029.md](CROSS_DECISION_CONTRADICTION_AUDIT_AND_IMPLEMENTATION_GATES_20261029.md) for the read-only D-06/D-07/D-08 contradiction audit, residual ambiguities A-G, and proposed G0-G7 evidence gates. No direct logical contradiction was found; provider/store/HTTP/device guarantees remain SPECIFIED ONLY / NOT RUN. D-01..D-04 remain owner-open; D-05 remains BLOCKED pending actual boundary proof. The audit does not approve a provider, store, or implementation.
+
+
+## Provider-neutral boundary contract sketch — 2026-10-29
+See [PROVIDER_NEUTRAL_BOUNDARY_CONTRACT_SKETCH_20261029.md](PROVIDER_NEUTRAL_BOUNDARY_CONTRACT_SKETCH_20261029.md). It defines proposed operations and typed outcomes for atomic reservation, dispatch-intent/reconciliation, trusted evidence acceptance, append-only report publication, artifact publication/release, retention, and hard stops. It is a review sketch only: not a frozen schema, implementation, provider/store selection, or proof of any guarantee. All integration evidence remains NOT RUN.
