@@ -62,10 +62,10 @@ Separate four conceptual layers: (1) phone and PC clients; (2) shared run/report
 - Add small input/output files and short run history.
 - Test AI code -> run -> copy report -> AI correction -> rerun before adding more runtimes or direct AI integrations.
 
-### Stage 4: evaluate convergence
-- Compare the shared contract and user journeys with RevDev.
-- Decide whether a shared responsive app, shared backend with separate clients, or merged product is justified by evidence.
-- Keep repositories separate unless the owner explicitly approves a migration.
+### Stage 4: select an evidence-backed integration topology
+- Compare the shared contract and user journeys with verified RevDev artifacts when available.
+- Evaluate options such as a shared responsive interface, shared services with separate clients, or other platform-appropriate arrangements against actual requirements and evidence.
+- Keep repositories and platform-specific boundaries separate during evaluation. Any repository merge, shared-code migration, or execution/security-boundary change requires its own reviewed plan and authorization.
 
 ## Open questions
 
