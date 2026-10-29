@@ -720,3 +720,8 @@ Latest follow-up: [BOUNDARY_PROOF_LEVEL_REVIEW_CHECKLIST_20261029.md](BOUNDARY_P
 ## Implementation-readiness backlog — 2026-10-29
 
 Added [IMPLEMENTATION_READINESS_BACKLOG_20261029.md](IMPLEMENTATION_READINESS_BACKLOG_20261029.md). It converts the current research into WP-00..WP-07: independent review; owner decision packet D-01..D-04; pure contract/reducer tests; actual policy-at-dispatch barrier; durable reservation/recovery; trusted evidence/report history; artifact publication/release; and phone/canonical acceptance. It states dependencies, closure evidence, and hard stops, with a small reviewer reconciliation ledger that must only be populated from concrete review output. No decisions are approved by this backlog. D-01..D-04 remain owner-open, D-05 remains blocked, D-06..D-08 remain proposals. No tests/workloads ran; provider/store/runtime unselected; canonical acceptance and PR #2/#3 untouched.
+
+
+## D-01..D-04 owner decision packet — 2026-10-29
+
+Added [OWNER_DECISION_PACKET_D01_D04_20261029.md](OWNER_DECISION_PACKET_D01_D04_20261029.md). It translates the four unresolved/proposed semantic choices into explicit owner choices with canonical anchors, counterexamples, affected LOOP/CASE IDs, proof boundaries and a response template. D-01/D-03/D-04 remain OPEN; D-02 remains a proposed default requiring owner confirmation before schema freeze. The packet does not alter canonical acceptance or authorize implementation.
