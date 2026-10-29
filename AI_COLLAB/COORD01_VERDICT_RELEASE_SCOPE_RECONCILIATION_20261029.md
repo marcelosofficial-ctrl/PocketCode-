@@ -74,3 +74,27 @@ The report helper blob `2459137b6f8d4b6bfadd6218e5a9bd92e75b0817` still returns 
 - RevDev publisher/orphan/retry/recovery P0 remains release-blocking. PocketCode execution location and integration topology remain undecided and approval-gated.
 
 **Next bounded task:** after separate authorization for documentation edits, reconcile COORD-01's wording so execution-required gates and release-only gates are tested independently, then ask for owner resolution of D-01/D-03 before freezing any verdict or collection schema. Until then, keep this as a documented finding and do not implement.
+
+## 8. Additional precedence gap: timeout status plus nonzero exit code
+
+A further static distinction is necessary before a regression can be specified safely. The current helper receives only `execution_status` and `exit_code`; it has no field identifying whether a nonzero code is an authoritative child-process exit or a wrapper/signal code associated with enforced timeout termination.
+
+| Evidence supplied to projection | Safe interpretation under current canonical CASE-04 | Required handling |
+|---|---|---|
+| Trusted terminal status `timed_out`; numeric nonzero code is only the runner/wrapper's timeout or signal code | The code does not independently establish a program failure | `INCOMPLETE / timed_out`; preserve the code and its provenance without treating it as a child exit |
+| Trusted `timed_out` plus independently trusted child `EXIT_NONZERO`, with no authoritative reconciliation explaining the apparent conflict | Two terminal claims conflict or their relationship is underspecified | `INCOMPLETE` until the trusted boundary resolves the conflict; retain both observations |
+| Independently trusted child `EXIT_NONZERO` and no competing/contradictory timeout terminal claim | Confirmed program failure | `FAIL`, even if cleanup is separately UNKNOWN |
+| Collector-only output cap or renderer truncation, with trusted child `EXIT_ZERO` | Neither fact alone proves timeout termination | Preserve the child result; apply only the applicable case-specific collection requirement |
+
+This means the existing helper's early rule “any valid nonzero exit code means FAIL” is too broad for an input where `exit_code` may be a runner-level termination code. It also means simply reversing precedence so every `timed_out` status wins would be unsafe: that could erase an independently confirmed child failure. The projection boundary must preserve the exit-code source/type and contradiction state, or normalize the input to an authoritative terminal outcome before calling the legacy helper.
+
+**Narrow regression candidates, specified only and NOT RUN:**
+
+1. `timed_out` + wrapper/signal code 137, with no trusted child exit: INCOMPLETE / `timed_out`.
+2. `timed_out` + trusted child exit 2, where both are presented as terminal observations and no reconciliation exists: INCOMPLETE with both observations retained.
+3. Trusted child `EXIT_NONZERO` without a competing timeout terminal claim, cleanup UNKNOWN: FAIL; cleanup UNKNOWN; release denied.
+4. `succeeded` + trusted child exit 0 + collector-only cap: apply D-03 and the case-specific required-stream rule; do not infer timeout.
+5. `succeeded` + trusted child exit 0 + display-only truncation: preserve execution verdict.
+
+These cases refine the earlier finding in section 6; they do not resolve D-01/D-03, change canonical acceptance, freeze an event schema, or authorize implementation. Owner review is still required before verdict-test expectations are frozen.
+
