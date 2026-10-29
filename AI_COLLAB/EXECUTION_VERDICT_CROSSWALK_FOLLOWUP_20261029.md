@@ -77,16 +77,24 @@ A fresh exact-ref comparison changes the next-step framing but does not erase th
 
 PR #2 was re-fetched as open/draft/unmerged at head `eb8b7ea83cb0e8fe1880351276c485b761431791`. The candidate fix and regression test exist on that branch but are not merged into `main`; do not describe the main-branch issue as fixed or imply the PR's tests passed. No PR action or source/test edit was performed during this comparison.
 
-### What remains for independent review
+### Read-only assessment of the candidate fix (2026-10-29)
 
-The PR #2 candidate appears to fix the specific status-precedence mismatch for timeout/cancellation/rejection/infrastructure/nonterminal states. It does not add exit-code provenance to the helper interface. The review should determine whether that is sufficient under the intended caller contract:
+Static comparison of the exact helper, test, and canonical acceptance resolves the narrow precedence question as follows:
 
-- `exit_code` must be the authoritative child-program exit code when it is used to classify `succeeded`; a wrapper/termination code must not be misrepresented as the child's exit.
-- A trusted `timed_out` terminal state must remain INCOMPLETE / `timed_out`, even if an external wrapper reports a nonzero termination code.
-- `succeeded` + nonzero code is expected FAIL only when the code is the authoritative child-program exit under the contract; contradictory lifecycle/exit evidence must not be silently normalized.
-- `program_failed` is a separate authoritative lifecycle fact and may classify FAIL without a numeric exit code.
-- Preserve raw status and code in the report even when the verdict is INCOMPLETE.
+| Input evidence | Canonical/expected verdict | Main/research helper | PR #2 candidate helper | Coverage in PR #2 test source |
+|---|---|---|---|---|
+| Trusted `timed_out` + wrapper/termination code 137 | INCOMPLETE / `timed_out` (CASE-04, LOOP-05) | FAIL — precedence mismatch | INCOMPLETE — candidate fix handles this | Yes: `test_nonzero_exit_does_not_override_uncertain_lifecycle` |
+| `cancelled` + nonzero code | INCOMPLETE | FAIL | INCOMPLETE | Yes |
+| `infrastructure_failed` + nonzero code | INCOMPLETE unless a separate trusted program failure is established | FAIL | INCOMPLETE | Yes |
+| `rejected` / nonterminal / unknown + nonzero code | INCOMPLETE | FAIL | INCOMPLETE | Yes |
+| `succeeded` + authoritative child exit 0 | PASS | PASS | PASS | Yes |
+| `succeeded` + authoritative child exit nonzero | FAIL | FAIL | FAIL | Yes |
+| `program_failed` + missing exit code | FAIL when that lifecycle status is authoritative | FAIL | FAIL | Yes |
 
-**Next task:** read the exact PR #2 helper/test and canonical CASE-04/LOOP-05 together; provide a narrow static verdict table and proposed additional test only if a real uncovered case remains. Do not edit PR #2, tests, canonical acceptance, or implementation. Independent Claude/Gemini review is optional input; if unavailable, continue read-only and mark it outstanding.
+**Conclusion:** The PR #2 candidate fix is a suitable minimal resolution of the specific CASE-04 timeout/nonzero-code precedence defect. The research/main helper still has the defect; the PR #2 candidate is unmerged. The exact focused tests have NOT RUN, so this is static conformance evidence only.
+
+**Remaining contract question:** the helper accepts only `execution_status` and `exit_code`; it has no exit-code provenance field. The candidate is safe for the reviewed timeout path because it ignores numeric exit codes unless status is `succeeded`, but classification of `succeeded` + nonzero assumes the supplied code is the authoritative child-program exit, not a wrapper/termination code. The execution contract's conceptual `succeeded` state means the program ended with exit code 0; it does not define a separate wrapper-code field. Since this helper is a pure formatter and no production caller is established here, do not invent a new schema or assert a live caller defect. Record the caller invariant explicitly in any future integration review: only pass the child's authoritative exit code as `exit_code`; preserve wrapper termination data separately if needed.
+
+Independent Claude/Gemini review has not been obtained in this conversation; keep it outstanding if the next chat can ask one of them. Do not block read-only progress on that review.
 
 No tests were run. No implementation, PR, provider, runtime, deployment, or canonical acceptance changes occurred.
