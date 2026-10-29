@@ -105,3 +105,6 @@ This list is a conceptual acceptance contract, not a frozen public schema. Do no
 If only the request fingerprint is known, report **request semantics identified; applied-policy binding NOT PROVEN**. If only a revision label is present without evidence tying it to the started attempt, likewise mark the barrier NOT PROVEN. A fake test can validate deterministic hashing and coordinator refusal rules, but it cannot prove that a real runtime/provider applied the policy. No provider is selected and no implementation or runtime test is authorized here.
 
 Related: FLA-11 in `FUNCTION_LEVEL_CONFORMANCE_AUDIT_20261029.md`; D-05 in `OWNER_DECISION_REGISTER_20261029.md`; PBR-01..07 above; COORD-06; LOOP-12/14; CASE-15.
+
+## Cross-decision audit pointer — 2026-10-29
+See [CROSS_DECISION_CONTRADICTION_AUDIT_AND_IMPLEMENTATION_GATES_20261029.md](CROSS_DECISION_CONTRADICTION_AUDIT_AND_IMPLEMENTATION_GATES_20261029.md) for cross-boundary invariants, unresolved interface questions, and the proposed G0-G7 evidence gate sequence. This pointer does not close owner decisions or promote specification/fake-test evidence to provider, persistence, HTTP, or device integration evidence.
