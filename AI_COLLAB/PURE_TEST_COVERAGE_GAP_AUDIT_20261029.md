@@ -118,3 +118,8 @@ Static comparison of four exact source/test blobs fetched from the named branche
 ## Patch-ready follow-up
 
 The bounded follow-up specification is [G01_G03_PATCH_READY_TEST_SPEC_20261029.md](G01_G03_PATCH_READY_TEST_SPEC_20261029.md). It records exact cases and separates strict input validation from any change to execution verdict semantics or fingerprint normalization. It is a proposal, not an applied patch.
+
+
+## G-07/G-08 patch-ready follow-up
+
+[ G07_G08_PATCH_READY_TEST_SPEC_20261029.md](G07_G08_PATCH_READY_TEST_SPEC_20261029.md) details the superscript Windows device aliases and tombstone repeated-add edge cases. Proposed behavior is explicit, but remains subject to owner approval; no code or tests changed.
