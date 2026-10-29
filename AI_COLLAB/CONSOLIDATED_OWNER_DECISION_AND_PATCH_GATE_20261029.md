@@ -53,7 +53,7 @@ These decisions affect expected behavior and should be resolved before freezing 
 ### G-08 — repeated tombstone additions
 **Recommendation:** same tenant/key/same fingerprint is idempotent and cannot shorten expiry; same tenant/key/different fingerprint is a conflict that does not mutate the original record; tenant scope and exact expiry semantics remain explicit.
 
-**Owner choice:** `APPROVE` stable tombstone identity and monotonic expiry / `CHANGE` specify whether and when key reuse during retention is allowed / `OPEN`.
+**Owner choice:** G-08 must settle three independent rules before implementation: (1) the clock basis used to decide whether an existing tombstone is expired during `add()`; (2) what a repeated same-fingerprint add does to expiry; and (3) what a different fingerprint does while the tombstone is live. A single “approve stable tombstone” answer is insufficient. The exact choices and copy-ready fields are below.
 
 Implementation-level edge cases, validation precedence, and expired-tombstone key reuse are analyzed in [G01_G08_EDGE_CASES_AND_PATCH_REVIEW_NOTES_20261029.md](G01_G08_EDGE_CASES_AND_PATCH_REVIEW_NOTES_20261029.md).
 
@@ -61,6 +61,21 @@ Detailed matrices:
 - [G-01..G-03 test specification](G01_G03_PATCH_READY_TEST_SPEC_20261029.md)
 - [G-01..G-03 behavior and proof gates](G01_G03_RECOMMENDED_BEHAVIOR_AND_PROOF_GATES_20261029.md)
 - [G-07/G-08 test specification](G07_G08_PATCH_READY_TEST_SPEC_20261029.md)
+
+### G-08 owner sub-decisions — all required before Patch E
+
+**G-08A — authoritative expiry clock (choose exactly one):**
+- `A1 EVENT_TIME`: supplied `deleted_at` values are the authoritative, trusted, monotonic ordering clock. The contract must say how monotonicity/trust is guaranteed; an old event timestamp cannot silently stand in for wall-clock acceptance time.
+- `A2 EXPLICIT_NOW`: pass a trusted `now`/acceptance-time value into the operation that decides whether a prior tombstone has expired.
+- `A3 CALLER_EXPIRES`: `add()` does not infer current expiry; the caller must perform an expiry/check operation with an authoritative time before attempting replacement. The caller contract and race implications must be explicit.
+
+**G-08B — same fingerprint repeated add (choose exactly one):**
+- `B1 STRICT_NO_OP`: preserve the original record and expiry exactly; duplicate add changes nothing.
+- `B2 MAX_EXPIRY`: preserve the fingerprint and set expiry to `max(existing_expiry, proposed_expiry)`. Never shorten retention; a later repeat may extend it.
+
+**G-08C — different fingerprint:** recommended `C1 CONFLICT_WHILE_LIVE`: raise the existing `IdempotencyConflict` (or document a distinct exception only with justification), and leave the live record unchanged. After expiry, replacement is allowed only when G-08A’s authoritative clock rule proves the old tombstone expired. Tenant scope remains part of the key.
+
+Do not implement Patch E until G-08A, G-08B and G-08C are explicitly selected. `lookup()`’s exact expiry boundary remains `now >= expires_at` unless the owner separately changes that contract. These are helper-model rules only; they do not establish transactional or cross-process idempotency.
 
 ## Suggested patch grouping and dependency order
 
@@ -101,7 +116,7 @@ G-01: APPROVE / CHANGE / OPEN — [strict bool validation]
 G-02: APPROVE / CHANGE / OPEN — [positive integer caps excluding bool]
 G-03: APPROVE / CHANGE / OPEN — [reject whitespace-only identity fields]
 G-07: APPROVE / CHANGE / OPEN — [reject COM¹/²/³ and LPT¹/²/³]
-G-08: APPROVE / CHANGE / OPEN — [stable tombstone fingerprint and non-shortening expiry]
+G-08A clock: A1 EVENT_TIME / A2 EXPLICIT_NOW / A3 CALLER_EXPIRES / OPEN — [choose one]\nG-08B same fingerprint: B1 STRICT_NO_OP / B2 MAX_EXPIRY / OPEN — [choose one]\nG-08C different fingerprint: C1 CONFLICT_WHILE_LIVE / CHANGE / OPEN — [choose one]
 Authorized branch: PR #3 only / other: [specify]
 Authorized scope: [specific IDs]
 Constraints: [optional]
@@ -120,3 +135,6 @@ Approval of a behavior is not automatically authorization to edit code; the owne
 
 
 **G-08 implementation blocker clarified:** the edge-case review identifies an authoritative-time question: `DeletionTombstones.add()` receives `deleted_at`, not necessarily the actual acceptance/current time. Before allowing a different fingerprint after expiry, decide whether supplied timestamps are the authoritative clock, whether the pure API needs an explicit `now`, or whether callers must expire/check records before adding. The same note recommends reusing the existing `IdempotencyConflict` for live-key conflicts.
+
+
+**Decision integrity note:** choosing G-08A does not choose G-08B, and neither choice authorizes a source patch. If the owner wants to defer any sub-decision, keep Patch E blocked while independently approved G-01/G-02/G-03/G-07 work may proceed on its own authorization.
