@@ -758,3 +758,6 @@ New single entry point: [CONSOLIDATED_OWNER_DECISION_AND_PATCH_GATE_20261029.md]
 
 
 Follow-up static source review: [G01_G08_EDGE_CASES_AND_PATCH_REVIEW_NOTES_20261029.md](G01_G08_EDGE_CASES_AND_PATCH_REVIEW_NOTES_20261029.md). It records exact implementation observations (validation precedence in G-01; bool/float cap acceptance in G-02; whitespace runtime normalizing to empty in G-03; exact superscript alias gap in G-07) and adds a necessary G-08 owner choice: whether an expired tombstone may be replaced when no lookup has lazily removed it. Still no source/test changes and no tests run.
+
+
+G-08 nuance: the add API receives `deleted_at`, which may be event time rather than current acceptance time. Do not treat it as proof that a previous tombstone is expired unless the contract guarantees that clock. Owner must choose the authoritative-time rule before coding; the existing `IdempotencyConflict` is the natural conflict exception to reuse.
