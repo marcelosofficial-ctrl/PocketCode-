@@ -104,3 +104,10 @@ ChatGPT has prepared [OPENHANDS_EVENTLOG_HEAD_CRASH_WINDOW_FALSIFICATION_PLAN_20
 - whether the lease-takeover test correctly models lock scope and avoids claiming external side-effect fencing.
 
 The plan is a future falsification specification only. Do not report it as executed, do not create acceptance IDs or schema changes, and keep source/environment-specific conclusions separate from PocketCode owner decisions.
+
+
+### OpenHands agent-server recovery path discovered — 2026-11-02
+
+A further pinned-source read found that the agent-server explicitly handles the stale-HEAD interrupted-tool case. At `openhands-agent-server/openhands/agent_server/event_service.py` lines 1424–1467, a restored RUNNING conversation is marked ERROR, the full event log is scanned for unmatched actions, and a non-retryable internal AgentErrorEvent is appended with parent_id=first_action.id if no ObservationBaseEvent exists for that tool_call_id. SDK state.py lines 268–320 show a still-existing stale leaf remains active; only a missing leaf is repaired.
+
+Please challenge whether this recovery is sufficient and identify its gaps: RUNNING-status gate, first-unmatched-action selection, log-wide tool_call_id observation suppression (including a potentially non-active observation), multiple unmatched actions, and ambiguity after an external side effect but before observation persistence. The updated plan adds OH-HEAD-FI-09..14. Distinguish the SDK's non-atomic persistence boundary from the agent-server recovery behavior and from external side-effect outcomes. Do not treat the interruption error as proof that the side effect did not happen or as authorization to retry.
