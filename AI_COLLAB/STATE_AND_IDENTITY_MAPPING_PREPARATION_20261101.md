@@ -181,3 +181,43 @@ Therefore Claude's promised research is still **NOT RECEIVED in the checked GitH
 - No tests, provider integration, persistence, Windows/host, iOS/Safari or device run occurred.
 - RevDev PC source, binary, runtime, watcher, queue and publication state remain UNKNOWN.
 - Claude's medium-sized research report remains NOT RECEIVED in the checked repository snapshot; Gemini's existing research remains distinct from the requested SCF-specific independent review.
+
+
+## 11. Source-review identity and persistence clarifications — 2026-11-01
+
+This section adds source observations without freezing any PocketCode identity or state contract.
+
+### 11.1 OpenHands identity domains observed in source
+
+OpenHands EventLog uses several distinct concepts:
+- EventID: event identity and duplicate detection;
+- on-disk event sequence: stable file-order cursor that is not reused after a lost file;
+- in-memory dense index: current readable collection position, which can differ from the disk sequence after gaps;
+- parent_id: event-tree relationship;
+- leaf_event_id: persisted active branch HEAD;
+- ConversationLease generation: owner epoch for guarded persistence writes.
+
+These must not be collapsed into one PocketCode event sequence, job ID, attempt ID, operation ID, or policy revision. The lease generation is not a provider idempotency key and does not fence external side effects by itself.
+
+### 11.2 Happy identity domains observed in source
+
+Happy client pairing distinguishes:
+- QR pairing token (32-byte bearer input);
+- handshakeId (subsequent handshake credential);
+- ephemeral phone/daemon public keys and nonces;
+- transcript hash and role MACs;
+- derived deviceToken (returned only after mutual proof);
+- deviceId (server/daemon-issued display identity).
+
+Account linking uses a separate ephemeral public key to seal the account master secret. None of these should be mapped to a PocketCode job/run/attempt ID. Server-side handshake enforcement was not source-verified.
+
+### 11.3 D-04 and D-05/D-06 review implications
+
+- D-04 remains OPEN: event identity, authenticated source, replay/order, immutable evidence and gap semantics need an owner decision and conformance fixtures.
+- D-05 remains BLOCKED: a storage lease does not prove the policy revision was atomically applied at execution start.
+- D-06 remains owner-open: a generation-guarded disk write does not make an external provider request idempotent or resolve ambiguous-start recovery.
+- Event append and active-HEAD snapshot writes in OpenHands are separate. Treat crash-between-writes as a proposed fault-injection case, not a reproduced defect.
+
+### 11.4 Claude report receipt clarification
+
+Section 9 above is a historical GitHub branch-presence check, not the current report-receipt status. Since that check, Claude's master OSS research report was supplied to ChatGPT in the conversation and its independent reconciliation was committed in CLAUDE_RESEARCH_MASTER_INDEPENDENT_RECONCILIATION_20261101.md. Claude's Windows sandbox source-audit follow-up was also supplied in the conversation and integrated into WINDOWS_SANDBOX_SOURCE_AUDIT_CLAUDE_20261101.md. The original raw master report itself is not currently asserted to be committed as a standalone repo file. Keep these three evidence artifacts distinct.
