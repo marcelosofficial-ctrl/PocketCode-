@@ -227,3 +227,25 @@ A live GitHub ref/PR check immediately after those commits returned:
 - PR #3: OPEN, DRAFT, UNMERGED; head `0ddcc0bc97bac5d446aefedf3d71f99411bd841d`; base main.
 
 No PR, main, source, tests, canonical acceptance, runtime, queue, provider, workflow/Actions, merge, deployment, or billing state was changed. The only writes in this pass were the three documentation files on the research branch. The commit created by this final handoff update must be read as the new research-branch HEAD; the next chat should verify the live ref before writing again.
+
+
+## 11. Follow-up source pass: align supplemental tests to existing detailed checklists
+
+A final specification pass found that the new Gemini-derived PC-EXT labels overlapped existing detailed research checklists. The regression plan now explicitly says those checklists are authoritative and PC-EXT is only a traceability index:
+
+- D-05: PBR-01..07 and PF-01..05 in `AI_COLLAB/ADAPTER_BOUNDARY_DECISION_GATE_20261029.md`.
+- D-06: DR-01..12 in `AI_COLLAB/IDEMPOTENCY_RECOVERY_FALSIFICATION_CHECKLIST_20261029.md`.
+- D-07: AR-01..14 in `AI_COLLAB/ARTIFACT_RELEASE_FALSIFICATION_CHECKLIST_20261029.md`.
+- D-08: RH-01..14 in `AI_COLLAB/REPORT_HISTORY_PERSISTENCE_FALSIFICATION_CHECKLIST_20261029.md`.
+- Boundary contract: `AI_COLLAB/PROVIDER_NEUTRAL_BOUNDARY_CONTRACT_SKETCH_20261029.md`, Sections 3–8.
+- Readiness dependencies: `AI_COLLAB/IMPLEMENTATION_READINESS_BACKLOG_20261029.md`, WP-03 through WP-06.
+
+Resulting gap assessment:
+- PC-EXT-01, PC-EXT-03 and PC-EXT-07 are pointers/illustrations against existing PBR/PF, AR and DR coverage, not parallel specifications.
+- PC-EXT-02 remains a provider/runtime resource-containment evidence gap under LOOP-12 and SECURITY.md.
+- PC-EXT-04 remains a focused provider teardown/orphan reconciliation gap. Keep execution, cleanup, disposition and release separate; prove actual deletion/termination only after a provider is selected.
+- PC-EXT-05 is future cost reconciliation, separate from OBS-03 and blocked by $0/no-provider/no-workload.
+- PC-EXT-06 adds hostile stdout fixtures to PC-LC-04/PC-RT-02 and TPM-15; it does not create a new trust mechanism.
+- The stream correction remains: a full Linux pipe blocks or fails depending on mode; it does not inherently truncate at a generic 1 MB threshold.
+
+Main remains `555840d8d83342513d9cd353d4d1522d46a5c82d`. PR #2 and PR #3 remain OPEN, DRAFT, UNMERGED at their previously recorded heads. The only additional writes were documentation updates on the research branch. Exact commits/blobs and the latest HEAD are recorded in the next final checkpoint section.
