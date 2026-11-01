@@ -396,3 +396,39 @@ Crosswalk source reconciliation update:
 Next step: request from Gemini the alternative artifact path, repository, branch/ref, blob SHA, and exact line references for the AWC IDs it used. If no alternative AWC artifact exists, it must correct the labels while preserving its useful engineering findings. The AWC fixture set itself remains PROPOSED_NOT_RUN.
 
 This was documentation and source verification only. No AWC trial, model run, PocketCode test, provider call, workload, source/test/PR/canonical acceptance change, Actions, spend, merge or deployment occurred. The research branch immediately before this handoff update was `06200ee9bf596871cfa62c236b80c89dec973567`.
+
+
+## 18. Final verified continuation snapshot — Claude + Gemini reconciliation (2026-11-01)
+
+This section supersedes the earlier preliminary blob/commit references in Sections 16–17 where a later date-correction commit replaced the file blob. The human-readable links remain stable, but use these final blob identities for exact source pinning:
+
+| Document | Final blob SHA | Current link |
+|---|---|---|
+| Resource containment and teardown review | `178498a9e2e44babc87f405fc1e81d29c19df555` | https://github.com/marcelosofficial-ctrl/PocketCode-/blob/pocketcode-ai-workflow-director-research-2026-10-28/AI_COLLAB/RESOURCE_CONTAINMENT_AND_TEARDOWN_EVIDENCE_REVIEW_20261101.md |
+| Lifecycle contract regression plan | `34bc74f82df5e6714bd872c63f3d86b7e4c93bf4` | https://github.com/marcelosofficial-ctrl/PocketCode-/blob/pocketcode-ai-workflow-director-research-2026-10-28/AI_COLLAB/LIFECYCLE_CONTRACT_REGRESSION_PLAN_20261101.md |
+| Implementation readiness backlog | `7645b908f5079cf7cd23061319fc775086cfb7e3` | https://github.com/marcelosofficial-ctrl/PocketCode-/blob/pocketcode-ai-workflow-director-research-2026-10-28/AI_COLLAB/IMPLEMENTATION_READINESS_BACKLOG_20261029.md |
+| RevDev ↔ PocketCode crosswalk review | `2e577636535bff05916ae21e4e9b63db040deb37` | https://github.com/marcelosofficial-ctrl/PocketCode-/blob/pocketcode-ai-workflow-director-research-2026-10-28/AI_COLLAB/REVDEV_POCKETCODE_CROSSWALK_INDEPENDENT_REVIEW_20261101.md |
+| This handoff addendum (before this final snapshot append) | `b327f2c854968559acf21b9662b65223af3bad15` | https://github.com/marcelosofficial-ctrl/PocketCode-/blob/pocketcode-ai-workflow-director-research-2026-10-28/AI_COLLAB/CHAT_HANDOFF_ADDENDUM_20261101.md |
+
+Latest research-branch commit before this final handoff append: `4d5d9c2bfedfe4f92ed5f53df9c9cacebf63658a`.
+
+### Source verification
+
+- All four substantive documents and the handoff were fetched again from the research branch. Their current blob SHAs matched the final values above.
+- Resource review read-back confirmed RES/TDN additions, OOM/timeout race text, and cgroup mount-option clarification.
+- Lifecycle plan read-back confirmed canonical cleanup/resource-status boundary, LOOP-14 gate, and cgroup hierarchy guidance.
+- Backlog read-back confirmed WP-08 remains BLOCKED and records write-ahead create/delete and resource observer requirements.
+- Crosswalk read-back confirmed the exact AWC-005/008/009/010/011/012/017/018 fixture definitions, and its OBS namespace rule is in Section 13.3. Preserve helper OBS-01..06; Gemini's six differently described observations remain unnumbered until Gemini supplies exact source references.
+- All dates in the newly added review sections are 2026-11-01. Gemini's supplied review self-reports 2026-11-02; that is retained solely as unverified input provenance and is not the date of this work.
+
+### Additional kernel documentation precision
+
+The Linux kernel cgroup v2 documentation states that `memory.events` includes descendant events by default, with `memory_localevents` restoring local-only behavior; `memory.events.local` remains local to the cgroup. Its `oom` counter is about the cgroup's limit-reaching allocation event, while `oom_kill` counts processes belonging to that cgroup killed by any OOM killer. These are different attribution dimensions and should not be treated as a matched one-to-one causal pair. `pids.events` is hierarchical by default, `pids.events.local` is local, and `pids_localevents` restores local-only behavior. See https://www.kernel.org/doc/html/v6.14/admin-guide/cgroup-v2.html. Record both limit-owner cgroup and victim process membership, plus the mount options and exact hierarchy. This is kernel semantics only, not evidence that PocketCode currently uses cgroups.
+
+### Final state
+
+- Documentation-only changes on the existing research branch.
+- No source, implementation tests, PR, main, canonical acceptance, Actions, provider, account, billing, workload, runtime, queue, local host or security boundary changed.
+- No tests, provider calls or workloads run. All RES/TDN and PC-LC/AD/DB/RT remain SPECIFIED ONLY / NOT RUN.
+- Provider selection NONE; budget $0; WP-08 BLOCKED; D-01..D-08 remain open as previously recorded.
+- Claude did not review the new files because its fetch failed. Gemini's AWC source IDs are mismatched against the pinned manifest; request exact alternate source pins before reconciling its labels.
