@@ -549,3 +549,13 @@ Primary sources and verification date are listed in Section 8 of the desk review
 ## 23. Report contract traceability follow-up
 
 The product-path desk review now includes Section 9. The proposed portable receipt must reuse the existing proposed report contract and LOOP-07/08 rather than invent a parallel schema. The paired experiment compares raw evidence against the exact same facts rendered through the proposed report, with no added diagnosis or omitted material evidence. This is design-only; no new acceptance ID or schema change.
+
+
+## 24. Final product-path research pins — 2026-11-01
+
+- Product path comparison desk review: `035f8db30f1512ad1c9d3e4fa19edf13dbf0ca86`.
+- Current checkpoint with Claude/Gemini review prompts: `bab4e70c9b8ebec4fbba2e5d2abe633d790b1e9c`.
+- Project status: `15929f3d0d2387b68641f517fbf1fddf73b69275`.
+- Handoff before this final pin section: `187f06627c78b98d08b47f5889deb49c7c0ff715`.
+
+The product-path desk review is source-backed desk research only. The next action is adversarial review by Claude and Gemini using the prompts in the current checkpoint, followed by a decision whether a hands-on fixed-task test is worth undertaking. The proposed report remains the existing LOOP-07/08 report projection; no new receipt schema or acceptance ID. No app installation or direct test was performed.
