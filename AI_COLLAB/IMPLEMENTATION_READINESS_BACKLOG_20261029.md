@@ -207,13 +207,28 @@ Implementation-level clarifications are in [G01_G08_EDGE_CASES_AND_PATCH_REVIEW_
 
 **Required scope:**
 - Map every requested limit to the provider's effective hard enforcement mechanism. Distinguish memory/swap, CPU bandwidth/deadline, task count, disk capacity/per-file size/I/O throughput, output collection and display.
-- Prove the worker/supervisor is outside the untrusted workload's kill domain and that a bounded workload cannot destabilize the worker or sibling attempts.
-- Bind resource telemetry to exact tenant/job/attempt/provider-resource identity. Use target-local counters where available, not global or ancestor aggregates.
-- Persist delete intent before provider calls; treat accepted/ambiguous responses as unresolved; reconcile the same stable resource ID until authoritative terminal destruction is observed.
+- Prove the worker/supervisor is outside the untrusted workload's kill domain and that a bounded workload cannot destabilize the worker or sibling attempts. Include worker-owned stream-buffer bounds, separate PID/process namespaces and filesystem/credential boundaries where applicable, and a concurrent second-attempt canary.
+- Bind resource telemetry to exact tenant/job/attempt/provider-resource identity. For cgroup v2, select hierarchical versus local counters from the actual subtree and mount options: memory.events normally includes descendants, memory.events.local does not, and memory_localevents changes the former behavior. Correlate limit-owner counters, victim membership, trusted termination evidence and observer health; no single OOM counter proves cause. Snapshot before cgroup removal.
+- Persist create and delete intent before provider calls; treat lost create acknowledgements as potential orphans and accepted/ambiguous delete responses as unresolved; reconcile the same stable resource/operation identity with correct account/region scope and complete pagination until authoritative terminal destruction is observed. Test warm-sandbox reuse and cross-attempt resource ownership.
 - Track process-tree empty, sandbox destroyed, attached resources released, and billing reconciled as separate observations.
-- Test crash/restart, lost delete acknowledgement, provider lookup outage, late cleanup event, repeated delete, and poison-item isolation in the reconciliation queue.
+- Test crash/restart, lost create and delete acknowledgements, provider lookup outage/ambiguous 404, late or stale cleanup events, repeated delete, warm-sandbox child leakage, and poison-item isolation in the reconciliation queue.
 - Prove cleanup eventually stops the provider resource; delayed invoice data is not a substitute for resource-state evidence.
 
 **Exit evidence:** selected-provider contract/version pinned; bounded controlled tests with exact configuration and identity; authoritative enforcement and termination evidence; durable restart/reconciliation evidence; worker/sibling canaries remain healthy; cleanup terminal state observed; resource and billing states separately reconciled. Preserve NOT RUN when any prerequisite is absent.
 
 **Hard stop:** no account creation, API key, workload, billing enablement, paid trial, provider call, host operation or implementation is authorized by this work package. Under the current $0 constraint it remains design-only.
+
+
+### WP-08 — Claude challenge reconciliation (2026-11-02)
+
+Claude's review attempt did not access the new research documents, so its response is recorded as adversarial input rather than a verdict on WP-08. The exact source reconciliation accepts these constraints:
+
+- No canonical cleanup-confirmed case or resource-limit lifecycle status exists today. TDN/RES remain supplementary; no canonical meanings are remapped.
+- CASE-07 output and CASE-14 output-file validation do not prove total disk quota, filesystem exhaustion, or I/O throughput.
+- OOM/ENOSPC/per-file-size/PID/I/O events are preserved with the enforcement owner and observed child outcome. Whether a confirmed resource cap is a program/runtime failure or infrastructure failure remains an architecture/owner decision where D-01/D-02 do not settle it.
+- memory.events.local is local-only and may undercount a job whose processes live in descendant cgroups. The default memory.events is hierarchical unless memory_localevents is enabled. Capture mount options and the actual tree; do not mix unrelated attempts at a parent; snapshot before removal. oom and oom_kill are distinct and neither alone establishes causation. Preserve OOM/timeout races as ambiguous unless trusted evidence resolves them.
+- A lost create acknowledgement requires durable intent before the external call, scoped orphan discovery and pagination, and restart recovery. It cannot be demonstrated by a pure helper or fake adapter alone.
+- Firecracker is a VMM/microVM building block; self-operation owns the surrounding host, jailer, networking, filesystem, supervisor and cleanup responsibilities.
+- LOOP-14 still gates provider account/billing and potentially billable workload evidence. A fake cannot verify real charges or that billing ceased.
+
+**WP-08 remains BLOCKED.** No provider, store, budget increase, implementation, local host operation or provider workload is approved. Required proof layers remain pure helper, fake adapter, persistence/restart, actual local cgroup enforcement where applicable, then selected-provider/runtime evidence.
