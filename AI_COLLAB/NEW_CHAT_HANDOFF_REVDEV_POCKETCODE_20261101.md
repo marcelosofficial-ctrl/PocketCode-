@@ -488,3 +488,18 @@ Key identity guardrails:
 State mapping Section 9's old report-availability statement is explicitly marked historical in new Section 11.4: Claude's research report and Windows audit follow-up have since been supplied in conversation and reconciled; the raw master report is not claimed to be a standalone committed file.
 
 No owner decisions, canonical acceptance, schema, fixed task, PR, source or product direction changed.
+
+
+## 20. OpenHands crash-window test plan — 2026-11-02
+
+Created [OPENHANDS_EVENTLOG_HEAD_CRASH_WINDOW_FALSIFICATION_PLAN_20261102.md](OPENHANDS_EVENTLOG_HEAD_CRASH_WINDOW_FALSIFICATION_PLAN_20261102.md).
+
+Purpose: falsify or confirm the OpenHands source-derived hypothesis that EventLog can durably contain a newly appended event while base_state still names the previous, still-existing active leaf after a crash. The plan is deliberately not a defect finding and has NOT been executed.
+
+The plan defines OH-HEAD-FI-01..08 as local test-plan labels only (not PocketCode acceptance IDs): before append; during event write; immediately after event-file commit; after append returns but before leaf assignment; during base_state atomic replacement; after replacement; after both writes but before caller acknowledgement; and concurrent lease takeover around the two guarded writes. Each test requires abrupt process termination, fresh-process restore, raw persisted files/hashes, EventLog index/gap state, restored leaf and active ancestry. It separates event durability, discoverability, active HEAD, acknowledgement and lease ownership. It excludes NFS/network storage and warns that process-kill testing does not prove power-loss durability.
+
+The plan includes same-ID/same-payload retry, same-ID/changed-payload conflict, new-ID logical retry, changed-parent and delayed replay cases. It explicitly distinguishes a missing saved leaf fallback from a still-existing old leaf.
+
+Cross-project mapping: lifecycle D-04 remains OPEN; D-05 BLOCKED; D-06 and D-08 owner-open. No new acceptance ID, schema, field or owner decision. No tests, source changes, providers, PR changes, builds, deployment or host operations. RevDev PC state remains UNKNOWN.
+
+Next useful reviewer action: ask Gemini to challenge the test boundaries and assertions using the updated independent-review packet. Claude follow-up is only warranted if it can run or inspect the exact pinned OpenHands source in a disposable test environment; no claim of execution without exact command/environment/results.
