@@ -837,3 +837,37 @@ These are source coverage observations, not proof of runtime defects beyond the 
 - Test count: 30 methods by source inspection only; zero tests executed.
 - Microsoft and Python documentation were checked for the filename and JSON-key behaviors respectively.
 - No implementation, workflow, provider, workload, persistence, merge, deployment, Actions, account or spending action occurred.
+
+
+## 21. Tombstone expiry and report completeness projection — 2026-11-01
+
+### 21.1 Tombstone key reuse depends on a prior lookup side effect
+
+The lifecycle descendant's `DeletionTombstones.lookup()` removes a record when `now >= expires_at`. However, `DeletionTombstones.add()` has no trusted current-time input and rejects a different fingerprint whenever a record for the tenant/key is still present, regardless of whether its stored expiry has passed.
+
+Consequently, an expired tombstone can continue to block a new fingerprint until some caller first invokes `lookup()` and causes the in-memory record to be deleted. The 30-day rule is therefore not self-enforcing at the `add()` boundary; behavior depends on call ordering and on a lookup side effect.
+
+**Required resolution:** D-08/retention owner must define the trusted time source and whether expiry is evaluated atomically during reservation/add. A correct durable implementation should not rely on a prior read to clean up expired state. Add cases for: expired record followed directly by a new fingerprint reservation; exact-expiry boundary; concurrent old-key lookup and new reservation; stale deletion event arriving after a newer reservation. The last case must not delete or overwrite a newer record.
+
+Do not simply trust caller-supplied `deleted_at` as current time. The current pure helper remains an in-memory model and does not prove durable expiry or race safety.
+
+### 21.2 Invalid report truncation flags still render as "no"
+
+PR #2's `format_report()` validates that stdout/stderr/check-list/file-list truncation flags are booleans. For a malformed value, it adds an uncertainty note saying the flag was ignored, but then computes the displayed truncation status from `flag is True` and actual rendered length. A malformed flag with no independently visible truncation is therefore displayed as `no`, not `unknown`.
+
+This is not equivalent to silently accepting the malformed flag: the diagnostic note is preserved. However, the summary field still gives a definitive negative answer where the source evidence is invalid. Consumers that read the truncation summary but overlook notes can incorrectly infer completeness.
+
+**Required resolution:** represent each truncation state as YES / NO / UNKNOWN, or an equally explicit typed state. A valid true flag or observed local truncation yields YES; a valid false flag plus no observed truncation yields NO; a malformed flag with no other evidence yields UNKNOWN. Keep report-display truncation separate from execution/collector truncation. Add independent cases for all four flags and verify the summary and uncertainty note agree.
+
+### 21.3 Additional test gaps
+
+- Tombstone direct expired-key reuse without a preceding lookup.
+- Tombstone exact deadline and stale event ordering.
+- Report formatter malformed truncation flag summary must not assert NO.
+- Report formatter valid false, valid true, malformed and absent flag states must remain distinct.
+
+These findings extend the existing tombstone/retention and report projection workstreams. Do not assign duplicate canonical LOOP/CASE or COORD IDs until traceability is refreshed. D-08 remains the relevant owner decision for retention/history semantics; no durable-store behavior is implied.
+
+### 21.4 Evidence status
+
+Static review only. Exact lifecycle helper blob remains `316345341603848c4a86a6a82e533daa796c7695`; exact PR #2 formatter blob remains `e9d944a722c2fac5279952696528da72a7011af3`. PR #2 and PR #3 were rechecked and remain open, draft and unmerged; no review threads or comments were returned. No tests were executed and no source was changed.
