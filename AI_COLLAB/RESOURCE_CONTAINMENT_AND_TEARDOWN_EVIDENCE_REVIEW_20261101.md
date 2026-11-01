@@ -175,20 +175,36 @@ Sources:
 - https://www.daytona.io/docs/en/v2/persistence/
 - https://www.daytona.io/docs/en/linux-sandboxes/
 
-### 4.5 Cloudflare Sandboxes
+### 4.5 Cloudflare Sandboxes: API generation must be pinned
 
-The current Cloudflare sandbox docs describe inactivity-driven instance lifetime, explicit `destroy()`, and the fact that an inactivity timeout sends SIGTERM before the instance stops. The docs caution that `destroy()` stops the instance immediately without time for process cleanup, so state must be saved beforehand. A Durable Object restart also does not automatically preserve the inactivity timeout; it must be re-established.
+The official docs now describe two materially different API generations. Do not combine their lifecycle semantics:
+
+**Current `@cloudflare/sandbox` 1.0 / Durable Object + Container model**
+- A Durable Object provides the stable sandbox identity and retains its own storage (for example, session metadata or a snapshot ID) until application code deletes that storage. The container instance has a separate lifetime.
+- Stopping/destroying the container ends its processes and instance-local disk. It does not, by itself, delete Durable Object storage, stored snapshot objects, or mounted R2 bucket objects.
+- An inactivity timeout sends SIGTERM and stops the instance shortly after whether or not processes exit. Explicit `destroy()` stops the instance immediately without time for process cleanup.
+- A Durable Object restart can leave the container instance running while the DO restarts; the inactivity timeout must be re-established. A pending `monitor()` observation is not a durable external cleanup record.
+- The official lifetime page says mounted buckets outlive every instance, and snapshots can be used to restore writable root filesystem state into a new instance. Those are distinct resources and must be separately inventoried and deleted/expired according to their own contracts.
+- Cloudflare states that Sandboxes are available on Workers Paid. Its Containers pricing page describes active-instance CPU/memory/disk billing and included monthly allowances on the paid plan. A zero-cost assumption is therefore invalid; DO storage, snapshots, buckets, and other products need separate cost/retention checks.
+
+**Legacy Sandbox SDK 0.x**
+- The 0.x lifecycle API documents `destroy()` as deleting the sandbox container's files, processes and sessions.
+- Cloudflare explicitly labels those docs as SDK 0.x for existing applications and directs new work to the current Sandboxes model. The 0.x destruction statement must not be generalized to 1.0 Durable Object storage or separately mounted/persistent resources.
 
 Implications:
-- A graceful application-level cleanup hook cannot be assumed to run on explicit destroy.
-- State persistence and teardown evidence need to be designed separately.
-- An inactivity timeout is not a substitute for a durable external watchdog/reconciler.
-- The sandbox docs state the feature is available on a Workers Paid plan; this is not a zero-cost assumption.
+- Pin the exact SDK/API generation and compatibility date in every provider capability record and test.
+- A 1.0 container destroy can prove instance stop only; it cannot prove Durable Object storage, snapshots, mounted buckets or other separately managed resources were deleted.
+- A 0.x `destroy()` result must be interpreted only within its documented sandbox-container scope.
+- Do not rely on graceful application cleanup on explicit destroy or timeout.
+- An inactivity timeout is not a substitute for durable external intent, reconciliation and resource inventory.
+- Cloudflare is a paid-plan candidate, not a $0 implementation option under the current project gate.
 
 Sources:
-- https://developers.cloudflare.com/sandbox/concepts/lifetime/
-- https://developers.cloudflare.com/sandbox/sdk/api/lifecycle/
-- https://developers.cloudflare.com/sandbox/
+- https://developers.cloudflare.com/sandbox/concepts/lifetime/ (current Durable Object + Container lifetime, last updated 2026-10-22)
+- https://developers.cloudflare.com/sandbox/sdk/api/lifecycle/ (legacy SDK 0.x API; explicitly versioned)
+- https://developers.cloudflare.com/sandbox/ (availability and version routing)
+- https://developers.cloudflare.com/containers/platform/pricing/ (active container resource billing)
+- https://developers.cloudflare.com/sandbox/files/save-and-restore-a-workspace/ (snapshot and mounted storage behavior)
 
 ### 4.6 E2B
 
@@ -210,13 +226,14 @@ These are subcases under the existing research plan, not new canonical acceptanc
 | RES-05 process/task ceiling | Bounded fork/thread pressure | Effective task limit, local event evidence, no host-wide task exhaustion | Host worker or sibling task capacity is exhausted |
 | RES-06 disk capacity vs I/O rate | Write many files and one oversized file; separately saturate I/O | Filesystem/volume capacity evidence distinct from I/O throughput and per-file cap | `io.max` or `RLIMIT_FSIZE` is claimed as total disk quota |
 | RES-07 output cap | Emit bounded large stdout/stderr with process status independently observed | Runtime termination vs collector loss vs display truncation | One boolean hides the enforcement layer or fabricates child termination |
-| RES-08 supervisor/sibling containment | Workload hits bounded memory/OOM, PID, CPU, disk and output-pressure cases while the orchestration worker, its own bounded buffers, and a second independent run are observed | Supervisor/worker is outside the workload's kill domain and required namespaces/filesystem/credentials; worker heartbeat and bounded memory remain healthy; second run continues; exact workload failure is attributed | Worker is in the workload cgroup/PID namespace or shares credentials/filesystem; output is only truncated after unbounded worker buffering; sibling is degraded; or collateral host impact occurs |
-| RES-09 descendant termination | Workload forks descendants, daemonizes, ignores graceful termination, and races with timeout cleanup | Trusted supervisor requests escalation; all attempt descendants are observed gone; `cgroup.events: populated=0` or provider-equivalent process-tree evidence is captured before teardown; the observer survives outside the workload kill domain | Parent exits but a descendant remains, observer is killed, or cleanup is inferred from parent PID alone |
+| RES-08 supervisor/sibling containment | Workload hits bounded memory/OOM, PID, CPU, disk and output-pressure cases while the orchestration worker, its own bounded buffers, host-side VMM/log collector, and a second independent run are observed | Supervisor/worker and host-side log collector are outside the workload's kill domain and required namespaces/filesystem/credentials; every host-side stdout/stderr/serial/log buffer and sink has a hard bound; worker heartbeat and bounded memory remain healthy; second run continues; exact workload failure is attributed | Worker or log collector shares the workload kill domain; guest-influenced VMM logs can exhaust host memory/disk; output is only truncated after unbounded buffering; sibling is degraded; or collateral host impact occurs |
+| RES-09 descendant termination | Workload forks descendants, daemonizes, attempts cgroup/process migration where the runtime exposes such interfaces, ignores graceful termination, and races with timeout cleanup | Trusted supervisor requests escalation; workload cannot write/migrate through delegated cgroup controls; all attempt descendants are observed gone; `cgroup.events: populated=0` or provider-equivalent process-tree evidence is captured before teardown; observer survives outside the workload kill domain | Parent exits but a descendant remains, workload can move a process outside the observed subtree, observer is killed, or cleanup is inferred from parent PID alone |
+| RES-10 host-side VMM/log pressure | Guest workload floods serial output, VMM stdout/stderr, or guest-influenced log files while the host runs a second VMM and orchestration worker | Every serial/log path is disabled, rate-limited, or backed by an explicitly bounded sink; host disk and memory remain bounded; loss/drop counters are visible; worker and sibling VMM remain healthy | Guest-controlled output can grow host buffers/files without bound, or the collector blocks/degrades the host or another run |
 | TDN-01 delete accepted but pending | Provider accepts deletion asynchronously | State remains DELETE_ACCEPTED/DESTROYING until terminal observation | API 2xx/202 response is mapped directly to CLEANUP_CONFIRMED |
 | TDN-02 lost delete acknowledgement | Provider may have accepted delete but coordinator times out or loses the response | Reconcile the same stable resource and operation identity; no duplicate resource is created; UNKNOWN is retained until an authoritative terminal observation | Retry creates a new sandbox, or closes cleanup without evidence |
 | TDN-03 provider lookup unavailable or ambiguous 404 | Delete request accepted/ambiguous; subsequent reads fail, return 404, or use a potentially wrong account/region/project scope | Verify exact tenant/account/region/resource scope and documented read consistency; keep CLEANUP_UNKNOWN / ORPHANED_TEARDOWN_REQUIRED and a durable retry schedule until authoritative absence/destruction is established | A list miss, unscoped 404, eventual-consistency gap, or missing state is treated as deletion; provider auto-expiry is treated as proof |
 | TDN-04 terminal deletion | Exact-resource provider read reaches documented destroyed/deleted terminal state after a stop/delete operation | Immutable event binds tenant/job/attempt/provider-resource/account/region/version and terminal state; stopped/paused is not treated as destroyed | Search miss, local DB close, stopped/paused state, or stale event substitutes for authoritative destruction |
-| TDN-05 attached resource independence | Sandbox has attached volumes, snapshots, persistent disks, object stores, preview URLs, tunnels, or other separately managed resources | Each resource is inventoried by stable identity and has its own lifecycle/release evidence; stopped compute does not imply storage billing stopped | Sandbox destruction is assumed to delete independent resources or release every chargeable resource |
+| TDN-05 attached resource independence | Sandbox has attached volumes, snapshots, persistent disks, object stores/buckets, Durable Object or equivalent control-plane storage, preview URLs, tunnels, or other separately managed resources | Each resource and control-plane identity is inventoried by stable tenant/job/attempt/provider-generation identity and has its own lifecycle/release evidence; stopped compute does not imply metadata, snapshots, buckets, or storage were deleted or billing stopped | Sandbox destruction is assumed to delete independent resources, durable control-plane state, snapshots, or every chargeable resource |
 | TDN-06 late cleanup event | Attempt N is deleted after attempt N+1 starts | Event remains bound to N and cannot mutate N+1 | Stale cleanup event closes the wrong attempt |
 | TDN-07 reconciliation crash | Coordinator crashes after provider accepted delete but before persisting the response or cleanup observation | Restart resumes lookup/reconciliation from durable intent for the same resource/operation identity; repeated reconciliation is idempotent; poison records do not block later jobs | New resource or untracked orphan is created, evidence is lost, or one poison item stalls the queue |
 | TDN-08 cleanup vs billing lag | Provider terminal state observed while usage/invoice data is delayed, pending, or later adjusted | Resource termination and provider-reported cost reconciliation remain separate axes; cost remains PENDING/UNKNOWN until authoritative usage/charge data is reconciled | Pending invoice appears as final zero cost, or billing telemetry is used as a proxy for process liveness/deletion |
@@ -350,3 +367,18 @@ Firecracker remains a VMM/microVM building block, not a managed sandbox service.
 - The teardown counterexamples are ACCEPTED as additional TDN coverage.
 - No new canonical LOOP/CASE ID, lifecycle status, schema, provider choice, or architecture decision is made here.
 - All RES/TDN cases remain SPECIFIED ONLY / NOT RUN. No host, provider, runtime, account, billing, queue, source, tests, Actions, PR, merge or deployment was touched.
+
+
+## 10. Provider-version and host-telemetry correction (2026-11-01)
+
+A fresh official-documentation pass identified two additional precision requirements:
+
+1. **Cloudflare API generation separation.** Current `@cloudflare/sandbox` 1.0 documentation describes a Durable Object whose storage/identity outlives the container instance. Instance-local processes and writable disk end when the instance stops, but stored snapshot metadata and mounted R2 bucket objects have independent lifetimes. The legacy Sandbox SDK 0.x `destroy()` documentation describes deletion of that SDK's sandbox files/processes/sessions. These are not interchangeable claims. Pin SDK generation and test instance stop, DO storage deletion, snapshot lifecycle and mounted bucket deletion independently. The current service is Workers Paid; container active-resource billing is documented separately from instance stop. Sources are listed in Section 4.5.
+
+2. **Firecracker host-side output is part of the attack surface.** Firecracker's production setup document warns that guest-controlled serial output and guest-influenced log generation can create unbounded host memory/storage usage unless the operator bounds, rate-limits or safely discards those streams. RES-10 now tests this directly. This is additional to bounding the PocketCode worker's own stdout/stderr collector; both the VMM/host logging path and the app-level collector must be bounded.
+
+3. **Observed cgroup emptiness requires control of membership.** `cgroup.events: populated=0` means no live processes remain in the observed cgroup subtree at that observation time. It does not prove a workload process was never moved outside that subtree. RES-09 now requires that untrusted code cannot write/migrate via delegated cgroup controls and that the supervisor's process-membership boundary is enforced. A process-tree-empty observation is time- and scope-bound, not a permanent statement about all resources.
+
+4. **Modal create and detach are not cleanup synonyms.** Current Python SDK docs state that sandbox container creation is asynchronous, `detach()` disconnects the client and cleans connection resources, while `terminate(wait=True)` waits for sandbox execution termination and returns the exit code. The SDK also exposes identity-based reattachment/listing (`from_id`, `from_name`, `list`) and terminated lookup by name. Future adapter evidence must distinguish create intent from actual container readiness, connection detach from execution termination, and execution termination from separately attached volume release. See https://modal.com/docs/sdk/py/latest/Sandbox.
+
+No provider selection, API call, account, workload, local host test, implementation or cost decision is authorized by this documentation update. All RES/TDN cases remain NOT RUN.
