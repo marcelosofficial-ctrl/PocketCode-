@@ -604,3 +604,11 @@ Protected PRs re-read and remain open, draft, unmerged and untouched:
 No Actions, tests, builds, installs, candidate execution, benchmark, device test, account/provider/workload, spend, source/PR modification, merge or deployment. The only writes were documentation on the existing research branch.
 
 **Next continuation:** wait for Claude's independent research output; do not re-run the broad search just to fill time. When it arrives, compare its candidate set and source evidence against Gemini plus the pinned deep dive. Add new candidates only where exact upstream sources and a real PocketCode/RevDev need justify them. Keep all candidate decisions provisional until integration boundaries, licence/dependency review and product-path evidence are sufficient.
+
+## 28. Fixed-task reproducibility gap closed — canonical source fixture added
+
+The fixed-task worksheet now contains Section 2A with an exact, frozen `main.py` fixture. Previously the worksheet specified behavior and expected output but left each path free to implement the task differently, weakening cross-path comparability. The new fixture uses Python standard-library CSV/JSON, `Decimal`, validates required headers/rows before creating output, and produces a clear missing-`unit_price` error with status 2 for the malformed input. Each path must accept the same source unchanged or record the necessary adaptation/wrapper as a limitation.
+
+Worksheet: [PRODUCT_FIXED_TASK_COMPARISON_WORKSHEET_20261028.md](PRODUCT_FIXED_TASK_COMPARISON_WORKSHEET_20261028.md), blob `491dc02ce53722e381ec7253ab754b2d2baa2d8c`.
+
+This only improves the experiment design. It has not been executed or tested on any app, browser, phone or runtime. It does not establish isolation, resource enforcement, termination, or security. Comparison remains **NOT RUN** and no hands-on test is authorized by this documentation update.
