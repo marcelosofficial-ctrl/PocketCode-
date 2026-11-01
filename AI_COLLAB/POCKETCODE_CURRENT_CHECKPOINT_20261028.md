@@ -346,3 +346,11 @@ Pinned candidates:
 - Aider commit `5dc9490bb35f9729ef2c95d00a19ccd30c26339c`: repo map module is coupled to Aider model/I/O/cache internals and dependencies. Reuse concept, not module, unless a later spike proves otherwise.
 
 No builds, installs, tests, device runs, benchmarks or code adoption. Current candidate order is CodeMirror/Pyodide for first-proof comparison, wasmsh later optional shell, Aider map later optional codebase-context utility.
+
+## 2026-11-01 fixed-task protocol hardening
+
+Closed a reproducibility gap in the existing fixed-task worksheet: it previously specified the behavior and expected output but did not supply one canonical source file. The worksheet now includes Section 2A with a frozen standard-library Python fixture, explicit malformed-header behavior, exact file/output expectations and a rule that each path must run the same source unchanged or disclose its required wrapper/adaptation.
+
+The fixture reads `items.csv`, validates required headers and rows before opening `summary.json`, uses `Decimal`, and returns status 2 with an explicit missing-column error for the malformed fixture. This makes the task less vulnerable to comparing different AI-generated implementations. It is still a narrow correctness/file-flow fixture, not a security or sandbox test.
+
+Updated worksheet blob: `491dc02ce53722e381ec7253ab754b2d2baa2d8c`. **Status remains DESIGN ONLY / NOT RUN.** No app install, code execution, benchmark, provider workload or device test. Next hands-on attempt still requires an explicit owner decision.
