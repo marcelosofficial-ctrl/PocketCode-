@@ -301,3 +301,10 @@ Key source-grounded corrections:
 7. Modal resource request and hard limit are distinct; default outbound public-IP access is allowed. Cloudflare destroy is immediate and does not allow relying on process cleanup handlers. E2B's microVM claim is vendor architecture information, not independent proof.
 
 Decision: PC-EXT-02 and PC-EXT-04 remain genuine provider/runtime evidence gaps. No provider selected. RES/TDN are test-design labels only. No account, API key, workload, provider call, paid usage, implementation or test run occurred. WP-08 is BLOCKED under the $0 constraint.
+
+
+## 14. OOM evidence attribution refinement
+
+The resource review received a final kernel-semantics correction (commit `609b252f669d91bd22b2dd23142744c16b3eaa00`, blob `dbb1bac56097d85e8fd20e1ccaa4583ce20d6844`): `memory.events.local:oom_kill` counts processes in the cgroup killed by any OOM killer. It cannot alone prove the target cgroup's own `memory.max` caused the kill. Conversely, some memory-limit failures return `-ENOMEM` without OOM kill. Tests must correlate effective memory/swap limits, local `max`/`oom`/`oom_kill` deltas, exact cgroup/PID membership, trusted termination evidence and supervisor/sibling health. No single counter is proof of causation.
+
+This refinement is reflected in the lifecycle regression plan and independent review. It does not alter canonical acceptance or authorize execution.
