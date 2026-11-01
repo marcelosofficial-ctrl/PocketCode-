@@ -518,3 +518,23 @@ Therefore PC-EXT-01, PC-EXT-03 and PC-EXT-07 in regression-plan Section 8 are tr
 The readiness backlog confirms the dependency order: WP-03 policy barrier (D-05/PBR/PF), WP-04 durable reservation (D-06/DR), WP-05 trusted evidence/report history (D-04/D-08/RH), and WP-06 artifact publication/release (D-03/D-07/AR). It explicitly keeps these BLOCKED until the relevant selected boundary and actual integration evidence exist. Do not create a second test framework or treat the PC-EXT labels as owner decisions.
 
 This pass is documentation cross-reference only. No owner decision, canonical acceptance text, source/test, provider, store, runtime, PR, queue, Actions, merge, deployment or spend changed. All linked checklists and test suites remain SPECIFIED ONLY / NOT RUN where stated.
+
+
+## 12. Resource containment and teardown source audit (2026-11-01)
+
+The focused follow-up is recorded in [RESOURCE_CONTAINMENT_AND_TEARDOWN_EVIDENCE_REVIEW_20261101.md](RESOURCE_CONTAINMENT_AND_TEARDOWN_EVIDENCE_REVIEW_20261101.md). It strengthens PC-EXT-02 and PC-EXT-04 without creating or remapping canonical acceptance IDs.
+
+Source-grounded corrections:
+- cgroup v2 `memory.max` is a hard memory boundary, but some allocation failures return `-ENOMEM` rather than causing OOM kill; do not require every fixture to have the same terminal signal.
+- Use `memory.events.local` for local cgroup event attribution. Hierarchical `memory.events` may include descendant events.
+- `memory.swap.max` is a separate control. `memory.high` is a throttle/reclaim boundary, not a kill threshold.
+- `cpu.max` is bandwidth quota/period, not a wall-clock timeout. `pids.max` counts tasks/TIDs.
+- `io.max` limits BPS/IOPS, not disk capacity. `RLIMIT_FSIZE` limits individual files, not total workspace size.
+- `cgroup.kill` sends SIGKILL to the cgroup subtree; `cgroup.events: populated=0` reports no live processes in that subtree. Neither proves a cloud sandbox object or its separately attached volume/snapshot has been deleted.
+- Firecracker's production guidance calls for Jailer or equivalent constraints, seccomp, cgroups/namespaces, privilege dropping and protected paths. The Jailer docs leave cleanup to the operator and warn of `notify_on_release` race conditions.
+- Daytona v2 documents asynchronous delete progression (`destroying` to `destroyed`); the call returns when teardown starts. Stable v0 delete is fire-and-forget unless its wait option is used. These are version-specific API semantics, not interchangeable.
+- Modal distinguishes CPU/memory request from hard limits and documents outbound public-IP access by default. Its dynamic network-policy update is Alpha and domain allowlist Beta.
+- Cloudflare documents immediate destroy and warns not to rely on process cleanup handlers; its current sandbox product is on Workers Paid.
+- E2B describes per-sandbox Firecracker microVMs, but its public security page alone does not prove PocketCode's exact teardown wait/lookup or resource-containment requirements.
+
+**Result:** PC-EXT-02 and PC-EXT-04 remain provider/runtime proof gaps. The new RES/TDN labels are local research test-design identifiers only. No provider is selected and no runtime claim is made. All cases remain NOT RUN.
