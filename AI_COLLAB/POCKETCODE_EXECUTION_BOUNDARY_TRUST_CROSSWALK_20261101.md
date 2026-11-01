@@ -541,3 +541,74 @@ Sources for this addendum:
 - [Can I Use: File System Access API](https://caniuse.com/native-filesystem-api) — compatibility table reports Safari and iOS Safari unsupported as of the reviewed September 2026 data.
 - [WebKit: New WebKit Features in Safari 15.2](https://webkit.org/blog/12140/new-webkit-features-in-safari-15-2/) — confirms COOP/COEP and SharedArrayBuffer support in Safari from 15.2.
 - [Apple: Choosing Background Strategies for Your App](https://developer.apple.com/documentation/BackgroundTasks/choosing-background-strategies-for-your-app) — native-app guidance used only to support conservative background-work expectations, not as a direct web-app lifecycle specification.
+
+
+## 16. Source-lineage correction and sibling-branch audit — 2026-11-01
+
+A final lineage check found a separate branch that must be distinguished from PR #3:
+
+- Branch: \`pocketcode-lifecycle-fingerprint-audit-2026-10-27\`
+- Head at review: \`26de6bb29020d6781d342c691e430616a4321083\`
+- \`scripts/lifecycle_contract.py\` blob: \`316345341603848c4a86a6a82e533daa796c7695\`
+- \`scripts/test_lifecycle_contract.py\` blob: \`ef9a68de632be30c091afe57f0724fd030a513f9\`
+
+This branch is separate from PR #3's pinned \`pocketcode-pass0-audit-2026-10-26\` branch and the research branch. The PR #3 source pin still has the original tombstone overwrite behavior described in Section 8.1. However, the sibling lifecycle/fingerprint audit branch contains a source-level fix and regression tests.
+
+### 16.1 Tombstone status corrected
+
+The sibling branch's \`DeletionTombstones.add()\` now:
+- validates tenant, key and fingerprint as nonblank strings;
+- rejects invalid \`deleted_at\` values, including booleans;
+- raises \`IdempotencyConflict\` when an existing tenant/key has a different fingerprint;
+- preserves the later expiry for same-fingerprint retries using the maximum of old and proposed expiry.
+
+The sibling test file contains:
+- \`test_tombstone_retries_do_not_shorten_retention_or_change_fingerprint\`;
+- \`test_tombstones_reject_blank_identity_and_invalid_epoch_values\`;
+- existing tenant-scope and exact 30-day expiry tests.
+
+**Revised classification:** tombstone overwrite/retention is no longer an unaddressed source gap across all branches. It is:
+- FIX PRESENT / TESTS PRESENT on \`pocketcode-lifecycle-fingerprint-audit-2026-10-27\`;
+- STILL PRESENT on the pinned PR #3 branch;
+- NOT SHOWN MERGED into PR #3 or the research branch;
+- NOT RUN in this review;
+- NOT durable-storage/concurrency proof, because this remains an in-memory helper.
+
+Do not repeat the unqualified statement that the tombstone issue is the next source fix. First decide whether this sibling branch is to be the source of a future integration or whether the patch is to be independently ported to PR #3 after owner approval.
+
+### 16.2 Other fixes on the sibling branch
+
+The sibling branch also adds validation for blank canonical fingerprint identity fields:
+- contract version;
+- tenant ID;
+- runtime;
+- entrypoint.
+
+The test confirms blank values raise \`ValueError\`, while whitespace around a valid runtime remains normalized consistently.
+
+This addresses the FLA-02/G-03 gap on that sibling branch only. The research branch's gap audit already notes that this separate branch contains later FLA-02/FLA-09 and tombstone changes. It does not establish integration into either PR #2 or PR #3.
+
+### 16.3 Remaining confirmed candidate gaps on the sibling branch
+
+The fetched sibling source still has the following limitations:
+
+1. **OutputBudget constructor:** still checks only \`cap <= 0\`; it does not enforce positive integer and exclude bool/float/string. FLA-03 remains open.
+2. **Malformed limit flags:** \`derive_disposition()\` still uses ordinary truthiness for \`limit_violated\` and \`output_truncated\`. Values such as \`"false"\` or \`1\` can still produce \`LIMIT_EXCEEDED\`. FLA-01 remains open.
+3. **Output limit semantics:** \`output_truncated\` still takes precedence over the raw execution outcome. The collector still does not own or confirm process termination. The semantic concern in Sections 6-7 remains open.
+4. **Event identity and immutability:** \`reduce_terminal_events()\` still has no expected tenant/job/attempt/source/policy binding arguments and makes only a shallow \`dict(raw)\` copy. FLA-04/06/07/08 remain separate coordinator/event-ingress concerns.
+5. **Redaction length ceiling:** configured credential patterns still have maximum match lengths. FLA-12 remains a bounded pattern-coverage gap; prevention and collection minimization remain the security strategy.
+
+### 16.4 Updated implementation-readiness order
+
+1. Reconcile the sibling branch's FLA-02/FLA-09/tombstone improvements with PR #3 before proposing any port. Do not duplicate an existing fix unknowingly.
+2. Address strict \`OutputBudget\` cap type validation and malformed boolean limit flags as bounded pure-helper changes, with explicit input contracts.
+3. Resolve D-01/D-03 before changing limit-versus-verdict semantics or freezing collection-state behavior.
+4. Define event identity ownership and deep immutable snapshot at the trusted ingress boundary; keep tenant/job/attempt/source/policy binding outside a reducer that lacks that context.
+5. Treat redaction-length tests as defense-in-depth only. Do not pass credentials to user execution.
+6. Only after branch reconciliation and owner review, choose a patch destination. Do not merge sibling branches or PRs simply to combine their changes.
+
+### 16.5 Verification boundary
+
+The sibling branch source and test blobs were fetched and inspected. No Python suite was run. The branch's test additions establish only that assertions exist in source, not that they pass. No PR was created, no branch was merged, and no implementation file was modified by this review.
+
+This addendum corrects Section 8.1's scope; Section 8.1 remains accurate for the exact PR #3 source blob it names.
