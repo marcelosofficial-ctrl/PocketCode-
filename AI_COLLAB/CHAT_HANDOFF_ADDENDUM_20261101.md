@@ -373,3 +373,26 @@ Claude explicitly stated that it could not read the three new research-branch AI
 - No source/test/PR/main/canonical acceptance/provider/runtime/queue/Actions/account/billing/host state changed. No tests, provider calls or workloads run.
 - All RES/TDN and PC-LC/AD/DB/RT cases remain SPECIFIED ONLY / NOT RUN. WP-08 remains BLOCKED, provider selection NONE, budget $0.
 - Next reviewer step: provide Claude these exact three blob URLs and request a source-backed verdict on the updated content, not the inaccessible path names. Separately resolve the outstanding Gemini OBS/fixture namespace collision before merging any reviewer observation IDs into the existing register; do not reuse ChatGPT OBS-01..06 labels for Gemini's differently described observations.
+
+
+## 17. Gemini AWC namespace collision — source-verified (2026-11-02)
+
+A direct fetch of the authoritative RevDev AWC files resolved the pending identifier concern. The AWC fixture source is in `marcelosofficial-ctrl/DevRelay-Missions`, not the PocketCode repository root:
+- Manifest: `resume/revdev/AI_WORK_COACH_SYNTHETIC_FIXTURES_V0_1.json`, blob `c2d4cba6c836f725f7bc4585f91e02d443fe89e1`, 18 fixtures AWC-001..018, status PROPOSED_NOT_RUN.
+- Specification: `resume/revdev/AI_WORK_COACH_FIXTURE_AND_MEASUREMENT_SPEC_V0_1.md`, blob `9169ae6c6e5689f70287b7c6c0aeac534d8f7183`.
+- Semantic matrix: `resume/revdev/AI_WORK_COACH_RUN_RECORD_SEMANTIC_CONFORMANCE_MATRIX_V0_1.md`, blob `6618d878747e4d09dd82f0b5228f5f9f3c175927`.
+- Static audit: `resume/revdev/AI_WORK_COACH_SYNTHETIC_FIXTURE_MANIFEST_STATIC_AUDIT_2026-10-29.md`, blob `333f6732499bd8f32ceb78f9e95c6001d9b6ed5e`.
+
+Gemini's supplied response used the labels AWC-005/008/009/010/011/012/017/018 for subjects that do not match those fixtures. The pinned manifest says, respectively: security-sensitive untrusted shortcut; failed targeted repair recovery; request to bypass a limit; task handoff to an assistant without a connector; untrusted source-file policy text; fabricated token/time/cost telemetry; unknown provider/model/plan/host capabilities; truncated evidence without a completion signal. Therefore those Gemini labels are not accepted as references to this AWC fixture set without an alternative artifact path/ref/blob SHA.
+
+Gemini's actual engineering suggestions are retained under the proper concerns: cgroup/worker containment -> RES-02/08; applied network-policy barrier -> D-05/PBR/PF; artifact/encoded-secret leakage -> release boundary/AR-01..14; truncation taxonomy -> execution/report evidence model; outcome/cleanup separation -> report projection; atomic semantic idempotency -> DR-01..12/PC-AD/DB; cross-attempt event/log binding -> PC-LC-03; release-time revalidation -> AR; cost lag -> separate cost observability/LOOP-14. No suggestions are discarded, but they do not get mismatched AWC labels.
+
+The helper OBS-01..06 meanings remain exactly as source-pinned in the crosswalk. Gemini's six differently described observations remain an independent unnumbered reviewer set until exact source references are provided. No OBS renumbering or overwrite is allowed.
+
+Crosswalk source reconciliation update:
+- `AI_COLLAB/REVDEV_POCKETCODE_CROSSWALK_INDEPENDENT_REVIEW_20261101.md`, blob `e052a3c989acfb15a939b26fb99ba3cc7fcfe773`, commit `06200ee9bf596871cfa62c236b80c89dec973567`.
+- URL: https://github.com/marcelosofficial-ctrl/PocketCode-/blob/pocketcode-ai-workflow-director-research-2026-10-28/AI_COLLAB/REVDEV_POCKETCODE_CROSSWALK_INDEPENDENT_REVIEW_20261101.md
+
+Next step: request from Gemini the alternative artifact path, repository, branch/ref, blob SHA, and exact line references for the AWC IDs it used. If no alternative AWC artifact exists, it must correct the labels while preserving its useful engineering findings. The AWC fixture set itself remains PROPOSED_NOT_RUN.
+
+This was documentation and source verification only. No AWC trial, model run, PocketCode test, provider call, workload, source/test/PR/canonical acceptance change, Actions, spend, merge or deployment occurred. The research branch immediately before this handoff update was `06200ee9bf596871cfa62c236b80c89dec973567`.
