@@ -299,3 +299,14 @@ The source-backed desk review is [PRODUCT_PATH_COMPARISON_DESK_REVIEW_20261101.m
 ### Report experiment contract correction — 2026-11-01
 
 The proposed portable receipt is not a new schema. Reuse the existing proposed report contract in `PRODUCT/EXECUTION_CONTRACT.md` and LOOP-07/08. The paired comparison must give raw evidence (A) versus the same evidence rendered through the existing report projection (B), with no extra diagnosis or dropped evidence. See Section 9 of `PRODUCT_PATH_COMPARISON_DESK_REVIEW_20261101.md`, blob `035f8db30f1512ad1c9d3e4fa19edf13dbf0ca86`. No new acceptance IDs or schema changes.
+
+
+## Product-path review prompts — 2026-11-01
+
+### Claude: adversarial product-path review
+
+> Review `AI_COLLAB/PRODUCT_PATH_COMPARISON_DESK_REVIEW_20261101.md` in full, including its source links. Check every factual claim against the exact current primary source and identify stale/version-mismatched claims. Focus on Pyodios timeout-versus-termination semantics; iOS Safari OPFS versus the Chromium-only File System Access API mount; Apple native background-task eligibility versus browser/PWA behavior; AndroidHarness permission and provider-data flows; PhoneCode PRoot debug versus QEMU Play release gates; Atlan's device-specific T2 and proot limitations; Codeg/Pairlet host requirements; and Codespaces quotas/billing. Then challenge whether the proposed raw-evidence versus existing-report experiment is fair, whether it duplicates LOOP-07/08, and whether the CSV failure case is too trivial. For every finding provide exact source URL, section/line, severity, and smallest correction. Mark anything not fetched as NOT REVIEWED. Do not install apps, run code, create accounts, use providers, or edit files.
+
+### Gemini: independent technical and product falsification review
+
+> Independently audit `AI_COLLAB/PRODUCT_PATH_COMPARISON_DESK_REVIEW_20261101.md`. Do not rely on Claude's or ChatGPT's conclusions. Verify the technical claims against primary docs and the exact GitHub repository revisions. Look for capability overclaims, unverified security/privacy inferences, iOS/Android platform conflation, release-stage confusion, and missing strong counterexamples. Check whether Pyodios is actually a viable comparator for the fixed standard-library CSV task while accounting for its 120-second timeout that does not stop execution; whether Safari Pyodide file I/O can be made practical without claiming direct Files-folder mounting; and whether the report experiment uses exactly the same evidence in both conditions. Identify any false or stale statements with exact source lines and propose the smallest correction. Do not reuse AWC or helper OBS identifiers unless the pinned source proves the mapping. No tests, installs, accounts, provider calls, or edits.
