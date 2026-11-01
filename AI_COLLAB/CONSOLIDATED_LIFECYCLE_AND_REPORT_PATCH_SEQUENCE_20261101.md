@@ -24,7 +24,7 @@ This ordering prevents a helper-only patch from being mistaken for coordinator, 
 | PR #2 branch | `chat-continuity-report-regressions-2026-10-26` at `eb8b7ea83cb0e8fe1880351276c485b761431791` | Report formatter source under review; open draft, not merged |
 | PR #2 formatter | `scripts/report_contract.py`, blob `e9d944a722c2fac5279952696528da72a7011af3` | Escaping/truncation, but no redaction call |
 | PR #3 base | `pocketcode-pass0-audit-2026-10-26` at `0ddcc0bc97bac5d446aefedf3d71f99411bd841d` | Original lifecycle audit branch; open draft, not merged |
-| Lifecycle descendant | `lifecycle-fingerprint` at `26de6bb29020d6781d342c691e430616a4321083` | 34 commits ahead, 0 behind PR #3 base; source candidate only |
+| Lifecycle descendant | `pocketcode-lifecycle-fingerprint-audit-2026-10-27` at `26de6bb29020d6781d342c691e430616a4321083` | 34 commits ahead, 0 behind PR #3 base; source candidate only |
 | Descendant lifecycle helper | `scripts/lifecycle_contract.py`, blob `316345341603848c4a86a6a82e533daa796c7695` | Current source reviewed for Sections 17–19 |
 | Research branch | `pocketcode-ai-workflow-director-research-2026-10-28` at `97db362e3f57c4d605d5d84a28d5cbb264c23c24` | Separate divergent design/test branch; not cumulative with PR #2/#3 |
 | Current documentation branch | `pocketcode-execution-boundary-crosswalk-2026-11-01` | Documentation-only continuity branch |
@@ -47,7 +47,7 @@ Target only the lifecycle descendant after source refresh and explicit authoriza
 
 ### A1. Decisions required before tests encode behavior
 
-- **G-01:** The recommendation is exact booleans with `TypeError` before deriving a disposition. This remains a recommendation, not an owner decision. Alternative fail-closed typed validation is possible but must preserve the distinction between malformed API input and an actual incomplete run.
+- **G-01:** The recommendation is exact booleans with `TypeError` before deriving a disposition. It must cover `limit_violated`, `output_truncated`, and `contradictory_evidence`. The last flag is especially important: a falsey malformed value such as `0` can currently suppress a contradiction and permit PASS when every other gate is true. This remains a recommendation, not an owner decision. Alternative fail-closed typed validation is possible but must preserve the distinction between malformed API input and an actual incomplete run.
 - **G-02:** Recommended: reject bool/non-integer with `TypeError`, integer values <= 0 with `ValueError`. Confirm compatibility with project conventions before implementation.
 - **G-08:** Define whether a repeated same-fingerprint add is a no-op or extends retention to the maximum deadline, and define how `add()` knows a prior tombstone is expired. A supplied `deleted_at` is not automatically trusted current acceptance time.
 - **D-01:** Do not alter valid limit semantics in the G-01/G-02 patch. Runtime-enforced limit termination, collection-only output caps, and report-display truncation are distinct facts. The user-facing mapping for confirmed limit-caused termination remains owner-open.
@@ -202,3 +202,20 @@ If exact source pins change, re-review. If a test depends on unresolved owner se
 - `AI_COLLAB/OUTPUT_STATE_AND_VERDICT_RELEASE_CROSSWALK_20261029.md`.
 - `AI_COLLAB/SEMANTIC_DECISIONS_AND_REPORT_PROJECTION_20261029.md`.
 - `AI_COLLAB/CROSS_DECISION_CONTRADICTION_AUDIT_AND_IMPLEMENTATION_GATES_20261029.md`.
+
+
+## 11. Fresh review deltas added 2026-11-01
+
+The live lifecycle branch is named `pocketcode-lifecycle-fingerprint-audit-2026-10-27`; the shorter `lifecycle-fingerprint` name does not resolve. Current HEAD remains `26de6bb29020d6781d342c691e430616a4321083`. The exact helper/test blobs are `316345341603848c4a86a6a82e533daa796c7695` and `ef9a68de632be30c091afe57f0724fd030a513f9`. The 30-method count is source inspection only.
+
+Add these requirements to the corresponding workstreams:
+
+- **G-01 widened:** validate exact booleans for `limit_violated`, `output_truncated`, and `contradictory_evidence` before any disposition branch. Falsey malformed contradiction/limit values can otherwise be treated as absent and potentially permit PASS; truthy malformed limit values can fabricate `LIMIT_EXCEEDED`.
+- **Fingerprint policy schema:** validate effective-policy mapping keys as strings recursively before JSON canonicalization. Python's JSON encoder converts non-string dictionary keys to strings, so malformed internal policy objects can collapse to an equivalent string-keyed representation. Add top-level and nested non-string-key rejection tests. This is a helper-boundary hardening requirement, not a claim that ordinary parsed JSON requests have non-string keys.
+- **G-07 confirmed:** reject the six Microsoft-documented superscript device aliases `COM¹/COM²/COM³` and `LPT¹/LPT²/LPT³`, with extension and casing variants. Do not generalize to unrelated Unicode numeric characters.
+- **ReportHistory identity:** reject whitespace-only `job_id` and `evidence_ref` values while preserving nonblank values as supplied.
+- **D-04 event canonicalization:** duplicate comparison currently uses only `(sequence, kind, payload)`; any additional immutable event metadata must be bound and validated at trusted ingress before reducer replay semantics are applied.
+- **Redactor tests:** add configured-pattern maximum-length and beyond-maximum fixtures; preserve the explicit best-effort/non-universal guarantee.
+
+The current checked-in suite has no tests for G-01/G-02/G-07, policy-key canonicalization, ReportHistory whitespace identity, event nested-mutation/collision diagnostics, or redactor maximum/beyond-maximum lengths. No test was run in this review. See Section 20 of `POCKETCODE_EXECUTION_BOUNDARY_TRUST_CROSSWALK_20261101.md` for exact source observations and official documentation references.
+
