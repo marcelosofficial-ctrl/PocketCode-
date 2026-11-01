@@ -267,3 +267,19 @@ The detailed owner-approved research checklists remain proposed and require owne
 6. Include PC-EXT-06 as additional hostile stdout fixtures in PC-LC-04/PC-RT-02, not as a separate producer-authentication mechanism.
 
 **No implied approval:** this alignment does not close D-01..D-08, select a provider/store, authorize implementation, or promote any test from SPECIFIED/NOT RUN. The source checklist IDs are the traceability anchors; the PC-EXT labels are navigation aids only.
+
+
+## 10. Detailed resource-containment and teardown evidence contract
+
+The summary cases PC-EXT-02 and PC-EXT-04 are now expanded in [RESOURCE_CONTAINMENT_AND_TEARDOWN_EVIDENCE_REVIEW_20261101.md](RESOURCE_CONTAINMENT_AND_TEARDOWN_EVIDENCE_REVIEW_20261101.md). That review defines RES-01..09 and TDN-01..08 as local test-design labels only. They are not canonical LOOP/CASE IDs and do not supersede any existing checklist.
+
+Key clarifications:
+- A configured resource request is not necessarily a hard limit. Record the effective per-attempt limit and its authoritative enforcement source.
+- CPU bandwidth throttling is not wall-clock termination.
+- cgroup `io.max` limits I/O throughput, not disk capacity; `RLIMIT_FSIZE` is per-file, not total workspace quota.
+- For cgroup v2, use exact target identity and local event counters; `cgroup.events: populated=0` is process-subtree evidence, not remote-provider resource-deletion proof.
+- Keep process-tree empty, provider sandbox destroyed, attached resources released, and billing reconciled as separate observations.
+- A delete request accepted or a delete API returning before teardown completes must not produce CLEANUP_CONFIRMED. Reconcile the same stable provider-resource identity until its authoritative terminal state is observed.
+- Firecracker's Jailer does not remove the operator's cleanup responsibility. Provider documentation is not independent runtime evidence.
+
+All RES/TDN cases remain SPECIFIED ONLY / NOT RUN. See the detailed review for the source-by-source provider comparison and bounded-test safety rules.
