@@ -221,3 +221,12 @@ Account linking uses a separate ephemeral public key to seal the account master 
 ### 11.4 Claude report receipt clarification
 
 Section 9 above is a historical GitHub branch-presence check, not the current report-receipt status. Since that check, Claude's master OSS research report was supplied to ChatGPT in the conversation and its independent reconciliation was committed in CLAUDE_RESEARCH_MASTER_INDEPENDENT_RECONCILIATION_20261101.md. Claude's Windows sandbox source-audit follow-up was also supplied in the conversation and integrated into WINDOWS_SANDBOX_SOURCE_AUDIT_CLAUDE_20261101.md. The original raw master report itself is not currently asserted to be committed as a standalone repo file. Keep these three evidence artifacts distinct.
+
+
+## 12. OpenHands crash-window falsification plan — 2026-11-02
+
+See [OPENHANDS_EVENTLOG_HEAD_CRASH_WINDOW_FALSIFICATION_PLAN_20261102.md](OPENHANDS_EVENTLOG_HEAD_CRASH_WINDOW_FALSIFICATION_PLAN_20261102.md).
+
+The source-derived append/HEAD hypothesis now has a bounded future test plan. The test must distinguish a valid event file from EventLog discoverability, persisted active HEAD and active ancestry; it must kill a separate writer process at deterministic boundaries and restore from disk in a fresh process. It must separately test same-ID/same-payload retry, same-ID/changed-payload conflict, new-ID logical retry and delayed replay. A missing saved leaf/fallback case is distinct from an old but still-existing leaf.
+
+This is not a new PocketCode acceptance ID and does not freeze EventID, sequence, parent, HEAD or lease fields. Lifecycle D-04 remains OPEN; D-05 remains BLOCKED; D-06 and D-08 remain owner-open. No test has run and no owner decision changed.
