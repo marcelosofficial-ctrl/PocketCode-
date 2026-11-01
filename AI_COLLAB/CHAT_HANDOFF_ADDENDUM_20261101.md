@@ -612,3 +612,9 @@ The fixed-task worksheet now contains Section 2A with an exact, frozen `main.py`
 Worksheet: [PRODUCT_FIXED_TASK_COMPARISON_WORKSHEET_20261028.md](PRODUCT_FIXED_TASK_COMPARISON_WORKSHEET_20261028.md), blob `491dc02ce53722e381ec7253ab754b2d2baa2d8c`.
 
 This only improves the experiment design. It has not been executed or tested on any app, browser, phone or runtime. It does not establish isolation, resource enforcement, termination, or security. Comparison remains **NOT RUN** and no hands-on test is authorized by this documentation update.
+
+### 28A. Canonical fixture sanity check
+
+The exact Section 2A source fixture was sanity-checked in an isolated ChatGPT Python 3.13.5/Linux x86_64 temporary directory. SHA-256 `70c66ad3a0132923cbf3190eb3546093fcc2c61c1bdcbf3b171696e1ae7521e7` (1,939 bytes). Success: exit 0, exact expected JSON. Missing-header failure: exit 2, explicit missing-`unit_price` message, no output file. The environment emitted an unrelated spreadsheet-runtime warmup traceback into stderr at interpreter startup, so stderr capture is not a clean app-only result. Details are in worksheet Section 2B.
+
+This is a fixture sanity check, not a PocketCode, Pyodios, browser, mobile, remote-host or provider test. Product comparison remains NOT RUN. It proves nothing about sandboxing, egress, limits, termination, cleanup or report utility.
