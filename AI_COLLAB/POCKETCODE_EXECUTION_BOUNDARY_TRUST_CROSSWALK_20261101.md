@@ -923,3 +923,14 @@ A similar user-consent device-pairing flow could be considered only as a future 
 ### 23.3 No contract or acceptance changes
 
 These are source-derived design observations only. Do not modify the canonical fixed task, shared fixture status, native RevDev acceptance IDs, PocketCode D-01..D-08 owner decisions, schema, PR #2/#3 or product direction based on these references. Proposed follow-up tests belong in the existing future conformance/falsification planning and require implementation-specific authorization before execution.
+
+
+## 24. OpenHands EventLog / active-HEAD crash-window falsification plan — 2026-11-02
+
+Added [OPENHANDS_EVENTLOG_HEAD_CRASH_WINDOW_FALSIFICATION_PLAN_20261102.md](OPENHANDS_EVENTLOG_HEAD_CRASH_WINDOW_FALSIFICATION_PLAN_20261102.md).
+
+The plan treats the append-then-leaf-save gap as a source-derived hypothesis, not a reproduced defect. It defines eight deterministic process-crash boundaries, including before/during/after event persistence, during/after base-state replacement, lost acknowledgement, and concurrent lease takeover. It requires a fresh restore process and independent classification of event durability, EventLog discoverability, active HEAD, active ancestry, acknowledgement and lease generation.
+
+The confirmation criterion is deliberately narrow: a valid persisted E1 discoverable after restore while base_state still names E0, restore selects E0, and E1 is absent from the active ancestry. Process-kill tests do not prove power-loss durability. NFS/network storage is excluded because the source warns its file locks are unreliable.
+
+Mapping remains advisory only: lifecycle D-04 OPEN; D-05 BLOCKED; D-06 owner-open; D-08 owner-open. No new acceptance ID, field, schema or owner decision. The plan has NOT been executed; OpenHands remains a study reference, not a selected PocketCode store.
