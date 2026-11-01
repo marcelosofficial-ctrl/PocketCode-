@@ -756,3 +756,84 @@ The source comparison does **not** establish that PR #2's report formatter recei
 ### 19.4 Disposition
 
 This is an integration/data-flow gap between the separate PR #2 formatter and PR #3 output collector, not a claim that either isolated helper violates a complete implemented product contract. Keep PR #2 and PR #3 separate; do not cherry-pick or merge based on the helper names alone. No tests were run and no source was changed.
+
+
+## 20. Fresh lifecycle function-and-test review — 2026-11-01
+
+A fresh review fetched the live audit branch and exact helper/test blobs. The branch name is `pocketcode-lifecycle-fingerprint-audit-2026-10-27` (the shorter `lifecycle-fingerprint` alias returns 404); its HEAD remains `26de6bb29020d6781d342c691e430616a4321083`. The exact source blobs remain helper `316345341603848c4a86a6a82e533daa796c7695` and test module `ef9a68de632be30c091afe57f0724fd030a513f9`. The test module contains 30 test methods by source inspection. No test was executed.
+
+### 20.1 G-01 must include the contradiction flag
+
+The previous G-01 recommendation covered `limit_violated` and `output_truncated`, but `derive_disposition()` also branches on `contradictory_evidence` using ordinary truthiness.
+
+With otherwise valid PASS gates and `execution_outcome="EXIT_ZERO"`, a malformed falsey value such as `contradictory_evidence=0` or `output_truncated=""` can be treated as false and allow `PASS`. Conversely, a truthy malformed value such as `limit_violated="false"` selects `LIMIT_EXCEEDED`. This makes malformed flag handling outcome-dependent and permits a malformed contradiction signal to be suppressed.
+
+**Revised G-01 scope:** validate exact booleans for all three control flags: `limit_violated`, `output_truncated`, and `contradictory_evidence`, before any disposition branch. Preserve the valid boolean semantics and keep the D-01 decision about actual limit-caused termination separate. Add regression cases for both falsey and truthy malformed inputs with all PASS gates valid. The current 30-method suite has no dedicated malformed-limit-flag matrix and no malformed-contradiction-flag test.
+
+Required test principle: malformed control input must not be reinterpreted as a valid run fact. The exact response (exception versus a typed invalid-input result) remains a contract choice; the earlier recommendation of `TypeError` remains unapproved.
+
+### 20.2 Fingerprint policy-map keys need runtime schema validation
+
+`canonical_request_fingerprint()` accepts `effective_policy: Mapping[str, Any]` by annotation but only shallowly converts it with `dict(effective_policy)` before JSON serialization. It does not validate mapping keys as strings, recursively.
+
+Python's JSON encoder converts supported non-string dictionary keys to strings. Therefore a Python policy mapping with an integer key can serialize identically to one with the corresponding string key, even though those are different input objects. Nested mappings have the same issue. This can collapse distinct malformed policy representations to one fingerprint if callers bypass an upstream schema validator.
+
+**Required action:** validate that every object key in the effective-policy tree is a string before canonical serialization, and reject unsupported container/value types according to a deliberately specified JSON policy schema. Add top-level and nested fixtures proving that non-string keys reject rather than collide. Do not silently normalize arbitrary policy objects. This is a pure-helper canonicalization gap, not evidence that JSON-originated client requests can create such values through a normal parser.
+
+References: [Python JSON documentation](https://docs.python.org/3.13/library/json.html) explains that JSON object keys are strings and Python dictionary keys are converted to strings during serialization. The annotation alone is not runtime enforcement.
+
+### 20.3 Portable filename audit: superscript device aliases remain missing
+
+The current `_canonical_input_name()` rejects ASCII `COM1..COM9` and `LPT1..LPT9`, but its regex does not reject Windows' superscript aliases `COM¹/COM²/COM³` and `LPT¹/LPT²/LPT³`, including names followed by an extension. The current fingerprint test covers `COM1.csv` but none of the superscript forms.
+
+Microsoft's current Win32 naming guidance explicitly lists those six aliases as reserved and notes that Windows treats superscript digits ¹, ² and ³ as digits in these device names: [Microsoft Learn — Naming Files, Paths, and Namespaces](https://learn.microsoft.com/en-us/windows/win32/fileio/naming-a-file).
+
+**Disposition:** G-07 remains open on the lifecycle descendant. Add exact, extension, and casing fixtures for all six aliases. Keep the patch narrowly scoped to those documented names; do not reject unrelated Unicode numeric characters as device aliases.
+
+### 20.4 ReportHistory accepts whitespace-only job and evidence references
+
+`ReportHistory.append()` checks that `job_id`, `disposition`, `cleanup_state` and `evidence_ref` are non-empty strings, but does not reject strings whose `strip()` is empty. A whitespace-only job ID or evidence reference can therefore be stored. This is inconsistent with the blank-after-strip rules already added to fingerprint, reservation and tombstone identity fields.
+
+**Required action:** add whitespace-only tests for job ID and evidence reference, then apply the repository's chosen input-error convention. Preserve nonblank identifiers exactly unless a separate canonicalization decision says otherwise. Do not infer that an evidence reference is authoritative merely because it is nonblank.
+
+No new finding ID is assigned here. Reconcile this observation into the existing pure-helper backlog/traceability before assigning any new identifier.
+
+### 20.5 Duplicate-event comparison only covers the current signature
+
+The reducer's duplicate signature is `(sequence, kind, payload)`. The event mapping may contain additional top-level fields, but those fields are not part of duplicate comparison. If such fields later carry immutable identity or provenance (tenant, job, attempt, source namespace, policy revision, provider event ID), a same-ID replay that changes one of them can be treated as identical when the three current signature fields match.
+
+D-04 remains OPEN and already requires source/tenant/job/attempt/policy scope to be bound before reduction. Do not extend the pure reducer with an unapproved schema. Instead, make trusted ingress construct a canonical event record with an explicit immutable-field projection, and test changed scope/provenance as conflict or rejection before reduction. Keep exact replay, event ID conflict and sequence collision diagnostics separate.
+
+### 20.6 Coverage gaps confirmed by the checked-in test source
+
+The 30 current test methods include useful malformed-event, fingerprint identity, idempotency, tombstone, output accounting, redaction and report-history cases. They do **not** include:
+- the G-01 malformed boolean matrix, including `contradictory_evidence`;
+- G-02 exact integer-cap validation for both OutputBudget caps;
+- G-07 superscript Windows device aliases;
+- nested payload mutation after event acceptance;
+- structured sequence-collision diagnostics for both colliding events;
+- non-string effective-policy keys at top level and nested levels;
+- whitespace-only ReportHistory job/evidence references;
+- redaction tests at configured maximum token lengths and beyond those limits.
+
+These are source coverage observations, not proof of runtime defects beyond the specific helper behavior described above. The existing plan already assigns event mutation/collision to COORD-12/COORD-11 and report/collection-boundary tests to the report workstream. Do not duplicate those IDs.
+
+### 20.7 Updated implementation order
+
+1. Refresh the exact lifecycle branch and file pins. Current refs are recorded at the start of this section.
+2. Expand G-01 to all three control booleans and decide malformed-input behavior before assertions.
+3. Implement G-02 exact positive-integer cap validation as a separate helper patch.
+4. Add policy-tree string-key/type validation to fingerprint canonicalization without changing fingerprint version for already-valid JSON policy documents.
+5. Close G-07 with the exact Microsoft-listed superscript device aliases.
+6. Add ReportHistory whitespace identity validation.
+7. Keep event scope, immutable fields and reducer snapshot/collision work blocked on D-04 and trusted-ingress design.
+8. Add redactor maximum/beyond-maximum tests while keeping its guarantee explicitly best-effort.
+9. Execute the exact checked-in suite only in an authorized local environment; otherwise keep all changes SPECIFIED ONLY / NOT RUN.
+
+### 20.8 Evidence status
+
+- Branch topology: VERIFIED IN SOURCE; lifecycle audit branch is 34 commits ahead and 0 behind PR #3's pinned base, with five changed files. It remains a separate branch and is not PR #3.
+- Helper/test pins: VERIFIED IN SOURCE; no source changed in this pass.
+- Test count: 30 methods by source inspection only; zero tests executed.
+- Microsoft and Python documentation were checked for the filename and JSON-key behaviors respectively.
+- No implementation, workflow, provider, workload, persistence, merge, deployment, Actions, account or spending action occurred.
