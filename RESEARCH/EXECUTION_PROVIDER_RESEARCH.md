@@ -149,3 +149,16 @@ This section supplements, and does not silently replace, the 2026-10-20 desk-res
 ### Updated conclusion
 
 No candidate is selected. The provider matrix is now sufficiently specific to design a controlled, provider-neutral comparison, but insufficient to claim that any candidate satisfies PocketCode's launch gates. Under the existing $0/no-account/no-workload constraints, the next permitted work is source-grounded review and design only.
+
+
+## Cross-reference to detailed acceptance evidence
+
+The current provider facts above are summarized in [AI_COLLAB/RESOURCE_CONTAINMENT_AND_TEARDOWN_EVIDENCE_REVIEW_20261101.md](../AI_COLLAB/RESOURCE_CONTAINMENT_AND_TEARDOWN_EVIDENCE_REVIEW_20261101.md). Use that review as the evidence-design companion when comparing candidates. It deliberately separates:
+- requested resources from enforced hard ceilings;
+- CPU throttling from wall-clock termination;
+- I/O rate from disk capacity;
+- child process-tree termination from provider resource deletion;
+- sandbox deletion from attached volume/snapshot deletion;
+- provider resource release from delayed billing reconciliation.
+
+The provider shortlist remains unranked pending an actual first-workflow definition, owner decisions, and explicit account/budget approval. No vendor's public documentation is accepted as runtime proof.
