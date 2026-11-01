@@ -115,3 +115,53 @@ Do not edit PR #2/#3, source/tests, canonical PocketCode acceptance, RevDev sour
 - P0-D source matrix contains ten ordered canaries; all ten were compared against the PocketCode canonical LOOP/CASE meanings.
 - No AWC model trials, PocketCode LOOP/CASE tests, RevDev P8U/P0-D runtime tests, provider calls, GitHub Actions, or local PC tests were run.
 - No implementation, source, test, PR, queue, runtime, security boundary, merge, or deployment was changed.
+
+
+## 7. Supplemental execution-boundary helper observations — 2026-11-01
+
+**Scope separation:** These are additional read-only observations from the lifecycle-helper source referenced by the separate execution-boundary crosswalk. They do not alter Sections 2–3 above, the AWC/P0-D semantic mappings, PocketCode canonical acceptance, or any original test namespace. They are candidate gaps, not an implementation authorization.
+
+### OBS-01 — No terminal event is conflated with confirmed provider failure
+
+Exact source snapshot:
+- PR #3 base helper: `scripts/lifecycle_contract.py`, blob `ba8d4d0b217c90513bed020e298029ef4e16f164`.
+- Lifecycle-fingerprint descendant helper: blob `316345341603848c4a86a6a82e533daa796c7695`.
+- Owner decision register: `AI_COLLAB/OWNER_DECISION_REGISTER_20261029.md`, blob `e67b2659cf2d71ef77d8e4619c91143e71062470`, D-02.
+
+Static path:
+1. `TERMINAL_EVENTS` maps `provider_error` to raw outcome `UNKNOWN` (helper lines 16–23).
+2. `reduce_terminal_events()` also initializes its outcome to `UNKNOWN` and leaves `winning_event_id=None` when no terminal event exists (lines 128–137).
+3. `derive_disposition()` maps every `execution_outcome == "UNKNOWN"` to `PROVIDER_ERROR` (lines 52–53).
+
+Therefore an empty event list or a stream with no terminal event is indistinguishable at the disposition-helper interface from an explicit provider-error terminal event. D-02's working default says `PROVIDER_ERROR` is appropriate only when the infrastructure cause itself is confirmed; missing terminal evidence must remain unknown/incomplete. The two states need a distinct representation or an explicit confirmed-cause input before disposition derivation. The reducer's existing event-ownership limitation also means an event kind alone does not establish trusted provider provenance.
+
+**Candidate negative/positive cases:**
+- Empty event list and nonterminal-only event list: no terminal evidence; must not become confirmed `PROVIDER_ERROR`.
+- Explicit, identity-bound and trusted provider-error evidence: may produce provider-error disposition while the user-facing execution verdict remains INCOMPLETE.
+- Unknown, missing, or unbound event source: retain UNKNOWN/INCOMPLETE, not a confirmed infrastructure cause.
+
+This is a source-level contract finding, not proof that a live caller currently misuses the helper. No tests were run.
+
+### OBS-02 — Malformed contradiction flag can bypass the contradiction gate
+
+In the same helper, `contradictory_evidence` is checked with ordinary truthiness (`if contradictory_evidence`, lines 43–47), while the four positive PASS gates are explicitly required to be literal `True` (lines 64–67). The helper does not reject non-boolean values for `contradictory_evidence`, `limit_violated`, or `output_truncated`.
+
+For example, `contradictory_evidence=0` is falsy and bypasses the contradiction guard. With EXIT_ZERO, confirmed cleanup and all four PASS gates set to literal True, the current function can return PASS even though the contradiction field is malformed rather than an explicit boolean False. Truthy malformed limit flags can also be interpreted as a confirmed limit; falsy malformed flags can be treated as no limit.
+
+**Candidate cases:** test `contradictory_evidence` with 0, None, empty string and string "false"; test both limit flags with malformed truthy and falsy values. Invalid values should be rejected or yield an incomplete/unknown disposition, never silently coerced into valid evidence. Add a passing-path regression proving malformed contradiction evidence cannot yield PASS.
+
+The existing `test_malformed_truthy_gate_values_never_produce_pass` does not cover these three flags. This is static source analysis; no suite was run.
+
+### OBS-03 — Bearer-token redaction can lose a long separator across the carry boundary
+
+Exact source snapshot: the same PR #3 and lifecycle-fingerprint helper blobs above; `StreamingRedactor` has `CARRY_BYTES = 768` (line 342) and the bearer pattern `Bearer\\s+[A-Za-z0-9._~+/-]{8,256}` (line 344). The whitespace quantifier is unbounded. The streaming algorithm emits a prefix when no complete configured match is present in the current combined buffer; it only moves the cutoff backward when it can already see a complete match crossing that cutoff (lines 359 onward).
+
+A local reproduction of this exact pattern/carry algorithm, with the Bearer prefix followed by 900 whitespace bytes before the token and input split across chunks, retained the bearer token unredacted. The current carry-boundary regression uses a short separator and does not cover a separator longer than the carry.
+
+**Candidate cases:** test whitespace separators at, below and above 768 bytes, including chunked input where the token arrives only after the prefix has already crossed the candidate cutoff. The helper should either use an explicitly bounded separator with a safe streaming rule or preserve bounded parser state sufficient to avoid emitting a potentially sensitive prefix. Do not treat this redactor as a privacy guarantee; prevent credentials from entering the user-code environment and minimize collection.
+
+This reproduction is a targeted check of the pattern/carry algorithm, not execution of the repository's full test suite. No source or tests were changed.
+
+### Review disposition
+
+OBS-01 through OBS-03 should be reconciled with the existing execution-boundary crosswalk Sections 6–9 and the D-01..D-04 owner register before any helper patch or schema decision. The known positive improvements on the lifecycle-fingerprint descendant (identity validation, malformed-event preservation, tombstone retention/fingerprint conflict) remain branch-scoped; these new observations do not negate them. Both helper/test suites remain NOT RUN in this review. No PR, source, test, canonical acceptance, provider, runtime, queue, Actions, account, spend, merge or deployment was changed.
