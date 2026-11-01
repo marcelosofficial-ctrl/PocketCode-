@@ -152,6 +152,7 @@ Sources:
 - https://modal.com/docs/guide/sandbox-networking
 - https://modal.com/docs/guide/sandbox-resources
 - https://modal.com/docs/sdk/js/latest/Sandbox
+- https://modal.com/docs/sdk/py/latest/Sandbox (Python terminate(wait=True) and poll semantics)
 
 ### 4.4 Daytona Sandboxes
 
