@@ -327,3 +327,49 @@ Branch separation was checked again:
 - PR #3: OPEN, DRAFT, UNMERGED; head `0ddcc0bc97bac5d446aefedf3d71f99411bd841d`, base main.
 
 Only documentation files on the existing research branch were written. No canonical acceptance, source, implementation tests, PR head, main, provider, account, runtime, queue, Actions, billing or deployment was touched. All RES/TDN cases and implementation/integration tests remain NOT RUN. No provider is selected; WP-08 remains BLOCKED.
+
+
+## 16. Claude resource/teardown challenge reconciliation — 2026-11-02
+
+### Review limitation and disposition
+
+Claude explicitly stated that it could not read the three new research-branch AI_COLLAB documents and therefore could not verdict RES/TDN. Do not describe its reply as a review of those files. ChatGPT independently reconciled its claims against the pinned canonical acceptance, SECURITY.md, the main-branch provider research, and the exact research-branch documents. The useful challenges were accepted and recorded as a source-reconciled addendum.
+
+### New/changed records
+
+1. Resource and teardown evidence review, blob `e86cacdd2960b86bc4030c971f7a6306f605e832`, commit `ea64aba8d16a7dca50c305d6d46bb58fcfa38490`:
+   - strengthened RES-02, RES-08 and RES-09;
+   - tightened TDN-02/03/04/05/07/08;
+   - added TDN-09 lost create acknowledgement and TDN-10 warm/reused sandbox contamination;
+   - recorded no canonical cleanup-confirmed ID and no resource-limit lifecycle status;
+   - added hierarchical/local cgroup event semantics, mount-option checks, OOM/timeout race attribution, observer survival and pre-removal snapshots;
+   - clarified Firecracker is a VMM/microVM building block, not a managed sandbox service.
+   - URL: https://github.com/marcelosofficial-ctrl/PocketCode-/blob/pocketcode-ai-workflow-director-research-2026-10-28/AI_COLLAB/RESOURCE_CONTAINMENT_AND_TEARDOWN_EVIDENCE_REVIEW_20261101.md
+2. Lifecycle regression plan, blob `0135df7d894fbaa7017bed58bde7f86a89eb59a6`, commit `b23231e9549658a9922a90f3be29c49ffcc4e055`:
+   - added Claude-review reconciliation and canonical-boundary notes;
+   - corrected cgroup evidence guidance to include actual hierarchy, mount options, local and hierarchical counters, OOM/timeout race and pre-removal evidence;
+   - retained all PC-LC/AD/DB/RT and RES/TDN tests as NOT RUN.
+   - URL: https://github.com/marcelosofficial-ctrl/PocketCode-/blob/pocketcode-ai-workflow-director-research-2026-10-28/AI_COLLAB/LIFECYCLE_CONTRACT_REGRESSION_PLAN_20261101.md
+3. Implementation readiness backlog, blob `449047335f97fd59bf8a0ae0ebcd92aee9c27c4a`, commit `e9d9c523e117ca03850db8758c82c3b239ed753c`:
+   - strengthened WP-08 worker isolation, cgroup evidence, create/delete intent, ambiguous 404, warm reuse and cross-attempt checks;
+   - added a separate Claude challenge reconciliation note;
+   - WP-08 remains BLOCKED.
+   - URL: https://github.com/marcelosofficial-ctrl/PocketCode-/blob/pocketcode-ai-workflow-director-research-2026-10-28/AI_COLLAB/IMPLEMENTATION_READINESS_BACKLOG_20261029.md
+
+### Technical corrections now in the records
+
+- The canonical lifecycle enum has no resource_limit_exceeded state. OOM, ENOSPC, per-file size, PID and I/O events must retain typed cause, enforcement layer, observer and child-terminal evidence. Classification as program/runtime failure versus infrastructure failure remains open where owner decisions D-01/D-02 do not settle it.
+- CASE-07 is stdout/stderr output cap; CASE-14 is output-file path/size safety. Neither proves total workspace disk capacity or I/O throughput.
+- There is no standalone canonical cleanup-confirmed case. TDN stays supplementary.
+- Kernel cgroup v2 docs: memory.events is hierarchical by default, memory.events.local is local-only, and memory_localevents can change memory.events to local-only. pids.events has a similar hierarchical/local distinction and pids_localevents option. Capture actual mount options and topology; a local read on a job parent may miss descendants, while a broad hierarchical parent can mix attempts.
+- oom and oom_kill are different observations. oom_kill counts processes in the cgroup killed by any OOM killer; it does not prove the cgroup's own memory.max caused the kill. Exit 137/SIGKILL does not resolve an OOM/timeout race.
+- Capture counters before cgroup removal. The observer/supervisor must survive outside the workload kill domain.
+- A lost create acknowledgement requires durable pre-call intent and scoped/paginated orphan reconciliation. Fake/pure tests alone cannot prove that persistence property.
+- LOOP-14 gates any provider account, billing enablement or potentially billable workload. A fake cannot prove that charges stopped.
+
+### Current proof status and next action
+
+- Read-back verified all three updated blobs on the existing research branch. Latest research-branch commit at this checkpoint: `e9d9c523e117ca03850db8758c82c3b239ed753c` before this handoff file update.
+- No source/test/PR/main/canonical acceptance/provider/runtime/queue/Actions/account/billing/host state changed. No tests, provider calls or workloads run.
+- All RES/TDN and PC-LC/AD/DB/RT cases remain SPECIFIED ONLY / NOT RUN. WP-08 remains BLOCKED, provider selection NONE, budget $0.
+- Next reviewer step: provide Claude these exact three blob URLs and request a source-backed verdict on the updated content, not the inaccessible path names. Separately resolve the outstanding Gemini OBS/fixture namespace collision before merging any reviewer observation IDs into the existing register; do not reuse ChatGPT OBS-01..06 labels for Gemini's differently described observations.
