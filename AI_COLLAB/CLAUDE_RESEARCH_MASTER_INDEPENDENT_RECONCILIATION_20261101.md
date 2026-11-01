@@ -315,3 +315,17 @@ Happy main snapshot 323fb2e9fd0c9a44ceab9239fbc586c513f7f844 (MIT):
 - Happy docs distinguish client E2E-encrypted content from third-party tokens encrypted server-side with HANDY_MASTER_SECRET.
 
 Disposition: OpenHands is a persistence/ownership study, not a copy-ready store. Happy is a pairing/UX study, not a selected dependency or verified complete pairing protocol. No native contract, D-01..D-08 owner decision, fixed task, product direction or implementation decision changed.
+
+
+## 15. OpenHands agent-server crash recovery and existing test coverage — 2026-11-02
+
+A further exact-ref read of OpenHands source found that the agent-server explicitly handles the append/HEAD crash window. At pinned commit `98849457621881ae2414719b82b8bc1cf535b4ab`, `event_service.py` lines 1424–1467 detects a restored RUNNING conversation, marks it ERROR, scans the full event log for unmatched actions and appends a non-retryable AgentErrorEvent explicitly parented to the first unmatched action when no ObservationBaseEvent exists for its tool_call_id. SDK `state.py` lines 268–320 confirm a still-existing stale leaf remains active; missing-leaf repair is separate.
+
+Existing tests and documented integration coverage:
+- Agent-server mocked unit tests: `tests/agent_server/test_event_service.py`, blob `fc6e589f71318ac36df92b72c1fd0225549d1436`, lines 2419–2678. They cover RUNNING/unmatched, RUNNING/no unmatched, non-RUNNING skip and observation suppression by tool_call_id despite different action_id. Inspected assertions do not verify parent_id or restored active ancestry.
+- SDK helper tests: `tests/sdk/conversation/test_get_unmatched_actions.py`, blob `35798b1bccb60b0976cf0785682ef17181e4450b`.
+- F31.crash-tool-call integration recipe in `.agents/skills/verify-agent-server/references/feature-map/F31-persistence-and-limits.md`, blob `5082730e1ba1d333daeaf321c21214ad4924cd12`, lines 191–220. It documents SIGKILL during a stubbed tool call, recovery status/error assertions, no observation and resumed model delivery. It does not assert parent_id/active ancestry and its broader recipe includes a DeepSeek key/model precondition.
+
+Interpretation: the SDK persistence writes remain separate, but targeted agent-server recovery exists and is covered at mocked-unit plus documented integration levels. The narrow missing proof is a real persisted-file crash/restore assertion that the recovery event is parented to the action and the active branch is action → recovery error. Full-log observation suppression, multiple unmatched actions and side-effect ambiguity also deserve focused challenge. EventLog writes event JSON before in-memory index/length and sidecar marker updates; marker update deletes old marker before writing the new marker. See OPENHANDS_EVENTLOG_HEAD_CRASH_WINDOW_FALSIFICATION_PLAN_20261102.md for marker crash boundaries.
+
+No source tests, provider, deployment or host were run by ChatGPT. These are source and test-spec observations only; no PocketCode owner decision or product direction changes.
