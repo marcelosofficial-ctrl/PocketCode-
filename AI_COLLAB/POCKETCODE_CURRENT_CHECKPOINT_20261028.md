@@ -312,3 +312,24 @@ The proposed portable receipt is not a new schema. Reuse the existing proposed r
 ### Gemini: independent technical and product falsification review
 
 > Independently audit `AI_COLLAB/PRODUCT_PATH_COMPARISON_DESK_REVIEW_20261101.md`. Do not rely on Claude's or ChatGPT's conclusions. Verify the technical claims against primary docs and the exact GitHub repository revisions. Look for capability overclaims, unverified security/privacy inferences, iOS/Android platform conflation, release-stage confusion, and missing strong counterexamples. Check whether Pyodios is actually a viable comparator for the fixed standard-library CSV task while accounting for its 120-second timeout that does not stop execution; whether Safari Pyodide file I/O can be made practical without claiming direct Files-folder mounting; and whether the report experiment uses exactly the same evidence in both conditions. Identify any false or stale statements with exact source lines and propose the smallest correction. Do not reuse AWC or helper OBS identifiers unless the pinned source proves the mapping. No tests, installs, accounts, provider calls, or edits.
+
+## 2026-11-01 Gemini open-source research review
+
+## 2026-11-01 Gemini open-source research review
+
+Owner supplied Gemini's four-stage open-source research report. ChatGPT completed a targeted primary-source desk review and recorded the detailed analysis in [GEMINI_OPEN_SOURCE_RESEARCH_REVIEW_20261101.md](GEMINI_OPEN_SOURCE_RESEARCH_REVIEW_20261101.md).
+
+**Disposition:** useful discovery catalogue, not an approved architecture or adoption plan. The report lacks adequate pinned source revisions/module-level evidence and contains overconfident or inaccurate claims. Key corrections:
+- Pyodide browser/WASM is promising for local Python but has browser API/origin capabilities, filesystem and resource/termination constraints; do not call it a complete secure sandbox.
+- wasmsh is an interesting, relatively young WASM shell/VFS candidate; verify implementation, budget enforcement, broker, dependencies and threat model before any adoption. No general shell in MVP.
+- tsnet is a Go library, not a drop-in RevDev C#/PowerShell component; Tailscale ACLs do not replace application authorization. AsyncSSH pairing is not demonstrated.
+- LangGraph graph checkpoints do not guarantee exactly-once external effects or provider execution recovery; defer while MVP has no autonomous multi-step agent loop.
+- Piston's public API is no longer generally free since 2026-02-15; self-hosting requires Linux/Docker/Isolate operations. Keep as reference only under $0.
+- OpenHands ACI repository is archived (2026-05-15); upstream points to the current Agent SDK. Do not adopt archived ACI.
+- CodeMirror 6 has real Android/iOS input handling code, but actual target-device UX remains untested.
+- FlaUI and Watchdog are conditional stack-specific candidates, not default dependencies for current RevDev.
+- Judge0 GPL-3.0 is not an automatic blanket source-disclosure trigger; perform a component/distribution-specific licence review if reconsidered.
+
+**Administrative decisions:** no unified runtime/graph architecture; PocketCode and RevDev remain separate systems and execution/security/acceptance boundaries, with future protocol compatibility possible. No LangGraph, tsnet/AsyncSSH, Piston-hosted, Watchdog, FlaUI, wasmsh-shell or OpenHands-ACI adoption approved. CodeMirror 6, Pyodide and Aider repo-map remain candidates/patterns only. No new canonical LOOP/CASE IDs, schema fields or API contract. No source, tests, PRs, Actions, accounts, providers, workloads, spending, merge or deployment authorized. $0 budget remains; PC/runtime/queue state UNKNOWN.
+
+Next: await Claude's independent report; reconcile exact upstream revisions and disagreements; deep-inspect only CodeMirror 6, Pyodide, wasmsh and Aider repo-map as plausible first candidates. Continue fixed-task experiment design; do not claim any path verified or selected.
