@@ -363,3 +363,24 @@ D-06 and D-08 already describe proposed idempotency and report-history requireme
 - Gemini: pending. The updated review request should prioritize the reconciled AWC changes, P0-D 9/10 split, OBS-01 through OBS-06, D-01/D-03 truncation semantics, and the boundary between pure-helper evidence and persistence/provider/runtime evidence.
 
 Everything remains static review. AWC fixtures are PROPOSED_NOT_RUN; PocketCode LOOP/CASE is proposed/NOT RUN; lifecycle helper tests are NOT RUN; provider/runtime/queue/host behavior remains UNKNOWN. No implementation, test, canonical acceptance, PR, queue, runtime, provider, Actions, merge, deployment or spend was changed or invoked.
+
+
+### 8.8 Cross-branch comparison and priority refinement
+
+A direct source comparison was made between the PR #3 base helper (blob ba8d4d0b217c90513bed020e298029ef4e16f164) and the lifecycle-fingerprint descendant helper (blob 316345341603848c4a86a6a82e533daa796c7695):
+
+- The complete derive_disposition block is identical in both snapshots. OBS-01, OBS-02 and OBS-06 therefore apply to both.
+- The complete StreamingRedactor class is identical in both snapshots. OBS-03 therefore applies to both.
+- reduce_terminal_events differs. The descendant adds checks for non-mapping events, blank event IDs/kinds, invalid sequence values, and non-mapping payloads; it preserves malformed events in invalid_events. The PR #3 base does not have these same checks.
+- Neither reducer validates an authenticated producer role or compares event tenant/job/attempt/source/policy identity with an expected current-attempt context. OBS-04 and OBS-05 remain model-boundary gaps in both snapshots.
+- The descendant's positive event-shape hardening is branch-specific and does not imply it is integrated into PR #3, main, or runtime.
+
+The redaction test design is extended beyond Bearer values. The configured key/password/secret patterns also cap captured values at 256 characters. A targeted local reproduction of the copied source algorithm with 300-character values left 44 trailing characters visible for each of secret=, api_key=, access_token= and password=. Add 257, 300 and 600-plus character values for these patterns, and assert that no suffix is emitted. This was a copied-algorithm reproduction, not an execution of the repository tests.
+
+Suggested source-level work priority, subject to the still-open owner decisions:
+1. Separate no terminal evidence from confirmed provider error; require strict boolean validation for negative-polarity flags; distinguish runtime-enforced limit from collector/display truncation.
+2. Specify producer authority and attempt-context identity before terminal reduction. Do not let coordinator sequence alone stand in for source or attempt binding.
+3. Expand redaction regression coverage for carry boundaries and overlong values, while keeping the redactor explicitly outside the security boundary.
+4. Only then use fake adapters, persistence/restart tests and provider/runtime evidence to establish dispatch, publication and queue guarantees.
+
+This is prioritization for future review, not authorization to modify implementation or tests.
