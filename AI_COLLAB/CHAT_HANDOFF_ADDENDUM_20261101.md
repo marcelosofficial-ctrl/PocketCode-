@@ -154,3 +154,15 @@ The source review also confirms that generic output_truncated currently maps to 
 ### Next review
 
 Ask Gemini to independently challenge the reconciled Section 8, especially AWC-005/011/008/009/010/012/017/018, the P0-D 9/10 split, OBS-01 through OBS-06, and the exact distinction between runtime-enforced limits, collector caps and display truncation. Require exact source/artifact references and evidence-layer labels. Do not ask Gemini to infer runtime behavior or approve implementation.
+
+
+### Second source pass: branch comparison and redaction coverage
+
+A direct diff-level comparison confirms:
+- PR #3 base and lifecycle-fingerprint descendant have identical disposition logic and identical StreamingRedactor code.
+- The descendant has stricter malformed-event shape validation and preserves invalid events; the PR #3 base does not contain those same protections.
+- Neither branch's reducer authenticates producer authority or compares an event to an expected tenant/job/attempt/source/policy context.
+- Additional copied-algorithm checks show 300-character values after secret=, api_key=, access_token= and password= leave a 44-character suffix visible. The bearer rule has separate word-boundary behavior and carry-boundary risk.
+- Repository helper and test suites remain NOT RUN. The reproduction was local and limited to code copied from the pinned source. No patch was made.
+
+This comparison and the future-work priority are recorded in Section 8.8 of the independent review file. It supersedes any implication that every malformed-event finding is identical across the two branch versions.
