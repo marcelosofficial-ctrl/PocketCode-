@@ -954,3 +954,10 @@ A targeted search at pinned OpenHands commit `98849457621881ae2414719b82b8bc1cf5
 - Feature map F31 `.agents/skills/verify-agent-server/references/feature-map/F31-persistence-and-limits.md`, blob `5082730e1ba1d333daeaf321c21214ad4924cd12`, lines 191–220, documents a SIGKILL-during-tool-call integration scenario that checks ERROR, one matching AgentErrorEvent, zero ObservationEvents and resumed model delivery. It does not assert parent_id or active ancestry and has a DeepSeek key/model precondition in the broader run recipe.
 
 Therefore do not duplicate existing unit cases. The remaining high-value gap is a real persistence/restore test that injects the append/HEAD crash and asserts E0 → action → recovery error active ancestry, plus explicit parent_id assertion, log-wide observation suppression, multiple unmatched actions and side-effect ambiguity. Existing tests and F31 are source-present/documented only; ChatGPT did not run them. No upstream test or source was changed.
+
+
+## 27. EventLog marker ordering and minimum residual proof — 2026-11-02
+
+Pinned EventLog append at `event_store.py` lines 288–297 writes the event JSON before updating in-memory indexes/length and then the sidecar length marker. Marker advancement at lines 320–330 deletes the prior marker before writing the new marker; LocalFileStore string writes use atomic_write_text (`local.py` lines 63–68). The falsification plan includes crashes across these boundaries and distinguishes process termination from power-loss durability.
+
+Existing test coverage has been mapped in Sections 25–26 and the detailed plan. Do not duplicate the mocked EventService branch tests or F31 SIGKILL recipe. The smallest remaining high-value proof is a real local persistence/restore test asserting that after the append/HEAD crash, EventService recovery produces active ancestry action → recovery AgentErrorEvent with `parent_id=action.id`. Then separately challenge full-log observation suppression, multiple unmatched actions and ambiguous external side effects. No tests have been run; no PocketCode decision changed.
