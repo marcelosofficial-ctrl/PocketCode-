@@ -360,3 +360,11 @@ Updated worksheet blob: `491dc02ce53722e381ec7253ab754b2d2baa2d8c`. **Status rem
 The Section 2A source fixture was copied to a temporary directory and sanity-checked in the isolated ChatGPT Python environment: Python 3.13.5, Linux x86_64. SHA-256 `70c66ad3a0132923cbf3190eb3546093fcc2c61c1bdcbf3b171696e1ae7521e7` (1,939 bytes). Success case returned exit 0 and exact expected JSON; malformed header returned exit 2 with the missing-`unit_price` error and no output file. The harness injected an unrelated spreadsheet warmup traceback into stderr at interpreter startup, so the entire stderr stream is not clean application-only evidence. See Section 2B of the worksheet.
 
 This is fixture logic validation only. No iPhone/app/browser/remote/hosted test, benchmark, device behavior, sandbox, termination, cleanup, egress or report-handoff evidence. Product-path comparison remains NOT RUN.
+
+## New-chat transfer checkpoint — 2026-11-01
+
+Created the standalone comprehensive handoff `AI_COLLAB/NEW_CHAT_BOOTSTRAP_20261101.md` (blob after read-back: `d07ffc44d37ccfa8bf3ab900d4307370a541946b`). It is the primary new-chat transfer document and includes a complete copy/paste bootstrap. The handoff addendum links it (blob `e58e165a15ebd811d59b5933267c2d02ad2b97f8`).
+
+The new chat must treat Claude's forthcoming medium-sized research document as valuable recommendations and evidence, not as permission to overwrite PocketCode's goals, contracts or owner decisions. It must reconcile Claude with Gemini, pinned primary sources and existing acceptance. PocketCode and RevDev remain distinct. No device/product-path test has occurred; fixed-task product comparison remains NOT RUN.
+
+Last branch comparison: 514 ahead / 0 behind main, base `555840d8d83342513d9cd353d4d1522d46a5c82d`. PR #2 and #3 remain open, draft, unmerged and untouched at their recorded head SHAs. Recheck live state in the next chat.
