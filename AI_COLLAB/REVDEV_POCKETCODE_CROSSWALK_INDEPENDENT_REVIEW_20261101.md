@@ -545,7 +545,7 @@ Source-grounded corrections:
 The kernel defines the local `oom_kill` counter as processes in the cgroup killed by any OOM killer. An increase alone does not prove the target cgroup's own `memory.max` caused the kill. Conversely, a memory-limit hit may return `-ENOMEM` without an OOM kill. The resource review now requires correlated target-local `max`/`oom`/`oom_kill` deltas, effective memory/swap configuration, exact cgroup and PID membership, trusted termination evidence, and supervisor/sibling health. No single counter is accepted as proof of causation.
 
 
-## 13. Gemini AWC identifier collision — source verification (2026-11-02)
+## 13. Gemini AWC identifier collision — source verification (2026-11-01)
 
 A source check found that several AWC-numbered subjects in the user-supplied Gemini review do not match the pinned RevDev AWC fixture manifest. This is not a minor wording difference; it is a material identifier/namespace mismatch. The crosswalk must not accept those labels as fixture references until Gemini supplies the alternative source artifact, exact branch and blob SHA.
 
