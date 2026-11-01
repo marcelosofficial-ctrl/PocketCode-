@@ -359,3 +359,37 @@ These findings lower confidence in adopting Codex without further review; they d
 ### 14.8 Non-actions
 
 No Windows test, build, installation, source edit, PR, host operation, queue action, schema change, canonical acceptance change, provider, spend or deployment was performed. Source reading only.
+
+
+## 15. Source navigation anchors
+
+Line numbers below refer to the exact pinned refs/blobs already listed in Sections 2, 13 and 14.
+
+### srt at 81145771c9bfc51c5669f071b515209321e0d078
+- token.rs (blob 56b4c4fd402db4ca8b2f525f3be5b1ad92e83f1c): flags/SID list around 82–112; token construction and read-back around 220–320; default DACL around 375–420.
+- wfp.rs (blob c3af835ec1479ac19bb1b35181a23d89e5c55640): layer/fence design around 1–55; transactional filter installation around 620–755; status logic around 870–905; filter completeness tests around 990–1145.
+- acl.rs (blob fe3aca61a1512e5f3e27c3b2de21c7e337320c22): additive ACE model around 1–25; masks around 100–130; grant/deny and parent-FDC behavior around 930–1015; ACE composition around 1060–1135.
+- job.rs (blob d9d3f19c2b061fb7ae43dd94437223b3a09aa561): kill-on-close and UI restrictions around 1–124.
+- launch.rs (blob c25c3a57aa2aadb4ea6c9208009276d3575c489f): fail-closed launch and self-protection around 115–205; suspended process creation, job assignment and resume around 267–345.
+- runner.rs (blob 43e746e5e0a4d712bc587afa47871c9a67930815): broker-to-runner command boundary and dispatch around 1–170.
+- install.rs (blob 9466d08fb2ac7bc20ec96abcb70c0d17d5d2d1e4): machine store and CA-key DACL trade-off around 1–95.
+- state_db.rs (blob 428b6354fd2ea8ecab2a8ab7ee95680ef7ce7653): refcount/disk-is-truth/crash-recovery design around 1–46; holder/persistent table definitions around 77–180.
+- persist.rs (blob 51f377d4b220a9812ba10d03604176819d312c43): persistent grant/deny recovery and forget logic, including crash recovery around 729–800 and 1152–1190.
+- ambient.rs (blob 31f2b19da5f19c3dfef2bcf1edb961d379e7151d): install-time ambient deny targets and cleanup semantics around 1–50.
+- probe.rs (blob e961cf81e8772f20ddbcd5691617fdbefa3ee750): token-shape verification and residual classification around 1–300 and 300–620.
+- windows-sandbox-utils.ts (blob fb8f0aa206724e1b52719d564c99b1ede71ae4c7): default IPv4 loopback readiness probe around 1669–1725.
+- winsrt.test.ts (blob 29a4ed5bc201ee093a6b1c6c82e7294bb4189508): explicit ICMP-not-fenced test around 5195–5201.
+
+### Codex at 06f3b4836ac6e4fecc1d75a09b8a9fa369b16635
+- token.rs (blob not separately repeated here): restricting SID list and CreateRestrictedToken around create_token_with_caps_from; use the exact pinned file ref.
+- firewall.rs (blob b5dfb2ef49652176b2b17a02e55719d1e864b471): offline firewall rules around 25–200; rule configuration and LocalUserAuthorizedList read-back around 206–290.
+- acl.rs (blob f351dba190a9f50a5362ea64fe5c6675bf5b3f8c): deny-presence predicate around 217–260; write grant mask around 262–345; add_deny_write_ace around 452–510.
+- setup_main_win.rs (blob 78c0a8be8e53bcad0e2015a3d48d8b94d5533dde): firewall setup around 578–620; write-root grants and deny-path ACL handling around 642–800; refresh-only error bail around 890–895.
+- sandbox_users.rs (blob 13460b94444ec084db8bbd0c3f998e1739207b77): local account/group provisioning around 35–160; machine-scope DPAPI blob writing around 360–490.
+- dpapi.rs (blob c4dcc79fa602860714af3fe606bea44c1a583d6b): CRYPTPROTECT_LOCAL_MACHINE around 1–80.
+- helper_materialization.rs (blob b7d00e1dd9263f9e6476bcd456a3da2319efed2d): size/mtime freshness and temp-file copy/rename around 210–360.
+- elevated/runner_pipe.rs (blob c8ae092c4a00fc3e029be48cb77cc78db4580d87): random pipe names, DACL and client PID verification around 47–130.
+- process.rs (blob 1571bb8ccf47c798787e5d1eee3e18de277dc74a): CreateProcessAsUserW and explicit handle list around 85–205.
+- spawn_prep.rs (blob 1b3704d6a26287d578eb5b30945d53b683607f6d): allow/deny ACL preparation and write-root derivation around 218–310.
+
+These anchors are source-navigation aids, not proof of runtime behavior. All line-range claims remain tied to the stated commit.
