@@ -166,3 +166,19 @@ A direct diff-level comparison confirms:
 - Repository helper and test suites remain NOT RUN. The reproduction was local and limited to code copied from the pinned source. No patch was made.
 
 This comparison and the future-work priority are recorded in Section 8.8 of the independent review file. It supersedes any implication that every malformed-event finding is identical across the two branch versions.
+
+
+## 8. Regression plan added — 2026-11-01
+
+A staged, evidence-layered test design is now available at [LIFECYCLE_CONTRACT_REGRESSION_PLAN_20261101.md](LIFECYCLE_CONTRACT_REGRESSION_PLAN_20261101.md).
+
+It separates:
+- Pure-helper regressions for OBS-01 through OBS-06.
+- Fake-adapter dispatch/reconciliation tests.
+- Persistence and exact-byte replay tests.
+- Provider/process-observer authority tests.
+- Queue quarantine and runtime liveness tests.
+
+Priority begins with false-PASS prevention (OBS-02) and terminal-evidence state separation (OBS-01), then attempt identity, producer authority and truncation taxonomy. Redaction is explicitly defense-in-depth. Every test remains proposed/NOT RUN; no source or test was changed.
+
+Current research branch includes the regression plan commit `fc987878c23d0a6e69189b3a9b706bbb3d2eacfb`. Its file blob is `70b457623c392a99475e5682ceb01903c2b9cf9a`.
