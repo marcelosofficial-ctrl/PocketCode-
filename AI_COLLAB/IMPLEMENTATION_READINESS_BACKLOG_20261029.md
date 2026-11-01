@@ -197,3 +197,23 @@ Use [CONSOLIDATED_OWNER_DECISION_AND_PATCH_GATE_20261029.md](CONSOLIDATED_OWNER_
 
 
 Implementation-level clarifications are in [G01_G08_EDGE_CASES_AND_PATCH_REVIEW_NOTES_20261029.md](G01_G08_EDGE_CASES_AND_PATCH_REVIEW_NOTES_20261029.md), including G-01 validation precedence and G-08 expired-key reuse. Resolve the G-08 retention/reuse rule before implementing tombstone changes.
+
+
+## WP-08 — Provider resource containment and teardown reconciliation (PC-EXT-02 / PC-EXT-04)
+
+**Status:** BLOCKED. Research/test design only. No provider, runtime or account selected.
+
+**Dependencies:** Owner decisions D-01..D-04; a selected and approved provider/runtime; an approved resource budget and test environment; WP-03 policy barrier; trusted evidence identity model; durable reconciliation/report persistence under WP-05. A fake adapter alone is insufficient.
+
+**Required scope:**
+- Map every requested limit to the provider's effective hard enforcement mechanism. Distinguish memory/swap, CPU bandwidth/deadline, task count, disk capacity/per-file size/I/O throughput, output collection and display.
+- Prove the worker/supervisor is outside the untrusted workload's kill domain and that a bounded workload cannot destabilize the worker or sibling attempts.
+- Bind resource telemetry to exact tenant/job/attempt/provider-resource identity. Use target-local counters where available, not global or ancestor aggregates.
+- Persist delete intent before provider calls; treat accepted/ambiguous responses as unresolved; reconcile the same stable resource ID until authoritative terminal destruction is observed.
+- Track process-tree empty, sandbox destroyed, attached resources released, and billing reconciled as separate observations.
+- Test crash/restart, lost delete acknowledgement, provider lookup outage, late cleanup event, repeated delete, and poison-item isolation in the reconciliation queue.
+- Prove cleanup eventually stops the provider resource; delayed invoice data is not a substitute for resource-state evidence.
+
+**Exit evidence:** selected-provider contract/version pinned; bounded controlled tests with exact configuration and identity; authoritative enforcement and termination evidence; durable restart/reconciliation evidence; worker/sibling canaries remain healthy; cleanup terminal state observed; resource and billing states separately reconciled. Preserve NOT RUN when any prerequisite is absent.
+
+**Hard stop:** no account creation, API key, workload, billing enablement, paid trial, provider call, host operation or implementation is authorized by this work package. Under the current $0 constraint it remains design-only.
