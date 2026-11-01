@@ -489,3 +489,30 @@ Updated PocketCode docs:
 - WP-08 backlog blob `a13788cc48c23cb3d2c98c4f6118c03e79479bdb`, commit `01144816ae99eb77a6ee2d962951e3d3901b40e4`.
 
 All additions remain design-only. No implementation, tests, provider, workload, account, host operation or spending occurred.
+
+
+## 21. Final continuation pins after Firecracker schema pass — 2026-11-01
+
+Final current blob identities for this checkpoint:
+
+| File | Blob SHA |
+|---|---|
+| `AI_COLLAB/RESOURCE_CONTAINMENT_AND_TEARDOWN_EVIDENCE_REVIEW_20261101.md` | `df6eda10467069738eb72818fc4b36ddd69b7889` |
+| `RESEARCH/EXECUTION_PROVIDER_RESEARCH.md` | `e754aee41858e45e0fb907a7f46df442a757f317` |
+| `AI_COLLAB/LIFECYCLE_CONTRACT_REGRESSION_PLAN_20261101.md` | `f33d2deeabb97a36c5916eb86de1f88d2b375acd` |
+| `AI_COLLAB/IMPLEMENTATION_READINESS_BACKLOG_20261029.md` | `a13788cc48c23cb3d2c98c4f6118c03e79479bdb` |
+| `AI_COLLAB/POCKETCODE_CURRENT_CHECKPOINT_20261028.md` | `897db38b4f7ae32bb7c7c3849c49a583938bebf6` |
+| `PROJECT_STATUS.md` | `9d8e5bd049fa90584546a598f843b95d6abd8ec6` |
+| `AI_COLLAB/CHAT_HANDOFF_ADDENDUM_20261101.md` (before this section is appended) | `0d0b4b736a6521711672aadde1d66c1a0cc6365f` |
+
+The RevDev/PocketCode crosswalk review remains blob `2e577636535bff05916ae21e4e9b63db040deb37` unless separately updated; it contains the source-verified AWC namespace correction.
+
+The PocketCode research branch HEAD before this handoff append was `41ec4aba3d0d48d2d8d96a7e5ba69f0adfa0b198`. The checkpoint and Project Status were read back after their updates. The latest queue now requests Claude's source-backed review of the exact resource/lifecycle/backlog URLs, Gemini's exact alternate AWC source pins, and then same-task product validation. No implementation/provider gates have changed.
+
+### Final boundaries
+
+- RES-10, PC-EXT-08/09 and TDN-09/10 are supplementary design IDs only.
+- Canonical LOOP-01..14 / CASE-01..16 remain unchanged; no lifecycle status or owner decision was added.
+- All tests remain SPECIFIED ONLY / NOT RUN; no provider selected; WP-08 BLOCKED; budget $0.
+- No source/test, PR #2/#3, main, Actions, account, API, billing, workload, host, queue, merge or deployment changed.
+- Local PC/source/binary/runtime/queue state remains UNKNOWN until the owner regains PC access.
