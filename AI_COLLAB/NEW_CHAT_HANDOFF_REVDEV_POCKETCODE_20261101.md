@@ -516,3 +516,13 @@ A second exact-ref source pass found an explicit OpenHands agent-server recovery
 SDK state.py lines 268–320 confirm a still-existing saved leaf is returned as active HEAD; missing-leaf repair only runs when the saved leaf event file is absent. Thus the append/HEAD gap remains real at the persistence layer, but it is not accurate to say the current agent-server has no recovery. The recovery has conditions and limitations: RUNNING status, first unmatched action only, log-wide tool_call_id suppression, and no proof about whether a side effect occurred before the crash. It must not be treated as safe provider retry.
 
 The falsification plan now includes OH-HEAD-FI-09..14 for RUNNING/non-RUNNING restore, pre-existing observation suppression, multiple unmatched actions, mismatched action association and external side-effect-before-observation ambiguity. Plan remains NOT EXECUTED. See updated plan for exact test design. D-04 remains OPEN; D-05 BLOCKED; D-06 and D-08 owner-open. No acceptance IDs or owner decisions changed.
+
+
+### 20.2 Existing OpenHands tests found, narrowing the gap — 2026-11-02
+
+A targeted search of the pinned OpenHands source found:
+- `tests/agent_server/test_event_service.py`, blob `fc6e589f71318ac36df92b72c1fd0225549d1436`, lines 2419–2678: mocked unit tests for RUNNING + unmatched action, RUNNING + no unmatched action, non-RUNNING skip, and observation suppression when tool_call_id matches but action_id differs. The inspected assertions do not verify recovery AgentErrorEvent.parent_id or real restored active ancestry.
+- `tests/sdk/conversation/test_get_unmatched_actions.py`, blob `35798b1bccb60b0976cf0785682ef17181e4450b`: SDK helper matching for observation/rejection/error events by tool_call_id.
+- F31.crash-tool-call in `.agents/skills/verify-agent-server/references/feature-map/F31-persistence-and-limits.md`, blob `5082730e1ba1d333daeaf321c21214ad4924cd12`, lines 191–220: documented SIGKILL-during-tool-call integration recipe asserting ERROR, one AgentErrorEvent, zero ObservationEvents and resumed model delivery. It does not assert parent_id or active ancestry; the broader recipe includes a DeepSeek API key/model precondition.
+
+The next useful gap is therefore not more mocked branch tests. It is a real local persistence/restore crash test that asserts action → recovery error active ancestry, plus a direct parent_id assertion. Also challenge full-log observation suppression, multiple unmatched actions and side-effect ambiguity. Existing test sources were inspected, not run. Avoid paying for the DeepSeek recipe; a stub-only equivalent is a future feasibility question, not a claimed substitute.
