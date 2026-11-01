@@ -222,3 +222,14 @@ Published [UNIFIED_COORDINATOR_FAILURE_INJECTION_SPEC_20261101.md](AI_COLLAB/UNI
 The specification defines the distinct identity namespaces, proposed durable state machine, fourteen crash/commit boundaries, fencing-epoch requirements, provider token namespace/retention requirements, and proposed STALE-01..05, TOKEN-01..04, PUB-01..02 and REL-01..03 failure-injection cases. These proposed cases do not replace or renumber canonical LOOP/CASE or existing DR/COORD IDs. It separates owner decisions D-01..D-08 from engineering/test design and defines proof gates from pure tests through fake coordinator, persistence, provider, artifact/API and device acceptance.
 
 Source pins were refreshed from the active documentation branch immediately before authoring. The new specification blob is `51edbb9bd1e3f3518b0e80620be9c0ebe88f49ab`. No implementation, canonical acceptance, PR #2/#3, provider/store selection, tests, workloads, account/billing, merge or deployment changed. D-05 remains BLOCKED; D-06..D-08 remain unproven at real boundaries; all new cases are NOT RUN.
+
+
+### Independent coordinator adversarial review — 2026-11-01
+
+Published [UNIFIED_COORDINATOR_ADVERSARIAL_REVIEW_20261101.md](AI_COLLAB/UNIFIED_COORDINATOR_ADVERSARIAL_REVIEW_20261101.md), a static adversarial pass against the unified coordinator failure-injection baseline.
+
+The review adds eight design findings: same-epoch concurrent writes require expected-version CAS; a delayed provider Start may arrive after worker takeover despite an earlier valid dispatch authorization; cancellation request/acknowledgement is not proof of termination; provider event identity/payload digest/sequence scope must be explicit; projection commits must bind an immutable event-set watermark; garbage collection must coordinate with pending artifact publication; provider token retention must cover the complete job/outage/delayed-request uncertainty horizon; and transfer revocation cannot recall bytes already sent.
+
+Proposed additional cases are CAS-01, DISPATCH-01, CANCEL-01/02, EVENT-01..05, PROJECTION-01, PUB-03, TOKEN-05 and REL-04. These are not canonical acceptance IDs and remain NOT RUN. Priority is ADV-01/02/04/05 before coordinator implementation, followed by cancellation, publication-GC, token-retention and transfer semantics before provider/artifact integration.
+
+This is documentation-only. No implementation, canonical acceptance, PR #2/#3, provider/store, workflow, workload, account/billing, merge or deployment changed. D-04/D-05/D-06/D-07/D-08 remain open or blocked as previously recorded.
