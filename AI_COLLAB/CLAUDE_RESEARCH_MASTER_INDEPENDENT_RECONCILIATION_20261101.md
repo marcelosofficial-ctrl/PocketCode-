@@ -261,3 +261,20 @@ Key new findings:
 - install.rs documents a shared-machine CA-key trade-off: BUILTIN\Users can read/replace ProgramData CA key material; the sandbox group is denied. This is a documented risk decision, not a proven exploit.
 
 The deeper source work raises confidence in several srt controls while also confirming important limits. srt remains STUDY ONLY. No runtime tests were run by ChatGPT, no winner is selected, and no RevDev/PocketCode architecture decision changes.
+
+
+## 12. Codex source follow-up: firewall verified, ACL concerns escalated for review
+
+ChatGPT read additional Codex source at pinned commit 06f3b4836ac6e4fecc1d75a09b8a9fa369b16635. See Section 14 of WINDOWS_SANDBOX_SOURCE_AUDIT_CLAUDE_20261101.md.
+
+Source confirms the offline account's outbound firewall BLOCK is NET_FW_IP_PROTOCOL_ANY, non-loopback, all profiles, SID-scoped through LocalUserAuthorizedList with SID read-back. When local binding is disabled, UDP loopback is blocked and TCP loopback is blocked except proxy ports. When allow_local_binding is enabled, those loopback blocks are removed.
+
+The source review also identifies high-priority questions in Codex ACL setup:
+- Workspace write grants include FILE_DELETE_CHILD, while add_deny_write_ace applies the deny to the target and does not explicitly add a parent FILE_DELETE_CHILD deny. Parent-mediated deletion/rename needs a targeted Windows test.
+- dacl_has_write_deny_for_sid treats any overlapping deny bit as sufficient, rather than verifying complete mask coverage.
+- add_deny_write_ace returns Ok(false) when ACL API writes fail, making failure indistinguishable from no change; callers do not log Ok(false).
+- setup_main_win accumulates ACL errors but only bails on them in refresh_only mode.
+- The inspected process launch path has no Job Object/kill-on-close; full descendant/orphan handling remains unknown.
+- Helper freshness uses size+mtime, not a cryptographic hash/signature, while the sandbox group is ACL-limited to read/execute.
+
+These are source-level concerns requiring independent review and disposable Windows tests, not proven runtime exploits. Codex remains STUDY ONLY. No implementation/adoption decision.
