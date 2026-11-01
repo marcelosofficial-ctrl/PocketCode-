@@ -61,16 +61,15 @@ Discovery, competitive research, and MVP definition. No production architecture,
 
 ## Immediate next steps
 
-The active queue is maintained in the [current checkpoint](AI_COLLAB/POCKETCODE_CURRENT_CHECKPOINT_20261028.md) and the dated work sequence in the [four-month phone-only plan](AI_COLLAB/FOUR_MONTH_PHONE_ONLY_MASTER_PLAN_20261028.md). Do not restart the broad research list on every chat.
+The active queue and copy-ready review prompts are in [POCKETCODE_CURRENT_CHECKPOINT_20261028.md](AI_COLLAB/POCKETCODE_CURRENT_CHECKPOINT_20261028.md). The full dated evidence handoff is [CHAT_HANDOFF_ADDENDUM_20261101.md](AI_COLLAB/CHAT_HANDOFF_ADDENDUM_20261101.md). Do not restart completed resource/teardown research unless official sources or pinned contracts change.
 
-1. Keep source-of-truth/navigation tidy and resolve stale wording; the execution location must stay undecided until the fixed-task comparison provides evidence.
-2. Finish exact-ref lifecycle/report review, especially policy-revision-before-start evidence and disposition versus artifact-release behavior.
-3. Reuse the [fixed-task worksheet](AI_COLLAB/PRODUCT_FIXED_TASK_COMPARISON_WORKSHEET_20261028.md) and existing competitor evidence. Hands-on alternatives have not been compared yet.
-4. Review the static prototype for task-specific mobile-flow issues; sample output must remain labelled simulated. Do not trigger deployment/Actions for this review.
-5. Prepare the PC-return checklist by February 2027. Provider testing remains separate and approval-gated; no provider, account or spend is selected.
-6. Revisit naming risk without renaming the repository or buying a domain as a side effect.
-
+1. Obtain Claude's source-backed review of the exact updated resource review, lifecycle regression plan and readiness backlog. Treat any inaccessible file as NOT REVIEWED.
+2. Obtain Gemini's exact alternative artifact pins for its mismatched AWC labels, or a corrected response with those labels removed. Preserve the original RevDev AWC fixture IDs and PocketCode helper OBS register.
+3. Continue the existing fixed-task comparison and product-hypothesis validation across local iPhone, browser/WASM, user-owned remote PC, hosted and manual AI paths. Use public desk research only until hands-on access and owner-approved test conditions exist.
+4. Prepare the PC-return checklist and safe offline verification sequence. Keep source/implementation tests, PRs, provider selection, accounts, workloads, billing, host operations, Actions, merge and deployment closed.
 ## Progress log
+
+- 2026-11-01: Completed a source-backed resource-containment and provider-teardown research pass on the isolated research branch. Added supplementary RES-10 (Firecracker host-side VMM/log sink pressure) and PC-EXT-08/09 (provider API-generation/resource-scope reconciliation and host-side VMM/log containment); refined Cloudflare current 1.0 versus legacy SDK 0.x lifecycle semantics, Modal async create/detach/terminate distinctions, cgroup process-migration constraints, and TDN attached-resource inventory. Reconciled Claude's canonical-gap challenges and verified Gemini's AWC identifier mismatch against the pinned RevDev fixture manifest. Updated resource review, lifecycle regression plan, provider research, WP-08 backlog, handoff and current checkpoint. All new cases are SPECIFIED ONLY / NOT RUN; no canonical LOOP/CASE IDs, source/tests, PRs, provider, runtime, account, billing, host, queue, Actions, merge or deployment changed. Provider selection NONE; WP-08 BLOCKED; budget $0; PC state UNKNOWN.
 
 - 2026-10-28: Reconciled the status/spec/architecture wording with the phone-only hypothesis. Execution location remains undecided while local phone, browser/WASM, remote-PC, hosted and manual alternatives are compared on one task. Reorganized the AI continuity hub and start-here route, added dated gates to the existing four-month plan, refreshed the new-chat handoff/checkpoint, labelled hosted/remote architecture as one candidate rather than the only shape, and removed a duplicated RevDev compatibility section in PRODUCT_SPEC.md. Documentation-only work on the isolated research branch; no execution/provider tests, implementation, deployment, Actions run, merge or spend occurred.
 
