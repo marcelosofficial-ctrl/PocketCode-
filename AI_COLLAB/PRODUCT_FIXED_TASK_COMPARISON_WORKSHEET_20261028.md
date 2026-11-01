@@ -111,6 +111,22 @@ For each path, record whether the exact source can be supplied unchanged, whethe
 
 **Expected result remains exactly as defined in Section 2:** `grand_total` string `10.75`, `line_items` integer `2`, item totals `notebook: "7.00"` and `pen: "3.75"`. Key order and JSON whitespace are irrelevant.
 
+## 2B. Canonical fixture sanity check — isolated harness only
+
+**Status:** fixture logic sanity-checked; product-path comparison remains NOT RUN.
+
+The exact source in Section 2A was copied into a temporary directory and run with synthetic inputs in an isolated ChatGPT Python environment. It was not run on the owner's phone, in Pyodios, Safari, PocketCode, a remote PC, or a hosted provider.
+
+| Check | Observed result |
+|---|---|
+| Environment | Python 3.13.5, Linux x86_64 |
+| Source fixture SHA-256 | `70c66ad3a0132923cbf3190eb3546093fcc2c61c1bdcbf3b171696e1ae7521e7` (1,939 bytes) |
+| Success input | Exit 0; stdout `Wrote summary.json`; parsed JSON matched all expected values exactly |
+| Malformed-header input | Exit 2; script emitted `ERROR: missing required CSV column(s): unit_price`; no `summary.json` existed |
+| Harness caveat | The Python environment injected an unrelated spreadsheet-runtime warmup traceback into stderr at interpreter startup. The fixture's own error line was present, but this means the complete stderr stream is not a clean application-only capture. |
+
+This confirms only that the frozen fixture behaves as specified in this isolated interpreter. It does not establish any mobile app/browser path, startup/memory behavior, file import/export, UI responsiveness, process lifecycle, sandboxing, egress, hard resource limits, termination, cleanup, user experience or report-handoff value. Do not use this check as a product-path score or acceptance PASS.
+
 ## 3. Alternatives to assess
 
 Do not install software, create accounts, upload private files, or start paid trials as part of desk research. A later hands-on session must be explicitly chosen and use only the synthetic input above.
