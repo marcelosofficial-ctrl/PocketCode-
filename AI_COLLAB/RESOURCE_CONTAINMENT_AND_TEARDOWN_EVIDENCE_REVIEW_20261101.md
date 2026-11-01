@@ -116,6 +116,7 @@ Sources:
 - https://docs.kernel.org/admin-guide/cgroup-v2.html#cpu-interface-files
 - https://docs.kernel.org/admin-guide/cgroup-v2.html#io-interface-files
 - https://docs.kernel.org/admin-guide/cgroup-v2.html#pid-interface-files
+- https://man7.org/linux/man-pages/man2/getrlimit.2.html (RLIMIT_FSIZE and per-file semantics)
 
 ### 4.2 Firecracker as a self-operated boundary
 
