@@ -86,17 +86,18 @@ All product bindings must retain the original suite ID and exact scenario/assert
 
 ## 6. Required owner decisions and schema blockers
 
-Do not freeze field names/enums or encode unresolved behavior until the relevant decisions are resolved:
+The exact owner decision register remains authoritative. The following are current research defaults/statuses, not owner approvals:
 
-- **D-01:** runtime-limit-caused verdict projection.
-- **D-03:** required output streams and partial-capture requirements by task class.
-- **D-04:** authenticated event source, tenant/job/attempt scope, immutable fields, replay identity and sequence-collision semantics.
-- **D-05:** exact applied-policy revision bound before execution; currently BLOCKED without a selected boundary/provider.
-- **D-06:** durable reservation, provider token namespace/retention, atomicity and ambiguous-start reconciliation.
-- **D-07:** artifact identity, publication, release authorization and transfer proof.
-- **D-08:** durable report append/version, retention, deletion and trusted tombstone expiry semantics.
+- **D-01 — confirmed execution limit verdict:** preserve the canonical CASE-04 working default: a trusted enforced timeout remains INCOMPLETE / timed_out, with the limit cause recorded separately (candidate disposition LIMIT_EXCEEDED). Do not silently reclassify timeout as FAIL. Collector-only and display-only truncation remain distinct. D-01 remains OPEN for any future canonical change.
+- **D-02 — provider failure without child exit evidence:** working default is user-facing INCOMPLETE and execution outcome UNKNOWN; use PROVIDER_ERROR disposition only when the infrastructure cause itself is confirmed. Never invent an exit code. A separately trusted nonzero child exit remains FAIL even if cleanup is UNKNOWN. Owner confirmation remains OPEN before schema/test freeze.
+- **D-03 — output completeness:** working default is no universal complete-output/artifact gate. Only streams/artifacts explicitly required by the particular acceptance case can block that case's PASS; optional diagnostics may be PARTIAL/UNAVAILABLE without automatically invalidating a trusted exit-zero result. D-03 remains OPEN before schema/gate freeze.
+- **D-04 — event identity scope:** proposed source replay scope is source namespace + tenant + job + attempt + source event ID, with coordinator-owned canonical event identity, authenticated scope/policy binding before reduction, and immutable observation comparison. This is not frozen. D-04 remains OPEN.
+- **D-05 — applied-policy binding:** BLOCKED until an actual execution boundary proves an immutable per-attempt policy revision or equivalent atomic/conditional dispatch barrier. A request fingerprint, acknowledgement or ETag alone is not proof of applied enforcement.
+- **D-06 — idempotency and ambiguous dispatch:** proposed durable tenant-scoped reservation plus versioned semantic fingerprint; same key/same fingerprint resolves to the original job/attempt; changed fingerprint conflicts before dispatch; persist intent before external start; reconcile the same identity after ambiguity. UNKNOWN lookup means no automatic redispatch. Exactly-once execution remains unclaimable without provider semantics and persistence proof.
+- **D-07 — artifact release:** proposed separate, current authorization bound to principal, tenant/job/attempt, trusted manifest, quarantine, exact immutable object identity/digest and safe bytes at release. Execution PASS is not a download permission.
+- **D-08 — report history:** proposed immutable issued versions, atomic monotonic version allocation, idempotent append identity, immutable evidence references and crash-safe reconciliation. In-memory ReportHistory is not durable proof; tombstone expiry requires a trusted-time and atomic replacement rule.
 
-The exact owner decision register remains authoritative. This review does not decide any of these.
+Do not resolve any decision by silently selecting an enum or writing a test that assumes one proposal. In particular, keep D-01..D-04 open where the register says OPEN, and keep D-05 BLOCKED. The owner decision register and packet distinguish lifecycle D-01..D-04 from the separate AI Workflow Director D-01..D-08 namespace.
 
 ## 7. Claude and Gemini independent review request
 
