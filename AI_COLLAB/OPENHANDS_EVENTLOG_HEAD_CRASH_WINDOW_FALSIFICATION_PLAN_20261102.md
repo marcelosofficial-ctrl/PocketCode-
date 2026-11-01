@@ -157,3 +157,44 @@ The generic FI-03/FI-04 cases still test the SDK persistence boundary. FI-09..14
 - **External side-effect property:** remains outside this mechanism. The recovery record does not prove whether a tool/provider side effect happened before the crash and must not authorize automatic retry.
 
 No test has been run. This refinement narrows the hypothesis and test scope; it does not change PocketCode D-04/D-05/D-06/D-08 or select OpenHands as a store.
+
+
+## 11. Existing pinned tests and integration recipe found — 2026-11-02
+
+A targeted source search found that this recovery path already has meaningful test coverage in the pinned OpenHands tree. This changes the purpose of the proposed plan: avoid duplicating the existing tests; focus only on gaps they do not prove.
+
+### 11.1 Existing unit-test coverage
+
+Pinned file `tests/agent_server/test_event_service.py`, blob `fc6e589f71318ac36df92b72c1fd0225549d1436`, lines 2419–2678, contains `TestEventServiceStartWithRunningStatus`:
+- `test_start_sets_error_status_when_running_from_disk` (2423 onward): mocked RUNNING state with one unmatched action; asserts status becomes ERROR and exactly one AgentErrorEvent is emitted with tool_name/tool_call_id and restart wording.
+- `test_start_does_not_add_error_event_when_no_unmatched_actions` (2506 onward): RUNNING but no events; asserts ERROR and no AgentErrorEvent.
+- `test_start_does_nothing_when_status_not_running` (2560 onward): IDLE; asserts status unchanged and no recovery event.
+- `test_start_skips_error_event_when_observation_already_exists` (2610 onward): matching tool_call_id but different action_id; asserts duplicate suppression.
+
+The inspected assertions do **not** verify that the synthesized AgentErrorEvent has `parent_id=first_action.id`, nor do they restore real persisted files and assert active ancestry. They use a mocked LocalConversation and a MagicMock state. The existing tests validate branch conditions and event emission, not the actual crash/persistence/restore sequence.
+
+Pinned file `tests/sdk/conversation/test_get_unmatched_actions.py`, blob `35798b1bccb60b0976cf0785682ef17181e4450b`, covers unmatched-action classification, ObservationEvent/UserRejectObservation/AgentErrorEvent matching by tool_call_id, different tool_call_id non-matching, and mixed responses. This is SDK helper coverage, not server process-crash integration.
+
+### 11.2 Existing documented integration scenario
+
+Pinned feature map `.agents/skills/verify-agent-server/references/feature-map/F31-persistence-and-limits.md`, blob `5082730e1ba1d333daeaf321c21214ad4924cd12`, defines `F31.crash-tool-call` at lines 191–220. It starts a stubbed terminal sleep, waits until one ActionEvent exists and base_state says RUNNING, SIGKILLs the server, restarts, then asserts:
+- conversation status is ERROR;
+- exactly one AgentErrorEvent exists for the same tool_call_id with restart wording;
+- there are zero ObservationEvents;
+- after rewriting the stub and resuming, the model receives the error as the tool result and the conversation finishes.
+
+The recipe's preconditions currently include a DeepSeek API key/model for the broader F31 verification run. ChatGPT did not execute it. The documented integration assertions do not inspect AgentErrorEvent.parent_id or the restored active-branch ancestry. The integration scenario is therefore a useful existing baseline, not proof of every branch/HEAD invariant.
+
+### 11.3 Revised minimum new work
+
+Do not recreate the already-covered unit scenarios. The smallest high-value additions are:
+1. Extend the unit assertion to require `error_event.parent_id == unmatched_action.id`.
+2. Add a real LocalFileStore persistence/restore test that creates E0, writes an ActionEvent E1, crashes between event append and leaf autosave, restores through EventService with RUNNING status, and asserts active ancestry E0 → E1 → recovery AgentErrorEvent.
+3. Add a paired non-RUNNING persisted-state test showing whether the unmatched action remains outside active ancestry without recovery; record this as intentional behavior or a gap, not an automatic defect.
+4. Add a case where a matching ObservationBaseEvent exists in the full event log but is not on the active ancestry; verify whether log-wide suppression is correct for the supported no-remote-branching model.
+5. Add a multi-unmatched-action case and assert which actions receive recovery records. Current source selects only `unmatched_actions[0]`; do not assume later unmatched actions are reconciled.
+6. Keep external side-effect ambiguity separate: SIGKILL after tool side effect but before observation persistence must not be interpreted as proof of non-execution or safe retry.
+
+The original FI-01..08 SDK persistence boundaries remain useful only if the exact crash hook can be installed without changing ordering. For an end-to-end recovery test, the documented F31 SIGKILL scenario is the better baseline; avoid adding paid-model requirements by constructing a fully local stub-only harness if feasible, but do not claim equivalence until its control flow is verified.
+
+No source tests were run by ChatGPT. These are source-presence and test-assertion reviews only. No code/test file was modified.
