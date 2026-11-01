@@ -332,7 +332,7 @@ For every adapter/provider capability record, pin provider product, API/SDK gene
 
 **Traceability:** LOOP-12 / RES-08 / RES-10; self-operated Firecracker host path only. Supplementary only.
 
-Flood guest serial output and guest-influenced VMM logs while the supervisor, host logger, second VMM and orchestration worker are observed. Require fixed-size/ring-buffer or rate-limited/discarding sinks, bounded host memory/disk, explicit loss counters, and survival of independent work. A bounded app report is insufficient if VMM stdout, serial console, or host log files remain unbounded.
+Flood guest serial output and guest-influenced VMM logs while the supervisor, host logger, second VMM and orchestration worker are observed. Disable serial where unnecessary or verify its explicit token-bucket rate limiter; when enabled, collect `uart.rate_limiter_dropped_bytes` because over-rate bytes are dropped and the limiter is optional (default is unrate-limited). Require independently bounded fixed-size/ring-buffer or rate-limited/discarding log sinks, bounded host memory/disk, and survival of independent work. A bounded app report is insufficient if VMM stdout, serial console, or host log files remain unbounded.
 
 **Expected:** no unbounded host output path; no worker or sibling degradation.
 
