@@ -132,6 +132,8 @@ This section supplements, and does not silently replace, the 2026-10-20 desk-res
 - For cgroup v2, `memory.events.local` is more suitable than hierarchical `memory.events` for local attribution. `cgroup.events: populated=0` confirms no live processes in that cgroup subtree, not deletion of a remote sandbox or its separately attached resources.
 - An asynchronous delete accepted response must be followed by authoritative resource lookup until terminal destruction is confirmed. A local DB close or list/search miss is insufficient.
 - Provider resource release and invoice/cost reconciliation are separate evidence axes. Billing delay cannot be interpreted as process liveness; a zero/pending invoice cannot prove cleanup.
+- Modal's current SDK documents `terminate(wait=True)` as waiting for the sandbox to finish and returning its exit code. Treat this as a useful completion signal, not proof that independently attached storage has been released.
+- Linux `RLIMIT_FSIZE` applies to an individual file and can generate SIGXFSZ; it is not a total workspace quota. See https://man7.org/linux/man-pages/man2/getrlimit.2.html.
 
 ### Official sources checked
 
