@@ -618,3 +618,21 @@ This only improves the experiment design. It has not been executed or tested on 
 The exact Section 2A source fixture was sanity-checked in an isolated ChatGPT Python 3.13.5/Linux x86_64 temporary directory. SHA-256 `70c66ad3a0132923cbf3190eb3546093fcc2c61c1bdcbf3b171696e1ae7521e7` (1,939 bytes). Success: exit 0, exact expected JSON. Missing-header failure: exit 2, explicit missing-`unit_price` message, no output file. The environment emitted an unrelated spreadsheet-runtime warmup traceback into stderr at interpreter startup, so stderr capture is not a clean app-only result. Details are in worksheet Section 2B.
 
 This is a fixture sanity check, not a PocketCode, Pyodios, browser, mobile, remote-host or provider test. Product comparison remains NOT RUN. It proves nothing about sandboxing, egress, limits, termination, cleanup or report utility.
+
+## 29. Final verification after fixture hardening
+
+Research branch comparison: `511 ahead / 0 behind` main, base SHA `555840d8d83342513d9cd353d4d1522d46a5c82d`.
+
+Latest relevant document pins:
+- Fixed-task worksheet: `AI_COLLAB/PRODUCT_FIXED_TASK_COMPARISON_WORKSHEET_20261028.md`, blob `14acbe1d6ff8ce99e49d164d70653397600de9db`.
+- Current checkpoint: `AI_COLLAB/POCKETCODE_CURRENT_CHECKPOINT_20261028.md`, blob `7b5b17a126e2a78efd7e2a303303c0c53a309a1e`.
+- This handoff: `AI_COLLAB/CHAT_HANDOFF_ADDENDUM_20261101.md`, prior blob `aee56577d656adc9aa6cc963e79c577d44d5156f`.
+- Project status: `PROJECT_STATUS.md`, blob `6c3174406ef10d9375cff1b09e21d716bef2160c`.
+- Gemini review: `AI_COLLAB/GEMINI_OPEN_SOURCE_RESEARCH_REVIEW_20261101.md`, blob `aefc611ee273393257a181ec192b75246c80210a`.
+- Candidate deep dive: `AI_COLLAB/OPEN_SOURCE_CANDIDATE_DEEP_DIVE_20261101.md`, blob `efb562e7061746ff738274cc3778f74a40ba2d69`.
+
+Protected PRs rechecked: #2 and #3 remain open, draft and unmerged with unchanged head SHAs `eb8b7ea83cb0e8fe1880351276c485b761431791` and `0ddcc0bc97bac5d446aefedf3d71f99411bd841d`, respectively. No PR edits, Actions, merges, deployments or source/test modifications.
+
+Recent additions are documentation-only: canonical task source fixture, isolated fixture sanity check, Gemini research reconciliation and candidate deep dive. The fixture check is explicitly not a product-path run. No provider, runtime, architecture convergence or dependency has been selected. Budget remains $0; PC/runtime/queue state remains UNKNOWN.
+
+**Continuation order:** (1) await Claude's research output and reconcile exact sources; (2) continue desk-only candidate review only where it adds evidence; (3) keep fixed-task path comparison NOT RUN until the owner explicitly authorizes a hands-on path; (4) if that occurs, capture exact app/runtime/device/version and complete both success and malformed-input records before any ranking; (5) only then decide whether the paired raw-evidence vs existing-report experiment is feasible. No automatic expansion into hosted/provider work.
