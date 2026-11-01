@@ -238,7 +238,9 @@ Disposition: this is a material open readiness/repair concern. Do not describe t
 Pinned files:
 - vendor/srt-win-src/src/job.rs, blob d9d3f19c2b061fb7ae43dd94437223b3a09aa561.
 - vendor/srt-win-src/src/launch.rs, blob c25c3a57aa2aadb4ea6c9208009276d3575c489f.
-- vendor/srt-win-src/src/runner.rs, blob 3e? (runner file read at the same pinned commit; exact blob should be re-fetched before citing its blob SHA).
+- vendor/srt-win-src/src/runner.rs, blob 43e746e5e0a4d712bc587afa47871c9a67930815.
+- vendor/srt-win-src/src/install.rs, blob 9466d08fb2ac7bc20ec96abcb70c0d17d5d2d1e4.
+- src/sandbox/windows-sandbox-utils.ts, blob fb8f0aa206724e1b52719d564c99b1ede71ae4c7.
 
 Source shows:
 - Broker launches a runner as the dedicated srt-sandbox account using CreateProcessWithLogonW; runner launches the target using CreateProcessAsUserW with the restricted token.
