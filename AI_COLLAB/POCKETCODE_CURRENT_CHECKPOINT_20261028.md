@@ -123,24 +123,27 @@ The worksheet now distinguishes the small fixed-task test from general timeout/r
 
 ## 6. Immediate next queue
 
-**Completed in this pass:** scoped structure/link verification; exact-ref policy-barrier and disposition source trace; static prototype review; adversarial product-hypothesis review; source-to-test traceability map; PC-return blocker crosswalk; and compact evidence-record template. Do not repeat these unless source refs change.
+**Completed through 2026-11-01:** resource-limit taxonomy and cgroup evidence review; provider teardown/orphan matrix; Claude's canonical-gap challenge reconciled without treating it as a review of files Claude could not fetch; Gemini's AWC identifier mismatch verified against the pinned RevDev manifest; Cloudflare 1.0 versus legacy SDK 0.x lifecycle split; Modal create/detach/terminate separation; Firecracker host-side log-pressure gap; and documentation/read-back updates. Do not repeat these passes unless the pinned sources change.
 
-1. **Get one independent challenge, when convenient.** The copy-ready prompt below asks Gemini or Claude to attack the product hypothesis with concrete counterexamples rather than produce another broad research report. No reviewer response is assumed.
-2. **Reconcile only material reviewer findings.** Update the existing hypothesis card, competitor addendum or checkpoint only if the reviewer supplies verifiable counter-evidence, identifies a specific missing alternative, or exposes a false assumption.
-3. **Preserve implementation boundaries.** The prototype status-color mismatch is a small source-reviewed polish issue; do not change source in this documentation/continuity pass. Any later UI change needs explicit authorization and must preserve the simulated-execution labels.
-4. **When PC returns, follow the checklist in order.** Re-fetch exact refs, run safe offline tests in separate clean worktrees, capture command/environment/exit/results, and stop at any missing prerequisite. Provider tests remain a separate, explicit owner-approval gate.
+1. **Claude source-backed review.** Send Claude the full blob URLs for the updated resource review, lifecycle regression plan, and readiness backlog from the latest handoff addendum. Ask it to read those exact blobs and return findings with path, section/line, evidence quote or paraphrase, severity, and proposed correction. It must explicitly mark anything it cannot fetch as NOT REVIEWED, not infer content from filenames.
+2. **Gemini identifier correction.** Ask Gemini for the exact repository, path, branch/ref, blob SHA and line references for the alternate AWC-005/008/009/010/011/012/017/018 meanings it supplied. If no alternative fixture manifest exists, request a corrected review that preserves the engineering recommendations but removes the mismatched AWC labels. Do not renumber or overwrite the source-pinned AWC or helper OBS registers.
+3. **Continue product validation without repeating backend research.** Use the existing fixed-task worksheet and product hypothesis card to compare the same small CSV-to-JSON task across local iPhone execution, browser/WASM, user-owned remote PC, hosted execution, and manual AI copy/paste. Public desk research only until hands-on access and owner-approved test conditions exist. Distinguish documented capability from tested task completion.
+4. **Keep the implementation and provider gates closed.** No source/test/PR/main edits, provider choice, account, API call, host test, workload, billing, Actions, merge or deployment. Budget remains $0. PC/runtime/queue state remains UNKNOWN until the PC returns.
 
-### Ready-to-send independent review prompt
+### Ready-to-send Claude review prompt
 
-> Independently challenge PocketCode's current product hypothesis using the existing AI_COLLAB/PRODUCT_HYPOTHESIS_CARD_20261028.md, AI_COLLAB/PHONE_ONLY_COMPETITOR_SCAN_ADDENDUM_20261028.md, and RESEARCH/COMPETITOR_MATRIX.md.
+> Review these exact updated PocketCode documents, not just their names:
+> 1. https://github.com/marcelosofficial-ctrl/PocketCode-/blob/pocketcode-ai-workflow-director-research-2026-10-28/AI_COLLAB/RESOURCE_CONTAINMENT_AND_TEARDOWN_EVIDENCE_REVIEW_20261101.md
+> 2. https://github.com/marcelosofficial-ctrl/PocketCode-/blob/pocketcode-ai-workflow-director-research-2026-10-28/AI_COLLAB/LIFECYCLE_CONTRACT_REGRESSION_PLAN_20261101.md
+> 3. https://github.com/marcelosofficial-ctrl/PocketCode-/blob/pocketcode-ai-workflow-director-research-2026-10-28/AI_COLLAB/IMPLEMENTATION_READINESS_BACKLOG_20261029.md
 >
-> Do not repeat broad mobile-coding research. Focus on one decision: **is a provider-neutral, portable evidence/report/continuity loop a meaningfully differentiated phone-first product, or can strong local-first alternatives plus ordinary copy/paste already do it well enough?**
->
-> Return: (1) the strongest counterexample/product substitute and the exact capability that undermines the hypothesis; (2) any concrete feature gap supported by current primary sources; (3) one same-task comparison that could falsify the hypothesis; (4) missing assumptions or misleading claims in our current card; (5) a concise continue/narrow/pivot/stop recommendation.
->
-> Cite exact public sources or repository paths. Label each statement DOCUMENTED CLAIM, DIRECT OBSERVATION, INFERENCE, or UNKNOWN. Do not claim hands-on testing unless you actually performed it. Do not install apps, create accounts, run providers, trigger Actions, change repository files, spend money, or recommend a paid path. Return findings only; PocketCode remains in discovery and the budget remains $0.
+> Read all three completely. For each finding, provide exact file/section and line range, the actual source requirement, the proposed case or text affected, why it is wrong/incomplete, severity, and the smallest correction. Review especially cgroup hierarchy/mount options and OOM-vs-timeout races; process migration and supervisor survival; Firecracker guest-influenced serial/log output; Cloudflare 1.0 versus SDK 0.x semantics; Modal async create versus detach versus terminate; Daytona async delete; durable create/delete intent and orphan reconciliation; separate instance, control-plane, snapshot, attached-resource and billing lifecycles. Check that no supplementary RES/TDN/PC-EXT ID is presented as canonical LOOP/CASE. Do not run code, access providers, create accounts, or assume anything not in the pinned docs. Explicitly state which files you could not read. Findings only; no edits.
 
-No owner action is required to continue documentation-only work. If you send this to another AI, bring its complete answer back for evidence reconciliation; do not treat silence or unsupported opinion as approval.
+### Ready-to-send Gemini source correction prompt
+
+> Your previous review used AWC-005/008/009/010/011/012/017/018 for resource, egress, secret artifact, truncation, outcome/cleanup, idempotency, log-correlation and release-scan subjects. The pinned RevDev manifest at marcelosofficial-ctrl/DevRelay-Missions, branch review/revdev-adaptive-ai-workshare-2026-10-27, path resume/revdev/AI_WORK_COACH_SYNTHETIC_FIXTURES_V0_1.json, blob c2d4cba6c836f725f7bc4585f91e02d443fe89e1, defines those IDs differently. Provide the exact alternate repository/path/ref/blob SHA/line references for the AWC meanings you used. If you used a PocketCode acceptance table rather than the AWC fixture manifest, identify it and correct the namespace. Preserve your technical recommendations, but do not reuse AWC IDs or helper OBS-01..06 unless the exact source proves the mapping. Do not change files or run tests.
+
+No owner action is required to continue source research. The complete review handoff and final blob pins are in [CHAT_HANDOFF_ADDENDUM_20261101.md](CHAT_HANDOFF_ADDENDUM_20261101.md).
 
 ## 7. Canonical links for the next chat
 
@@ -276,3 +279,8 @@ Re-ranked the existing open-source reuse cases against the actual first-proof bo
 5. **Defer:** REUSE-RECOVERY-01 until a concrete external side effect can commit separately from its receipt; REUSE-STALE-01 until persistent workspace/file writes enter scope. Existing CASE-13 remains the run-level ambiguous-response baseline.
 
 Regardless of the nonzero-exit FAILED-vs-INCOMPLETE decision, artifact release remains a separate fail-closed gate. This is static scope-based prioritization only; it does not resolve the owner decision, change contracts/tests, or claim execution evidence.
+
+
+## 2026-11-01 provider lifecycle and host-containment research checkpoint
+
+The latest source-backed resource/teardown pass is recorded in [CHAT_HANDOFF_ADDENDUM_20261101.md](CHAT_HANDOFF_ADDENDUM_20261101.md), Sections 16–19. The latest additions are RES-10, PC-EXT-08 and PC-EXT-09; all are supplementary design IDs, not canonical LOOP/CASE acceptance. Cloudflare API generations are now separated (current Durable Object + Container model versus legacy SDK 0.x); Modal asynchronous create, connection detach and execution termination are distinct; Firecracker guest-influenced serial/log output is treated as a host-side resource boundary; and cgroup process migration out of the observed subtree is explicitly excluded. Updated provider research, WP-08 and regression-plan blobs are pinned in the handoff. No provider is selected, no tests or workloads were run, WP-08 remains BLOCKED, budget remains $0, and PC/runtime/queue state remains UNKNOWN until PC access returns.
