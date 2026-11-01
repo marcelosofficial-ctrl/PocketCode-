@@ -99,3 +99,12 @@ The next step remains the two independent reviews requested in Sections 4–5 of
 - Claude: challenge evidence authority, identity correlation, persistence/publication, quarantine/liveness, exact-result replay, and repair retry versus dispatch retry, without inferring PC implementation behavior.
 
 ChatGPT's static review is complete for now; it does not substitute for Claude/Gemini. After their responses, reconcile exact source/line references and make only supported documentation corrections. No runtime tests, model trials, provider use, source/test edits, PR changes, canonical acceptance edits, Actions, queue/host mutation, merge, deployment or spend occurred. The $0 and phone-only constraints remain unchanged.
+
+
+### Final read-back identifiers for this continuation update
+
+- Research branch HEAD after the review/checkpoint commit: `d5344329d8578e105f9be5bee38e1bb9dde3a2bc`.
+- Updated independent review blob: `c1d1a6a7f31706035198a0b0522e35bca1f33a0a`.
+- Updated addendum blob before this identifier-only pointer commit: `450f2cd25ba9db68ea7196be2e1e10abd409c7ae`.
+- Commit message: `docs: extend crosswalk and lifecycle evidence review`.
+- Both edited files were fetched again after the commit; the exact blob hashes matched the new objects and the OBS-01..OBS-03 section was present.
