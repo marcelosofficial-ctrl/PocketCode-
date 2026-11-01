@@ -409,3 +409,17 @@ You are continuing my existing PocketCode + RevDev projects. This is a continuat
 **Safety and work boundaries:** No merge, deploy, release, publish, Actions, install, provider workload, account creation, spending, source/test changes, PR modification, runtime/queue/host changes, restarts, secrets, elevation or security-boundary weakening unless I explicitly authorize. Documentation-only continuity updates on the isolated research branch are authorized. PR #2 and #3 must remain untouched and unmerged.
 
 **What to do next:** Verify the GitHub branch/docs/PRs, then continue useful work without duplicating Gemini's research. Claude's medium-sized report is coming soon. When I provide it, perform a rigorous claim-by-claim reconciliation against Gemini, our pinned source reviews, PocketCode's original goals and existing contracts. Continue improving the fixed-task experiment and product-path decision readiness without claiming device tests. Update GitHub documentation with exact evidence and read-back hashes. Keep PocketCode and RevDev distinct. Ask me only when an owner-only decision or action is genuinely required.
+
+## Live continuity supplement — 2026-11-01 (later verification)
+
+This supplement supersedes only the earlier branch-count snapshot in Section 5; it does not rewrite historical evidence or alter project decisions.
+
+- Research branch: `pocketcode-ai-workflow-director-research-2026-10-28`.
+- Exact branch head immediately before this supplement: `a80a0f6deaad711a17b85616b2d6b2d367e32d0e`.
+- Fresh compare against `main`: **520 ahead / 0 behind**; base and merge base `555840d8d83342513d9cd353d4d1522d46a5c82d`.
+- PR #2 remains OPEN, DRAFT, UNMERGED at head `eb8b7ea83cb0e8fe1880351276c485b761431791`.
+- PR #3 remains OPEN, DRAFT, UNMERGED at head `0ddcc0bc97bac5d446aefedf3d71f99411bd841d`.
+- The detailed chronological verification is in `AI_COLLAB/CHAT_HANDOFF_ADDENDUM_20261101.md`, Sections 31–34. Its latest read-back blob before this supplement was `9da8c89ddfea1cd9626d0831845efb1e6e780480`.
+- The older Section 5 count (512 ahead) is a historical snapshot, not current status. Re-fetch refs before consequential work because each documentation commit advances the research branch.
+- Claude's independent report is still expected; do not substitute another broad survey for its reconciliation. Until it is supplied, continue only with bounded, nonduplicative source/contract consistency work.
+- No PR, source/test, canonical acceptance, workflow, provider, account, workload, host, queue, Action, merge, deployment or spend was changed in this verification pass.
