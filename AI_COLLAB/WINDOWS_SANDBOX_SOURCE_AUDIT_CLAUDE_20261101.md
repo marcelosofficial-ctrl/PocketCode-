@@ -278,3 +278,84 @@ Pinned file vendor/srt-win-src/src/install.rs documents that the ProgramData CA 
 The additional source reads improve confidence that srt has deliberate token hardening, additive ACL semantics, refcounted crash recovery, job-object process-tree containment and layered launch protections. They also expose a concrete gap in the current WFP status/verification story and the explicit ICMP exclusion.
 
 srt remains STUDY ONLY. Its Windows alpha status, residual token shapes, ICMP non-coverage, open partial-filter status issue, IPv4-only default probe, machine-wide install and shared-machine CA-key trade-off prevent calling it a complete or selected boundary. No runtime test was performed by ChatGPT.
+
+
+## 14. Additional pinned-source review of Codex Windows ACL, firewall and launch support — 2026-11-01
+
+ChatGPT continued the Codex source review at the same exact commit 06f3b4836ac6e4fecc1d75a09b8a9fa369b16635. This closes some of Claude's listed gaps and identifies ACL questions that need high-priority independent review. No Windows execution was performed.
+
+### 14.1 Offline firewall: direct source read
+
+Pinned file: codex-rs/windows-sandbox-rs/src/firewall.rs, blob b5dfb2ef49652176b2b17a02e55719d1e864b471.
+
+Source confirms:
+- The offline outbound rule is an enabled outbound BLOCK for NET_FW_IP_PROTOCOL_ANY, across all firewall profiles, with remote addresses excluding loopback and LocalUserAuthorizedList scoped to the offline sandbox user's SID.
+- The rule configuration is read back; the code checks that the expected offline SID appears in LocalUserAuthorizedList.
+- With local binding disabled, the code blocks UDP loopback and blocks TCP loopback except the configured proxy ports. It first installs a broad TCP block, then narrows the blocked remote-port complement so a failed narrowing update remains fail-closed.
+- With allow_local_binding enabled, the code removes the loopback TCP/UDP block rules and the legacy proxy allow rule. This opens loopback to local services; it is not a narrow per-service permission.
+- The rules are idempotently reconfigured by stable internal names. Failure to configure/read back the expected scope returns a setup error.
+
+This upgrades the offline SID/firewall scope from third-party-only to source-verified at this commit. It does not prove that Windows Firewall is enabled, that external policy cannot override/disable the rules, or that every traffic mechanism is covered on a real host.
+
+### 14.2 ACL source: high-priority deny-application concerns
+
+Pinned file: codex-rs/windows-sandbox-rs/src/acl.rs, blob f351dba190a9f50a5362ea64fe5c6675bf5b3f8c.
+
+Source confirms:
+- The workspace write allow mask includes FILE_GENERIC_READ, FILE_GENERIC_WRITE, FILE_GENERIC_EXECUTE, DELETE and FILE_DELETE_CHILD.
+- add_deny_write_ace applies an inheritable deny ACE to the target path itself, with write/append/attribute/delete and FILE_DELETE_CHILD rights. The inspected function does not add a separate FILE_DELETE_CHILD deny ACE to the target's parent, unlike srt's explicit parent-FDC design.
+- The protected paths are created as directories if absent before the deny is applied; setup comments identify protected children such as .git, .codex and .agents.
+
+Two code-level concerns require independent security review and targeted Windows tests:
+
+**A. Parent-delete semantics:** a writable parent root is granted FILE_DELETE_CHILD, while the protected child receives a deny ACE on the child object. The inspected Codex helper does not explicitly deny FILE_DELETE_CHILD on the parent. Windows permits deletion through the parent right as an alternative to DELETE on the child, so this is a concrete possible carveout-bypass path to test. This report does not claim a runtime exploit has been demonstrated. Test protected directory/file deletion and rename through the writable parent, including nested paths and inherited ACEs.
+
+**B. Incomplete-deny detection and silent ACL-write failures:** dacl_has_write_deny_for_sid returns true when a matching deny ACE overlaps ANY bit of the full deny-write mask; it does not prove that all required deny rights are present. add_deny_write_ace also returns Ok(false) when SetEntriesInAclW or SetNamedSecurityInfoW fails, rather than propagating the Win32 error. Ok(false) is also the no-new-ACE result, so callers cannot distinguish an already-present deny from these write failures. The setup caller logs only Err; it treats Ok(false) as no action. This is a source-level error-reporting/control concern, not a runtime exploit claim.
+
+### 14.3 Setup error aggregation
+
+Pinned file: codex-rs/windows-sandbox-rs/src/setup_main_win.rs, blob 78c0a8be8e53bcad0e2015a3d48d8b94d5533dde.
+
+The full setup routine accumulates write-root and deny-path ACL errors in refresh_errors. The final explicit bail on a non-empty refresh_errors is conditional on refresh_only. The initial/full setup path is refresh_only=false, so this function does not turn those accumulated ACL errors into a failure at that final check. This deserves review alongside the silent Ok(false) behavior above. Firewall setup errors and sandbox-directory lock errors have separate direct error paths. Do not generalize this finding to every setup operation.
+
+### 14.4 Firewall and ACL interaction
+
+The Codex write allow mask includes FILE_DELETE_CHILD. The deny helper applies its inheritable deny on the protected target, but no parent-FDC deny was found in the inspected helper. srt's ACL helper explicitly denies FILE_DELETE_CHILD on the parent. This difference makes parent-mediated deletion a high-priority comparative test, especially for RevDev's destructive-operation refusal. Keep this as a proposed test until validated on Windows.
+
+### 14.5 Accounts, credentials and helper materialization
+
+Pinned files:
+- codex-rs/windows-sandbox-rs/src/sandbox_users.rs, blob 13460b94444ec084db8bbd0c3f998e1739207b77.
+- codex-rs/windows-sandbox-rs/src/dpapi.rs, blob c4dcc79fa602860714af3fe606bea44c1a583d6b.
+- codex-rs/windows-sandbox-rs/src/helper_materialization.rs, blob b7d00e1dd9263f9e6476bcd456a3da2319efed2d.
+- codex-rs/windows-sandbox-rs/src/setup_main_win.rs, same blob as §14.3.
+
+Source confirms:
+- Codex provisions separate offline and online local user accounts and a CodexSandboxUsers group.
+- The sandbox user password blobs are protected with DPAPI machine scope (CRYPTPROTECT_LOCAL_MACHINE), then stored in the sandbox secrets directory. The setup code applies a DENY for the sandbox group to that secrets directory; the sandbox bin directory is locked so the sandbox group gets read/execute while the real user retains write access.
+- Machine-scope DPAPI means the file ACL is an important access boundary; this is not user-bound DPAPI encryption.
+- Helper materialization uses file size and modification time to decide whether the copied helper is fresh. It uses a temporary file in .sandbox-bin and rename, but does not compute a cryptographic hash or verify a signature in the inspected path. The sandbox group is given read/execute rather than write access to the helper directory, which is a separate mitigating ACL. Do not describe the freshness check as cryptographic integrity verification.
+
+### 14.6 Elevated runner IPC and process containment
+
+Pinned files:
+- codex-rs/windows-sandbox-rs/src/elevated/runner_pipe.rs, blob c8ae092c4a00fc3e029be48cb77cc78db4580d87.
+- codex-rs/windows-sandbox-rs/src/process.rs, blob 1571bb8ccf47c798787e5d1eee3e18de277dc74a.
+- codex-rs/windows-sandbox-rs/src/spawn_prep.rs, blob 1b3704d6a26287d578eb5b30945d53b683607f6d.
+
+Source confirms:
+- Elevated runner IPC uses a random 128-bit nonce in paired pipe names.
+- Pipe DACL is sandbox-user-only, and the parent checks GetNamedPipeClientProcessId against the runner PID it just launched.
+- The inspected process.rs path uses CreateProcessAsUserW with an explicit stdio handle list in the pipe path. It does not create the process suspended or assign it to a Job Object in this module.
+- No Job Object/kill-on-close containment was found in the inspected Codex Windows sandbox files. This is not proof that no other surrounding component provides process-tree handling; descendant orphan behavior remains UNKNOWN until the full launch/cancellation path is inspected and tested.
+- spawn_prep applies allow/deny path ACL preparation and computes write roots/deny carveouts, but does not close the parent-FDC question above.
+
+### 14.7 Updated Codex assessment
+
+Codex now has source-verified token construction, offline firewall rule construction, SID scoping/read-back, two local accounts, protected secret-directory setup and elevated named-pipe IPC. Its source also reveals priority questions: target-only deny ACEs versus parent FILE_DELETE_CHILD grants, incomplete deny-presence detection, swallowed ACL API errors, initial-setup error aggregation, no Job Object in the inspected process launch path, and size/mtime rather than cryptographic helper integrity.
+
+These findings lower confidence in adopting Codex without further review; they do not establish that the shipped product is exploitable. The exact ACL and setup concerns need independent security review and disposable Windows tests. Codex remains STUDY ONLY.
+
+### 14.8 Non-actions
+
+No Windows test, build, installation, source edit, PR, host operation, queue action, schema change, canonical acceptance change, provider, spend or deployment was performed. Source reading only.
