@@ -145,3 +145,7 @@ The next work is to await Claude's independent research, reconcile candidate cla
 ## 2026-11-01 follow-up: pinned open-source candidate review
 
 Added [AI_COLLAB/OPEN_SOURCE_CANDIDATE_DEEP_DIVE_20261101.md](AI_COLLAB/OPEN_SOURCE_CANDIDATE_DEEP_DIVE_20261101.md) with exact upstream commit/blob pins and source-level constraints for CodeMirror 6, Pyodide, wasmsh and Aider repo-map. Key correction: CodeMirror 6's GitHub repositories were archived because development moved to a new Forgejo host; npm `@codemirror/view@6.43.15` remains active, but current source commit was not fetched. Pyodide remains a candidate for the fixed task, not a general security boundary. wasmsh is not a full OS shell and its zero-valued limits are unlimited. Aider's repo-map is coupled to Aider internals, so the concept is preferable to importing the module. No candidate has been adopted or run.
+
+## 2026-11-01 fixed-task protocol hardening
+
+Updated `AI_COLLAB/PRODUCT_FIXED_TASK_COMPARISON_WORKSHEET_20261028.md` with a canonical, frozen `main.py` source fixture. This closes a comparability gap: every execution path must now run the same source unchanged or explicitly record its adaptation/wrapper. The fixture validates input before writing output and defines exact success and malformed-header behavior. Design-only; not run or device-tested.
