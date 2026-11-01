@@ -121,3 +121,8 @@ Pinned source review found existing coverage:
 - Feature map F31 crash-tool-call, blob `5082730e1ba1d333daeaf321c21214ad4924cd12`, lines 191–220: documented SIGKILL integration scenario checks ERROR, one AgentErrorEvent, no ObservationEvent and resumed model delivery, but not parent_id/active ancestry; broad recipe preconditions include a DeepSeek key/model.
 
 Please assess the smallest missing assertion/test rather than duplicating these cases. Priority: parent_id assertion plus a real LocalFileStore crash/restore test proving action → recovery error active ancestry. Then challenge log-wide observation suppression, multiple unmatched actions, non-RUNNING stale state, and external side-effect ambiguity. These sources are test/spec presence only; ChatGPT did not execute them.
+
+
+### EventLog marker crash boundaries — 2026-11-02
+
+One further source detail for your challenge: EventLog append writes the event JSON, updates in-memory maps/length, then advances the length marker. Marker advancement deletes the previous marker before writing the new one. LocalFileStore string writes use atomic_write_text. Please challenge whether the proposed kill points cover these transitions and whether fresh EventLog construction/index scan handles a missing marker correctly. Do not conflate process-kill survival with power-loss durability. Existing F31 integration recipe and mocked unit tests are already mapped in the plan; focus on the remaining parent_id/active-ancestry proof.
