@@ -889,3 +889,37 @@ Key refinements to LOC-01..24:
 - Hard worker termination is host action only; Python cleanup, output flush, child exit status and final outcome remain UNKNOWN unless independently captured.
 
 No change to the canonical task, candidate ordering, product direction or approval gates. LOC-01..24 remain proposed and NOT RUN. No runtime/device/security result is claimed.
+
+
+## 23. OpenHands event persistence and Happy device pairing source implications — 2026-11-01
+
+Source review: [OPENHANDS_EVENTLOG_AND_HAPPY_PAIRING_SOURCE_REVIEW_20261101.md](OPENHANDS_EVENTLOG_AND_HAPPY_PAIRING_SOURCE_REVIEW_20261101.md).
+
+### 23.1 OpenHands is a useful event-journal reference, not a selected store
+
+Observed source patterns worth retaining for design comparison:
+- stable event identity plus separate durable on-disk sequence;
+- explicit parent-event identity and active branch HEAD;
+- append-only event files, duplicate-ID/parent checks, non-reused disk sequence after gaps;
+- explicit gap reporting and surviving-event readability;
+- lease owner generation held under a lock during protected persistence writes.
+
+Important caveats:
+- local file locks are not a distributed lock and are documented as unreliable on NFS/network filesystems;
+- LocalFileStore caches reads and assumes exclusive access;
+- event append and base-state HEAD update are separate writes; a crash between them is a candidate orphaned-event/stale-HEAD window, not yet reproduced;
+- lease generation guards disk writes routed through the guard, not arbitrary provider requests, child process launches or other external side effects.
+
+Do not import OpenHands event IDs, sequence numbers, parent IDs, lease generation or storage semantics as PocketCode fields by name similarity. They are separate identity domains. D-04 still requires owner-reviewed authenticated event identity, replay/order semantics and immutable evidence. D-05/D-06 remain separate policy-enforcement and side-effect/idempotency gates.
+
+### 23.2 Happy is a device-pairing UX/crypto study, not a verified server protocol
+
+The Android client implements ephemeral X25519, transcript-bound HKDF, four-emoji comparison, role-specific HMAC confirmation and a derived device token withheld until daemon proof. The client tests include fixed vectors and a FakeDaemon.
+
+No daemon-side /v0/mobile-connector/handshake handler was located in the public repository source search. Therefore one-time QR-token use, replay resistance, rate limits, atomic confirm/reject/expiry transitions, daemon crash cleanup and device-token authorization remain unverified. The happy-agent CLI also writes token+secret JSON to a local file without file-level encryption; requested POSIX mode bits are not evidence of Windows ACL behavior.
+
+A similar user-consent device-pairing flow could be considered only as a future optional remote-host authorization UX. It does not replace remote execution, OS policy enforcement, durable jobs or report history. No pairing implementation or provider has been selected.
+
+### 23.3 No contract or acceptance changes
+
+These are source-derived design observations only. Do not modify the canonical fixed task, shared fixture status, native RevDev acceptance IDs, PocketCode D-01..D-08 owner decisions, schema, PR #2/#3 or product direction based on these references. Proposed follow-up tests belong in the existing future conformance/falsification planning and require implementation-specific authorization before execution.
