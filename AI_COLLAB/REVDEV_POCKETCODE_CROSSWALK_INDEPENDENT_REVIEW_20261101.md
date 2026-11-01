@@ -389,3 +389,114 @@ This is prioritization for future review, not authorization to modify implementa
 ## 9. Regression plan
 
 A separate staged test-design artifact has been added: [LIFECYCLE_CONTRACT_REGRESSION_PLAN_20261101.md](LIFECYCLE_CONTRACT_REGRESSION_PLAN_20261101.md). It separates pure-helper tests (OBS-01..06) from fake-adapter, persistence, provider-boundary and runtime/queue tests, defines candidate negative cases, and states evidence exit criteria. All cases remain proposed and NOT RUN. The plan does not authorize or imply implementation changes.
+## 10. Gemini specification audit received and source-reconciled (2026-11-01)
+
+**Input provenance:** The owner supplied a Gemini response headed "PocketCode Cross-Project Specification Audit and Lifecycle Regression Plan Review". Its self-reported date is 2026-11-02, one calendar day later than this audit's current date (2026-11-01). The date and authorship metadata were not independently authenticated. The response supplied artifact names but no commit SHAs, blob SHAs, source line numbers, or test output.
+
+**Overall verdict:** Do not accept Gemini's AWC, CASE, P0-D, or OBS mappings as written. The supplied response systematically assigns meanings from different or unidentified specifications to identifiers already pinned in this project. Several engineering concerns are valuable and are retained below under new supplementary test IDs. This reconciliation does not replace or renumber any canonical acceptance ID.
+
+### 10.1 Exact artifact recheck
+
+The following snapshots were fetched again from GitHub:
+
+- RevDev AWC synthetic fixture manifest: repository `marcelosofficial-ctrl/DevRelay-Missions`, blob `c2d4cba6c836f725f7bc4585f91e02d443fe89e1`. It contains 18 AWC fixtures, AWC-001 through AWC-018, with status PROPOSED_NOT_RUN.
+- RevDev P0-D source: repository `marcelosofficial-ctrl/DevRelay-Missions`, blob `6a0c804e1ad75edf1022af960acbb143ba1430b6`, lines 107-123 for the P0-D matrix.
+- PocketCode canonical execution acceptance: `PRODUCT/EXECUTION_LOOP_ACCEPTANCE.md`, main blob `c6714c27db52b2962fe8d1c7e6a16829d46a8338`.
+- PocketCode execution contract: `PRODUCT/EXECUTION_CONTRACT.md`, research branch blob `128a00a9b2a335514814cab76fb5781fe8f9f858`.
+- PocketCode transition/report matrix: `AI_COLLAB/TRANSITION_AND_REPORT_PROJECTION_MATRIX_20261029.md`, blob `c4166ad1447e5628c4f4aadd34c864c878d5f795`.
+- PocketCode semantic-decision note: `AI_COLLAB/SEMANTIC_DECISIONS_AND_REPORT_PROJECTION_20261029.md`, blob `a237e882128865ce6a47651a1f9c6da6901f4994`.
+- Current owner decision register: `AI_COLLAB/OWNER_DECISION_REGISTER_20261029.md`, blob `e67b2659cf2d71ef77d8e4619c91143e71062470`.
+
+The cited PocketCode execution-acceptance file defines CASE-01 through CASE-16. It does not define CASE-17 or CASE-18. The execution contract does not contain the cited "Multi-Attempt Logging" section. The semantic-decision note contains four proposed executive decisions and no OBS-01 through OBS-06 identifier set. The actual OBS-01 through OBS-06 used in this review are the six helper findings pinned in Sections 7-8.
+
+### 10.2 Identifier corrections
+
+| Gemini's description | Pinned source meaning | Reconciliation |
+|---|---|---|
+| AWC-005 = resource capping | Unsafe shortcut suggested in untrusted task content | Reject mapping. It is a Work Coach trust-handling fixture, not a runtime resource test. |
+| AWC-008 = egress isolation | Recovery after two consecutive targeted repair attempts fail | Reject mapping. Repair recovery is not network enforcement. |
+| AWC-009 = secret protection | User asks how to bypass a usage limit | Reject mapping. Usage-limit advice is not secret scanning or environment isolation. |
+| AWC-010 = output truncation | Manual task handoff when no supported connector exists | Reject mapping. The task packet is not an execution stream. |
+| AWC-011 = cleanup guarantee | Source content contains instruction-like text asking the assistant to change its safety policy | Reject mapping. Prompt injection is not provider teardown. |
+| AWC-012 = idempotency | Fabricated token, time, and cost metrics in a packet | Reject mapping. Telemetry honesty is not dispatch replay. |
+| AWC-017 = attempt binding | Provider/model/host capabilities are unknown | Reject mapping. Capability honesty is not cross-attempt event correlation. |
+| AWC-018 = artifact release gate | Partial/truncated evidence with no completion signal | Reject mapping. The fixture is assistant reporting from incomplete evidence, not current download authorization. |
+
+The canonical PocketCode CASE meanings also contradict several Gemini descriptions:
+
+- CASE-05 is cancellation and termination confirmation, not memory/CPU resource capping.
+- CASE-07 is configured output-limit enforcement and explicit truncation/rejection.
+- CASE-08 is missing input or an unsafe input path/name, not network egress.
+- CASE-09 is exit zero with a program-reported failed check.
+- CASE-10 is printed PASS with a non-zero exit.
+- CASE-11 is browser disconnect while execution continues.
+- CASE-12 is copying a report after a failed/incomplete run.
+- CASE-13 is retry after an ambiguous network response and duplicate-execution prevention.
+- CASE-15 is untrusted code attempting outbound network access or reading environment secrets.
+- CASE-16 is out-of-order concurrent run completion with correct run identity.
+- CASE-17 and CASE-18 are not defined by this canonical acceptance file.
+
+The original P0-D source defines item 9 as an intentional malformed mission quarantined without blocking later queue work. Item 10 is exact-result publication and duplicate/idempotent replay. They are not a cancel-versus-timeout race or a worker-disconnect state machine. Preserve the existing crosswalk split: P0-D-10a ambiguous replay is adjacent to CASE-13; P0-D-10b run identity/order is adjacent to CASE-16; exact durable publication remains RevDev-specific. P0-D-09 remains unmapped.
+
+### 10.3 Engineering findings retained, with corrected scope
+
+**A. Applied-policy barrier before untrusted execution: ACCEPT as a real provider-boundary requirement.**
+
+Gemini's Daytona v2 example is materially supported by the current official Daytona v2 Network Limits documentation: policy updates to an existing sandbox are stored immediately but applied in the background; a policy read exposes both desired and applied policies/revisions, and the update can remain pending until enforcement catches up. The documentation recommends checking connectivity before critical work. This validates the race for an update-on-an-existing-sandbox flow, not a claim that every provider or create-time policy has the same race.
+
+Required design: apply the restrictive policy during sandbox creation where supported. If changing an existing sandbox, do not dispatch untrusted code until a fresh authoritative read confirms the exact required policy and revision are applied. A pending, stale, missing, or mismatched applied policy must fail closed. An ETag/If-Match token protects a conditional update from lost-update races; by itself it does not prove that the data plane is enforcing the policy. A probe is useful corroboration but is not proof against every protocol, address family, DNS route, or bypass path. This is a D-05 / LOOP-12 / CASE-15 concern, not an AWC-008 mapping.
+
+The current Modal documentation fetched for this review documents create-time `block_network` and outbound allowlist options, but does not substantiate Gemini's specific asynchronous-update timing claim for Modal. Keep the race provider- and operation-specific unless provider documentation and a real adapter test establish it.
+
+**B. Resource-limit enforcement and containment: ACCEPT as an important LOOP-12 evidence gap, not an AWC fixture.**
+
+LOOP-12 already requires a disposable constrained runtime with egress denied by default and resource limits enforced outside user code. A fake adapter returning MEMORY_EXCEEDED is not evidence that a host-side or guest-side limit is actually active. Future provider/runtime proof must identify the real enforcement boundary and show that the workload cannot exhaust or kill the orchestration worker/host outside its sandbox. Use the selected provider's authoritative resource telemetry and scoped before/after counters where available; do not assume every provider exposes Linux cgroups.
+
+Technical correction to Gemini's example: Linux pipe capacity is not a generic silent truncation threshold. A write to a full pipe blocks, or fails for nonblocking I/O. A collector may separately drop, cap, or lose data. `RLIMIT_FSIZE` limits file growth and can cause SIGXFSZ (or EFBIG when the signal is handled); it is not a stdout-pipe cap. A bare SIGKILL does not uniquely identify OOM. If cgroup v2 is the actual enforcement mechanism, record the relevant cgroup identity, configured limit, and scoped event-counter delta; distinguish hierarchical `memory.events` from local `memory.events.local`. Do not treat a global or pre-existing counter as proof that this attempt hit the limit.
+
+**C. Runtime, stream-capture, collector, and display truncation: ACCEPT; refine, do not replace PC-LC-05.**
+
+The existing plan already requires separate execution outcome, limit enforcement, termination evidence, and collection/presentation truncation. Extend evidence detail to distinguish: (1) an enforced execution/resource limit and its actual termination effect, (2) process-stream capture/transport interruption or reader failure, (3) collector/retention cap or storage loss, and (4) display/viewport shortening. Preserve retained-byte counts, the affected stream, and the observing component. No single `is_truncated` flag can establish where data was lost. A confirmed EXIT_ZERO must remain an observed execution fact even when collection is partial; the user-facing verdict then follows the applicable case's explicit evidence requirements.
+
+**D. Execution outcome versus cleanup/teardown: ACCEPT as a separation requirement, already represented in the current semantic matrix.**
+
+Preserve a trusted child EXIT_ZERO/EXIT_NONZERO independently from cleanup state. A provider delete timeout or HTTP 500 after a confirmed exit must not rewrite the child exit code. Cleanup may be UNKNOWN, FAILED, or pending reconciliation, and artifact release remains denied while a mandatory cleanup/release gate is unresolved. Gemini's phrase "Axis B verdict INCOMPLETE" is too imprecise: execution outcome, evidence quality, user-facing verdict, job disposition, cleanup state, and artifact-release decision are separately represented in the current matrix, not a simple pair of axes. The matrix already says EXIT_ZERO with a missing mandatory gate is INCOMPLETE while preserving EXIT_ZERO.
+
+**E. Request fingerprint and durable idempotency: ACCEPT; extend the test detail.**
+
+This is already a proposed D-06 requirement and PC-DB-01/PC-AD-01 concern. The reservation must be tenant-scoped and atomic. Same key plus same canonical semantic request fingerprint resolves to the original job/attempt; same key plus changed fingerprint conflicts before dispatch. The fingerprint should cover the complete execution-relevant request, including normalized inputs/files, runtime/entrypoint, requested limits, and policy revision, not just a loosely serialized text payload. After lost acknowledgement, UNKNOWN lookup must never trigger blind redispatch. Prove this with database concurrency/crash/restart tests; fake adapters alone do not prove it.
+
+**F. Producer authority and cross-attempt correlation: ACCEPT; retain the existing PC-LC-03/04 design.**
+
+Attempt identity must bind tenant, job, attempt, source namespace, event identity, sequence, and relevant policy revision before reduction. A late event from attempt N must not enter attempt N+1's active result. Identical replay is idempotent only within the same scoped identity; changed payload under the same identity is a conflict. The valid producer must be authenticated at the trusted boundary. A cryptographic signature is one possible mechanism only if key ownership, rotation, verification, and source binding are defined; a self-asserted role or signed but untrusted client header is insufficient. Do not mandate signatures as the only design.
+
+**G. Artifact integrity and current release authorization: ACCEPT; this is already a contract rule that needs explicit regression coverage.**
+
+The current execution contract already requires a fresh release decision and re-checks current authorization, run/attempt association, trusted manifest, quarantine/lifecycle state, safe object identity, size/type/path policy, and exact immutable bytes at release time. D-07 records this as proposed and NOT RUN. Add cases for interrupted/partial writes, checksum mismatch, changed bytes after manifest creation, stale authorization/policy, wrong tenant/run/attempt, and quarantined artifacts. A partially written or digest-mismatched artifact must not be published or streamed. Content scanning for a private key or other sensitive pattern is required only if an explicit release policy defines that scanner, its version, coverage, and failure semantics; do not imply such a scanner already exists or is complete.
+
+**H. Delayed cost telemetry: RETAIN AS A FUTURE, SEPARATE REQUIREMENT.**
+
+This is not the existing OBS-03 (which is the streaming-redactor carry/token-length finding) and it does not map to AWC-012 or LOOP-14 as an equivalence. If a provider is selected later, distinguish measured resource usage, estimated cost, provider-reconciled billing, and unknown/pending cost. Never show a delayed invoice as final zero spend. This remains a future adapter/persistence design item and is blocked by the current $0/no-provider/no-workload constraint.
+
+**I. Untrusted stdout containing control-shaped JSON: ACCEPT as a useful negative test.**
+
+Printed JSON, fake exit codes, and strings such as `{"verdict":"PASS"}` remain untrusted program output. They must never become lifecycle events or authoritative report fields. The transition matrix already states this trust rule; add an explicit pure-helper/adapter regression that keeps such bytes in stdout and leaves authoritative state unchanged.
+
+### 10.4 Revised cross-project disposition
+
+- No AWC-to-LOOP/CASE mapping is changed by Gemini's response.
+- No canonical LOOP/CASE ID or P0-D item is renamed, split, or redefined.
+- The P0-D-10a/10b/10c split remains as documented in Section 8.3.
+- Existing OBS-01 through OBS-06 retain their original source meanings. Gemini's six differently labelled observations are treated as engineering suggestions, not as a second definition of those OBS IDs.
+- The new regression additions are supplementary test-design IDs only. They do not become AWC fixtures, canonical LOOP/CASE acceptance, P0-D canaries, or proof of implementation.
+- No provider, storage system, runtime, billing mechanism, authentication scheme, or integration topology is selected.
+
+### 10.5 External technical references checked
+
+- Daytona v2 Network Limits: https://www.daytona.io/docs/en/v2/network-limits/ (v2 documentation labels itself alpha; policy updates on an existing sandbox are asynchronous and expose desired/applied revisions).
+- Linux `pipe(7)`: https://man7.org/linux/man-pages/man7/pipe.7.html (full pipes block writers or fail for nonblocking I/O).
+- Linux `getrlimit(2)`: https://man7.org/linux/man-pages/man2/getrlimit.2.html (RLIMIT_FSIZE limits file growth and SIGXFSZ behavior).
+- Linux cgroup v2: https://docs.kernel.org/6.9/admin-guide/cgroup-v2.html (memory.max and memory.events / memory.events.local semantics).
+- Modal networking and security: https://modal.com/docs/guide/sandbox-networking (the fetched page documents create-time network-block and allowlist options; it did not substantiate the specific asynchronous update claim attributed to Modal).
+
+**Verification status:** Source and documentation inspection only. No tests, provider calls, sandbox workloads, runtime experiments, Actions, source/test changes, canonical acceptance changes, PR edits, merges, deployments, or spend occurred. All proposed acceptance and provider/runtime evidence remains NOT RUN; PC and hosted provider state remain UNKNOWN/unselected.
