@@ -230,3 +230,12 @@ See [OPENHANDS_EVENTLOG_HEAD_CRASH_WINDOW_FALSIFICATION_PLAN_20261102.md](OPENHA
 The source-derived append/HEAD hypothesis now has a bounded future test plan. The test must distinguish a valid event file from EventLog discoverability, persisted active HEAD and active ancestry; it must kill a separate writer process at deterministic boundaries and restore from disk in a fresh process. It must separately test same-ID/same-payload retry, same-ID/changed-payload conflict, new-ID logical retry and delayed replay. A missing saved leaf/fallback case is distinct from an old but still-existing leaf.
 
 This is not a new PocketCode acceptance ID and does not freeze EventID, sequence, parent, HEAD or lease fields. Lifecycle D-04 remains OPEN; D-05 remains BLOCKED; D-06 and D-08 remain owner-open. No test has run and no owner decision changed.
+
+
+### 12.1 Agent-server crash recovery qualification — 2026-11-02
+
+The pinned OpenHands source review was extended beyond the SDK layer. At `event_service.py` lines 1424–1467, a restored RUNNING conversation is marked ERROR; the service scans the full event log for unmatched actions and, if no ObservationBaseEvent exists for the first action's tool_call_id, writes a non-retryable internal AgentErrorEvent with an explicit parent_id pointing to that action. This is a targeted recovery path for the stale-HEAD window, not an atomic append/HEAD transaction.
+
+Important conditions and limits: it is gated by persisted RUNNING status; it considers the first unmatched action; any matching observation-like event for the tool_call_id in the full log suppresses recovery; and the recovery error does not prove whether an external side effect happened before the crash. A stale still-existing leaf remains accepted by SDK _resolve_active_leaf; missing-leaf repair is a separate condition. See the expanded FI-09..14 cases in the falsification plan.
+
+This strengthens the D-04 design discussion but does not freeze event identities or semantics. D-05 remains BLOCKED and D-06 remains owner-open: a recovery event is not a provider idempotency/fencing mechanism. No test has run and no owner decision changed.
