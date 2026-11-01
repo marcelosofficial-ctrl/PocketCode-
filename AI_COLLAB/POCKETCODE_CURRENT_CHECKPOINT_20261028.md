@@ -354,3 +354,9 @@ Closed a reproducibility gap in the existing fixed-task worksheet: it previously
 The fixture reads `items.csv`, validates required headers and rows before opening `summary.json`, uses `Decimal`, and returns status 2 with an explicit missing-column error for the malformed fixture. This makes the task less vulnerable to comparing different AI-generated implementations. It is still a narrow correctness/file-flow fixture, not a security or sandbox test.
 
 Updated worksheet blob: `491dc02ce53722e381ec7253ab754b2d2baa2d8c`. **Status remains DESIGN ONLY / NOT RUN.** No app install, code execution, benchmark, provider workload or device test. Next hands-on attempt still requires an explicit owner decision.
+
+### Canonical fixture isolated sanity check — 2026-11-01
+
+The Section 2A source fixture was copied to a temporary directory and sanity-checked in the isolated ChatGPT Python environment: Python 3.13.5, Linux x86_64. SHA-256 `70c66ad3a0132923cbf3190eb3546093fcc2c61c1bdcbf3b171696e1ae7521e7` (1,939 bytes). Success case returned exit 0 and exact expected JSON; malformed header returned exit 2 with the missing-`unit_price` error and no output file. The harness injected an unrelated spreadsheet warmup traceback into stderr at interpreter startup, so the entire stderr stream is not clean application-only evidence. See Section 2B of the worksheet.
+
+This is fixture logic validation only. No iPhone/app/browser/remote/hosted test, benchmark, device behavior, sandbox, termination, cleanup, egress or report-handoff evidence. Product-path comparison remains NOT RUN.
