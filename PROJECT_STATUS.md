@@ -283,3 +283,12 @@ The note provides a provisional identity map for task, RevDev MissionId/RunId, P
 Claude research availability was rechecked: all eight PocketCode branches were enumerated; no dedicated medium-sized Claude research report appears in the active research tree or listed branches. Branch search returned no Claude-specific research branch. Repository commit search found only the older CLAUDE.md entry-instructions commit, not the promised report. This means NOT RECEIVED in this checked snapshot, not that Claude has not written it elsewhere. Claude's SCF-specific review and Gemini's SCF-specific red-team review remain pending.
 
 Documentation-only work on the isolated research branch. No schema, owner decision, canonical acceptance, source/tests, PR #2/#3, main branch, provider/store, account, workflow, Actions, workload, billing, deployment, merge or PC/host/queue state changed or exercised. No tests/device/provider execution occurred.
+
+
+### Pyodide 314.0.7 official-source mobile feasibility review — 2026-11-01
+
+Added [PYODIDE_314_0_7_MOBILE_RUNTIME_FEASIBILITY_REVIEW_20261101.md](AI_COLLAB/PYODIDE_314_0_7_MOBILE_RUNTIME_FEASIBILITY_REVIEW_20261101.md) and linked its findings from Section 22 of the execution-boundary crosswalk. This is official-source desk research only; the fixed task and LOC-01..24 remain NOT RUN.
+
+Key refinements: Pyodide 314.0.7 requires a module-type worker; its documented cooperative KeyboardInterrupt path requires a Web Worker plus SharedArrayBuffer/cross-origin isolation, so LOC-05 gates LOC-06; maxMemoryBytes appears in the current Unreleased changelog section and is not part of the pinned 314.0.7 release; the default MEMFS is lost on reload; Safari file handling requires explicit picker/import and Blob save/share rather than Chromium-only File System Access API; and Worker.terminate does not establish Python cleanup or terminal outcome. The pinned standard-library task remains a suitable narrow candidate using decimal.Decimal, CSV and JSON, but does not prove general Python compatibility or security isolation.
+
+No change to product direction, canonical task, provider ranking or approval gates. No code, tests, device run, app install, account, provider, workload, Actions, billing, PR, merge, deployment or host/queue operation occurred.
