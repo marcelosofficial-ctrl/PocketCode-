@@ -204,3 +204,13 @@ The central finding is that the documents and helpers describe compatible pieces
 Published [END_TO_END_TRUST_CHAIN_GAP_MATRIX_20261101.md](AI_COLLAB/END_TO_END_TRUST_CHAIN_GAP_MATRIX_20261101.md) with the stage-by-stage authoritative producer, identity invariant, current evidence, proof gate, cross-stage failure rules, owner decision blockers, and implementation order.
 
 This is documentation-only synthesis. No implementation or canonical acceptance changed; no tests/workloads ran; no provider/store was selected; no PR was merged and no deployment occurred.
+
+### Coordinator crash-window and stale-worker audit — 2026-11-01
+
+A focused static review of the provider-neutral interfaces and crash/recovery plans identified an additional design gap: worker leases are discussed, but no monotonic fencing epoch is specified for every coordinator mutation. A stale worker could resume after lease expiry and attempt dispatch, event acceptance, report projection or artifact publication. A database lease by itself cannot fence an external provider call.
+
+The audit also requires a complete provider idempotency-token namespace and retention contract; an exact dispatch-intent crash/call-order table; stale-worker handling for late evidence and projections; separate source-event, coordinator-event, projection, append and publication identities; and exact immutable-byte/range-transfer semantics at artifact release.
+
+Published [COORDINATOR_CRASH_WINDOW_AND_FENCING_AUDIT_20261101.md](AI_COLLAB/COORDINATOR_CRASH_WINDOW_AND_FENCING_AUDIT_20261101.md), including proposed STALE/TOKEN/PUB/REL falsification cases. These are proposed test additions, not canonical acceptance IDs.
+
+D-06 remains OPEN; D-04/D-07/D-08 remain OPEN; no provider/store is selected. Static review only: no implementation changes, tests, workloads, account/billing actions, merges or deployments.
