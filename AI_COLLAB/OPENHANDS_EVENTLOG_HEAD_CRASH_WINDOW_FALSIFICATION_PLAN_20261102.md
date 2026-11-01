@@ -122,3 +122,38 @@ A useful report must include:
 ## 9. Non-actions and current status
 
 This document is a design for future falsification only. It does not report execution. No OpenHands tests, builds, provider calls, device runs, persistence services, PocketCode source/tests/schema, canonical acceptance, PR #2/#3, Actions, deployment, account, billing, or PC/RevDev host/queue operations were performed. No provider or store is selected. All RevDev PC state remains UNKNOWN.
+
+
+## 10. Source refinement: agent-server has an explicit interrupted-tool recovery path — 2026-11-02
+
+A second exact-ref read of the pinned source found an important qualification that must be included in any result. At the same pinned commit `98849457621881ae2414719b82b8bc1cf535b4ab`:
+
+- `openhands-sdk/openhands/sdk/conversation/state.py` lines 342–364 confirms append then leaf assignment. Lines 632–655 show public-field autosave; the base-state write occurs after assignment and is separately guarded when a write guard is configured.
+- `openhands-agent-server/openhands/agent_server/event_service.py` lines 1424–1467 explicitly recognizes this crash window. On loading a conversation whose persisted `execution_status` is RUNNING, it marks status ERROR, scans the **full event log** for unmatched actions, and if the first unmatched action has no observation-like event for its `tool_call_id`, appends a non-retryable internal AgentErrorEvent with `parent_id=first_action.id`. The source comment says this explicit parent avoids attaching the recovery result to stale HEAD as a sibling and leaving an orphan tool result on the active branch.
+- `state.py` lines 268–320 clarify that a set, still-existing leaf is returned as-is; missing-leaf repair only runs when the saved leaf event file is absent. A still-existing stale leaf is not automatically advanced to the last event by that repair helper.
+
+This means the underlying append/HEAD non-atomicity is directly acknowledged by the source, and the server contains a targeted recovery mechanism for interrupted tool actions. It would be inaccurate to describe the current source as having no recovery. It would also be inaccurate to conclude that the recovery closes every possible gap: the recovery is conditional on the restored state being RUNNING, on finding an unmatched action, and on no observation-like event already existing for that tool_call_id. It appends an interruption error rather than proving the original tool side effect did not occur.
+
+### 10.1 Required additional tests
+
+Add the following to the future harness before drawing a product conclusion:
+
+| ID | Setup / fault | Required assertion |
+|---|---|---|
+| OH-HEAD-FI-09 | Crash after action event file commits but before leaf autosave; persisted execution_status=RUNNING; restore through EventService | Full-log scan finds unmatched action; recovery error is explicitly parented to that action; restored active branch includes action then recovery error; no sibling/orphan result |
+| OH-HEAD-FI-10 | Same crash state but persisted execution_status is not RUNNING | Determine whether EventService intentionally skips interrupted-tool recovery; document resulting active branch and any stale action visibility |
+| OH-HEAD-FI-11 | RUNNING state, matching ObservationBaseEvent already exists anywhere in full log for the tool_call_id | Verify duplicate suppression and whether active ancestry is still coherent; a log-wide match must not silently hide a missing active-branch observation |
+| OH-HEAD-FI-12 | Multiple unmatched actions in full log | Verify the first-action selection and whether one recovery error is sufficient or later unmatched actions remain unresolved |
+| OH-HEAD-FI-13 | Observation matches tool_call_id but has a different action association | Verify the intentional tool_call_id-based duplicate suppression and whether it can suppress recovery for the wrong action |
+| OH-HEAD-FI-14 | Crash after external tool side effect but before observation persistence, then restart recovery | Verify user-facing result remains interrupted/unknown; do not claim the side effect did not occur or automatically redispatch it |
+
+Also record whether recovery's `_conversation._on_event(error_event)` is routed through the same write guard and whether the recovery append and any status/HEAD saves remain separate writes. Do not assume a recovery event is transactionally coupled to execution_status=ERROR.
+
+### 10.2 Revised interpretation
+
+The generic FI-03/FI-04 cases still test the SDK persistence boundary. FI-09..14 test the agent-server's application-level recovery path. Report both layers separately:
+- **SDK persistence property:** event append and active-HEAD snapshot are separate operations; a stale still-existing leaf can remain the effective HEAD.
+- **Agent-server recovery property:** a RUNNING conversation with an unmatched action is reconciled by a non-retryable interruption error explicitly parented to the action, subject to the conditions above.
+- **External side-effect property:** remains outside this mechanism. The recovery record does not prove whether a tool/provider side effect happened before the crash and must not authorize automatic retry.
+
+No test has been run. This refinement narrows the hypothesis and test scope; it does not change PocketCode D-04/D-05/D-06/D-08 or select OpenHands as a store.
