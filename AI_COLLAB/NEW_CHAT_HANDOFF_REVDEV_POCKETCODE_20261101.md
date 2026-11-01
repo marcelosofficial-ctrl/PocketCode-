@@ -468,3 +468,23 @@ Cross-project interpretation:
 - D-01..D-08, fixed-task worksheet, canonical acceptance, product direction and all RevDev roles remain unchanged.
 
 No tests, builds, device runs, upstream changes, PR edits, schema/acceptance changes, provider, deployment, host action or spend. PC and RevDev runtime state remain UNKNOWN.
+
+
+## 19. Crosswalk/state identity integration and Gemini challenge topics — 2026-11-01
+
+The OpenHands and Happy source findings are now reflected in:
+- Section 23 of AI_COLLAB/POCKETCODE_EXECUTION_BOUNDARY_TRUST_CROSSWALK_20261101.md
+- Section 11 of AI_COLLAB/STATE_AND_IDENTITY_MAPPING_PREPARATION_20261101.md
+- Section 14 of AI_COLLAB/CLAUDE_RESEARCH_MASTER_INDEPENDENT_RECONCILIATION_20261101.md
+- AI_COLLAB/GEMINI_INDEPENDENT_REVIEW_PACKET_20261029.md (additional challenge topics)
+
+Key identity guardrails:
+- OpenHands EventID, disk sequence, dense in-memory index, parent_id, leaf_event_id and ConversationLease generation are separate concepts. None automatically maps to PocketCode job/run/attempt/operation/policy IDs.
+- Happy QR pairing token, handshakeId, ephemeral keys/nonces, transcript hash, role MAC, derived deviceToken and deviceId are separate domains. Account linking is a different flow.
+- OpenHands append-event and HEAD snapshot writes are separate; crash window is a hypothesis pending fault injection.
+- OpenHands guarded_write fences protected persistence writes, not external side effects.
+- Happy pairing daemon-side guarantees remain UNKNOWN because the public source search found client implementations/tests only.
+
+State mapping Section 9's old report-availability statement is explicitly marked historical in new Section 11.4: Claude's research report and Windows audit follow-up have since been supplied in conversation and reconciled; the raw master report is not claimed to be a standalone committed file.
+
+No owner decisions, canonical acceptance, schema, fixed task, PR, source or product direction changed.
