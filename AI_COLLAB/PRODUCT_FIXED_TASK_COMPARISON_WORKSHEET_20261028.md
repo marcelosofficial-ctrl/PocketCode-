@@ -40,6 +40,77 @@ Equivalent JSON whitespace is acceptable; key values, decimal strings, line-item
 
 Use the same CSV with the required unit_price header removed. Expected behavior: the program reports a clear, relevant error and does not produce a misleading valid summary.json. Where the environment exposes a trustworthy process exit status, it should be non-zero; where it does not, record “exit status unavailable” rather than inferring it from text.
 
+## 2A. Canonical task source fixture — freeze before comparison
+
+**Status:** protocol completion; not executed. The original worksheet defined behavior and expected values but did not include one canonical source file. That left room for different implementations to be compared as though they were the same task. Use the exact source below for every path that accepts a Python script. Do not let an AI or app regenerate/rewrite it between conditions. If a path cannot accept the same source, record that as a path limitation and do not silently substitute another implementation.
+
+Save the following UTF-8/LF file as `main.py` in the fresh workspace, alongside the selected `items.csv` input:
+
+```python
+import csv
+import json
+import sys
+from collections import defaultdict
+from decimal import Decimal, InvalidOperation
+from pathlib import Path
+
+INPUT = Path("items.csv")
+OUTPUT = Path("summary.json")
+REQUIRED = {"item", "quantity", "unit_price"}
+
+
+def main():
+    try:
+        with INPUT.open("r", encoding="utf-8", newline="") as source:
+            reader = csv.DictReader(source)
+            headers = set(reader.fieldnames or [])
+            missing = sorted(REQUIRED - headers)
+            if missing:
+                raise ValueError("missing required CSV column(s): " + ", ".join(missing))
+
+            totals = defaultdict(Decimal)
+            line_items = 0
+            for row_number, row in enumerate(reader, start=2):
+                item = (row.get("item") or "").strip()
+                if not item:
+                    raise ValueError(f"row {row_number}: item is empty")
+                try:
+                    quantity = int(row["quantity"])
+                    unit_price = Decimal(row["unit_price"])
+                except (ValueError, InvalidOperation, TypeError):
+                    raise ValueError(f"row {row_number}: invalid quantity or unit_price")
+                totals[item] += Decimal(quantity) * unit_price
+                line_items += 1
+
+        grand_total = sum(totals.values(), Decimal("0"))
+        result = {
+            "grand_total": format(grand_total, ".2f"),
+            "line_items": line_items,
+            "totals_by_item": {
+                item: format(totals[item], ".2f") for item in sorted(totals)
+            },
+        }
+        OUTPUT.write_text(
+            json.dumps(result, indent=2, sort_keys=True) + "\\n",
+            encoding="utf-8",
+        )
+        print(f"Wrote {OUTPUT.name}")
+        return 0
+    except (OSError, csv.Error, ValueError) as error:
+        print(f"ERROR: {error}", file=sys.stderr)
+        return 2
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
+```
+
+The fixture deliberately validates all input rows before opening `summary.json`. In the fresh malformed-input workspace, the missing `unit_price` header must produce a nonzero script status (2 when run as a normal Python process), an error identifying the missing column, and no `summary.json`. The success case must create the actual file and print `Wrote summary.json`. This fixture does not test hostile CSV payloads, filesystem sandboxing, process-tree termination, network isolation or production-grade atomic writes.
+
+For each path, record whether the exact source can be supplied unchanged, whether it is run as a script or must be adapted to a notebook/cell, and any unavoidable wrapper. If a wrapper is required, preserve it as a separate artifact and record its role. Do not compare a rewritten solution against this fixture as if the source were identical.
+
+**Expected result remains exactly as defined in Section 2:** `grand_total` string `10.75`, `line_items` integer `2`, item totals `notebook: "7.00"` and `pen: "3.75"`. Key order and JSON whitespace are irrelevant.
+
 ## 3. Alternatives to assess
 
 Do not install software, create accounts, upload private files, or start paid trials as part of desk research. A later hands-on session must be explicitly chosen and use only the synthetic input above.
