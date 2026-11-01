@@ -294,3 +294,55 @@ Claude's dedicated SCF-001..018 implementation/identity review remains pending. 
 ### 12.8 Non-actions
 
 All work after the original handoff was documentation-only on the isolated PocketCode research branch. No schema, canonical acceptance, source/test, PR #2/#3, main branch, provider/store, account, workflow, Actions, workload, billing, deployment, merge, PC host, runtime, watcher, queue or publication state was changed or exercised. No tests, provider integration or device execution occurred. RevDev PC state remains UNKNOWN.
+
+
+## 13. Claude research master received and independently reconciled — 2026-11-01
+
+Claude's complete "PocketCode + RevDev: Open-Source Research Master" was supplied in chat. The review is recorded in:
+- [Independent reconciliation](CLAUDE_RESEARCH_MASTER_INDEPENDENT_RECONCILIATION_20261101.md)
+- [Project status](../PROJECT_STATUS.md)
+
+### 13.1 Main verdict
+
+Treat Claude's report as a useful discovery and source-reading map, not as an approved adoption plan. Its P0 labels are recommendations, not owner decisions. No technology, dependency, runtime, storage design, protocol, sandbox, licence or product direction was adopted by this review.
+
+### 13.2 Important primary-source checks
+
+- Anthropic sandbox-runtime: Windows support is explicitly alpha. Current docs confirm Schannel-based HTTPS failures (PowerShell web requests, .NET HttpClient, NuGet, winget, etc.), persistent allowWrite ACL grants, cross-session read implications for kept roots, and stated WFP attribution gaps. Study only; no PC install/provisioning/elevation.
+- MCP 2026-07-28: stateless core; Tasks is an optional `io.modelcontextprotocol/tasks` extension. It is not a durability, evidence, authorization or release guarantee. Use as a mapping vocabulary only.
+- ACP docs: v1 is the latest published protocol; v2 is draft. ACP supports JSON-RPC sessions, optional session loading, permission requests, updates and cancellation, but does not supply durable PocketCode job lifecycle or remote transport security.
+- OpenHands docs: append-only EventLog, state-only and event-based updates, FIFO locking/atomic update pattern and persistence/resume. This is a pattern reference, not proof that we should copy a per-event JSON layout or create a new RevDev journal.
+- StreamJsonRpc and Polly: credible library candidates; neither supplies our trust boundary or durable recovery.
+- Happy: source-level pairing/encryption/security has not yet been audited. No fork decision.
+
+### 13.3 Candidate disposition
+
+- Study now: srt Windows source/limitations, Codex Windows token/ACL/process creation, OpenHands EventLog/state.
+- Mapping only: MCP Tasks.
+- Deferred narrow spike: ACP read-only session viewer, only after current PocketCode milestone gates.
+- Study source before decision: Happy pairing, crypto, self-hosting, revocation and permission flows.
+- Conditional only: StreamJsonRpc, Polly, DSSE/in-toto formats, CodeMirror, Velopack, Job Objects, worktree tooling.
+- No new SQLite journal until RevDev P8U and existing result/evidence contracts can be inspected on PC.
+- Tailscale/Headscale remain owner-policy decisions; no assumption about current free-tier terms.
+- Pyodide remains under the existing 314.0.7 review and fixed-task feasibility work; no device evidence exists.
+
+### 13.4 Security and lifecycle guardrails
+
+Parser tolerance may accept explicitly enumerated syntax variants with diagnostics, but must not infer missing ACK, nonce, identity, version authority, confirmation or guard. Parsed content is not thereby policy-approved or authorized. Preserve HOSTED_DENY and destructive-operation refusals.
+
+Retry is not crash recovery. Never blindly retry an ambiguous side effect. Cancellation request, acknowledgement, process termination and verified terminal evidence are separate facts. Job Objects are process control, not a security sandbox or proof of terminal evidence.
+
+Maintain PocketCode's existing product direction, fixed task, seven independent state axes and D-01..D-08 decision boundaries. Maintain RevDev's native acceptance IDs and state axes. RevDev PC source, binary, runtime, watcher, queue and publication state remain UNKNOWN.
+
+### 13.5 Next passes
+
+1. Obtain Gemini's independent SCF-001..018 review and Claude's fixture-by-fixture review; reconcile without replacing native acceptance IDs.
+2. Delegate Gemini the Codex token/ACL/process creation and srt Windows policy/cleanup source reads.
+3. Delegate Claude OpenHands EventLog/state/persistence and Happy pairing/encryption source reads with exact commits, paths and threat-model findings.
+4. Continue identity/state mapping and owner-decision preparation without schema freeze.
+5. Prepare a RevDev P8U/source inventory checklist; no journal proposal before PC evidence.
+6. Continue only the existing PocketCode fixed-task phone-feasibility work.
+
+### 13.6 Non-actions
+
+No code, dependency, schema, canonical acceptance, source/test, PR #2/#3, provider, account, workload, billing, Actions, installation, device test, merge, deployment, host, watcher, queue, runtime or publication state was changed or exercised. No spend. Documentation-only continuity work on the isolated PocketCode research branch.
