@@ -636,3 +636,13 @@ Protected PRs rechecked: #2 and #3 remain open, draft and unmerged with unchange
 Recent additions are documentation-only: canonical task source fixture, isolated fixture sanity check, Gemini research reconciliation and candidate deep dive. The fixture check is explicitly not a product-path run. No provider, runtime, architecture convergence or dependency has been selected. Budget remains $0; PC/runtime/queue state remains UNKNOWN.
 
 **Continuation order:** (1) await Claude's research output and reconcile exact sources; (2) continue desk-only candidate review only where it adds evidence; (3) keep fixed-task path comparison NOT RUN until the owner explicitly authorizes a hands-on path; (4) if that occurs, capture exact app/runtime/device/version and complete both success and malformed-input records before any ranking; (5) only then decide whether the paired raw-evidence vs existing-report experiment is feasible. No automatic expansion into hosted/provider work.
+
+## 30. New-chat bootstrap created
+
+A standalone, comprehensive continuation document has been added:
+- `AI_COLLAB/NEW_CHAT_BOOTSTRAP_20261101.md`
+- Creation commit: `f01712956abcab6508fdd235d10be9d032ded061`
+
+It includes PocketCode and RevDev goals, three-AI roles, owner constraints, Claude's expected medium-sized report and how to evaluate it without overriding project goals, Gemini findings and corrections, exact candidate dispositions/source pins, fixed-task state, canonical acceptance IDs, AWC/P0-D crosswalk, lifecycle observations, resource/teardown research, RelayRef status, GitHub/PR safeguards, next-work order and a complete copy/paste message for the next ChatGPT chat.
+
+The standalone bootstrap is the primary transfer document. This addendum and the current checkpoint remain supporting continuity records.
