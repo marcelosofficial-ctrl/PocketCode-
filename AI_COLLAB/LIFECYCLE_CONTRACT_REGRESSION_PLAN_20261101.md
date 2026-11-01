@@ -190,7 +190,7 @@ Test policy supplied at sandbox creation and policy mutation on an existing sand
 **Traceability:** LOOP-12 and the resource/termination semantics in the transition matrix; no AWC mapping.  
 **Proof layer:** provider/runtime evidence, with adapter evidence for the configured policy.
 
-Exercise the actual selected provider's configured memory, CPU, process-count, disk/file, wall-time, and output limits as applicable. Show the authoritative enforcement source and exact sandbox/job/attempt identity. A workload exceeding its memory boundary must not kill or destabilize the orchestration worker or unrelated workloads. Where cgroup v2 is the actual mechanism, record the target cgroup and pre/post local event counters; do not interpret a global or pre-existing OOM counter as this attempt's event. Use provider-specific proof where cgroups are not exposed. Distinguish throttling, allocation failure, file-size rejection, process termination, and output collection caps.
+Exercise the actual selected provider's configured memory, CPU, process-count, disk/file, wall-time, and output limits as applicable. Show the authoritative enforcement source and exact sandbox/job/attempt identity. A workload exceeding its memory boundary must not kill or destabilize the orchestration worker or unrelated workloads. Where cgroup v2 is the actual mechanism, record the exact hierarchy, limit-owning cgroup, mount options, PID membership, and pre/post hierarchical plus local counters. memory.events.local can undercount descendants; memory.events is hierarchical by default unless memory_localevents is enabled. Neither oom nor oom_kill alone proves cause. Capture OOM/timeout race evidence and counters before cgroup removal. Use provider-specific proof where cgroups are not exposed. Distinguish throttling, allocation failure, file-size rejection, process termination, and output collection caps.
 
 ### PC-EXT-03: immutable artifact publication and release-time revalidation
 
@@ -288,3 +288,29 @@ All RES/TDN cases remain SPECIFIED ONLY / NOT RUN. See the detailed review for t
 ### PC-EXT-02 attribution clarification
 
 The detailed resource review's Section 8 refines RES-02: `memory.events.local:oom_kill` counts processes in the cgroup killed by any OOM killer, so it is not by itself proof that the target cgroup's own `memory.max` caused the kill. Capture effective memory/swap limits, target-local `max`/`oom`/`oom_kill` counter deltas, exact cgroup identity and process membership, trusted termination evidence, and supervisor/sibling health. Do not require an OOM kill for every memory-limit hit because some failures return `-ENOMEM`. Interpret correlated evidence, not one counter.
+
+
+## 11. Claude review reconciliation: canonical gaps and proof boundaries (2026-11-02)
+
+Claude explicitly reported that the new resource review, lifecycle regression plan and readiness backlog were inaccessible during its review attempt. Its response is therefore a set of adversarial challenges, not a review verdict on those three files. This section records the findings reconciled against the exact canonical acceptance and research-branch sources in this pass.
+
+### Canonical acceptance is not expanded by the supplementary plan
+
+1. There is no canonical cleanup-confirmed LOOP/CASE ID. CASE-05 concerns user cancellation and whether termination is confirmed; CASE-06 concerns provider/worker failure before a trustworthy program result. The first-useful-proof paragraph also names cleanup as a gate, but that is not a standalone teardown acceptance case. TDN remains a supplementary integration-test namespace.
+2. The lifecycle status list has no resource-limit status. Do not add resource_limit_exceeded as a canonical status. Preserve resource cause, enforcement layer and terminal evidence separately. OOM, ENOSPC, per-file-size enforcement, PID limit and I/O throttling must not be silently remapped.
+3. CASE-07 concerns the configured output limit. CASE-14 concerns output-file path/size safety. Neither proves a total workspace disk quota or I/O throughput boundary.
+4. Canonical verdicts remain PASS, FAIL and INCOMPLETE. Mapping a particular resource event to a confirmed program/runtime failure versus infrastructure failure depends on the actual ownership of the limit and trusted terminal evidence; D-01/D-02 remain open wherever the source does not decide this. No verdict rule is approved by this note.
+5. LOOP-14 remains a hard cost/authorization gate. Provider-account billing claims, including that charges have stopped, require real provider-boundary evidence after explicit approval. A mock, local estimate, or missing billing telemetry cannot establish a zero charge or stopped billing.
+
+### Review additions mapped to existing supplementary cases
+
+- RES-08 already owns worker/sibling containment and is sharpened to include worker memory/output buffers, namespace/filesystem/credential separation, and a second concurrently running attempt.
+- RES-09 already owns descendant termination and is sharpened to include daemonized descendants, escalation beyond graceful termination, independent observation, and exact process-subtree emptiness.
+- TDN-01..08 remain the original provider teardown matrix. The resource review now adds TDN-09 (lost create acknowledgement with durable pre-call intent and scoped orphan discovery) and TDN-10 (warm/reused sandbox contamination and stale child/state). TDN-06 additionally rejects cross-attempt resource sharing and stale cleanup observations.
+- The source-specific detailed additions and cgroup event interpretation are in [RESOURCE_CONTAINMENT_AND_TEARDOWN_EVIDENCE_REVIEW_20261101.md](RESOURCE_CONTAINMENT_AND_TEARDOWN_EVIDENCE_REVIEW_20261101.md).
+
+### Required evidence-layer order
+
+Pure-helper semantics → fake-adapter protocol → durable persistence/restart → local Linux cgroup enforcement where that is the actual approved host mechanism → selected-provider/runtime proof. A lost-create-ack orphan-reconciliation test cannot be claimed at the persistence layer until a pre-call intent is durably committed. No fake or pure test proves host isolation or provider teardown. Provider execution remains gated by LOOP-14 and the current $0 constraint.
+
+All PC-LC, PC-AD, PC-DB, PC-RT, RES and TDN cases remain SPECIFIED ONLY / NOT RUN. This reconciliation does not authorize implementation or host tests, select a provider, change canonical acceptance, or close D-01..D-08.
