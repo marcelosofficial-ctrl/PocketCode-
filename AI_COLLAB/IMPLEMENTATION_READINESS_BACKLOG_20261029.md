@@ -219,7 +219,7 @@ Implementation-level clarifications are in [G01_G08_EDGE_CASES_AND_PATCH_REVIEW_
 **Hard stop:** no account creation, API key, workload, billing enablement, paid trial, provider call, host operation or implementation is authorized by this work package. Under the current $0 constraint it remains design-only.
 
 
-### WP-08 — Claude challenge reconciliation (2026-11-02)
+### WP-08 — Claude challenge reconciliation (2026-11-01)
 
 Claude's review attempt did not access the new research documents, so its response is recorded as adversarial input rather than a verdict on WP-08. The exact source reconciliation accepts these constraints:
 
