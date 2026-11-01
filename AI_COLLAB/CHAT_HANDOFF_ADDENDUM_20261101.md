@@ -544,3 +544,8 @@ The desk review specifies a paired raw-evidence versus portable-receipt experime
 - Budget remains $0; PC/runtime/queue state remains UNKNOWN until PC access returns.
 
 Primary sources and verification date are listed in Section 8 of the desk review.
+
+
+## 23. Report contract traceability follow-up
+
+The product-path desk review now includes Section 9. The proposed portable receipt must reuse the existing proposed report contract and LOOP-07/08 rather than invent a parallel schema. The paired experiment compares raw evidence against the exact same facts rendered through the proposed report, with no added diagnosis or omitted material evidence. This is design-only; no new acceptance ID or schema change.
