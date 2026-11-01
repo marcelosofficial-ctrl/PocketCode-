@@ -249,3 +249,28 @@ Resulting gap assessment:
 - The stream correction remains: a full Linux pipe blocks or fails depending on mode; it does not inherently truncate at a generic 1 MB threshold.
 
 Main remains `555840d8d83342513d9cd353d4d1522d46a5c82d`. PR #2 and PR #3 remain OPEN, DRAFT, UNMERGED at their previously recorded heads. The only additional writes were documentation updates on the research branch. Exact commits/blobs and the latest HEAD are recorded in the next final checkpoint section.
+
+
+## 12. Final verified research-branch snapshot — after Gemini checklist alignment
+
+The last documentation-only commits in this work pass are:
+
+| File | Commit | Read-back blob |
+|---|---|---|
+| Independent crosswalk review, Sections 10–11 | `4eed9c15b74a69cd5d5438f890b07918c55608f5` | `75f97c91e8c7bfdd7a4673ae8410c9035e87cc0e` |
+| Lifecycle regression plan, Sections 8–9 | `40ca0ba5e8142e85090cb0f3b8890f5a90edf7c3` | `8d9725bca53bacb772cfd0a54f8758ee6da83cb4` |
+| This continuation addendum, Sections 11–12 | `ea41c51bc1ec181a26b42dd12dd08b0c89bd0692` | `3f87de325ee88d51dd2f07127eef6f83863477d3` |
+
+The live research branch ref was read after the above updates and returned `ea41c51bc1ec181a26b42dd12dd08b0c89bd0692`. The final addendum update that records this snapshot is the next commit and becomes the new branch HEAD.
+
+Final read-back checks confirmed:
+- Review document: Gemini source reconciliation, exact identifier corrections, Daytona/policy discussion, and existing-checklist alignment.
+- Regression plan: PC-EXT-01..07, the PBR/PF/DR/AR/RH traceability table, and NOT RUN status.
+- Handoff: this audit's corrected meanings, source alignment, and branch/PR protection rules.
+
+Verified branch separation immediately before this final addendum write:
+- Main: `555840d8d83342513d9cd353d4d1522d46a5c82d`.
+- PR #2: OPEN, DRAFT, UNMERGED; head `eb8b7ea83cb0e8fe1880351276c485b761431791`, base main.
+- PR #3: OPEN, DRAFT, UNMERGED; head `0ddcc0bc97bac5d446aefedf3d71f99411bd841d`, base main.
+
+Only the three named AI_COLLAB documents on the existing research branch were written in this pass. No source, tests, canonical acceptance, main, PR head, provider, store, runtime, queue, GitHub Actions, merge, deployment, account, billing, or workload was changed or invoked. All implementation and integration tests remain NOT RUN; local PC and hosted execution state remain UNKNOWN.
