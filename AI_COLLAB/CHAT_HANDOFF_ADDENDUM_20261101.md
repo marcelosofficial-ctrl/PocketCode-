@@ -585,3 +585,22 @@ Critical CodeMirror correction: Gemini's `github.com/codemirror/CodeMirror` poin
 Other source findings: Pyodide's MEMFS is ephemeral, IDBFS requires explicit sync, browser native directory mount is experimental/Chromium-only, and normal threading/multiprocessing/subprocess are unavailable. wasmsh has no host FS or general process model; browser background syntax runs synchronously; zero means unlimited for several budgets; host OOM and network allowlist side channels are explicit threat-model concerns. Aider's repo map depends on Aider internals, model token counting, I/O and multiple packages; reuse the pattern, not its module by default.
 
 Disposition unchanged: CodeMirror/Pyodide are leading browser-path candidates only; wasmsh is a later optional shell investigation; Aider repo-map is a later optional context utility. No builds, installs, benchmarks, device tests, code adoption or implementation.
+
+## 27. Final read-back after Gemini review and candidate deep dive
+
+Research branch comparison against `main`: **501 ahead / 0 behind**, base SHA `555840d8d83342513d9cd353d4d1522d46a5c82d`.
+
+Latest read-back pins:
+- `AI_COLLAB/GEMINI_OPEN_SOURCE_RESEARCH_REVIEW_20261101.md` blob `aefc611ee273393257a181ec192b75246c80210a`.
+- `AI_COLLAB/OPEN_SOURCE_CANDIDATE_DEEP_DIVE_20261101.md` blob `efb562e7061746ff738274cc3778f74a40ba2d69`.
+- `AI_COLLAB/POCKETCODE_CURRENT_CHECKPOINT_20261028.md` blob `ba68d299df0ebdc284f9b9e3d86f0735e51e0fb1`.
+- `PROJECT_STATUS.md` blob `d9fa742686c4b86cae206ff11ee739bfbfca11df`.
+- This handoff blob before this final pin append: `265d167a94cdfebeeef1064a12098494d8ed47d9`.
+
+Protected PRs re-read and remain open, draft, unmerged and untouched:
+- PR #2 `chat-continuity-report-regressions-2026-10-26`, head `eb8b7ea83cb0e8fe1880351276c485b761431791`, base main `555840d8d83342513d9cd353d4d1522d46a5c82d`.
+- PR #3 `pocketcode-pass0-audit-2026-10-26`, head `0ddcc0bc97bac5d446aefedf3d71f99411bd841d`, base main `555840d8d83342513d9cd353d4d1522d46a5c82d`.
+
+No Actions, tests, builds, installs, candidate execution, benchmark, device test, account/provider/workload, spend, source/PR modification, merge or deployment. The only writes were documentation on the existing research branch.
+
+**Next continuation:** wait for Claude's independent research output; do not re-run the broad search just to fill time. When it arrives, compare its candidate set and source evidence against Gemini plus the pinned deep dive. Add new candidates only where exact upstream sources and a real PocketCode/RevDev need justify them. Keep all candidate decisions provisional until integration boundaries, licence/dependency review and product-path evidence are sufficient.
