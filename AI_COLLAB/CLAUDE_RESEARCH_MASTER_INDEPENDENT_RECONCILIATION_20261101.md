@@ -246,3 +246,18 @@ The PR also says Windows CI ran its unit/smoke/integration legs but no manual Wi
 Neither sandbox is selected. srt remains alpha and STUDY ONLY. Codex remains STUDY ONLY. No sandbox installation, host mutation, Windows test, dependency, schema, acceptance change or product-direction change is approved. RevDev PC state remains UNKNOWN. The source-read backlog and PROP-ST-01..23 are proposals only, not canonical acceptance IDs.
 
 The next bounded pass is Gemini's independent challenge/source read when available, not another broad 70-candidate research sweep. Claude's remaining separate work is OpenHands EventLog/state/persistence and Happy pairing/encryption source review.
+
+
+## 11. Deeper srt source follow-up and open WFP readiness issue
+
+ChatGPT independently read srt Windows Rust/TypeScript source at merge commit 81145771c9bfc51c5669f071b515209321e0d078. Full detail and exact blob references are in [WINDOWS_SANDBOX_SOURCE_AUDIT_CLAUDE_20261101.md](WINDOWS_SANDBOX_SOURCE_AUDIT_CLAUDE_20261101.md), Section 13.
+
+Key new findings:
+- srt token source uses LUA_TOKEN | WRITE_RESTRICTED; disables BUILTIN\Administrators and logon SIDs; deletes all privileges except SeChangeNotifyPrivilege; restricts to capability SIDs, sandbox user SID, Everyone and RESTRICTED; then reads back the token restriction and checks it.
+- srt has source-verified Job Object KILL_ON_JOB_CLOSE containment. The target is created suspended, assigned to a non-breakaway child job, then resumed. UI restrictions, isolated desktop checks, handle whitelist and process mitigations are also in launch source.
+- srt ACL source withholds FILE_DELETE_CHILD from modify grants and adds parent FILE_DELETE_CHILD denies for protected targets. State DB source shows refcounted holder rows, file identity binding, per-user file locking and recovery.
+- WFP source installs only ALE_AUTH_CONNECT IPv4/IPv6 layers. The Windows test suite explicitly states ICMP ping is NOT fenced.
+- Current srt main SHA 98a4016d27609ed34dd1fb43d23ed6efb6eeeb77 still reports WFP state installed if ANY block-user filter exists. Open issue #723 reports a half-installed IPv6 case; open PR #716 proposes partial status and repair, but is not merged. The default TS readiness probe binds IPv4 loopback only, not IPv6.
+- install.rs documents a shared-machine CA-key trade-off: BUILTIN\Users can read/replace ProgramData CA key material; the sandbox group is denied. This is a documented risk decision, not a proven exploit.
+
+The deeper source work raises confidence in several srt controls while also confirming important limits. srt remains STUDY ONLY. No runtime tests were run by ChatGPT, no winner is selected, and no RevDev/PocketCode architecture decision changes.
