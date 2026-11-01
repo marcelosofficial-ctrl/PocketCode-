@@ -1,6 +1,6 @@
 # RevDev ↔ PocketCode Crosswalk — Independent Static Review (2026-11-01)
 
-**Status:** ChatGPT independent desk review completed; Claude/Gemini reviews still outstanding. This is a review note, not approval of a shared contract, implementation, or combined acceptance suite.
+**Status:** ChatGPT and Claude static desk reviews received; Gemini review pending. This is a review note, not approval of a shared contract, implementation, or combined acceptance suite.
 
 **Reviewed source snapshot**
 - RevDev review branch: `review/revdev-adaptive-ai-workshare-2026-10-27`
@@ -165,3 +165,201 @@ This reproduction is a targeted check of the pattern/carry algorithm, not execut
 ### Review disposition
 
 OBS-01 through OBS-03 should be reconciled with the existing execution-boundary crosswalk Sections 6–9 and the D-01..D-04 owner register before any helper patch or schema decision. The known positive improvements on the lifecycle-fingerprint descendant (identity validation, malformed-event preservation, tombstone retention/fingerprint conflict) remain branch-scoped; these new observations do not negate them. Both helper/test suites remain NOT RUN in this review. No PR, source, test, canonical acceptance, provider, runtime, queue, Actions, account, spend, merge or deployment was changed.
+
+
+## 8. Claude review received and source-reconciled disposition (2026-11-01)
+
+**Status:** Claude's two review responses were received. The reconciliation below supersedes Sections 2–3 wherever a row-level mapping changes, and extends Section 7 where the source review found additional contract gaps. Gemini's independent review remains pending.
+
+### 8.1 Review provenance and exact source recheck
+
+Claude explicitly reported that it read only this review note, could not retrieve the underlying source files, did not verify the review's line references, and did not run tests. Treat Claude's comments as an independent conceptual challenge, not as source verification.
+
+ChatGPT then re-fetched the source snapshots to resolve the disputed points:
+
+- RevDev AWC manifest: blob c2d4cba6c836f725f7bc4585f91e02d443fe89e1. It contains AWC-001 through AWC-018 and remains PROPOSED_NOT_RUN.
+- PocketCode canonical execution acceptance, main and research branch: blob c6714c27db52b2962fe8d1c7e6a16829d46a8338. The two refs returned the same blob. LOOP/CASE criteria remain proposed/not run.
+- RevDev P0-D source: blob 6a0c804e1ad75edf1022af960acbb143ba1430b6, lines 107–123. The ten ordered canary requirements match the crosswalk's source wording.
+- Lifecycle-fingerprint helper: scripts/lifecycle_contract.py, branch pocketcode-lifecycle-fingerprint-audit-2026-10-27, blob 316345341603848c4a86a6a82e533daa796c7695.
+- Lifecycle-fingerprint tests: blob ef9a68de632be30c091afe57f0724fd030a513f9.
+- Owner decision register: AI_COLLAB/OWNER_DECISION_REGISTER_20261029.md, blob e67b2659cf2d71ef77d8e4619c91143e71062470, especially D-01 through D-04 and D-06/D-08.
+
+The lifecycle-fingerprint branch remains a separate, unmerged 34-commit descendant of the PR #3 base. Its helper and tests are not evidence of integration into PR #3, main, or a live runtime. No test suite was run in this recheck.
+
+### 8.2 Superseding AWC mapping decisions
+
+The manifest confirms the fixture intents. The following changes reduce false-positive mappings and preserve the separation between assistant behavior and execution acceptance.
+
+| AWC ID | Reconciled PocketCode relation | Disposition |
+|---|---|---|
+| AWC-001 | None | Keep none. |
+| AWC-002 | LOOP-06 adjacent only | Keep. Preserving a task checklist is not the same as validating named program-reported checks and provenance. |
+| AWC-003 | None | Keep none. |
+| AWC-004 | LOOP-02/03 adjacent only | Keep. Honest not-run reporting and refusal to invent PASS are related, but AWC tests an assistant response, not trusted execution evidence. |
+| AWC-005 | None | Remove LOOP-12/CASE-15. It concerns unsafe instructions in untrusted task content and preserving authorization checks, not enforced runtime egress denial or secret exclusion. |
+| AWC-006 | LOOP-07/CASE-12 adjacent only | Keep as a bounded-diagnostics/report-quality analogy, not acceptance equivalence. |
+| AWC-007 | None | Keep none. Session continuation is not a run lifecycle criterion. |
+| AWC-008 | None | Remove LOOP-09/CASE-13. Repair retries change or repair task work; dispatch retries resend the same attempt after ambiguous acknowledgement. The shared word “retry” is not a shared invariant. |
+| AWC-009 | None | Remove LOOP-14. Assistant advice against quota evasion is not the product's provider/billing authorization gate. |
+| AWC-010 | LOOP-13 primary adjacency; LOOP-08 secondary transport analogy | Keep as conceptual only. Both move information from the product/workflow toward an assistant. AWC-010 is a prospective task packet without an execution verdict; LOOP-08 is a retrospective report bound to a run identity and verdict. The common point is truthful, user-initiated manual handoff, not payload equivalence. |
+| AWC-011 | None | Keep none. It concerns source-file prompt injection and assistant instruction hierarchy, not runtime network/secret isolation. |
+| AWC-012 | LOOP-02 adjacent only | Remove LOOP-14. Honest labeling of simulated values relates to UI state honesty; LOOP-14 does not test telemetry provenance or fabricated counters. |
+| AWC-013–016 | None | Keep none. |
+| AWC-017 | None | Remove LOOP-13/14. Unknown provider/model/plan/host capability metadata is not a capability-registry acceptance case in the current LOOP/CASE suite. |
+| AWC-018 | CASE-12 primary adjacency; LOOP-02/03 secondary conceptual relation | Remove LOOP-05 from this fixture. CASE-12 is the closest report behavior: preserve the actual uncertainty, diagnostics and truncation markers. LOOP-02/03 express related honesty principles, but AWC-018 does not observe a PocketCode execution lifecycle or trusted terminal event. |
+
+#### AWC-005 and AWC-011 boundary
+
+These fixtures both concern assistant-side handling of untrusted instructions, but they are not duplicates: AWC-005 is an unsafe shortcut in task content during a security-sensitive change; AWC-011 is instruction-like text embedded in a source file that attempts to change assistant policy. Neither proves the separate PocketCode runtime property in LOOP-12/CASE-15. Keep both AWC fixtures, but do not map either to runtime isolation.
+
+#### AWC-010 handoff precision
+
+Correction is explicit: the transfer directions are the same. Both handoffs move information outward from the product/workflow toward an AI assistant. Their distinctions are payload, stage and identity binding:
+- AWC-010 prepares a task packet before execution and carries no run verdict.
+- LOOP-08 copies a report after execution and the report is associated with a specific run and observed result.
+- LOOP-13 is the stronger adjacency for truthful claims about unsupported cross-app automation and explicit manual fallback.
+- LOOP-08 is a secondary analogy for user-initiated copy/share transport only.
+
+Neither AWC-010 nor a manual copy/share action proves an execution report is accurate.
+
+#### AWC-018 and truncation precision
+
+The exact fixture says the evidence excerpt is partial and lacks a terminal result. It does not tell us whether truncation was display-only, collector/retention truncation, or caused by an enforced runtime limit. PocketCode's D-01/D-03 working definitions keep those states separate. Therefore:
+- Keep CASE-12 as the primary adjacent report requirement.
+- Keep LOOP-02/03 only as broader honesty concepts.
+- Do not map this fixture to LOOP-05.
+- A separate runtime fixture is needed for an enforced limit that kills a child while termination remains unconfirmed. That is a lifecycle uncertainty case, unlike display-only or collector-only truncation with independent confirmed exit evidence.
+
+### 8.3 Superseding P0-D mapping decisions
+
+The original P0-D source at lines 107–123 was re-fetched and checked. Keep the original ten IDs and meanings.
+
+| P0-D item | Reconciled PocketCode relation | Disposition |
+|---|---|---|
+| 1–7 | None | Keep none. These are RevDev mission compatibility/schema/grouped-cycle cases. |
+| 8 | CASE-12/LOOP-07 adjacent only | Keep adjacency, but state explicitly that neither current PocketCode case requires durable persistence/publication of the validation-failure result. |
+| 9 | None | Keep none. CASE-16 is out-of-order run identity/order, not poison-item quarantine or queue liveness. No current LOOP/CASE case proves a malformed queue item can be quarantined while later work continues. |
+| 10a: duplicate/idempotent replay after ambiguous response | CASE-13 adjacent only | Covers only the ambiguous retry/idempotency sub-invariant. |
+| 10b: run identity and order association | CASE-16 adjacent only | Covers only correct run/result correlation under out-of-order completion. |
+| 10c: durable exact-result publication and replay | None equivalent | Neither CASE-13 nor CASE-16 proves exact-byte durable publication, restart recovery, or persistent duplicate replay. |
+
+Use “Source requirement (condensed)” as the Section 12 column header. Do not say “exact” when the text is condensed.
+
+P0-D item 9 remains a RevDev queue-liveness obligation. Its minimum negative cases should include: a poisoned item does not block later work; quarantine preserves diagnostic evidence instead of silently deleting the item; crash during quarantine is idempotently recoverable; and a poison item cannot enter an unbounded retry loop. These are candidate RevDev acceptance checks, not additions to PocketCode's canonical suite.
+
+### 8.4 OBS-01 through OBS-03: reconciled findings
+
+#### OBS-01 — No terminal evidence and provider error need separate states
+
+The source path is confirmed in the helper snapshot:
+- TERMINAL_EVENTS maps provider_error to UNKNOWN.
+- reduce_terminal_events() initializes its outcome to UNKNOWN and leaves the winning event unset if no terminal event exists.
+- derive_disposition() maps UNKNOWN to PROVIDER_ERROR.
+
+Claude accepts the finding and adds an important authority requirement. Preserve at least three distinguishable input states:
+1. No terminal evidence exists.
+2. A provider-error event exists, but its producer/source is missing, untrusted or mismatched.
+3. A provider-error event is authenticated to the trusted provider boundary and its cause is confirmed.
+
+Only state 3 may support a confirmed provider-error disposition. States 1 and 2 remain UNKNOWN/INCOMPLETE. D-02 requires a confirmed infrastructure cause; a terminal event kind by itself is not confirmation.
+
+Candidate cases: empty stream; nonterminal-only stream; provider_error from a wrong/untrusted source; authenticated provider_error with confirmed cause. A pure helper can test the disposition distinction, but cannot prove a producer is authentic.
+
+#### OBS-02 — Falsy malformed negative flags can bypass the contradiction/limit guard
+
+The helper uses truthiness for contradictory_evidence, limit_violated and output_truncated. A malformed falsy value such as 0, None or an empty string can therefore be treated like False. In the PASS path, malformed contradictory_evidence=0 can bypass the contradiction check while the four positive gates are literal True.
+
+The checked-in test test_malformed_truthy_gate_values_never_produce_pass exercises malformed values for the positive PASS gates. It does not exercise malformed falsy values for these three negative-polarity flags. The existing truthy cases such as the string "false" are not the same false-PASS bypass: they are truthy and currently fail closed for the contradiction guard or can cause limit misclassification.
+
+Candidate regressions:
+- For each of the three negative flags, test 0, None and empty string on an otherwise valid PASS path.
+- Reject malformed values or return INCOMPLETE; never treat them as an explicit False.
+- Test truthy malformed values separately for safe rejection and correct classification.
+- Require literal booleans at the contract boundary. For a clean PASS, contradiction and limit/truncation flags must be explicitly False.
+
+Evidence class: source-level helper contract. The caller's actual types and runtime behavior remain UNKNOWN.
+
+#### OBS-03 — Bearer redaction has both a carry-boundary gap and a token-length gap
+
+The source regex is explicitly case-insensitive ((?i)), so Claude's uncertainty about case variants is resolved by the checked-in source. Case-variant tests remain useful regression coverage.
+
+The 768-byte carry issue is independently reproduced using the source algorithm copied from the helper. A match is not recognized until at least eight token characters are present. If the combined buffer crosses the cutoff while only zero to seven token characters are present, no complete regex match exists to move the cutoff backwards. With Bearer length 6, the leak trigger is 6 + separator_bytes + visible_token_bytes > 768. For zero to seven visible token bytes, the minimum separator length is 763 down to 756 bytes. The leak depends on chunk boundaries, so a single fixed 768-byte boundary test is insufficient.
+
+Claude also correctly highlighted the 256-character token bound, with one precision correction: a token longer than 256 characters is not always “first 256 redacted, rest visible.” With a plain alphanumeric token, the trailing word-boundary requirement can cause the entire match to fail. With punctuation inside the allowed character class, a boundary can allow the first matched portion to be redacted while a suffix remains visible. Both outcomes are unsafe for a best-effort redactor.
+
+Candidate regressions:
+- Separator lengths 755–763 with zero to seven token bytes present at the chunk that crosses the carry cutoff; split chunks across the boundary.
+- Bearer token lengths 255, 256, 257, 300 and above 600, using both alphanumeric-only and punctuation-containing values.
+- Padding and delimiter cases including equals sign, period and hyphen.
+- Mixed-case Bearer spellings. The source already uses case-insensitive matching.
+- Assert that no secret suffix is emitted, not merely that a full known token string is absent.
+
+This was a local reproduction of the copied source algorithm, not execution of the repository helper test suite. No source or tests were changed. The redactor remains best-effort and must not be treated as a security boundary.
+
+### 8.5 Additional lifecycle-helper contract gaps
+
+#### OBS-04 — Event kind does not establish producer authority
+
+The reducer validates event ID, coordinator sequence, kind and mapping-shaped payload. It does not authenticate the producer or establish that a provider_error, exit, timeout or cleanup claim came from the component authorized to make that observation. The helper's accepted event shape does not itself prove source authority.
+
+Candidate authority model:
+- Child exit code: trusted process supervisor.
+- Cleanup confirmation: cleanup observer, not child-reported output.
+- Provider failure: authenticated provider boundary with confirmed cause.
+- Policy/tenant authorization: coordinator or policy boundary.
+- Artifact digest and object association: storage boundary.
+
+A pure helper can require a producer-role/source field and allow-listed role. It cannot prove authenticity. A real boundary needs authenticated or channel-bound observations and tests for wrong-source and unauthenticated events. This is a contract gap, not proof of live caller misuse.
+
+#### OBS-05 — Event reduction lacks explicit attempt-context correlation
+
+The reducer does not receive an expected tenant/job/attempt/source/policy identity against which each event is checked. It sorts accepted events by coordinator sequence and event ID, but sequence order alone does not prevent an event from an earlier or different attempt from influencing the current reduction. D-04 proposes source-scoped event identity and tenant/job/attempt binding; it remains OPEN.
+
+Candidate cases:
+- An event for a different tenant, job or attempt cannot win the current reduction.
+- A stale terminal event from an earlier attempt cannot replace the current attempt's result.
+- Mismatched task/job/attempt/source/policy identity is rejected or quarantined, not coerced.
+- Same event identity with changed payload or sequence is a conflict.
+
+A pure helper can test explicit identity comparisons once expected context is part of its contract. It cannot prove IDs are unforgeable or unique across restarts. The caller's filtering behavior remains UNKNOWN.
+
+#### OBS-06 — output_truncated is collapsed into LIMIT_EXCEEDED
+
+The helper currently returns LIMIT_EXCEEDED when output_truncated is truthy, independently of whether an enforced runtime limit terminated the child. The owner register's D-01/D-03 working definitions distinguish:
+- A trusted runtime-enforced deadline/resource limit and confirmed termination.
+- Collector/retention truncation while independent process evidence may still confirm exit zero.
+- Display-only truncation, which must preserve the execution verdict.
+
+The current boolean field does not identify which case occurred. Do not interpret generic output truncation as a confirmed runtime limit or a lifecycle timeout. Preserve truncation cause/evidence quality separately from execution outcome and limit enforcement. Required evidence depends on the specific acceptance case; a presentation-only truncation must not rewrite a previously confirmed execution verdict.
+
+Candidate cases: display-only truncation plus confirmed exit zero; collector cap plus independently confirmed exit zero; trusted enforced limit with confirmed termination; enforced limit with termination unconfirmed. Each must preserve the separate execution verdict, lifecycle and disposition dimensions.
+
+Evidence class: source-level helper/contract mismatch against D-01/D-03 working definitions. Owner decisions remain OPEN; no canonical acceptance change is implied.
+
+### 8.6 Engineering proof layers and next tests
+
+Claude correctly separates what each test layer can establish:
+
+| Layer | What it can establish | What it cannot establish alone |
+|---|---|---|
+| Pure helper | Deterministic mapping, typed-input rejection, event reduction over a supplied event list, fingerprint and reservation rules | Producer authenticity, durable transactions, provider execution, live queue liveness |
+| Fake adapter | Scripted acknowledgement loss, call count/order, reconciliation transitions and no-redispatch decisions under controlled responses | Actual provider idempotency, cross-process atomicity or real termination |
+| Persistence test | Atomic reservation/version allocation, durability across restart, torn-write detection and byte-for-byte republish | Authentic provider events or actual child termination |
+| Provider/runtime boundary | Authenticated event source, actual child termination, real provider idempotency/lookup and queue liveness | Claims outside the chosen, exercised boundary |
+
+The engineering gaps should be carried separately from AWC/P0-D semantic traceability:
+- Dispatch retry: same key/same fingerprint resolves to the original attempt; same key/changed fingerprint conflicts before dispatch; after lost acknowledgement, UNKNOWN lookup means no redispatch; authoritative same-attempt lookup adopts the existing result.
+- Repair retry: changed task content is a new task/attempt with a new identity. Reusing the same idempotency key with changed fingerprint must conflict. A repair must not race on the same workspace while an earlier dispatch remains unresolved.
+- Persistence/publication: crash after result computation but before publication; restart republishes stored bytes exactly rather than recomputing; partial/torn writes are detectable; later evidence creates a new immutable version rather than silently changing an issued report.
+- Queue liveness: quarantining a poison item does not block later items, preserves diagnosis, is idempotent across restart, and cannot retry forever.
+- Authority/correlation: wrong-source and wrong-attempt events cannot determine the current disposition.
+
+D-06 and D-08 already describe proposed idempotency and report-history requirements, but they remain proposals until tested at the actual atomic storage/provider boundary. A pure helper or fake adapter is not proof of those guarantees.
+
+### 8.7 Reviewer reconciliation status
+
+- ChatGPT: static source and crosswalk review recorded in Sections 2–3 and this reconciliation.
+- Claude: two conceptual/engineering reviews received. Claude did not independently verify the underlying artifacts or run tests; ChatGPT rechecked the relevant source blobs listed in Section 8.1.
+- Gemini: pending. The updated review request should prioritize the reconciled AWC changes, P0-D 9/10 split, OBS-01 through OBS-06, D-01/D-03 truncation semantics, and the boundary between pure-helper evidence and persistence/provider/runtime evidence.
+
+Everything remains static review. AWC fixtures are PROPOSED_NOT_RUN; PocketCode LOOP/CASE is proposed/NOT RUN; lifecycle helper tests are NOT RUN; provider/runtime/queue/host behavior remains UNKNOWN. No implementation, test, canonical acceptance, PR, queue, runtime, provider, Actions, merge, deployment or spend was changed or invoked.
