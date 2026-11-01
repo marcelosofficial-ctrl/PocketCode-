@@ -724,3 +724,35 @@ The reducer still accepts no expected tenant, job, attempt, source namespace, or
 6. Persistence tests separately prove append-only durable evidence and crash/concurrency behavior.
 
 Keep these as design/test requirements, not product claims. The 34-commit descendant remains a source candidate only; its tests remain NOT RUN.
+
+
+## 19. PR #2 report formatter and PR #3 redactor boundary — 2026-11-01
+
+A fresh exact-blob inspection compared PR #2 `scripts/report_contract.py` (blob `e9d944a722c2fac5279952696528da72a7011af3`) with the lifecycle descendant's `scripts/lifecycle_contract.py` (blob `316345341603848c4a86a6a82e533daa796c7695`).
+
+### 19.1 What PR #2 formatter does
+
+- `_safe_text()` converts values to text, escapes control characters/newlines and truncates individual fields.
+- `format_report()` includes task summary, check names/provenance/details, stdout, stderr, output filenames and notes.
+- stdout/stderr are passed through `_safe_text()`; there is no secret-redaction call in this formatter.
+- The formatter's own docstring says it does not verify input trustworthiness and expects authoritative runner evidence from production callers.
+
+Therefore field escaping and size limits protect report structure/size, not confidentiality. A secret present in supplied stdout/stderr, check details, filenames, task summaries or notes can still be rendered. This is a source-level data-flow observation, not proof that production currently supplies secrets or that a complete runtime call path exists.
+
+### 19.2 What PR #3 lifecycle helper does
+
+The lifecycle module contains `StreamingRedactor` and `OutputBudget`; the budget feeds accepted stdout/stderr bytes through its own per-stream redactors before retention. The redactor explicitly documents best-effort configured-pattern coverage, with bounded token lengths and a 768-byte carry window.
+
+The source comparison does **not** establish that PR #2's report formatter receives only bytes retained by this OutputBudget. The helper and formatter live on separate PR branches, and no integrated coordinator/runner call path was verified. Do not assume that the existence of a redactor in PR #3 protects every string rendered by PR #2.
+
+### 19.3 Required architecture and tests
+
+1. Treat untrusted program output and metadata as sensitive by default. Prefer preventing credentials/secrets from entering the execution environment and minimize collection.
+2. Define one trusted output-collection boundary that owns byte limits, redaction policy, stream state and provenance before report projection.
+3. Make the report formatter consume a typed, already-classified collection result, not arbitrary raw provider dictionaries. Preserve `COMPLETE`, `PARTIAL`, `UNAVAILABLE`, `EMPTY`, `RUNTIME_LIMIT` and `DISPLAY_TRUNCATED` distinctions where applicable.
+4. Keep redaction defense-in-depth only. Test configured-pattern matches at maximum length, beyond maximum length, across chunks and at carry boundaries; explicitly prove that unknown secret formats are not claimed covered.
+5. Add report projection tests showing that raw secret-like data is not accidentally reintroduced through task summary, check detail, filename, note or evidence metadata fields. These tests supplement, but do not replace, the rule that credentials must never be passed to untrusted user code.
+
+### 19.4 Disposition
+
+This is an integration/data-flow gap between the separate PR #2 formatter and PR #3 output collector, not a claim that either isolated helper violates a complete implemented product contract. Keep PR #2 and PR #3 separate; do not cherry-pick or merge based on the helper names alone. No tests were run and no source was changed.
