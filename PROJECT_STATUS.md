@@ -140,3 +140,8 @@ The crosswalk reconciles PR #2, PR #3 and the separate research branch without m
 ### iPhone/Safari feasibility addendum — 2026-11-01
 
 Extended the execution-boundary crosswalk with iOS-specific findings: Safari/iOS file-system API limitations, memory-pressure and reload handling, a narrowly scoped current WebKit WASM compilation report, and LOC-17..LOC-24 acceptance cases. The report explicitly does not generalize the Asyncify-specific WebKit issue to Pyodide. The first experiment remains a small standard-library CSV/JSON transformation, tested in foreground on an actual iPhone. No runtime, source code, PR, provider, workflow, account, billing, deployment or merge was changed.
+
+
+### Lifecycle sibling-branch lineage correction — 2026-11-01
+
+Added Section 16 to the execution-boundary crosswalk after inspecting \`pocketcode-lifecycle-fingerprint-audit-2026-10-27\`. That separate branch already contains source/tests for tombstone retention/fingerprint conflict and blank fingerprint identity validation. These are not merged into PR #3; the PR #3 pinned source still has the earlier behavior. Remaining sibling-branch gaps include OutputBudget integer type validation, malformed limit-flag truthiness, event binding/snapshot ownership and redaction length ceilings. Tests were inspected but not run.
