@@ -381,7 +381,7 @@ Line numbers below refer to the exact pinned refs/blobs already listed in Sectio
 - winsrt.test.ts (blob 29a4ed5bc201ee093a6b1c6c82e7294bb4189508): explicit ICMP-not-fenced test around 5195–5201.
 
 ### Codex at 06f3b4836ac6e4fecc1d75a09b8a9fa369b16635
-- token.rs (blob not separately repeated here): restricting SID list and CreateRestrictedToken around create_token_with_caps_from; use the exact pinned file ref.
+- token.rs (blob 71a4b1dd7c0a9aa70dad76313cb89dcdadcc7119): restricting SID list and CreateRestrictedToken around create_token_with_caps_from.
 - firewall.rs (blob b5dfb2ef49652176b2b17a02e55719d1e864b471): offline firewall rules around 25–200; rule configuration and LocalUserAuthorizedList read-back around 206–290.
 - acl.rs (blob f351dba190a9f50a5362ea64fe5c6675bf5b3f8c): deny-presence predicate around 217–260; write grant mask around 262–345; add_deny_write_ace around 452–510.
 - setup_main_win.rs (blob 78c0a8be8e53bcad0e2015a3d48d8b94d5533dde): firewall setup around 578–620; write-root grants and deny-path ACL handling around 642–800; refresh-only error bail around 890–895.
