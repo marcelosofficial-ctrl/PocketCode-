@@ -160,3 +160,8 @@ See Section 17 of [the execution-boundary crosswalk](AI_COLLAB/POCKETCODE_EXECUT
 ### Event reducer integrity follow-up — 2026-11-01
 
 A line-level review of the lifecycle descendant found that malformed-event shape validation does not solve nested payload immutability: the reducer uses shallow outer copies, and its accepted events, invalid-event records and duplicate-comparison state can retain caller-owned references. It also flags duplicate coordinator sequence numbers without returning the colliding records in a dedicated diagnostic collection. These map to existing D-04 / COORD-11 / COORD-12 and FLA-04/06/07 concerns, not new duplicate finding IDs. D-04 remains owner-open; no event schema or source patch was approved. See Section 18 of the crosswalk. Tests remain NOT RUN.
+
+
+### Report formatter/redactor boundary follow-up — 2026-11-01
+
+Exact source inspection confirms PR #2's `_safe_text()` escapes control characters and truncates fields but does not redact secrets; `format_report()` renders stdout/stderr and user/program-supplied metadata. PR #3's `OutputBudget` uses a best-effort `StreamingRedactor`, but no integrated data flow proves that all PR #2 report fields pass through it. This remains an integration/data-flow gap, not a verified production exploit. See Section 19 of the crosswalk. No source edits or tests were run.
