@@ -676,3 +676,51 @@ The six added test methods are:
 - `test_tombstones_reject_blank_identity_and_invalid_epoch_values`.
 
 This corrects the summary above: the descendant's additional input hardening covers fingerprint identity, idempotency reservation identity, event shape, and tombstone identity/epoch values. It still does not prove upstream tenant authentication, canonical allowlisting, transactional reservation, durable tombstone storage, or concurrency safety.
+
+
+## 18. Event reducer mutation and collision diagnostics — 2026-11-01
+
+A fresh line-level review of the 34-commit lifecycle descendant confirms that the added malformed-event validation does **not** close the event immutability and collision-diagnostics requirements already described by D-04, COORD-11 and COORD-12 in the research branch.
+
+### 18.1 Caller-owned nested payloads remain live references
+
+In `reduce_terminal_events()`:
+
+- `event = dict(raw)` copies only the outer mapping.
+- `payload = event.get("payload")` remains the caller-owned nested mapping.
+- `by_id[event_id] = (sequence, kind, payload)` stores that same nested object.
+- `accepted.append(event)` returns the shallow copy with the same nested payload reference.
+- `invalid_events.append(event)` also retains the shallow copy, and non-mapping invalid inputs are appended as the original object.
+
+Consequently, mutation of an original nested payload after reduction can mutate the returned accepted evidence and the reducer's duplicate-comparison state. The descendant's new payload-shape validation only checks `isinstance(payload, Mapping)`; it does not establish a canonical immutable snapshot. This is a source-confirmed helper limitation, not evidence of an exploitable production path because no coordinator ingress is implemented or verified here.
+
+**Required falsification test:** reduce a valid event with nested dict/list payloads; mutate the caller-owned nested objects; assert the accepted snapshot and derived outcome remain unchanged. Repeat for invalid-event diagnostic records if those records are intended to be durable evidence. The implementation boundary should validate and canonicalize the complete event before accepting it, then compare/store the immutable canonical representation. A deep copy alone is not a substitute for schema validation or canonical serialization.
+
+### 18.2 Sequence collisions are flagged but not fully explained
+
+The reducer sorts accepted events by `(sequence, event_id)` and sets `contradictory_evidence = True` when distinct accepted events share a sequence. It does not add those sequence-collision events to `conflicts`, nor return a dedicated sequence-collision collection. The current comments promise deterministic tie-breaking, but tie-breaking is not the same as preserving an explicit explanation of every conflicting record.
+
+**Required falsification test:** submit two distinct event IDs with the same sequence, for both nonterminal/nonterminal and terminal/nonterminal combinations. Assert contradiction and assert both colliding records (or a structured conflict record that references both) are visible in deterministic diagnostics. This matches COORD-11 Setup C. Do not silently classify the tie-break winner as authoritative.
+
+### 18.3 Identity scope remains upstream and owner-open
+
+The reducer still accepts no expected tenant, job, attempt, source namespace, or policy revision. D-04 remains OPEN. The descendant's validation of event ID, sequence, kind and mapping payload is useful shape validation, but it is not source authentication, scope binding, or replay identity. Keep those controls at the authenticated ingress/coordinator boundary before reduction. Do not add an unscoped event-ID uniqueness rule to the pure reducer and call it tenant-safe.
+
+### 18.4 Test and decision disposition
+
+- COORD-11 already specifies exact replay, scoped source-ID conflicts, and sequence collisions.
+- COORD-12 already specifies nested-payload mutation after acceptance.
+- D-04 explicitly keeps event source, authority, immutable fields and conflict semantics OPEN.
+- No new duplicate finding ID is needed; map these as concrete source observations against FLA-04/06/07 and COORD-11/12.
+- No tests were executed. No event schema was frozen and no source change was made.
+
+### 18.5 Revised bounded implementation order
+
+1. Owner resolves D-04's event identity scope and immutable fields.
+2. Trusted ingress authenticates producer and binds tenant/job/attempt/source/policy revision.
+3. Ingress validates and creates canonical immutable event snapshots before reducer input.
+4. Reducer reports duplicate-ID conflicts and sequence-collision records explicitly and deterministically.
+5. Fake-coordinator tests prove replay, cross-scope isolation, collision diagnostics and post-acceptance mutation resistance.
+6. Persistence tests separately prove append-only durable evidence and crash/concurrency behavior.
+
+Keep these as design/test requirements, not product claims. The 34-commit descendant remains a source candidate only; its tests remain NOT RUN.
