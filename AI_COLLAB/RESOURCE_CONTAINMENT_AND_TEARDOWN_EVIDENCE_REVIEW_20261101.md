@@ -38,7 +38,7 @@ A future provider adapter must declare which enforcement mechanism applies to ea
 ### 2.1 Important kernel details
 
 - `memory.max` is the principal hard memory limit. The kernel documentation notes that usage may temporarily exceed the limit under some circumstances and some allocation types may return `-ENOMEM` without invoking OOM killer. Do not require every memory stress fixture to end with SIGKILL.
-- `memory.events` is hierarchical by default. Use `memory.events.local` when attributing an event to the exact target cgroup. Capture before/after counters and the cgroup identity; a pre-existing or ancestor counter is not per-attempt proof.
+- `memory.events` is hierarchical by default and includes descendant events; `memory.events.local` reports only events local to the cgroup. The kernel's `memory_localevents` mount option changes `memory.events` to legacy local-only behavior, so record the actual mount option rather than assuming hierarchy. For a dedicated per-attempt root containing every descendant, the hierarchical file can capture subtree events; a local-only read at that parent can undercount child-cgroup activity. Conversely, a parent that contains multiple attempts can aggregate unrelated activity. Choose counters from the actual cgroup topology and prove the scope. (`pids.events` has a corresponding hierarchy/local distinction and `pids_localevents` mount option.)
 - `memory.swap.max` is separate from `memory.max`. A memory-only test that ignores swap configuration may not establish the intended total memory pressure boundary.
 - `cpu.max` expresses bandwidth as quota/period. It throttles eligible scheduler workloads; it does not terminate an infinite loop. Wall-time termination must be a separate, observed control.
 - `pids.max` counts kernel tasks (TIDs), not just user-visible process leaders. `pids.events.local` and `pids.current` are relevant evidence.
@@ -204,22 +204,22 @@ These are subcases under the existing research plan, not new canonical acceptanc
 | Subcase | Setup / attack | Required observation | Failure condition |
 |---|---|---|---|
 | RES-01 limit configuration binding | Requested limits differ from defaults; inspect the exact sandbox/attempt's effective configuration | Provider/host authoritative effective limits, identity-bound | Only request payload or adapter echo is available |
-| RES-02 memory boundary | Bounded allocator crosses memory ceiling in a dedicated test sandbox | Limit evidence; target-local before/after counters where available; exact child outcome | Supervisor or unrelated workload is killed/degraded, or evidence is global/unattributed |
+| RES-02 memory boundary | Bounded allocator crosses memory ceiling in a dedicated test sandbox, including a nested child cgroup when the actual topology uses one | Effective limit-owner configuration; before/after hierarchical and local counter snapshots selected for the exact tree; exact process-to-cgroup membership; independently observed child outcome | Supervisor or unrelated workload is killed/degraded, counter scope is unknown, or one OOM counter is treated as causal proof |
 | RES-03 swap accounting | Exercise memory pressure with declared swap policy | Effective swap cap and relevant counters/state | Swap remains unbounded contrary to declared policy |
 | RES-04 CPU bandwidth vs deadline | CPU-bound workload exceeds bandwidth request, then separate wall-clock deadline | Throttling/accounting separated from deadline event and termination | CPU throttling is misreported as timeout, or infinite loop survives hard deadline |
 | RES-05 process/task ceiling | Bounded fork/thread pressure | Effective task limit, local event evidence, no host-wide task exhaustion | Host worker or sibling task capacity is exhausted |
 | RES-06 disk capacity vs I/O rate | Write many files and one oversized file; separately saturate I/O | Filesystem/volume capacity evidence distinct from I/O throughput and per-file cap | `io.max` or `RLIMIT_FSIZE` is claimed as total disk quota |
 | RES-07 output cap | Emit bounded large stdout/stderr with process status independently observed | Runtime termination vs collector loss vs display truncation | One boolean hides the enforcement layer or fabricates child termination |
-| RES-08 supervisor/sibling containment | Workload hits memory/PID/CPU limits while worker heartbeat and independent sibling canary run | Worker remains responsive; sibling remains isolated; exact workload failure is attributed | Shared kill domain or collateral host impact |
-| RES-09 descendant termination | Workload forks descendants and ignores graceful signal | All attempt descendants terminated; exact process subtree empty | Parent exits but descendant remains, or cleanup is inferred from parent PID alone |
+| RES-08 supervisor/sibling containment | Workload hits bounded memory/OOM, PID, CPU, disk and output-pressure cases while the orchestration worker, its own bounded buffers, and a second independent run are observed | Supervisor/worker is outside the workload's kill domain and required namespaces/filesystem/credentials; worker heartbeat and bounded memory remain healthy; second run continues; exact workload failure is attributed | Worker is in the workload cgroup/PID namespace or shares credentials/filesystem; output is only truncated after unbounded worker buffering; sibling is degraded; or collateral host impact occurs |
+| RES-09 descendant termination | Workload forks descendants, daemonizes, ignores graceful termination, and races with timeout cleanup | Trusted supervisor requests escalation; all attempt descendants are observed gone; `cgroup.events: populated=0` or provider-equivalent process-tree evidence is captured before teardown; the observer survives outside the workload kill domain | Parent exits but a descendant remains, observer is killed, or cleanup is inferred from parent PID alone |
 | TDN-01 delete accepted but pending | Provider accepts deletion asynchronously | State remains DELETE_ACCEPTED/DESTROYING until terminal observation | API 2xx/202 response is mapped directly to CLEANUP_CONFIRMED |
-| TDN-02 lost delete acknowledgement | Provider may have accepted delete but coordinator times out | Lookup same stable resource ID; no duplicate resource created | Retry creates a new sandbox or closes cleanup without evidence |
-| TDN-03 provider lookup unavailable | Delete request accepted/ambiguous; subsequent reads fail | CLEANUP_UNKNOWN / ORPHANED_TEARDOWN_REQUIRED and durable retry schedule | Missing state is treated as deletion |
-| TDN-04 terminal deletion | Provider read reaches documented destroyed/deleted terminal state | Immutable event binds tenant/job/attempt/resource/version and terminal state | Search miss, local DB close, or stale event substitutes for authoritative state |
-| TDN-05 attached resource independence | Sandbox has attached volume/snapshot/artifact storage | Each separately billable/persistent resource has its own release/delete state | Sandbox destruction is assumed to delete independent resources |
+| TDN-02 lost delete acknowledgement | Provider may have accepted delete but coordinator times out or loses the response | Reconcile the same stable resource and operation identity; no duplicate resource is created; UNKNOWN is retained until an authoritative terminal observation | Retry creates a new sandbox, or closes cleanup without evidence |
+| TDN-03 provider lookup unavailable or ambiguous 404 | Delete request accepted/ambiguous; subsequent reads fail, return 404, or use a potentially wrong account/region/project scope | Verify exact tenant/account/region/resource scope and documented read consistency; keep CLEANUP_UNKNOWN / ORPHANED_TEARDOWN_REQUIRED and a durable retry schedule until authoritative absence/destruction is established | A list miss, unscoped 404, eventual-consistency gap, or missing state is treated as deletion; provider auto-expiry is treated as proof |
+| TDN-04 terminal deletion | Exact-resource provider read reaches documented destroyed/deleted terminal state after a stop/delete operation | Immutable event binds tenant/job/attempt/provider-resource/account/region/version and terminal state; stopped/paused is not treated as destroyed | Search miss, local DB close, stopped/paused state, or stale event substitutes for authoritative destruction |
+| TDN-05 attached resource independence | Sandbox has attached volumes, snapshots, persistent disks, object stores, preview URLs, tunnels, or other separately managed resources | Each resource is inventoried by stable identity and has its own lifecycle/release evidence; stopped compute does not imply storage billing stopped | Sandbox destruction is assumed to delete independent resources or release every chargeable resource |
 | TDN-06 late cleanup event | Attempt N is deleted after attempt N+1 starts | Event remains bound to N and cannot mutate N+1 | Stale cleanup event closes the wrong attempt |
-| TDN-07 reconciliation crash | Coordinator crashes after provider accepted delete but before persisting response | Restart resumes lookup/reconciliation for same resource identity | New resource or untracked orphan is created |
-| TDN-08 cleanup vs billing lag | Provider terminal state observed; billing data remains pending | Resource termination and cost reconciliation represented separately | Pending invoice appears as zero cost or active billing is mistaken for live process evidence |
+| TDN-07 reconciliation crash | Coordinator crashes after provider accepted delete but before persisting the response or cleanup observation | Restart resumes lookup/reconciliation from durable intent for the same resource/operation identity; repeated reconciliation is idempotent; poison records do not block later jobs | New resource or untracked orphan is created, evidence is lost, or one poison item stalls the queue |
+| TDN-08 cleanup vs billing lag | Provider terminal state observed while usage/invoice data is delayed, pending, or later adjusted | Resource termination and provider-reported cost reconciliation remain separate axes; cost remains PENDING/UNKNOWN until authoritative usage/charge data is reconciled | Pending invoice appears as final zero cost, or billing telemetry is used as a proxy for process liveness/deletion |
 
 ### 5.1 Safety of the future test harness
 
@@ -271,3 +271,82 @@ Likewise, a workload may hit `memory.max` and receive `-ENOMEM` without an OOM k
 - supervisor and sibling-canary health.
 
 Interpret the combined evidence rather than a single counter. Do not require `oom_kill` to increase for every limit-hit fixture, and do not label an arbitrary OOM kill as a cgroup-limit violation without corroboration. This is a proof-attribution refinement, not a new product requirement.
+
+
+## 9. Claude's independent challenge and evidence-boundary reconciliation (2026-11-02)
+
+**Review limitation:** Claude reported that it could not read this review, the lifecycle regression plan, or the readiness backlog during its review attempt. Its response is therefore recorded as a useful adversarial challenge, not as a verdict on the contents of those three documents. The points below were reconciled against the pinned canonical acceptance and the exact research-branch documents in this pass. No implementation or runtime test was performed.
+
+### 9.1 Canonical acceptance gaps remain explicit
+
+- The canonical LOOP/CASE contract has no standalone acceptance ID for "cleanup confirmed." Cleanup appears as a gate/consequence in the first-useful-proof text and as a cancellation-observation concern in CASE-05; CASE-06 covers a worker/provider failure before a trustworthy program result. Neither is a complete provider resource teardown/reconciliation acceptance case.
+- The canonical lifecycle status list is accepted, queued, running, succeeded, program_failed, timed_out, cancelled, rejected, and infrastructure_failed. There is no resource-limit lifecycle status. Do not introduce resource_limit_exceeded as though it were canonical.
+- CASE-07 is the configured stdout/stderr output-limit scenario. CASE-14 is output-file path/size validation. Neither is a general acceptance test for total workspace disk quota, filesystem exhaustion, I/O throughput, or per-file operating-system limits.
+- Do not silently assign OOM, ENOSPC, SIGXFSZ/per-file-size rejection, PID exhaustion, or I/O throttling to a lifecycle status. Preserve the exact cause, enforcement layer, child terminal evidence, and infrastructure attribution. The canonical user verdict remains PASS/FAIL/INCOMPLETE; whether a particular enforced limit is a confirmed program/runtime failure or an infrastructure failure depends on the actual ownership/contract and remains an owner/architecture decision where D-01/D-02 do not settle it.
+- RES/TDN labels remain supplementary falsification identifiers. They do not amend canonical LOOP/CASE or create a cleanup status.
+
+### 9.2 Correct cgroup event attribution for nested workloads
+
+The kernel documentation confirms:
+- memory.events is hierarchical by default and counts descendant events. The system-wide memory_localevents mount option changes that behavior to local-only.
+- memory.events.local reports only events local to the specific cgroup. A local read at a job parent can therefore miss events recorded in child cgroups.
+- oom records that the cgroup's memory usage reached the limit and an allocation was about to fail. The event is not raised in every allocation-failure mode.
+- oom_kill counts processes belonging to the cgroup that were killed by any OOM killer. It does not, by itself, prove that this cgroup's own memory.max caused the kill.
+- pids.events is hierarchical by default; pids.events.local is local. The pids_localevents mount option changes the default aggregate behavior.
+
+**Test rule:** record the kernel version, cgroup v2 mount options, exact hierarchy, the cgroup that owns each hard limit, exact workload PID/TID membership, and before/after hierarchical and local event snapshots. For a dedicated per-attempt root that contains all descendants, hierarchical counters can expose descendant events. Local counters remain useful for identifying which cgroup recorded local activity. Do not use an ancestor that mixes unrelated attempts as a per-attempt source. Persist all needed counter snapshots before removing the cgroup.
+
+Treat the following as separate observations:
+1. limit pressure/approach (max, oom, pids.events);
+2. OOM victim evidence (oom_kill);
+3. supervisor-requested timeout/cancellation signal and its timestamp;
+4. trusted child exit/signal observation;
+5. process-tree-empty confirmation.
+
+A timeout/OOM race must retain both event streams. Exit status 137 or SIGKILL alone does not identify the cause. If the trusted observer cannot establish which control caused termination, report cause as UNKNOWN/ambiguous rather than selecting a convenient explanation. The supervisor and evidence collector must live outside the workload's kill domain; if they can be OOM-killed with the workload, missing telemetry is not a clean pass. Capture counters before cgroup removal because the evidence interface disappears with the cgroup.
+
+### 9.3 Resource enforcement is a vector, not one generic kill
+
+Keep these cases distinct and do not infer a kill from a throttle:
+- memory hard limit and swap limit;
+- memory.high pressure/throttling;
+- CPU bandwidth throttling versus CPU-time and wall-clock deadline;
+- PID/task creation rejection;
+- disk capacity/ENOSPC versus per-file-size enforcement;
+- I/O BPS/IOPS throttling;
+- runtime output enforcement versus collector/transport/display truncation.
+
+For disk exhaustion, preserve whether the exhausted resource was a per-job quota controlled by PocketCode/provider or shared infrastructure. A per-file limit is not a workspace quota; an I/O rate limit is not a capacity limit. The same OS symptom can require different product attribution depending on which boundary owned the resource.
+
+### 9.4 Teardown counterexamples added without changing canonical IDs
+
+The original TDN cases are strengthened above. Two additional supplementary cases are now explicit:
+
+| Subcase | Setup / attack | Required observation | Failure condition |
+|---|---|---|---|
+| TDN-09 lost create acknowledgement | Persist create intent, then provider creates a resource but the acknowledgement containing its ID is lost | Durable pre-call intent/idempotency identity; bounded, correctly scoped reconciliation/list pagination discovers or rules out the resource; exactly the same logical create is reconciled without blind duplicate creation | No durable intent, incomplete pagination/scope, a second resource is created, or orphan is silently forgotten |
+| TDN-10 warm/reused sandbox contamination | A provider reuses a warm sandbox or task environment after a job appears complete; a daemonized child/agent remains | Prove job-level process-tree emptiness and sandbox reuse isolation; a later attempt cannot inherit an earlier attempt's process, files, credentials, tunnels, or state | Parent exit or per-job report closure is treated as full cleanup, or stale child/state leaks into another attempt |
+
+Additionally, TDN-06 must cover the case where a retry/attempt shares or is incorrectly attached to a still-live resource from a previous attempt. Cleanup for attempt N must not terminate or close attempt N+1, and attempt N+1 must not inherit attempt N's live process or provider resource. TDN-10's stale-observation negative case must re-check state after late child/retry activity; one earlier empty-tree observation is not perpetual proof.
+
+### 9.5 Isolation and proof-layer additions
+
+RES-08 is the worker-containment test, not merely a workload-limit test. Its evidence should show the orchestration worker is outside the workload cgroup/PID namespace and does not share the untrusted workspace or credentials; its own stream buffers are bounded before rendering; a second concurrent attempt remains healthy while a bounded adversarial attempt is terminated. A collector that truncates after buffering unbounded output does not prove worker protection.
+
+Use this evidence ladder:
+1. **Pure-helper tests:** test fail-closed interpretation of typed evidence and state transitions. They do not prove that an observer is authentic.
+2. **Fake-adapter protocol tests:** test call order, retry counts, acknowledgement loss, asynchronous delete, lookup scope, pagination, and reconciliation decisions. They do not prove provider behavior.
+3. **Persistence tests:** prove durable write-ahead create/delete intent, atomic reservation, restart recovery, immutable observations, and stable identity. A lost-create-ack orphan case is blocked until this layer exists.
+4. **Local Linux cgroup tests:** only in an explicitly approved, isolated environment; prove actual kernel enforcement and observer/sibling survival for that exact kernel/cgroup topology. No such local test was run here.
+5. **Provider/runtime tests:** prove the selected provider's real enforcement, deletion, attached-resource release, and telemetry behavior. LOOP-14's explicit approval/verified zero-cost gate applies; fake tests and desk research cannot prove that billing stopped.
+
+Firecracker remains a VMM/microVM building block, not a managed sandbox service. When self-operated, the owner of the deployment remains responsible for the host cgroups, jailer/chroot, tap/network devices, root filesystem copies, supervisor, durable cleanup and orphan reconciliation. Provider and kernel documentation are design inputs, not observed PocketCode behavior.
+
+### 9.6 Review disposition
+
+- Claude's canonical-gap observations are ACCEPTED as scope clarifications.
+- The cgroup local-versus-hierarchical concern is ACCEPTED, with the kernel mount-option caveat added.
+- The timeout/OOM race, observer survival and pre-removal snapshot requirements are ACCEPTED as supplementary evidence requirements.
+- The teardown counterexamples are ACCEPTED as additional TDN coverage.
+- No new canonical LOOP/CASE ID, lifecycle status, schema, provider choice, or architecture decision is made here.
+- All RES/TDN cases remain SPECIFIED ONLY / NOT RUN. No host, provider, runtime, account, billing, queue, source, tests, Actions, PR, merge or deployment was touched.
