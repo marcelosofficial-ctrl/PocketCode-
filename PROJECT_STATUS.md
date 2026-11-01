@@ -165,3 +165,20 @@ A line-level review of the lifecycle descendant found that malformed-event shape
 ### Report formatter/redactor boundary follow-up — 2026-11-01
 
 Exact source inspection confirms PR #2's `_safe_text()` escapes control characters and truncates fields but does not redact secrets; `format_report()` renders stdout/stderr and user/program-supplied metadata. PR #3's `OutputBudget` uses a best-effort `StreamingRedactor`, but no integrated data flow proves that all PR #2 report fields pass through it. This remains an integration/data-flow gap, not a verified production exploit. See Section 19 of the crosswalk. No source edits or tests were run.
+
+
+### Fresh lifecycle helper and test coverage review — 2026-11-01
+
+Refreshed the exact lifecycle audit branch name and pins, then reviewed the descendant helper and 30-method test source line by line. The prior `lifecycle-fingerprint` shorthand was incorrect; the live name is `pocketcode-lifecycle-fingerprint-audit-2026-10-27`, HEAD `26de6bb29020d6781d342c691e430616a4321083`.
+
+New findings added to Section 20 of the execution-boundary crosswalk and the consolidated patch sequence:
+- Expand G-01 strict boolean validation to include `contradictory_evidence`; malformed falsey contradiction or truncation values can otherwise be treated as absent and allow an otherwise valid EXIT_ZERO to project PASS.
+- Validate effective-policy mapping keys as strings recursively before JSON fingerprint serialization; Python's JSON encoder coerces non-string dictionary keys to strings.
+- Confirm G-07 remains open: Windows documents COM¹/COM²/COM³ and LPT¹/LPT²/LPT³ as reserved aliases, but the helper regex and current tests cover only ASCII digits.
+- Add whitespace-only `ReportHistory` job/evidence-reference rejection.
+- Keep immutable event metadata bound at trusted ingress under D-04; the reducer's duplicate signature currently compares only sequence, kind and payload.
+- Add redactor tests at and beyond configured maximum token lengths without claiming universal secret detection.
+
+Official references: [Microsoft Windows file-naming rules](https://learn.microsoft.com/en-us/windows/win32/fileio/naming-a-file) and [Python JSON serialization behavior](https://docs.python.org/3.13/library/json.html).
+
+This remains static source review and documentation. No implementation source changed, no tests were executed, and D-01/D-04 remain owner-open. See [crosswalk Section 20](AI_COLLAB/POCKETCODE_EXECUTION_BOUNDARY_TRUST_CROSSWALK_20261101.md) and [consolidated patch sequence](AI_COLLAB/CONSOLIDATED_LIFECYCLE_AND_REPORT_PATCH_SEQUENCE_20261101.md).
