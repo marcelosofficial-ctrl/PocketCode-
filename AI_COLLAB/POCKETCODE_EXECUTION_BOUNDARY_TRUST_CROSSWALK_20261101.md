@@ -401,31 +401,34 @@ Do not implement these against an unapproved schema merely to make a test pass. 
 
 ## 11. Suggested fixed-task product experiment
 
-Use one deterministic, synthetic CSV-to-CSV task, for example:
-- accept a user-selected small CSV;
-- validate required columns;
-- normalize whitespace and dates;
-- generate a cleaned output CSV;
-- return row counts and precise validation errors;
-- allow explicit output save/share.
+Use the existing [PRODUCT_FIXED_TASK_COMPARISON_WORKSHEET_20261028.md](PRODUCT_FIXED_TASK_COMPARISON_WORKSHEET_20261028.md) as the **canonical fixed-task definition**. It already specifies exact synthetic success and malformed-input fixtures, expected output, standard-library Decimal arithmetic, fresh-workspace rules, per-attempt evidence, scoring, alternatives and falsification criteria.
 
-Run the same task through:
-1. ordinary AI chat with copy/paste only;
-2. a local Pyodide worker using standard-library Python;
-3. one existing phone-based coding or Python workflow, if already available at no cost.
+The worksheet's canonical task is:
+- Input: the exact synthetic `items.csv` with `item,quantity,unit_price`.
+- Success: create a real `summary.json` with grand total `10.75`, two line items, and exact decimal-string totals for notebook and pen.
+- Failure: remove the required `unit_price` header; report the precise error and leave no misleading valid `summary.json`.
+- Use standard-library decimal-safe arithmetic, no network, credentials, third-party packages, private files or real data.
 
-Measure:
-- task completion and output correctness;
-- time and number of user actions;
-- error recovery clarity;
-- cold and warm runtime startup;
-- memory pressure and browser stability;
-- offline behavior;
-- output-file handoff quality;
-- whether the report helps the AI make a correct next iteration;
-- actual cost, which must remain $0.
+**Do not replace this task with a second CSV-cleaning/CSV-to-CSV task merely because this crosswalk previously gave that as an example.** That example is an optional future task only if the canonical worksheet reveals a material gap and the owner approves expanding the comparison. Maintaining one canonical task avoids incompatible fixtures and repeated research.
 
-Do not choose arbitrary resource thresholds before measuring the device and runtime. Use an explicit test budget and derive acceptable limits from results. Keep the first fixture synthetic and non-sensitive.
+For the first bounded comparison, prioritize:
+1. ordinary AI chat with explicit manual copy/paste;
+2. a browser-local Pyodide worker using the pinned Pyodide 314.0.7 candidate and standard-library Python;
+3. one already-available phone-based coding/Python workflow, if one exists at no cost and without installation or account creation.
+
+The worksheet's broader alternatives (including Pyodios, Pyto, remote-PC and hosted products) remain candidates in its comparison table. Do not install apps, create accounts, enable billing, or run hosted workloads as part of this research pass. Record any alternative that is unavailable as NOT RUN, not as a failure.
+
+Use the existing worksheet's measurement and scoring rules rather than creating a competing scorecard:
+- correctness for both success and malformed-input cases;
+- real file creation and explicit save/share;
+- trustworthy process status and evidence provenance where available;
+- setup actions, elapsed time, recovery clarity and report usefulness;
+- cold/warm startup, memory pressure, browser stability and offline behavior;
+- privacy/network behavior and actual cost, which must remain $0.
+
+The iPhone/Safari requirements in Section 15 refine the browser-local candidate; they do not change the canonical task. Use LOC-01..LOC-24 as proposed device acceptance cases. In particular, a browser reload, worker disappearance or lost terminal message remains UNKNOWN/INCOMPLETE; cooperative interruption and hard Worker.terminate must not be presented as proof of child cleanup; file selection and output save/share must be observed in the actual Safari and Home Screen web-app modes.
+
+The experiment is not a production runtime selection. It is intended to falsify or support the narrow product hypothesis before expanding architecture. No hands-on run, device result, security guarantee or provider approval is implied here.
 
 ## 12. Three-AI review assignments
 
