@@ -174,3 +174,68 @@ A finding can be marked **adapter/persistence/runtime verified** only with the c
 ## 7. Current status
 
 All rows in this plan are proposed. No source code, tests, canonical acceptance, provider adapter, persistence layer, runtime, queue, PR or main branch was changed. No test was run. PC state remains UNKNOWN. This document is a sequencing and acceptance-design artifact only.
+## 8. Supplementary regression cases from Gemini's review (2026-11-01)
+
+These are new test-design identifiers only. They do not rename, extend, or replace AWC, AEC, LOOP, CASE, P8U, P0-D, CYC, or OBS IDs. They are retained because the engineering ideas are useful after correcting Gemini's crosswalk errors.
+
+### PC-EXT-01: applied-policy barrier before process launch
+
+**Traceability:** PocketCode D-05, LOOP-12, CASE-15.  
+**Proof layer:** adapter plus provider/runtime evidence; pure checks can test state decisions only.
+
+Test policy supplied at sandbox creation and policy mutation on an existing sandbox. For an update, cover desired revision ahead of applied revision, pending status, stale read, mismatched policy contents, concurrent update/ETag conflict, provider read failure, and exact desired/applied match. The adapter must not dispatch the untrusted process while the policy is pending, stale, missing, or mismatched. A create/update API success, HTTP 2xx, ETag value, or self-reported adapter flag alone is not proof of effective egress enforcement. Require authoritative applied-policy state before launch, then actual provider/runtime egress evidence for the relevant protocols and routes. A probe is corroboration, not exhaustive proof. If the provider cannot guarantee a safe pre-execution barrier, the provider is not eligible for untrusted code.
+
+### PC-EXT-02: actual resource boundary and host containment
+
+**Traceability:** LOOP-12 and the resource/termination semantics in the transition matrix; no AWC mapping.  
+**Proof layer:** provider/runtime evidence, with adapter evidence for the configured policy.
+
+Exercise the actual selected provider's configured memory, CPU, process-count, disk/file, wall-time, and output limits as applicable. Show the authoritative enforcement source and exact sandbox/job/attempt identity. A workload exceeding its memory boundary must not kill or destabilize the orchestration worker or unrelated workloads. Where cgroup v2 is the actual mechanism, record the target cgroup and pre/post local event counters; do not interpret a global or pre-existing OOM counter as this attempt's event. Use provider-specific proof where cgroups are not exposed. Distinguish throttling, allocation failure, file-size rejection, process termination, and output collection caps.
+
+### PC-EXT-03: immutable artifact publication and release-time revalidation
+
+**Traceability:** D-07, proposed execution contract's execution-outcome/artifact-release separation, LOOP-10, CASE-14, and the security implications of CASE-15.  
+**Proof layer:** persistence plus adapter and provider/storage boundary evidence.
+
+Inject interrupted writes, partial manifests, digest mismatch, bytes changed after validation, stale policy/authorization, wrong tenant/job/attempt, quarantine, and cleanup-not-confirmed states. A manifest becomes publishable only after the complete immutable object is written and its digest/size/type/path metadata is verified. A partial or digest-mismatched object is never exposed. Re-evaluate current authorization and the exact immutable bytes immediately before release. If policy requires content scanning, test the explicitly versioned scanner and its failure/unknown behavior; do not assume an unspecified scanner exists. Artifact denial must not rewrite the historical execution outcome.
+
+### PC-EXT-04: teardown failure, orphan reconciliation, and separate cleanup state
+
+**Traceability:** lifecycle transition matrix and proposed execution contract; preserve execution outcome separately from cleanup/disposition.  
+**Proof layer:** provider/runtime plus durable persistence and reconciliation.
+
+Test confirmed child EXIT_ZERO followed by provider delete timeout, HTTP 500, ambiguous response, delayed termination, and late cleanup confirmation. Preserve the exact child outcome and exit code. Record cleanup as UNKNOWN/pending or ORPHANED_TEARDOWN_REQUIRED when the provider cannot confirm deletion; never mark cleanup complete from a local database close alone. Reconcile the same sandbox/job/attempt idempotently, retain the failure evidence, and prevent a stale cleanup event from changing another attempt. Prove eventual provider-side termination/deletion and ensure a leaked resource cannot silently continue accruing cost. No provider call or workload is authorized by this test design.
+
+### PC-EXT-05: delayed usage and billing reconciliation
+
+**Traceability:** future cost-observability requirement, distinct from OBS-03 and not equivalent to LOOP-14.  
+**Proof layer:** adapter plus persistence, only after explicit provider/budget approval.
+
+Represent usage quantity, estimate, provider-reported charge, currency/rate-card version, observation time, and reconciliation state separately. Candidate states include ESTIMATED, PENDING, RECONCILED, and UNKNOWN. Delayed billing data must not appear as final zero cost. A local vCPU-second estimate is not a provider invoice and is valid only when its rate source/version is recorded. This remains BLOCKED under the current $0/no-provider/no-workload constraint.
+
+### PC-EXT-06: stdout cannot forge lifecycle events
+
+**Traceability:** transition matrix trust rule; CASE-09/10 are related report-honesty cases, not equivalent producer-authentication tests.  
+**Proof layer:** pure helper and adapter boundary.
+
+Have untrusted code print JSON shaped like a terminal event, including fake `verdict`, `exit_code`, `attempt_id`, `provider_error`, or cleanup fields. Confirm these bytes remain ordinary untrusted stdout and cannot mutate terminal state, disposition, release authorization, or event history. Only an authenticated trusted producer on the accepted event channel can supply the relevant observation.
+
+### PC-EXT-07: tenant-scoped semantic idempotency fingerprint
+
+**Traceability:** D-06 and PC-DB-01 / PC-AD-01; related to CASE-13 but not a replacement for provider dispatch proof.  
+**Proof layer:** durable persistence/concurrency, then adapter/provider.
+
+Test same tenant/key/same semantic request, same tenant/key/changed source or input file, changed runtime/entrypoint/limits/policy revision, concurrent reservations, crash after reservation but before dispatch, crash after dispatch but before acknowledgement, and same textual key used by two different tenants. The reservation is atomic and tenant-scoped. The semantic fingerprint covers every execution-relevant normalized field and file digest. Same key and same fingerprint resolves to the original identity; changed fingerprint conflicts before dispatch; cross-tenant keys do not alias. UNKNOWN lookup never triggers blind redispatch. Provider exactly-once execution remains unclaimable unless the provider supplies idempotent-start semantics or authoritative reconciliation.
+
+### PC-LC-05 clarification: do not label a full pipe as a truncation event
+
+Retain the existing separation between execution limit, stream capture, collector/retention, and display truncation. Add a stream-reader interruption/backpressure case. A full Linux pipe ordinarily blocks a writer, or fails under nonblocking I/O; it does not inherently discard bytes at a universal 1 MB threshold. Record whether bytes were never read, deliberately dropped by a collector cap, lost during transport/storage, or omitted by display rendering. Keep process terminal evidence independent.
+
+### Evidence order and hard stop
+
+1. Pure-helper and fake-adapter cases can validate deterministic decisions and protocol mapping only.
+2. Persistence cases must prove atomic reservation, crash/restart behavior, immutable publication, and release decisions on the actual chosen store.
+3. Provider/runtime cases must prove pre-execution policy enforcement, resource containment, child termination, cleanup, and egress at the actual execution boundary.
+4. No level inherits the proof of a later level. A provider API response is not host enforcement evidence; a unit test is not persistence evidence; a mock is not a provider test.
+
+All PC-EXT cases are proposed and NOT RUN. No provider, database, scanner, runtime, or billing system is selected. No source or test implementation is authorized by this plan.
