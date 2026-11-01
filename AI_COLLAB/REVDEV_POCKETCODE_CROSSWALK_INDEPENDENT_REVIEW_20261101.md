@@ -384,3 +384,8 @@ Suggested source-level work priority, subject to the still-open owner decisions:
 4. Only then use fake adapters, persistence/restart tests and provider/runtime evidence to establish dispatch, publication and queue guarantees.
 
 This is prioritization for future review, not authorization to modify implementation or tests.
+
+
+## 9. Regression plan
+
+A separate staged test-design artifact has been added: [LIFECYCLE_CONTRACT_REGRESSION_PLAN_20261101.md](LIFECYCLE_CONTRACT_REGRESSION_PLAN_20261101.md). It separates pure-helper tests (OBS-01..06) from fake-adapter, persistence, provider-boundary and runtime/queue tests, defines candidate negative cases, and states evidence exit criteria. All cases remain proposed and NOT RUN. The plan does not authorize or imply implementation changes.
