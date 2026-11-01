@@ -198,3 +198,15 @@ Do not copy the implementation wholesale. Its file-store lock assumptions are lo
 ## 6. Non-actions
 
 No upstream source was changed. No tests, builds, device runs, installs, account operations, provider operations, schemas, canonical acceptance IDs, PocketCode PRs, RevDev host, PC source/runtime/queue, Actions, deployments, merges or spend were touched. All PC/RevDev runtime state remains UNKNOWN.
+
+
+## 7. Agent-server recovery and existing tests addendum — 2026-11-02
+
+A further read of the same pinned source found that the agent-server explicitly recognizes the append/HEAD crash window. At `event_service.py` lines 1424–1467, startup detects a persisted RUNNING conversation, marks it ERROR, scans the full EventLog for unmatched actions, and appends a non-retryable internal AgentErrorEvent explicitly parented to the first unmatched action if no ObservationBaseEvent exists for its tool_call_id. The comment explains this parent override prevents the recovery result from becoming a sibling under stale HEAD. SDK state.py lines 268–320 show a still-existing leaf is accepted as HEAD; missing-leaf repair only occurs when the saved leaf event is absent.
+
+Existing tests were located:
+- `tests/agent_server/test_event_service.py`, blob `fc6e589f71318ac36df92b72c1fd0225549d1436`, lines 2419–2678, covers RUNNING+unmatched, RUNNING+no unmatched, non-RUNNING, and observation suppression by tool_call_id even when action_id differs. These use mocked state and do not assert parent_id or restored active ancestry.
+- `tests/sdk/conversation/test_get_unmatched_actions.py`, blob `35798b1bccb60b0976cf0785682ef17181e4450b`, covers helper matching by tool_call_id.
+- The verification feature map F31.crash-tool-call, blob `5082730e1ba1d333daeaf321c21214ad4924cd12`, lines 191–220, documents a SIGKILL integration recipe checking ERROR, one matching AgentErrorEvent, zero ObservationEvents and resumed delivery. It does not check parent_id or active ancestry; the broader recipe has a DeepSeek API-key/model precondition.
+
+The remaining gap is a real local persistence/restore crash test asserting action → recovery error active ancestry and explicit parent_id, plus focused tests for full-log observation suppression and multiple unmatched actions. No test was run by ChatGPT. No upstream source/test was changed. See the expanded falsification plan for exact boundaries, including event-file/length-marker ordering and the distinction between process-crash survival and power-loss durability.
