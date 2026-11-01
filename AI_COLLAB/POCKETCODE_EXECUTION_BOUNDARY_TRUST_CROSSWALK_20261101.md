@@ -612,3 +612,52 @@ The fetched sibling source still has the following limitations:
 The sibling branch source and test blobs were fetched and inspected. No Python suite was run. The branch's test additions establish only that assertions exist in source, not that they pass. No PR was created, no branch was merged, and no implementation file was modified by this review.
 
 This addendum corrects Section 8.1's scope; Section 8.1 remains accurate for the exact PR #3 source blob it names.
+
+
+## 17. Exact lifecycle branch ancestry and source delta — 2026-11-01
+
+A direct GitHub compare was performed between the pinned PR #3 head used in this audit and the lifecycle-fingerprint branch:
+
+- PR #3 reviewed base: `0ddcc0bc97bac5d446aefedf3d71f99411bd841d`.
+- Lifecycle-fingerprint branch head: `26de6bb29020d6781d342c691e430616a4321083`.
+- Compare result: `ahead`, 34 commits ahead, 0 behind, merge base exactly the PR #3 base.
+- Therefore the lifecycle-fingerprint branch is a **direct descendant** of the reviewed PR #3 commit, not a divergent branch. Its improvements are later commits in the same ancestry, but they are not present in the pinned PR #3 head or PR #3 review diff unless that PR branch is advanced.
+- The repository PR search returned PR #2 and PR #3 only. No PR for the lifecycle-fingerprint branch was found in that search. This is not an exhaustive guarantee that no external review exists.
+
+### 17.1 Exact changed-file inventory
+
+The 34-commit compare reports five changed paths relative to the pinned PR #3 base:
+
+| Path | Change | Review significance |
+|---|---:|---|
+| `AI_COLLAB/CHAT_HANDOFF_20261027.md` | +17 | Continuity documentation |
+| `AI_COLLAB/CONTRACT_CODE_TEST_TRACEABILITY_20261027.md` | +33 / -1 | Traceability updates |
+| `AI_COLLAB/OFFLINE_ACCEPTANCE_TEST_MATRIX.md` | +27 | Acceptance coverage additions |
+| `scripts/lifecycle_contract.py` | +45 / -7 | Pure-helper validation and tombstone changes |
+| `scripts/test_lifecycle_contract.py` | +102 | Six additional test methods |
+
+The checked-in lifecycle test method count is 24 at the PR #3 base and 30 at the lifecycle-fingerprint head. This is a source inspection count only. Neither suite was executed in this pass.
+
+### 17.2 Source-level improvements confirmed in the descendant
+
+1. **Tombstones:** nonblank string validation for tenant/key/fingerprint; strict non-negative integer epoch validation excluding bool; same tenant/key with a different fingerprint raises `IdempotencyConflict`; same-fingerprint retries preserve the later expiry instead of shortening retention.
+2. **Canonical fingerprint identity:** rejects whitespace-only contract version, tenant ID, runtime and entrypoint. Runtime is normalized before fingerprinting and cannot normalize to an empty string.
+3. **Terminal-event input validation:** rejects non-mapping event records, blank event IDs/kinds, invalid sequence types/values, and non-mapping/missing payloads. Rejected inputs are returned in an `invalid_events` collection and mark evidence contradictory. The prior helper silently allowed or discarded some malformed shapes.
+4. **Regression source:** six test methods were added, including tombstone retry/identity validation, blank fingerprint identity, malformed event validation, and existing adjacent lifecycle checks.
+
+### 17.3 What did not change
+
+The direct source comparison confirms that the following remain unchanged between the pinned PR #3 helper and this descendant:
+
+- `OutputBudget` constructor still only checks `cap <= 0`, so bool and float values are not explicitly rejected.
+- `derive_disposition()` still accepts truthy malformed `limit_violated` and `output_truncated` values.
+- Output truncation still maps to `LIMIT_EXCEEDED` in disposition derivation without proof that the child process was stopped. The collector has no process-control capability.
+- `reduce_terminal_events()` still lacks expected tenant/job/attempt/source/policy binding inputs. It still makes shallow dictionary copies, not deep immutable snapshots. The new validation does not solve trusted-ingress ownership or nested mutation.
+- Configured-pattern redaction remains bounded best-effort redaction, not a guarantee that arbitrary secrets are removed.
+- Tombstones and idempotency race logic remain in-memory models, not transactional storage or concurrency evidence.
+
+### 17.4 Correct branch disposition
+
+The descendant is the strongest available source candidate for the specific fixes listed above, and its ancestry means those changes can be reviewed as a linear continuation from PR #3. It is **not** evidence that PR #3 itself has been updated, accepted, or tested. Do not merge, fast-forward, cherry-pick, or create a PR without an explicit owner decision and a full review of all 34 commits and their documentation changes.
+
+The next efficient engineering pass should review the 34-commit range and the changed helper/tests as a whole, then isolate the minimal source commits relevant to the lifecycle contract. Keep the known-open OutputBudget, limit-flag, output/termination, event-binding/snapshot, and redaction issues separate. No implementation change, test execution, PR creation, merge, Actions run, provider activity, or deployment occurred during this comparison.
