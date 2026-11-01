@@ -278,6 +278,19 @@ Score each condition independently for:
 
 Correctness and evidence honesty are hard gates. A shorter but incorrect or less truthful response loses. Record prompt/output character counts and turns only as rough proxies, not tokens, latency, or cost. Repeat at least three comparable pairs if free usage permits; stop at any usage limit without quota evasion. If the sample is smaller, label it exploratory.
 
+### Pre-registration and scoring integrity
+
+Before opening either assistant chat for a pair, freeze and record:
+- exact task source and input bytes (or their reproducible text), plus the expected success/failure behavior;
+- the actual observed evidence packet and its provenance;
+- the known failure cause and the minimum acceptable correction, where a failure case is used;
+- the exact acceptance checks that will verify the proposed correction;
+- the common prompt template and the model/mode/tool settings that are actually visible.
+
+Do not change the task, evidence, prompt, or scoring rubric after seeing one condition's answer. Randomize whether A or B is run first. Keep the chats isolated, with no shared conversation context or access to the other answer. Where practical, hide the A/B label and evidence-format identity from the person scoring the outputs until scores are recorded. If model settings such as temperature are unavailable, record them as UNKNOWN rather than implying they were controlled.
+
+The current missing-header CSV case is a useful failure-honesty smoke test, but it may be too easy to distinguish report formats if both conditions reach the correct diagnosis immediately. If all conditions reach the same correct answer, record a ceiling result and do not claim a report advantage. Any harder failure fixture must be specified, frozen, and independently checked before running the next pair, not invented after inspecting an unfavorable answer.
+
 ### Existing report fields and exploratory identifiers
 
 The existing proposed report already covers run identity, runtime/status, exit and duration when known, bounded stdout/stderr and truncation, output-file metadata, and explicit missing evidence. Evaluate that proposal as written. The following may be recorded as *available external evidence* or explored as future contract questions, but are not current report requirements: input digest, source/script revision or digest, artifact content digest, timestamp when unavailable, or a suggested next diagnostic action. Do not add these to the report solely to improve the experiment.
