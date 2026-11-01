@@ -205,3 +205,25 @@ New supplementary test IDs PC-EXT-01 through PC-EXT-07 are proposed only. They d
 **Date caveat:** Gemini's supplied response says 2026-11-02, one day ahead of the current date in this audit. The content is treated as supplied review text; its date/authorship metadata is not independently verified.
 
 **Current research branch state before these documentation additions:** `a3db9294d4e6d4692a2a990b56d925d34a12ef5c`. After the additions, verify the new branch HEAD and read back all three updated documents. Main and PR #2/#3 are to remain untouched. No implementation, canonical acceptance, tests, provider, runtime, queue, Actions, merge, deployment or spend is authorized.
+
+
+## 10. Final GitHub checkpoint after Gemini reconciliation
+
+The three documentation updates were committed sequentially to the existing research branch:
+
+| File | Commit | Resulting blob |
+|---|---|---|
+| `AI_COLLAB/REVDEV_POCKETCODE_CROSSWALK_INDEPENDENT_REVIEW_20261101.md` | `9e99020bea45239c9b3295d57a3663d7f8f64a7d` | `1bd83b8b30988bc8313bd30e0dceefe73eb3ded2` |
+| `AI_COLLAB/LIFECYCLE_CONTRACT_REGRESSION_PLAN_20261101.md` | `e925fbd49ab518d565d56374d4bf4ca7593ef9c8` | `565eba82399b44d32d049f16084f1fda1a30d494` |
+| `AI_COLLAB/CHAT_HANDOFF_ADDENDUM_20261101.md` (Gemini reconciliation update) | `01cd7d4e69ecba411dcf1c9d07a77a94d1b42696` | `e1412fa1aaeb5fbff0eddd27c1f0427fc658fd79` |
+
+Read-back checks confirmed the Gemini reconciliation section and its source pins in the independent review, all seven PC-EXT cases in the regression plan, and the continuation summary in this addendum. The three files were fetched from the research branch after commit. The independent review and regression plan both explicitly retain NOT RUN / UNKNOWN boundaries.
+
+A live GitHub ref/PR check immediately after those commits returned:
+
+- Research branch `pocketcode-ai-workflow-director-research-2026-10-28`: `01cd7d4e69ecba411dcf1c9d07a77a94d1b42696` before this final handoff checkpoint update.
+- Main: unchanged at `555840d8d83342513d9cd353d4d1522d46a5c82d`.
+- PR #2: OPEN, DRAFT, UNMERGED; head `eb8b7ea83cb0e8fe1880351276c485b761431791`; base main.
+- PR #3: OPEN, DRAFT, UNMERGED; head `0ddcc0bc97bac5d446aefedf3d71f99411bd841d`; base main.
+
+No PR, main, source, tests, canonical acceptance, runtime, queue, provider, workflow/Actions, merge, deployment, or billing state was changed. The only writes in this pass were the three documentation files on the research branch. The commit created by this final handoff update must be read as the new research-branch HEAD; the next chat should verify the live ref before writing again.
