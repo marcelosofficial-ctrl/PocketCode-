@@ -210,3 +210,87 @@ Never collapse execution outcome, coordination disposition, evidence persistence
 First priorities: reconcile Claude/Gemini research; have both review SCF fixtures; resolve identity/state mapping and D-01..D-08 before any schema. Continue the fixed-task PocketCode local feasibility comparison; Pyodide 314.0.7 CSV/JSON foreground Safari test is a candidate, not run. RevDev queue/host decisions wait for PC access; River remains a candidate.
 
 Work efficiently and thoroughly, make sensible administrative decisions within these boundaries, do substantial work per pass, update GitHub continuity when useful, verify every created/updated file and exact branch head, and ask the user only for essential missing information.
+
+
+---
+
+## 12. Continuation delta after the original 2026-11-01 handoff — refreshed follow-up
+
+This section supplements the original handoff above. The original historical snapshot is preserved; the following is the later verified continuation state.
+
+### 12.1 Refreshed repository and PR state
+
+At the latest verification during this continuation:
+- PocketCode research branch `pocketcode-execution-boundary-crosswalk-2026-11-01`: `66685aacfd3a5381455cdb7cbffaed10905b1bd5`.
+- PocketCode `main`: `555840d8d83342513d9cd353d4d1522d46a5c82d`.
+- Compare: research branch 465 commits ahead, 0 behind. This is a documentation/research branch, not a merge target.
+- PocketCode PR #2 remains open/draft/unmerged at `eb8b7ea83cb0e8fe1880351276c485b761431791`.
+- PocketCode PR #3 remains open/draft/unmerged at `0ddcc0bc97bac5d446aefedf3d71f99411bd841d`.
+- RevDev review branch remains `6589ea90874a41ec4bce9d61ec003a05b73e89ad`; RevDev main remains `058f9025319d12e76195659c715ccb4afce133b8`.
+- RevDev PR #1 remains open/draft/unmerged at `59f88dc0bd884872cf379c8aeb6272c9a70c71ce`.
+- All three PRs remain untouched by this continuation.
+
+Always refresh again before subsequent work; these are snapshots, not permanent branch guarantees.
+
+### 12.2 New documentation added after the original handoff
+
+1. `AI_COLLAB/SHARED_CONTRACT_GOLDEN_FIXTURE_CATALOGUE_CHATGPT_PRELIMINARY_REVIEW_20261101.md` — independent static review of SCF-001..018. Retains the 18 provisional IDs, identifies proof-precondition clarifications, preserves supplemental adversarial cases, and contains separate Claude/Gemini review instructions. Not owner-approved, not canonical acceptance, not schema freeze.
+2. `AI_COLLAB/STATE_AND_IDENTITY_MAPPING_PREPARATION_20261101.md` — seven independent state axes, separate artifact expectation/operation records, identity-domain map, native suite namespace preservation and explicit D-01..D-08 stop rules. Not a schema or owner decision.
+3. `AI_COLLAB/PYODIDE_314_0_7_MOBILE_RUNTIME_FEASIBILITY_REVIEW_20261101.md` — official-source desk review of the pinned browser-local candidate and LOC-01..24 refinements. Not device tested.
+4. `AI_COLLAB/POCKETCODE_EXECUTION_BOUNDARY_TRUST_CROSSWALK_20261101.md` Section 11 now points to the existing canonical fixed-task worksheet instead of suggesting a competing CSV-cleaning task. Section 22 records the Pyodide 314.0.7 technical findings.
+5. `PROJECT_STATUS.md` records these review/research deltas.
+
+### 12.3 Fixed-task decision reinforced
+
+The one canonical experiment remains the existing `PRODUCT_FIXED_TASK_COMPARISON_WORKSHEET_20261028.md`: synthetic `items.csv` → real `summary.json`, Decimal-safe arithmetic, exact expected total 10.75 and malformed missing-`unit_price` failure. Do not replace it with a second CSV-to-CSV cleaning task. No hands-on comparison has occurred.
+
+### 12.4 State and identity clarification
+
+The current shared semantic preparation distinguishes seven independent state axes:
+- execution outcome;
+- coordination/job disposition;
+- evidence persistence/integrity;
+- publication;
+- release authorization;
+- transfer/delivery/receipt;
+- derived user-facing verdict.
+
+Artifact expectation remains a separate fact. Operation records for start, cancel, report append, publication, release and transfer remain distinct. Do not map RevDev MissionId/RunId, PocketCode runId, coordinator job/attempt, provider token, event, evidence, artifact, report, release-decision or transfer identifiers by name similarity.
+
+Critical mapping rules:
+- rejection before an attempt is request/admission disposition, not a fictitious process outcome;
+- infrastructure failure without trusted child terminal evidence leaves execution outcome UNKNOWN;
+- cancellation request/acknowledgement is not confirmed termination;
+- PocketCode CASE-04's confirmed timeout remains INCOMPLETE / timed_out under the current canonical working default;
+- RevDev P8U execution PASS/FAIL and publication NOT_ATTEMPTED/PENDING_RETRY/PUBLISHED/PERMANENT_ERROR remain RevDev-native;
+- no shared fixture or schema replaces LOOP/CASE/AEC/AWC, COORD/DR, P8U/P0-D, RelayRef or other native acceptance namespaces.
+
+### 12.5 Pyodide 314.0.7 official-source findings
+
+- Version 314.0.7 is pinned; record exact runtime/assets rather than floating to latest/dev.
+- It requires a module-type Web Worker; classic importScripts workers are unsupported.
+- Documented cooperative KeyboardInterrupt requires Web Worker + SharedArrayBuffer + appropriate cross-origin-isolation headers. LOC-05 gates LOC-06.
+- The current changelog lists maxMemoryBytes under Unreleased, not in 314.0.7. Do not assume a pinned-release hard WASM heap cap; no browser-process/OS resource guarantee follows.
+- decimal.Decimal via C _decimal is available; _pydecimal is unavailable. threading, multiprocessing and sockets are nonfunctional.
+- Safari path should use explicit file picker and Blob save/share; File System Access API is Chromium-only per Pyodide's official FAQ. Default MEMFS is lost on page reload.
+- Worker.terminate is a host stop action only; it does not prove Python cleanup, output flush, exit status or terminal outcome.
+
+The fixed task is still a narrow standard-library feasibility test, not a runtime selection or security acceptance. LOC-01..24 remain proposed and NOT RUN.
+
+### 12.6 Claude report status
+
+After the original handoff, the current PocketCode research branch tree and all eight listed PocketCode branches were refreshed/enumerated. A Claude-specific branch search returned no results. Repository commit search found the old `CLAUDE.md` entry-instructions commit, not the promised medium-sized research report. Therefore the report remains **NOT RECEIVED in the checked GitHub snapshot**. This does not establish whether Claude has prepared it elsewhere or whether it may arrive later.
+
+Claude's dedicated SCF-001..018 implementation/identity review remains pending. Gemini's dedicated SCF-001..018 adversarial review remains pending. Gemini's existing architecture/open-source audit is not a substitute for that fixture-specific review.
+
+### 12.7 Current next work
+
+1. Receive and fully review Claude's medium-sized research document when supplied; classify evidence, recommendation, optional alternative, open question and unsupported claim. Compare against Gemini and existing goals; do not let recency/detail override the project direction.
+2. Obtain Claude and Gemini's independent SCF reviews using the exact catalogue and review instructions. Reconcile disagreements.
+3. Continue identity/state mapping and owner decision preparation without freezing schema. Lifecycle D-01..D-04 remain OPEN as recorded; D-05 remains BLOCKED; D-06..D-08 remain proposals requiring owner review and actual-boundary proof.
+4. Continue the fixed-task phone feasibility plan. No install, device test, provider workload, account or spend unless explicitly authorized.
+5. Keep RevDev PC host/queue decisions deferred until PC access returns and fresh read-only source/runtime evidence is possible.
+
+### 12.8 Non-actions
+
+All work after the original handoff was documentation-only on the isolated PocketCode research branch. No schema, canonical acceptance, source/test, PR #2/#3, main branch, provider/store, account, workflow, Actions, workload, billing, deployment, merge, PC host, runtime, watcher, queue or publication state was changed or exercised. No tests, provider integration or device execution occurred. RevDev PC state remains UNKNOWN.
