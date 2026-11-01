@@ -575,3 +575,13 @@ Owner supplied Gemini's four-stage open-source research report. The source-recon
 **Next work:** wait for Claude's independent review; reconcile disagreements against pinned upstream sources. Deep inspect CodeMirror 6, Pyodide, wasmsh and Aider repo-map only. Continue the existing fixed-task comparison design. Do not start a real run or claim adoption without the relevant proof.
 
 This review is targeted source/doc research only. No candidate was installed, built, run, benchmarked or penetration-tested.
+
+## 26. Pinned source-level deep dive of top open-source candidates
+
+Completed static source-level inspection of CodeMirror 6, Pyodide, wasmsh and Aider repo-map. Full source pins, blob SHAs, exact module paths, constraints and reuse recommendations are in [OPEN_SOURCE_CANDIDATE_DEEP_DIVE_20261101.md](OPEN_SOURCE_CANDIDATE_DEEP_DIVE_20261101.md), commit `49a288bb52a0b234c30713f980d63a3c1bf84586`. Updated Gemini reconciliation in [GEMINI_OPEN_SOURCE_RESEARCH_REVIEW_20261101.md](GEMINI_OPEN_SOURCE_RESEARCH_REVIEW_20261101.md).
+
+Critical CodeMirror correction: Gemini's `github.com/codemirror/CodeMirror` points to legacy CodeMirror 5. CodeMirror 6's old GitHub repositories were archived 2026-04-15 after moving active development to `code.haverbeke.berlin`. The old GitHub `codemirror/view` HEAD `fbff59ba004d80d8c914f64c42586387b08706ac` is only a forwarding commit. This is not project abandonment: npm lists actively published `@codemirror/view@6.43.15` (MIT), but the new source host returned 403 in this review. Do not pin the old forwarding commit as current source; pin package version and integrity until the active source can be inspected.
+
+Other source findings: Pyodide's MEMFS is ephemeral, IDBFS requires explicit sync, browser native directory mount is experimental/Chromium-only, and normal threading/multiprocessing/subprocess are unavailable. wasmsh has no host FS or general process model; browser background syntax runs synchronously; zero means unlimited for several budgets; host OOM and network allowlist side channels are explicit threat-model concerns. Aider's repo map depends on Aider internals, model token counting, I/O and multiple packages; reuse the pattern, not its module by default.
+
+Disposition unchanged: CodeMirror/Pyodide are leading browser-path candidates only; wasmsh is a later optional shell investigation; Aider repo-map is a later optional context utility. No builds, installs, benchmarks, device tests, code adoption or implementation.
