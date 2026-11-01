@@ -258,3 +258,8 @@ Published [SHARED_CONTRACT_READINESS_AND_STATE_DOMAIN_CROSSWALK_20261101.md](AI_
 
 
 - 2026-11-01: Added [shared contract readiness and state-domain crosswalk](AI_COLLAB/SHARED_CONTRACT_READINESS_AND_STATE_DOMAIN_CROSSWALK_20261101.md) and [shared contract golden fixture catalogue](AI_COLLAB/SHARED_CONTRACT_GOLDEN_FIXTURE_CATALOGUE_20261101.md). The catalogue defines 18 provisional scenarios across execution, coordination, evidence capture, publication, release and transfer, with conservative crosswalks to native PocketCode and RevDev acceptance IDs. Canonical LOOP/CASE/P8U/P0-D/RelayRef suites remain unchanged; conceptual fixture relationships do not imply acceptance equivalence. Documentation-only work: no schema freeze, implementation, executable tests, provider/store selection, workload, Actions run, deployment, merge, or spend.
+
+
+### Comprehensive RevDev + PocketCode new-chat handoff — 2026-11-01
+
+Published [NEW_CHAT_HANDOFF_REVDEV_POCKETCODE_20261101.md](AI_COLLAB/NEW_CHAT_HANDOFF_REVDEV_POCKETCODE_20261101.md). It consolidates current verified repository/branch/PR state, three-AI roles, the expected forthcoming medium-sized Claude report and explicit instruction not to let recommendations overwrite project goals, PC/$0/HOSTED_DENY constraints, shared product direction, Gemini candidate audit, cross-project state/identity rules, SCF-001..018, canonical acceptance boundaries, technical audit findings and next priorities. Includes a ready-to-paste bootstrap for the next chat. Documentation-only continuity update; no source/tests, PR #2/#3, default branch, provider, Actions, workload, host state, merge, deployment, billing or spend changed.
