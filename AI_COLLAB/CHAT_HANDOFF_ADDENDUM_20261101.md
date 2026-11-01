@@ -375,7 +375,7 @@ Claude explicitly stated that it could not read the three new research-branch AI
 - Next reviewer step: provide Claude these exact three blob URLs and request a source-backed verdict on the updated content, not the inaccessible path names. Separately resolve the outstanding Gemini OBS/fixture namespace collision before merging any reviewer observation IDs into the existing register; do not reuse ChatGPT OBS-01..06 labels for Gemini's differently described observations.
 
 
-## 17. Gemini AWC namespace collision — source-verified (2026-11-02)
+## 17. Gemini AWC namespace collision — source-verified (2026-11-01)
 
 A direct fetch of the authoritative RevDev AWC files resolved the pending identifier concern. The AWC fixture source is in `marcelosofficial-ctrl/DevRelay-Missions`, not the PocketCode repository root:
 - Manifest: `resume/revdev/AI_WORK_COACH_SYNTHETIC_FIXTURES_V0_1.json`, blob `c2d4cba6c836f725f7bc4585f91e02d443fe89e1`, 18 fixtures AWC-001..018, status PROPOSED_NOT_RUN.
