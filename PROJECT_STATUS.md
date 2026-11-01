@@ -145,3 +145,10 @@ Extended the execution-boundary crosswalk with iOS-specific findings: Safari/iOS
 ### Lifecycle sibling-branch lineage correction — 2026-11-01
 
 Added Section 16 to the execution-boundary crosswalk after inspecting \`pocketcode-lifecycle-fingerprint-audit-2026-10-27\`. That separate branch already contains source/tests for tombstone retention/fingerprint conflict and blank fingerprint identity validation. These are not merged into PR #3; the PR #3 pinned source still has the earlier behavior. Remaining sibling-branch gaps include OutputBudget integer type validation, malformed limit-flag truthiness, event binding/snapshot ownership and redaction length ceilings. Tests were inspected but not run.
+
+
+### Exact lifecycle branch ancestry and source delta — 2026-11-01
+
+A direct commit comparison established that `pocketcode-lifecycle-fingerprint-audit-2026-10-27` is a direct descendant of the pinned PR #3 head used in the audit: 34 commits ahead, 0 behind, with the PR #3 commit as the merge base. It is not a divergent branch. The descendant contains tombstone retry/fingerprint protection, blank canonical fingerprint identity validation, malformed terminal-event input validation, and six additional lifecycle test methods (30 total versus 24 at the PR #3 base). The helper also retains the known OutputBudget type, malformed limit-flag, output/termination, event-binding/deep-snapshot, and redaction limitations. Source and test files were inspected; tests were not run. No PR for the descendant was found in the repository PR search. No merge, cherry-pick, implementation edit, Actions run, provider activity, billing, or deployment occurred.
+
+See Section 17 of [the execution-boundary crosswalk](AI_COLLAB/POCKETCODE_EXECUTION_BOUNDARY_TRUST_CROSSWALK_20261101.md) for exact commits, changed-file inventory, and disposition.
