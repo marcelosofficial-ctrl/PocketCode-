@@ -199,7 +199,7 @@ Use [CONSOLIDATED_OWNER_DECISION_AND_PATCH_GATE_20261029.md](CONSOLIDATED_OWNER_
 Implementation-level clarifications are in [G01_G08_EDGE_CASES_AND_PATCH_REVIEW_NOTES_20261029.md](G01_G08_EDGE_CASES_AND_PATCH_REVIEW_NOTES_20261029.md), including G-01 validation precedence and G-08 expired-key reuse. Resolve the G-08 retention/reuse rule before implementing tombstone changes.
 
 
-## WP-08 — Provider resource containment and teardown reconciliation (PC-EXT-02 / PC-EXT-04)
+## WP-08 — Provider resource containment and teardown reconciliation (PC-EXT-02 / PC-EXT-04 / PC-EXT-08 / PC-EXT-09)
 
 **Status:** BLOCKED. Research/test design only. No provider, runtime or account selected.
 
@@ -207,10 +207,10 @@ Implementation-level clarifications are in [G01_G08_EDGE_CASES_AND_PATCH_REVIEW_
 
 **Required scope:**
 - Map every requested limit to the provider's effective hard enforcement mechanism. Distinguish memory/swap, CPU bandwidth/deadline, task count, disk capacity/per-file size/I/O throughput, output collection and display.
-- Prove the worker/supervisor is outside the untrusted workload's kill domain and that a bounded workload cannot destabilize the worker or sibling attempts. Include worker-owned stream-buffer bounds, separate PID/process namespaces and filesystem/credential boundaries where applicable, and a concurrent second-attempt canary.
+- Prove the worker/supervisor and any host-side VMM/log collector are outside the untrusted workload's kill domain and that a bounded workload cannot destabilize the worker, host or sibling attempts. Include worker-owned and VMM-owned stream/log buffer bounds, separate PID/process namespaces and filesystem/credential boundaries where applicable, and a concurrent second-attempt canary. For self-operated Firecracker, guest-controlled serial/log output must not create unbounded host memory or disk usage.
 - Bind resource telemetry to exact tenant/job/attempt/provider-resource identity. For cgroup v2, select hierarchical versus local counters from the actual subtree and mount options: memory.events normally includes descendants, memory.events.local does not, and memory_localevents changes the former behavior. Correlate limit-owner counters, victim membership, trusted termination evidence and observer health; no single OOM counter proves cause. Snapshot before cgroup removal.
 - Persist create and delete intent before provider calls; treat lost create acknowledgements as potential orphans and accepted/ambiguous delete responses as unresolved; reconcile the same stable resource/operation identity with correct account/region scope and complete pagination until authoritative terminal destruction is observed. Test warm-sandbox reuse and cross-attempt resource ownership.
-- Track process-tree empty, sandbox destroyed, attached resources released, and billing reconciled as separate observations.
+- Track process-tree empty, sandbox instance destroyed, control-plane identity/storage deleted, snapshots and attached resources released, and billing reconciled as separate observations. Pin the provider API/SDK generation and do not mix legacy/current lifecycle semantics (notably Cloudflare Sandbox SDK 0.x versus current Durable Object + Container model).
 - Test crash/restart, lost create and delete acknowledgements, provider lookup outage/ambiguous 404, late or stale cleanup events, repeated delete, warm-sandbox child leakage, and poison-item isolation in the reconciliation queue.
 - Prove cleanup eventually stops the provider resource; delayed invoice data is not a substitute for resource-state evidence.
 
@@ -232,3 +232,15 @@ Claude's review attempt did not access the new research documents, so its respon
 - LOOP-14 still gates provider account/billing and potentially billable workload evidence. A fake cannot verify real charges or that billing ceased.
 
 **WP-08 remains BLOCKED.** No provider, store, budget increase, implementation, local host operation or provider workload is approved. Required proof layers remain pure helper, fake adapter, persistence/restart, actual local cgroup enforcement where applicable, then selected-provider/runtime evidence.
+
+
+### WP-08 — 2026-11-01 provider-generation and host-output additions
+
+The WP-08 evidence scope now includes PC-EXT-08 (provider API generation and resource-scope reconciliation) and PC-EXT-09 (host-side VMM/log-sink containment). These are supplementary design cases, not canonical LOOP/CASE additions.
+
+- Cloudflare's current `@cloudflare/sandbox` 1.0 Durable Object + Container model has a durable identity/storage layer separate from the instance. Container stop does not delete DO storage, snapshots or mounted R2 buckets. The legacy SDK 0.x `destroy()` documentation has a narrower sandbox-files/processes/sessions meaning. Pin generation and reconcile every resource class separately.
+- Modal `create` is asynchronous; `detach()` only disconnects the client/connection resources; `terminate(wait=True)` waits for execution termination and returns an exit code. Persist create intent and distinguish connection teardown from execution and attached-resource release.
+- Firecracker production guidance warns that guest-influenced serial output and log generation can cause unbounded host memory/storage use without bounded/rate-limited sinks. Include host logger and VMM paths, not only PocketCode stdout capture.
+- `cgroup.events: populated=0` is scoped to the observed subtree and observation time. Prevent workload-controlled cgroup migration out of the subtree before treating it as process-tree emptiness evidence.
+
+**Status remains BLOCKED / SPECIFIED ONLY / NOT RUN.** No provider selection, budget change, account, workload, host test or implementation is approved.
