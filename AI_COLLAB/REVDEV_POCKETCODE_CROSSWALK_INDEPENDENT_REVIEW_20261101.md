@@ -500,3 +500,21 @@ Printed JSON, fake exit codes, and strings such as `{"verdict":"PASS"}` remain u
 - Modal networking and security: https://modal.com/docs/guide/sandbox-networking (the fetched page documents create-time network-block and allowlist options; it did not substantiate the specific asynchronous update claim attributed to Modal).
 
 **Verification status:** Source and documentation inspection only. No tests, provider calls, sandbox workloads, runtime experiments, Actions, source/test changes, canonical acceptance changes, PR edits, merges, deployments, or spend occurred. All proposed acceptance and provider/runtime evidence remains NOT RUN; PC and hosted provider state remain UNKNOWN/unselected.
+
+
+## 11. Regression-specification de-duplication and authoritative checklist alignment
+
+A further source pass checked the Gemini-derived PC-EXT suggestions against the existing PocketCode research checklists. The detailed checklists predate this response and remain the authoritative research/test specifications:
+
+- D-05 policy barrier: `AI_COLLAB/ADAPTER_BOUNDARY_DECISION_GATE_20261029.md`, PBR-01..07 and PF-01..05. PBR already rejects stale/pending/missing/mismatched policy before dispatch, tests revision races and concurrent starts, and requires an actual conditional/immutable policy binding. PF already separates canonical request fingerprint from applied-policy proof.
+- D-06 dispatch recovery: `AI_COLLAB/IDEMPOTENCY_RECOVERY_FALSIFICATION_CHECKLIST_20261029.md`, DR-01..12. It already covers tenant-scoped semantic fingerprints, atomic reservation, concurrent requests, crash points, ambiguous ACK, lookup UNKNOWN, lease expiry, recovered-attempt identity and tombstone retention.
+- D-07 release: `AI_COLLAB/ARTIFACT_RELEASE_FALSIFICATION_CHECKLIST_20261029.md`, AR-01..14. It already covers authorization revocation, wrong tenant/job/attempt, immutable digest/object mutation, incomplete manifests, quarantine, size/type/path, active content, streaming races, ranges, non-disclosure and concurrent quarantine/replacement.
+- D-08 report persistence: `AI_COLLAB/REPORT_HISTORY_PERSISTENCE_FALSIFICATION_CHECKLIST_20261029.md`, RH-01..14. In particular RH-05/06 preserve later cleanup/contradiction observations as new immutable versions; RH-07/08/13 test crash and ambiguous commit; RH-12 addresses cross-store report/artifact publication.
+- Provider-neutral operation sketch: `AI_COLLAB/PROVIDER_NEUTRAL_BOUNDARY_CONTRACT_SKETCH_20261029.md`, Sections 3–8. It separates request fingerprint from actual applied policy evidence, authenticates and binds evidence before reduction, and requires release to use the exact immutable object version.
+- General security requirements: `SECURITY.md`; provider evaluation: `RESEARCH/EXECUTION_PROVIDER_RESEARCH.md`. Both remain design/evaluation sources, not evidence of any selected provider.
+
+Therefore PC-EXT-01, PC-EXT-03 and PC-EXT-07 in regression-plan Section 8 are traceability wrappers around existing PBR/PF, AR and DR requirements, not new parallel acceptance suites. Their examples should be added to the corresponding existing test rows only where they contribute a missing negative case. PC-EXT-02 remains a real provider/runtime proof-planning gap under LOOP-12. PC-EXT-04 remains a focused teardown/orphan reconciliation gap; it should preserve the existing multi-field projection semantics and add actual provider deletion/termination evidence when a boundary is selected. PC-EXT-05 is future cost observability and remains blocked. PC-EXT-06 is additional hostile stdout data for existing producer-authority/terminal-observation tests, with TPM-15 as the report-matrix trace.
+
+The readiness backlog confirms the dependency order: WP-03 policy barrier (D-05/PBR/PF), WP-04 durable reservation (D-06/DR), WP-05 trusted evidence/report history (D-04/D-08/RH), and WP-06 artifact publication/release (D-03/D-07/AR). It explicitly keeps these BLOCKED until the relevant selected boundary and actual integration evidence exist. Do not create a second test framework or treat the PC-EXT labels as owner decisions.
+
+This pass is documentation cross-reference only. No owner decision, canonical acceptance text, source/test, provider, store, runtime, PR, queue, Actions, merge, deployment or spend changed. All linked checklists and test suites remain SPECIFIED ONLY / NOT RUN where stated.
