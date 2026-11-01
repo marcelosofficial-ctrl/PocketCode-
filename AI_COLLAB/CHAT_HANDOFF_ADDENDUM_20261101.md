@@ -474,3 +474,18 @@ A second official-documentation pass identified a material Cloudflare API-genera
 - No provider selected. No provider APIs, accounts, workloads, billing, local host tests or runtime operations used.
 - All RES/TDN and PC-LC/AD/DB/RT/EXT tests remain SPECIFIED ONLY / NOT RUN. WP-08 remains BLOCKED; budget $0.
 - No source code, implementation tests, main branch, PRs, Actions, queues or deployments changed.
+
+
+## 20. Firecracker serial limiter default verified — 2026-11-01
+
+A further exact-source check of Firecracker's current API schema found that serial-console rate limiting is **optional**, not enabled by default. When configured, guest serial writes above the token-bucket rate are dropped and counted in `uart.rate_limiter_dropped_bytes`; when absent, serial output is not rate-limited. This refines RES-10/PC-EXT-09: test the effective serial configuration and dropped-byte metric, and independently bound VMM stdout and guest-influenced log sinks. Do not infer that Firecracker automatically rate-limits serial output.
+
+Pinned source: `firecracker-microvm/firecracker`, branch `main`, `src/firecracker/swagger/firecracker.yaml`, blob `245c8e4473a43befbd1d5a28ecece098a994a815`. Production host guidance: `docs/prod-host-setup.md`, blob `8939b56a965963d8df1c44c583dcd38361197347`.
+
+Updated PocketCode docs:
+- Resource review blob `df6eda10467069738eb72818fc4b36ddd69b7889`, commit `71be16af411aa1bf573ad3f1cff36d773ece8d58`.
+- Provider research blob `e754aee41858e45e0fb907a7f46df442a757f317`, commit `4a0aee6f8485b8cbf70bddb8067f2536130ff53f`.
+- Lifecycle plan blob `f33d2deeabb97a36c5916eb86de1f88d2b375acd`, commit `95ae1df46abe9a730b409eba44426327121b10b8`.
+- WP-08 backlog blob `a13788cc48c23cb3d2c98c4f6118c03e79479bdb`, commit `01144816ae99eb77a6ee2d962951e3d3901b40e4`.
+
+All additions remain design-only. No implementation, tests, provider, workload, account, host operation or spending occurred.
