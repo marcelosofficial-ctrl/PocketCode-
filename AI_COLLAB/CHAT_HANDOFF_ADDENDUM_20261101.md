@@ -108,3 +108,49 @@ ChatGPT's static review is complete for now; it does not substitute for Claude/G
 - Updated addendum blob before this identifier-only pointer commit: `450f2cd25ba9db68ea7196be2e1e10abd409c7ae`.
 - Commit message: `docs: extend crosswalk and lifecycle evidence review`.
 - Both edited files were fetched again after the commit; the exact blob hashes matched the new objects and the OBS-01..OBS-03 section was present.
+
+
+## 7. Continuation update after Claude's reviews — 2026-11-01
+
+Claude returned both requested reviews. The reconciled source-backed disposition is now appended as Section 8 of REVDEV_POCKETCODE_CROSSWALK_INDEPENDENT_REVIEW_20261101.md.
+
+### Review status
+
+- Claude's conceptual and engineering critiques were received. Claude disclosed that it had read only the review note and had not inspected the underlying source files or run tests.
+- ChatGPT re-fetched the exact AWC manifest, PocketCode canonical LOOP/CASE acceptance, RevDev P0-D source, lifecycle-fingerprint helper and test blobs, and D-01..D-04 owner register before reconciling the findings.
+- Gemini's independent review remains pending.
+
+### Material crosswalk decisions
+
+- AWC-005 and AWC-011 remain separate assistant-side untrusted-instruction fixtures, but neither maps to LOOP-12/CASE-15 runtime isolation.
+- AWC-008 has no LOOP-09/CASE-13 mapping: task repair retries are not dispatch retries.
+- AWC-009 has no LOOP-14 mapping: quota-evasion advice is not a provider/billing authorization gate.
+- AWC-010's transfer direction is the same for both cases, from product/workflow toward an assistant. LOOP-13 is the primary adjacent concept; LOOP-08 is only a secondary copy/share transport analogy because a prospective task packet is not a retrospective run-bound report.
+- AWC-012 maps only adjacently to LOOP-02; remove LOOP-14.
+- AWC-017 has no current LOOP/CASE mapping.
+- AWC-018 is primarily adjacent to CASE-12, with LOOP-02/03 only as broader honesty concepts. Remove LOOP-05 unless a separate fixture establishes lifecycle uncertainty from a missing terminal signal.
+- P0-D 9 remains unmapped. CASE-16 is not a queue-quarantine/liveness test.
+- Split P0-D 10 into CASE-13 idempotency adjacency and CASE-16 run-identity/order adjacency. Neither proves durable exact-result publication/replay.
+- Section 12 header should be “Source requirement (condensed)”.
+
+### New helper review items
+
+Section 8 also records OBS-04 producer authority, OBS-05 attempt-context correlation and OBS-06 truncation-cause conflation, in addition to the reconciled OBS-01 through OBS-03.
+
+Important redaction refinements: the source regex already has case-insensitive matching; the carry leak trigger depends on chunk boundaries and can occur with 756–763 separator bytes; and overlong bearer-like values can be wholly missed or partially redacted depending on punctuation at the 256-character boundary. A local copied-algorithm reproduction was performed, but repository tests remain NOT RUN.
+
+The source review also confirms that generic output_truncated currently maps to LIMIT_EXCEEDED, while D-01/D-03 distinguish runtime-enforced limits, collector truncation and display truncation. Keep that as a source-level contract gap, not a runtime vulnerability claim.
+
+### Exact source pins used for this reconciliation
+
+- AWC manifest: c2d4cba6c836f725f7bc4585f91e02d443fe89e1, PROPOSED_NOT_RUN.
+- PocketCode canonical LOOP/CASE acceptance: c6714c27db52b2962fe8d1c7e6a16829d46a8338, proposed/NOT RUN.
+- RevDev P0-D source: 6a0c804e1ad75edf1022af960acbb143ba1430b6, lines 107–123.
+- Lifecycle-fingerprint helper: 316345341603848c4a86a6a82e533daa796c7695.
+- Lifecycle-fingerprint tests: ef9a68de632be30c091afe57f0724fd030a513f9, NOT RUN.
+- Owner decision register: e67b2659cf2d71ef77d8e4619c91143e71062470; D-01..D-04 and D-06/D-08 remain proposed/open.
+- The lifecycle-fingerprint branch remains separate from PR #3 and main. No code, tests, canonical acceptance, PR, runtime, queue, provider, Actions, merge, deployment or spend was changed.
+
+### Next review
+
+Ask Gemini to independently challenge the reconciled Section 8, especially AWC-005/011/008/009/010/012/017/018, the P0-D 9/10 split, OBS-01 through OBS-06, and the exact distinction between runtime-enforced limits, collector caps and display truncation. Require exact source/artifact references and evidence-layer labels. Do not ask Gemini to infer runtime behavior or approve implementation.
