@@ -284,3 +284,8 @@ Regardless of the nonzero-exit FAILED-vs-INCOMPLETE decision, artifact release r
 ## 2026-11-01 provider lifecycle and host-containment research checkpoint
 
 The latest source-backed resource/teardown pass is recorded in [CHAT_HANDOFF_ADDENDUM_20261101.md](CHAT_HANDOFF_ADDENDUM_20261101.md), Sections 16–19. The latest additions are RES-10, PC-EXT-08 and PC-EXT-09; all are supplementary design IDs, not canonical LOOP/CASE acceptance. Cloudflare API generations are now separated (current Durable Object + Container model versus legacy SDK 0.x); Modal asynchronous create, connection detach and execution termination are distinct; Firecracker guest-influenced serial/log output is treated as a host-side resource boundary; and cgroup process migration out of the observed subtree is explicitly excluded. Updated provider research, WP-08 and regression-plan blobs are pinned in the handoff. No provider is selected, no tests or workloads were run, WP-08 remains BLOCKED, budget remains $0, and PC/runtime/queue state remains UNKNOWN until PC access returns.
+
+
+### Firecracker serial limiter source refinement — 2026-11-01
+
+Firecracker's current API schema makes the serial-console token-bucket limiter optional. If configured, excess guest serial bytes are dropped and counted in `uart.rate_limiter_dropped_bytes`; if absent, serial output is unrate-limited. RES-10 / PC-EXT-09 now require effective-config verification, loss-metric collection and independently bounded VMM log sinks. Exact Firecracker source pins and updated PocketCode blob SHAs are in Sections 19–20 of the current [chat handoff](CHAT_HANDOFF_ADDENDUM_20261101.md). No test or runtime proof was performed.
