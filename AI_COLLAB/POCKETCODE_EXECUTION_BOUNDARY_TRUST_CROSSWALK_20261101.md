@@ -943,3 +943,14 @@ A further exact-ref read of OpenHands at `98849457621881ae2414719b82b8bc1cf535b4
 Interpretation: the non-atomic SDK append/HEAD boundary is directly acknowledged in source, and the agent-server has a targeted recovery path for interrupted tool actions. The recovery is conditional on RUNNING status, unmatched action and no matching observation-like event by tool_call_id. It does not prove whether an external side effect occurred before the crash, nor does it authorize automatic redispatch. A matching observation anywhere in the full log suppresses recovery, which needs a branch/association test.
 
 The falsification plan was expanded with OH-HEAD-FI-09..14 (plan-local labels only) to test RUNNING vs non-RUNNING restore, full-log observation suppression, multiple unmatched actions, tool_call_id association and side-effect-before-observation ambiguity. These are not PocketCode acceptance IDs. The test plan remains NOT EXECUTED. D-04 OPEN, D-05 BLOCKED, D-06 owner-open and D-08 owner-open remain unchanged.
+
+
+## 26. Existing OpenHands crash-recovery test coverage — 2026-11-02
+
+A targeted search at pinned OpenHands commit `98849457621881ae2414719b82b8bc1cf535b4ab` found existing tests and a documented integration recipe. Full assessment is appended to [OPENHANDS_EVENTLOG_HEAD_CRASH_WINDOW_FALSIFICATION_PLAN_20261102.md](OPENHANDS_EVENTLOG_HEAD_CRASH_WINDOW_FALSIFICATION_PLAN_20261102.md), Section 11.
+
+- `tests/agent_server/test_event_service.py` blob `fc6e589f71318ac36df92b72c1fd0225549d1436`, lines 2419–2678, covers RUNNING+unmatched action, RUNNING+no unmatched action, non-RUNNING skip, and duplicate suppression when an observation shares tool_call_id but has a different action_id. These use a mocked LocalConversation/MagicMock state. The inspected assertions do not verify parent_id or restored active ancestry.
+- `tests/sdk/conversation/test_get_unmatched_actions.py` blob `35798b1bccb60b0976cf0785682ef17181e4450b` covers helper matching across observations, rejection and AgentErrorEvent by tool_call_id.
+- Feature map F31 `.agents/skills/verify-agent-server/references/feature-map/F31-persistence-and-limits.md`, blob `5082730e1ba1d333daeaf321c21214ad4924cd12`, lines 191–220, documents a SIGKILL-during-tool-call integration scenario that checks ERROR, one matching AgentErrorEvent, zero ObservationEvents and resumed model delivery. It does not assert parent_id or active ancestry and has a DeepSeek key/model precondition in the broader run recipe.
+
+Therefore do not duplicate existing unit cases. The remaining high-value gap is a real persistence/restore test that injects the append/HEAD crash and asserts E0 → action → recovery error active ancestry, plus explicit parent_id assertion, log-wide observation suppression, multiple unmatched actions and side-effect ambiguity. Existing tests and F31 are source-present/documented only; ChatGPT did not run them. No upstream test or source was changed.
