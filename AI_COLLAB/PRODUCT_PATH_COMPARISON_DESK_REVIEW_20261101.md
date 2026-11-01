@@ -227,3 +227,38 @@ Use the existing proposed canonical report as condition B. Do not design a compe
 ### Scope consequence
 
 No new LOOP/CASE ID is proposed. The experiment evaluates whether existing LOOP-07/08 report behavior creates user value beyond raw output and competitor-native logs. If the proposed report already meets the task but does not improve the next correction or portability, the product should not claim the report itself is a differentiator. Any schema change must go through the existing owner decision and contract review process, not be slipped into this research note.
+
+
+## 8. Post-review worksheet chronology reconciliation — 2026-11-02
+
+The statement in Section 5 that the paired report-handoff protocol was still missing was accurate for the worksheet revision available when this desk review was authored, but it was superseded later on 2026-11-01. The fixed-task worksheet was strengthened after this review's final commit. The two documents must be read chronologically, not as contradictory descriptions of the same repository state.
+
+Verified Git history on `pocketcode-ai-workflow-director-research-2026-10-28`:
+
+- This desk review's latest commit: `e92384eaf7a342545d15adaeb711e76074557b57`, 2026-11-01 19:50:12 UTC.
+- Worksheet paired-experiment alignment commit: `39ca13f6c29d72cea29a5f10a4a8f52713b51c91`, 2026-11-01 20:29:15 UTC.
+- Worksheet paired-experiment controls/scoring commit: `3aba52a462127d2b4cf5e6c3cb98c16cce99d836`, 2026-11-01 20:29:54 UTC.
+- Worksheet canonical source fixture freeze: `96d1150211b14920105c23554a8adc36b930757f`, 2026-11-01 20:56:47 UTC.
+- Worksheet newline correction: `ce734ed53a6073c6ee32c81b0183ade7d458097c`, 2026-11-01 20:56:58 UTC.
+- Worksheet isolated fixture sanity-check record: `85bd49b9caac389a9c10c63f1856eca629fcee4f`, 2026-11-01 20:58:13 UTC.
+
+The current worksheet now contains the paired correction test in Section 5B (lines 343–398), including:
+- A: fresh assistant chat receives task source/input plus exact native/raw observations, without added diagnosis.
+- B: a different fresh assistant chat receives the same source/input/observations represented by the existing proposed PocketCode report.
+- Same assistant/model/mode/tools and task/evidence; no shared chat context or cross-exposure of answers.
+- A pair is marked CONFOUNDED if the report cannot represent a material fact or uncertainty present in the native evidence.
+- Independent scoring for diagnosis, evidence honesty, correction quality, verified success/failure behavior, and user effort.
+- Frozen evidence/prompt/rubric before either chat is opened, randomized A/B order, and practical blinding of the scorer where possible.
+- At least three comparable pairs if free usage permits; smaller samples remain exploratory.
+- A ceiling-effect rule and prohibition on inventing a harder failure fixture after seeing results.
+
+The correct current disposition is therefore:
+
+- **Paired report-handoff protocol:** DESIGNED in the current worksheet.
+- **Canonical task source:** FROZEN in the current worksheet; SHA-256 `70c66ad3a0132923cbf3190eb3546093fcc2c61c1bdcbf3b171696e1ae7521e7` (1,939 bytes).
+- **Isolated fixture sanity check:** RECORDED; validates fixture behavior only.
+- **Real product-path execution:** NOT RUN.
+- **Paired AI correction experiment:** NOT RUN; cannot begin until a real path produces an observed evidence packet, or else must be explicitly labelled a synthetic information-design-only test.
+- **Product hypothesis / report differentiator:** UNVALIDATED.
+
+This is a chronology and status reconciliation, not a new experiment, product decision, schema approval, or acceptance change. The earlier Section 5 recommendation to add the paired protocol has been satisfied by the later worksheet commits. Do not duplicate the protocol or treat its design completion as product-path evidence.
