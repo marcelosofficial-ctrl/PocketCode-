@@ -329,7 +329,7 @@ Branch separation was checked again:
 Only documentation files on the existing research branch were written. No canonical acceptance, source, implementation tests, PR head, main, provider, account, runtime, queue, Actions, billing or deployment was touched. All RES/TDN cases and implementation/integration tests remain NOT RUN. No provider is selected; WP-08 remains BLOCKED.
 
 
-## 16. Claude resource/teardown challenge reconciliation — 2026-11-02
+## 16. Claude resource/teardown challenge reconciliation — 2026-11-01
 
 ### Review limitation and disposition
 
