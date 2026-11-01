@@ -559,3 +559,19 @@ The product-path desk review now includes Section 9. The proposed portable recei
 - Handoff before this final pin section: `187f06627c78b98d08b47f5889deb49c7c0ff715`.
 
 The product-path desk review is source-backed desk research only. The next action is adversarial review by Claude and Gemini using the prompts in the current checkpoint, followed by a decision whether a hands-on fixed-task test is worth undertaking. The proposed report remains the existing LOOP-07/08 report projection; no new receipt schema or acceptance ID. No app installation or direct test was performed.
+
+## 25. Gemini open-source research review and administrative decisions
+
+## 25. Gemini open-source research review and administrative decisions
+
+Owner supplied Gemini's four-stage open-source research report. The source-reconciled review is [GEMINI_OPEN_SOURCE_RESEARCH_REVIEW_20261101.md](GEMINI_OPEN_SOURCE_RESEARCH_REVIEW_20261101.md), commit `97a4323c28c00a4f7444962e032853c8cab9dfac`.
+
+**Review verdict:** useful discovery catalogue, not an adoption/architecture decision. Gemini's [1]...[5] citations and repeated uploaded-file references do not provide traceable module-level evidence. Its P1/P2 rankings and unified architecture are not accepted.
+
+**Key corrections:** Pyodide is promising browser-local Python, not a complete secure sandbox; it has browser API/origin, filesystem, resource and lifecycle constraints. wasmsh is interesting but needs source-level verification of its VFS, budgets, network broker, dependencies and threat model. tsnet is Go and does not drop into current RevDev PowerShell/.NET; app-level authorization remains necessary and AsyncSSH pairing is not demonstrated. LangGraph graph persistence is not exactly-once external execution/recovery. Piston public API is no longer generally free (since 2026-02-15); self-hosting has real operations/security costs. OpenHands ACI is archived (2026-05-15), with editor migrated to Agent SDK. CodeMirror has explicit mobile input handling but device UX remains NOT RUN. FlaUI/Watchdog are stack-specific and conditional. GPL-3.0 is not an automatic blanket source-disclosure trigger.
+
+**Administrative decisions:** preserve PocketCode and RevDev as distinct systems with separate runtime, security and acceptance boundaries. Shared protocols may be considered later; no unified graph/runtime architecture. No dependency/provider/technology selected. Defer LangGraph, tsnet/AsyncSSH, Piston hosted, FlaUI, Watchdog and OpenHands ACI. No shell feature in MVP. CodeMirror 6 and Pyodide remain leading browser-path candidates only; Aider repo-map remains an optional pattern. No new canonical LOOP/CASE IDs or report fields. No source/tests/PRs/Actions/accounts/provider workloads/spending/merge/deployment authorized. $0 budget and PC/runtime/queue UNKNOWN remain.
+
+**Next work:** wait for Claude's independent review; reconcile disagreements against pinned upstream sources. Deep inspect CodeMirror 6, Pyodide, wasmsh and Aider repo-map only. Continue the existing fixed-task comparison design. Do not start a real run or claim adoption without the relevant proof.
+
+This review is targeted source/doc research only. No candidate was installed, built, run, benchmarked or penetration-tested.
