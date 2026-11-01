@@ -393,3 +393,85 @@ Line numbers below refer to the exact pinned refs/blobs already listed in Sectio
 - spawn_prep.rs (blob 1b3704d6a26287d578eb5b30945d53b683607f6d): allow/deny ACL preparation and write-root derivation around 218–310.
 
 These anchors are source-navigation aids, not proof of runtime behavior. All line-range claims remain tied to the stated commit.
+
+
+## 16. Follow-up: srt WFP partial-set and IPv6 verification gap — current-main recheck 2026-11-01
+
+This section separates the source defect, the open repair PR, the separate IPv6 verifier proposal, and the limits of external Windows measurements.
+
+### 16.1 Current main is still on the vulnerable status implementation
+
+Current anthropics/sandbox-runtime main resolves to commit 98a4016d27609ed34dd1fb43d23ed6efb6eeeb77. At that ref:
+- vendor/srt-win-src/src/wfp.rs blob remains c3af835ec1479ac19bb1b35181a23d89e5c55640.
+- filter_status() collects tagged filters and sets have_block = tags.iter().any(|(_, t)| t.kind == KIND_BLOCK_USER). It reports installed if ANY block-user filter remains, otherwise absent. It does not require the IPv4 and IPv6 block filters, nor both proxy permits, to be present.
+- src/sandbox/windows-sandbox-utils.ts blob is dbc7c23f4373c69403109429a41144018111941b. verifyWindowsWfpEgress() creates its default listener bound only to 127.0.0.1, then invokes srt-win wfp verify against that IPv4 target. It does not create an IPv6 listener or run a second family-specific probe.
+
+This directly confirms the two implementation gaps reported in issue #723. These are source facts at the stated current-main snapshot.
+
+### 16.2 Issue #723: observed partial-filter behavior
+
+Open issue: https://github.com/anthropics/sandbox-runtime/issues/723
+
+The reporter's detailed body describes tests on one Windows 11 build 26200, with srt-win built from 24eb39e94a6de386e83d126c52317d8e0fa49522, using loopback listeners and three repetitions per state:
+- Delete the IPv6 block filter: status still says installed; IPv4 probe says blocked; IPv6 listener accepts; the default IPv4-only verifyWindowsWfpEgress passes; plain install exits 0 with "already installed" and does not restore the filter.
+- Delete the IPv4 block filter: the IPv4 runtime probe fails closed.
+- Delete both permit filters: status still says installed, but plain install fails with an unknown port range.
+- install --force restores the full filter set in the tested cases.
+
+The report explicitly says it did NOT test real IPv6/internet egress, other Windows builds, reboot with a partial set, non-elevated status, or service-originated traffic. Treat it as a detailed externally reported reproduction, not an independently repeated test or universal Windows result.
+
+### 16.3 PR #716 is open and proposes a partial-state repair, but is not merged
+
+PR: https://github.com/anthropics/sandbox-runtime/pull/716
+
+GitHub currently reports PR #716 as open and unmerged. Its diff:
+- Adds partial WFP status.
+- Defines a complete filter set by checking required proxy-permit and block-user entries at both IPv4 and IPv6 ALE connect layers, and checks consistency of proxy ranges and sandbox user SID tags.
+- Uses the recorded loopback mode to detect when all open-loopback permits disappeared.
+- Makes partial installations visible to dependency checks and allows a plain install to repair when the requested configuration matches; --force is required when the existing recorded configuration differs.
+- Adds unit tests that remove each filter from an in-memory enumerated set and expect partial, plus config/repair tests.
+
+The PR's Rust tests are source-level/unit tests. They are not, by themselves, a Windows integration test that deletes a live WFP filter and observes repair. The issue reporter separately states that the PR branch was measured on the same setup, three times per state, with the partial state detected and repaired. That is useful external evidence, but still one machine and not our independent execution.
+
+### 16.4 A separate IPv6 readiness-probe change is not part of PR #716
+
+A follow-up comment on issue #723 describes a separate, unmerged branch for dual-family verifyWindowsWfpEgress:
+- Bind a loopback listener on both 127.0.0.1 and ::1.
+- Run wfp verify once for each family.
+- Fail closed if either family cannot be bound or is not blocked.
+- Adjust the --allow-loopback probe target to match the destination family.
+
+The reporter gives 3/3 measurements per state for that branch on the same test setup, including the missing-IPv6-block case. The branch's source was not fetched in this audit and no PR was identified in the comment. Do not attribute this improvement to PR #716 or current main.
+
+### 16.5 Other srt egress gaps are intentional and test-documented
+
+At the same pinned PR #745 merge commit 81145771c9bfc51c5669f071b515209321e0d078:
+- vendor/srt-win-src/src/wfp.rs installs filters only at FWPM_LAYER_ALE_AUTH_CONNECT_V4 and _V6.
+- test/sandbox/winsrt.test.ts contains an explicit R2: ICMP (ping) is NOT fenced test. Its comment says ICMP does not traverse ALE_AUTH_CONNECT; the test expects ping not to fail with General failure.
+- The same test file documents that Windows DNS resolution uses the DNS Client service under a NetworkService token, so the service's wire query does not carry the sandbox child's ALE_USER_ID. It runs node dns.lookup('google.com', ...) and expects successful resolution despite the sandbox network fence. This creates a DNS-query channel outside the child-token WFP block; do not describe the WFP fence as complete network isolation or complete DNS-exfiltration prevention.
+- The WFP module itself documents that its BLOCK is keyed to the token user SID and does not match anonymous-token or deny-only-user-SID shapes. wfp verify reports these as residuals; the PR #745 description says they are warnings and do not change the pass result. Lowered-integrity probes that cannot be set up are also reported as unprobed residuals rather than failing the fence.
+
+The default IPv4-only probe gap is separate from the deliberate ICMP/DNS service limitations. A passing probe proves only the tested direct-connect/token/family/target cases, not all network egress.
+
+### 16.6 ACL and persistence details confirmed at the pinned srt source
+
+At 81145771c9bfc51c5669f071b515209321e0d078:
+- acl.rs defines MODIFY_NO_FDC as read/write/execute plus DELETE, explicitly without FILE_DELETE_CHILD. Deny targets receive a parent FILE_DELETE_CHILD deny; placeholder intermediate directories receive object-only DELETE denies so the intermediate cannot be renamed/rmdir'd to bypass a leaf stamp.
+- state_db.rs describes a per-user SQLite session store, exclusive file lock across brokers, refcounted holders and working ACE rows. It records intent before applying each DACL mutation, commits path-by-path rather than one global transaction, and runs crash recovery when the lock is acquired.
+- persist.rs records unfinished persistent DACL writes and replays them after a crash; explicit forget is the removal route for kept roots.
+- install.rs documents an accepted shared-machine trade-off: BUILTIN\\Users has modify access to the machine CA-key material under ProgramData so unelevated self-heal can rewrite it. The sandbox group is explicitly denied. The source comment states any real local user can read or replace that CA key material. This is a documented trust decision, not a demonstrated exploit.
+
+### 16.7 Updated interpretation
+
+srt's Windows design is more carefully layered than a simple WFP+ACL summary suggests: restricted-token read-back, per-family WFP filters, additive ACL grants/denies, parent-FDC protection, job-object containment, persistent-write journaling and crash replay are all visible in source.
+
+But three separate gaps must remain explicit:
+1. Filter-set health: current main's installed state can mask a missing family filter; PR #716 proposes a fix but remains unmerged.
+2. Readiness coverage: current main's default helper probes IPv4 loopback only; a separate proposed branch adds IPv6.
+3. Protocol/service coverage: ICMP and DNS Client service-originated DNS queries are outside the direct child-token ALE_AUTH_CONNECT fence; anonymous and deny-only token shapes are residuals.
+
+srt remains STUDY ONLY / ALPHA, not a recommended dependency or selected host boundary. No runtime test was run by ChatGPT.
+
+### 16.8 Non-actions
+
+No srt PR was merged or modified. No code was changed in either upstream project. No Windows test, build, installation, WFP mutation, ACL mutation, host action, RevDev/PocketCode source change, schema, acceptance, provider, spend or deployment was performed.
