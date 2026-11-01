@@ -111,3 +111,13 @@ The plan is a future falsification specification only. Do not report it as execu
 A further pinned-source read found that the agent-server explicitly handles the stale-HEAD interrupted-tool case. At `openhands-agent-server/openhands/agent_server/event_service.py` lines 1424–1467, a restored RUNNING conversation is marked ERROR, the full event log is scanned for unmatched actions, and a non-retryable internal AgentErrorEvent is appended with parent_id=first_action.id if no ObservationBaseEvent exists for that tool_call_id. SDK state.py lines 268–320 show a still-existing stale leaf remains active; only a missing leaf is repaired.
 
 Please challenge whether this recovery is sufficient and identify its gaps: RUNNING-status gate, first-unmatched-action selection, log-wide tool_call_id observation suppression (including a potentially non-active observation), multiple unmatched actions, and ambiguity after an external side effect but before observation persistence. The updated plan adds OH-HEAD-FI-09..14. Distinguish the SDK's non-atomic persistence boundary from the agent-server recovery behavior and from external side-effect outcomes. Do not treat the interruption error as proof that the side effect did not happen or as authorization to retry.
+
+
+### Existing OpenHands crash-recovery tests to avoid duplicating — 2026-11-02
+
+Pinned source review found existing coverage:
+- `tests/agent_server/test_event_service.py` blob `fc6e589f71318ac36df92b72c1fd0225549d1436`, lines 2419–2678: RUNNING with unmatched action, no unmatched action, non-RUNNING skip, and observation suppression by tool_call_id despite different action_id. These are mocked-state unit tests; inspected assertions do not check error_event.parent_id or restored active ancestry.
+- `tests/sdk/conversation/test_get_unmatched_actions.py` blob `35798b1bccb60b0976cf0785682ef17181e4450b`: helper matching by tool_call_id.
+- Feature map F31 crash-tool-call, blob `5082730e1ba1d333daeaf321c21214ad4924cd12`, lines 191–220: documented SIGKILL integration scenario checks ERROR, one AgentErrorEvent, no ObservationEvent and resumed model delivery, but not parent_id/active ancestry; broad recipe preconditions include a DeepSeek key/model.
+
+Please assess the smallest missing assertion/test rather than duplicating these cases. Priority: parent_id assertion plus a real LocalFileStore crash/restore test proving action → recovery error active ancestry. Then challenge log-wide observation suppression, multiple unmatched actions, non-RUNNING stale state, and external side-effect ambiguity. These sources are test/spec presence only; ChatGPT did not execute them.
