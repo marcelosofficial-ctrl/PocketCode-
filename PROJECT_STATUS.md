@@ -135,3 +135,8 @@ Added [AI_COLLAB/POCKETCODE_EXECUTION_BOUNDARY_TRUST_CROSSWALK_20261101.md](AI_C
 The crosswalk reconciles PR #2, PR #3 and the separate research branch without merging their evidence. It records the current Pyodide 314.0.7 mobile/WebAssembly limits, worker interruption and same-origin credential boundaries, file/network constraints, collector-versus-termination semantics, COORD-01 execution/release separation, the PR #3 tombstone overwrite/retention gap, and proposed local/remote acceptance batches.
 
 **Decision for next research phase:** run a fixed, synthetic CSV-to-CSV feasibility experiment with local browser Python before choosing a hosted provider. This is not a production runtime selection. Budget remains $0. No code, tests, PR #2/#3, provider, account, workload, billing, Actions, deployment or merge changed. Exact helper/test suites remain NOT RUN in this pass.
+
+
+### iPhone/Safari feasibility addendum — 2026-11-01
+
+Extended the execution-boundary crosswalk with iOS-specific findings: Safari/iOS file-system API limitations, memory-pressure and reload handling, a narrowly scoped current WebKit WASM compilation report, and LOC-17..LOC-24 acceptance cases. The report explicitly does not generalize the Asyncify-specific WebKit issue to Pyodide. The first experiment remains a small standard-library CSV/JSON transformation, tested in foreground on an actual iPhone. No runtime, source code, PR, provider, workflow, account, billing, deployment or merge was changed.
