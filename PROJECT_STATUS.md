@@ -155,3 +155,8 @@ See Section 17 of [the execution-boundary crosswalk](AI_COLLAB/POCKETCODE_EXECUT
 
 
 **Delta inventory correction:** inspection of the full GitHub compare patch additionally confirms `reserve_idempotency()` now rejects blank/non-string tenant ID, key, fingerprint and proposed job ID. Its regression test is one of the six added methods. The crosswalk now lists all six additions and distinguishes pure-helper input validation from upstream authentication and transactional storage guarantees.
+
+
+### Event reducer integrity follow-up — 2026-11-01
+
+A line-level review of the lifecycle descendant found that malformed-event shape validation does not solve nested payload immutability: the reducer uses shallow outer copies, and its accepted events, invalid-event records and duplicate-comparison state can retain caller-owned references. It also flags duplicate coordinator sequence numbers without returning the colliding records in a dedicated diagnostic collection. These map to existing D-04 / COORD-11 / COORD-12 and FLA-04/06/07 concerns, not new duplicate finding IDs. D-04 remains owner-open; no event schema or source patch was approved. See Section 18 of the crosswalk. Tests remain NOT RUN.
