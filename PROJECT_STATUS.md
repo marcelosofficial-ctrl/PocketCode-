@@ -151,3 +151,7 @@ Added [AI_COLLAB/OPEN_SOURCE_CANDIDATE_DEEP_DIVE_20261101.md](AI_COLLAB/OPEN_SOU
 Updated `AI_COLLAB/PRODUCT_FIXED_TASK_COMPARISON_WORKSHEET_20261028.md` with a canonical, frozen `main.py` source fixture. This closes a comparability gap: every execution path must now run the same source unchanged or explicitly record its adaptation/wrapper. The fixture validates input before writing output and defines exact success and malformed-header behavior. Design-only; not run or device-tested.
 
 The canonical fixed-task source fixture received an isolated logic sanity check in ChatGPT's Python 3.13.5/Linux environment: expected success output and malformed-header failure behavior matched; see worksheet Section 2B. This is not a product-path test and does not change NOT RUN status for mobile/browser/remote/hosted comparison.
+
+## 2026-11-01 new-chat transfer package
+
+Created `AI_COLLAB/NEW_CHAT_BOOTSTRAP_20261101.md` as the primary comprehensive continuation handoff, including a full copy/paste prompt. It carries forward PocketCode and RevDev goals, three-AI roles, constraints, Claude's expected medium-sized report and evaluation rules, Gemini's adjudicated findings, fixed-task state, acceptance/crosswalk rules and next actions. Claude's recommendations are to be treated as valuable evidence and proposals, not as authority to overwrite the product goals or owner decisions. See the handoff addendum for final repository state.
