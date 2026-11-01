@@ -346,3 +346,38 @@ Maintain PocketCode's existing product direction, fixed task, seven independent 
 ### 13.6 Non-actions
 
 No code, dependency, schema, canonical acceptance, source/test, PR #2/#3, provider, account, workload, billing, Actions, installation, device test, merge, deployment, host, watcher, queue, runtime or publication state was changed or exercised. No spend. Documentation-only continuity work on the isolated PocketCode research branch.
+
+
+## 14. Windows sandbox source-audit continuation — 2026-11-01
+
+Claude supplied a partial Windows sandbox audit after timing out. Read the full audit at:
+- AI_COLLAB/WINDOWS_SANDBOX_SOURCE_AUDIT_CLAUDE_20261101.md
+
+### 14.1 Independent Codex source verification
+
+ChatGPT independently fetched exact upstream Codex source at commit 06f3b4836ac6e4fecc1d75a09b8a9fa369b16635:
+- codex-rs/windows-sandbox-rs/src/token.rs
+- codex-rs/windows-sandbox-rs/src/elevated/command_runner_win.rs
+- commit diff/message.
+
+Correction to Claude's cautious classification: the exact CreateRestrictedToken flags DISABLE_MAX_PRIVILEGE | LUA_TOKEN | WRITE_RESTRICTED are verified in upstream source at that SHA, not merely in the third-party derivative. The same source verifies zero disabled SIDs, zero deleted privileges, restricting SID order (capabilities, extra restricting SIDs, logon, Everyone), zero SID attributes, default-DACL setup and re-enabling SeChangeNotifyPrivilege. The commit verifies that the elevated runner adds the token user SID for ReadOnly/WorkspaceWrite and explicitly leaves the unelevated path unchanged.
+
+The commit documents an elevated named-pipe/Ninja hang caused by the missing sandbox user SID in the restricting list, and says the unelevated repro still hangs. This is a narrow compatibility finding, not a whole-sandbox validation.
+
+### 14.2 srt PR #745 independently verified at the PR-description level
+
+PR #745 merge commit 81145771c9bfc51c5669f071b515209321e0d078 describes an AppContainer WFP matching bypass and fix, additional token-shape probes, anonymous/deny-only residuals, lowered-integrity probe caveats, machine-wide loopback-open behavior and no automatic migration of old filter installations. It states Windows CI passed the described test legs but no manual Windows run was performed. The Rust implementation was not read; do not call this source-verified behavior.
+
+### 14.3 Current disposition and next steps
+
+- Codex: STUDY ONLY. Token source slice verified; full ACL, firewall, account setup, process/job-object containment, cleanup, default policy and stale-install behavior remain open.
+- srt: STUDY ONLY, Windows alpha. README/PR design claims are documented evidence; Rust WFP/ACL/runner/install/probe/cleanup implementation remains unread.
+- No winner, runtime, dependency, architecture or product decision. No sandbox install or host test. RevDev PC state remains UNKNOWN.
+- PROP-ST-01..23 are proposed later test labels only, not native acceptance IDs.
+- When Gemini returns, have it independently challenge this audit and read the missing Codex ACL/process and srt WFP/ACL/failure/cleanup sources at pinned SHAs.
+- Claude's next separate bounded assignments remain OpenHands EventLog/state/persistence and Happy pairing/encryption. Do not repeat the broad candidate research sweep.
+- Continue existing PocketCode fixed-task, identity/state and SCF work. Do not allow sandbox research to displace the canonical milestone.
+
+### 14.4 Non-actions
+
+Documentation-only update on the isolated PocketCode research branch. No source/test, schema, canonical acceptance, PR #2/#3, main branch, provider, account, workflow, Actions, workload, billing, deployment, merge, host, runtime, watcher, queue, firewall, WFP, ACL, installation, elevation or publication state was changed or exercised.
