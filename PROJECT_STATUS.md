@@ -182,3 +182,8 @@ New findings added to Section 20 of the execution-boundary crosswalk and the con
 Official references: [Microsoft Windows file-naming rules](https://learn.microsoft.com/en-us/windows/win32/fileio/naming-a-file) and [Python JSON serialization behavior](https://docs.python.org/3.13/library/json.html).
 
 This remains static source review and documentation. No implementation source changed, no tests were executed, and D-01/D-04 remain owner-open. See [crosswalk Section 20](AI_COLLAB/POCKETCODE_EXECUTION_BOUNDARY_TRUST_CROSSWALK_20261101.md) and [consolidated patch sequence](AI_COLLAB/CONSOLIDATED_LIFECYCLE_AND_REPORT_PATCH_SEQUENCE_20261101.md).
+
+
+### Tombstone expiry and report completeness follow-up — 2026-11-01
+
+A further static source pass identified that an expired in-memory tombstone may continue blocking a new fingerprint until `lookup()` first removes it. Expiry therefore depends on call order and needs a trusted-time/atomic reservation rule under D-08. The PR #2 formatter also renders malformed truncation flags as `no` in its summary while adding a separate warning; the summary should preserve UNKNOWN rather than imply completeness. These are documented in crosswalk Section 21 and patch-sequence Section 12. Exact source blobs unchanged; no tests executed or implementation changed.
