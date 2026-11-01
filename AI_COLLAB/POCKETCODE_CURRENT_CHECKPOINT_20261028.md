@@ -49,7 +49,7 @@ These were documentation/source-review changes on the isolated research branch. 
 
 13. Added a blank cross-path synthesis and decision-record template to the [fixed-task worksheet](PRODUCT_FIXED_TASK_COMPARISON_WORKSHEET_20261028.md). It keeps success and malformed-input results separate, records the strongest counter-evidence per path, and prevents rankings while critical evidence is unknown. This is a protocol improvement only; all path comparisons remain NOT RUN.
 
-14. Reconciled the fixed-task worksheet's report-layer experiment with the existing proposed execution report. Native evidence inventory is now separate from the A/B test; condition B is only a projection of the existing proposal using the same facts as condition A. Removed the suggestion to add a diagnostic recommendation as report content, and explicitly labels unrepresented facts as CONFOUNDED/contract gaps. This is a documentation-only protocol correction; the experiment and all execution-path comparisons remain NOT RUN.
+14. Reconciled the fixed-task worksheet's report-layer experiment with the existing proposed execution report. Native evidence inventory is now separate from the A/B test; condition B is only a projection of the existing proposal using the same facts as condition A. Removed the suggestion to add a diagnostic recommendation as report content, and explicitly labels unrepresented facts as CONFOUNDED/contract gaps. This is a documentation-only protocol correction; the experiment and all execution-path comparisons remain NOT RUN. Added preregistration, randomized A/B order, isolated chats, blinded scoring where practical, explicit UNKNOWN settings, and a ceiling-effect stop rule for the simple malformed-header fixture.
 
 ## 4. Critical unresolved contract questions
 
