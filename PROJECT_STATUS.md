@@ -187,3 +187,20 @@ This remains static source review and documentation. No implementation source ch
 ### Tombstone expiry and report completeness follow-up — 2026-11-01
 
 A further static source pass identified that an expired in-memory tombstone may continue blocking a new fingerprint until `lookup()` first removes it. Expiry therefore depends on call order and needs a trusted-time/atomic reservation rule under D-08. The PR #2 formatter also renders malformed truncation flags as `no` in its summary while adding a separate warning; the summary should preserve UNKNOWN rather than imply completeness. These are documented in crosswalk Section 21 and patch-sequence Section 12. Exact source blobs unchanged; no tests executed or implementation changed.
+
+
+### End-to-end trust-chain synthesis — 2026-11-01
+
+A read-only synthesis now connects request admission, semantic fingerprinting, durable reservation, dispatch intent, actual policy binding, provider start/reconciliation, scoped event ingress, terminal/cleanup evidence, output collection, redaction/report projection, durable report publication, artifact publication/release, and mobile presentation.
+
+The central finding is that the documents and helpers describe compatible pieces but do not establish one integrated trusted execution path. In particular:
+- D-05 remains BLOCKED because no selected provider/runtime has demonstrated immutable per-attempt policy binding or atomic conditional dispatch.
+- D-06 remains an owner-open proposal; no selected durable store/provider proves atomic reservation, provider idempotency, or lost-ack recovery.
+- D-04 remains owner-open; no authenticated provider ingress has been verified, and the reviewed reducer has immutable-snapshot and sequence-collision diagnostic gaps.
+- PR #2 report formatting has no verified end-to-end redaction/typed-projection path from PR #3.
+- D-08 report history and D-07 artifact publication/release remain proposals without selected durable stores or API integration.
+- Device execution acceptance remains NOT RUN.
+
+Published [END_TO_END_TRUST_CHAIN_GAP_MATRIX_20261101.md](AI_COLLAB/END_TO_END_TRUST_CHAIN_GAP_MATRIX_20261101.md) with the stage-by-stage authoritative producer, identity invariant, current evidence, proof gate, cross-stage failure rules, owner decision blockers, and implementation order.
+
+This is documentation-only synthesis. No implementation or canonical acceptance changed; no tests/workloads ran; no provider/store was selected; no PR was merged and no deployment occurred.
