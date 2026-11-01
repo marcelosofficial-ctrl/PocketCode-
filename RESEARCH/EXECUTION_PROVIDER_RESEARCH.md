@@ -107,3 +107,45 @@ Do not choose from marketing pages alone. For the top two candidates, run the sa
 ## Current conclusion
 
 No provider has been selected. First narrow the product workflow and required execution contract, then run a controlled technical comparison. Do not enter API keys, upload private user projects, or incur paid usage during initial research without explicit owner approval.
+
+
+## 2026-11-01 — resource containment and teardown documentation recheck
+
+This section supplements, and does not silently replace, the 2026-10-20 desk-research snapshot above. It records official-documentation semantics relevant to PC-EXT-02 and PC-EXT-04. No provider was contacted and no workload/account was used.
+
+### Provider-specific facts verified from current official documentation
+
+| Candidate | Resource / isolation documentation | Teardown semantics | Current implication |
+|---|---|---|---|
+| E2B | E2B says each sandbox runs in its own Firecracker microVM and kernel. This is a vendor architecture statement, not independent proof. | Security page says destroyed on timeout or shutdown; it does not by itself specify the exact wait/lookup semantics PocketCode needs for orphan reconciliation. | Keep as an investigation candidate only. Obtain exact API lifecycle, hard resource ceilings, storage and terminal-state evidence before any decision. |
+| Modal | CPU/memory request is not necessarily a hard cap; separate CPU/memory limits cap burst. Default outbound access to public IPs is allowed. gVisor and VM runtimes are documented. | JS SDK exposes `terminate()`; current docs describe runtime termination. A real adapter still needs exact wait/lookup behavior and stable resource identity. | Require explicit egress policy at create, explicit hard caps, and authoritative termination observation. Dynamic policy update is documented Alpha; domain allowlist Beta. |
+| Daytona v2 | v2 Linux docs expose CPU/memory maxima and lifecycle/network policy controls. v2 documentation labels the API alpha. | Delete returns when teardown starts; state progresses through deleting/destroying to deleted/destroyed. Direct `get` reads the control plane. | Never map delete-call return to cleanup-confirmed. Poll/read terminal state. Verify v2 maturity and selected account capabilities. |
+| Daytona stable v0 | Stable docs expose resource configuration and lifecycle features; exact resource proof still needs selected sandbox class and effective configuration. | Delete is fire-and-forget by default; explicit `wait`/DeleteAndWait can wait for destroyed state. | Adapter must request wait or independently reconcile the same ID. |
+| Cloudflare Sandboxes | Current docs describe container sandboxing for generated/untrusted code and a Workers Paid availability requirement. | Explicit `destroy()` immediately terminates/deletes state; inactivity timeout sends SIGTERM before stop, but a restart may require re-establishing the timeout. | Do not rely on graceful cleanup on destroy or on an in-memory Durable Object timeout alone. Not a zero-cost assumption. |
+| Firecracker self-hosted | Production host guidance requires defence in depth: KVM, patching, seccomp, Jailer or equivalent, cgroups/namespaces, privilege dropping and protected host paths. | Jailer documentation says operator owns cleanup; `notify_on_release` can race if setup/process crashes. | A low-level building block, not a managed service. It transfers host operations, isolation and cleanup obligations to us. |
+
+### Important distinctions for the provider comparison
+
+- A resource **request/reservation** is not a resource **hard limit**. Modal explicitly distinguishes them and bills by the higher of request or actual usage.
+- A configured CPU bandwidth cap is not a wall-clock timeout. A CPU-bound infinite loop can remain alive while throttled.
+- cgroup `io.max` is a bytes/operations-per-second control, not a total disk-capacity quota. `RLIMIT_FSIZE` is per-file, not total workspace capacity.
+- For cgroup v2, `memory.events.local` is more suitable than hierarchical `memory.events` for local attribution. `cgroup.events: populated=0` confirms no live processes in that cgroup subtree, not deletion of a remote sandbox or its separately attached resources.
+- An asynchronous delete accepted response must be followed by authoritative resource lookup until terminal destruction is confirmed. A local DB close or list/search miss is insufficient.
+- Provider resource release and invoice/cost reconciliation are separate evidence axes. Billing delay cannot be interpreted as process liveness; a zero/pending invoice cannot prove cleanup.
+
+### Official sources checked
+
+- Linux cgroup v2: https://docs.kernel.org/admin-guide/cgroup-v2.html
+- Firecracker production host setup: https://github.com/firecracker-microvm/firecracker/blob/main/docs/prod-host-setup.md
+- Firecracker Jailer: https://github.com/firecracker-microvm/firecracker/blob/main/docs/jailer.md
+- Modal network security: https://modal.com/docs/guide/sandbox-networking
+- Modal resource limits: https://modal.com/docs/guide/sandbox-resources
+- Daytona v2 Linux sandbox and lifecycle: https://www.daytona.io/docs/en/v2/linux-sandboxes/
+- Daytona stable Linux sandbox delete/wait: https://www.daytona.io/docs/en/linux-sandboxes/
+- Cloudflare sandbox lifetime: https://developers.cloudflare.com/sandbox/concepts/lifetime/
+- Cloudflare sandbox lifecycle API: https://developers.cloudflare.com/sandbox/sdk/api/lifecycle/
+- E2B security architecture: https://e2b.dev/security
+
+### Updated conclusion
+
+No candidate is selected. The provider matrix is now sufficiently specific to design a controlled, provider-neutral comparison, but insufficient to claim that any candidate satisfies PocketCode's launch gates. Under the existing $0/no-account/no-workload constraints, the next permitted work is source-grounded review and design only.
