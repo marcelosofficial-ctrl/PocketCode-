@@ -294,3 +294,8 @@ Firecracker's current API schema makes the serial-console token-bucket limiter o
 ## 2026-11-01 product-path comparison checkpoint
 
 The source-backed desk review is [PRODUCT_PATH_COMPARISON_DESK_REVIEW_20261101.md](PRODUCT_PATH_COMPARISON_DESK_REVIEW_20261101.md), blob `2592cafe479faed5059357074b5e7cbd80fc22ae`. It refreshes Pyodios, browser Pyodide/Safari file handling, AndroidHarness, PhoneCode, Atlan, Kodo, Codeg, Pairlet and Codespaces. It adds no canonical acceptance IDs and records no direct product test. The next discriminating experiment is a fair paired comparison of identical raw execution evidence versus the same facts in a portable receipt, evaluated by a separate AI. Receipt hypothesis remains UNVERIFIED; all product runs/interviews remain NOT RUN. No app installation, account, provider, implementation or spending is authorized.
+
+
+### Report experiment contract correction — 2026-11-01
+
+The proposed portable receipt is not a new schema. Reuse the existing proposed report contract in `PRODUCT/EXECUTION_CONTRACT.md` and LOOP-07/08. The paired comparison must give raw evidence (A) versus the same evidence rendered through the existing report projection (B), with no extra diagnosis or dropped evidence. See Section 9 of `PRODUCT_PATH_COMPARISON_DESK_REVIEW_20261101.md`, blob `035f8db30f1512ad1c9d3e4fa19edf13dbf0ca86`. No new acceptance IDs or schema changes.
