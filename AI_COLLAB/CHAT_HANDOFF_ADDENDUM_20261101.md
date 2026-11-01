@@ -516,3 +516,31 @@ The PocketCode research branch HEAD before this handoff append was `41ec4aba3d0d
 - All tests remain SPECIFIED ONLY / NOT RUN; no provider selected; WP-08 BLOCKED; budget $0.
 - No source/test, PR #2/#3, main, Actions, account, API, billing, workload, host, queue, merge or deployment changed.
 - Local PC/source/binary/runtime/queue state remains UNKNOWN until the owner regains PC access.
+
+
+## 22. Product-path comparison desk review — 2026-11-01
+
+Added [PRODUCT_PATH_COMPARISON_DESK_REVIEW_20261101.md](PRODUCT_PATH_COMPARISON_DESK_REVIEW_20261101.md), blob `2592cafe479faed5059357074b5e7cbd80fc22ae`, after reviewing the existing fixed-task worksheet and product hypothesis, current official/maintainer documentation, and relevant platform documentation.
+
+### Main findings
+
+- Pyodios is the strongest direct iOS local-Python comparator for the fixed standard-library CSV task. Its own FAQ reports a 300 MB Python memory budget, 5–15 second initialization, fresh sessions after app launch, and a 120-second UI timeout that does not stop the running code; recovery requires a Python session restart.
+- Browser-local Pyodide remains plausible on iOS, but the distinction between Safari OPFS and a user's visible Files directory matters. Pyodide's experimental direct native-directory mount is documented as Chromium-only; a Safari route should use explicit import/export or a tested origin-private workspace.
+- AndroidHarness and PhoneCode make generic local mobile-agent positioning substantially less distinctive. PhoneCode explicitly separates its PRoot debug prototype from its gated QEMU Google Play architecture; do not treat the latter as a released, fully proven runtime.
+- Atlan is an Android power-user alternative; its own security docs say proot Bash is not OS-sandboxed and its reported confinement tier is device-specific.
+- Codeg and Pairlet are remote-host clients, not phone-only execution. Codespaces has included personal-account compute/storage quotas, not unlimited free usage.
+- The report/receipt concept is not yet a proven differentiator. Competitors already expose tool activity, logs, session continuity and handoff features.
+
+### Next experiment
+
+The desk review specifies a paired raw-evidence versus portable-receipt experiment. Both conditions must receive exactly the same source, input and observed run facts; the receipt may reorganize but not add facts or diagnoses. Measure correction accuracy, provenance preservation, verification honesty, user steps and turns. The malformed CSV case may be ceiling-limited; if so, define a separate failure fixture before collecting results. A synthetic receipt can test information design only, not end-to-end execution value.
+
+### Status and boundaries
+
+- Product-path claims are source review only; no app installed, no code executed, no interview conducted.
+- Fixed CSV comparison and raw-vs-receipt experiment remain NOT RUN.
+- No product hypothesis, architecture, provider, MVP or owner decision has been accepted or changed.
+- No source/implementation tests, PRs, main, Actions, accounts, provider APIs, workloads, billing, host operations, merge or deployment changed.
+- Budget remains $0; PC/runtime/queue state remains UNKNOWN until PC access returns.
+
+Primary sources and verification date are listed in Section 8 of the desk review.
