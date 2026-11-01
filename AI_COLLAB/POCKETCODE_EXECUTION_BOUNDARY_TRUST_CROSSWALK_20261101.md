@@ -874,3 +874,18 @@ These findings extend the existing tombstone/retention and report projection wor
 ### 21.4 Evidence status
 
 Static review only. Exact lifecycle helper blob remains `316345341603848c4a86a6a82e533daa796c7695`; exact PR #2 formatter blob remains `e9d944a722c2fac5279952696528da72a7011af3`. PR #2 and PR #3 were rechecked and remain open, draft and unmerged; no review threads or comments were returned. No tests were executed and no source was changed.
+
+
+## 22. Pyodide 314.0.7 official-source mobile feasibility review — 2026-11-01
+
+Added [PYODIDE_314_0_7_MOBILE_RUNTIME_FEASIBILITY_REVIEW_20261101.md](PYODIDE_314_0_7_MOBILE_RUNTIME_FEASIBILITY_REVIEW_20261101.md) after checking the versioned official Pyodide 314.0.7 changelog, worker, interrupt, compatibility, filesystem, FAQ and deployment documentation.
+
+Key refinements to LOC-01..24:
+- Pyodide 314.0.7 requires a **module-type Web Worker**; classic workers using importScripts() are unsupported.
+- The documented cooperative KeyboardInterrupt path requires both a worker and SharedArrayBuffer, enabled by appropriate cross-origin-isolation headers. LOC-05 is therefore a prerequisite gate for LOC-06. If crossOriginIsolated/SharedArrayBuffer is unavailable, mark the documented cooperative interrupt unsupported/blocked for that deployment; do not relabel Worker.terminate() as cooperative interruption.
+- The current changelog places maxMemoryBytes under **Unreleased**, not in the pinned 314.0.7 release. Do not rely on it for this candidate or claim a hard memory quota. Even a future WASM heap cap would not establish whole-browser-process, CPU, wall-time or OS enforcement.
+- The official compatibility page confirms that the decimal module uses its C _decimal implementation (the Python _pydecimal implementation is unavailable), while threading, multiprocessing and sockets are not functional. The existing fixed task's decimal.Decimal, CSV and JSON path remains a suitable narrow compatibility target; it does not prove broader Python support.
+- Safari file handling must use explicit file-picker input and user-initiated Blob save/share, not the Chromium-only File System Access API. Default MEMFS is lost on page reload.
+- Hard worker termination is host action only; Python cleanup, output flush, child exit status and final outcome remain UNKNOWN unless independently captured.
+
+No change to the canonical task, candidate ordering, product direction or approval gates. LOC-01..24 remain proposed and NOT RUN. No runtime/device/security result is claimed.
