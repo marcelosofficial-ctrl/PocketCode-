@@ -257,3 +257,17 @@ No existing checklist is superseded. RES/TDN are test-design labels local to thi
 - Local PC/runtime/queue state: **UNKNOWN**.
 
 The next engineering review should challenge the RES/TDN cases and the source-specific lifecycle semantics. It must not promote desk research or mocked state transitions into runtime proof.
+
+
+## 8. Additional attribution correction: OOM counters are not self-authenticating
+
+A final kernel-source pass found an important nuance for RES-02. The kernel defines `memory.events.local:oom_kill` as the number of processes belonging to the cgroup killed by **any kind of OOM killer**. Therefore, an increase in `oom_kill` alone does not prove that this cgroup's own `memory.max` boundary caused the kill.
+
+Likewise, a workload may hit `memory.max` and receive `-ENOMEM` without an OOM kill. A defensible cgroup-based test should capture, for the exact target cgroup:
+- effective `memory.max`, `memory.high`, and `memory.swap.max` before launch;
+- before/after values of local `memory.events.local` counters, especially `max`, `oom`, and `oom_kill`;
+- exact cgroup path/identity and hierarchy, plus workload PID-to-cgroup association;
+- trusted kernel/provider termination evidence and the child process exit/signal observation;
+- supervisor and sibling-canary health.
+
+Interpret the combined evidence rather than a single counter. Do not require `oom_kill` to increase for every limit-hit fixture, and do not label an arbitrary OOM kill as a cgroup-limit violation without corroboration. This is a proof-attribution refinement, not a new product requirement.
