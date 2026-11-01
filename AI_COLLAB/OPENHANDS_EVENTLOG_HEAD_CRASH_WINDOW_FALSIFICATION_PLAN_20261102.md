@@ -198,3 +198,22 @@ Do not recreate the already-covered unit scenarios. The smallest high-value addi
 The original FI-01..08 SDK persistence boundaries remain useful only if the exact crash hook can be installed without changing ordering. For an end-to-end recovery test, the documented F31 SIGKILL scenario is the better baseline; avoid adding paid-model requirements by constructing a fully local stub-only harness if feasible, but do not claim equivalence until its control flow is verified.
 
 No source tests were run by ChatGPT. These are source-presence and test-assertion reviews only. No code/test file was modified.
+
+
+## 12. Event-file and length-marker ordering refinement — 2026-11-02
+
+The pinned EventLog append order at `openhands-sdk/openhands/sdk/conversation/event_store.py` lines 288–297 is:
+1. write the event JSON through FileStore;
+2. update in-memory disk/index maps and length;
+3. advance the sidecar length marker by deleting the prior marker and writing the new marker.
+
+The marker helper at lines 320–330 deliberately deletes the old marker first, so an interrupted marker update should leave no marker rather than a stale marker claiming the new length. A later append can detect marker mismatch and count/scan event files. LocalFileStore string writes use `atomic_write_text` at `io/local.py` lines 63–68. The base snapshot uses the same FileStore string-write path.
+
+Add explicit instrumentation around:
+- after event JSON replacement but before in-memory map/length updates;
+- after in-memory update but before marker deletion;
+- after old marker deletion but before new marker write;
+- after new marker write;
+- during fresh EventLog construction/index scan and during append-time marker-mismatch rescan.
+
+These boundaries help separate a missing marker/index-cache issue from the active-HEAD issue. A fresh-process restore is required because the original LocalFileStore cache is not authoritative after restart. Do not call a file atomically replaced “power-loss durable”: atomic rename/replace protects against partial visibility under the tested local filesystem, but the reviewed source alone does not prove fsync or stable-media persistence. The test must report process-crash survival separately from power-loss durability.
