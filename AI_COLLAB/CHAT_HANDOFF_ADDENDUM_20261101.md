@@ -432,3 +432,45 @@ The Linux kernel cgroup v2 documentation states that `memory.events` includes de
 - No tests, provider calls or workloads run. All RES/TDN and PC-LC/AD/DB/RT remain SPECIFIED ONLY / NOT RUN.
 - Provider selection NONE; budget $0; WP-08 BLOCKED; D-01..D-08 remain open as previously recorded.
 - Claude did not review the new files because its fetch failed. Gemini's AWC source IDs are mismatched against the pinned manifest; request exact alternate source pins before reconciling its labels.
+
+
+## 19. Provider API-generation and host-output research pass — 2026-11-01
+
+### What changed
+
+A second official-documentation pass identified a material Cloudflare API-generation distinction, a Modal create/detach/terminate distinction, and a host-side Firecracker output-exhaustion path. These were added as documentation-only updates on this research branch:
+
+1. Resource containment and teardown review, final blob `2fd1ddee9674c59719fbd3f93c95004d754c927`, commit `d6c29b8b9ed6d6a96f261394a34ad6cd2acb591a`:
+   - Cloudflare section now distinguishes current `@cloudflare/sandbox` 1.0 Durable Object + Container lifecycle from legacy SDK 0.x `destroy()` semantics.
+   - TDN-05 now includes Durable Object/control-plane storage, snapshots, mounted buckets, preview/tunnel resources and other separately managed resources.
+   - RES-08 includes host-side VMM/log collector memory/disk bounds; RES-09 requires the workload cannot migrate processes out of the observed cgroup subtree; added RES-10 for guest-controlled Firecracker serial/VMM log pressure.
+   - URL: https://github.com/marcelosofficial-ctrl/PocketCode-/blob/pocketcode-ai-workflow-director-research-2026-10-28/AI_COLLAB/RESOURCE_CONTAINMENT_AND_TEARDOWN_EVIDENCE_REVIEW_20261101.md
+2. Provider research, final blob `900476c031c031f4a88f2a0eb42e0526f3e8e07f`, commit `9a01b95266cd0c4931cc602c36f25c1d06083691`:
+   - Provider matrix and distinctions updated for Cloudflare API generations, Modal async create/detach/terminate and Firecracker host log handling.
+   - URL: https://github.com/marcelosofficial-ctrl/PocketCode-/blob/pocketcode-ai-workflow-director-research-2026-10-28/RESEARCH/EXECUTION_PROVIDER_RESEARCH.md
+3. Lifecycle regression plan, final blob `90fd54a10f7e638631da10749fcdac9ac6c1e610`, commit `eeae952ce7e32f7dcc25eb8c863444bd6c80cab4`:
+   - added PC-EXT-08 provider API-generation/resource-scope reconciliation and PC-EXT-09 host-side VMM/log-sink containment.
+   - strengthened PC-EXT-02 and PC-EXT-04 with process membership and provider resource scope requirements.
+   - URL: https://github.com/marcelosofficial-ctrl/PocketCode-/blob/pocketcode-ai-workflow-director-research-2026-10-28/AI_COLLAB/LIFECYCLE_CONTRACT_REGRESSION_PLAN_20261101.md
+4. Implementation readiness backlog, final blob `de61496d85c3ffd2d945b6fc40bdedbbbc3d825d`, commit `fa9302b60d34d3967c6f12b8cd3a1d4c571ece52`:
+   - WP-08 now explicitly includes PC-EXT-08/09, API generation pinning, and host VMM/log containment.
+   - WP-08 remains BLOCKED.
+   - URL: https://github.com/marcelosofficial-ctrl/PocketCode-/blob/pocketcode-ai-workflow-director-research-2026-10-28/AI_COLLAB/IMPLEMENTATION_READINESS_BACKLOG_20261029.md
+
+### Research findings that affect architecture
+
+**Cloudflare:** Current Sandboxes lifetime docs describe a Durable Object identity/storage layer separate from the container instance. The DO's storage survives instance stop until application code deletes it; snapshots and mounted R2 buckets have their own persistence. Instance-local processes/files end when the container stops. Explicit destroy stops the instance without a graceful cleanup window. The legacy Sandbox SDK 0.x docs separately describe deleting that SDK's sandbox files/processes/sessions. Do not apply the 0.x guarantee to current 1.0 Durable Object storage, snapshots or mounted buckets. Cloudflare Sandboxes are Workers Paid; active instance resource billing is documented. Sources: https://developers.cloudflare.com/sandbox/concepts/lifetime/ ; https://developers.cloudflare.com/sandbox/sdk/api/lifecycle/ ; https://developers.cloudflare.com/containers/platform/pricing/ ; https://developers.cloudflare.com/sandbox/files/save-and-restore-a-workspace/.
+
+**Modal:** Python SDK docs state that `Sandbox.create` provisions the corresponding container asynchronously; `detach()` disconnects the client and cleans connection resources; `terminate(wait=True)` waits for execution termination and returns an exit code. `from_id`, `from_name(include_terminated=True)` and `list` provide identity-based lookup surfaces. These are distinct operations and do not establish attached volume release. Source: https://modal.com/docs/sdk/py/latest/Sandbox.
+
+**Firecracker:** Production host setup explicitly warns that guest-controlled serial output and guest-influenced log generation can cause unbounded host memory/storage use unless sinks are rate-limited, bounded or discarded safely. A PocketCode report cap alone does not protect host VMM logging. Source: https://github.com/firecracker-microvm/firecracker/blob/main/docs/prod-host-setup.md.
+
+**cgroup membership:** `cgroup.events: populated=0` means no live processes in that cgroup and descendants at the observation time. It does not prove a process was never moved outside the observed subtree. Prevent workload-controlled cgroup migration and keep the supervisor's membership boundary authoritative. Source: https://www.kernel.org/doc/html/v6.14/admin-guide/cgroup-v2.html.
+
+### Final status and proof boundaries
+
+- RES-10 and PC-EXT-08/09 are supplementary test-design IDs only. No canonical LOOP/CASE IDs or lifecycle statuses were added or remapped.
+- The Cloudflare distinction corrects an overbroad reading of `destroy()`; resource classes and API generations are now explicit.
+- No provider selected. No provider APIs, accounts, workloads, billing, local host tests or runtime operations used.
+- All RES/TDN and PC-LC/AD/DB/RT/EXT tests remain SPECIFIED ONLY / NOT RUN. WP-08 remains BLOCKED; budget $0.
+- No source code, implementation tests, main branch, PRs, Actions, queues or deployments changed.
