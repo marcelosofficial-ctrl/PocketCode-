@@ -295,3 +295,23 @@ Additional explicit limits at srt PR #745 merge 81145771c9bfc51c5669f071b5152093
 The same pinned srt source confirms stronger ACL semantics (modify grants omit FILE_DELETE_CHILD; parent-FDC deny and intermediate DELETE protection), a per-user refcounted session DB with record-first per-path DACL mutation and crash replay, and a documented shared-machine trade-off that real local users can read or replace the ProgramData CA key material.
 
 Disposition unchanged: srt is an ALPHA study reference only, not selected or adopted. No Windows test was run by ChatGPT; external issue measurements are explicitly labelled as such.
+
+
+## 14. OpenHands EventLog and Happy pairing source review — 2026-11-01
+
+Detailed source evidence is recorded in OPENHANDS_EVENTLOG_AND_HAPPY_PAIRING_SOURCE_REVIEW_20261101.md.
+
+OpenHands software-agent-sdk main snapshot 98849457621881ae2414719b82b8bc1cf535b4ab (MIT):
+- EventLog is a per-event JSON append-only store with event IDs, durable disk sequence numbers, parent validation, file locking, sidecar length marker, index rebuild and explicit missing-file gap reporting.
+- LocalFileStore uses atomic text writes and filelock but caches reads and warns that external modifications can be stale; FileStore/EventLog docs say local file locks are unreliable on NFS/network filesystems.
+- ConversationState stores base_state.json separately from the event files. append_event writes the event first and updates leaf_event_id/base snapshot separately. A crash between those operations is a source-derived orphaned-event/stale-HEAD hypothesis, not a reproduced bug.
+- EventService uses owner ID + monotonic generation + expiry and guarded_write holds the lease lock across the ownership check and protected disk write. This fences guarded persistence writes, not external process/provider side effects. Event append and HEAD snapshot remain separate guarded writes, not one transaction.
+
+Happy main snapshot 323fb2e9fd0c9a44ceab9239fbc586c513f7f844 (MIT):
+- Android client pairing uses ephemeral X25519, a transcript binding QR token/commitment/keys/nonces/address/port, HKDF purpose-separated emoji/confirm/device-token keys, human emoji comparison and mutual role MAC confirmation. The device token is derived and withheld until daemon proof succeeds.
+- Client tests cover fixed vectors, malformed/low-order inputs, failed proof and cancellation, but use a FakeDaemon.
+- The public repository source search found only mobile PairingService clients/tests for /v0/mobile-connector/handshake; no daemon-side route implementation was located. Server-side one-time token/replay/rate-limit/expiry/atomic transition guarantees therefore remain unknown.
+- Android uses Expo SecureStore for credentials. happy-agent CLI stores token+secret JSON in ~/.happy/agent.key with requested POSIX mode bits and no file-level encryption; Windows ACL semantics were not verified.
+- Happy docs distinguish client E2E-encrypted content from third-party tokens encrypted server-side with HANDY_MASTER_SECRET.
+
+Disposition: OpenHands is a persistence/ownership study, not a copy-ready store. Happy is a pairing/UX study, not a selected dependency or verified complete pairing protocol. No native contract, D-01..D-08 owner decision, fixed task, product direction or implementation decision changed.
