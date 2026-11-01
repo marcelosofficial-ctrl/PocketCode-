@@ -200,3 +200,30 @@ Official/primary sources consulted 2026-11-01:
 - GitHub Codespaces billing: https://docs.github.com/en/billing/concepts/product-billing/github-codespaces
 
 These are source claims and maintainer descriptions. They are not independent audits or PocketCode test results.
+
+
+## 9. Contract traceability correction — reuse the existing proposed report
+
+A read-only traceability pass against the research branch found that the proposed portable receipt is **not a new feature/schema to invent**. The repository already defines the intended user-copyable report and its semantics:
+
+- `PRODUCT/EXECUTION_LOOP_ACCEPTANCE.md` lines 36–38: LOOP-07 defines useful diagnostics; LOOP-08 defines one primary Copy result action with a complete, bounded, plain-text report.
+- `PRODUCT/EXECUTION_LOOP_ACCEPTANCE.md` lines 81–90: stable parseable field labels, observed facts, unavailable values, bounded output, provenance, process-vs-task distinction, user-initiated copy and run identity.
+- `PRODUCT/EXECUTION_CONTRACT.md` lines 111–124: proposed report fields and safety rules.
+- `PRODUCT/EXECUTION_CONTRACT.md` lines 126–181: proposed plain-text report illustration and required semantics, including evidence source, check provenance, optional unknown exit/duration, explicit truncation, output-file metadata, and format versioning.
+- `AI_COLLAB/ADAPTER_RESULT_ENVELOPE_AND_FAKE_PROTOCOL_20261029.md` lines 20–32 and 39–76: proposed raw-fact immutability, attempt identity, provenance, unknowns, trusted producer authority, report-as-projection, and distinct output-collection states.
+
+**Important status:** the report format and envelope are still proposals, not frozen public schemas or implemented behavior. The synthetic report in the contract is explicitly illustrative and is not evidence of a real run.
+
+### Corrected paired experiment
+
+Use the existing proposed canonical report as condition B. Do not design a competing "receipt v2" or add fields solely to make the experiment look novel.
+
+- **A — Raw evidence:** source/input plus the exact raw observations and unmodified available output/status facts.
+- **B — Existing proposed report projection:** the same source/input and same observations, rendered using the current proposed report field order and labels. It may organize and label facts but must not add a diagnosis, infer a missing exit code, promote script output into trusted evidence, or omit material raw facts.
+- Both conditions must preserve identical information content. If the proposed report cannot represent a raw fact or its uncertainty, record that as a contract gap before testing; do not silently drop it.
+- Use fresh, isolated assistant chats and the same model/mode/tools. Score correction quality, provenance, truthfulness, user effort and turns.
+- A synthetic report can test only the usefulness of the proposed information layout. It cannot validate execution, trusted evidence production, artifact creation, or security.
+
+### Scope consequence
+
+No new LOOP/CASE ID is proposed. The experiment evaluates whether existing LOOP-07/08 report behavior creates user value beyond raw output and competitor-native logs. If the proposed report already meets the task but does not improve the next correction or portability, the product should not claim the report itself is a differentiator. Any schema change must go through the existing owner decision and contract review process, not be slipped into this research note.
