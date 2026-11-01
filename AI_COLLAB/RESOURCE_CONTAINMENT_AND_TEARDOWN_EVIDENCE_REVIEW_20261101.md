@@ -140,6 +140,7 @@ Current official documentation states:
 - Runtime network-policy updates are documented as Alpha; the docs say the new policy takes effect immediately and established connections disallowed by the new policy are terminated. This is provider documentation, not independent proof of the data plane.
 - Sandboxes can use gVisor or VM runtime isolation.
 - CPU/memory resource requests are not hard ceilings by themselves. Separate limits cap bursting; resource billing is based on the greater of requested and actual usage.
+- The JS SDK exposes `terminate({wait:true})`, which waits for the sandbox to finish and returns its exit code. This is stronger than a fire-and-forget terminate request, but it must not be generalized into proof that separately attached volumes or all billable resources have been released.
 
 Implications:
 - Any future test must set an explicit outbound policy at sandbox creation rather than rely on default egress denial.
