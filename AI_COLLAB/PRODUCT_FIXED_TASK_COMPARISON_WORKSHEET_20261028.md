@@ -251,48 +251,55 @@ Overall scenario: PASS | FAIL | BLOCKED | INCONCLUSIVE | NOT RUN
 
 
 
-## 5B. Report-layer falsification protocol — native evidence versus portable receipt
+## 5B. Report-layer falsification protocol — native evidence versus portable report
 
-**Status: design only; NOT RUN.** This section follows the 2026-10-28 source review showing that some adjacent tools already document run history, logs, error handoff, diagnostic exports, file export, or session continuity. Do not score a competitor as lacking a feature merely because it is named differently or the desk-research page does not mention it.
+**Status: design only; NOT RUN.** This section evaluates whether the existing proposed PocketCode report improves evidence handoff beyond the evidence already exposed by an execution path. It does not define a new schema, and it does not authorize a real execution test.
 
-For each feasible path and each of the success and malformed-input scenarios, capture two evidence bundles:
+### Evidence inventory (separate from the paired AI comparison)
 
-1. **Native baseline:** the best ordinary evidence that the existing path itself makes available (logs, tool events, process status, diagnostic report, output file, or raw error text). Record the exact retrieval/export steps.
-2. **Portable-receipt candidate:** a proposed compact report assembled from only the evidence actually observed in that run. Keep it separate from the native baseline and do not invent fields that the path does not expose.
+For each feasible path and each success/malformed-input scenario, first record the best native evidence the path actually exposes: logs, tool events, process status, diagnostic export, output file, raw error text, and the exact retrieval/export steps. Preserve the source and evidence class for every item. This inventory describes the path; it is not itself the A/B experiment.
 
-Minimum receipt fields to evaluate—not an implementation commitment:
+### Paired correction test
 
-- task/run identifier and timestamp, if genuinely available;
-- input identity or a synthetic-input digest, and source/script revision or digest if available;
-- execution location and runtime/version, or explicit UNKNOWN;
-- observed process exit/status and its source, or UNAVAILABLE;
-- stdout/stderr references or bounded excerpts with truncation flags;
-- generated artifact names and content/digest evidence, distinguishing a displayed JSON answer from a real exported file;
-- failure/timeout/cancel/interruption observations, including whether termination is confirmed or unknown;
-- job disposition and artifact-release decision kept separate where the path supports them; otherwise label them not available;
-- explicit evidence provenance for every material claim, plus unknowns and next bounded diagnostic action.
+Use the same underlying observed evidence in both conditions:
 
-**Paired correction test:** Give a separate AI assistant the same task and same source/input context in two fresh conditions: (A) the competitor's best native evidence/raw error and (B) the portable receipt. Record whether each proposed correction addresses the actual observed failure, whether it introduces unsupported claims, and whether the next step is actionable. If the evidence differs in amount or content beyond the format/provenance change, mark the pair CONFOUNDED. Do not treat one pair as a benchmark; repeat at least three comparable pairs if free usage permits, stopping at any usage cap without quota evasion.
+1. **A — Native/raw evidence:** give a fresh assistant chat the task source and input plus the exact available native observations and outputs, without adding a diagnosis.
+2. **B — Existing proposed report projection:** give a different fresh assistant chat the same task source and input and the same observations, represented using the current proposed report in [the execution contract](../PRODUCT/EXECUTION_CONTRACT.md). The report may organize and label evidence, but must not add diagnosis, infer missing facts, promote script output into trusted evidence, or omit material facts.
 
-**Decision rules:**
+Keep the assistant/model/mode/tools, source, input, task instructions, and available evidence identical. Save both complete outputs before scoring. Do not show either chat the other's answer. If B cannot represent a material fact or uncertainty available in A, record the exact gap and mark the pair **CONFOUNDED**; do not silently drop the fact or invent a parallel field. If native evidence cannot be exported in a form that preserves the relevant facts, record that as a property of the native path, but do not pretend the A/B conditions contained identical information.
 
-- A receipt has no demonstrated value if it merely reformats evidence already equally easy to export and use.
-- A report is not “truthful” merely because it is structured JSON; provenance and unknown-state handling must be supported by evidence.
-- Do not award a path a PASS if real output-file creation/export, failure behavior, or critical status evidence is unknown.
-- If the receipt improves correction but adds material steps, record both effects and ask whether users value the tradeoff.
-- If existing native evidence is equally useful and portable enough, prefer the simpler existing workflow or an interoperable small utility over a separate execution product.
-- The task remains NOT RUN until the same approved procedure is actually exercised on a real alternative.
+Score each condition independently for:
+- correct diagnosis and next correction against the known task behavior;
+- preservation of observed facts and provenance;
+- no invented runtime, exit, artifact, termination, cleanup, or policy claims;
+- correction scope and actionability;
+- whether the correction passes the same success and malformed-input criteria when independently verified;
+- user effort, including copy/export steps, turns, and manual explanation.
 
+Correctness and evidence honesty are hard gates. A shorter but incorrect or less truthful response loses. Record prompt/output character counts and turns only as rough proxies, not tokens, latency, or cost. Repeat at least three comparable pairs if free usage permits; stop at any usage limit without quota evasion. If the sample is smaller, label it exploratory.
 
-### Contract-alignment clarification — 2026-10-28
+### Existing report fields and exploratory identifiers
 
-The portable-receipt candidate is an evaluation condition, **not a second report schema**. Map its fields to the existing proposed [execution contract](../PRODUCT/EXECUTION_CONTRACT.md) and [execution-loop acceptance criteria](../PRODUCT/EXECUTION_LOOP_ACCEPTANCE.md) before any implementation discussion. Those documents already call for lifecycle status, exit code only when known, runtime/version, duration when known, bounded stdout/stderr with truncation, output-file metadata, and explicit missing evidence; acceptance also separates PASS/FAIL/INCOMPLETE from exact lifecycle status and distinguishes script-reported checks from independently verified facts. Record any missing field as unknown/unavailable, not as a reason to silently invent a parallel contract.
+The existing proposed report already covers run identity, runtime/status, exit and duration when known, bounded stdout/stderr and truncation, output-file metadata, and explicit missing evidence. Evaluate that proposal as written. The following may be recorded as *available external evidence* or explored as future contract questions, but are not current report requirements: input digest, source/script revision or digest, artifact content digest, timestamp when unavailable, or a suggested next diagnostic action. Do not add these to the report solely to improve the experiment.
 
+A report is not truthful merely because it is structured. Provenance and unknown-state handling must be supported by the underlying evidence. A synthetic report may test information layout only; it cannot validate execution, trusted evidence production, artifact creation, termination, cleanup, or security.
+
+### Decision rules
+
+- The report has no demonstrated differentiating value if raw/native evidence is equally easy to export and leads to the same correct correction with equal or less user effort.
+- If the report improves correction or provenance but adds material steps, record both effects and whether the tradeoff is user-valued.
+- If a path's output-file creation/export, malformed-input behavior, or critical status evidence is unknown, do not award it a task PASS.
+- If the existing report cannot faithfully represent the native evidence without loss, record a contract gap for separate review. Do not solve it by quietly inventing a second schema.
+- If the existing report adds no measurable value, prefer the simpler native workflow or a small interoperability utility over a separate execution product.
+- The overall task comparison remains NOT RUN until an approved procedure is exercised on a real alternative.
+
+### Contract-alignment clarification — 2026-11-01
+
+The portable report is an evaluation condition, **not a second report schema**. The canonical proposal remains in [the execution contract](../PRODUCT/EXECUTION_CONTRACT.md) and [the execution-loop acceptance criteria](../PRODUCT/EXECUTION_LOOP_ACCEPTANCE.md), including LOOP-07/08. The report format and envelope remain proposals, not frozen public schemas or implemented behavior. No new LOOP/CASE ID is introduced by this experiment.
 
 ### Open contract question: run-to-input/source binding
 
-The existing proposed report includes a run ID, runtime/status, optional exit/duration, bounded output, and output filenames/sizes, but does not explicitly require an input digest, script/source revision, or artifact content digest. The portable-receipt test may examine whether any of these identifiers materially improve reproducibility and cross-tool debugging, but they are **not current contract requirements**. Record whether each alternative exposes such evidence, whether collecting it is privacy-safe and practical, and whether the separate AI correction actually benefits. Any proposed addition belongs in a future versioned review of the canonical report contract—not an undocumented parallel schema.
-
+The current proposed report does not explicitly require an input digest, script/source revision, or artifact content digest. The experiment may record whether a path exposes these identifiers and whether they materially help reproducibility or correction. Their usefulness, privacy impact, collection practicality, and contract implications require separate review. They are not current contract requirements and must not be silently added to the report.
 
 ## 5C. Pyodios-specific preflight and evidence capture — source review only
 
