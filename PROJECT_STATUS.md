@@ -297,3 +297,16 @@ No change to product direction, canonical task, provider ranking or approval gat
 ### Continuation handoff refreshed — 2026-11-01
 
 Appended the verified post-handoff continuation delta to [NEW_CHAT_HANDOFF_REVDEV_POCKETCODE_20261101.md](AI_COLLAB/NEW_CHAT_HANDOFF_REVDEV_POCKETCODE_20261101.md). It records the new state/identity and Pyodide reviews, fixed-task alignment, Claude report availability check, current branch/PR snapshots, remaining reviewer/owner blockers and explicit non-actions. The original handoff snapshot is preserved above the appended delta. Re-fetch branch heads again before future work.
+
+
+### Claude open-source research independently reconciled — 2026-11-01
+
+Claude's "PocketCode + RevDev: Open-Source Research Master" was received and reviewed. The full independent reconciliation is [CLAUDE_RESEARCH_MASTER_INDEPENDENT_RECONCILIATION_20261101.md](AI_COLLAB/CLAUDE_RESEARCH_MASTER_INDEPENDENT_RECONCILIATION_20261101.md).
+
+Primary-source checks confirmed the important architectural leads while narrowing their claims: srt Windows is explicitly alpha and documents Schannel failures, persistent ACL grants, cross-session read implications and WFP limitations; MCP Tasks is an optional extension outside the stateless core, not a durable-execution guarantee; ACP public docs list v1 as latest and v2 as draft; OpenHands documents an append-only EventLog plus distinct state-only/event-based updates and persistence/resume; StreamJsonRpc and Polly provide libraries, not our trust or durability model.
+
+Disposition: srt/Codex sandbox and OpenHands are study targets; MCP Tasks is mapping vocabulary only; ACP is deferred to a later read-only spike; Happy requires source-level pairing/crypto review before fork discussion; StreamJsonRpc/Polly are conditional dependencies; no new SQLite journal is selected until existing RevDev P8U/source contracts can be audited. DSSE/in-toto remain format-study candidates, not a 100-line implementation commitment. Pyodide remains a constrained candidate under the existing 314.0.7 review, not an adopted or device-validated runtime.
+
+Critical guardrail: parser syntax tolerance must never relax ACK/nonce/identity/confirmation/guard authority. Retry, cancellation, Job Object termination, durable recovery and verified terminal evidence remain distinct. PocketCode's product direction, fixed task, seven state axes and D-01..D-08 boundaries remain unchanged. RevDev PC state remains UNKNOWN.
+
+This was documentation and selected public-source review only. No code, schema, acceptance, PR #2/#3, provider, account, workload, spend, Actions, install, device test, merge, deployment, PC host, watcher, queue or publication state was changed or exercised.
