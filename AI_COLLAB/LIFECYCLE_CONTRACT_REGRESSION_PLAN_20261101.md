@@ -290,7 +290,7 @@ All RES/TDN cases remain SPECIFIED ONLY / NOT RUN. See the detailed review for t
 The detailed resource review's Section 8 refines RES-02: `memory.events.local:oom_kill` counts processes in the cgroup killed by any OOM killer, so it is not by itself proof that the target cgroup's own `memory.max` caused the kill. Capture effective memory/swap limits, target-local `max`/`oom`/`oom_kill` counter deltas, exact cgroup identity and process membership, trusted termination evidence, and supervisor/sibling health. Do not require an OOM kill for every memory-limit hit because some failures return `-ENOMEM`. Interpret correlated evidence, not one counter.
 
 
-## 11. Claude review reconciliation: canonical gaps and proof boundaries (2026-11-02)
+## 11. Claude review reconciliation: canonical gaps and proof boundaries (2026-11-01)
 
 Claude explicitly reported that the new resource review, lifecycle regression plan and readiness backlog were inaccessible during its review attempt. Its response is therefore a set of adversarial challenges, not a review verdict on those three files. This section records the findings reconciled against the exact canonical acceptance and research-branch sources in this pass.
 
