@@ -381,3 +381,27 @@ PR #745 merge commit 81145771c9bfc51c5669f071b515209321e0d078 describes an AppCo
 ### 14.4 Non-actions
 
 Documentation-only update on the isolated PocketCode research branch. No source/test, schema, canonical acceptance, PR #2/#3, main branch, provider, account, workflow, Actions, workload, billing, deployment, merge, host, runtime, watcher, queue, firewall, WFP, ACL, installation, elevation or publication state was changed or exercised.
+
+
+## 15. Deeper srt source audit continuation — 2026-11-01
+
+Read the updated Windows sandbox audit document, especially Section 13:
+AI_COLLAB/WINDOWS_SANDBOX_SOURCE_AUDIT_CLAUDE_20261101.md
+
+Additional pinned source findings at srt merge commit 81145771c9bfc51c5669f071b515209321e0d078:
+
+1. **Token:** srt uses LUA_TOKEN | WRITE_RESTRICTED; disables BUILTIN\Administrators and logon SIDs; deletes all privileges except SeChangeNotifyPrivilege; restricts to capability SIDs, sandbox user SID, Everyone and RESTRICTED; reads back and verifies the resulting restricted-SID set and flag. This differs materially from the Codex token call.
+2. **Process containment:** source verifies Job Object KILL_ON_JOB_CLOSE. Target process is created suspended, assigned to a runner-to-child job without breakaway, then resumed. UI restrictions, isolated desktop check, handle whitelist and process mitigations are present in launch source.
+3. **ACL:** modify grants withhold FILE_DELETE_CHILD; denies add parent FILE_DELETE_CHILD denies; placeholder intermediate directories receive object-only DELETE denies. Per-user SQLite state tracks holders/ACE refs and file identity; a file lock serializes operations and recovery runs after holder death.
+4. **Network:** WFP filters are only at ALE_AUTH_CONNECT IPv4 and IPv6 layers. Windows test suite explicitly documents ICMP ping is not fenced.
+5. **WFP readiness:** current srt main at 98a4016d27609ed34dd1fb43d23ed6efb6eeeb77 still says installed if any block filter exists. Open issue #723 reports that a missing IPv6 block can be missed by status and by the default IPv4-only wrapper probe. Open PR #716 proposes a partial state and repair behavior, but is not merged. The PR branch still shows the default TypeScript probe binding IPv4 only.
+6. **Shared machine:** install.rs comments explicitly accept BUILTIN\Users read/replace access to ProgramData CA key material to support self-heal, while denying the sandbox group. This requires shared-machine threat-model review.
+
+The extra source work improves confidence in srt's token, ACL and job controls, but also reveals that its network fence is not all-protocol and its current readiness/status path can report healthy with a partial address-family filter set. srt remains STUDY ONLY; no winner or adoption decision. The exact audit has source paths, blob SHAs, line references and confidence distinctions.
+
+Open issue/PR links for follow-up:
+- https://github.com/anthropics/sandbox-runtime/issues/723
+- https://github.com/anthropics/sandbox-runtime/pull/716
+- https://github.com/anthropics/sandbox-runtime/pull/745
+
+No runtime tests were run by ChatGPT. All RevDev PC state remains UNKNOWN.
