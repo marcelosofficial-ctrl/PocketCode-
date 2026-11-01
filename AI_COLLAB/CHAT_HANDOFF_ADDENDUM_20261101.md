@@ -274,3 +274,30 @@ Verified branch separation immediately before this final addendum write:
 - PR #3: OPEN, DRAFT, UNMERGED; head `0ddcc0bc97bac5d446aefedf3d71f99411bd841d`, base main.
 
 Only the three named AI_COLLAB documents on the existing research branch were written in this pass. No source, tests, canonical acceptance, main, PR head, provider, store, runtime, queue, GitHub Actions, merge, deployment, account, billing, or workload was changed or invoked. All implementation and integration tests remain NOT RUN; local PC and hosted execution state remain UNKNOWN.
+
+
+## 13. Resource-containment and teardown evidence pass
+
+A new source-grounded research artifact was created:
+
+- `AI_COLLAB/RESOURCE_CONTAINMENT_AND_TEARDOWN_EVIDENCE_REVIEW_20261101.md`
+- Initial create commit: `d63ebc339ab6764d647ffdac721c82449a0e19bb`
+- Final blob after source clarifications: `477674c773aeadae979c64c06a07770974e316a7`
+- It defines local test-design IDs RES-01..09 and TDN-01..08. These are not canonical LOOP/CASE IDs.
+
+Additional documentation updates:
+- `AI_COLLAB/LIFECYCLE_CONTRACT_REGRESSION_PLAN_20261101.md`: detailed resource/teardown review pointer and semantic corrections. Commit `066e49e68770debbc31b5a51855bcdeae7e233b5`; blob `8b2f23833d5d2aec59df70a56db9c52f8af73975`.
+- `AI_COLLAB/REVDEV_POCKETCODE_CROSSWALK_INDEPENDENT_REVIEW_20261101.md`: source-specific findings and corrected evidence boundaries. Commit `e8945bc364d82269c37ab65ccf1e0bcbc772b887`; blob `d7d34194d72c9d0795f856e377dc2ff5dcb3e9fa`.
+- `RESEARCH/EXECUTION_PROVIDER_RESEARCH.md`: provider lifecycle/resource documentation recheck supplement. Latest commit `33aea5f99687d70266ef8356acffeefb7e58bf31`; blob `231f9cfda80ab52726e265e5160d1f97486458a6`.
+- `AI_COLLAB/IMPLEMENTATION_READINESS_BACKLOG_20261029.md`: added WP-08, explicitly BLOCKED on owner decisions, selected/approved provider/runtime, budget, durable evidence and integration. Commit `fa5f8af5181e8b805ff1be56bb43eef9b0e34bd9`; blob `75a73621b78f77e87ed0abc84691f45453268e5d`.
+
+Key source-grounded corrections:
+1. cgroup v2 `memory.max` is a hard memory boundary but does not imply every allocation failure produces OOM kill. `memory.events.local` is preferred for local attribution; `memory.swap.max` is separate.
+2. `cpu.max` is CPU bandwidth, not wall-clock termination. `pids.max` counts kernel tasks/TIDs.
+3. `io.max` is I/O throughput, not disk capacity. `RLIMIT_FSIZE` is per-file, not total workspace size.
+4. `cgroup.kill` sends SIGKILL to a cgroup subtree; `cgroup.events: populated=0` confirms no live process in that subtree, not remote resource deletion.
+5. A delete API can be asynchronous. Daytona v2 progresses from deleting/destroying to deleted/destroyed; its call returns when teardown starts. Stable v0 offers a wait option because default delete is fire-and-forget. Modal documents `terminate(wait=True)` as waiting for sandbox finish and returning exit code. These signals must not be generalized to separately attached storage or billing release.
+6. Firecracker Jailer leaves cleanup to its operator and warns of cleanup-registration races. It is a building block, not a turnkey hosted service.
+7. Modal resource request and hard limit are distinct; default outbound public-IP access is allowed. Cloudflare destroy is immediate and does not allow relying on process cleanup handlers. E2B's microVM claim is vendor architecture information, not independent proof.
+
+Decision: PC-EXT-02 and PC-EXT-04 remain genuine provider/runtime evidence gaps. No provider selected. RES/TDN are test-design labels only. No account, API key, workload, provider call, paid usage, implementation or test run occurred. WP-08 is BLOCKED under the $0 constraint.
