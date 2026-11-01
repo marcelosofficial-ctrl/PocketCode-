@@ -308,3 +308,22 @@ Decision: PC-EXT-02 and PC-EXT-04 remain genuine provider/runtime evidence gaps.
 The resource review received a final kernel-semantics correction (commit `609b252f669d91bd22b2dd23142744c16b3eaa00`, blob `dbb1bac56097d85e8fd20e1ccaa4583ce20d6844`): `memory.events.local:oom_kill` counts processes in the cgroup killed by any OOM killer. It cannot alone prove the target cgroup's own `memory.max` caused the kill. Conversely, some memory-limit failures return `-ENOMEM` without OOM kill. Tests must correlate effective memory/swap limits, local `max`/`oom`/`oom_kill` deltas, exact cgroup/PID membership, trusted termination evidence and supervisor/sibling health. No single counter is proof of causation.
 
 This refinement is reflected in the lifecycle regression plan and independent review. It does not alter canonical acceptance or authorize execution.
+
+
+## 15. Final verified checkpoint for resource/teardown pass
+
+Read-back verified final blobs:
+- Resource review: `dbb1bac56097d85e8fd20e1ccaa4583ce20d6844` (commit `609b252f669d91bd22b2dd23142744c16b3eaa00`).
+- Lifecycle regression plan: `05c4ff9eca8f7816831348a077fcd356b33e4c53` (latest OOM clarification commit `2ac1c4d9105295821bc7089c4e535ccd7e97092b`).
+- Independent review: `da7dc4e8644a948f410c2d1cee502db333f1b07e` (latest OOM clarification commit `6d07c8bf61c20eef012007dab8a2f0db43c75a57`).
+- Implementation readiness backlog: `75a73621b78f77e87ed0abc84691f45453268e5d` (WP-08 commit `fa5f8af5181e8b805ff1be56bb43eef9b0e34bd9`).
+- Provider research: `231f9cfda80ab52726e265e5160d1f97486458a6` (latest provider refresh commit `33aea5f99687d70266ef8356acffeefb7e58bf31`).
+
+The current research branch ref was `287eb770fff8ac6ea6f5b0b9ca71a3e3790140c0` before this final handoff update. This update becomes the new branch HEAD.
+
+Branch separation was checked again:
+- Main: `555840d8d83342513d9cd353d4d1522d46a5c82d`.
+- PR #2: OPEN, DRAFT, UNMERGED; head `eb8b7ea83cb0e8fe1880351276c485b761431791`, base main.
+- PR #3: OPEN, DRAFT, UNMERGED; head `0ddcc0bc97bac5d446aefedf3d71f99411bd841d`, base main.
+
+Only documentation files on the existing research branch were written. No canonical acceptance, source, implementation tests, PR head, main, provider, account, runtime, queue, Actions, billing or deployment was touched. All RES/TDN cases and implementation/integration tests remain NOT RUN. No provider is selected; WP-08 remains BLOCKED.
