@@ -439,3 +439,32 @@ Key new evidence:
 - srt ACL source confirms modify grants omit FILE_DELETE_CHILD, parent-FDC denies are applied for protected paths, and intermediate paths get object-only DELETE denies. State DB/persistence sources describe per-user refcounting, record-first writes, file-lock serialization and crash replay. Install source documents that BUILTIN\\Users can read/replace ProgramData CA-key material, while the sandbox group is denied.
 
 Interpretation: the source supports stronger controls than a high-level summary suggests, but it does not justify complete network isolation. Separate the WFP installed-state bug, IPv6 probe omission, and intentional protocol/service gaps. srt remains ALPHA / STUDY ONLY. No PC or Windows tests, installs, ACL/WFP mutations, upstream PR actions, implementation or adoption decision.
+
+
+## 18. OpenHands EventLog and Happy pairing source review — 2026-11-01
+
+New detailed review: AI_COLLAB/OPENHANDS_EVENTLOG_AND_HAPPY_PAIRING_SOURCE_REVIEW_20261101.md.
+
+Pinned refs:
+- OpenHands/software-agent-sdk main 98849457621881ae2414719b82b8bc1cf535b4ab.
+- slopus/happy main 323fb2e9fd0c9a44ceab9239fbc586c513f7f844.
+
+Key OpenHands findings:
+- EventLog is per-event JSON, append-only, with event ID, parent validation, durable disk sequence, marker/index refresh and gap reporting.
+- LocalFileStore uses atomic text writes and filelock but caches reads; network/NFS locking is explicitly unsupported/unreliable.
+- ConversationState writes event file then updates active leaf in separate base_state snapshot. Crash between them could leave a persisted but inactive event; this is an untested source-derived hypothesis.
+- EventService uses owner ID/generation/expiry and holds lease lock across generation check plus guarded disk write. This fences persistence writes, not arbitrary external side effects. Event and HEAD writes are separately guarded, not transactional.
+
+Key Happy findings:
+- Android pairing derives a device token from ephemeral X25519 and transcript-bound HKDF, shows four emoji, requires user comparison and mutual HMAC proof, and only returns token after daemon proof.
+- Fixed crypto vectors and client tests exist; PairingService tests use FakeDaemon.
+- No daemon-side /v0/mobile-connector/handshake implementation was located in public repository source search. Replay/expiry/rate-limit/atomic transition semantics remain unknown.
+- Android account credentials use Expo SecureStore; happy-agent CLI writes token+secret JSON without file encryption and only requests POSIX file modes. Windows ACL effect unverified.
+- Happy's E2E content encryption and server-side third-party token encryption are distinct.
+
+Cross-project interpretation:
+- OpenHands informs D-04 event identity/order/evidence and the lease-vs-side-effect distinction, but is not a frozen contract or copy-ready store.
+- Happy pairing could be a future device authorization UX layer only; it does not replace remote execution or OS policy enforcement.
+- D-01..D-08, fixed-task worksheet, canonical acceptance, product direction and all RevDev roles remain unchanged.
+
+No tests, builds, device runs, upstream changes, PR edits, schema/acceptance changes, provider, deployment, host action or spend. PC and RevDev runtime state remain UNKNOWN.
