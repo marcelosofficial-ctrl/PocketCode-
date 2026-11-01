@@ -218,3 +218,31 @@ Do not turn PocketCode into a general mobile terminal, unrestricted shell, vendo
 ## 9. Non-actions and evidence status
 
 This review did not inspect RevDev PC source or runtime, run code, install software, execute tests, exercise a device, add dependencies, use an AI provider workload, create accounts, incur spend, change schemas, alter canonical acceptance, touch PR #2 or PR #3, merge, deploy, publish, mutate a queue, or operate a host. RevDev PC state remains UNKNOWN. PocketCode remains research/documentation-only on its isolated branch.
+
+
+## 10. Windows sandbox source-audit follow-up — 2026-11-01
+
+Claude supplied a partial Codex-vs-srt Windows audit after timing out. The complete reconciled findings, evidence limits, proposed later tests and source-read backlog are recorded in [WINDOWS_SANDBOX_SOURCE_AUDIT_CLAUDE_20261101.md](WINDOWS_SANDBOX_SOURCE_AUDIT_CLAUDE_20261101.md).
+
+### 10.1 Independent correction: Codex token flags are upstream-verified
+
+ChatGPT independently fetched Codex source at exact commit 06f3b4836ac6e4fecc1d75a09b8a9fa369b16635:
+- codex-rs/windows-sandbox-rs/src/token.rs
+- codex-rs/windows-sandbox-rs/src/elevated/command_runner_win.rs
+- the commit diff/message.
+
+This verifies the exact CreateRestrictedToken flags DISABLE_MAX_PRIVILEGE | LUA_TOKEN | WRITE_RESTRICTED, zero disabled SIDs, zero deleted privileges, restricting SID order (capabilities, extras, logon, Everyone), zero SID attributes, default-DACL setup and re-enabling SeChangeNotifyPrivilege. It also verifies the elevated runner's new user-SID constructors and the commit's explicit statement that the unelevated path is unchanged. The flags are therefore not derivative-only evidence as Claude's original report cautiously classified them.
+
+The pinned commit's rationale documents a Ninja/default-named-pipe hang in the elevated write-restricted token and an elevated-only fix. It also states that the same repro remains in the unelevated sandbox. This is compatibility evidence for one narrow issue, not proof of the full sandbox.
+
+### 10.2 srt PR #745 independently checked, source still unread
+
+ChatGPT fetched PR #745 and verified its project-authored description: an AppContainer token could bypass the earlier WFP account-SID match; the fix adds all-packages SIDs; verification probes additional token shapes; anonymous and deny-only shapes remain residuals; lowered-integrity setup failures are not necessarily fatal; loopback-open mode exposes all local loopback services; and existing installations retain old filters until re-install because there is no migration.
+
+The PR also says Windows CI ran its unit/smoke/integration legs but no manual Windows run was performed. The Rust implementation itself was not read. Do not convert PR design notes into source-verified behavior.
+
+### 10.3 Disposition unchanged
+
+Neither sandbox is selected. srt remains alpha and STUDY ONLY. Codex remains STUDY ONLY. No sandbox installation, host mutation, Windows test, dependency, schema, acceptance change or product-direction change is approved. RevDev PC state remains UNKNOWN. The source-read backlog and PROP-ST-01..23 are proposals only, not canonical acceptance IDs.
+
+The next bounded pass is Gemini's independent challenge/source read when available, not another broad 70-candidate research sweep. Claude's remaining separate work is OpenHands EventLog/state/persistence and Happy pairing/encryption source review.
