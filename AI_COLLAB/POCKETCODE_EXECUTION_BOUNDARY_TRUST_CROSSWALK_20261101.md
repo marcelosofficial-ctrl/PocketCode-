@@ -934,3 +934,12 @@ The plan treats the append-then-leaf-save gap as a source-derived hypothesis, no
 The confirmation criterion is deliberately narrow: a valid persisted E1 discoverable after restore while base_state still names E0, restore selects E0, and E1 is absent from the active ancestry. Process-kill tests do not prove power-loss durability. NFS/network storage is excluded because the source warns its file locks are unreliable.
 
 Mapping remains advisory only: lifecycle D-04 OPEN; D-05 BLOCKED; D-06 owner-open; D-08 owner-open. No new acceptance ID, field, schema or owner decision. The plan has NOT been executed; OpenHands remains a study reference, not a selected PocketCode store.
+
+
+## 25. OpenHands crash-recovery source refinement — 2026-11-02
+
+A further exact-ref read of OpenHands at `98849457621881ae2414719b82b8bc1cf535b4ab` narrows Section 23 and the Section 24 test plan. `openhands-agent-server/openhands/agent_server/event_service.py` lines 1424–1467 explicitly recognizes that persisted HEAD may lag an event written before autosave. For a restored conversation with `execution_status=RUNNING`, it scans the full event log for unmatched actions and, if no ObservationBaseEvent exists for the first action's tool_call_id, appends a non-retryable internal AgentErrorEvent explicitly parented to that action. This avoids a recovery result being stamped as a sibling on stale HEAD. `openhands-sdk/openhands/sdk/conversation/state.py` lines 268–320 confirm a still-existing saved leaf is accepted as-is; missing-leaf repair only applies when the saved leaf file is absent.
+
+Interpretation: the non-atomic SDK append/HEAD boundary is directly acknowledged in source, and the agent-server has a targeted recovery path for interrupted tool actions. The recovery is conditional on RUNNING status, unmatched action and no matching observation-like event by tool_call_id. It does not prove whether an external side effect occurred before the crash, nor does it authorize automatic redispatch. A matching observation anywhere in the full log suppresses recovery, which needs a branch/association test.
+
+The falsification plan was expanded with OH-HEAD-FI-09..14 (plan-local labels only) to test RUNNING vs non-RUNNING restore, full-log observation suppression, multiple unmatched actions, tool_call_id association and side-effect-before-observation ambiguity. These are not PocketCode acceptance IDs. The test plan remains NOT EXECUTED. D-04 OPEN, D-05 BLOCKED, D-06 owner-open and D-08 owner-open remain unchanged.
