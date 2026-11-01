@@ -176,3 +176,8 @@ A second official-docs pass found important API-generation distinctions and a ho
 - **Cgroup process membership:** `cgroup.events: populated=0` is an observation of live processes in that cgroup and descendants. The host must prevent workload-controlled migration out of the observed subtree and preserve a supervisor-owned membership boundary. Source: https://www.kernel.org/doc/html/v6.14/admin-guide/cgroup-v2.html.
 
 Provider selection remains NONE. All evidence remains desk research, not runtime verification.
+
+
+### Firecracker serial limiter default and loss telemetry
+
+The Firecracker API schema defines serial-console rate limiting as optional. If configured, guest writes above the token-bucket rate are silently dropped and counted in `uart.rate_limiter_dropped_bytes`; if absent, the default is unrate-limited serial output. Do not assume Firecracker enables this control automatically. For any self-operated Firecracker path, verify the effective API configuration, record dropped-byte metrics, and independently bound the VMM log pipe/file sink. Sources: https://github.com/firecracker-microvm/firecracker/blob/main/src/firecracker/swagger/firecracker.yaml ; https://github.com/firecracker-microvm/firecracker/blob/main/docs/prod-host-setup.md.
