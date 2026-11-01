@@ -214,3 +214,11 @@ The audit also requires a complete provider idempotency-token namespace and rete
 Published [COORDINATOR_CRASH_WINDOW_AND_FENCING_AUDIT_20261101.md](AI_COLLAB/COORDINATOR_CRASH_WINDOW_AND_FENCING_AUDIT_20261101.md), including proposed STALE/TOKEN/PUB/REL falsification cases. These are proposed test additions, not canonical acceptance IDs.
 
 D-06 remains OPEN; D-04/D-07/D-08 remain OPEN; no provider/store is selected. Static review only: no implementation changes, tests, workloads, account/billing actions, merges or deployments.
+
+### Unified coordinator failure-injection specification — 2026-11-01
+
+Published [UNIFIED_COORDINATOR_FAILURE_INJECTION_SPEC_20261101.md](AI_COLLAB/UNIFIED_COORDINATOR_FAILURE_INJECTION_SPEC_20261101.md), a 14-section synthesis of the existing DR-01..12 and COORD-01..12 inventories, report-history and artifact-release checklists, the provider-neutral boundary and the two 2026-11-01 architecture audits.
+
+The specification defines the distinct identity namespaces, proposed durable state machine, fourteen crash/commit boundaries, fencing-epoch requirements, provider token namespace/retention requirements, and proposed STALE-01..05, TOKEN-01..04, PUB-01..02 and REL-01..03 failure-injection cases. These proposed cases do not replace or renumber canonical LOOP/CASE or existing DR/COORD IDs. It separates owner decisions D-01..D-08 from engineering/test design and defines proof gates from pure tests through fake coordinator, persistence, provider, artifact/API and device acceptance.
+
+Source pins were refreshed from the active documentation branch immediately before authoring. The new specification blob is `51edbb9bd1e3f3518b0e80620be9c0ebe88f49ab`. No implementation, canonical acceptance, PR #2/#3, provider/store selection, tests, workloads, account/billing, merge or deployment changed. D-05 remains BLOCKED; D-06..D-08 remain unproven at real boundaries; all new cases are NOT RUN.
