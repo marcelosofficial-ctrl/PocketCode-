@@ -646,3 +646,85 @@ A standalone, comprehensive continuation document has been added:
 It includes PocketCode and RevDev goals, three-AI roles, owner constraints, Claude's expected medium-sized report and how to evaluate it without overriding project goals, Gemini findings and corrections, exact candidate dispositions/source pins, fixed-task state, canonical acceptance IDs, AWC/P0-D crosswalk, lifecycle observations, resource/teardown research, RelayRef status, GitHub/PR safeguards, next-work order and a complete copy/paste message for the next ChatGPT chat.
 
 The standalone bootstrap is the primary transfer document. This addendum and the current checkpoint remain supporting continuity records.
+
+
+## 31. Continuation review — live state, product-vision precision, and cross-project source reconciliation (2026-11-01)
+
+### 31.1 Live PocketCode GitHub state rechecked
+
+The research branch `pocketcode-ai-workflow-director-research-2026-10-28` exists. A fresh comparison against `main` returned **516 ahead / 0 behind**, with base and merge-base `555840d8d83342513d9cd353d4d1522d46a5c82d`. The comparison endpoint did not expose the research branch HEAD SHA; do not infer it from commit counts or older handoff pins.
+
+PRs were re-fetched directly:
+- PR #2 remains **open, draft, unmerged**, head `eb8b7ea83cb0e8fe1880351276c485b761431791`, base main `555840d8d83342513d9cd353d4d1522d46a5c82d`.
+- PR #3 remains **open, draft, unmerged**, head `0ddcc0bc97bac5d446aefedf3d71f99411bd841d`, same base.
+- Neither PR was modified. Do not treat the PR metadata's `mergeable` field as permission or a merge recommendation.
+
+Current read-back pins from the research branch:
+- Bootstrap: `AI_COLLAB/NEW_CHAT_BOOTSTRAP_20261101.md`, blob `d07ffc44d37ccfa8bf3ab900d4307370a541946b`.
+- This addendum before this append: blob `e58e165a15ebd811d59b5933267c2d02ad2b97f8`.
+- Current checkpoint: `AI_COLLAB/POCKETCODE_CURRENT_CHECKPOINT_20261028.md`, blob `8df9af27316743fbd652d0dcff7de3c68acc26f5`.
+- Project status: `PROJECT_STATUS.md`, blob `586e9650dc5a4c6d4df433681a4470f0dac2ea19`.
+- Fixed-task worksheet: `AI_COLLAB/PRODUCT_FIXED_TASK_COMPARISON_WORKSHEET_20261028.md`, blob `14acbe1d6ff8ce99e49e164d70653397600de9db`.
+- Gemini research review: `AI_COLLAB/GEMINI_OPEN_SOURCE_RESEARCH_REVIEW_20261101.md`, blob `aefc611ee273393257a181ec192b75246c80210a`.
+- Candidate deep dive: `AI_COLLAB/OPEN_SOURCE_CANDIDATE_DEEP_DIVE_20261101.md`, blob `efb562e7061746ff738274cc3778f74a40ba2d69`.
+- RevDev/PocketCode independent crosswalk review: `AI_COLLAB/REVDEV_POCKETCODE_CROSSWALK_INDEPENDENT_REVIEW_20261101.md`, blob `2e577636535bff05916ae21e4e9b63db040deb37`.
+- Owner decision register: `AI_COLLAB/OWNER_DECISION_REGISTER_20261029.md`, blob `e67b2659cf2d71ef77d8e4619c91143e71062470`.
+- Shared-core proposal: `PRODUCT/REVDEV_POCKETCODE_SHARED_CORE.md`, blob `35344d54cd7864862797c424686de885a217c70d`.
+
+### 31.2 Important product-vision wording: unified destination, separate engineering boundaries now
+
+The authoritative shared-core proposal states that the **intended destination is one coherent PC-and-phone product/program**: RevDev is the PC-side guarded developer-operations/control-plane path; PocketCode is the phone-first path.
+
+The present separation of repositories, roadmaps, clients, platform adapters, acceptance suites and release gates is a deliberate transitional engineering boundary. It is **not** a decision to abandon the unified product vision or to treat the projects as unrelated products.
+
+At the same time, this destination does not authorize premature convergence. Integration topology remains undecided. Align versioned task/work-plan, lifecycle, result/report, evidence and continuation contracts first. Do not merge repositories, migrate shared code, choose a shared runtime, rewrite the frontend or combine execution/security boundaries without a separately reviewed plan, supporting evidence and owner authorization.
+
+Use this precise distinction in future summaries:
+- **Product direction:** one coherent PC-and-phone product/program is the intended destination.
+- **Current engineering reality:** PocketCode and RevDev remain distinct projects with separate runtime, trust, platform, acceptance and release boundaries.
+- **Future integration:** undecided and evidence/approval-gated.
+
+### 31.3 AWC/P0-D source reconciliation rechecked at the original RevDev branch
+
+The earlier fetch attempt without an explicit RevDev ref returned 404; this was a ref-selection error, not evidence that the source was missing. Re-fetching from `marcelosofficial-ctrl/DevRelay-Missions`, branch `review/revdev-adaptive-ai-workshare-2026-10-27`, succeeded and confirmed these exact pins:
+- RevDev acceptance traceability supplement `resume/revdev/POCKETCODE_REVDEV_ACCEPTANCE_TRACEABILITY_SUPPLEMENT_2026-10-29.md`: blob `d56da68bdc5414cf518d97abc63445f26c6af1fa`.
+- AWC manifest `resume/revdev/AI_WORK_COACH_SYNTHETIC_FIXTURES_V0_1.json`: blob `c2d4cba6c836f725f7bc4585f91e02d443fe89e1`.
+- AWC fixture/measurement spec: blob `9169ae6c6e5689f70287b7c6c0aeac534d8f7183`.
+- AWC run-record semantic conformance matrix: blob `6618d878747e4d09dd82f0b5228f5f9f3c175927`.
+- AWC manifest static audit: blob `333f6732499bd8f32ceb78f9e95c6001d9b6ed5e`.
+- P0-D source `resume/revdev/SHARED_INFRA_RELIABILITY_HARDENING_PLAN_2026-09-30.md`: blob `6a0c804e1ad75edf1022af960acbb143ba1430b6`.
+
+The AWC manifest is `AWC-FIXTURES-0.1`, status `PROPOSED_NOT_RUN`, exactly 18 fixtures AWC-001..018. AWC IDs are RevDev Work Coach evaluation fixtures, not PocketCode LOOP/CASE acceptance and not RevDev P8U/P0-D acceptance. The fixture and measurement specification explicitly separates assistant-response, packet/orchestrator, host-adapter and product-execution-guard test layers. No model trial or product acceptance is established.
+
+**AWC-017 chronology warning:** the independent crosswalk document contains an earlier interim table in Section 2 that described LOOP-13/14 adjacency. The later Gemini reconciliation and source-collision sections (Sections 10.2, 10.4 and 13) supersede that interim wording: the pinned AWC-017 fixture is about preparing instructions when provider/model/plan/host capabilities are unknown; it is not cross-attempt event binding, and its current disposition is **no LOOP/CASE mapping**. The final bootstrap's Section 8 correctly records AWC-017 as none. Do not resurrect the earlier interim mapping. The technical concern about cross-attempt identity remains valid, but belongs to PC-LC-03 / trusted event-boundary requirements, not AWC-017.
+
+The P0-D source was also re-fetched at the pinned branch and confirms:
+- P0-D-09 is an intentional malformed mission quarantined without blocking later work.
+- P0-D-10 is exact-result publication and duplicate/idempotent replay.
+- P0-D-10a/10b/10c remains the established split: ambiguous replay adjacent to CASE-13; run identity/order adjacent to CASE-16; exact durable publication remains RevDev-specific.
+- P0-D-09 has no PocketCode mapping. Do not turn queue liveness/quarantine into CASE-08 or CASE-16.
+
+The crosswalk remains conceptual traceability only. AWC trials are PROPOSED_NOT_RUN; PocketCode LOOP/CASE and RevDev P8U/P0-D runtime acceptance remain NOT RUN; PC/runtime/queue/publication state remains UNKNOWN.
+
+### 31.4 Canonical execution and decision guardrails reconfirmed
+
+The current research documents continue to preserve:
+- Canonical PocketCode acceptance IDs: LOOP-01..14 and CASE-01..16. Supplementary PC-LC, PC-AD, PC-DB, PC-RT, PC-EXT, RES, TDN, TPM, PBR/PF, DR, AR and RH identifiers remain in their own namespaces.
+- D-01 is still owner-open. Under the current canonical CASE-04 wording, the working default for a trusted enforced timeout is INCOMPLETE / timed_out, with the limit cause recorded separately. Do not silently turn it into FAIL.
+- D-03 is still owner-open. Only evidence explicitly required by the particular case gates that case's PASS; optional diagnostics are not a universal gate. EMPTY, UNAVAILABLE, PARTIAL, RUNTIME_LIMIT and DISPLAY_TRUNCATED remain distinct.
+- D-05..D-08 are proposed boundary requirements, not verified integrations: applied-policy binding; durable idempotency/recovery; release-time authorization/integrity; append-only crash-safe report history.
+- A fake adapter, pure helper or synthetic fixture cannot establish host/provider isolation, egress denial, resource enforcement, termination, cleanup, durable storage or release authorization.
+
+The fixed task remains a frozen design fixture with an isolated Python sanity check only. Product-path comparison remains NOT RUN. Do not convert the fixture sanity check into a PocketCode/Pyodide/browser/iPhone/remote/provider PASS.
+
+### 31.5 Next work while Claude's report is pending
+
+Do not launch another broad candidate survey. The highest-value next pass is to prepare for a rigorous reconciliation of Claude's report:
+1. Extract every material claim, recommendation, source pointer, dependency and implied scope change.
+2. Classify each as VERIFIED, SOURCE CLAIM, INFERENCE, RECOMMENDATION, CONFLICT or UNKNOWN.
+3. Compare against Gemini's pinned review/deep dive, the canonical PocketCode contract and acceptance, owner decision register, fixed-task worksheet, product-path desk review and current RevDev/PocketCode crosswalk.
+4. Verify exact upstream source revision, module/file, licence, transitive dependencies, platform support, threat model and evidence limits for any proposed reuse.
+5. Preserve useful engineering ideas even when the proposed technology or architecture is rejected.
+6. Record disagreements as OPEN until primary evidence or an owner decision resolves them. Do not adopt a provider, runtime, dependency, schema, acceptance ID, shared architecture or scope expansion by recommendation alone.
+
+No source/test, canonical acceptance, PR, Action, provider, account, workload, queue, host, merge, deployment or spend was changed in this continuation review. The only permitted write in this pass is this documentation-only continuity append on the existing research branch.
