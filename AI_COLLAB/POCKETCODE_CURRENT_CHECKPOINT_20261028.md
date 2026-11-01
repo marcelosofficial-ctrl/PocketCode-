@@ -333,3 +333,16 @@ Owner supplied Gemini's four-stage open-source research report. ChatGPT complete
 **Administrative decisions:** no unified runtime/graph architecture; PocketCode and RevDev remain separate systems and execution/security/acceptance boundaries, with future protocol compatibility possible. No LangGraph, tsnet/AsyncSSH, Piston-hosted, Watchdog, FlaUI, wasmsh-shell or OpenHands-ACI adoption approved. CodeMirror 6, Pyodide and Aider repo-map remain candidates/patterns only. No new canonical LOOP/CASE IDs, schema fields or API contract. No source, tests, PRs, Actions, accounts, providers, workloads, spending, merge or deployment authorized. $0 budget remains; PC/runtime/queue state UNKNOWN.
 
 Next: await Claude's independent report; reconcile exact upstream revisions and disagreements; deep-inspect only CodeMirror 6, Pyodide, wasmsh and Aider repo-map as plausible first candidates. Continue fixed-task experiment design; do not claim any path verified or selected.
+
+## 2026-11-01 pinned open-source candidate deep dive
+
+Completed a follow-up static source-level pass on CodeMirror 6, Pyodide, wasmsh and Aider repo-map. See [OPEN_SOURCE_CANDIDATE_DEEP_DIVE_20261101.md](OPEN_SOURCE_CANDIDATE_DEEP_DIVE_20261101.md), commit `49a288bb52a0b234c30713f980d63a3c1bf84586`, and the updated [Gemini research review](GEMINI_OPEN_SOURCE_RESEARCH_REVIEW_20261101.md).
+
+Important correction: Gemini's `github.com/codemirror/CodeMirror` points to legacy CodeMirror 5. The old CodeMirror 6 GitHub repositories were archived on 2026-04-15 after development moved to `code.haverbeke.berlin`; npm `@codemirror/view@6.43.15` remains actively published under MIT. The current Forgejo source returned 403 here, so do not use the archived GitHub forwarding commit as a current source pin. Pin package version/integrity and test device UX.
+
+Pinned candidates:
+- wasmsh commit `beb3eff548be7beb6dfdda3bf7c2f893f51d9c26`: explicit no-host-filesystem/no-fork/no-exec model; browser background syntax is synchronous; zero budget means unlimited; threat model warns of embedder OOM and network allowlist side channels. Interesting, but no shell in MVP.
+- Pyodide commit `950e0de49536778f2d7a0efc825e932d812be9e7`: MEMFS is ephemeral, IDBFS sync explicit, native browser directory mount experimental Chromium-only, and normal threading/multiprocessing/subprocess unavailable. Still a leading candidate for the fixed standard-library CSV task.
+- Aider commit `5dc9490bb35f9729ef2c95d00a19ccd30c26339c`: repo map module is coupled to Aider model/I/O/cache internals and dependencies. Reuse concept, not module, unless a later spike proves otherwise.
+
+No builds, installs, tests, device runs, benchmarks or code adoption. Current candidate order is CodeMirror/Pyodide for first-proof comparison, wasmsh later optional shell, Aider map later optional codebase-context utility.
