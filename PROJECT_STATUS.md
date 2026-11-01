@@ -149,3 +149,5 @@ Added [AI_COLLAB/OPEN_SOURCE_CANDIDATE_DEEP_DIVE_20261101.md](AI_COLLAB/OPEN_SOU
 ## 2026-11-01 fixed-task protocol hardening
 
 Updated `AI_COLLAB/PRODUCT_FIXED_TASK_COMPARISON_WORKSHEET_20261028.md` with a canonical, frozen `main.py` source fixture. This closes a comparability gap: every execution path must now run the same source unchanged or explicitly record its adaptation/wrapper. The fixture validates input before writing output and defines exact success and malformed-header behavior. Design-only; not run or device-tested.
+
+The canonical fixed-task source fixture received an isolated logic sanity check in ChatGPT's Python 3.13.5/Linux environment: expected success output and malformed-header failure behavior matched; see worksheet Section 2B. This is not a product-path test and does not change NOT RUN status for mobile/browser/remote/hosted comparison.
