@@ -503,3 +503,16 @@ The plan includes same-ID/same-payload retry, same-ID/changed-payload conflict, 
 Cross-project mapping: lifecycle D-04 remains OPEN; D-05 BLOCKED; D-06 and D-08 owner-open. No new acceptance ID, schema, field or owner decision. No tests, source changes, providers, PR changes, builds, deployment or host operations. RevDev PC state remains UNKNOWN.
 
 Next useful reviewer action: ask Gemini to challenge the test boundaries and assertions using the updated independent-review packet. Claude follow-up is only warranted if it can run or inspect the exact pinned OpenHands source in a disposable test environment; no claim of execution without exact command/environment/results.
+
+
+### 20.1 Important OpenHands source refinement — 2026-11-02
+
+A second exact-ref source pass found an explicit OpenHands agent-server recovery path. At pinned commit `98849457621881ae2414719b82b8bc1cf535b4ab`, `openhands-agent-server/openhands/agent_server/event_service.py` lines 1424–1467:
+- a restored conversation with persisted execution_status RUNNING is marked ERROR;
+- recovery scans the full event log, not only active branch, for unmatched actions;
+- if the first unmatched action has no ObservationBaseEvent with the same tool_call_id anywhere in the log, it appends a non-retryable internal AgentErrorEvent explicitly parented to the action;
+- source comments state this avoids attaching the recovery result to stale HEAD as a sibling and leaving an orphan tool result.
+
+SDK state.py lines 268–320 confirm a still-existing saved leaf is returned as active HEAD; missing-leaf repair only runs when the saved leaf event file is absent. Thus the append/HEAD gap remains real at the persistence layer, but it is not accurate to say the current agent-server has no recovery. The recovery has conditions and limitations: RUNNING status, first unmatched action only, log-wide tool_call_id suppression, and no proof about whether a side effect occurred before the crash. It must not be treated as safe provider retry.
+
+The falsification plan now includes OH-HEAD-FI-09..14 for RUNNING/non-RUNNING restore, pre-existing observation suppression, multiple unmatched actions, mismatched action association and external side-effect-before-observation ambiguity. Plan remains NOT EXECUTED. See updated plan for exact test design. D-04 remains OPEN; D-05 BLOCKED; D-06 and D-08 owner-open. No acceptance IDs or owner decisions changed.
