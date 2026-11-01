@@ -661,3 +661,18 @@ The direct source comparison confirms that the following remain unchanged betwee
 The descendant is the strongest available source candidate for the specific fixes listed above, and its ancestry means those changes can be reviewed as a linear continuation from PR #3. It is **not** evidence that PR #3 itself has been updated, accepted, or tested. Do not merge, fast-forward, cherry-pick, or create a PR without an explicit owner decision and a full review of all 34 commits and their documentation changes.
 
 The next efficient engineering pass should review the 34-commit range and the changed helper/tests as a whole, then isolate the minimal source commits relevant to the lifecycle contract. Keep the known-open OutputBudget, limit-flag, output/termination, event-binding/snapshot, and redaction issues separate. No implementation change, test execution, PR creation, merge, Actions run, provider activity, or deployment occurred during this comparison.
+
+
+### 17.2a Additional reservation-input validation confirmed by full commit diff
+
+The full 34-commit comparison patch also changes `reserve_idempotency()`, which was not called out in the first function-level summary above. It now rejects tenant ID, key, fingerprint and proposed job ID unless each is a non-blank string. A dedicated regression test, acceptance rows IDEM-03/IDEM-04, and traceability updates accompany this change.
+
+The six added test methods are:
+- `test_fingerprint_rejects_blank_canonical_identity_fields`;
+- `test_malformed_events_are_preserved_and_force_incomplete`;
+- `test_terminal_events_require_nonblank_identity_and_mapping_payload`;
+- `test_idempotency_rejects_blank_or_non_string_identity_values`;
+- `test_tombstone_retries_do_not_shorten_retention_or_change_fingerprint`;
+- `test_tombstones_reject_blank_identity_and_invalid_epoch_values`.
+
+This corrects the summary above: the descendant's additional input hardening covers fingerprint identity, idempotency reservation identity, event shape, and tombstone identity/epoch values. It still does not prove upstream tenant authentication, canonical allowlisting, transactional reservation, durable tombstone storage, or concurrency safety.
