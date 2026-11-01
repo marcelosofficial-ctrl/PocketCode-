@@ -91,3 +91,16 @@ When resuming this independent review, challenge the following without proposing
 6. **Product fit:** explain whether any pattern materially improves PocketCode's remote-first, $0, phone-first architecture without creating a mobile terminal, selecting a provider, or changing owner decisions.
 
 For each finding provide pinned repo SHA, file path, symbol/line range, observed behavior, inference, unknowns, and a concrete falsification test. Keep this review documentation-only.
+
+
+### OpenHands crash-window falsification plan — 2026-11-02
+
+ChatGPT has prepared [OPENHANDS_EVENTLOG_HEAD_CRASH_WINDOW_FALSIFICATION_PLAN_20261102.md](OPENHANDS_EVENTLOG_HEAD_CRASH_WINDOW_FALSIFICATION_PLAN_20261102.md). Please independently challenge its test validity and assumptions, especially:
+- whether the proposed kill hooks truly occur after durable event-file commit but before leaf assignment/save;
+- whether the restore path accepts a still-existing old leaf and therefore leaves the new event outside active ancestry;
+- whether EventLog index/marker refresh could make E1 discoverable even when the active HEAD remains E0;
+- whether the base_state atomic-write test correctly distinguishes pre-replace and post-replace crashes;
+- whether duplicate-ID retry, changed-payload conflict, delayed replay and branch ancestry cases are sufficient without claiming provider idempotency;
+- whether the lease-takeover test correctly models lock scope and avoids claiming external side-effect fencing.
+
+The plan is a future falsification specification only. Do not report it as executed, do not create acceptance IDs or schema changes, and keep source/environment-specific conclusions separate from PocketCode owner decisions.
