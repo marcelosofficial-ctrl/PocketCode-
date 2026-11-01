@@ -263,3 +263,12 @@ Published [SHARED_CONTRACT_READINESS_AND_STATE_DOMAIN_CROSSWALK_20261101.md](AI_
 ### Comprehensive RevDev + PocketCode new-chat handoff — 2026-11-01
 
 Published [NEW_CHAT_HANDOFF_REVDEV_POCKETCODE_20261101.md](AI_COLLAB/NEW_CHAT_HANDOFF_REVDEV_POCKETCODE_20261101.md). It consolidates current verified repository/branch/PR state, three-AI roles, the expected forthcoming medium-sized Claude report and explicit instruction not to let recommendations overwrite project goals, PC/$0/HOSTED_DENY constraints, shared product direction, Gemini candidate audit, cross-project state/identity rules, SCF-001..018, canonical acceptance boundaries, technical audit findings and next priorities. Includes a ready-to-paste bootstrap for the next chat. Documentation-only continuity update; no source/tests, PR #2/#3, default branch, provider, Actions, workload, host state, merge, deployment, billing or spend changed.
+
+
+### Shared fixture preliminary review and fixed-task alignment — 2026-11-01
+
+Added [SHARED_CONTRACT_GOLDEN_FIXTURE_CATALOGUE_CHATGPT_PRELIMINARY_REVIEW_20261101.md](AI_COLLAB/SHARED_CONTRACT_GOLDEN_FIXTURE_CATALOGUE_CHATGPT_PRELIMINARY_REVIEW_20261101.md). This is ChatGPT's independent static semantic/acceptance review of provisional SCF-001..018, not Claude/Gemini review, owner approval, schema freeze or executable acceptance. It recommends retaining the 18 IDs while tightening selected proof preconditions and preserving supplemental CAS/DISPATCH/CANCEL/EVENT/PROJECTION/PUB/TOKEN/REL adversarial cases without renumbering canonical suites. Claude's dedicated catalogue review and Gemini's dedicated red-team review remain pending.
+
+The newer execution-boundary crosswalk's example CSV-cleaning/CSV-to-CSV task could be mistaken for a replacement of the already-established fixed-task worksheet. Section 11 was aligned to the existing canonical PRODUCT_FIXED_TASK_COMPARISON_WORKSHEET_20261028.md (items.csv to real summary.json, including the malformed-header case). The alternate cleaning task is not adopted. The worksheet remains the single canonical fixed task; LOC-01..24 refine browser/device acceptance but do not change it.
+
+Documentation-only changes on this isolated research branch. No schema, canonical acceptance, source/tests, PR #2/#3, provider/store/runtime, account, workload, Actions, billing, deployment, merge or PC/host/queue state changed. No tests or device execution occurred.
