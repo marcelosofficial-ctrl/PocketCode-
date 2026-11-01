@@ -405,3 +405,20 @@ Open issue/PR links for follow-up:
 - https://github.com/anthropics/sandbox-runtime/pull/745
 
 No runtime tests were run by ChatGPT. All RevDev PC state remains UNKNOWN.
+
+
+## 16. Deeper Codex source audit continuation — 2026-11-01
+
+Read Section 14 of AI_COLLAB/WINDOWS_SANDBOX_SOURCE_AUDIT_CLAUDE_20261101.md for exact pinned source blobs and details.
+
+At Codex commit 06f3b4836ac6e4fecc1d75a09b8a9fa369b16635, ChatGPT additionally inspected firewall.rs, acl.rs, setup_main_win.rs, sandbox_users.rs, dpapi.rs, helper_materialization.rs, process.rs, spawn_prep.rs and elevated/runner_pipe.rs.
+
+New source findings:
+- Offline outbound Firewall BLOCK is NET_FW_IP_PROTOCOL_ANY, non-loopback, all profiles and scoped to the offline account SID with LocalUserAuthorizedList read-back. UDP loopback is blocked; TCP loopback is blocked except proxy ports unless allow_local_binding removes those blocks.
+- Codex workspace write grants include FILE_DELETE_CHILD. add_deny_write_ace writes a deny on the target but does not add a separate parent FILE_DELETE_CHILD deny. Parent-mediated delete/rename is a high-priority Windows test, not yet a proven bypass.
+- dacl_has_write_deny_for_sid considers any overlapping deny bit enough; add_deny_write_ace returns Ok(false) on SetEntriesInAclW/SetNamedSecurityInfoW failure, so callers cannot distinguish a failed write from no change. setup_main_win only bails on accumulated ACL errors when refresh_only is true. These require independent security review.
+- Codex uses machine-scope DPAPI for password blobs, with the sandbox secrets directory ACL-denied to the sandbox group. Helper freshness checks size+mtime, not cryptographic hash/signature; the helper directory is ACL-limited to sandbox read/execute.
+- Elevated runner pipes use random 128-bit names, sandbox-user-only DACL and verify the connected PID.
+- No Job Object/kill-on-close was found in the inspected Codex process launch path; descendant orphan behavior remains UNKNOWN.
+
+These are source-level findings/review concerns, not demonstrated runtime exploits. Codex remains STUDY ONLY. No Windows tests or host operations were performed.
