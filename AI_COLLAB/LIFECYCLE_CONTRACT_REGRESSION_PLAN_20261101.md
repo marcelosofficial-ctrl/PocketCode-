@@ -239,3 +239,31 @@ Retain the existing separation between execution limit, stream capture, collecto
 4. No level inherits the proof of a later level. A provider API response is not host enforcement evidence; a unit test is not persistence evidence; a mock is not a provider test.
 
 All PC-EXT cases are proposed and NOT RUN. No provider, database, scanner, runtime, or billing system is selected. No source or test implementation is authorized by this plan.
+
+
+## 9. Alignment with existing falsification checklists
+
+The PC-EXT labels in Section 8 are a review traceability index, not a second normative test suite. Where an established checklist already owns the detailed falsification cases, implement and report against that checklist's original IDs. Do not create duplicate tests, acceptance requirements, or competing expected outcomes merely to satisfy a PC-EXT label.
+
+| Section 8 item | Existing authoritative research/test specification | What remains useful from the Gemini review | Disposition |
+|---|---|---|---|
+| PC-EXT-01 applied-policy barrier | `AI_COLLAB/ADAPTER_BOUNDARY_DECISION_GATE_20261029.md`: D-05, PBR-01..07 and PF-01..05 | Provider-specific desired-versus-applied state examples and the reminder that an ETag is not proof of data-plane enforcement | Existing PBR/PF are authoritative. PC-EXT-01 is a pointer and provider-specific test-design note, not a duplicate barrier contract. |
+| PC-EXT-02 resource boundary/host containment | `SECURITY.md`, LOOP-12, `RESEARCH/EXECUTION_PROVIDER_RESEARCH.md` evaluation proof | Actual selected-provider evidence for memory/CPU/process/disk/output limits and isolation from the orchestration worker | This is still a gap in detailed falsification coverage. Expand the provider proof plan after a provider and its enforcement telemetry are selected. No cgroup-specific requirement unless cgroup v2 is actually the enforcement mechanism. |
+| PC-EXT-03 artifact publication/release | `AI_COLLAB/ARTIFACT_RELEASE_FALSIFICATION_CHECKLIST_20261029.md`: D-07 and AR-01..14; `PRODUCT/EXECUTION_CONTRACT.md`; `AI_COLLAB/PROVIDER_NEUTRAL_BOUNDARY_CONTRACT_SKETCH_20261029.md` §6 | Use partial-write/digest-mismatch examples as test data against AR-03/05/09/14; keep current authorization and exact immutable bytes at the release boundary | AR-01..14 is authoritative and already covers these requirements. PC-EXT-03 must not become a duplicate release suite. |
+| PC-EXT-04 teardown/orphan reconciliation | `AI_COLLAB/TRANSITION_AND_REPORT_PROJECTION_MATRIX_20261029.md`; `AI_COLLAB/SEMANTIC_DECISIONS_AND_REPORT_PROJECTION_20261029.md`; `AI_COLLAB/REPORT_HISTORY_PERSISTENCE_FALSIFICATION_CHECKLIST_20261029.md` RH-05/06/12; PC-RT-02 | Explicit provider delete timeout/500, ambiguous deletion, orphan reconciliation and eventual confirmed termination | This remains a useful integration-level gap. Keep execution outcome, cleanup state, job disposition and artifact release distinct. Add a provider teardown case to the later selected-provider implementation plan; no generic CASE ID is created. |
+| PC-EXT-05 delayed cost reconciliation | `SECURITY.md` launch/budget constraints; LOOP-14; `RESEARCH/EXECUTION_PROVIDER_RESEARCH.md` cost evaluation | Distinguish measured usage, estimate, pending provider charge, reconciled charge and unknown | Future observability work only, not current lifecycle acceptance. Blocked until explicit budget/provider approval. |
+| PC-EXT-06 forged stdout control JSON | `AI_COLLAB/TRANSITION_AND_REPORT_PROJECTION_MATRIX_20261029.md` TPM-15; `PRODUCT/EXECUTION_CONTRACT.md` trust/report rules; PC-LC-04 and PC-RT-02 | Expand the negative fixture beyond printed PASS to fake exit, attempt, provider-error and cleanup fields | Add these cases inside the existing producer-authority/terminal-observation tests. Do not treat CASE-09/10 as producer-authentication acceptance. |
+| PC-EXT-07 tenant-scoped semantic idempotency | `AI_COLLAB/IDEMPOTENCY_RECOVERY_FALSIFICATION_CHECKLIST_20261029.md`: D-06 and DR-01..12; `AI_COLLAB/ADAPTER_BOUNDARY_DECISION_GATE_20261029.md` PF-01..05; PC-AD-01 and PC-DB-01 | Make the full execution-relevant fingerprint field list obvious to implementers | DR/PF are authoritative and already cover tenant isolation, semantic changes, concurrency, dispatch intent and crash/ack recovery. PC-EXT-07 is a pointer, not a duplicate test suite. |
+
+### Required sequencing correction
+
+The detailed owner-approved research checklists remain proposed and require owner decisions where marked. Sequence any future work as follows:
+
+1. Resolve D-01..D-04 before freezing verdict and event-replay expectations.
+2. Resolve D-05 and use PBR/PF before any dispatch or hosted-execution safety claim. Request fingerprint equality is not applied-policy proof.
+3. Use DR-01..12 for durable reservation and ambiguous-dispatch recovery; then prove the chosen provider's idempotent-start or authoritative lookup semantics. Do not claim exactly-once provider execution from database idempotency alone.
+4. Use RH-01..14 for durable append-only report history and AR-01..14 for artifact release. RH-12 is the cross-store report/artifact publication case; AR-03/05/09/14 cover immutable-object and mutation races.
+5. Keep PC-EXT-02 and PC-EXT-04 as identified provider/runtime evidence gaps to refine only after the actual boundary is selected. PC-EXT-05 remains future and budget-blocked.
+6. Include PC-EXT-06 as additional hostile stdout fixtures in PC-LC-04/PC-RT-02, not as a separate producer-authentication mechanism.
+
+**No implied approval:** this alignment does not close D-01..D-08, select a provider/store, authorize implementation, or promote any test from SPECIFIED/NOT RUN. The source checklist IDs are the traceability anchors; the PC-EXT labels are navigation aids only.
