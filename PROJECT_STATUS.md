@@ -328,3 +328,10 @@ This was documentation and selected public-source review only. No code, schema, 
 
 
 - 2026-11-01: Integrated the OpenHands/Happy findings into Section 23 of the execution-boundary crosswalk, Section 11 of the state/identity mapping, and the Gemini independent-review packet. These remain study findings only; D-01..D-08, canonical acceptance, fixed task and product direction are unchanged. Updated handoff includes the exact next reviewer challenges.
+
+
+### OpenHands EventLog crash-window falsification plan — 2026-11-02
+
+Added [AI_COLLAB/OPENHANDS_EVENTLOG_HEAD_CRASH_WINDOW_FALSIFICATION_PLAN_20261102.md](AI_COLLAB/OPENHANDS_EVENTLOG_HEAD_CRASH_WINDOW_FALSIFICATION_PLAN_20261102.md). This turns the observed append-event-then-save-active-leaf ordering into a bounded future fault-injection plan, not a defect claim. Eight deterministic process-crash points cover event persistence, leaf assignment/base-state replacement, lost acknowledgement and concurrent lease takeover. The plan requires fresh-process restore and independent classification of event durability, discoverability, active HEAD, active ancestry, acknowledgement and lease generation. It also covers retry/replay conflicts and distinguishes a missing leaf from an old still-existing leaf.
+
+The plan has NOT been executed. It is not PocketCode acceptance and changes no IDs, schema, owner decisions, fixed task, provider/store selection or product direction. Gemini's review packet now asks for an independent challenge of the test boundaries. No source/tests, PR #2/#3, main branch, Actions, provider, account, workload, spend, deployment, merge or host/PC/RevDev queue state was changed or exercised. RevDev PC state remains UNKNOWN.
