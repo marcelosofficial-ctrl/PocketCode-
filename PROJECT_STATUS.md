@@ -233,3 +233,8 @@ The review adds eight design findings: same-epoch concurrent writes require expe
 Proposed additional cases are CAS-01, DISPATCH-01, CANCEL-01/02, EVENT-01..05, PROJECTION-01, PUB-03, TOKEN-05 and REL-04. These are not canonical acceptance IDs and remain NOT RUN. Priority is ADV-01/02/04/05 before coordinator implementation, followed by cancellation, publication-GC, token-retention and transfer semantics before provider/artifact integration.
 
 This is documentation-only. No implementation, canonical acceptance, PR #2/#3, provider/store, workflow, workload, account/billing, merge or deployment changed. D-04/D-05/D-06/D-07/D-08 remain open or blocked as previously recorded.
+
+
+### Lifecycle ordering review — 2026-11-01
+
+Published [LIFECYCLE_ORDERING_AND_EVIDENCE_PRESERVATION_REVIEW_20261101.md](AI_COLLAB/LIFECYCLE_ORDERING_AND_EVIDENCE_PRESERVATION_REVIEW_20261101.md). Static review identified three design clarifications: (1) separate execution finalization from destructive cleanup and preserve required outputs before deletion unless durable provider-side output retention is proven; (2) define a trusted per-task artifact expectation and explicit artifact-not-required path so successful artifact-free jobs can finish; (3) separate release authorization, first-byte disclosure, partial transfer, server-side byte completion and any explicitly verified client receipt. Proposed LIFE-01..12 are not canonical acceptance IDs and remain NOT RUN. P0 before implementation design: evidence preservation and artifact-free branch. P1 before release/API design: transfer semantics. Documentation-only; no source, PRs, provider/store, tests, workflows, workloads, billing, merge or deployment changed. D-01..D-08 remain open/blocked as previously recorded.
