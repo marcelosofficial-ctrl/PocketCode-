@@ -239,3 +239,10 @@ The pinned OpenHands source review was extended beyond the SDK layer. At `event_
 Important conditions and limits: it is gated by persisted RUNNING status; it considers the first unmatched action; any matching observation-like event for the tool_call_id in the full log suppresses recovery; and the recovery error does not prove whether an external side effect happened before the crash. A stale still-existing leaf remains accepted by SDK _resolve_active_leaf; missing-leaf repair is a separate condition. See the expanded FI-09..14 cases in the falsification plan.
 
 This strengthens the D-04 design discussion but does not freeze event identities or semantics. D-05 remains BLOCKED and D-06 remains owner-open: a recovery event is not a provider idempotency/fencing mechanism. No test has run and no owner decision changed.
+
+
+### 12.2 Existing OpenHands tests and residual gap — 2026-11-02
+
+Pinned source review found unit tests for the recovery branches in `tests/agent_server/test_event_service.py` (blob `fc6e589f71318ac36df92b72c1fd0225549d1436`, lines 2419–2678) and `tests/sdk/conversation/test_get_unmatched_actions.py` (blob `35798b1bccb60b0976cf0785682ef17181e4450b`). A documented SIGKILL integration scenario, F31.crash-tool-call, exists in the agent-server verification feature map (blob `5082730e1ba1d333daeaf321c21214ad4924cd12`, lines 191–220).
+
+The unit tests use mocked state and do not assert the recovery event's parent_id or actual restored active ancestry. F31 checks status, matching AgentErrorEvent, no observation and resumed delivery, but does not assert parent_id/active ancestry; its broader recipe includes a DeepSeek key/model precondition. The next meaningful test is a local persistence/restore fault-injection test, not another duplicate mock test. No tests were executed by ChatGPT. No D-04/D-05/D-06/D-08 owner decision changed.
