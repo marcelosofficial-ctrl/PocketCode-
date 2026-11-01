@@ -219,3 +219,13 @@ Add these requirements to the corresponding workstreams:
 
 The current checked-in suite has no tests for G-01/G-02/G-07, policy-key canonicalization, ReportHistory whitespace identity, event nested-mutation/collision diagnostics, or redactor maximum/beyond-maximum lengths. No test was run in this review. See Section 20 of `POCKETCODE_EXECUTION_BOUNDARY_TRUST_CROSSWALK_20261101.md` for exact source observations and official documentation references.
 
+
+
+## 12. Additional retention and report-completeness gates
+
+The fresh follow-up review added two concrete checks to Workstreams A/C:
+
+- **Tombstone expiry:** the in-memory `add()` method can reject a new fingerprint after the old expiry until `lookup()` first deletes the expired record. Resolve trusted-time and atomic expiry semantics under D-08 before changing the helper. Test direct expired-key reuse, exact deadline, stale deletion ordering and concurrent reservation/lookup.
+- **Report truncation certainty:** PR #2 formatter currently records malformed truncation flags in uncertainty notes but displays `no` when there is no independent observed truncation. Change the proposed report projection to tri-state YES/NO/UNKNOWN. Test valid true, valid false, malformed and absent states for stdout, stderr, check-list and file-list independently. Keep display truncation distinct from execution/collector truncation.
+
+See crosswalk Section 21. No implementation source or tests changed in this pass.
