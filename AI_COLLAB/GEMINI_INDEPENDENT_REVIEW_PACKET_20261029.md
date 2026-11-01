@@ -77,3 +77,17 @@ This review is intended for Gemini to return to the PocketCode coordinating chat
 - No provider/runtime selected.
 - No workload, account, billing change, merge, or deployment.
 - Canonical acceptance and PR #2/#3 remain untouched.
+
+
+## Additional source-level challenge topics — 2026-11-01
+
+When resuming this independent review, challenge the following without proposing schema changes:
+
+1. **Codex ACL concerns:** inspect the exact pinned Codex ACL/setup source and test whether target-only deny ACEs can be bypassed through parent FILE_DELETE_CHILD, whether any-overlap deny detection is sufficient, and whether Ok(false) masks ACL API failures. Distinguish code defect from Windows runtime exploit.
+2. **srt WFP:** independently verify current-main partial-filter status logic, IPv4-only readiness probing, issue #723 reproduction scope, open PR #716 repair semantics, and the explicitly unfenced ICMP/DNS Client service path. Do not describe PR #716 as merged or as containing the separate IPv6 probe branch.
+3. **OpenHands EventLog:** challenge the event-file append then separate base_state HEAD update crash window. Determine whether the current restore logic can leave an appended event inactive after a crash. This is a hypothesis until fault-injection proves it.
+4. **OpenHands lease:** confirm guarded_write holds the lease lock across generation check and disk write, and state precisely what it does not fence (external side effects).
+5. **Happy pairing:** validate the Android client crypto/transcript and human confirmation, but do not infer server replay/expiry/rate-limit guarantees from FakeDaemon tests. Locate daemon-side route source or classify server guarantees UNKNOWN.
+6. **Product fit:** explain whether any pattern materially improves PocketCode's remote-first, $0, phone-first architecture without creating a mobile terminal, selecting a provider, or changing owner decisions.
+
+For each finding provide pinned repo SHA, file path, symbol/line range, observed behavior, inference, unknowns, and a concrete falsification test. Keep this review documentation-only.
