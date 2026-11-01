@@ -273,7 +273,7 @@ Likewise, a workload may hit `memory.max` and receive `-ENOMEM` without an OOM k
 Interpret the combined evidence rather than a single counter. Do not require `oom_kill` to increase for every limit-hit fixture, and do not label an arbitrary OOM kill as a cgroup-limit violation without corroboration. This is a proof-attribution refinement, not a new product requirement.
 
 
-## 9. Claude's independent challenge and evidence-boundary reconciliation (2026-11-02)
+## 9. Claude's independent challenge and evidence-boundary reconciliation (2026-11-01)
 
 **Review limitation:** Claude reported that it could not read this review, the lifecycle regression plan, or the readiness backlog during its review attempt. Its response is therefore recorded as a useful adversarial challenge, not as a verdict on the contents of those three documents. The points below were reconciled against the pinned canonical acceptance and the exact research-branch documents in this pass. No implementation or runtime test was performed.
 
