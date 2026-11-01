@@ -162,3 +162,17 @@ These decisions govern planning until explicitly revised:
 - [GNU GPL FAQ](https://www.gnu.org/licenses/gpl-faq.en.html)
 
 **Review limitation:** This review checked project documentation/source entry points, not every line of each candidate repository. No candidate was built, installed, benchmarked, executed or penetration-tested. The source list above is not a substitute for pinned revision and dependency/licence review before adoption.
+
+
+## 9. Follow-up source-level candidate audit — 2026-11-01
+
+A pinned source-level triage of the four most plausible candidates is now recorded in [OPEN_SOURCE_CANDIDATE_DEEP_DIVE_20261101.md](OPEN_SOURCE_CANDIDATE_DEEP_DIVE_20261101.md), commit `49a288bb52a0b234c30713f980d63a3c1bf84586`.
+
+This follow-up found an important CodeMirror source-location issue: Gemini's `github.com/codemirror/CodeMirror` link resolves to the legacy CodeMirror 5 repository. The old CodeMirror 6 GitHub package repositories were archived on 2026-04-15 because development moved to `code.haverbeke.berlin`; the old `codemirror/view` GitHub commit `fbff59ba004d80d8c914f64c42586387b08706ac` is only a forwarding commit, not the current source pin. This is **not** evidence of abandonment: npm currently lists `@codemirror/view@6.43.15` under MIT, with recent publication and current 6.43.x mobile fixes. The Forgejo source host returned 403 in this review environment, so current upstream source commit remains NOT VERIFIED. Pin the published package version/integrity until the active source can be fetched.
+
+The deeper review also confirms:
+- Pyodide's default MEMFS is ephemeral; IDBFS persistence requires explicit synchronization; native directory mounting is experimental and Chromium-only; browser Python lacks normal `threading`, `multiprocessing` and `subprocess` process creation.
+- wasmsh is a constrained shell interpreter, not a general OS shell: no host filesystem, no arbitrary `fork/exec`, no job control; background syntax parses but browser execution is synchronous. Its step/output/pipe/recursion limits use zero for unlimited. The threat model itself warns of embedder OOM and network side-channel risk when hosts are allowlisted.
+- Aider's `repomap.py` is coupled to Aider-specific model/I/O/cache modules and several dependencies, so the map concept is more reusable than the module itself.
+
+No candidate was built, installed, benchmarked, executed or adopted. Exact repository commit and source blob pins, open questions and narrow reuse directions are in the deep-dive document.
