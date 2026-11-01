@@ -190,7 +190,7 @@ Test policy supplied at sandbox creation and policy mutation on an existing sand
 **Traceability:** LOOP-12 and the resource/termination semantics in the transition matrix; no AWC mapping.  
 **Proof layer:** provider/runtime evidence, with adapter evidence for the configured policy.
 
-Exercise the actual selected provider's configured memory, CPU, process-count, disk/file, wall-time, and output limits as applicable. Show the authoritative enforcement source and exact sandbox/job/attempt identity. A workload exceeding its memory boundary must not kill or destabilize the orchestration worker or unrelated workloads. Where cgroup v2 is the actual mechanism, record the exact hierarchy, limit-owning cgroup, mount options, PID membership, and pre/post hierarchical plus local counters. memory.events.local can undercount descendants; memory.events is hierarchical by default unless memory_localevents is enabled. Neither oom nor oom_kill alone proves cause. Capture OOM/timeout race evidence and counters before cgroup removal. Use provider-specific proof where cgroups are not exposed. Distinguish throttling, allocation failure, file-size rejection, process termination, and output collection caps.
+Exercise the actual selected provider's configured memory, CPU, process-count, disk/file, wall-time, and output limits as applicable. Show the authoritative enforcement source and exact sandbox/job/attempt identity. A workload exceeding its memory boundary must not kill or destabilize the orchestration worker or unrelated workloads. Where cgroup v2 is the actual mechanism, record the exact hierarchy, limit-owning cgroup, mount options, PID membership, and pre/post hierarchical plus local counters. memory.events.local can undercount descendants; memory.events is hierarchical by default unless memory_localevents is enabled. Neither oom nor oom_kill alone proves cause. Capture OOM/timeout race evidence and counters before cgroup removal. Use provider-specific proof where cgroups are not exposed. Ensure untrusted code cannot write/migrate through delegated cgroup controls so a process cannot escape the observed subtree. For self-operated Firecracker, also test guest-controlled serial/VMM log floods against bounded host-side log sinks. Distinguish throttling, allocation failure, file-size rejection, process termination, and output collection caps.
 
 ### PC-EXT-03: immutable artifact publication and release-time revalidation
 
@@ -204,7 +204,7 @@ Inject interrupted writes, partial manifests, digest mismatch, bytes changed aft
 **Traceability:** lifecycle transition matrix and proposed execution contract; preserve execution outcome separately from cleanup/disposition.  
 **Proof layer:** provider/runtime plus durable persistence and reconciliation.
 
-Test confirmed child EXIT_ZERO followed by provider delete timeout, HTTP 500, ambiguous response, delayed termination, and late cleanup confirmation. Preserve the exact child outcome and exit code. Record cleanup as UNKNOWN/pending or ORPHANED_TEARDOWN_REQUIRED when the provider cannot confirm deletion; never mark cleanup complete from a local database close alone. Reconcile the same sandbox/job/attempt idempotently, retain the failure evidence, and prevent a stale cleanup event from changing another attempt. Prove eventual provider-side termination/deletion and ensure a leaked resource cannot silently continue accruing cost. No provider call or workload is authorized by this test design.
+Test confirmed child EXIT_ZERO followed by provider delete timeout, HTTP 500, ambiguous response, delayed termination, and late cleanup confirmation. Preserve the exact child outcome and exit code. Record cleanup as UNKNOWN/pending or ORPHANED_TEARDOWN_REQUIRED when the provider cannot confirm deletion; never mark cleanup complete from a local database close alone. Pin the provider API/SDK generation: instance destruction, Durable Object/control-plane storage deletion, snapshot deletion, mounted bucket deletion and attached-volume release may be separate operations. Reconcile the same sandbox/job/attempt idempotently, retain the failure evidence, and prevent a stale cleanup event from changing another attempt. Prove eventual provider-side termination/deletion and ensure a leaked resource cannot silently continue accruing cost. No provider call or workload is authorized by this test design.
 
 ### PC-EXT-05: delayed usage and billing reconciliation
 
@@ -314,3 +314,32 @@ Claude explicitly reported that the new resource review, lifecycle regression pl
 Pure-helper semantics → fake-adapter protocol → durable persistence/restart → local Linux cgroup enforcement where that is the actual approved host mechanism → selected-provider/runtime proof. A lost-create-ack orphan-reconciliation test cannot be claimed at the persistence layer until a pre-call intent is durably committed. No fake or pure test proves host isolation or provider teardown. Provider execution remains gated by LOOP-14 and the current $0 constraint.
 
 All PC-LC, PC-AD, PC-DB, PC-RT, RES and TDN cases remain SPECIFIED ONLY / NOT RUN. This reconciliation does not authorize implementation or host tests, select a provider, change canonical acceptance, or close D-01..D-08.
+
+
+## 12. Provider-generation and host-output regression additions (2026-11-01)
+
+### PC-EXT-08: provider API generation and resource-scope reconciliation
+
+**Traceability:** PC-EXT-04 / TDN-05 and provider-specific lifecycle documentation. Supplementary only; no new canonical LOOP/CASE ID.
+
+For every adapter/provider capability record, pin provider product, API/SDK generation, version, region/account scope, compatibility date where applicable, and exact lifecycle documentation. Create a resource graph that distinguishes execution instance, stable control-plane identity, snapshots, persistent volumes/buckets, tunnels/previews, and billing/usage records. Exercise destruction at each layer and verify that an instance stop is not projected as deletion of every associated resource. For Cloudflare specifically, test the current Durable Object + Container model separately from legacy Sandbox SDK 0.x: instance-local processes/files, Durable Object storage, snapshot objects and mounted R2 buckets have different lifetimes. Do not apply a 0.x destroy guarantee to 1.0 resources.
+
+**Expected:** exact API generation is bound to each event and resource; every resource is independently inventoried; cleanup remains partial/UNKNOWN until all required scopes reach their documented terminal condition.
+
+**Fail:** versionless lifecycle assumptions, 0.x/1.0 semantics mixed together, or container destroy projected as deletion of DO storage/snapshots/buckets.
+
+### PC-EXT-09: host-side VMM and log-sink containment
+
+**Traceability:** LOOP-12 / RES-08 / RES-10; self-operated Firecracker host path only. Supplementary only.
+
+Flood guest serial output and guest-influenced VMM logs while the supervisor, host logger, second VMM and orchestration worker are observed. Require fixed-size/ring-buffer or rate-limited/discarding sinks, bounded host memory/disk, explicit loss counters, and survival of independent work. A bounded app report is insufficient if VMM stdout, serial console, or host log files remain unbounded.
+
+**Expected:** no unbounded host output path; no worker or sibling degradation.
+
+**Fail:** guest output can grow host buffers/files without bound, or the collector blocks/degrades the host.
+
+### Modal lifecycle distinction
+
+Adapter tests must treat asynchronous create, connection detach, execution termination and attached-resource release as distinct events. A successful `detach()` is not a termination signal. `terminate(wait=True)` plus exit code is not a general resource-deletion proof. Reconcile using stable sandbox identity and the provider's documented lookup/list surfaces; persist create intent before asynchronous creation.
+
+All PC-EXT-08/09 cases are SPECIFIED ONLY / NOT RUN. No provider API call or host test is authorized.
