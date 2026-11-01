@@ -473,3 +473,71 @@ The Wasmtime links currently resolve to development API documentation. They are 
 ---
 
 **Review conclusion:** the next useful product evidence is a narrow, fixed-task browser-local Python test on real mobile devices. Before any authenticated execution feature, isolate the worker's origin and network authority. Before any remote runner, fix the distinction between collector caps and runtime termination, preserve child-exit provenance, and separate execution verdict from operational disposition and artifact release.
+
+## 15. iPhone/Safari feasibility addendum — 2026-11-01
+
+A second platform-specific research pass adds constraints to Batch A. These do not change the local-Pyodide recommendation, but they make actual iPhone acceptance essential.
+
+### 15.1 File-system UX must not depend on File System Access API
+
+The current Can I Use support table, with usage data for September 2026, lists the File System Access API as unsupported in Safari and Safari on iOS, including Safari 27.2. This is a secondary compatibility source rather than an Apple product guarantee, so reconfirm on the target iOS release during device testing.
+
+MVP consequence:
+- Use the normal browser file picker for explicit input selection.
+- Keep the run workspace in ephemeral MEMFS.
+- For outputs, test a user-initiated download/share flow using generated Blob data and the available iOS browser UI.
+- Do not make opening arbitrary local directories, persistent folder handles, or silent write-back a requirement.
+- Test the exact save/share path in Safari and Home Screen web-app mode; do not assume they behave identically.
+
+### 15.2 Safari memory headroom is not equivalent to installed RAM
+
+A WebKit engineer's March 2024 comment in an older WebKit issue described an approximate 1.5 GB WebContent-process limit for most iPhones at that time and a separate approximately 2 GB Gigacage allocation limit. The same issue was later marked resolved in September 2026, with the engineer noting that several different restrictions affect different scenarios and asking for specific new reports.
+
+Do not turn those historic figures into a current fixed iPhone memory limit. Apple does not publish a stable app/webpage memory quota suitable for this product's configuration. The correct engineering conclusion is narrower: browser process memory is constrained and can be device-, OS-, memory-pressure- and workload-dependent. Treat page reload/eviction as a normal failure mode that the product must report honestly.
+
+### 15.3 Current WebKit WebAssembly compilation report
+
+WebKit issue 304810 remains listed as NEW in the reviewed source. A September 15, 2026 report describes a reproducible memory spike for a particular Emscripten Asyncify WebAssembly workload on iOS 26.6.2 / iPhone 16 Pro: the web-content process was killed in four of four runs in the reporter's test. The report attributes the peak to WebKit's WebAssembly compilation/optimization path and compares an Asyncify build with a synchronous build and a function-padded build.
+
+Important limits:
+- This is a report about a specific workload/build and compiler path.
+- It is not evidence that Pyodide 314.0.7 reproduces the issue.
+- It is not a universal statement that WebAssembly is unusable on iOS.
+- The WebKit maintainer response asks for a new bug because the older issue may be resolved for its original workload while this report may be a new or still-unfixed issue.
+
+MVP consequence: add a measured memory/reload test to the exact Pyodide build and tested packages. Run a repeated workload in one persistent Pyodide instance, compare with fresh-instance behavior only when needed, and avoid casually creating multiple simultaneous WebAssembly instances. Observe post-completion memory as well as peak memory. If any package or native extension introduces Asyncify-specific compilation behavior, isolate it in a separate test rather than assuming it shares the standard-library profile.
+
+### 15.4 iOS foreground and interruption model
+
+Apple's native-app background-task guidance says iOS may background applications at any time, grants only limited time to finish certain work, and may suspend or terminate tasks. That is not a direct specification for Safari's web runtime, but it supports a conservative design rule: PocketCode's PWA must not promise that untrusted Python continues running after the user backgrounds or leaves the app.
+
+For the local proof:
+- Describe execution as foreground work.
+- Treat a page reload, web-content-process eviction, worker disappearance, or lost terminal message as UNKNOWN/INCOMPLETE, never PASS.
+- Do not silently rerun after recovery.
+- Preserve only the last safely received bounded result and run identity.
+- Test tab switching, locking the phone, incoming calls, memory pressure, Safari tab restoration, and Home Screen web-app relaunch on the actual device.
+
+### 15.5 Added iPhone acceptance cases
+
+| ID | Test | Required evidence |
+|---|---|---|
+| LOC-17 | Input via Safari file picker | User-selected file bytes and metadata match the selected fixture |
+| LOC-18 | Output save/share | Generated Blob can be handed to the user in Safari and Home Screen web-app mode without assuming File System Access API |
+| LOC-19 | Repeated run memory | Same Pyodide instance handles repeated small tasks without unbounded retained objects or runaway memory |
+| LOC-20 | Instance lifecycle | Compare one reused instance with controlled instance restart; record startup/memory impact |
+| LOC-21 | iOS memory-pressure/reload | Eviction or reload produces UNKNOWN/INCOMPLETE, never a fabricated terminal result |
+| LOC-22 | Foreground interruption | Lock/background/tab switch behavior is measured; no promise of background completion |
+| LOC-23 | Cross-origin isolation in deployed environment | Verify actual response headers, \`crossOriginIsolated\`, SharedArrayBuffer and loading of all required assets |
+| LOC-24 | WebAssembly module/package compatibility | Record the exact package/runtime build, module count, startup peak and post-run memory; isolate Asyncify-specific findings |
+
+### 15.6 Current recommendation refinement
+
+The proposed first proof remains a small standard-library CSV/JSON transformation, not a package-heavy notebook or machine-learning workload. Its first success criterion is not maximum speed or maximum memory use. It is reliable completion, bounded input/output, a truthful report, explicit file handoff, and graceful recovery when the browser kills or reloads the page.
+
+Sources for this addendum:
+- [WebKit Bug 304810: High memory usage in WASM compilation thread](https://bugs.webkit.org/show_bug.cgi?id=304810) — current report and September 2026 iPhone 16 Pro reproduction details.
+- [WebKit Bug 268816: Web-content memory discussion](https://www2.webkit.org/show_bug.cgi?id=268816) — historic engineering comments; not a current fixed quota.
+- [Can I Use: File System Access API](https://caniuse.com/native-filesystem-api) — compatibility table reports Safari and iOS Safari unsupported as of the reviewed September 2026 data.
+- [WebKit: New WebKit Features in Safari 15.2](https://webkit.org/blog/12140/new-webkit-features-in-safari-15-2/) — confirms COOP/COEP and SharedArrayBuffer support in Safari from 15.2.
+- [Apple: Choosing Background Strategies for Your App](https://developer.apple.com/documentation/BackgroundTasks/choosing-background-strategies-for-your-app) — native-app guidance used only to support conservative background-work expectations, not as a direct web-app lifecycle specification.
