@@ -182,3 +182,26 @@ It separates:
 Priority begins with false-PASS prevention (OBS-02) and terminal-evidence state separation (OBS-01), then attempt identity, producer authority and truncation taxonomy. Redaction is explicitly defense-in-depth. Every test remains proposed/NOT RUN; no source or test was changed.
 
 Current research branch includes the regression plan commit `fc987878c23d0a6e69189b3a9b706bbb3d2eacfb`. Its file blob is `70b457623c392a99475e5682ceb01903c2b9cf9a`.
+## 9. Gemini review received and source-reconciled - 2026-11-01
+
+Gemini's supplied review was read and rechecked against exact source snapshots. Its AWC/CASE/P0-D/OBS mappings are not accepted because the identifiers are materially misassigned:
+
+- AWC-005 is unsafe untrusted suggestion handling, AWC-008 is failed-repair recovery, AWC-009 is usage-limit bypass advice, AWC-010 is manual task handoff, AWC-011 is prompt injection in source content, AWC-012 is fabricated usage telemetry, AWC-017 is unknown provider/model/host capabilities, and AWC-018 is partial evidence with no completion signal.
+- PocketCode CASE-05 is cancellation, CASE-07 output limits, CASE-08 unsafe input path, CASE-13 ambiguous-request idempotency, CASE-15 egress/secrets, and CASE-16 out-of-order run identity. CASE-17/18 do not exist in the pinned canonical acceptance.
+- RevDev P0-D-09 is malformed mission quarantine without blocking later queue work. P0-D-10 is exact-result publication and duplicate/idempotent replay.
+- The actual OBS-01..06 meanings remain the ones in the independent review and regression plan; Gemini's six alternative labels are not substituted.
+
+Useful engineering findings retained in the audit and new regression-plan Section 8:
+1. D-05 must be an actual applied-policy barrier before untrusted process launch. Daytona v2 documentation confirms existing-sandbox policy updates can remain pending while desired and applied revisions differ. ETag is a concurrency token, not applied-enforcement proof.
+2. LOOP-12 requires provider/runtime proof of resource boundaries and host containment; mock adapter errors are insufficient.
+3. PC-LC-05 is extended to distinguish execution enforcement, stream capture, collector/retention, and display loss. Linux pipes block/fail when full; they do not inherently truncate at a universal 1 MB threshold.
+4. D-06 semantic fingerprints must be tenant-scoped and include all execution-relevant normalized request inputs.
+5. D-07's current release-boundary revalidation is already specified; tests now cover partial writes, digest mismatch, exact immutable bytes, current authorization and quarantine.
+6. Provider teardown failure needs explicit orphan reconciliation while preserving the confirmed child exit separately from cleanup.
+7. Forged JSON in stdout must remain untrusted text. Delayed cost reconciliation is a separate future requirement and remains blocked by the $0/no-provider/no-workload constraint.
+
+New supplementary test IDs PC-EXT-01 through PC-EXT-07 are proposed only. They do not become canonical CASE/AWC/P0-D IDs and all remain NOT RUN.
+
+**Date caveat:** Gemini's supplied response says 2026-11-02, one day ahead of the current date in this audit. The content is treated as supplied review text; its date/authorship metadata is not independently verified.
+
+**Current research branch state before these documentation additions:** `a3db9294d4e6d4692a2a990b56d925d34a12ef5c`. After the additions, verify the new branch HEAD and read back all three updated documents. Main and PR #2/#3 are to remain untouched. No implementation, canonical acceptance, tests, provider, runtime, queue, Actions, merge, deployment or spend is authorized.
