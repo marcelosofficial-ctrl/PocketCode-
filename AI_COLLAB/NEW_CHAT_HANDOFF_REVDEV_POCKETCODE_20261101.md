@@ -422,3 +422,20 @@ New source findings:
 - No Job Object/kill-on-close was found in the inspected Codex process launch path; descendant orphan behavior remains UNKNOWN.
 
 These are source-level findings/review concerns, not demonstrated runtime exploits. Codex remains STUDY ONLY. No Windows tests or host operations were performed.
+
+
+## 17. srt network-fence follow-up and current-main recheck — 2026-11-01
+
+See Section 16 of AI_COLLAB/WINDOWS_SANDBOX_SOURCE_AUDIT_CLAUDE_20261101.md and Section 13 of AI_COLLAB/CLAUDE_RESEARCH_MASTER_INDEPENDENT_RECONCILIATION_20261101.md.
+
+Current srt main snapshot: commit 98a4016d27609ed34dd1fb43d23ed6efb6eeeb77; WFP source blob c3af835ec1479ac19bb1b35181a23d89e5c55640; TS helper blob dbc7c23f4373c69403109429a41144018111941b.
+
+Key new evidence:
+- Current filter_status() says installed when ANY block-user filter exists, not when all v4/v6 required filters exist.
+- Current default verifyWindowsWfpEgress() binds only 127.0.0.1.
+- Issue #723 reports that deleting only the IPv6 block can leave IPv6 reachable while status and IPv4 probe pass; reporter's scope was one Windows 11 26200 machine, loopback tests, 3 repetitions per state, not broad internet testing.
+- PR #716 remains open/unmerged. It proposes partial state and repair logic, with unit tests. It does not include the separate IPv6 runtime readiness-probe branch described in the issue comment.
+- srt's own tests explicitly state ICMP is not fenced and show DNS Client service resolution outside the child's ALE_USER_ID. Anonymous and deny-only token forms remain warning residuals.
+- srt ACL source confirms modify grants omit FILE_DELETE_CHILD, parent-FDC denies are applied for protected paths, and intermediate paths get object-only DELETE denies. State DB/persistence sources describe per-user refcounting, record-first writes, file-lock serialization and crash replay. Install source documents that BUILTIN\\Users can read/replace ProgramData CA-key material, while the sandbox group is denied.
+
+Interpretation: the source supports stronger controls than a high-level summary suggests, but it does not justify complete network isolation. Separate the WFP installed-state bug, IPv6 probe omission, and intentional protocol/service gaps. srt remains ALPHA / STUDY ONLY. No PC or Windows tests, installs, ACL/WFP mutations, upstream PR actions, implementation or adoption decision.
