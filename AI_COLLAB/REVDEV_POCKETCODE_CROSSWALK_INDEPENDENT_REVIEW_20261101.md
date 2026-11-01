@@ -538,3 +538,8 @@ Source-grounded corrections:
 - E2B describes per-sandbox Firecracker microVMs, but its public security page alone does not prove PocketCode's exact teardown wait/lookup or resource-containment requirements.
 
 **Result:** PC-EXT-02 and PC-EXT-04 remain provider/runtime proof gaps. The new RES/TDN labels are local research test-design identifiers only. No provider is selected and no runtime claim is made. All cases remain NOT RUN.
+
+
+### PC-EXT-02 evidence attribution nuance
+
+The kernel defines the local `oom_kill` counter as processes in the cgroup killed by any OOM killer. An increase alone does not prove the target cgroup's own `memory.max` caused the kill. Conversely, a memory-limit hit may return `-ENOMEM` without an OOM kill. The resource review now requires correlated target-local `max`/`oom`/`oom_kill` deltas, effective memory/swap configuration, exact cgroup and PID membership, trusted termination evidence, and supervisor/sibling health. No single counter is accepted as proof of causation.
