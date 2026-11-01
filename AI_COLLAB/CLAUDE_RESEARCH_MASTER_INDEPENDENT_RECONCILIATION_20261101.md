@@ -278,3 +278,20 @@ The source review also identifies high-priority questions in Codex ACL setup:
 - Helper freshness uses size+mtime, not a cryptographic hash/signature, while the sandbox group is ACL-limited to read/execute.
 
 These are source-level concerns requiring independent review and disposable Windows tests, not proven runtime exploits. Codex remains STUDY ONLY. No implementation/adoption decision.
+
+
+## 13. srt WFP partial-state and network-coverage clarification — 2026-11-01
+
+The detailed source and issue reconciliation is in Section 16 of WINDOWS_SANDBOX_SOURCE_AUDIT_CLAUDE_20261101.md.
+
+Current srt main at 98a4016d27609ed34dd1fb43d23ed6efb6eeeb77 still has two independent gaps:
+- filter_status() treats any remaining block-user filter as installed, even if the other address family's block filter is missing.
+- verifyWindowsWfpEgress() creates its default listener on IPv4 loopback only.
+
+Issue #723 contains an externally reported Windows 11 26200 reproduction (3 repetitions per state on one machine) where deleting the IPv6 block left IPv6 reachable while status and the IPv4-only readiness probe passed. PR #716 remains open/unmerged and proposes partial detection plus repair semantics. Its dual-family status logic is not the same as a dual-family runtime readiness probe. A separate issue-comment branch proposes IPv4+IPv6 readiness checks; it is not merged and was not source-inspected here.
+
+Additional explicit limits at srt PR #745 merge 81145771c9bfc51c5669f071b515209321e0d078: WFP is installed at ALE_AUTH_CONNECT V4/V6 only; the Windows test suite explicitly says ICMP is not fenced; its DNS test demonstrates the DNS Client service resolves names under a NetworkService token outside the child's ALE_USER_ID. Anonymous and deny-only token shapes are residual warnings, not a failed verdict. Do not call this complete network isolation.
+
+The same pinned srt source confirms stronger ACL semantics (modify grants omit FILE_DELETE_CHILD; parent-FDC deny and intermediate DELETE protection), a per-user refcounted session DB with record-first per-path DACL mutation and crash replay, and a documented shared-machine trade-off that real local users can read or replace the ProgramData CA key material.
+
+Disposition unchanged: srt is an ALPHA study reference only, not selected or adopted. No Windows test was run by ChatGPT; external issue measurements are explicitly labelled as such.
