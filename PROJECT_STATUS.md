@@ -350,3 +350,12 @@ Targeted search at pinned OpenHands commit found recovery unit tests in `tests/a
 ### Final OpenHands EventLog marker/test-plan refinement — 2026-11-02
 
 The pinned EventLog append sequence is event JSON write, in-memory index/length update, then sidecar marker update. The marker update deletes the old marker before writing the new one; LocalFileStore string writes use atomic_write_text. The falsification plan now includes marker crash boundaries and explicitly distinguishes process-crash survival from power-loss durability. Existing mocked unit tests and F31 SIGKILL integration recipe have been mapped; they do not assert recovery event parent_id or restored active ancestry. Do not duplicate them. Minimum residual test is real local persisted-file crash/restore with action → recovery error ancestry and explicit parent_id. No test run, no upstream code/test modification.
+
+
+### OpenHands recovery review priority update — 2026-11-02
+
+Pinned source supports multiple ActionEvents per LLM response and executes the batch only after emitting all action records. Batch results are emitted after the parallel executor returns. Startup recovery currently writes one AgentErrorEvent for the first unmatched action, whereas the normal interrupt path writes errors for every active-branch orphan. This creates a high-priority multi-action crash-recovery test gap (FI-15..18).
+
+In-place navigate/re-root is also supported and preserves abandoned events in the full log, while startup recovery scans the full log and suppresses recovery on any matching observation-like event by tool_call_id. This makes stale-observation suppression after navigation a concrete test target (FI-19..22), subject to verifying the RUNNING lifecycle and intended re-execution semantics. F31 crash-tool-call configures a local llm-stub per-conversation agent; the wider F31 setup also presets DeepSeek for other subfeatures, so isolated provider-free execution remains to be verified.
+
+Detailed evidence and tests: `AI_COLLAB/OPENHANDS_EVENTLOG_HEAD_CRASH_WINDOW_FALSIFICATION_PLAN_20261102.md` Section 13. No tests executed, no upstream source changed, no PocketCode acceptance or owner decisions changed.
