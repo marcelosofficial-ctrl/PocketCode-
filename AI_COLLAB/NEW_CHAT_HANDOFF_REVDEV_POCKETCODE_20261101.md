@@ -621,3 +621,8 @@ No OpenHands source/tests modified or executed; no provider workload, spend, PR,
 ### 23.1 PAUSED crash/replay path (2026-11-02)
 
 Plan Section 21.9 adds a second source-confirmed OpenHands risk: pause() can set PAUSED after a blocking tool has begun; startup recovery only handles RUNNING; on resume LocalConversation resets PAUSED to RUNNING and Agent._step executes unmatched actions on the active branch before calling the LLM. Therefore a PAUSED conversation killed before its observation is persisted can re-dispatch the action on resume. The existing pause test proves the pause-during-tool window is reachable in the SDK. Full server SIGKILL/restart integration and actual external duplicate side effect remain to be tested. Keep interrupt() separate: it sets cancellation token/cancels async task and has a synthetic orphan-error path.
+
+
+### 23.2 Latest GitHub continuity status (2026-11-02)
+
+Working branch pocketcode-execution-boundary-crosswalk-2026-11-01 compares 580 ahead, 0 behind main (base 555840d8d83342513d9cd353d4d1522d46a5c82d). PR #2 and PR #3 were rechecked and remain OPEN; neither was modified. Recent branch commits are documentation-only OpenHands evidence corrections. Main and both PRs remain untouched.
