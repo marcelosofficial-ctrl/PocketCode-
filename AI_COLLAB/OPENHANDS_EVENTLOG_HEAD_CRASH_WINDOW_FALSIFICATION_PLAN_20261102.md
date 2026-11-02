@@ -300,3 +300,16 @@ The closed PR search for #3749 surfaced two related PR descriptions:
 - The agent-server PR for #3749 says it exposes the tree over HTTP, adds `POST /api/conversations/{id}/navigate`, and wires `RemoteConversation.navigate_to()` to call the new endpoint and refresh cached state instead of raising `NotImplementedError`.
 
 This makes the narrow interpretation clear: a pre-#3749 SDK stage lacked the remote API, but the later pinned revision has remote navigate/re-root. The recovery comment's assertion that “remote branching is unsupported” therefore cannot be read as “remote navigate/re-root is unavailable.” It may still mean concurrent/multi-writer branching is unsupported; Gemini should identify the exact invariant and commit-level evolution. The documented abandoned-branch behavior remains a valid test target.
+
+
+## 16. Historical crash-retry issue #2298 and active-branch re-execution path — 2026-11-02
+
+Issue #2298 (“Duplicate observations for same tool_call_id after crash recovery”) is CLOSED. Its body documents the earlier defect where AgentErrorEvent was not counted as matching an ActionEvent, so a user resume re-executed the tool and produced both an error and an observation. The current pinned `state.py` lines 713–752 explicitly match AgentErrorEvent by tool_call_id, and the pinned SDK tests cover that behavior. Do not report the old #2298 defect as still present.
+
+However, this does not eliminate the navigate/rewind case because two different event sequences are passed to the same helper:
+- Startup recovery passes the full EventLog (`event_service.py` lines 1431–1446), so an observation on an abandoned branch can mark the action as already observed and suppress a recovery error.
+- Normal agent pending-action detection uses `state.active_branch()` (`agent.py` lines 747–756), so the same abandoned observation is excluded and the action remains pending on the selected branch.
+
+The F10 feature map explicitly says navigation to an earlier event leaves later events on disk but moves HEAD; a subsequent append creates a sibling. A concrete test sequence is therefore: create A→O, navigate HEAD back to A, send a new message to start a new run, let pending-action detection re-execute A (the active branch contains A but not O), interrupt that re-execution after a controlled side effect and before result persistence, then restart. If status is RUNNING, startup's full-log scan can see O from the abandoned branch and suppress the recovery error. On a later user resume, active-branch detection can still see A as pending and execute it again. Whether this exact lifecycle is valid and intended must be proven, but all constituent APIs are present in the pinned source and F10 spec. This is now the highest-priority FI-19 test.
+
+The fix for #2298 shows why AgentErrorEvent must count as a terminal tool-result marker for the matching branch; it does not justify matching a result across abandoned branches. A correct branch-aware recovery check may need to use active ancestry plus a separate explicit crash-tail detection rule, but that is a design hypothesis for Gemini to challenge, not a recommendation to patch OpenHands.
