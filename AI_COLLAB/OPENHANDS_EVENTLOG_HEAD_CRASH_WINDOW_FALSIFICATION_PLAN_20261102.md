@@ -291,3 +291,12 @@ For PocketCode's crosswalk, translate this only into a design warning: an interr
 The startup comment at `event_service.py` lines 1431–1435 says remote branching is unsupported and cites #3749 as the reason there are no abandoned branches to exclude. Fetching OpenHands issue #3749 shows it is titled **“[Feature] Conversation history tree: agent-server HTTP exposure (fork/navigate/schema) (3/3)”**, is closed, and its body explicitly specifies the HTTP `POST /{id}/navigate` route, the `navigate` operation, branch-aware `parent_id`/`leaf_event_id`, and acceptance that `GET /events/search` still returns all branches after navigation. The pinned source and F10 feature map independently expose and test this navigation behavior.
 
 This makes the code comment's citation appear contradictory or stale. Do not assume the issue's closure proves every branching mode is supported, but do require Gemini to inspect the merge/commit and explain precisely what “remote branching unsupported” means in the recovery comment. Distinguish: (a) concurrent/multi-writer branching, (b) creating separate forked conversations, (c) in-place navigate/re-root that leaves abandoned branches in the same EventLog. The last is explicitly supported by the pinned API docs/source. The recovery's full-log observation suppression must be tested against that behavior unless a stronger invariant prevents the relevant RUNNING state.
+
+
+### 15.1 PR description cross-check
+
+The closed PR search for #3749 surfaced two related PR descriptions:
+- The SDK tree foundation PR describes `LocalConversation.navigate_to()` and says the remote wrapper was temporarily `NotImplementedError` until the HTTP surface in #3749.
+- The agent-server PR for #3749 says it exposes the tree over HTTP, adds `POST /api/conversations/{id}/navigate`, and wires `RemoteConversation.navigate_to()` to call the new endpoint and refresh cached state instead of raising `NotImplementedError`.
+
+This makes the narrow interpretation clear: a pre-#3749 SDK stage lacked the remote API, but the later pinned revision has remote navigate/re-root. The recovery comment's assertion that “remote branching is unsupported” therefore cannot be read as “remote navigate/re-root is unavailable.” It may still mean concurrent/multi-writer branching is unsupported; Gemini should identify the exact invariant and commit-level evolution. The documented abandoned-branch behavior remains a valid test target.
