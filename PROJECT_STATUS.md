@@ -393,3 +393,15 @@ The OpenHands recovery audit now distinguishes several upstream issue histories 
 Detailed distinctions and future-only test cases FI-23..FI-26 are recorded in AI_COLLAB/OPENHANDS_EVENTLOG_HEAD_CRASH_WINDOW_FALSIFICATION_PLAN_20261102.md, Section 18. These are research notes only. No OpenHands tests were run or modified; no PocketCode source/tests/schema, canonical acceptance, owner decision, PR #2/#3, main branch, Actions, deployment, spend, provider workload or PC/RevDev host/queue state changed. RevDev PC state remains UNKNOWN.
 
 - Follow-up status for #6289: linked PR #6290 was OPEN/unmerged when checked on 2026-11-02. It proposes one AgentErrorEvent per tool call discarded after FinishTool, with a two-turn regression test and sync/async coverage. Test results in the PR are author-reported only. Verify pinned revision separately; do not attribute the unmerged fix to it.
+
+### Gemini A–F independent verdict update — 2026-11-02
+
+Gemini's independent review at pinned OpenHands commit 98849457621881ae2414719b82b8bc1cf535b4ab classifies multi-action startup recovery (A/C) as confirmed defective: multiple ActionEvents can be persisted before batch execution, but startup recovery emits one AgentErrorEvent for unmatched_actions[0], potentially moving the active leaf to a branch that excludes later actions. Acceptance must inspect actual leaf/ancestor IDs and every interrupted action, not only parent_id.
+
+Gemini also classifies full-log observation suppression (B) as a defect. ChatGPT retains this as a strong but qualified candidate until realistic tool_call_id reuse is demonstrated; the #3063 guard intentionally suppresses duplicate recovery when a matching observation is already present. Distinguish active-branch semantics from synthetic ID-reuse tests.
+
+Other Gemini findings: non-RUNNING recovery guard confirmed, but PAUSED-with-in-flight-tool reachability remains to prove; recovery error wording overstates external non-completion; local stub crash test appears feasible but is not executed; EventLog power-loss durability is NOT ESTABLISHED absent exact fsync/storage proof.
+
+For a safe multi-action recovery ancestry, if actions are A1 -> A2 -> A3, one possible test topology is E3 parented to A3, then E2 parented to E3, then E1 parented to E2, leaving E1 as leaf and all actions in its ancestor chain. This is a topology proposal for falsification, not an adopted PocketCode decision.
+
+Detailed reconciliation and exact Gemini follow-up requirements are in AI_COLLAB/OPENHANDS_EVENTLOG_HEAD_CRASH_WINDOW_FALSIFICATION_PLAN_20261102.md Section 19. No upstream source/tests were run or modified; no PocketCode source/tests/schema, canonical acceptance IDs, owner decisions, PR #2/#3 or main changed. Current working branch comparison: 567 ahead, 0 behind. PR #2/#3 remain open/unmerged. RevDev PC/host/queue state remains UNKNOWN.
