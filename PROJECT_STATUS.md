@@ -380,3 +380,14 @@ The historical duplicate-execution bug in issue #2298 is closed and the pinned c
 
 
 Direct SDK test proof now found: `tests/sdk/conversation/local/test_conversation_tree.py` blob `9086af335ea59d267939ba0302d524f0594df3c1`, lines 117–141, explicitly confirms navigate/re-root leaves abandoned events in EventLog while excluding them from active view. The exact RUNNING/startup-recovery suppression sequence remains unexecuted and must be tested.
+
+### OpenHands issue/fix history reconciliation — 2026-11-02
+
+The OpenHands recovery audit now distinguishes several upstream issue histories instead of treating all unmatched-action paths as one defect:
+
+- #3045 was closed by #3063 (merged 2026-05-05). Restart recovery skips a synthetic AgentErrorEvent if a matching ObservationBaseEvent already exists in the loaded full log. This qualifies the full-log suppression concern and makes it an intentional duplicate-result guard; active-branch semantics still require independent verification.
+- #4591 was closed by #4932 (merged 2026-09-23). The SDK tolerates orphan observation-like events during manipulation-index calculation when the corresponding ActionEvent is absent from the view. Verify this final fix is present at the pinned source commit.
+- The #4932 review history identifies a separate incremental-view duplicate-observation path worth testing; full-rebuild enforcement must not be assumed to cover every live append path.
+- #6289 (opened 2026-10-28 against SDK 1.58.2 / main 46b1fa5) reports post-Finish tool calls being left unmatched and executed on a later turn. Keep it separate from crash recovery and verify whether the pinned revision includes it.
+
+Detailed distinctions and future-only test cases FI-23..FI-26 are recorded in AI_COLLAB/OPENHANDS_EVENTLOG_HEAD_CRASH_WINDOW_FALSIFICATION_PLAN_20261102.md, Section 18. These are research notes only. No OpenHands tests were run or modified; no PocketCode source/tests/schema, canonical acceptance, owner decision, PR #2/#3, main branch, Actions, deployment, spend, provider workload or PC/RevDev host/queue state changed. RevDev PC state remains UNKNOWN.
