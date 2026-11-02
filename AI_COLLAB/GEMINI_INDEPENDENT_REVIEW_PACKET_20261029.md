@@ -152,3 +152,10 @@ The recovery comment cites #3749 for “remote branching is unsupported.” I fe
 
 
 Follow-up on #3749: the SDK foundation PR's description says RemoteConversation navigation was initially NotImplemented until the agent-server HTTP surface. The #3749 agent-server PR description explicitly adds POST `/api/conversations/{id}/navigate` and wires `RemoteConversation.navigate_to()` to that endpoint. Thus the pinned revision's remote navigate/re-root is supported; the recovery comment's “remote branching unsupported” cannot mean navigate is unavailable. Please determine whether it instead means concurrent/multi-writer branching and whether that narrower invariant prevents stale-observation suppression. The abandoned branch remains on disk by design.
+
+
+### Historical issue #2298 context: avoid a false positive
+
+OpenHands issue #2298 is CLOSED and documents the earlier duplicate-execution bug caused by get_unmatched_actions not matching AgentErrorEvent. The pinned code now matches AgentErrorEvent by tool_call_id (`state.py` lines 713–752), and the SDK tests cover it. Do not claim that historical bug remains.
+
+Our distinct concern is that startup recovery calls get_unmatched_actions on the full EventLog, while normal pending-action detection uses active_branch (`agent.py` lines 747–756). After supported navigate/re-root, a matching observation can remain on an abandoned branch. It may suppress startup recovery even though the action is still pending on the active branch. Please falsify the exact sequence in crash-window plan Section 16: A→O, navigate HEAD back to A, send a new message, re-execute pending A, crash before new result persistence, restart, then compare full-log recovery matching with active-branch pending-action matching. Establish whether RUNNING status and the exact lifecycle make this reachable, and whether user intent makes replay expected. The existing #2298 fix does not automatically resolve this branch-context mismatch.
