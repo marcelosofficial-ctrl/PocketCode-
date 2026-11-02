@@ -162,3 +162,22 @@ Our distinct concern is that startup recovery calls get_unmatched_actions on the
 
 
 Direct test evidence for navigation: pinned `tests/sdk/conversation/local/test_conversation_tree.py`, blob `9086af335ea59d267939ba0302d524f0594df3c1`, lines 117–141, `test_navigate_then_emit_creates_sibling_branch` explicitly creates root→A1→A2, navigates to root, appends B1, and asserts A1/A2 remain in EventLog but are absent from active view while A1/B1 are siblings. Please incorporate this concrete test, then challenge the remaining RUNNING/recovery lifecycle and same-tool-call observation suppression. It proves abandoned events persist, not by itself that FI-19 is fully reachable.
+
+### New upstream issue/fix reconciliation — 2026-11-02
+
+Before concluding the OpenHands recovery review, inspect these upstream issue/PR histories and compare them to the exact pinned commit 98849457621881ae2414719b82b8bc1cf535b4ab:
+
+- Issue #3045 was closed by PR #3063 (merged 2026-05-05, merge commit b6c63d0). The PR says restart recovery now skips synthesizing AgentErrorEvent if an ObservationBaseEvent already exists for the unmatched action's tool_call_id. Determine whether the pinned event_service contains this guard and its exact test. This qualifies the earlier full-log suppression concern: an already-present matching observation is intentionally treated as a result marker. Still assess active-branch ancestry and pending-action semantics.
+- Issue #4591 was closed by PR #4932 (merged 2026-09-23, merge commit dd8d9f6). The SDK fix makes manipulation-index calculation tolerate orphan observations whose ActionEvent is absent from the view, while preserving duplicate-result enforcement through ObservationUniquenessProperty. Verify the pinned source includes the final merged change, not merely an intermediate PR head.
+- PR #4932 review history notes a remaining raw incremental-view path where duplicate observations could reach serialization before a full enforcing rebuild. Challenge this independently; do not assume full-rebuild enforcement covers incremental appends.
+- Issue #6289 was opened 2026-10-28 against SDK 1.58.2 / main commit 46b1fa5. It reports [FinishTool, tool] leaving the later ActionEvent unmatched and executing it on the next user turn. Determine whether the pinned commit predates or includes the behavior. Keep this separate from crash recovery and multi-action batch crash analysis.
+
+Required distinctions:
+1. Observation already present before restart recovery (expected suppression under #3063).
+2. Original tool completes after recovery has already appended AgentErrorEvent (late-result duplicate path).
+3. AgentErrorEvent survives in a reconstructed view after its ActionEvent is absent (orphan observation, #4932).
+4. Duplicate observation appended through a live incremental view before enforcement/rebuild.
+5. Post-Finish tool call left unmatched and executed on a later turn (#6289).
+6. Active-branch pending-action detection after navigation/rewind versus full-log duplicate suppression.
+
+Please return exact pinned source/test evidence for each, plus whether the issue/fix is present at the pinned revision. State which are fixed, remaining, post-pin, or unresolved. Do not run or change upstream source/tests. Do not make PocketCode owner decisions or change canonical acceptance IDs.
