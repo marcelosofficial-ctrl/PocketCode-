@@ -563,3 +563,35 @@ F31 provider setup nuance: the F31 feature-map documents a local llm-stub endpoi
 Claude timeout handling: this independent correction was made from the pinned source and repository tests; it does not rely on Claude's pending review. When Claude returns, ask it to challenge this exact explicit-parent reading and the active-branch consequence, not repeat the earlier generic multi-action prompt.
 
 No OpenHands source or tests were modified or executed. No provider workload, spend, PR, merge, deployment, PocketCode source/schema/acceptance ID, or RevDev host/queue operation occurred.
+
+
+### 21.9 PAUSED crash window: resume re-executes active-branch pending actions — 2026-11-02
+
+This strengthens and supersedes the earlier Section 21.2 wording that harmful re-execution was unresolved at source level.
+
+Pinned source at 98849457621881ae2414719b82b8bc1cf535b4ab:
+
+- event_service.py startup recovery only enters its synthetic-error path when persisted execution_status == RUNNING. PAUSED is not included.
+- local_conversation.py pause() explicitly sets execution_status=PAUSED and emits PauseEvent; its docstring says pause takes effect at the next run-loop iteration between agent steps. It does not cancel an in-flight tool. interrupt() is a separate operation that sets the cancellation token and cancels a tracked async task.
+- tests/sdk/conversation/local/test_conversation_pause_functionality.py::test_pause_while_running_continuous_actions waits until a blocking executor signals that tool execution has begun, calls pause(), asserts PAUSED, and confirms the run exits after the current step. This directly establishes that PAUSED can be persisted while an action is in flight.
+- local_conversation.py _run/_arun accepts PAUSED as a resumable state and changes it to RUNNING.
+- agent.py Agent._step checks ConversationState.get_unmatched_actions(state.active_branch()) before building/sending a new LLM request. If any unmatched actions exist, it executes them via _execute_actions and returns. Thus a restored PAUSED conversation with an unmatched action can dispatch that action again on resume.
+
+Derived crash sequence:
+1. Tool ActionEvent is persisted and the tool executor begins.
+2. pause() sets and persists PAUSED while the executor is still in progress.
+3. Process dies before an ObservationEvent is persisted.
+4. Startup reload sees PAUSED, so event_service.py skips RUNNING-only crash recovery and adds no AgentErrorEvent.
+5. User resumes; LocalConversation changes PAUSED to RUNNING; Agent._step sees the unmatched ActionEvent on active_branch and executes it again.
+
+Verdict: the source-level re-dispatch path is CONFIRMED. A real server integration test is still required to establish the exact persistence/lease/server lifecycle and demonstrate the external duplicate side effect. The test should use a side-effecting tool whose external effect is independently recorded before the process is killed; distinguish a tool that continues outside the server from one terminated with the process. Never infer that the first execution had no effect from the absent ObservationEvent.
+
+Required regression cases:
+- PAUSED + one unmatched action after restart: verify startup does not synthesize an error and resume currently dispatches the action again.
+- PAUSED + multiple unmatched actions: verify the pending-action path sees the entire active branch and compare with RUNNING recovery's first-action branch-detachment.
+- RUNNING + one/multiple unmatched actions: preserve the Section 21.8 assertions.
+- interrupt() cancellation control: confirm cancellation-token and synthetic orphan-error path prevents the same replay, while checking thread completion ordering.
+- side-effect completed but observation not persisted; side-effect still running at process death; side-effect cancelled before completion. Record each external outcome independently.
+- Confirm a fresh run does not create duplicate ActionEvents or duplicate observation-like results for the same tool_call_id.
+
+No source/tests/workload changed or run. This is source-derived and existing-test-supported, not runtime-tested.
