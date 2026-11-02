@@ -372,3 +372,8 @@ Recovery source comment cites issue #3749 for unsupported remote branching, but 
 
 
 #3749 PR-description cross-check clarifies that the agent-server PR added POST `/navigate` and wired `RemoteConversation.navigate_to()`; remote in-place navigate/re-root is supported in the pinned revision. The recovery comment's “remote branching unsupported” must refer to a narrower mode (e.g. concurrent/multi-writer branching) or be stale. FI-19..22 remain a valid falsification target.
+
+
+### OpenHands issue #2298 distinction recorded — 2026-11-02
+
+The historical duplicate-execution bug in issue #2298 is closed and the pinned code now matches AgentErrorEvent by tool_call_id. The new hypothesis is different: startup recovery scans the full EventLog, while normal pending-action detection scans only active_branch. A matching observation on an abandoned branch may suppress startup recovery even though the action remains pending on the active branch after navigation. Detailed sequence is in crash-window plan Section 16; not a confirmed defect. Do not conflate with #2298.
