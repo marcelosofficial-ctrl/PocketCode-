@@ -255,3 +255,8 @@ The pinned SDK supports multiple ActionEvents per LLM response for parallel tool
 A second issue: in-place navigation is supported and preserves abandoned events on disk (`local_conversation.py` lines 988–1011; remote wrapper lines 1914–1943; EventService lines 2358–2372; F10 feature map). Startup recovery's full-log observation suppression can therefore encounter an observation outside active ancestry. The source's note that remote branching is unsupported must be reconciled with supported navigate/re-root semantics. FI-15..22 are plan-local only; no PocketCode acceptance ID or owner decision changed.
 
 F31 crash-tool-call uses a local llm-stub configured in T's inline agent; the encompassing F31 setup also presets DeepSeek for other subfeatures. Isolated provider-free execution remains to be confirmed.
+
+
+### 12.4 Recovery event wording and outcome semantics — 2026-11-02
+
+OpenHands startup recovery emits an INTERNAL, non-retryable AgentErrorEvent whose text says the tool execution “did not complete” (`event_service.py` lines 1458–1465). The source does not prove this negative claim for external side effects: in parallel batches, one tool may have completed its effect while another remains blocked, and results are only emitted after the full batch completes. This is a useful PocketCode semantic warning: missing result evidence is not proof of non-execution. A future contract should represent external outcome as UNKNOWN unless separately verified, and retry authorization must remain distinct. No owner decision changed.
