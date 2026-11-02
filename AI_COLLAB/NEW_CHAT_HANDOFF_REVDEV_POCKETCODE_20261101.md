@@ -556,3 +556,10 @@ Startup recovery AgentErrorEvent text says the tool execution “did not complet
 ### 20.6 OpenHands #3749 citation contradiction to resolve
 
 The startup recovery comment says remote branching is unsupported and cites #3749. But issue #3749 itself is closed and titled “Conversation history tree: agent-server HTTP exposure (fork/navigate/schema)”; its body defines the `/navigate` HTTP route and says event search continues to return all branches after navigation. This is consistent with pinned `navigate_to` source and F10 docs. Gemini should inspect linked PR/merge and distinguish unsupported concurrent/multi-writer branching from supported in-place navigate/re-root and separate forked conversations. Do not accept the comment's citation at face value. The full plan includes FI-19..22; not a confirmed defect yet.
+
+
+### 20.7 Issue #2298 is fixed; new concern is full-log vs active-branch mismatch
+
+OpenHands issue #2298 is CLOSED. The old bug was AgentErrorEvent not matching ActionEvent during pending-action detection, causing duplicate execution after resume. Pinned `state.py` lines 713–752 now match AgentErrorEvent by tool_call_id and tests cover it. Do not report the old bug as current.
+
+New hypothesis: startup recovery checks the full EventLog; ordinary pending-action detection checks only active_branch (`agent.py` lines 747–756). After supported navigation, an observation may remain in the full log but outside active ancestry. That observation can suppress recovery while the action remains pending on the active branch. The detailed test sequence is crash-window plan Section 16. Gemini must establish RUNNING lifecycle reachability and intended replay semantics before calling this a defect.
