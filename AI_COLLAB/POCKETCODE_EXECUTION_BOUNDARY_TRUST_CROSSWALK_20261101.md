@@ -979,3 +979,8 @@ No tests executed, no upstream code changed, no PocketCode decisions changed. Up
 ## 29. OpenHands recovery error text overstates what is known — 2026-11-02
 
 The startup AgentErrorEvent says “The tool execution was interrupted and did not complete” (`event_service.py` lines 1458–1462), while its classification is INTERNAL and `retryable=False` (1463–1465). The code cannot necessarily know the external side-effect outcome: a tool may have completed an external effect while another parallel tool remains blocked, and batch observations are emitted only after the full executor batch returns. A crash in that window can leave completed side effects with no persisted observations. Therefore the message's “did not complete” wording may overstate what the event log proves. For PocketCode, the design warning is to say “result/evidence not persisted; external outcome unknown” unless an independent authoritative source proves otherwise. This is a design comparison only, not a selected contract or owner decision. See crash-window plan Section 14.
+
+
+### 28.1 Branching-comment citation check
+
+The recovery comment cites #3749 for “remote branching is unsupported.” However, OpenHands issue #3749 is closed and titled “Conversation history tree: agent-server HTTP exposure (fork/navigate/schema)”; its body explicitly specifies the `/navigate` route and acceptance that events/search continues to return all branches. This is consistent with pinned `navigate_to` source and F10 tests, and appears to contradict or at least qualify the recovery comment. Require Gemini to distinguish concurrent multi-writer branching from supported in-place navigate/re-root and separate forked conversations. No assumption about the defect is made until this is reconciled.
