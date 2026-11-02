@@ -590,3 +590,14 @@ Other Gemini findings: non-RUNNING recovery guard confirmed, but PAUSED-with-in-
 For a safe multi-action recovery ancestry, if actions are A1 -> A2 -> A3, one possible test topology is E3 parented to A3, then E2 parented to E3, then E1 parented to E2, leaving E1 as leaf and all actions in its ancestor chain. This is a topology proposal for falsification, not an adopted PocketCode decision.
 
 Detailed reconciliation and exact Gemini follow-up requirements are in AI_COLLAB/OPENHANDS_EVENTLOG_HEAD_CRASH_WINDOW_FALSIFICATION_PLAN_20261102.md Section 19. No upstream source/tests were run or modified; no PocketCode source/tests/schema, canonical acceptance IDs, owner decisions, PR #2/#3 or main changed. Current working branch comparison: 567 ahead, 0 behind. PR #2/#3 remain open/unmerged. RevDev PC/host/queue state remains UNKNOWN.
+
+
+## 22. ChatGPT continuation update — OpenHands Gemini A–F correction (2026-11-02)
+
+Read Section 21 of `AI_COLLAB/OPENHANDS_EVENTLOG_HEAD_CRASH_WINDOW_FALSIFICATION_PLAN_20261102.md` before continuing. It is the authoritative latest independent source reconciliation and supersedes the earlier Gemini A–F interpretation where conflicting.
+
+Critical correction: the alleged multi-action branch-detachment is not established. In pinned `event_service.py`, startup recovery creates one AgentErrorEvent without explicit parent_id and sends it through LocalConversation._tree_stamping. ConversationState._stamp_parent_id defaults the parent to the current active leaf. For Prompt → A1 → A2 → A3, expected ancestry after one recovery error is Prompt → A1 → A2 → A3 → E1, not Prompt → A1 → E1. The code comment says explicit action parent but the constructor does not supply it. Test incomplete multi-tool batch/model-history behavior, not the unsupported detached-tree explanation. Do not implement reverse-order errors based on Gemini's proposed topology.
+
+Other unresolved tasks: PAUSED may be persisted while tool execution is in flight; startup recovery skips PAUSED; prove resume dispatch semantics. Trace the full LocalFileStore write helper before claims about atomic replace/fsync. Provider ID uniqueness scope is not proven. F31 isolated stub/no-DeepSeek setup is unverified. Missing observation does not prove no external side effect. Keep #2298 fixed.
+
+Fresh repo status: working branch is 569 ahead, 0 behind main; PR #2 and #3 remain open draft and unmerged. Documentation-only continuity work on this isolated branch remains permitted. Do not touch either PR or main. No source/tests/schema/acceptance changes, provider workload, Actions, merge, deployment, spend, or host/queue operations. PC/RevDev state remains UNKNOWN.
