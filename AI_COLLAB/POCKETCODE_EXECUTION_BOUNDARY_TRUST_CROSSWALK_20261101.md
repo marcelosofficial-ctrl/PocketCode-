@@ -997,3 +997,14 @@ A distinct potential problem remains: startup recovery calls `get_unmatched_acti
 
 
 Direct pinned test confirmation: `tests/sdk/conversation/local/test_conversation_tree.py` blob `9086af335ea59d267939ba0302d524f0594df3c1`, lines 117–141, explicitly verifies navigate-to-root then append sibling; the abandoned A1/A2 events remain in EventLog but disappear from active view. This confirms the underlying full-log versus active-branch distinction, although the exact startup recovery suppression sequence still needs an integration test.
+
+## 30. OpenHands crash-recovery issue history: narrow the remaining hypotheses — 2026-11-02
+
+Two earlier findings require explicit fix-history reconciliation before the OpenHands source review is treated as complete.
+
+- Issue #3045 (2026-05-03) described duplicate observation-like events when restart recovery emitted AgentErrorEvent and a late/pre-existing ObservationEvent shared a tool_call_id. PR #3063 merged 2026-05-05 (b6c63d0) and adds a restart-time guard: if a matching ObservationBaseEvent already exists in the loaded state, skip the synthetic AgentErrorEvent. This makes full-log observation suppression an intentional duplicate-result guard. The unresolved concern is narrower: whether the matching observation can be on an abandoned branch while the action is pending on the selected active branch, and whether the resulting behavior is intended.
+- Issue #4591 (2026-08-23) described KeyError in manipulation_indices when an orphan AgentErrorEvent remained after its ActionEvent was absent from a reconstructed view. PR #4932 merged 2026-09-23 (dd8d9f6) and makes the SDK tolerate orphan observations in manipulation-index calculation while retaining duplicate detection through ObservationUniquenessProperty. Verify exact inclusion at pinned commit 98849457621881ae2414719b82b8bc1cf535b4ab.
+- PR #4932 review history notes a residual non-rebuilding incremental-view path where duplicate observations may still reach tool-result serialization before enforcement/rebuild. Treat this as a separate unresolved test boundary, not as a claim that #4932 failed its stated orphan-observation fix.
+- Issue #6289 (opened 2026-10-28 against SDK 1.58.2 / main 46b1fa5) reports post-Finish tool calls left unmatched and executed on a later user turn. This is a distinct action-batch lifecycle issue, not crash recovery. Verify pinned revision ancestry before attributing it to the audited commit.
+
+The detailed case separation and test IDs FI-23..FI-26 are in AI_COLLAB/OPENHANDS_EVENTLOG_HEAD_CRASH_WINDOW_FALSIFICATION_PLAN_20261102.md, Section 18. No upstream tests were run; no PocketCode acceptance ID, schema, or owner decision changed.
