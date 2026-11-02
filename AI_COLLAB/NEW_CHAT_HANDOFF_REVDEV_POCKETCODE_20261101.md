@@ -601,3 +601,18 @@ Critical correction: the alleged multi-action branch-detachment is not establish
 Other unresolved tasks: PAUSED may be persisted while tool execution is in flight; startup recovery skips PAUSED; prove resume dispatch semantics. Trace the full LocalFileStore write helper before claims about atomic replace/fsync. Provider ID uniqueness scope is not proven. F31 isolated stub/no-DeepSeek setup is unverified. Missing observation does not prove no external side effect. Keep #2298 fixed.
 
 Fresh repo status: working branch is 569 ahead, 0 behind main; PR #2 and #3 remain open draft and unmerged. Documentation-only continuity work on this isolated branch remains permitted. Do not touch either PR or main. No source/tests/schema/acceptance changes, provider workload, Actions, merge, deployment, spend, or host/queue operations. PC/RevDev state remains UNKNOWN.
+
+
+## 23. Critical OpenHands multi-action recovery correction (2026-11-02)
+
+Read AI_COLLAB/OPENHANDS_EVENTLOG_HEAD_CRASH_WINDOW_FALSIFICATION_PLAN_20261102.md Section 21.8 and PROJECT_STATUS.md's OpenHands correction before continuing. They supersede the earlier Section 22 statement and the contrary paragraph in plan Section 21.
+
+The earlier ChatGPT conclusion was wrong. At pinned OpenHands commit 98849457621881ae2414719b82b8bc1cf535b4ab, startup recovery explicitly constructs one AgentErrorEvent(parent_id=first_action.id, ...) for unmatched_actions[0]. ConversationState._stamp_parent_id preserves explicit parent IDs; append moves the active leaf to the error. Tool calls in one model response are converted to ActionEvents in a loop before batch execution. Therefore, for three unmatched actions A1→A2→A3, the recovery event E1 is attached to A1 and becomes active leaf; A2/A3 remain in the full EventLog but are outside active ancestry. Source-level multi-action branch detachment is CONFIRMED.
+
+Current tests have a one-unmatched-action startup recovery case and separate multi-tool execution tests, but no located test combining a multi-action batch with crash/restart and resumed request reconstruction. The next task is to specify/run (only if explicitly authorized) a targeted integration test that checks event IDs/parents, active leaf, full log versus active branch, model-facing history, partial completions and side effects. Do not implement a fix or adopt reverse-order error emission from source reasoning alone. Preserve #2298 matching behavior and treat missing observations as external outcome UNKNOWN.
+
+The F31 crash-tool-call uses a local llm-stub with placeholder key; the broad F31 setup mentions DeepSeek for a separate real-model case. Isolated no-provider feasibility is plausible but not fully bootstrap-verified; no workload run. EventLog helper fsync correction remains as in plan Section 21.7. PAUSED startup recovery skip remains source-confirmed; duplicate redispatch on resume remains unresolved. Provider tool_call_id uniqueness across turns remains unproven.
+
+Claude is currently timed out. This correction is independently source-grounded; when Claude returns, ask it to specifically challenge the explicit parent_id=first_action.id and active-branch consequence. Do not treat the prior pending Claude prompt's contrary premise as valid.
+
+No OpenHands source/tests modified or executed; no provider workload, spend, PR, merge, deployment, PocketCode source/schema/canonical acceptance, PR #2/#3, main, or RevDev host/queue action. RevDev PC/runtime/installed binary/queue/publication state remains UNKNOWN.
