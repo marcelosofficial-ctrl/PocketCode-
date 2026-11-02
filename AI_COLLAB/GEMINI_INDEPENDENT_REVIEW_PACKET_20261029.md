@@ -126,3 +126,16 @@ Please assess the smallest missing assertion/test rather than duplicating these 
 ### EventLog marker crash boundaries — 2026-11-02
 
 One further source detail for your challenge: EventLog append writes the event JSON, updates in-memory maps/length, then advances the length marker. Marker advancement deletes the previous marker before writing the new one. LocalFileStore string writes use atomic_write_text. Please challenge whether the proposed kill points cover these transitions and whether fresh EventLog construction/index scan handles a missing marker correctly. Do not conflate process-kill survival with power-loss durability. Existing F31 integration recipe and mocked unit tests are already mapped in the plan; focus on the remaining parent_id/active-ancestry proof.
+
+
+### Higher-priority OpenHands recovery challenges added — 2026-11-02
+
+Please review the newly added Section 13 of `OPENHANDS_EVENTLOG_HEAD_CRASH_WINDOW_FALSIFICATION_PLAN_20261102.md`. Two important source facts materially change the priority:
+
+1. Multi-tool responses are supported. `event/base.py` lines 181–200 describes multiple ActionEvents from parallel tool calls. `response_dispatch.py` lines 224–255 emits each ActionEvent before `_aexecute_actions`; `agent.py` lines 695–716 and `parallel_executor.py` lines 128–191 run the complete batch, and `_ActionBatch.emit` emits observations only after batch completion. `get_unmatched_actions` returns all unmatched actions, but startup recovery chooses only `[0]`. Contrast this with `LocalConversation._emit_orphaned_action_errors` lines 2777–2805, which loops over all active-branch orphans after an interrupt. Challenge whether startup recovery leaves a normal multi-tool batch incomplete or cuts later tool calls off the active branch. Please inspect actual parent ordering and model reconstruction before judging.
+
+2. Navigation/re-root is supported and leaves abandoned events in the full log. `local_conversation.py` lines 988–1011, `remote_conversation.py` lines 1914–1943, EventService lines 2358–2372, and F10 feature map lines 34–38/295–328 establish this. Yet startup recovery scans full log and suppresses recovery when any ObservationBaseEvent matches tool_call_id. Challenge whether a prior-branch observation can suppress recovery for an action pending on the current branch. Reconcile this with the code comment that remote branching is unsupported (#3749); do not equate unsupported concurrent branching with supported navigate/re-root.
+
+F31's crash-tool-call scenario creates an inline agent using local `llm-stub` (`openai/qa-stub`, placeholder key, local base_url); the wider F31 setup also calls `llm preset deepseek` for the broader family. Please verify whether the isolated crash subfeature can be run without a DeepSeek key/provider call. Do not claim the whole F31 suite is provider-free.
+
+New plan cases FI-15..18 cover multi-action crash recovery; FI-19..22 cover navigation/rewind suppression. Treat them as test proposals, not executed evidence. Do not modify source/tests or make PocketCode owner decisions.
