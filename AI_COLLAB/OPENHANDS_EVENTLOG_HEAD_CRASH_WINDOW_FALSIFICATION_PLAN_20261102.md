@@ -273,3 +273,14 @@ Priority order for independent review and any future test work:
 4. EventLog marker boundaries and process-crash versus power-loss distinction.
 
 The no-abandoned-branches explanation in the startup comment must be reconciled against the supported navigate API before treating FI-19..22 as merely synthetic. No upstream tests were run or modified. No PocketCode acceptance ID or owner decision changed.
+
+
+## 14. Recovery error wording versus external side-effect uncertainty — 2026-11-02
+
+The startup-created AgentErrorEvent text at `event_service.py` lines 1458–1462 states: “A restart occurred while this tool was in progress ... The tool execution was interrupted and did not complete.” Its classification is INTERNAL and `retryable=False` (lines 1463–1465).
+
+That wording is stronger than the evidence necessarily supports. In a parallel batch, a tool may complete an external side effect and return a result into the in-memory batch while another tool remains blocked; because _ActionBatch.aprepare awaits the whole batch and _ActionBatch.emit persists results only afterward, a process crash can occur after one side effect completed but before any batch observation is emitted. Startup's synthetic error cannot know whether the side effect completed. The same ambiguity can occur for a single tool that completes its external effect immediately before process death but before its observation is durably appended.
+
+Add an explicit assertion to FI-16 and the real integration harness: preserve the external side-effect ledger independently from conversation events, kill after the side effect is confirmed but before observation persistence, then assert the recovery event does not claim a verified negative execution outcome. If the current user-facing error string claims “did not complete,” report this as a semantic overstatement even if automatic retry is disabled. Do not conflate retryable=False with proof of non-execution or with provider idempotency.
+
+For PocketCode's crosswalk, translate this only into a design warning: an interruption record should state that the result/evidence was not persisted and the external outcome is unknown unless independently proven. This does not make an OpenHands implementation decision or a PocketCode owner decision.
