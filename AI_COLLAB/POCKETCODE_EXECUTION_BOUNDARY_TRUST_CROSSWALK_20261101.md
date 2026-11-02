@@ -984,3 +984,6 @@ The startup AgentErrorEvent says “The tool execution was interrupted and did n
 ### 28.1 Branching-comment citation check
 
 The recovery comment cites #3749 for “remote branching is unsupported.” However, OpenHands issue #3749 is closed and titled “Conversation history tree: agent-server HTTP exposure (fork/navigate/schema)”; its body explicitly specifies the `/navigate` route and acceptance that events/search continues to return all branches. This is consistent with pinned `navigate_to` source and F10 tests, and appears to contradict or at least qualify the recovery comment. Require Gemini to distinguish concurrent multi-writer branching from supported in-place navigate/re-root and separate forked conversations. No assumption about the defect is made until this is reconciled.
+
+
+The related PR descriptions clarify the #3749 history: the SDK foundation initially left RemoteConversation navigation as NotImplemented until the agent-server API PR; #3749 then added the HTTP `/navigate` endpoint and wired the remote client to it. Therefore remote in-place navigate/re-root is supported in the pinned revision. “Remote branching unsupported” must mean something narrower (potentially concurrent/multi-writer branch mutation) or the comment is stale. The full-log suppression test remains valid until an explicit invariant is proven.
