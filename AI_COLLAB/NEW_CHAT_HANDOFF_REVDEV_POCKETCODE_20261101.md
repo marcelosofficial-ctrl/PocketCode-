@@ -546,3 +546,8 @@ A deeper source pass found two more important supported paths. Exact plan and ev
 **F31 stub note:** crash-tool-call T uses a local `llm-stub` endpoint and placeholder key in its inline agent. The wider F31 setup also runs `llm preset deepseek`, so do not claim the full family is provider-free. Whether the preset can be omitted for isolated F31.crash-tool-call is not yet verified.
 
 All FI-15..22 labels are local plan labels, not PocketCode acceptance IDs. No upstream tests run/changed; no owner decision changes.
+
+
+### 20.5 OpenHands recovery message may overstate external outcome — 2026-11-02
+
+Startup recovery AgentErrorEvent text says the tool execution “did not complete” (`event_service.py` lines 1458–1462), with INTERNAL / retryable=False classification. But the source cannot prove no external side effect occurred before the crash. In a multi-tool batch, one tool can finish an external side effect while another blocks; results are emitted only after the whole batch returns. Thus a crash may leave completed side effects without observations. Treat this as an important PocketCode design warning: missing result/evidence means external outcome UNKNOWN unless independently verified; non-retryable is not proof of non-execution. See crash-window plan Section 14. No PocketCode owner decision changed.
