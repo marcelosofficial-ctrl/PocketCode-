@@ -144,3 +144,8 @@ New plan cases FI-15..18 cover multi-action crash recovery; FI-19..22 cover navi
 ### Recovery error wording and side-effect ambiguity — 2026-11-02
 
 Startup recovery's AgentErrorEvent text says “The tool execution was interrupted and did not complete” (`event_service.py` lines 1458–1462), with INTERNAL / retryable=False classification. Challenge whether that statement is supportable. A multi-tool batch can have one external side effect complete while another tool remains blocked; because results are emitted only after the full batch returns, a crash may leave completed effects without observations. Please assess whether the error text overstates what is known and what a more accurate evidence/outcome representation would be. Distinguish no persisted result from no side effect. Do not equate retryable=False with proof of non-execution.
+
+
+### Important citation contradiction: OpenHands issue #3749 — 2026-11-02
+
+The recovery comment cites #3749 for “remote branching is unsupported.” I fetched issue #3749 itself: it is CLOSED and titled “[Feature] Conversation history tree: agent-server HTTP exposure (fork/navigate/schema) (3/3)”. Its body specifies the HTTP `/navigate` route and acceptance that `/events/search` still returns all branches after navigation. This appears inconsistent with the recovery comment and the pinned `navigate_to` source/F10 feature map. Please inspect the issue's linked PR/merge commit and clarify whether “remote branching unsupported” means only concurrent/multi-writer branching, while in-place navigate/re-root is supported. Explicitly distinguish concurrency, forked conversations and abandoned branches within one conversation. Do not let the comment citation override the actual route/API behavior.
