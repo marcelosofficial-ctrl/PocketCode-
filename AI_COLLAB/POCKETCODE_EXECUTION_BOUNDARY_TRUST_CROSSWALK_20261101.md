@@ -974,3 +974,8 @@ A deeper pinned-source pass elevated two recovery questions. They are source-der
 **F31 qualification:** F31 crash-tool-call configures T with a per-conversation `openai/qa-stub` model, placeholder key and local `llm-stub` base_url (F31 lines 103–121); the crash subscenario at lines 191–220 uses that stub. The enclosing setup also runs `llm preset deepseek`, and other F31 subfeatures use DeepSeek. The crash subfeature appears stub-backed, but whether preset setup is needed without a key is not yet verified. Do not claim all F31 is provider-free.
 
 No tests executed, no upstream code changed, no PocketCode decisions changed. Updated source review, Gemini packet and handoff are being reconciled separately.
+
+
+## 29. OpenHands recovery error text overstates what is known — 2026-11-02
+
+The startup AgentErrorEvent says “The tool execution was interrupted and did not complete” (`event_service.py` lines 1458–1462), while its classification is INTERNAL and `retryable=False` (1463–1465). The code cannot necessarily know the external side-effect outcome: a tool may have completed an external effect while another parallel tool remains blocked, and batch observations are emitted only after the full executor batch returns. A crash in that window can leave completed side effects with no persisted observations. Therefore the message's “did not complete” wording may overstate what the event log proves. For PocketCode, the design warning is to say “result/evidence not persisted; external outcome unknown” unless an independent authoritative source proves otherwise. This is a design comparison only, not a selected contract or owner decision. See crash-window plan Section 14.
