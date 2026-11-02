@@ -243,3 +243,13 @@ A prior-branch observation can therefore exist in the full EventLog while being 
 F31 crash-tool-call creates a per-conversation agent with model `openai/qa-stub`, placeholder key `qa-stub-key`, and a local `llm-stub` base URL (F31 lines 103–121). The crash scenario (lines 191–220) sends the request to that stub, SIGKILLs during the stubbed terminal tool action, then changes the stub to finish and resumes. The wider F31 setup also runs `llm preset deepseek` and other F31 subfeatures use DeepSeek. Thus the specific crash-tool-call flow appears local-stub-backed, but whether the preset command is required in an isolated no-key invocation is not verified. Do not call the entire F31 suite provider-free.
 
 No tests were run by ChatGPT. No upstream source/tests were modified. The expanded test plan is proposal only.
+
+## 9. Upstream recovery issue/fix chronology — 2026-11-02
+
+Additional issue history narrows the remaining OpenHands recovery questions:
+- #3045 / #3063: a restart-time guard skips synthetic AgentErrorEvent when a matching ObservationBaseEvent already exists in the loaded log. This is an intentional duplicate-result suppression rule, not by itself evidence of a branch-context defect.
+- #4591 / #4932: manipulation-index calculation was changed to tolerate orphan observations whose ActionEvent is absent from the reconstructed view. Duplicate observations remain a separate invariant managed by ObservationUniquenessProperty.
+- PR #4932 review notes a separate non-rebuilding incremental-view path where duplicate observations may reach serialization before enforcement/rebuild.
+- #6289 reports a separate post-Finish unmatched-action execution-on-next-turn issue against SDK 1.58.2 / main 46b1fa5; verify whether the pinned commit includes it before attribution.
+
+The exact issue/PR chronology, test proposals FI-23..FI-26, and reviewer questions are recorded in AI_COLLAB/OPENHANDS_EVENTLOG_HEAD_CRASH_WINDOW_FALSIFICATION_PLAN_20261102.md Section 18. This does not change any PocketCode design/owner decision or acceptance ID. No upstream tests or source were run or modified.
