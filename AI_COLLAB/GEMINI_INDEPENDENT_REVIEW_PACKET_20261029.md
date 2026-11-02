@@ -181,3 +181,9 @@ Required distinctions:
 6. Active-branch pending-action detection after navigation/rewind versus full-log duplicate suppression.
 
 Please return exact pinned source/test evidence for each, plus whether the issue/fix is present at the pinned revision. State which are fixed, remaining, post-pin, or unresolved. Do not run or change upstream source/tests. Do not make PocketCode owner decisions or change canonical acceptance IDs.
+
+### #6289 linked PR status update — 2026-11-02
+
+Issue #6289 links to PR #6290, which is OPEN/unmerged at the time of this review. Its proposed change emits one AgentErrorEvent for each tool call truncated after FinishTool, so discarded calls do not remain pending and execute on a later turn. It includes a two-turn regression test and sync/async coverage. The author reports local test results, but ChatGPT has not run or independently verified them.
+
+Please inspect PR #6290's diff/test design and verify whether pinned commit 988494... contains the unfixed behavior. Do not describe PR #6290 as merged or as a fix already present in the pinned source.
