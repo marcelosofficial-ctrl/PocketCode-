@@ -420,3 +420,8 @@ The EventLog class is in event_store.py. EventLog.append delegates to FileStore.
 Other qualifications: provider tool_call_id reuse scope is unproven; F31 isolated no-DeepSeek setup remains unverified; recovery error wording cannot prove no external side effect; #2298 remains fixed by the current tool_call_id matcher. All upstream tests remain NOT RUN. No product/owner decision, canonical acceptance ID, source, test, schema, PR, provider, budget, deployment or host state changed.
 
 Repository continuity check: working branch `pocketcode-execution-boundary-crosswalk-2026-11-01` compares 569 commits ahead of main and 0 behind (main base `555840d8d83342513d9cd353d4d1522d46a5c82d`). PR #2 and PR #3 are both still OPEN, DRAFT, UNMERGED and untouched. The previous 567-ahead count is stale. RevDev PC/installed binary/runtime/watcher/queue/publication state remains UNKNOWN.
+
+
+### 21.1 EventLog lower-level write durability correction — 2026-11-02
+
+A further exact-ref read completed the LocalFileStore path. Event JSON is written through `LocalFileStore.write` to `atomic_write_text`: same-directory temp file, flush, `os.fsync(file.fileno())`, close, then `os.replace`. The helper does not fsync the containing directory after replace. Thus Gemini was incorrect to say there is no file fsync. Individual text-file writes have a deliberate atomic-replacement pattern; rename durability across OS crash/power loss remains unproven without directory sync and filesystem-specific testing. Event JSON, marker and base_state/HEAD are still separate writes, not one transaction. No test executed.
