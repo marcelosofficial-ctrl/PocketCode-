@@ -441,3 +441,8 @@ No OpenHands tests or source were run/modified. No PocketCode source/tests/schem
 ### OpenHands PAUSED crash/replay path strengthened — 2026-11-02
 
 The PAUSED concern is stronger than a startup-recovery omission. Pinned source shows pause() can set PAUSED while a tool is in flight; the existing test test_pause_while_running_continuous_actions explicitly pauses after the blocking executor signals entry. Startup recovery only repairs RUNNING. On resume, LocalConversation changes PAUSED to RUNNING and Agent._step checks unmatched actions on the active branch and executes them before a new LLM request. Therefore PAUSED + unmatched action + restart can re-dispatch the action on resume. Source-level replay path is CONFIRMED; exact server restart/persistence lifecycle and duplicate external side effect still require integration testing. See plan Section 21.9. No workload run.
+
+
+### Continuity branch status after OpenHands audit updates — 2026-11-02
+
+GitHub compare recheck: pocketcode-execution-boundary-crosswalk-2026-11-01 is 580 commits ahead of main and 0 behind; merge base/main is 555840d8d83342513d9cd353d4d1522d46a5c82d. PR #2 and PR #3 were re-read and both remain OPEN. They were not modified. The latest commits on the working branch are documentation-only corrections to the OpenHands crash-window plan, PROJECT_STATUS.md and new-chat handoff. No source/test/schema/acceptance change, merge, deployment, Actions run, provider workload, spend or host/queue operation.
