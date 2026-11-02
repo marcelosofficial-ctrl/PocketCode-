@@ -391,3 +391,5 @@ The OpenHands recovery audit now distinguishes several upstream issue histories 
 - #6289 (opened 2026-10-28 against SDK 1.58.2 / main 46b1fa5) reports post-Finish tool calls being left unmatched and executed on a later turn. Keep it separate from crash recovery and verify whether the pinned revision includes it.
 
 Detailed distinctions and future-only test cases FI-23..FI-26 are recorded in AI_COLLAB/OPENHANDS_EVENTLOG_HEAD_CRASH_WINDOW_FALSIFICATION_PLAN_20261102.md, Section 18. These are research notes only. No OpenHands tests were run or modified; no PocketCode source/tests/schema, canonical acceptance, owner decision, PR #2/#3, main branch, Actions, deployment, spend, provider workload or PC/RevDev host/queue state changed. RevDev PC state remains UNKNOWN.
+
+- Follow-up status for #6289: linked PR #6290 was OPEN/unmerged when checked on 2026-11-02. It proposes one AgentErrorEvent per tool call discarded after FinishTool, with a two-turn regression test and sync/async coverage. Test results in the PR are author-reported only. Verify pinned revision separately; do not attribute the unmerged fix to it.
