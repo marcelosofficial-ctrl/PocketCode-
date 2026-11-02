@@ -364,3 +364,8 @@ Detailed evidence and tests: `AI_COLLAB/OPENHANDS_EVENTLOG_HEAD_CRASH_WINDOW_FAL
 ### OpenHands recovery error wording qualification — 2026-11-02
 
 Startup recovery's AgentErrorEvent says the tool execution “did not complete” while classifying it INTERNAL/non-retryable. The code cannot prove no external side effect occurred before the crash, especially where parallel batch results are emitted only after the full batch returns. Treat the wording as potentially overconfident; missing observation/evidence does not prove non-execution. PocketCode design warning only: represent external outcome as UNKNOWN absent independent proof. Detailed test addition is in crash-window plan Section 14. No owner decision changed.
+
+
+### OpenHands #3749 reference conflict noted — 2026-11-02
+
+Recovery source comment cites issue #3749 for unsupported remote branching, but issue #3749 is closed and describes exposing the conversation history tree over HTTP, including `/navigate` and all-branch event search. This conflicts with or qualifies the comment. Independent review must distinguish concurrent/multi-writer branching from supported in-place navigate/re-root and forked conversations. The navigation suppression test remains a high-priority falsification case, not a confirmed defect.
