@@ -359,3 +359,8 @@ Pinned source supports multiple ActionEvents per LLM response and executes the b
 In-place navigate/re-root is also supported and preserves abandoned events in the full log, while startup recovery scans the full log and suppresses recovery on any matching observation-like event by tool_call_id. This makes stale-observation suppression after navigation a concrete test target (FI-19..22), subject to verifying the RUNNING lifecycle and intended re-execution semantics. F31 crash-tool-call configures a local llm-stub per-conversation agent; the wider F31 setup also presets DeepSeek for other subfeatures, so isolated provider-free execution remains to be verified.
 
 Detailed evidence and tests: `AI_COLLAB/OPENHANDS_EVENTLOG_HEAD_CRASH_WINDOW_FALSIFICATION_PLAN_20261102.md` Section 13. No tests executed, no upstream source changed, no PocketCode acceptance or owner decisions changed.
+
+
+### OpenHands recovery error wording qualification — 2026-11-02
+
+Startup recovery's AgentErrorEvent says the tool execution “did not complete” while classifying it INTERNAL/non-retryable. The code cannot prove no external side effect occurred before the crash, especially where parallel batch results are emitted only after the full batch returns. Treat the wording as potentially overconfident; missing observation/evidence does not prove non-execution. PocketCode design warning only: represent external outcome as UNKNOWN absent independent proof. Detailed test addition is in crash-window plan Section 14. No owner decision changed.
