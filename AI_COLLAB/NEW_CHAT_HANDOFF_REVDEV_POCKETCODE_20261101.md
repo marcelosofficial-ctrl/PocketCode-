@@ -568,3 +568,13 @@ New hypothesis: startup recovery checks the full EventLog; ordinary pending-acti
 ### 20.8 Direct unit-test proof for abandoned branches
 
 Pinned `tests/sdk/conversation/local/test_conversation_tree.py`, blob `9086af335ea59d267939ba0302d524f0594df3c1`, lines 117–141, contains `test_navigate_then_emit_creates_sibling_branch`: after navigating to root and appending B1, abandoned A1/A2 remain in EventLog but are absent from active view; A1 and B1 are siblings. This directly proves the full-log/active-branch split. It does not alone prove the full FI-19 server restart sequence. Keep that final lifecycle as an integration test, not a source-only conclusion.
+
+## 20.9 OpenHands recovery issue/fix chronology update — 2026-11-02
+
+The OpenHands review now distinguishes the crash/recovery issue history:
+- #3045 was closed by #3063 (merged 2026-05-05, b6c63d0): restart recovery skips creating a synthetic AgentErrorEvent if an ObservationBaseEvent already exists for the action tool_call_id in the loaded state.
+- #4591 was closed by #4932 (merged 2026-09-23, dd8d9f6): ToolCallMatchingProperty manipulation-index calculation tolerates orphan observations whose ActionEvent is absent from the view; duplicate-result detection remains separately enforced.
+- The #4932 review history identifies a separate incremental-view duplicate-observation path. Do not assume rebuilding/enforcing views cover every incremental append.
+- #6289 (opened 2026-10-28 against SDK 1.58.2 / main 46b1fa5) reports post-Finish tool calls left unmatched and executed on a later turn. Keep separate from crash recovery; verify whether it is present in the pinned commit.
+
+The detailed test separation FI-23..FI-26 and Gemini challenges are in AI_COLLAB/OPENHANDS_EVENTLOG_HEAD_CRASH_WINDOW_FALSIFICATION_PLAN_20261102.md Section 18 and AI_COLLAB/GEMINI_INDEPENDENT_REVIEW_PACKET_20261029.md. No OpenHands tests were run; no source/tests, PocketCode acceptance IDs, owner decisions, PRs or main branch changed. RevDev PC state remains UNKNOWN.
