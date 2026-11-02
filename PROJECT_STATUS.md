@@ -369,3 +369,6 @@ Startup recovery's AgentErrorEvent says the tool execution “did not complete�
 ### OpenHands #3749 reference conflict noted — 2026-11-02
 
 Recovery source comment cites issue #3749 for unsupported remote branching, but issue #3749 is closed and describes exposing the conversation history tree over HTTP, including `/navigate` and all-branch event search. This conflicts with or qualifies the comment. Independent review must distinguish concurrent/multi-writer branching from supported in-place navigate/re-root and forked conversations. The navigation suppression test remains a high-priority falsification case, not a confirmed defect.
+
+
+#3749 PR-description cross-check clarifies that the agent-server PR added POST `/navigate` and wired `RemoteConversation.navigate_to()`; remote in-place navigate/re-root is supported in the pinned revision. The recovery comment's “remote branching unsupported” must refer to a narrower mode (e.g. concurrent/multi-writer branching) or be stale. FI-19..22 remain a valid falsification target.
