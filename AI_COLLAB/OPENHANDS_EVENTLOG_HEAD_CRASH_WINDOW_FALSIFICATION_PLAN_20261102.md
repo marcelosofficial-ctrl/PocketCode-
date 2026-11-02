@@ -509,3 +509,19 @@ The backing FileStore implementation must be followed into `openhands-sdk/openha
 7. Reconcile historical PR merge states against pinned history and preserve #2298's fixed classification.
 
 No source, tests, schema, branch, PR, acceptance IDs, provider, spend, host, queue or deployment was changed. All OpenHands tests remain NOT RUN. RevDev PC/runtime/queue state remains UNKNOWN.
+
+
+### 21.7 Completed LocalFileStore atomic-write trace — 2026-11-02
+
+The lower-level write helper has now been inspected at the same pinned OpenHands commit.
+
+- `openhands-sdk/openhands/sdk/io/local.py`, `LocalFileStore.write`, lines 63–68: string writes call `atomic_write_text(Path(full_path), contents)`; binary writes use a direct open/write path. EventLog JSON and marker contents are strings, so the string path is the relevant one.
+- `openhands-sdk/openhands/sdk/utils/files.py`, `atomic_write_text`, lines 21–47: creates a temporary file in the destination directory with `tempfile.mkstemp`; applies owner-only mode; writes text; calls `file.flush()`; calls `os.fsync(file.fileno())`; closes the file through the context manager; then calls `os.replace(temporary_path, path)`. Cleanup attempts to unlink the temp file on exceptions.
+- The inspected helper does **not** call `fsync` on the containing directory after `os.replace`.
+
+Updated durability verdict:
+- **Process termination (e.g. SIGKILL):** the write path is designed to avoid exposing a partially written target: data is written to a same-directory temporary file, flushed and fsynced, closed, then atomically replaced. This is strong source evidence for old-or-new target visibility under ordinary local filesystem semantics. Do not overstate it as a universal filesystem guarantee.
+- **OS crash / sudden power loss:** file contents are fsynced before replacement, but the directory entry update is not explicitly fsynced. Therefore persistence of the rename across power loss is not established by this helper alone. The correct conclusion is not "no fsync exists"; it is "file fsync exists, directory fsync is absent in this helper, so rename durability across power loss remains filesystem/platform dependent and unproven."
+- **EventLog transaction:** event JSON and the length marker are separate writes; ConversationState event append and base_state/HEAD persistence are also separate. Atomic replacement of an individual text file does not make those multi-file updates transactional.
+
+This corrects Gemini's statement that the implementation does not fsync file descriptors. It does fsync the temporary file before replace. No fault-injection or power-loss test has been run.
