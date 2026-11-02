@@ -313,3 +313,16 @@ However, this does not eliminate the navigate/rewind case because two different 
 The F10 feature map explicitly says navigation to an earlier event leaves later events on disk but moves HEAD; a subsequent append creates a sibling. A concrete test sequence is therefore: create A→O, navigate HEAD back to A, send a new message to start a new run, let pending-action detection re-execute A (the active branch contains A but not O), interrupt that re-execution after a controlled side effect and before result persistence, then restart. If status is RUNNING, startup's full-log scan can see O from the abandoned branch and suppress the recovery error. On a later user resume, active-branch detection can still see A as pending and execute it again. Whether this exact lifecycle is valid and intended must be proven, but all constituent APIs are present in the pinned source and F10 spec. This is now the highest-priority FI-19 test.
 
 The fix for #2298 shows why AgentErrorEvent must count as a terminal tool-result marker for the matching branch; it does not justify matching a result across abandoned branches. A correct branch-aware recovery check may need to use active ancestry plus a separate explicit crash-tail detection rule, but that is a design hypothesis for Gemini to challenge, not a recommendation to patch OpenHands.
+
+
+## 17. Direct SDK test confirms abandoned branches persist — 2026-11-02
+
+The navigation claim is now supported by a direct pinned unit test, not only docs/API wrappers. At pinned commit `98849457621881ae2414719b82b8bc1cf535b4ab`, `tests/sdk/conversation/local/test_conversation_tree.py`, blob `9086af335ea59d267939ba0302d524f0594df3c1`, lines 117–141, `test_navigate_then_emit_creates_sibling_branch`:
+- creates root → A1 → A2;
+- navigates HEAD back to root;
+- emits B1 as a sibling of A1;
+- asserts A1/A2 remain in `state.events` (the EventLog);
+- asserts A1/A2 are absent from the active view;
+- asserts A1 and B1 both have the root as parent.
+
+This directly confirms that a non-active observation can remain in the full EventLog after supported navigation. It does not by itself prove the exact RUNNING/recovery sequence or that a prior observation for the same ActionEvent can suppress recovery in a real server restart. Those remain FI-19/20. The code comment's “no abandoned branches to exclude” is therefore factually incompatible with in-place navigation semantics unless it is scoped narrowly to a different kind of remote/concurrent branch. Gemini must resolve that distinction.
