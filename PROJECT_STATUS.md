@@ -405,3 +405,18 @@ Other Gemini findings: non-RUNNING recovery guard confirmed, but PAUSED-with-in-
 For a safe multi-action recovery ancestry, if actions are A1 -> A2 -> A3, one possible test topology is E3 parented to A3, then E2 parented to E3, then E1 parented to E2, leaving E1 as leaf and all actions in its ancestor chain. This is a topology proposal for falsification, not an adopted PocketCode decision.
 
 Detailed reconciliation and exact Gemini follow-up requirements are in AI_COLLAB/OPENHANDS_EVENTLOG_HEAD_CRASH_WINDOW_FALSIFICATION_PLAN_20261102.md Section 19. No upstream source/tests were run or modified; no PocketCode source/tests/schema, canonical acceptance IDs, owner decisions, PR #2/#3 or main changed. Current working branch comparison: 567 ahead, 0 behind. PR #2/#3 remain open/unmerged. RevDev PC/host/queue state remains UNKNOWN.
+
+
+## 21. OpenHands Gemini A–F independent correction — 2026-11-02
+
+ChatGPT independently re-read the exact OpenHands source at `98849457621881ae2414719b82b8bc1cf535b4ab`. See [the detailed correction and next test requirements](AI_COLLAB/OPENHANDS_EVENTLOG_HEAD_CRASH_WINDOW_FALSIFICATION_PLAN_20261102.md), Section 21. This addendum supersedes the earlier Section 20.4/Gemini summary where they conflict.
+
+Most important correction: Gemini's claim that startup recovery's single error event is parented to A1 and detaches A2/A3 is not supported by the actual code. The AgentErrorEvent constructor does not pass parent_id. LocalConversation._tree_stamping and ConversationState._stamp_parent_id default an unset parent to the current active leaf. For a normal A1 → A2 → A3 active chain, the recovery error is therefore expected to append after A3, preserving all three actions in ancestry. The source comment claiming explicit action parenting appears inconsistent with the implementation. This does not resolve whether one error is enough to make a multi-action tool-call batch valid for the resumed model. That remains the focused test question; do not adopt reverse-order error emission.
+
+PAUSED can be set while a tool step is in progress: the pinned pause test explicitly pauses after the executor signals entry. Startup recovery only handles persisted RUNNING status, so PAUSED skips that recovery block. Whether a real server crash in this window leads to duplicate dispatch on resume remains UNRESOLVED.
+
+The EventLog class is in event_store.py. EventLog.append delegates to FileStore.write, then updates the in-memory index and marker. Gemini's claimed inline .tmp/os.replace path is not present in event_store.py. Lower-level LocalFileStore semantics and fsync guarantees require exact helper tracing; process-kill and power-loss guarantees are not yet established.
+
+Other qualifications: provider tool_call_id reuse scope is unproven; F31 isolated no-DeepSeek setup remains unverified; recovery error wording cannot prove no external side effect; #2298 remains fixed by the current tool_call_id matcher. All upstream tests remain NOT RUN. No product/owner decision, canonical acceptance ID, source, test, schema, PR, provider, budget, deployment or host state changed.
+
+Repository continuity check: working branch `pocketcode-execution-boundary-crosswalk-2026-11-01` compares 569 commits ahead of main and 0 behind (main base `555840d8d83342513d9cd353d4d1522d46a5c82d`). PR #2 and PR #3 are both still OPEN, DRAFT, UNMERGED and untouched. The previous 567-ahead count is stale. RevDev PC/installed binary/runtime/watcher/queue/publication state remains UNKNOWN.
