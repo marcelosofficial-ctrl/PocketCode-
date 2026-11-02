@@ -616,3 +616,8 @@ The F31 crash-tool-call uses a local llm-stub with placeholder key; the broad F3
 Claude is currently timed out. This correction is independently source-grounded; when Claude returns, ask it to specifically challenge the explicit parent_id=first_action.id and active-branch consequence. Do not treat the prior pending Claude prompt's contrary premise as valid.
 
 No OpenHands source/tests modified or executed; no provider workload, spend, PR, merge, deployment, PocketCode source/schema/canonical acceptance, PR #2/#3, main, or RevDev host/queue action. RevDev PC/runtime/installed binary/queue/publication state remains UNKNOWN.
+
+
+### 23.1 PAUSED crash/replay path (2026-11-02)
+
+Plan Section 21.9 adds a second source-confirmed OpenHands risk: pause() can set PAUSED after a blocking tool has begun; startup recovery only handles RUNNING; on resume LocalConversation resets PAUSED to RUNNING and Agent._step executes unmatched actions on the active branch before calling the LLM. Therefore a PAUSED conversation killed before its observation is persisted can re-dispatch the action on resume. The existing pause test proves the pause-during-tool window is reachable in the SDK. Full server SIGKILL/restart integration and actual external duplicate side effect remain to be tested. Keep interrupt() separate: it sets cancellation token/cancels async task and has a synthetic orphan-error path.
