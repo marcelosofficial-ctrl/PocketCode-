@@ -326,3 +326,62 @@ The navigation claim is now supported by a direct pinned unit test, not only doc
 - asserts A1 and B1 both have the root as parent.
 
 This directly confirms that a non-active observation can remain in the full EventLog after supported navigation. It does not by itself prove the exact RUNNING/recovery sequence or that a prior observation for the same ActionEvent can suppress recovery in a real server restart. Those remain FI-19/20. The code comment's “no abandoned branches to exclude” is therefore factually incompatible with in-place navigation semantics unless it is scoped narrowly to a different kind of remote/concurrent branch. Gemini must resolve that distinction.
+
+## 18. Reconcile historical crash-recovery issues #3045 and #4591 — 2026-11-02
+
+Two closed upstream issues and their fixes materially qualify the remaining recovery tests. These are source-history facts to verify against the exact pinned commit, not proof that every current path is correct.
+
+### 18.1 Issue #3045 / PR #3063: observation already present at recovery time
+
+Issue #3045, opened 2026-05-03, reported that restart recovery could append an AgentErrorEvent for an action even though a matching ObservationEvent already existed under the same tool_call_id but a different action_id. That produced two observation-like events for one tool call and could later break tool-call matching during condensation or provider serialization.
+
+PR #3063 merged 2026-05-05 (merge commit b6c63d0). Its description says restart recovery skips synthesizing AgentErrorEvent when the loaded state already contains an ObservationBaseEvent with the unmatched action's tool_call_id. It complements SDK view-level duplicate/orphan handling.
+
+This means the full-log observation check is not merely an unexplained quirk: it was introduced as a deliberate duplicate-result guard for a known crash/recovery race. The prior FI-19 hypothesis must now be narrowed. A matching observation already in the restored EventLog should suppress a second recovery result by design. The unresolved question is whether the observation belongs to the active branch and whether suppression can leave an action pending on that branch. Do not call this a defect without proving that active-branch pending-action execution is reachable and that the behavior violates intended replay semantics.
+
+PR: https://github.com/OpenHands/software-agent-sdk/pull/3063
+Issue: https://github.com/OpenHands/software-agent-sdk/issues/3045
+
+### 18.2 Issue #4591 / PR #4932: orphan observation in a reconstructed view
+
+Issue #4591, opened 2026-08-23, reported that ToolCallMatchingProperty.manipulation_indices() could raise KeyError when an AgentErrorEvent survived in a view but its ActionEvent was absent, for example because the action failed to parse under SDK/server version skew or was removed by view enforcement/condensation.
+
+PR #4932 merged 2026-09-23 (merge commit dd8d9f6). Its final description says the SDK tracks action tool_call_ids independently and tolerates observations that have no preceding action in the view, while retaining duplicate-observation enforcement through ObservationUniquenessProperty. The PR records focused regression coverage and SDK context test results. These are upstream-reported test results, not tests run by ChatGPT.
+
+This fix is distinct from #3045/#3063:
+- #3063 prevents a duplicate recovery AgentErrorEvent when an observation already exists in the loaded full log.
+- #4932 makes manipulation-index calculation tolerate an orphan observation that remains after its action is absent from a reconstructed view.
+- Neither should be described as proof that all duplicate results or active-branch inconsistencies are impossible.
+
+PR: https://github.com/OpenHands/software-agent-sdk/pull/4932
+Issue: https://github.com/OpenHands/software-agent-sdk/issues/4591
+
+### 18.3 Remaining edge and test boundaries
+
+The #4932 review history records a residual raw incremental-view path where duplicate observations could still reach serialization before a full enforcing rebuild. Treat this as a separate incremental-view/cardinality question. Do not claim #4932 guarantees that every live append sequence is normalized before every consumer reads it.
+
+Add or retain separate future tests:
+- FI-23, pre-existing observation: restored RUNNING state has an unmatched action by action_id but a matching ObservationBaseEvent by tool_call_id already in the full EventLog. Assert restart does not append a second AgentErrorEvent; inspect active ancestry and pending-action detection separately.
+- FI-24, late observation: restart recovery first appends AgentErrorEvent, then the original tool execution reports a late ObservationEvent. Assert raw EventLog, reconstructed view, condenser manipulation indices and LLM serialization each have explicitly documented behavior. Distinguish a persisted duplicate from a duplicate exposed to the model.
+- FI-25, orphan observation: AgentErrorEvent remains in the reconstructed view while its ActionEvent is absent/unparseable. Verify the pinned SDK's manipulation-index path is tolerant, as addressed by #4932.
+- FI-26, duplicate incremental append: append action + observation + duplicate observation through the non-rebuilding/incremental path. Verify whether the live view can expose two tool results before enforcement/rebuild. Do not assume the full-rebuild invariant applies to the incremental path.
+
+### 18.4 Issue #6289: post-Finish unmatched tool calls are a separate lifecycle defect report
+
+Issue #6289 was opened 2026-10-28 against SDK 1.58.2 / main commit 46b1fa5. It reports that when one LLM response contains [FinishTool, another tool], the later ActionEvent is emitted before the batch is truncated; the discarded call has no result event and is then treated as a pending action and executed before the next user message. Its supplied reproduction uses a scripted TestLLM and no provider call.
+
+This is not the same as startup crash recovery or multi-action crash handling. It is relevant as a separate unmatched-action lifecycle edge because it demonstrates why "unmatched action" cannot always be interpreted as "action intended for later execution." Verify whether commit 98849457621881ae2414719b82b8bc1cf535b4ab contains this behavior or predates the report before attributing it to the pinned revision.
+
+Issue: https://github.com/OpenHands/software-agent-sdk/issues/6289
+
+### 18.5 Updated reviewer priority
+
+Gemini must:
+1. Verify the exact pinned commit contains the #3063 and #4932 fixes and their relevant tests; cite exact paths/lines.
+2. Explain the intended invariant behind full-log observation suppression, including why active-branch pending-action detection does not cause an unintended replay.
+3. Test late completion after recovery separately from an observation already present before recovery.
+4. Inspect whether incremental append paths can expose duplicate tool results before a rebuilding/enforcing view.
+5. Treat #6289 as post-pin unless commit ancestry proves otherwise; assess it separately from crash recovery.
+6. Keep #2298's historical defect marked fixed. Do not relabel any of these distinct paths as #2298.
+
+No OpenHands tests were run or modified by ChatGPT. No PocketCode source, tests, schema, acceptance IDs or owner decisions changed. These are study findings only.
