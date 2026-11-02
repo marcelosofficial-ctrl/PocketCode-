@@ -533,3 +533,16 @@ The next useful gap is therefore not more mocked branch tests. It is a real loca
 Pinned EventLog source at `event_store.py` lines 288–297 writes event JSON first, updates in-memory indexes/length, then advances the sidecar marker. Marker update at lines 320–330 deletes the old marker before writing the new one, so interruption should leave no marker rather than a stale marker claiming the new length. `LocalFileStore.write` for strings uses atomic_write_text (`local.py` lines 63–68). The plan now includes crashes after event-file replacement, during in-memory/marker progression, after marker deletion and during fresh index/marker rescan. Atomic replacement/process-kill survival must not be called power-loss durability without fsync/storage evidence.
 
 Existing recovery coverage is now mapped. Do not duplicate the mocked EventService unit tests or the F31 SIGKILL recipe. Remaining highest-value gap: real local persisted-file crash/restore asserting action → recovery error active ancestry and `parent_id=action.id`, plus focused full-log suppression/multiple-unmatched cases. The expanded plan is in Section 11–12 of OPENHANDS_EVENTLOG_HEAD_CRASH_WINDOW_FALSIFICATION_PLAN_20261102.md. All test plans remain NOT EXECUTED.
+
+
+### 20.4 OpenHands priority escalation: parallel action batches and navigation — 2026-11-02
+
+A deeper source pass found two more important supported paths. Exact plan and evidence are in `AI_COLLAB/OPENHANDS_EVENTLOG_HEAD_CRASH_WINDOW_FALSIFICATION_PLAN_20261102.md`, Section 13.
+
+**Parallel/multi-action crash:** `event/base.py` lines 181–200 confirms multiple ActionEvents per LLM message. `response_dispatch.py` lines 224–255 emits all ActionEvents before executing; `_ActionBatch.aprepare` waits for the complete batch, and `_ActionBatch.emit` only then emits results (`agent.py` lines 695–716 and 327–381). `parallel_executor.py` lines 128–191 uses `asyncio.gather`. Startup recovery currently writes only one AgentErrorEvent for `unmatched_actions[0]` (`event_service.py` lines 1436–1467). The interrupt path, by contrast, writes synthetic errors for every active-branch orphan (`local_conversation.py` lines 2777–2805). Test whether startup recovery leaves later tool calls detached/unanswered. FI-15..18 added.
+
+**Navigate/rewind:** `LocalConversation.navigate_to` lines 988–1011 keeps abandoned events in the EventLog but moves HEAD; remote wrapper lines 1914–1943 and EventService lines 2358–2372 expose it; F10 docs confirm the behavior. Startup recovery scans full log and suppresses a recovery error when any observation-like event matches tool_call_id, even if the observation is outside active ancestry. This is a concrete test target, though not yet a confirmed defect. Reconcile with the comment that remote branching is unsupported (#3749). FI-19..22 added.
+
+**F31 stub note:** crash-tool-call T uses a local `llm-stub` endpoint and placeholder key in its inline agent. The wider F31 setup also runs `llm preset deepseek`, so do not claim the full family is provider-free. Whether the preset can be omitted for isolated F31.crash-tool-call is not yet verified.
+
+All FI-15..22 labels are local plan labels, not PocketCode acceptance IDs. No upstream tests run/changed; no owner decision changes.
