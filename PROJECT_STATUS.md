@@ -425,3 +425,14 @@ Repository continuity check: working branch `pocketcode-execution-boundary-cross
 ### 21.1 EventLog lower-level write durability correction — 2026-11-02
 
 A further exact-ref read completed the LocalFileStore path. Event JSON is written through `LocalFileStore.write` to `atomic_write_text`: same-directory temp file, flush, `os.fsync(file.fileno())`, close, then `os.replace`. The helper does not fsync the containing directory after replace. Thus Gemini was incorrect to say there is no file fsync. Individual text-file writes have a deliberate atomic-replacement pattern; rename durability across OS crash/power loss remains unproven without directory sync and filesystem-specific testing. Event JSON, marker and base_state/HEAD are still separate writes, not one transaction. No test executed.
+
+
+### OpenHands multi-action recovery correction — 2026-11-02
+
+Correction to the preceding Section 21: the prior statement that recovery omitted parent_id and therefore defaulted to the active leaf was incorrect. Exact pinned source at 98849457621881ae2414719b82b8bc1cf535b4ab shows event_service.py constructs its one recovery AgentErrorEvent with explicit parent_id=first_action.id. ConversationState._stamp_parent_id preserves explicit parents, and append advances HEAD to the recovery error. With unmatched A1→A2→A3, recovery therefore creates A1→E1 as the active path and leaves A2/A3 outside that active ancestry. The source-level branch-detachment mechanism is CONFIRMED.
+
+The current startup-recovery unit test covers one unmatched action only. Existing parallel-execution tests cover multi-action batches but not crash/restart. The missing combined test must assert persisted event IDs, parent IDs, active leaf, active ancestry, full EventLog, and the resumed model request. Practical provider response and external side-effect consequences remain to be integration-tested. Details and test specification are in plan Section 21.8. This correction supersedes Section 21's contrary multi-action paragraph and handoff Section 22.
+
+F31 nuance: the crash-tool-call uses a local llm-stub endpoint and placeholder key; DeepSeek is listed in the broader feature-map preconditions for a separate real-model case. Isolated no-provider feasibility is plausible but bootstrap independence is not fully traced. No workload run.
+
+No OpenHands tests or source were run/modified. No PocketCode source/tests/schema/canonical acceptance IDs, owner decisions, PR #2/#3, main, Actions, provider workload, spend, deployment or PC/RevDev host/queue state changed. RevDev PC state remains UNKNOWN.
