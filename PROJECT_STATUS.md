@@ -377,3 +377,6 @@ Recovery source comment cites issue #3749 for unsupported remote branching, but 
 ### OpenHands issue #2298 distinction recorded — 2026-11-02
 
 The historical duplicate-execution bug in issue #2298 is closed and the pinned code now matches AgentErrorEvent by tool_call_id. The new hypothesis is different: startup recovery scans the full EventLog, while normal pending-action detection scans only active_branch. A matching observation on an abandoned branch may suppress startup recovery even though the action remains pending on the active branch after navigation. Detailed sequence is in crash-window plan Section 16; not a confirmed defect. Do not conflate with #2298.
+
+
+Direct SDK test proof now found: `tests/sdk/conversation/local/test_conversation_tree.py` blob `9086af335ea59d267939ba0302d524f0594df3c1`, lines 117–141, explicitly confirms navigate/re-root leaves abandoned events in EventLog while excluding them from active view. The exact RUNNING/startup-recovery suppression sequence remains unexecuted and must be tested.
