@@ -139,3 +139,8 @@ Please review the newly added Section 13 of `OPENHANDS_EVENTLOG_HEAD_CRASH_WINDO
 F31's crash-tool-call scenario creates an inline agent using local `llm-stub` (`openai/qa-stub`, placeholder key, local base_url); the wider F31 setup also calls `llm preset deepseek` for the broader family. Please verify whether the isolated crash subfeature can be run without a DeepSeek key/provider call. Do not claim the whole F31 suite is provider-free.
 
 New plan cases FI-15..18 cover multi-action crash recovery; FI-19..22 cover navigation/rewind suppression. Treat them as test proposals, not executed evidence. Do not modify source/tests or make PocketCode owner decisions.
+
+
+### Recovery error wording and side-effect ambiguity — 2026-11-02
+
+Startup recovery's AgentErrorEvent text says “The tool execution was interrupted and did not complete” (`event_service.py` lines 1458–1462), with INTERNAL / retryable=False classification. Challenge whether that statement is supportable. A multi-tool batch can have one external side effect complete while another tool remains blocked; because results are emitted only after the full batch returns, a crash may leave completed effects without observations. Please assess whether the error text overstates what is known and what a more accurate evidence/outcome representation would be. Distinguish no persisted result from no side effect. Do not equate retryable=False with proof of non-execution.
