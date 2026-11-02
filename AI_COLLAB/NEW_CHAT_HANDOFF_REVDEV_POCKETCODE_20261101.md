@@ -551,3 +551,8 @@ All FI-15..22 labels are local plan labels, not PocketCode acceptance IDs. No up
 ### 20.5 OpenHands recovery message may overstate external outcome — 2026-11-02
 
 Startup recovery AgentErrorEvent text says the tool execution “did not complete” (`event_service.py` lines 1458–1462), with INTERNAL / retryable=False classification. But the source cannot prove no external side effect occurred before the crash. In a multi-tool batch, one tool can finish an external side effect while another blocks; results are emitted only after the whole batch returns. Thus a crash may leave completed side effects without observations. Treat this as an important PocketCode design warning: missing result/evidence means external outcome UNKNOWN unless independently verified; non-retryable is not proof of non-execution. See crash-window plan Section 14. No PocketCode owner decision changed.
+
+
+### 20.6 OpenHands #3749 citation contradiction to resolve
+
+The startup recovery comment says remote branching is unsupported and cites #3749. But issue #3749 itself is closed and titled “Conversation history tree: agent-server HTTP exposure (fork/navigate/schema)”; its body defines the `/navigate` HTTP route and says event search continues to return all branches after navigation. This is consistent with pinned `navigate_to` source and F10 docs. Gemini should inspect linked PR/merge and distinguish unsupported concurrent/multi-writer branching from supported in-place navigate/re-root and separate forked conversations. Do not accept the comment's citation at face value. The full plan includes FI-19..22; not a confirmed defect yet.
