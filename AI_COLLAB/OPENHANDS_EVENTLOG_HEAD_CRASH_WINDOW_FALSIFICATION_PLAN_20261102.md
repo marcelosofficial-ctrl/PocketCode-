@@ -437,3 +437,75 @@ Gemini reports atomic os.replace but no file or parent-directory fsync, concludi
 8. Reconcile all above with #3045/#3063, #4591/#4932, and #6289/#6290. #3063 and #4932 are merged historical fixes; #6290 was OPEN/unmerged at last check. Do not regress the historical #2298-fixed classification.
 
 No upstream source or tests were run or modified by ChatGPT. No PocketCode source/tests/schema, canonical acceptance IDs, owner decisions, PR #2/#3, or main branch were changed.
+
+
+## 21. ChatGPT independent source correction of Gemini A–F — 2026-11-02
+
+**Evidence status:** exact-ref source inspection only; no upstream test was executed. This section supersedes conflicting multi-action interpretations in Sections 20.4 and the subsequent Gemini summary. It does not alter PocketCode acceptance or owner decisions.
+
+Pinned OpenHands source: `OpenHands/software-agent-sdk` commit `98849457621881ae2414719b82b8bc1cf535b4ab`.
+
+### 21.1 Multi-action recovery: Gemini's branch-detachment explanation is falsified by the inspected code
+
+At this pinned revision, `openhands-agent-server/openhands/agent_server/event_service.py` startup recovery:
+- sets restored RUNNING status to ERROR;
+- calls `ConversationState.get_unmatched_actions(state.events)`;
+- selects only `unmatched_actions[0]`;
+- constructs `AgentErrorEvent` with tool_name, tool_call_id, error and classification;
+- calls `self._conversation._on_event(error_event)`.
+
+The constructor in the fetched source does **not** pass `parent_id=first_action.id`. This conflicts with the nearby source comment and prior handoff wording that said recovery explicitly parents the error to the action.
+
+`LocalConversation._tree_stamping()` sends the event through `self._state._stamp_parent_id(event)`. At `openhands-sdk/openhands/sdk/conversation/state.py`, `_stamp_parent_id` assigns the current active leaf when parent_id is unset; `append_event` then advances HEAD to the newly appended event. Therefore, for a normal linear three-action sequence where A1 → A2 → A3 is already the active ancestry when recovery appends E1, the expected topology is:
+
+`Prompt → A1 → A2 → A3 → E1`
+
+It is **not** `Prompt → A1 → E1`, and A2/A3 are not detached by this default tree-stamping path. The source comment claiming explicit action parenting appears stale/inaccurate unless another event-construction or callback transformation not yet found changes the event before append.
+
+Gemini's suggested reverse-order E3/E2/E1 chain is consequently not justified by the branch-detachment argument. Do not implement or adopt it.
+
+A separate concern remains CONFIRMED at source level: startup recovery emits a synthetic error for only the first unmatched action. The complete consequences for provider history and batch reconciliation remain UNRESOLVED. `response_dispatch.py` emits all ActionEvents before batch execution; batch result emission occurs only after the batch completes. The next test must inspect all three tool calls and all three result slots in the reconstructed model-facing history, active ancestry, and subsequent agent dispatch. A single recovery error may leave an incomplete tool-call batch even though all ActionEvents remain ancestors. Do not describe this as proven branch detachment.
+
+### 21.2 PAUSED recovery: split the pause API from interrupt cancellation
+
+Pinned `local_conversation.py` shows `pause()` changes execution_status to PAUSED and emits PauseEvent; its docstring says pause takes effect at the next run-loop iteration, between agent steps. It does not itself cancel an in-flight tool. The existing `tests/sdk/conversation/local/test_conversation_pause_functionality.py::test_pause_while_running_continuous_actions` deliberately calls pause after the blocking executor has signalled entry, then asserts the run exits after the current step and remains PAUSED. This establishes that PAUSED can be visible while a tool step is in progress.
+
+However, that test's executor is not a durable external process crash test. The exact sequence "PAUSED persisted, external tool still executing, process killed, server restarts" remains a plausible reachable window, not fully integration-proven here. Agent-server startup recovery is conditional on persisted status RUNNING, so a PAUSED state skips the startup interrupted-tool recovery block. Whether resume re-dispatches the pending action, and whether an executor thread can outlive the paused run in the actual server lifecycle, require a targeted persisted-state test. Verdict: PAUSED startup recovery skip is CONFIRMED; harmful re-execution / duplicate side effect is UNRESOLVED.
+
+Do not conflate `pause()` with `interrupt()`: interrupt sets the cancellation token and cancels a tracked async run task; the cancellation path documents synthetic orphan errors. The exact cancellation/worker-thread completion ordering still needs a narrow trace.
+
+### 21.3 EventLog write path: correct file and guarantee boundary
+
+The implementation path is `openhands-sdk/openhands/sdk/conversation/event_store.py`, class `EventLog`, not `event_log.py`. At the pinned revision, `EventLog.append()` calls `self._fs.write(event_path, payload)`, updates in-memory index state, then advances the length marker. `_advance_length_marker` deletes the previous marker and writes the new marker. The prior Gemini description of a hard-coded `.tmp` plus `os.replace` inside event_store.py is not the actual code at this layer.
+
+The backing FileStore implementation must be followed into `openhands-sdk/openhands/sdk/io/local.py` and its atomic-write helper before making claims about replace/flush/fsync. The inspected EventLog code alone proves neither process-kill atomicity nor power-loss durability. Current verdict: EventLog append ordering is CONFIRMED; exact lower-level atomic-write semantics and fsync/directory-sync guarantees remain UNRESOLVED pending complete LocalFileStore helper inspection. Do not state "SIGKILL guaranteed" or "power-loss vulnerable" without that full path.
+
+### 21.4 Other Gemini findings, current reconciliation
+
+- **Tool-call ID reuse:** SDK matching by string tool_call_id is source-confirmed. The claim that major providers guarantee globally unique IDs across turns is not established by the SDK source or the Gemini response's cited evidence. Do not label reuse impossible or a confirmed production defect. Provider protocol/SDK validation evidence and a reachable real transcript are still required.
+- **F31:** the feature-map recipe is a real documented integration scenario, but it is not proof of a standalone no-provider local harness. The recipe uses a local llm-stub endpoint for the crash tool sequence, while the broader F31 setup has DeepSeek preset/key setup. Isolated omission feasibility is UNRESOLVED until configuration/bootstrap dependencies are traced. Do not execute it or create a provider workload.
+- **Historical fixes:** keep #3045/#3063 and #4591/#4932 distinct, and keep #6289/#6290 separate. Gemini's status assertions require exact PR merge/base evidence, not only issue summaries. #2298 remains fixed in the inspected current matcher: AgentErrorEvent matches by tool_call_id. No regression claim.
+- **Recovery error wording:** confirmed concern. A missing persisted observation proves only that the coordinator did not persist an observation. It cannot prove whether an external command/API side effect occurred. PocketCode should preserve UNKNOWN external outcome unless independently reconciled.
+
+### 21.5 Source locations inspected
+
+- `openhands-agent-server/openhands/agent_server/event_service.py`: startup RUNNING recovery block around lines 1424–1467.
+- `openhands-sdk/openhands/sdk/conversation/state.py`: `_resolve_active_leaf`, `_stamp_parent_id`, `append_event), around lines 268–364; `get_unmatched_actions`, around lines 713–752.
+- `openhands-sdk/openhands/sdk/conversation/impl/local_conversation.py`: `_tree_stamping` around lines 500–550; `pause`, `interrupt`, and `_emit_orphaned_action_errors` around lines 2777–2880.
+- `openhands-sdk/openhands/sdk/agent/response_dispatch.py`: async tool-call handling around lines 210–270.
+- `openhands-sdk/openhands/sdk/conversation/event_store.py`: `EventLog.append`, `_advance_length_marker`, scan/index behavior.
+- `tests/sdk/conversation/local/test_conversation_pause_functionality.py`: `test_pause_while_running_continuous_actions`.
+- `tests/agent_server/test_event_service.py`: `TestEventServiceStartWithRunningStatus` mocked startup recovery tests.
+- `.agents/skills/verify-agent-server/references/feature-map/F31-persistence-and-limits.md`: `F31.crash-tool-call`.
+
+### 21.6 Next evidence tasks, in priority order
+
+1. Have Claude independently inspect the exact pinned source and specifically challenge the parent_id/default-leaf correction. Require exact source lines and no reliance on prior summaries.
+2. Build a three-action event-tree and model-history test specification. Assert actual parent IDs, active leaf, ancestor chain, each tool_call_id and every expected observation/error result. Distinguish branch topology from incomplete batch semantics.
+3. Trace pause() and interrupt() across executor threads, run-loop exit, server shutdown, persisted status and resume. Test PAUSED+unmatched action restore and whether the action can be dispatched again.
+4. Complete LocalFileStore write helper tracing for write/flush/close/replace/fsync/directory sync. Separate process termination, OS crash and power loss.
+5. Establish provider tool_call_id uniqueness scope from primary API specifications and actual SDK validators. A synthetic repeated-ID test is only defensive behavior evidence.
+6. Trace F31 bootstrap to determine whether the isolated stub case can omit DeepSeek setup. Do not run a workload.
+7. Reconcile historical PR merge states against pinned history and preserve #2298's fixed classification.
+
+No source, tests, schema, branch, PR, acceptance IDs, provider, spend, host, queue or deployment was changed. All OpenHands tests remain NOT RUN. RevDev PC/runtime/queue state remains UNKNOWN.
