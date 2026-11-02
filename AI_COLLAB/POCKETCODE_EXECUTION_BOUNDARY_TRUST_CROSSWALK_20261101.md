@@ -987,3 +987,10 @@ The recovery comment cites #3749 for “remote branching is unsupported.” Howe
 
 
 The related PR descriptions clarify the #3749 history: the SDK foundation initially left RemoteConversation navigation as NotImplemented until the agent-server API PR; #3749 then added the HTTP `/navigate` endpoint and wired the remote client to it. Therefore remote in-place navigate/re-root is supported in the pinned revision. “Remote branching unsupported” must mean something narrower (potentially concurrent/multi-writer branch mutation) or the comment is stale. The full-log suppression test remains valid until an explicit invariant is proven.
+
+
+### 28.2 Historical issue #2298 is fixed, but branch-context mismatch remains to test
+
+OpenHands issue #2298 (closed) documents the earlier duplicate-execution bug: AgentErrorEvent was not counted as matching ActionEvent, so resume re-executed the tool. The pinned `state.py` lines 713–752 now match AgentErrorEvent by tool_call_id, and SDK tests cover it. Do not report #2298 as currently unfixed.
+
+A distinct potential problem remains: startup recovery calls `get_unmatched_actions(state.events)` on the full log, while normal agent pending-action detection calls it on `state.active_branch()` (`agent.py` lines 747–756). Supported navigation can leave an observation on an abandoned branch. That observation can suppress startup recovery on the full log while the action remains pending on the active branch and may be re-executed on user resume. See crash-window plan Section 16; still a test hypothesis, not a confirmed defect.
