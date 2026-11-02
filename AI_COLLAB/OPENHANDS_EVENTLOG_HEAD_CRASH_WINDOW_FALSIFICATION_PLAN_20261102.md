@@ -217,3 +217,59 @@ Add explicit instrumentation around:
 - during fresh EventLog construction/index scan and during append-time marker-mismatch rescan.
 
 These boundaries help separate a missing marker/index-cache issue from the active-HEAD issue. A fresh-process restore is required because the original LocalFileStore cache is not authoritative after restart. Do not call a file atomically replaced “power-loss durable”: atomic rename/replace protects against partial visibility under the tested local filesystem, but the reviewed source alone does not prove fsync or stable-media persistence. The test must report process-crash survival separately from power-loss durability.
+
+
+## 13. Higher-priority recovery gaps: multi-action batches and navigated branches — 2026-11-02
+
+A deeper source pass found two supported execution/history features that make the existing recovery edge cases more important. These remain source-derived hypotheses requiring tests, not confirmed product defects.
+
+### 13.1 Multiple tool calls are normal, persisted before batch execution
+
+Pinned source evidence:
+- `openhands-sdk/openhands/sdk/event/base.py` lines 181–200 explicitly says multiple ActionEvents are received for one LLM message when it returns multiple parallel tool calls.
+- `openhands-sdk/openhands/sdk/agent/response_dispatch.py` lines 224–255 (`_ahandle_tool_calls`) iterates each tool call and invokes `_get_action_event(... on_event=...)` before calling `_aexecute_actions` on the complete list. The same order is present in sync `_handle_tool_calls` lines 170–200.
+- `openhands-sdk/openhands/sdk/agent/agent.py` lines 695–716 calls `_ActionBatch.aprepare`; `_ActionBatch.aprepare` lines 327–352 awaits the whole parallel executor batch and only then returns results; `_ActionBatch.emit` lines 354–381 emits result/observation events afterward.
+- `openhands-sdk/openhands/sdk/agent/parallel_executor.py` lines 128–191 runs multiple actions concurrently with `asyncio.gather` (or serially when max workers is 1), returning the batch results only after all calls complete.
+- `ConversationState.get_unmatched_actions` lines 713–752 returns all unmatched executable actions in chronological order.
+- Startup recovery at `openhands-agent-server/openhands/agent_server/event_service.py` lines 1436–1467 currently chooses only `unmatched_actions[0]` and emits one AgentErrorEvent explicitly parented to that first action.
+
+Implication to test: if a multi-tool response has ActionEvents A1, A2, A3 persisted before execution and the process dies before batch result events are emitted, recovery currently creates a result only for A1. Because A2/A3 were appended after A1, their parent chain may be cut off from the new active leaf when the recovery event is explicitly parented to A1. The exact resulting active branch, unmatched set and subsequent LLM request must be asserted, not inferred. The separate interrupt path is different: `LocalConversation._emit_orphaned_action_errors` at lines 2777–2805 loops over all unmatched actions on the active branch and emits a synthetic error for each. Do not confuse this interrupt behavior with startup recovery.
+
+Add cases:
+- OH-HEAD-FI-15: 2+ tool calls in one LLM response; kill after all ActionEvents persisted but before batch results emitted. Assert all persisted actions, recovery error count, parent IDs, active ancestry, remaining unmatched actions, and model-facing reconstructed tool-call history.
+- OH-HEAD-FI-16: one tool side effect completes while another parallel tool remains blocked; kill before batch emit. Verify the recovery record(s) do not imply which side effects completed and no action is automatically redispatched without explicit authorization.
+- OH-HEAD-FI-17: repeat with `tool_concurrency_limit=1` to distinguish serial execution from multi-worker concurrency. Actions may still all be recorded before the first tool runs; inspect actual behavior.
+- OH-HEAD-FI-18: compare startup recovery with the interrupt path, which emits errors for all active-branch orphans. Assert whether the difference is intentional and whether startup recovery leaves an incomplete batch.
+
+### 13.2 Full-log suppression versus supported navigate/rewind
+
+The earlier concern about a matching observation on a non-active branch was prematurely treated as likely synthetic. Pinned source explicitly supports navigation that leaves abandoned events on disk:
+- `openhands-sdk/openhands/sdk/conversation/impl/local_conversation.py` lines 988–1011: `navigate_to` moves HEAD to an existing event; all branches stay on disk, appending after navigation creates a sibling, and abandoned events remain in the log but drop out of the active view.
+- `openhands-sdk/openhands/sdk/conversation/impl/remote_conversation.py` lines 1914–1943: `RemoteConversation.navigate_to` calls the server `/navigate` route and refreshes cached state.
+- `openhands-agent-server/openhands/agent_server/event_service.py` lines 2358–2372 exposes the navigate operation.
+- F10 feature map `F10-fork-navigate-condense-ask.md` lines 34–38 and 295–328 documents that navigation does not delete abandoned events and that the next append branches from the selected HEAD.
+- Yet startup recovery at `event_service.py` lines 1431–1446 scans the full event log and suppresses recovery if any ObservationBaseEvent shares the first action's tool_call_id.
+
+This creates a concrete falsification case: an action A has observation O on a later branch; the user navigates HEAD back to A, leaving O in the full log but outside active ancestry; a new run re-enters the pending action path; the tool is interrupted; startup sees the old O in the full log and may suppress the recovery error even though O is not on the active branch. Whether this exact state is reachable with the persisted RUNNING lifecycle and whether the intended semantics make re-execution user-authorized must be checked. The source comment that remote branching is unsupported (#3749) must be reconciled with the separately documented and exposed navigate/re-root API; do not silently treat those as identical concepts.
+
+Add cases:
+- OH-HEAD-FI-19: create A→O, navigate HEAD back to A, verify O remains in EventLog but is absent from active_branch; then reproduce RUNNING/startup recovery and inspect whether full-log suppression occurs.
+- OH-HEAD-FI-20: repeat with a different tool_call_id observation to verify suppression is identity-scoped.
+- OH-HEAD-FI-21: repeat after appending a sibling branch from A, with and without an observation on that sibling; assert recovery and active ancestry.
+- OH-HEAD-FI-22: inspect intended user semantics for navigate-back-to-pending-action followed by send_message/run. Establish whether this is a deliberate re-execution path, a stale-result suppression bug, or an unsupported sequence.
+
+### 13.3 F31 crash scenario: local stub qualification
+
+The F31 crash-tool-call recipe creates `qa-f31-tool` with `fixture llm-stub`, builds `TOOL_AGENT` with model `openai/qa-stub`, a placeholder `qa-stub-key`, and `base_url=$TOOL/v1`, then creates conversation T with that inline agent (feature map lines 103–121). The crash scenario at lines 191–220 drives T through that stub, SIGKILLs the server while the stubbed terminal action is running, then rewrites the stub to finish and resumes the run. No actual DeepSeek completion is part of T's described request path.
+
+The enclosing F31 setup also runs `llm preset deepseek` (line 109), and the broader F31 feature family contains DeepSeek-backed subfeatures. Do not claim the entire F31 suite is provider-free. The narrower crash-tool-call path appears to be local-stub-backed; verify whether the preset command is merely unrelated default setup or a required no-key prerequisite before publishing a standalone stub-only recipe. No F31 test has been executed by ChatGPT.
+
+### 13.4 Priority update
+
+Priority order for independent review and any future test work:
+1. Multi-action startup recovery and active-branch truncation (FI-15..18).
+2. Full-log observation suppression after supported navigate/rewind (FI-19..22).
+3. Real persisted-file crash/restore parent_id + active ancestry assertion (FI-09..14).
+4. EventLog marker boundaries and process-crash versus power-loss distinction.
+
+The no-abandoned-branches explanation in the startup comment must be reconciled against the supported navigate API before treating FI-19..22 as merely synthetic. No upstream tests were run or modified. No PocketCode acceptance ID or owner decision changed.
