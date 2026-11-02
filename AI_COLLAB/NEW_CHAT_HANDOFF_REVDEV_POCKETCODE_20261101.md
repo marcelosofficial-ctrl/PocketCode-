@@ -563,3 +563,8 @@ The startup recovery comment says remote branching is unsupported and cites #374
 OpenHands issue #2298 is CLOSED. The old bug was AgentErrorEvent not matching ActionEvent during pending-action detection, causing duplicate execution after resume. Pinned `state.py` lines 713–752 now match AgentErrorEvent by tool_call_id and tests cover it. Do not report the old bug as current.
 
 New hypothesis: startup recovery checks the full EventLog; ordinary pending-action detection checks only active_branch (`agent.py` lines 747–756). After supported navigation, an observation may remain in the full log but outside active ancestry. That observation can suppress recovery while the action remains pending on the active branch. The detailed test sequence is crash-window plan Section 16. Gemini must establish RUNNING lifecycle reachability and intended replay semantics before calling this a defect.
+
+
+### 20.8 Direct unit-test proof for abandoned branches
+
+Pinned `tests/sdk/conversation/local/test_conversation_tree.py`, blob `9086af335ea59d267939ba0302d524f0594df3c1`, lines 117–141, contains `test_navigate_then_emit_creates_sibling_branch`: after navigating to root and appending B1, abandoned A1/A2 remain in EventLog but are absent from active view; A1 and B1 are siblings. This directly proves the full-log/active-branch split. It does not alone prove the full FI-19 server restart sequence. Keep that final lifecycle as an integration test, not a source-only conclusion.
