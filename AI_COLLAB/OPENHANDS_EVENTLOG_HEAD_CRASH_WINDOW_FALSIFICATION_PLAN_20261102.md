@@ -393,3 +393,47 @@ Issue #6289 links to PR #6290, which is OPEN and unmerged at the time of this re
 This further confirms #6289 is a distinct action-batch lifecycle issue with a proposed fix, not an accepted or merged upstream correction. Gemini should inspect PR #6290's exact diff and tests only to determine the semantics and whether pinned commit 988494... contains the unfixed path. Do not treat the proposed fix as merged or as evidence of behavior in the pinned commit.
 
 PR: https://github.com/OpenHands/software-agent-sdk/pull/6290
+
+## 19. Gemini independent verdict reconciliation — 2026-11-02
+
+Gemini returned an independent A–F verdict against pinned OpenHands commit 98849457621881ae2414719b82b8bc1cf535b4ab. This is an independent reviewer report, not a test execution by ChatGPT. Its reported line ranges differ from the earlier ChatGPT line map in places; reconcile by symbol and commit before treating line numbers as canonical.
+
+### 19.1 Findings accepted provisionally
+
+- **A/C, multi-action startup recovery:** Gemini confirms startup recovery retrieves multiple unmatched actions but emits exactly one AgentErrorEvent for unmatched_actions[0]. The action batch path emits each ActionEvent before execution, and multiple actions may be persisted in a parent chain. Recovery parented to the first action can make the recovery error the new leaf while later action events remain on an abandoned branch. This is a high-confidence source-level defect candidate. The critical acceptance proof is not just error.parent_id == action.id: assert the final leaf's ancestor chain contains every interrupted action and every corresponding recovery result.
+- **E, recovery wording:** accepted. The persisted event proves only that the coordinator did not persist a tool result before interruption. It does not prove the external side effect did not occur. The recovery record and user-facing language should communicate outcome UNKNOWN unless independently reconciled.
+- **#3749 scope:** Gemini's distinction is plausible and consistent with the direct navigation test: remote in-place navigation exists; concurrent multi-writer branch mutation may be the narrower unsupported capability. The stale comment must be scoped or corrected, not used to deny abandoned branches.
+- **F, local test seam:** a zero-cost local crash test is feasible in principle with a scripted/mock LLM, a blocking local tool, a subprocess SIGKILL seam and restored EventService. This is a proposed test design, not proof that the documented F31 scenario already runs fully offline or that the harness has been executed.
+
+### 19.2 Findings requiring qualification before a final defect verdict
+
+**B, full-log stale-observation suppression:** the scope mismatch is source-supported: startup recovery examines the full EventLog, while normal pending-action detection uses the active branch. However, the concrete sequence also requires an old ObservationBaseEvent to share the tool_call_id of a newly emitted action on the active branch. Gemini must prove that such ID reuse is permitted and reachable in the actual provider/SDK lifecycle, or classify the issue as a defensive edge case rather than a normal execution defect. A synthetic test that manually reuses an ID proves the guard's behavior, not the production likelihood. Reconcile the #3063 intentional duplicate-result guard and test active ancestry separately.
+
+**D, non-RUNNING restore:** skipping recovery outside RUNNING is confirmed as a guard, but the claim that PAUSED can coincide with active tool execution needs a lifecycle proof. Establish all transitions into PAUSED, whether dispatch can still be in flight, persistence ordering around status changes, and whether restart resumes or leaves the run paused. WAITING_FOR_CONFIRMATION is not equivalent to PAUSED; preserve that distinction.
+
+### 19.3 Required correction to the proposed multi-action recovery ordering
+
+If actions are persisted as A1 -> A2 -> A3, a recovery sequence that must keep every action on the selected active ancestry can be appended in reverse action order:
+- create E3 with parent A3;
+- create E2 with parent E3;
+- create E1 with parent E2;
+- final leaf is E1.
+
+Then the active ancestry traverses E1 -> E2 -> E3 -> A3 -> A2 -> A1 (plus prior context). This is a testable topology proposal, not a PocketCode owner decision or a claim that OpenHands should adopt this exact ordering. Tests must also verify each error event retains the correct action/tool_call_id and that no side effects are retried implicitly.
+
+### 19.4 Gemini's F event-log durability finding needs a narrower proof
+
+Gemini reports atomic os.replace but no file or parent-directory fsync, concluding process-survival recovery but unproven power-loss durability. Keep this as POWER-LOSS DURABILITY NOT ESTABLISHED, not as a confirmed data-loss defect. Verify the exact pinned EventLog write path, temporary-file flush/close ordering, replace semantics on supported platforms, parent-directory synchronization, and whether another storage layer performs durability barriers. No power-cut test has been run.
+
+### 19.5 Follow-up evidence request to Gemini
+
+1. Provide exact pinned source and tests for A/C, including the parent assignment of every emitted ActionEvent and the precise startup recovery emission loop.
+2. Demonstrate the final active ancestry after recovery for 2+ unmatched actions. Include actual parent IDs, leaf ID and ancestor IDs, not just a conceptual diagram.
+3. For B, cite the tool-call ID generation/validation contract and show a realistic repeated-ID path. Explicitly test the #3063 guard and active-branch matching together.
+4. For D, map status transitions and prove or falsify an in-flight tool while PAUSED, including persistence order and restart behavior.
+5. For E, identify whether any callers/UX interpret the text as a safe-to-retry guarantee. Keep external outcome UNKNOWN.
+6. For F, provide a minimal executable command/test entrypoint using only local stubs and no DeepSeek preset/provider key. Do not execute provider workloads.
+7. For EventLog durability, cite the exact write implementation and state separately what is guaranteed against process kill versus OS crash versus sudden power loss.
+8. Reconcile all above with #3045/#3063, #4591/#4932, and #6289/#6290. #3063 and #4932 are merged historical fixes; #6290 was OPEN/unmerged at last check. Do not regress the historical #2298-fixed classification.
+
+No upstream source or tests were run or modified by ChatGPT. No PocketCode source/tests/schema, canonical acceptance IDs, owner decisions, PR #2/#3, or main branch were changed.
