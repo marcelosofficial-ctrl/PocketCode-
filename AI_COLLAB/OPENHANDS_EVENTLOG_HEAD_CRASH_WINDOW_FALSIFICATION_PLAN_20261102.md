@@ -525,3 +525,41 @@ Updated durability verdict:
 - **EventLog transaction:** event JSON and the length marker are separate writes; ConversationState event append and base_state/HEAD persistence are also separate. Atomic replacement of an individual text file does not make those multi-file updates transactional.
 
 This corrects Gemini's statement that the implementation does not fsync file descriptors. It does fsync the temporary file before replace. No fault-injection or power-loss test has been run.
+
+
+### 21.8 Critical correction: explicit first-action parent confirmed — 2026-11-02
+
+This section supersedes the multi-action conclusion in Sections 21 and 21.6, and the matching statements in PROJECT_STATUS.md Section 21 and NEW_CHAT_HANDOFF Section 22. Those earlier statements were wrong because the exact pinned event_service.py constructor call was misread.
+
+Pinned source evidence at 98849457621881ae2414719b82b8bc1cf535b4ab:
+
+- openhands-agent-server/openhands/agent_server/event_service.py, startup recovery block around lines 1424–1467: unmatched_actions = ConversationState.get_unmatched_actions(state.events); if nonempty, it selects first_action = unmatched_actions[0]; constructs exactly one AgentErrorEvent(parent_id=first_action.id, ...); then calls self._conversation._on_event(error_event). The explicit parent_id is present. This is not default active-leaf stamping.
+- openhands-sdk/openhands/sdk/conversation/state.py, _stamp_parent_id / append_event around lines 330–365: explicit parent IDs are preserved; only an unset parent is replaced with the current active leaf; append advances the leaf to the appended event.
+- openhands-sdk/openhands/sdk/agent/response_dispatch.py, _handle_tool_calls / _ahandle_tool_calls around lines 160–270: all tool calls in the model message are converted to ActionEvents in a loop before the batch is executed. The async path delegates multiple calls to _aexecute_actions; ParallelToolExecutor.aexecute_batch runs them concurrently when configured above one worker and returns event lists in input order.
+- openhands-sdk/openhands/sdk/conversation/state.py, get_unmatched_actions around lines 713–752: unmatched actions are returned in chronological order. AgentErrorEvent matches by tool_call_id.
+- tests/agent_server/test_event_service.py, TestEventServiceStartWithRunningStatus: existing startup-recovery unit coverage creates one unmatched action and asserts exactly one recovery error. It does not cover a multi-action batch.
+- tests/sdk/agent/test_parallel_execution_integration.py: current integration coverage proves multiple tool calls are converted/executed as a batch and observations are emitted in original order, but it does not combine that with process crash/restart recovery.
+
+Resulting topology: if three unmatched actions were persisted in order A1 → A2 → A3, recovery selects A1 and appends E1 with explicit parent_id=A1.id. The append makes E1 the active leaf. The resulting active ancestry is expected to be Prompt → A1 → E1; A2 and A3 remain in the EventLog but are not ancestors of the active leaf. If only A2 and A3 are unmatched, recovery parents its single error to A2, and A3 is outside the active ancestry. This follows directly from the explicit parent and active-branch tree semantics.
+
+Verdict: the source-level multi-action branch-detachment mechanism is CONFIRMED. The practical user-visible consequence (whether provider resume accepts the truncated tool batch history, how the model responds, and whether already-running tools can still finish/side-effect) remains to be established by an integration test. The source-level defect does not depend on claiming the provider will reject the history.
+
+Existing test gap: startup recovery tests only one unmatched action; normal parallel-execution tests cover multi-action batches without crash/restart. No located test combines multiple unmatched ActionEvents, startup recovery, active branch reconstruction and resumed model request. This is the highest-priority missing regression test.
+
+Required falsification/regression test (no implementation decision yet):
+1. Construct a real persisted ConversationState whose active ancestry contains A1, A2, A3 from one LLM response, each with distinct tool_call_id and no matching observation.
+2. Persist execution_status=RUNNING and restart/load through EventService startup recovery.
+3. Assert recovery currently appends exactly one AgentErrorEvent, its parent_id equals A1.id, and the active leaf is that error.
+4. Assert A2/A3 remain in full EventLog but are absent from active_branch() and the resumed LLM request's reconstructed tool history.
+5. Repeat with A1 matched and A2/A3 unmatched; assert the first remaining unmatched action is selected and later siblings are excluded.
+6. Add mixed-completion cases (e.g. A1 observation exists, A2 unmatched, A3 observation exists or unmatched) and inspect full EventLog, active ancestry, matching IDs and provider-facing message history.
+7. Include a blocking external-side-effect tool. Kill the server while one or more tool threads may be running; independently record which side effects occurred. Do not interpret missing observations as proof of no side effect.
+8. Keep one-action recovery as a control and ensure the #2298 tool_call_id matching behavior remains intact.
+
+A reverse-order error chain E3→E2→E1, or a different batch-preserving topology, may be evaluated as a candidate design only after the test establishes desired provider history semantics. It is not adopted as a fix here. Any future correction must handle partial observations and late observations, avoid duplicate observation-like events per tool_call_id, preserve all action/result pairs on one valid active branch, and avoid implying external operations did not occur.
+
+F31 provider setup nuance: the F31 feature-map documents a local llm-stub endpoint with placeholder key for the crash-tool-call conversation. The broader feature-map preconditions mention a DeepSeek key because the same F31 family includes a separate real-model no-plaintext-at-rest case. This supports the feasibility of an isolated stub-only crash case in principle, but the complete bootstrap/CLI dependency chain has not yet been proven independent of preset/key setup. Verdict: isolated no-provider feasibility PLAUSIBLE, not yet fully confirmed; no workload run.
+
+Claude timeout handling: this independent correction was made from the pinned source and repository tests; it does not rely on Claude's pending review. When Claude returns, ask it to challenge this exact explicit-parent reading and the active-branch consequence, not repeat the earlier generic multi-action prompt.
+
+No OpenHands source or tests were modified or executed. No provider workload, spend, PR, merge, deployment, PocketCode source/schema/acceptance ID, or RevDev host/queue operation occurred.
