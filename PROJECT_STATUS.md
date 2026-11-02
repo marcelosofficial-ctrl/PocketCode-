@@ -436,3 +436,8 @@ The current startup-recovery unit test covers one unmatched action only. Existin
 F31 nuance: the crash-tool-call uses a local llm-stub endpoint and placeholder key; DeepSeek is listed in the broader feature-map preconditions for a separate real-model case. Isolated no-provider feasibility is plausible but bootstrap independence is not fully traced. No workload run.
 
 No OpenHands tests or source were run/modified. No PocketCode source/tests/schema/canonical acceptance IDs, owner decisions, PR #2/#3, main, Actions, provider workload, spend, deployment or PC/RevDev host/queue state changed. RevDev PC state remains UNKNOWN.
+
+
+### OpenHands PAUSED crash/replay path strengthened — 2026-11-02
+
+The PAUSED concern is stronger than a startup-recovery omission. Pinned source shows pause() can set PAUSED while a tool is in flight; the existing test test_pause_while_running_continuous_actions explicitly pauses after the blocking executor signals entry. Startup recovery only repairs RUNNING. On resume, LocalConversation changes PAUSED to RUNNING and Agent._step checks unmatched actions on the active branch and executes them before a new LLM request. Therefore PAUSED + unmatched action + restart can re-dispatch the action on resume. Source-level replay path is CONFIRMED; exact server restart/persistence lifecycle and duplicate external side effect still require integration testing. See plan Section 21.9. No workload run.
