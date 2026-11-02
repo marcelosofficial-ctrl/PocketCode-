@@ -210,3 +210,36 @@ Existing tests were located:
 - The verification feature map F31.crash-tool-call, blob `5082730e1ba1d333daeaf321c21214ad4924cd12`, lines 191–220, documents a SIGKILL integration recipe checking ERROR, one matching AgentErrorEvent, zero ObservationEvents and resumed delivery. It does not check parent_id or active ancestry; the broader recipe has a DeepSeek API-key/model precondition.
 
 The remaining gap is a real local persistence/restore crash test asserting action → recovery error active ancestry and explicit parent_id, plus focused tests for full-log observation suppression and multiple unmatched actions. No test was run by ChatGPT. No upstream source/test was changed. See the expanded falsification plan for exact boundaries, including event-file/length-marker ordering and the distinction between process-crash survival and power-loss durability.
+
+
+## 8. Multi-action recovery and navigation/rewind qualification — 2026-11-02
+
+Further pinned-source review materially expands the crash-recovery analysis. Commit remains `98849457621881ae2414719b82b8bc1cf535b4ab`.
+
+### 8.1 Multi-action batch path
+
+- `event/base.py` lines 181–200 says multiple ActionEvents are produced when one LLM response contains multiple parallel tool calls.
+- `response_dispatch.py` lines 224–255 (`_ahandle_tool_calls`) loops through all tool calls and calls `_get_action_event` before invoking `_aexecute_actions` on the accumulated list. `agent.py` lines 1517–1544 confirms `_get_action_event` invokes `on_event(action_event)` before returning.
+- `agent.py` lines 695–716 delegates to `_ActionBatch.aprepare`; `_ActionBatch.aprepare` lines 327–352 awaits the full executor batch. `_ActionBatch.emit` lines 354–381 only emits the tool results after the batch returns.
+- `parallel_executor.py` lines 128–191 uses `asyncio.gather` for concurrent tool calls (or sequential awaits when only one worker is configured).
+- `state.py` lines 713–752 returns every unmatched executable ActionEvent in chronological order.
+- Startup recovery at `event_service.py` lines 1436–1467 uses only `unmatched_actions[0]` and creates one AgentErrorEvent explicitly parented to that first action.
+- By contrast, the normal interrupt path in `local_conversation.py` lines 2646–2654 calls `_emit_orphaned_action_errors`, which loops all active-branch orphans at lines 2777–2805.
+
+This establishes a high-priority test gap: a normal multi-tool LLM response can persist several actions before execution results are emitted. A crash during the batch can leave multiple unmatched actions, while startup recovery answers only the first. Because later actions are descendants of earlier action events, the explicit parent to the first action may also detach later actions from the recovered active branch. This is not yet a confirmed defect; test exact parent chain, active branch, remaining unmatched actions and reconstructed LLM history. The detailed FI-15..18 cases are in the crash-window plan.
+
+### 8.2 Full-log observation suppression after supported navigation
+
+The earlier assumption that a non-active-branch observation is necessarily synthetic needs correction:
+- `local_conversation.py` lines 988–1011 supports `navigate_to`, keeps all branches on disk, and documents that appending after navigation creates a sibling while abandoned events remain in the log.
+- `remote_conversation.py` lines 1914–1943 calls the server `/navigate` route; EventService exposes navigation at lines 2358–2372.
+- F10 feature map lines 34–38 and 295–328 documents that navigation preserves abandoned events while moving HEAD.
+- Startup recovery at `event_service.py` lines 1431–1446 scans the full log and suppresses recovery if any ObservationBaseEvent matches the first action's tool_call_id.
+
+A prior-branch observation can therefore exist in the full EventLog while being absent from active ancestry. Test whether a supported navigate-back-to-action → new run → interrupted tool → restart sequence can persist RUNNING state and cause the old observation to suppress recovery. Reconcile this with the comment that remote branching is unsupported (#3749); distinguish unsupported concurrent branching from the exposed in-place navigate/re-root behavior. Do not call this a confirmed bug until reachability and intended re-execution semantics are established. See FI-19..22.
+
+### 8.3 F31 local stub nuance
+
+F31 crash-tool-call creates a per-conversation agent with model `openai/qa-stub`, placeholder key `qa-stub-key`, and a local `llm-stub` base URL (F31 lines 103–121). The crash scenario (lines 191–220) sends the request to that stub, SIGKILLs during the stubbed terminal tool action, then changes the stub to finish and resumes. The wider F31 setup also runs `llm preset deepseek` and other F31 subfeatures use DeepSeek. Thus the specific crash-tool-call flow appears local-stub-backed, but whether the preset command is required in an isolated no-key invocation is not verified. Do not call the entire F31 suite provider-free.
+
+No tests were run by ChatGPT. No upstream source/tests were modified. The expanded test plan is proposal only.
