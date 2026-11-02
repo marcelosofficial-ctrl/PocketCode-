@@ -385,3 +385,11 @@ Gemini must:
 6. Keep #2298's historical defect marked fixed. Do not relabel any of these distinct paths as #2298.
 
 No OpenHands tests were run or modified by ChatGPT. No PocketCode source, tests, schema, acceptance IDs or owner decisions changed. These are study findings only.
+
+### 18.4.1 PR #6290 proposed fix — status checked 2026-11-02
+
+Issue #6289 links to PR #6290, which is OPEN and unmerged at the time of this review. The PR description says _ActionBatch retains calls truncated after FinishTool and emits one AgentErrorEvent (AGENT_OUTCOME) for each discarded call_, so every tool call receives one result and cannot remain pending for a later turn. It includes a two-turn regression test and sync/async coverage. The PR author reports the focused tests and 7,706 SDK tests passed locally; these are author-reported, not independently verified here.
+
+This further confirms #6289 is a distinct action-batch lifecycle issue with a proposed fix, not an accepted or merged upstream correction. Gemini should inspect PR #6290's exact diff and tests only to determine the semantics and whether pinned commit 988494... contains the unfixed path. Do not treat the proposed fix as merged or as evidence of behavior in the pinned commit.
+
+PR: https://github.com/OpenHands/software-agent-sdk/pull/6290
