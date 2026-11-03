@@ -470,14 +470,15 @@ These are test cases for the existing fixed-task proof, not new canonical accept
 | BR-02 | Python calls XHR/WebSocket/EventSource to external host | Blocked; no external connection established |
 | BR-03 | Python calls same-origin private API path | No such API exists on execution origin; request returns no sensitive data |
 | BR-04 | Python attempts app-origin fetch | CSP blocks it; app API sees no request |
-| BR-05 | Python inspects JS globals | Restricted jsglobals exposes no worker/app privileged references, or candidate fails this hardening gate |
-| BR-06 | Python attempts IndexedDB/Cache Storage/OPFS writes | API unavailable to Python; no cross-run state persists |
+| BR-05 | Python inspects JS globals and imports pyodide_js | Restricted js scope and attenuated pyodide_js expose no worker globals, FS, _module, _api, eval, stream controls or privileged wrapper references, or candidate fails this hardening gate |
+| BR-06 | Python attempts IndexedDB/Cache Storage/OPFS writes and mounts IDBFS through pyodide_js.FS | Persistent browser storage is unavailable to user code; no cross-run state persists |
 | BR-07 | Python forges terminal/result messages | Parent rejects untrusted or malformed schema; no false success |
 | BR-08 | Python floods messages/stdout/stderr | Parent enforces event/byte caps and records truncation/termination honestly |
 | BR-09 | Iframe navigates or closes during execution | Parent does not treat disappearance as success or confirmed cancellation |
 | BR-10 | Old worker/iframe sends delayed output after retry | Run/attempt/nonce/sequence binding rejects stale message |
 | BR-11 | Runtime or lockfile is changed between runs | Pinned digest/version check rejects unexpected bytes |
 | BR-12 | User code tries to create nested workers or import remote modules | CSP blocks; no unapproved script is loaded |
+| BR-13 | iOS Safari loads Pyodide under restrictive worker CSP | Pyodide starts with WebAssembly permitted but JavaScript eval denied; if Safari requires unsafe-eval or the test fails, browser security gate is BLOCKED |
 
 No BR identifier is a canonical LOOP/CASE acceptance ID. These are proposed test names only. They must remain in this research matrix unless an explicit crosswalk is approved.
 
