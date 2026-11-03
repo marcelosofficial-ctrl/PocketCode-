@@ -731,3 +731,14 @@ Priority order:
 5. Keep process-kill and power-loss durability as separate test claims.
 
 The existing tests and F31 scenario are controls, not substitutes for the missing combined cases. No fix is selected. Reverse-order error chaining is not accepted without proving tool-call order, partial observations, late results and provider-facing history. All tests remain NOT RUN; no OpenHands source/tests, PocketCode source/acceptance, provider workload, Actions, PR #2/#3 or host operation occurred.
+
+
+## 28. Complete cross-project handoff — 2026-11-03
+
+The authoritative new-chat entry point is now the complete handoff in the RevDev repository:
+
+[NEW_CHAT_HANDOFF_REVDEV_POCKETCODE_2026-11-03.md](https://github.com/marcelosofficial-ctrl/DevRelay-Missions/blob/review/revdev-adaptive-ai-workshare-2026-10-27/resume/revdev/NEW_CHAT_HANDOFF_REVDEV_POCKETCODE_2026-11-03.md)
+
+Read it fully before continuing. It consolidates both product goals, separate repository/acceptance/security boundaries, three-AI roles, PC-free/$0/authorization constraints, current RevDev P0/P8U/OD-06 status, Work Coach manifest validation gap, PocketCode owner decisions and fixed-task research, pinned OpenHands findings and OH-RCV-01…08 test sequence, shared SCF review status, exact repository/PR snapshot and ordered next actions.
+
+**Live-count supersession:** latest 2026-11-03 compare is RevDev 447 ahead / 0 behind main and PocketCode 598 ahead / 0 behind main. Earlier notes in this handoff recording 445/0 and 595/0 predate the last continuity commits and are superseded. PR #2 and #3 remain open draft and untouched. No PR action, source/test execution, provider workload, Actions, host/queue operation or deployment occurred.
