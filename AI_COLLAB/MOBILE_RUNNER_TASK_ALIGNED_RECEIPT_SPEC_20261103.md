@@ -127,13 +127,13 @@ Runtime/version: NOT_SELECTED
 Exit code: NOT_OBSERVED (fixture expectation: 0)
 Duration: NOT_MEASURED
 
-stdout state: SAMPLE CONTENT
+stdout state: SAMPLE CONTENT (fixture expectation; not captured by prototype)
 stdout:
 Wrote summary.json
 
-stderr state: SAMPLE CAPTURED EMPTY
+stderr state: SAMPLE EXPECTATION: EMPTY (not captured by prototype)
 stderr:
-(empty in this fixture's expected behavior; not collected by this prototype)
+(empty in this fixture's expected behavior)
 
 Artifact state: EXPECTED_TO_BE_CREATED (fixture expectation only)
 Artifact name: summary.json
@@ -164,11 +164,11 @@ Runtime/version: NOT_SELECTED
 Exit code: NOT_OBSERVED (fixture expectation: 2)
 Duration: NOT_MEASURED
 
-stdout state: SAMPLE CAPTURED EMPTY
+stdout state: SAMPLE EXPECTATION: EMPTY (not captured by prototype)
 stdout:
-(empty in this fixture's expected behavior; not collected by this prototype)
+(empty in this fixture's expected behavior)
 
-stderr state: SAMPLE CONTENT
+stderr state: SAMPLE CONTENT (fixture expectation; not captured by prototype)
 stderr:
 ERROR: missing required CSV column(s): unit_price
 
