@@ -612,7 +612,7 @@ No apps were installed, no tasks run, and no canonical LOOP/CASE meanings change
 
 ## 13. Mobile local-Python comparator refresh — 2026-11-03
 
-Read `AI_COLLAB/MOBILE_LOCAL_PYTHON_COMPARATOR_REFRESH_20261103.md`, blob `2b2b05bd0efbd339cdef2dff14cd404bc25f168b`.
+Read `AI_COLLAB/MOBILE_LOCAL_PYTHON_COMPARATOR_REFRESH_20261103.md`, blob `811dc791b34a8dadfb632fc97a8a65acd11e8c4d`.
 
 Public-source desk research adds iOS comparators Pyodios, Carnets and a-Shell, plus Android Pydroid 3 and Termux. The fixed CSV-to-JSON task is not differentiated by basic on-device Python execution, editing, terminal access or file import/export alone. Do not build a second general-purpose mobile Python IDE without evidence of an unmet need.
 
@@ -635,3 +635,16 @@ The audited PocketCode source is pinned to the separate `pocketcode-execution-bo
 Expanded finding: verdict precedence is not the only issue. The pure helper explicitly accepts caller-supplied evidence and does not authenticate its provenance. The formatter's `Evidence source` field is also caller-supplied text. The test named `test_nonzero_exit_overrides_script_printed_pass` does not supply script output; it tests contradictory `succeeded + nonzero exit` metadata. Keep script claims, trusted lifecycle status and process exit evidence separate. Add evidence-ingress/run-binding/terminal-conflict tests before claiming trustworthy verdicts.
 
 This is source/static analysis only. No code/tests were changed or run. Do not copy PocketCode source/audit files across branches. The owner-designated PocketCode branch remains this AI Workflow Director branch; the execution-boundary branch remains separate research.
+
+
+## 15. Latest branch comparison snapshot — 2026-11-03
+
+Fresh read-only comparisons against each repository's `main` after the documentation updates:
+
+| Repository / branch | Ahead | Behind | Merge base |
+|---|---:|---:|---|
+| RevDev `review/revdev-adaptive-ai-workshare-2026-10-27` | 487 | 0 | `058f9025319d12e76195659c715ccb4afce133b8` |
+| PocketCode owner-designated `pocketcode-ai-workflow-director-research-2026-10-28` | 581 | 0 | `555840d8d83342513d9cd353d4d1522d46a5c82d` |
+| PocketCode separate `pocketcode-execution-boundary-crosswalk-2026-11-01` | 605 | 0 | `555840d8d83342513d9cd353d4d1522d46a5c82d` |
+
+These are divergence counts, not merge-readiness evidence. The two PocketCode branches remain separate. No branch merge, rebase, PR update, or cross-branch artifact transfer was performed. PR #2/#3 remain protected and untouched; re-fetch exact PR metadata before any consequential PR decision.
