@@ -646,3 +646,62 @@ Use the following status:
 Keep `interrupt()` separate: it cancels the async run and has a synthetic orphan-error path. Do not infer that a missing ObservationEvent proves no external side effect.
 
 No upstream source/tests were changed or run. No provider workload, spend, PR, merge, deployment, PC/host or queue action occurred.
+
+
+## 25. 2026-11-03 continuation: current local comparator, shared fixture reviews and RevDev validation
+
+### 25.1 PocketCode local-execution comparison
+
+The current [fixed-task comparison worksheet](PRODUCT_FIXED_TASK_COMPARISON_WORKSHEET_20261028.md) now contains a dated public-source refresh:
+
+- Pyodios is the strongest no-cost iPhone-local candidate identified for the canonical small CSV-to-JSON task. Its current public listing says free, iOS 26+, v1.1.0 and 42.9 MB; official documentation describes local Python 3.14.2 / Pyodide 314.0.5, a project folder, script/notebook/REPL workflow, file import/export and CSV/JSON inspection.
+- Its important reliability constraint is that active Python cannot be interrupted. The documented 120-second timeout does not stop execution; a later run waits until the session is restarted. Its Python process state is ephemeral across launches.
+- Carnets remains a credible free on-device Jupyter alternative, but it is a much larger download and must be evaluated as a notebook workflow, not assumed to be a drop-in script IDE.
+- Pyto is an optional third candidate only if its free feature coverage is useful for comparison.
+
+No app was installed. No code was run in any candidate. The canonical CSV-to-JSON success/malformed-input comparison remains NOT RUN. Execution location is still undecided. Do not describe Pyodios or Carnets as a chosen backend.
+
+The key product question is now narrower: code execution itself is already available through free local alternatives. PocketCode must demonstrate value through a trustworthy run-bound receipt, honest timeout/cancellation and side-effect semantics, source/input/output identity, explicit permission/egress controls, and a portable report that improves AI correction through explicit share/copy/paste. These are hypotheses to test, not proven PocketCode capabilities or validated demand.
+
+### 25.2 Shared contract fixture review queue
+
+The existing [Shared Contract Golden Fixture Catalogue preliminary review](SHARED_CONTRACT_GOLDEN_FIXTURE_CATALOGUE_CHATGPT_PRELIMINARY_REVIEW_20261101.md) now contains separate review assignments for:
+- Gemini: security, evidence-oracle completeness, false-PASS and identity/replay adversarial review of SCF-001..018.
+- Claude: architecture and implementation-feasibility review of durable state, identity, CAS/fencing, lifecycle ordering, publication, release/transfer/receipt and fixture testability.
+
+Keep SCF-001..018 unchanged. These are provisional shared fixtures, not owner-approved acceptance, a schema freeze, or a replacement for native AEC/LOOP/CASE/COORD/DR/P8U/P0-D/AWC/RelayRef suites. No schema was drafted or frozen. Neither review response is yet recorded as received in this handoff.
+
+### 25.3 RevDev AWC fixture-manifest validation checkpoint
+
+A separate documentation-only checkpoint was added to RevDev's research branch:
+
+- [RevDev CURRENT_GOALS](https://github.com/marcelosofficial-ctrl/DevRelay-Missions/blob/review/revdev-adaptive-ai-workshare-2026-10-27/resume/revdev/CURRENT_GOALS.md), latest blob `7d420c793be303fe4d8ed381d643f52c8b982234`.
+- AWC manifest blob `c2d4cba6c836f725f7bc4585f91e02d443fe89e1`.
+- AWC manifest schema blob `d7436f5b9df8c34b29ad7453e105b7c0270fbe65`.
+- Draft 2020-12 schema meta-validation and the current 18-fixture manifest structural validation passed under Python 3.13.5 / `jsonschema` 4.26.0.
+- Current AWC-001..018 IDs are sequential and unique. The schema does not reject a deliberately duplicated fixture ID, so a separate semantic ID uniqueness assertion is required in a future harness. No schema or fixture ID was changed.
+
+This is not Work Coach semantic-validator execution, evidence authenticity, model trial or product acceptance. The latest 33-method semantic validator suite remains NOT RUN. RevDev P8U/P0-D runtime acceptance remains NOT RUN and the P0 publisher/orphan/retry/recovery defect remains release-blocking.
+
+### 25.4 RevDev owner-decision boundary
+
+OD-06 remains OPEN for the accepted-dispatch/intent-but-no-runner-start gap. P8U-09 currently means the runner starts and then crashes before a local terminal result is written. Do not silently expand P8U-09 or invent a new canonical P8U ID. The absence of runner-entry evidence is UNKNOWN unless a complete authoritative oracle proves no runner entered during the relevant interval.
+
+### 25.5 OpenHands recovery correction
+
+The current authoritative study documents are:
+- [Pinned recovery evidence reconciliation addendum](OPENHANDS_PINNED_RECOVERY_EVIDENCE_RECONCILIATION_ADDENDUM_20261102.md), commit `df26c91d9df2d06c31ef01b6d1b0b326caabe9ef`.
+- [Crash-window falsification plan](OPENHANDS_EVENTLOG_HEAD_CRASH_WINDOW_FALSIFICATION_PLAN_20261102.md), Section 21.10 contains the corrected pause lifecycle.
+- This handoff, Section 24, contains the correction in summary.
+
+Multi-action recovery explicitly parents one error to the first unmatched action and can detach later actions from active ancestry; stale full-log observation suppression can disagree with active-branch pending-action detection after navigation; EventLog local writes fsync the temp file before replace, while power-loss durability remains unproven; and missing observations do not prove no external side effect. The normal synchronous pause test does not prove PAUSED while a tool is already executing. The narrower async LLM-I/O pause race remains source-supported. Full crash/restart integration scenarios remain NOT RUN. #2298/#2300, #3045/#3063 and #4591/#4932 remain merged historical fixes; #6289/#6290 is separate and unmerged at the last check.
+
+### 25.6 Next bounded sequence
+
+1. Send the two shared-fixture review prompts to Gemini and Claude; reconcile concrete counterexamples against the exact catalogue and native acceptance. Do not freeze a shared schema.
+2. Continue the same canonical CSV-to-JSON comparison only through source research until a hands-on attempt is separately authorized. Pyodios is the first local candidate, Carnets second. The fixed task remains NOT RUN.
+3. Close the OpenHands source review only with the targeted combined regression specifications and any independent Claude challenge. Do not modify OpenHands or PocketCode source/tests.
+4. Keep RevDev product P0 first. No PC runtime or publisher work is possible until fresh PC access and an authorized read-only inventory.
+5. Refresh exact branch/main refs and PR #2/#3 before further consequential work.
+
+No source/test/acceptance change, schema freeze, PR action, provider workload, account, billing, install, Actions, merge, deployment, PC host, queue or runtime operation occurred. PR #2/#3 remain open draft and untouched; main remains unchanged; budget remains $0.
