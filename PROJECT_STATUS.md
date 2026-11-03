@@ -479,3 +479,10 @@ The pinned `EventService.run()` selects native `LocalConversation.arun()` for th
 F31's crash-tool-call `TOOL_AGENT` is explicitly configured to a local `openai/qa-stub` endpoint; the DeepSeek key/preset in the broader feature-map setup is tied to a separate real-model `F31.no-plaintext-at-rest` run. The crash subfeature's model target is local, but the reduced standalone no-DeepSeek bootstrap remains unverified. See the 2026-11-03 addendum follow-up in the crash-window plan and pinned recovery addendum.
 
 No source/test/provider/host action or canonical acceptance change occurred.
+
+
+## OpenHands recovery test-plan checkpoint — 2026-11-03
+
+The pinned OpenHands recovery review now has a consolidated, non-duplicative regression sequence in [OPENHANDS_EVENTLOG_HEAD_CRASH_WINDOW_FALSIFICATION_PLAN_20261102.md](AI_COLLAB/OPENHANDS_EVENTLOG_HEAD_CRASH_WINDOW_FALSIFICATION_PLAN_20261102.md), Section 21.12. It prioritizes (1) explicit parent/active-ancestry assertion for the existing one-action recovery path, (2) three-action batch crash/restart ancestry and resumed request history, (3) the native async pause-during-LLM race, then (4) navigation/stale-observation, partial completion, interrupt, side-effect ambiguity and multi-file durability cases.
+
+The plan explicitly distinguishes existing unit/integration/F31 coverage from what remains untested. It does not select a recovery fix; reverse-order error chaining remains only one candidate and must be tested against provider-facing history and partial completion. All OpenHands tests remain NOT RUN. No source/test/provider/Actions/PR/host changes occurred. PR #2/#3 remain protected and untouched.
