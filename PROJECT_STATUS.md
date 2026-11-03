@@ -252,3 +252,14 @@ Reviewed prototype source blob e2c4ece041be95ce9a73bc60ff354702b21c33c2. The cur
 - clipboard behavior remains browser-dependent and unverified.
 
 Recommendation: align the demo task with the frozen fixture (or clearly label it as a separate example), make the copied receipt truthful about execution and artifact state, and then add actual input-intake and timeout/cancellation UI only when their behavior can be implemented and tested. No source/test changes or browser/device tests were made. The prototype remains simulated; execution and differentiator remain unvalidated.
+
+
+## 2026-11-03 live branch and cross-project reconciliation
+
+Fresh comparison of the owner-designated branch \`pocketcode-ai-workflow-director-research-2026-10-28\` now reports **561 ahead / 0 behind** main, merge base \`555840d8d83342513d9cd353d4d1522d46a5c82d\`. This supersedes earlier same-day 555/556 snapshots in this file. The count is branch divergence, not merge readiness.
+
+PR #2 remains OPEN / DRAFT / UNMERGED at unchanged head \`eb8b7ea83cb0e8fe1880351276c485b761431791\`; PR #3 remains OPEN / DRAFT / UNMERGED at unchanged head \`0ddcc0bc97bac5d446aefedf3d71f99411bd841d\`. Both were re-fetched and left untouched.
+
+The separate RevDev branch \`review/revdev-adaptive-ai-workshare-2026-10-27\` currently compares 463 ahead / 0 behind its main (merge base \`058f9025319d12e76195659c715ccb4afce133b8\`). Keep repository and branch identities separate.
+
+No PR, source, test, Actions, provider, account, workload, spend, host, queue, runtime, install, deployment or merge was changed. The fixed-task product-path comparison and paired AI correction experiment remain NOT RUN; differentiator remains UNVALIDATED.
