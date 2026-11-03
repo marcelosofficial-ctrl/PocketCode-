@@ -171,3 +171,19 @@ Created `AI_COLLAB/NEW_CHAT_BOOTSTRAP_20261101.md` as the primary comprehensive 
 
 
 - 2026-11-03 Pyodide trusted-bootstrap feasibility refinement: Added Section 10.11.1 to the browser desk review, commit `a69b4d55848ac00d7b637cc48d9b41af9f53e86b`, pinned additional 314.0.7 import-hook/Python module sources in commit `a591357e5b33be54a62f198b4f6b8f4593a4da82`, and accounted for the package-loader cached JS proxy in commit `a7ed283ecbcbe932078c301d630b8017e709a220`, final desk-review blob `ae0c5d5a4b4e0c7edae39c53fc9118fa70aee493`. Source review confirms a possible attenuation experiment: unregister pyodide_js from the import hook, clear cached pyodide_js modules, restrict jsglobals, and audit pyodide.code.run_js; however pyodide._package_loader imports a JS-backed loadedPackages proxy during bootstrap, so that cached reference must also be handled. Pyodide webloop and HTTP helpers depend on pyodide_js, so async/network functionality may be unavailable in the first proof. This is a source-derived hypothesis only, not a verified mitigation. WP-09 updated with the cached-proxy caveat, commit `ef5929ec67b41906c2756984302c724429199ec2`, final blob `5041cafde16fbd07a87c87f93ee5d9caf6a0b8a5`. No runtime or tests executed.
+
+
+## 2026-11-03 primary continuation handoff
+
+The current primary new-chat transfer document is [AI_COLLAB/NEW_CHAT_HANDOFF_20261103.md](AI_COLLAB/NEW_CHAT_HANDOFF_20261103.md). It supersedes the 2026-11-01 bootstrap's live-state snapshot, while retaining that bootstrap and the long addendum as historical context. The new handoff includes a self-contained copy/paste prompt, current product direction, three-AI roles, phone-only/$0 constraints, PocketCode canonical acceptance and owner-open decisions, fixed-task/paired experiment state, Claude/Gemini research adjudication, current Linux and Pyodide source findings, RevDev/RelayRef/P8U continuity, protected PR state, exact next passes and no-go boundaries.
+
+Handoff file creation commit: `7ee551b698616d030e1651c2189bb21ef92c759c`; verified blob after read-back: `cd223994ce689a83469070e48e82c4a909cfbd7b`.
+
+Latest verified branch state before this status-pointer update: `c0514044707b6a440bed2f7a7f758bdbf6500d14`, 546 ahead / 0 behind main `555840d8d83342513d9cd353d4d1522d46a5c82d`. PR #2 and #3 remained open, draft and unmerged at their protected heads; re-fetch before consequential work. This status-pointer update is documentation-only on the existing research branch.
+
+Latest work conclusions:
+- Happy Agent Linux strict-service remains a source-level reference only, not a selected provider/dependency; absolute deadline, CPU/disk quotas and input/egress/lifecycle gaps remain.
+- Happy Agent Windows adapter is not acceptable as-is for untrusted code due broad root read and inherited environment.
+- Pyodide 314.0.7 empty `jsglobals` is insufficient because `pyodide_js`, FS/IDBFS, `_module`, `_api`, `run_js`, cached module/proxy references and Safari CSP limitations remain. A trusted-bootstrap attenuation experiment is only a hypothesis, not verified.
+- Browser/Pyodide and Linux paths remain unselected; product-path execution and device tests NOT RUN; budget $0.
+- No source, tests, canonical acceptance, PR, Actions, provider, account, workload, installation, merge, deployment or local PC state changed.
