@@ -717,3 +717,17 @@ See Section 21.11 of the [crash-window plan](OPENHANDS_EVENTLOG_HEAD_CRASH_WINDO
 - F31's `TOOL_AGENT` explicitly targets a local `openai/qa-stub` endpoint at `$TOOL/v1` with a placeholder key and zero retries. The documented DeepSeek key requirement is tied to a separate `F31.no-plaintext-at-rest` real-model run; a reduced no-DeepSeek bootstrap for crash-tool-call is plausible but not fully command-verified.
 
 No OpenHands source/tests or workloads changed or ran. No provider request, spend, Actions, host/queue operation, PR change, merge or deployment occurred.
+
+
+## 27. OpenHands regression sequence consolidated — 2026-11-03
+
+The detailed, non-duplicative test sequence is now recorded in [OPENHANDS_EVENTLOG_HEAD_CRASH_WINDOW_FALSIFICATION_PLAN_20261102.md](OPENHANDS_EVENTLOG_HEAD_CRASH_WINDOW_FALSIFICATION_PLAN_20261102.md), Section 21.12.
+
+Priority order:
+1. Extend the existing one-action EventService startup unit test to assert explicit `parent_id` and active ancestry.
+2. Add real LocalFileStore restore coverage for a three-action unmatched batch and inspect both full EventLog and provider-facing active history.
+3. Deterministically exercise pause during outstanding native async LLM I/O, response release, tool dispatch, process termination, EventService restore and resume.
+4. Add navigation/stale-observation, partial-completion, interrupt-control and independently observed side-effect cases.
+5. Keep process-kill and power-loss durability as separate test claims.
+
+The existing tests and F31 scenario are controls, not substitutes for the missing combined cases. No fix is selected. Reverse-order error chaining is not accepted without proving tool-call order, partial observations, late results and provider-facing history. All tests remain NOT RUN; no OpenHands source/tests, PocketCode source/acceptance, provider workload, Actions, PR #2/#3 or host operation occurred.
