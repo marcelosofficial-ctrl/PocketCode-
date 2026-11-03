@@ -583,3 +583,28 @@ Earlier same-day counts of 569 ahead / 0 behind for PocketCode and 471 ahead / 0
 - RevDev research branch: head `01e0858bfd8733070b7c0f78b0f62bafe1fd2649`, **477 ahead / 0 behind**, merge base `058f9025319d12e76195659c715ccb4afce133b8`.
 
 These are pre-correction snapshots. The present handoff update advances the PocketCode branch again, so re-fetch exact refs before the next consequential action. PR #2/#3 and RevDev PR #1 remain OPEN / DRAFT / UNMERGED; their heads were unchanged in the latest metadata read.
+
+
+## 2026-11-03 iOS runner competitive baseline and product differentiation decision
+
+Added [`AI_COLLAB/IOS_PYTHON_RUNNER_COMPETITIVE_BASELINE_20261103.md`](AI_COLLAB/IOS_PYTHON_RUNNER_COMPETITIVE_BASELINE_20261103.md). Public-source research checked a-Shell, Carnets, Pyto, Pythonista 3, Coilbook and Python Code Editor & IDE, plus official Python iOS and Apple sandbox documentation.
+
+**Executive decision:** do not build a generic iPhone Python IDE/interpreter as PocketCode's differentiator. The market already advertises free/low-cost local offline Python, project/file import, notebooks, consoles, stop controls and debugging. Especially relevant:
+- a-Shell's App Store listing advertises free offline local Python and Unix tools.
+- Carnets advertises free local/offline Jupyter with file/directory support and sharing.
+- Pyto and Pythonista advertise embedded local Python IDEs and file/automation workflows.
+- Coilbook's first-party pages claim CPython 3.14, free unlimited runs, Files-app project folders, input/console and Stop. Its App Store storefront presence was not independently confirmed in this pass.
+- Python Code Editor & IDE's App Store listing advertises local offline Python, debugger, pip, pytest, project import and ZIP export. The listing is recent and public ratings are sparse; all such feature claims remain unverified until hands-on use.
+
+Official Python iOS documentation says Python must be embedded in an iOS app, not used as a system-wide Python executable. Pythonista/Pyto documentation describes same-process interpreter operation and iOS subprocess restrictions. Therefore a native embedded interpreter is useful for trusted local work, not a hostile-code OS sandbox. A Stop button does not prove process isolation or hard quotas.
+
+PocketCode's differentiation should be the provider-neutral **task/evidence/recovery/AI-correction layer**:
+1. immutable task/run packet binding exact source and input hashes;
+2. explicit entrypoint/working directory and user authorization;
+3. host-observed lifecycle/output evidence, exit/outcome, artifact hashes and cleanup uncertainty;
+4. durable report/run history and recovery without rerunning a completed task;
+5. portable AI debugging packet, explicit user-mediated handoff, patch preview/approval and attempt lineage.
+
+The frozen CSV-to-JSON task remains a workflow benchmark, not proof of runtime advantage or sandbox security. First controlled comparison should use a-Shell plus one current native IDE (Python Code Editor & IDE if available in the owner's Belgian storefront, otherwise Pyto free tier), optionally Coilbook if store availability is confirmed. Do not install/run anything without explicit owner/device authorization. Mark capabilities advertised-but-unverified, unknown or verified; do not treat silence in marketing as absence.
+
+No apps were installed, no tasks run, and no canonical LOOP/CASE meanings changed. Runtime/provider selection remains NONE; budget remains $0; fixed-task product comparison remains NOT RUN. Full rationale, source links, benchmark dimensions and go/no-go criteria are in the competitive baseline.
