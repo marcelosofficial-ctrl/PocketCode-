@@ -334,3 +334,41 @@ Inspired by the [Open-Source Reuse Audit](OPEN_SOURCE_REUSE_AUDIT_20261029.md), 
 | Stale file/edit protection | If an operation is based on a prior file revision, detect a conflicting revision before overwrite | Stale content silently overwrites newer user changes |
 
 These are proposed acceptance checks, not results. Keep cases that apply to the selected execution path; the remote reconnect case is conditional. A test is not PASS until the exact implementation/revision is run and evidence is saved.
+
+
+### 5C.1 Current local iPhone source refresh — 2026-11-03
+
+**Status remains source review only; no app was installed, no device task was run, and no performance/security benchmark was performed.** These updates refine the existing preflight, not the canonical CSV-to-JSON task or the product decision.
+
+| Candidate | Current public listing / documented capability | Material constraint or unresolved question | Use in comparison |
+|---|---|---|---|
+| **Pyodios** | Free iOS app; current listing reports v1.1.0, iOS 26+, 42.9 MB. Its official FAQ describes local Python 3.14.2 on Pyodide 314.0.5, editor/REPL/notebooks, local files, CSV preview and import/export through Files/share sheet. | Documentation reports a 4 GB minimum device-memory requirement and about a 300 MB runtime memory ceiling. Most importantly, active Python execution cannot be interrupted: its 120-second timeout does not terminate the code, and another run waits behind it until the session is restarted. The Python process/session state does not persist across launches, although saved files/scripts do. These are vendor-documented claims, not hands-on observations. | **Leading zero-cost local baseline** for the fixed standard-library CSV task. The interruption/termination limitation is a key reliability test condition. |
+| **Carnets** | Free local Jupyter notebook app for iPhone/iPad. Current App Store page reports v1.9.2 and about 1.5 GB. Public materials describe on-device notebook execution and offline use; package support is notebook/Jupyter-oriented. | Large install footprint; test whether the current release can access the CSV and script from one selected directory, execute a standalone .py workflow cleanly, and export the generated JSON. Older file-access guidance is historical and must not be treated as a current limitation without a run. | Secondary local baseline. Compare actual task setup friction, file access and artifact export rather than notebook features alone. |
+| **Pyto** | App Store listing describes a free download with in-app purchases, a Python IDE/runtime and a large package catalogue. | Current package availability, free-tier restrictions, actual compatible runtime, editor/file workflow and whether the fixed task is fully available without purchase remain unverified. | Optional third candidate only if it adds material coverage; not necessary for the first paired test. |
+
+**Sources reviewed:** [Pyodios official FAQ](https://pyodios.app/faq), [Carnets App Store listing](https://apps.apple.com/us/app/carnets-jupyter/id1450994949), and the current [Pyto App Store listing](https://apps.apple.com/us/app/pyto-python-3/id1436650069). Listing price, size, version and OS requirements are storefront metadata and may vary by region/device; recheck immediately before any future hands-on attempt.
+
+#### Product implication, not a product decision
+
+A free local Python app already challenges any claim that PocketCode's advantage is simply “run Python from an iPhone.” For the existing product hypothesis, the more meaningful differentiators to falsify are:
+- whether the user receives a trustworthy, run-bound execution receipt rather than only console text and output files;
+- whether cancellation/timeout means the underlying process actually stopped, with the external outcome represented honestly when it did not;
+- whether input, source, output and report identities can be bound without fabricating provenance;
+- whether the result can be carried through explicit share/copy/paste to any AI assistant and then used for a controlled correction/rerun;
+- whether execution location, file access, network egress and authorization remain visible and bounded.
+
+These are hypotheses and requirements to test, not proof that PocketCode currently provides them or that local alternatives cannot.
+
+#### Existing fixed-task protocol: additional observations to capture
+
+Keep the same canonical CSV-to-JSON task and inputs. Do not make a new benchmark task. When a future attempt is explicitly approved:
+
+1. Record device class, exact OS, app build/version, runtime/Python version, install size as listed, cold-start time and any memory warning.
+2. Import the canonical input into a fresh project/folder; record the exact steps and whether the app grants access to the whole project folder or only individual files.
+3. Run the same standard-library script and verify the actual `summary.json` file and its exact content, not only a console message. Export it using the normal Files/share flow.
+4. Run the malformed-input variant in a fresh folder. Record the error and verify that no valid-looking output from a previous attempt survives.
+5. Treat cancellation as its own test. For Pyodios, do not count the 120-second timeout as a stop: its documentation says execution continues. Record whether the app exposes a real stop mechanism and whether a subsequent run is blocked.
+6. Compare native evidence with the already-proposed portable report contract. Record missing fields as UNKNOWN / NOT DOCUMENTED; do not create a second schema or automatically fail an app for fields that are not required by the current contract.
+7. Keep the success, malformed-input, interruption and report-handoff observations separate. A correct JSON file does not prove cancellation, evidence provenance, safe egress, or portable AI correction.
+
+**Verdict:** Pyodios is the strongest zero-cost iPhone-local comparator identified in this source refresh for the small fixed task. This is a candidate selection for the comparison queue, not a winner or chosen PocketCode backend. The fixed-task comparison remains NOT RUN, no execution path is selected, and $0 remains the default budget.
