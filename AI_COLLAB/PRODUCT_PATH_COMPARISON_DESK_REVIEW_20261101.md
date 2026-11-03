@@ -533,10 +533,11 @@ Candidate trusted bootstrap, to be tested in a throwaway harness only:
 2. Keep the returned Pyodide API object only in the trusted worker wrapper's lexical closure. Do not assign it to globalThis, a worker property, a message payload, or any object reachable from Python.
 3. Before dispatching user code, call the trusted JS API's unregisterJsModule("pyodide_js").
 4. Remove any already-imported pyodide_js and pyodide_js.* entries from sys.modules using trusted bootstrap code. Verify that later imports fail because the import finder no longer contains that registration.
-5. Keep the host-only FS handle, stdout/stderr callbacks and worker message port in private wrapper variables. Do not expose them through jsglobals, pyodide_js, pyodide.ffi, registered modules or Python globals.
-6. Verify pyodide.code.run_js fails because js.eval is absent. Verify this remains true on Safari even if a compatibility CSP policy has to permit WebAssembly using unsafe-eval.
-7. Attempt to re-register pyodide_js and js from Python using pyodide.ffi.register_js_module and only Python-created JsProxy objects. Confirm that this cannot restore the original API, worker globals, FS handle, message port or eval reference.
-8. Test the exact standard-library fixture, file I/O, bounded stdout/stderr and exception reporting after attenuation. Explicitly test which optional Pyodide features stop working.
+5. Audit pyodide._package_loader.loadedPackages: the package loader imports this JS-backed map during Pyodide initialization, so clearing sys.modules does not remove the cached reference. Replace it with an immutable Python-only snapshot or None before untrusted code, if the package loader still needs to remain importable.
+6. Keep the host-only FS handle, stdout/stderr callbacks and worker message port in private wrapper variables. Do not expose them through jsglobals, pyodide_js, pyodide.ffi, registered modules or Python globals.
+7. Verify pyodide.code.run_js fails because js.eval is absent. Verify this remains true on Safari even if a compatibility CSP policy has to permit WebAssembly using unsafe-eval.
+8. Attempt to re-register pyodide_js and js from Python using pyodide.ffi.register_js_module and only Python-created JsProxy objects. Confirm that this cannot restore the original API, worker globals, FS handle, message port or eval reference.
+9. Test the exact standard-library fixture, file I/O, bounded stdout/stderr and exception reporting after attenuation. Explicitly test which optional Pyodide features stop working.
 
 This candidate is acceptable only if the full hostile-Python test corpus cannot recover a privileged object. It is not enough that a few known names raise ImportError. The wrapper must retain its private handles, and the Python-visible import/module/object graph must be audited after each runtime update. If this requires patching Pyodide internals or maintaining a fork, treat that as a significant dependency and maintenance cost under the $0 constraint.
 
