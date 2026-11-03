@@ -280,7 +280,7 @@ Pyodide 314.0.7 documents `pyodide.setInterruptBuffer()` as a web-worker-only me
 
 The browser `Worker.terminate()` path is the independent host-controlled stop mechanism. Do not conflate the two:
 - `setInterruptBuffer`: graceful/cooperative interrupt attempt; record whether the code actually handles and returns from it.
-- `Worker.terminate()`: host termination attempt; record worker exit, resource recovery and whether the page remains responsive.
+- `Worker.terminate()`: host-controlled abrupt termination request; do not rely on an in-worker acknowledgement after calling it. Verify externally that execution stops, no further worker activity occurs, resources recover, and the page remains responsive.
 - App/page close, reload, backgrounding, or PWA suspension: separate lifecycle events, not substitutes for a confirmed worker-stop observation.
 
 SharedArrayBuffer availability is conditional on the browser's security/isolation context. Feature-detect `crossOriginIsolated` and `SharedArrayBuffer` at runtime; do not make them a required assumption for all deployed iOS contexts. A COOP/COEP setup also affects cross-origin resource loading, so the exact runtime/CDN and service-worker deployment must be tested together.
