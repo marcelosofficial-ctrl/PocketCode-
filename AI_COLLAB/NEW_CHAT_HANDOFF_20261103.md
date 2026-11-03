@@ -542,3 +542,35 @@ The spec resolves the next design pass: align the example to the frozen \`main.p
 No fake import, run, cancellation, or termination controls should be added. A simulated UI cannot prove LOOP-01 file intake, LOOP-03/04 execution, LOOP-10 file creation, LOOP-12 isolation, or real clipboard/device behavior. Existing LOOP-01..14 and CASE-01..16 remain unchanged.
 
 No prototype source or tests were changed. No browser/device tests, file import, clipboard test, execution, installation, provider workload, Actions, account, spend, host/queue operation, PR mutation, merge or deployment occurred. The fixed-task product-path comparison and paired AI correction experiment remain NOT RUN; report differentiator remains UNVALIDATED.
+
+
+---
+
+## 12. 2026-11-03 follow-up — Pyodide 314.0.7 capability audit and execution-path decision
+
+**New source-backed research artifact:** [`AI_COLLAB/PYODIDE_314_0_7_CAPABILITY_ATTENUATION_AUDIT_20261103.md`](PYODIDE_314_0_7_CAPABILITY_ATTENUATION_AUDIT_20261103.md), blob `d799cb4adcc08bfe3548921ae021ab58feae3f20`.
+
+Executive decision:
+- Stock Pyodide 314.0.7 is **not approved as the security boundary for arbitrary hostile/untrusted Python**.
+- Do not prioritize a trusted-bootstrap import-scrub shim for MVP. The exact source shows `jsglobals` only controls the `js` module, while bootstrap separately registers `pyodide_js` exposing `FS`, `_module`, and `_api`.
+- Unregistering a JS module does not remove an already-imported module from `sys.modules`; the package loader also retains a JS-backed `loadedPackages` reference, and optional webloop/http modules can cache more JS references. The source review does not prove that these references alone recover the full API, so treat them as residual capability paths requiring adversarial tests, not as a demonstrated exploit.
+- Pyodide's `run_js()` is an eval wrapper through `js`; removing that module should block this particular route only if all JS references are removed and CSP remains strict. Never use `unsafe-eval` as a Safari workaround.
+- Upstream's CSP test fixture is not a PocketCode no-egress policy. It uses `default-src http: 'wasm-unsafe-eval'`; the pinned test marks Safari expected-fail for `wasm-unsafe-eval`.
+- A disposable dedicated worker is useful for responsiveness and can be terminated by a live parent, but WebKit documents iOS background tab suspension and timer throttling. A browser timer is not a durable wall-clock deadline while the app is suspended. Worker termination does not prove per-run memory/disk quotas or persistent-storage cleanup.
+
+Execution-path recommendation:
+- Browser-local Pyodide: keep only as a possible user-approved convenience path for code the user already trusts; isolated origin, disposable worker, no credentials, deny-by-default CSP/no egress, bounded inputs/outputs, and no hostile-code or hard-quota claim. Not selected.
+- Isolated Linux/VM: continue as the required research direction for arbitrary untrusted code, with independent supervisor/workload boundary, network denial, memory/swap/CPU/process/disk limits, hard deadline, process-tree reconciliation, and artifact integrity. Happy Agent Linux strict service remains a reference, not ready implementation.
+- User-owned remote PC: future RevDev/PocketCode bridge candidate, but only with a disposable execution boundary; ordinary host-account execution is not safe for hostile code. PC state remains UNKNOWN and unavailable in current phone-only period.
+- Manual copy/paste: transparent fallback and control condition for report-value research, never a PocketCode execution.
+
+No canonical LOOP/CASE IDs or meanings changed. No code/tests/browser/device tests were run. Fixed-task product comparison remains NOT RUN; runtime/provider selection remains NONE; budget remains $0.
+
+### Latest live GitHub reconciliation (2026-11-03 follow-up)
+
+- PocketCode branch head: `78b0c15273ff0f66072dbb5d58a9a0f6c0c904cf`; compare `main...research`: **569 ahead / 0 behind**, merge base `555840d8d83342513d9cd353d4d1522d46a5c82d`.
+- RevDev branch head: `675902cced5bf92a63ab73bb865834014c0e2b59`; compare `main...research`: **471 ahead / 0 behind**, merge base `058f9025319d12e76195659c715ccb4afce133b8`.
+- PocketCode PR #2 and #3 remain OPEN / DRAFT / UNMERGED at heads `eb8b7ea83cb0e8fe1880351276c485b761431791` and `0ddcc0bc97bac5d446aefedf3d71f99411bd841d`.
+- RevDev PR #1 remains OPEN / DRAFT / UNMERGED at head `59f88dc0bd884872cf379c8aeb6272c9a70c71ce`.
+- No PR was modified, no Actions run was triggered, and no source/test/runtime/host/queue change occurred.
+
