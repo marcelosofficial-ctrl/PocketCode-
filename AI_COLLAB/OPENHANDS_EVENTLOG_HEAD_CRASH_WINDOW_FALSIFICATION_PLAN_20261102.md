@@ -640,3 +640,40 @@ This is a narrower, asynchronous pause-during-LLM / post-response-dispatch race.
 Required deterministic regression (not executed): block a scripted asynchronous LLM request; call normal pause from another thread and verify durable PAUSED; release a tool-call response; assert whether the tool starts after PauseEvent/PAUSED; kill the server while the local blocking tool is active; restore via real EventService; assert startup's status decision, active branch and pending action; resume and record whether the action dispatches again. Keep separate controls for synchronous pause during an already-running tool and interrupt cancellation. Record external side-effect outcomes independently.
 
 No OpenHands source or test was run or modified. No provider workload or host action occurred.
+
+
+### 21.11 Server-native async path and F31 local-stub qualification — 2026-11-03
+
+This follow-up strengthens two boundaries in Section 21.10 and the F31 discussion without claiming an executed integration test.
+
+#### EventService uses the native async conversation path for the normal LocalConversation + Agent combination
+
+Pinned source: `openhands-agent-server/openhands/agent_server/event_service.py`, blob `e02803e37e70a9dee43a815d34c5649e91332daf`, `EventService.run()`, lines 1527–1678 (native-path selection and execution around 1622–1650).
+
+The server explicitly prefers the native async path when:
+- `conversation.arun` exists and is a coroutine function;
+- the conversation overrides `BaseConversation.arun`; and
+- the agent overrides `AgentBase.astep`.
+
+When those conditions hold it executes `await conversation.arun()`. `LocalConversation` overrides `arun()`, and the normal `Agent` implementation overrides `astep()`. Thus the lock-release path in `Agent._astep()` is relevant to the normal EventService server path, not merely a direct SDK test. Sync-only custom subclasses are routed through a thread-pool `conversation.run()` instead.
+
+This confirms the server-path reachability premise for the async pause-during-LLM race. It still does not prove the whole pause → tool dispatch → process kill → EventService restore → resume sequence: the deterministic persisted integration test remains NOT RUN.
+
+#### F31 crash-tool-call uses an inline local stub, while DeepSeek is a wider feature-map prerequisite
+
+Pinned feature map: `.agents/skills/verify-agent-server/references/feature-map/F31-persistence-and-limits.md`, blob `5082730e1ba1d333daeaf321c21214ad4924cd12`, lines 91–121 and the `F31.crash-tool-call` section.
+
+The documented `TOOL_AGENT` explicitly sets:
+- model `openai/qa-stub`;
+- API key `qa-stub-key`;
+- base URL `$TOOL/v1`, where `$TOOL` is created by the local `control-agent-server fixture llm-stub --name qa-f31-tool` command;
+- `num_retries: 0`.
+
+The documented global precondition says `$DEEPSEEK_API_KEY` is set for **one real model run in `F31.no-plaintext-at-rest`**. The broader setup also runs `control-agent-server llm preset deepseek` before configuring the inline local stub conversation. The stubbed crash-tool-call conversation itself therefore targets the local stub, not DeepSeek.
+
+Reconciled conclusion:
+- **CONFIRMED:** the crash-tool-call conversation's configured model endpoint is a local llm-stub; the wider F31 family includes a separate real-model secret-at-rest test.
+- **PLAUSIBLE, NOT FULLY BOOTSTRAP-PROVEN:** a reduced crash-tool-call-only harness can probably omit the DeepSeek preset/key if it creates and configures the local stub and server without invoking the separate real-model subfeature.
+- **UNRESOLVED:** the feature-map does not supply a complete independently documented reduced launch/bootstrap command proving every server-default/config prerequisite can be omitted. Do not claim the entire F31 recipe is provider-free.
+
+No server, provider, fixture, test or host workload was executed. Do not run the DeepSeek-dependent subfeature under the $0/no-provider boundary.
