@@ -489,3 +489,12 @@ The companion audit defines nine independent stages: user intent, policy decisio
 - Refreshed [PC_RETURN_CHECKLIST_DRAFT_20261028.md](PC_RETURN_CHECKLIST_DRAFT_20261028.md), blob SHA 6bfa59becb1992bb02ae46500673c85f3aa858a7. The addendum preserves the existing first-session order, explicitly rejects spending the first PC session on the no-fork Pyodide hostile-sandbox experiment, and adds fresh-state, remote-host-boundary and PR-protection reminders.
 - The branch snapshot immediately before this checklist/handoff refresh was head 528702bf720f3d5659bcba918195bb030497f920, 553 ahead / 0 behind main 555840d8d83342513d9cd353d4d1522d46a5c82d. The current final head and comparison are recorded in PROJECT_STATUS.md after the final read-back.
 - The original handoff header's c051404 head is the historical preparation snapshot. It was superseded first by the owner's supplied 4368a78 head, then by the documentation-only continuation commits. Always re-fetch the live ref rather than treating a handoff snapshot as current.
+
+
+## 2026-11-03 cross-project branch-pointer reconciliation
+
+A newer RevDev continuity handoff, DevRelay-Missions/resume/revdev/NEW_CHAT_HANDOFF_REVDEV_POCKETCODE_2026-11-03.md, references a different PocketCode branch: pocketcode-execution-boundary-crosswalk-2026-11-01 with a handoff-reported 602-ahead snapshot. The owner-designated branch for this continuation remains pocketcode-ai-workflow-director-research-2026-10-28.
+
+Live comparison of the owner-designated branch during this continuation: **556 ahead / 0 behind** main 555840d8d83342513d9cd353d4d1522d46a5c82d. PR #2 and #3 remain OPEN / DRAFT / UNMERGED with unchanged heads eb8b7ea83cb0e8fe1880351276c485b761431791 and 0ddcc0bc97bac5d446aefedf3d71f99411bd841d.
+
+Do not silently switch branches, merge histories, copy branch-specific files, or treat their blob SHAs and status snapshots as interchangeable. Continue on the branch explicitly designated by the owner unless the owner clarifies otherwise. The 602-ahead figure belongs to the other handoff's earlier snapshot and was not reverified here.
