@@ -155,3 +155,38 @@ The iPhone/Safari LOC-01..24 cases refine the browser-local test conditions; the
 - No source/test implementation, PR #2/#3, default branch, provider, account, workflow, Actions, billing, deployment, merge, PC host or queue was changed or exercised.
 
 **Recommendation:** retain the 18 fixtures, apply the clarifications only after Claude and Gemini have independently reviewed them, then build a field dictionary and traceability matrix. Do not draft/freeze a shared schema yet.
+
+
+## 7. Independent Claude and Gemini review requests — 2026-11-03
+
+The next useful reviewer pass is a **fixture-by-fixture adversarial review of the existing 18-item catalogue**, not another broad architecture review. The catalogue remains PROVISIONAL / NOT OWNER-APPROVED / NOT A SCHEMA FREEZE. Preserve SCF-001..SCF-018 exactly. Do not draft or freeze a schema, modify canonical acceptance, or edit repository files.
+
+Exact current review inputs on branch `pocketcode-execution-boundary-crosswalk-2026-11-01`:
+- `AI_COLLAB/SHARED_CONTRACT_GOLDEN_FIXTURE_CATALOGUE_20261101.md`, blob `6b27791356ecf34d28e457030dd04a2b796cc6ca`.
+- `AI_COLLAB/SHARED_CONTRACT_READINESS_AND_STATE_DOMAIN_CROSSWALK_20261101.md`, blob `5d3fa6068f4979d404739cc5cedebd36452bea05`.
+- `AI_COLLAB/STATE_AND_IDENTITY_MAPPING_PREPARATION_20261101.md`, blob `783907a5a93443f440fbb11c88e55352341ffb32`.
+- This preliminary review, prior to this append, blob `cdb0e6b9fd15373eacb6ebf05950542d1662be7b`.
+
+### Assignment to Gemini: independent security and false-PASS red team
+
+> Review every existing fixture SCF-001 through SCF-018 in the exact catalogue and its companion state/identity crosswalk. Your job is to find realistic false-PASS, false-FAIL, authorization, identity, replay, evidence-provenance, stale-write, recovery, cleanup, publication, release, transfer/receipt, and projection errors.
+>
+> For every SCF ID, return PASS / QUALIFIED / GAP as a review verdict, the strongest counterexample or reason no material issue was found, the exact evidence that would distinguish the states, and the minimum additional assertion/precondition needed. Prioritize the most severe cross-fixture gaps; do not inflate small wording preferences into security defects.
+>
+> Explicitly challenge: whether UNKNOWN is preserved; whether absence is backed by a complete oracle; whether identity scope and content digest are sufficient; whether late external side effects survive takeover/cancellation; whether event/report/artifact identities are in separate namespaces; whether policy/authorization is bound to the actual operation; whether exact result publication is distinguished from release and client receipt; whether stale/out-of-order evidence can regress mutable projections.
+>
+> Keep SCF IDs unchanged. Any supplemental case labels must be clearly proposed and must not replace AEC, LOOP/CASE, COORD/DR, P8U/P0-D, AWC or RelayRef acceptance. Do not edit or commit. Do not claim tests ran unless they actually ran; no provider call, spend, deployment or Actions.
+
+### Assignment to Claude: architecture and implementation-feasibility challenge
+
+> Independently review the same exact 18-fixture catalogue plus the state-domain and identity mapping documents. Focus on whether each fixture has an implementable, observable acceptance oracle and whether the state/identity boundaries can be represented without flattening distinct lifecycle domains.
+>
+> For each SCF ID, return PASS / QUALIFIED / GAP, the responsible conceptual component(s), required durable facts and transition order, evidence source needed, and smallest regression-test shape. Challenge atomicity assumptions, retry/replay, fencing and compare-and-swap, branch/attempt correlation, multi-store publication, retention/garbage collection, cleanup ordering, receipt verification, and monotonic latest-pointer behavior.
+>
+> Identify cases where the same event/result can mean different things in PocketCode versus RevDev, and cases where shared wording would conceal a different trust/authorization boundary. Do not map an SCF fixture to a canonical native acceptance ID unless the exact semantics match; explain partial mappings.
+>
+> Keep all 18 IDs and current owner decisions unchanged. No schema freeze, code changes, test modifications, PR actions, provider workloads, spending, deployment or Actions. Do not report implementation claims without exact pinned source. Return a ranked evidence-based challenge, including an explicit list of issues that should remain unresolved pending owner decisions.
+
+### Consolidation rule
+
+ChatGPT will compare both reviews against the exact catalogue/crosswalk and current native acceptance sources. Preserve the preliminary review's clarifications unless source evidence disproves them. Any disagreement must be resolved by concrete counterexample and observable proof, not reviewer seniority. Only after both reviews should we update the existing catalogue/preliminary review. The shared fixture catalogue remains provisional; no shared schema or field mapping is frozen.
