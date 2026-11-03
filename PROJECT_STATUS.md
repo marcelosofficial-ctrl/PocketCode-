@@ -455,3 +455,18 @@ See Section 21.10 of `AI_COLLAB/OPENHANDS_EVENTLOG_HEAD_CRASH_WINDOW_FALSIFICATI
 A distinct asynchronous race remains: `Agent._astep()` releases the lock for LLM I/O; normal pause can persist PAUSED during that wait; the returned tool-call response may be dispatched without a PAUSED recheck. If the process is terminated during that newly dispatched tool before a result is persisted, startup recovery skips PAUSED (it repairs RUNNING only). Resume reaches active-branch pending-action dispatch. Source path confirmed; deterministic server restart integration and actual external duplicate side effect remain NOT RUN / UNKNOWN. `interrupt()` is distinct and must not be conflated with pause.
 
 This refines, rather than removes, the PAUSED recovery concern. No canonical PocketCode acceptance, owner decision or schema changed. No upstream test/source, provider workload, spend, PR #2/#3, main, deployment, PC host or queue action occurred.
+
+
+## 22. Phone-local execution comparator source refresh — 2026-11-03
+
+The existing fixed-task worksheet was refreshed with current public evidence for the strongest no-cost iPhone-local candidates:
+
+- **Pyodios:** public listing reports a free iOS 26+ app, v1.1.0, 42.9 MB. Its official FAQ documents local Python 3.14.2 via Pyodide 314.0.5, a project working directory, editor/REPL/notebooks, file import/export, CSV preview and JSON output. It also documents material limitations: approximately 300 MB runtime memory, 4 GB minimum device RAM, and no way to interrupt active Python execution. Its 120-second timeout does not terminate the running code; another run waits until the session is restarted. The session itself does not persist across launches, although project files/scripts do.
+- **Carnets:** free, on-device Jupyter notebook app; current App Store listing reports v1.9.2 and approximately 1.5 GB. It remains a useful alternative, but notebook workflow, directory permission, script execution and JSON export need a current hands-on check.
+- **Pyto:** optional third candidate; free download with in-app purchases. Current free-feature coverage is not sufficiently verified to make it the first comparison target.
+
+Sources and preflight are recorded in [the existing fixed-task worksheet](AI_COLLAB/PRODUCT_FIXED_TASK_COMPARISON_WORKSHEET_20261028.md). No app has been installed and the canonical CSV-to-JSON success/malformed-input task remains NOT RUN.
+
+**Product implication:** local Python execution on an iPhone is already available as a free workaround. PocketCode should not claim differentiation from code execution alone. The stronger hypothesis to test is whether it adds a trustworthy run-bound receipt, honest timeout/cancellation and side-effect semantics, source/input/output identity, explicit permissions/egress, and a portable handoff usable by any AI assistant. These are proposed differentiators, not demonstrated PocketCode capabilities or validated market demand.
+
+Execution location remains undecided. No provider/runtime/framework is selected. Budget remains $0. PR #2 and #3 remain open draft and untouched. No install, workload, test, provider call, Actions run, merge, deployment or spend occurred.
