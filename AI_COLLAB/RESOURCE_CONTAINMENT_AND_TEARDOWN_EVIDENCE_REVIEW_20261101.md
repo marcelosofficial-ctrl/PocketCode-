@@ -406,7 +406,7 @@ Reviewed the Linux service implementation in `slopus/happy-agent` at immutable c
 - `proxy/hosts.rs` blob `145f8762a9781cae3ac9178cb09ef0e7c47ab4f8`
 - `proxy/egress.rs` blob `7e797ad21086834dcd253bcebdadc357d03c992f`
 - `platform/service_bridge.rs` blob `25964e69011c487e5387125e640d9ddc708702b6`
-- Native service tests in `platform/supervisor/tests/services.rs` at the same commit.
+- Native service tests in `native/supervisor/tests/services.rs` at the same commit.
 
 ### 11.2 Controls that are genuinely present in source
 
