@@ -498,3 +498,20 @@ A newer RevDev continuity handoff, DevRelay-Missions/resume/revdev/NEW_CHAT_HAND
 Live comparison of the owner-designated branch during this continuation: **556 ahead / 0 behind** main 555840d8d83342513d9cd353d4d1522d46a5c82d. PR #2 and #3 remain OPEN / DRAFT / UNMERGED with unchanged heads eb8b7ea83cb0e8fe1880351276c485b761431791 and 0ddcc0bc97bac5d446aefedf3d71f99411bd841d.
 
 Do not silently switch branches, merge histories, copy branch-specific files, or treat their blob SHAs and status snapshots as interchangeable. Continue on the branch explicitly designated by the owner unless the owner clarifies otherwise. The 602-ahead figure belongs to the other handoff's earlier snapshot and was not reverified here.
+
+
+## 2026-11-03 static mobile prototype audit
+
+Read-only audit: MOBILE_RUNNER_PROTOTYPE_STATIC_UX_EVIDENCE_AUDIT_20261103.md, blob 4e5679dccd041bdae55a05b22e51a0d5bd668f58. Reviewed source prototypes/mobile-runner/index.html, blob e2c4ece041be95ce9a73bc60ff354702b21c33c2.
+
+Key findings:
+1. The prototype's sales CSV -> summary.txt example is not the frozen CSV-to-JSON comparison task. Align the example with the frozen fixture if this is the task-comparison demo, or label it as a separate illustrative flow.
+2. The copied report currently lacks separate stdout/stderr capture state and explicit artifact state. The failure example hides the file card but the copied report does not explicitly state artifact absence.
+3. The CSV panel is fixed sample text, not a user file-import flow.
+4. Timeout/cancellation controls and state distinctions are absent. Do not imply the demo can stop code.
+5. Tab/panel ARIA relationships and keyboard navigation are incomplete; the existing checker only covers source heuristics.
+6. Clipboard behavior remains browser-dependent and unverified.
+
+Good existing safeguards to preserve: visible simulated-execution banner; example buttons do not claim to run; both copied artifacts state no code was executed; debugging prompt includes editor code, sample CSV and report; README warns against putting private data in the public demo.
+
+Recommended next design order: canonical task alignment; truthful compact receipt with execution/disposition/streams/artifact states; distinguish sample from actual input; reserve timeout/cancellation UI; complete accessibility and later test on actual browsers. This is a design audit only. No source/tests, browser/device interaction, clipboard test, accessibility audit, execution, installation, Actions, deployment, provider workload or spend occurred. Prototype remains simulated; product-path comparison and differentiator remain NOT RUN / UNVALIDATED.
