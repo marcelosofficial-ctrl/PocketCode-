@@ -446,3 +446,12 @@ The PAUSED concern is stronger than a startup-recovery omission. Pinned source s
 ### Continuity branch status after OpenHands audit updates — 2026-11-02
 
 GitHub compare recheck: pocketcode-execution-boundary-crosswalk-2026-11-01 is 580 commits ahead of main and 0 behind; merge base/main is 555840d8d83342513d9cd353d4d1522d46a5c82d. PR #2 and PR #3 were re-read and both remain OPEN. They were not modified. The latest commits on the working branch are documentation-only corrections to the OpenHands crash-window plan, PROJECT_STATUS.md and new-chat handoff. No source/test/schema/acceptance change, merge, deployment, Actions run, provider workload, spend or host/queue operation.
+
+
+### OpenHands PAUSED lifecycle clarification — 2026-11-03
+
+See Section 21.10 of `AI_COLLAB/OPENHANDS_EVENTLOG_HEAD_CRASH_WINDOW_FALSIFICATION_PLAN_20261102.md`. Correction to the preceding PAUSED note: the existing `test_pause_while_running_continuous_actions` is synchronous (`conversation.run()`) and the state lock spans the tool step, so ordinary pause waits for the current tool result before persisting PAUSED. It does not prove PAUSED is persisted while that tool remains in flight.
+
+A distinct asynchronous race remains: `Agent._astep()` releases the lock for LLM I/O; normal pause can persist PAUSED during that wait; the returned tool-call response may be dispatched without a PAUSED recheck. If the process is terminated during that newly dispatched tool before a result is persisted, startup recovery skips PAUSED (it repairs RUNNING only). Resume reaches active-branch pending-action dispatch. Source path confirmed; deterministic server restart integration and actual external duplicate side effect remain NOT RUN / UNKNOWN. `interrupt()` is distinct and must not be conflated with pause.
+
+This refines, rather than removes, the PAUSED recovery concern. No canonical PocketCode acceptance, owner decision or schema changed. No upstream test/source, provider workload, spend, PR #2/#3, main, deployment, PC host or queue action occurred.
