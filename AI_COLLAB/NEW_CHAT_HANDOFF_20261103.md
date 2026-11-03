@@ -531,3 +531,14 @@ No PR/source/test/Actions/provider/account/workload/spend/host/queue/runtime/ins
 ## 2026-11-03 branch-count snapshot supersession
 
 The 561-ahead PocketCode figure in the preceding addendum is superseded. The latest comparison immediately before this documentation update reported this owner-designated branch at **563 ahead / 0 behind** main, merge base \`555840d8d83342513d9cd353d4d1522d46a5c82d\`. This is a historical snapshot taken before the present continuity commits, not a live count after them. Re-fetch the branch comparison before making any decision. PR #2/#3 remain open, draft, unmerged, at their unchanged protected heads.
+
+
+## 2026-11-03 mobile prototype next-pass design
+
+Read [MOBILE_RUNNER_TASK_ALIGNED_RECEIPT_SPEC_20261103.md](MOBILE_RUNNER_TASK_ALIGNED_RECEIPT_SPEC_20261103.md), blob \`2b2b05bd0efbd339cdef2dff14cd404bc25f168b\`, before any future mobile-prototype source work.
+
+The spec resolves the next design pass: align the example to the frozen \`main.py\` + \`items.csv\` CSV-to-JSON task; show the expected \`summary.json\`; include the malformed-header case; and present one complete simulated receipt that distinguishes expected fixture values from actual observations. In particular, remove fabricated sample durations, do not imply a runtime was selected, distinguish sample stdout/stderr expectations from collected streams, and explicitly show artifact/cleanup/release states.
+
+No fake import, run, cancellation, or termination controls should be added. A simulated UI cannot prove LOOP-01 file intake, LOOP-03/04 execution, LOOP-10 file creation, LOOP-12 isolation, or real clipboard/device behavior. Existing LOOP-01..14 and CASE-01..16 remain unchanged.
+
+No prototype source or tests were changed. No browser/device tests, file import, clipboard test, execution, installation, provider workload, Actions, account, spend, host/queue operation, PR mutation, merge or deployment occurred. The fixed-task product-path comparison and paired AI correction experiment remain NOT RUN; report differentiator remains UNVALIDATED.
