@@ -608,3 +608,16 @@ PocketCode's differentiation should be the provider-neutral **task/evidence/reco
 The frozen CSV-to-JSON task remains a workflow benchmark, not proof of runtime advantage or sandbox security. First controlled comparison should use a-Shell plus one current native IDE (Python Code Editor & IDE if available in the owner's Belgian storefront, otherwise Pyto free tier), optionally Coilbook if store availability is confirmed. Do not install/run anything without explicit owner/device authorization. Mark capabilities advertised-but-unverified, unknown or verified; do not treat silence in marketing as absence.
 
 No apps were installed, no tasks run, and no canonical LOOP/CASE meanings changed. Runtime/provider selection remains NONE; budget remains $0; fixed-task product comparison remains NOT RUN. Full rationale, source links, benchmark dimensions and go/no-go criteria are in the competitive baseline.
+
+
+## 13. Mobile local-Python comparator refresh — 2026-11-03
+
+Read `AI_COLLAB/MOBILE_LOCAL_PYTHON_COMPARATOR_REFRESH_20261103.md`, blob `2b2b05bd0efbd339cdef2dff14cd404bc25f168b`.
+
+Public-source desk research adds iOS comparators Pyodios, Carnets and a-Shell, plus Android Pydroid 3 and Termux. The fixed CSV-to-JSON task is not differentiated by basic on-device Python execution, editing, terminal access or file import/export alone. Do not build a second general-purpose mobile Python IDE without evidence of an unmet need.
+
+The stronger product hypothesis is the workflow around execution: exact run/attempt/input identity, authoritative lifecycle evidence, truthful timeout/cancellation/unknown states, artifact integrity, cleanup/recovery provenance and a portable receipt that measurably improves cross-assistant correction. These remain target capabilities, not implemented or validated PocketCode features.
+
+The comparator refresh is public-source research only. No app was installed, no task/device/browser test was run, and no runtime was selected. The frozen task product-path comparison and paired AI correction experiment remain NOT RUN. Keep the manual copy/paste control; compare identical source/input/observed facts in every condition. Do not award simulated prototype screens execution or correctness points.
+
+The latest primary handoff remains this AI Workflow Director branch. The separate execution-boundary-crosswalk branch and its OpenHands research remain separate; do not copy or merge artifacts between branches without explicit authorization.
