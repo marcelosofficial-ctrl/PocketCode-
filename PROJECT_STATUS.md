@@ -237,3 +237,18 @@ Research addendum: [PYODIDE_ATTENUATION_EXECUTION_BOUNDARY_AND_LIFECYCLE_MATRIX_
 The owner-designated PocketCode research branch for this continuation is pocketcode-ai-workflow-director-research-2026-10-28. Its live comparison was 556 ahead / 0 behind main 555840d8d83342513d9cd353d4d1522d46a5c82d. PR #2 and #3 remain OPEN / DRAFT / UNMERGED at their unchanged protected heads eb8b7ea83cb0e8fe1880351276c485b761431791 and 0ddcc0bc97bac5d446aefedf3d71f99411bd841d.
 
 A separate RevDev handoff references pocketcode-execution-boundary-crosswalk-2026-11-01 at a previously reported 602-ahead snapshot. This is a different branch. Do not silently switch, merge, copy branch-specific files or conflate blob IDs. Continue on the branch explicitly designated by the owner unless clarified.
+
+
+## 2026-11-03 static mobile-prototype UX/evidence audit
+
+Read-only review: [MOBILE_RUNNER_PROTOTYPE_STATIC_UX_EVIDENCE_AUDIT_20261103.md](AI_COLLAB/MOBILE_RUNNER_PROTOTYPE_STATIC_UX_EVIDENCE_AUDIT_20261103.md), blob 4e5679dccd041bdae55a05b22e51a0d5bd668f58.
+
+Reviewed prototype source blob e2c4ece041be95ce9a73bc60ff354702b21c33c2. The current page is an honest simulated UX sketch, but it is not yet a representative demonstration of the primary product hypothesis:
+- the sample sales-CSV-to-summary task differs from the frozen CSV-to-JSON comparison task;
+- the copied report omits separate stdout/stderr capture states and explicit artifact state, and hides the sample failure artifact card without stating artifact status in the copied report;
+- the CSV panel is hard-coded sample text, not a user file-import flow;
+- timeout/cancellation controls and their distinct states are absent;
+- tab/panel ARIA relationships and keyboard navigation are incomplete;
+- clipboard behavior remains browser-dependent and unverified.
+
+Recommendation: align the demo task with the frozen fixture (or clearly label it as a separate example), make the copied receipt truthful about execution and artifact state, and then add actual input-intake and timeout/cancellation UI only when their behavior can be implemented and tested. No source/test changes or browser/device tests were made. The prototype remains simulated; execution and differentiator remain unvalidated.
