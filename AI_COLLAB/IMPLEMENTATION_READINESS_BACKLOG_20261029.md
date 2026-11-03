@@ -244,3 +244,34 @@ The WP-08 evidence scope now includes PC-EXT-08 (provider API generation and res
 - `cgroup.events: populated=0` is scoped to the observed subtree and observation time. Prevent workload-controlled cgroup migration out of the subtree before treating it as process-tree emptiness evidence.
 
 **Status remains BLOCKED / SPECIFIED ONLY / NOT RUN.** No provider selection, budget change, account, workload, host test or implementation is approved.
+
+
+## WP-09 — Browser-local execution boundary proof (Pyodide / iOS Safari)
+
+**Status:** RESEARCH SPECIFIED; NOT IMPLEMENTED; NOT RUN. Candidate only. No runtime or framework selected.
+
+**Purpose:** Determine whether browser-local Python can safely support the narrow fixed-task workflow without being mistaken for a hostile-code sandbox. This work package is separate from WP-08 hosted/provider resource containment. A browser worker is not a Linux process/cgroup boundary and cannot inherit WP-08's conclusions.
+
+**Design candidate:** authenticated PocketCode app origin → sandboxed cross-origin iframe on a separate static-only execution origin → dedicated module worker running pinned Pyodide core. The execution origin must have no session cookies, credentials, private APIs, server functions, user-specific data or shared parent-domain cookie scope. The app sends only bounded inputs over a run-scoped MessageChannel. All worker output is untrusted and bounded.
+
+**Required work:**
+- Pin Pyodide release, core asset set, lockfile and all runtime digests. Do not use moving CDN/dev assets or allow arbitrary package installation.
+- Prototype exact iframe and worker response CSP headers. The worker needs its own CSP response header. Allow only same-origin immutable runtime assets through connect-src; the execution origin must be static-only. Do not use CORS as an egress boundary.
+- Test a separate registrable execution domain versus alternative opaque/per-run origin designs. Confirm cookie isolation, same-origin API absence, frame restrictions, worker creation, asset loading and iOS/PWA compatibility.
+- Test Pyodide 314.0.7 jsglobals with a frozen null-prototype empty object. Treat this as a capability-minimization hypothesis only; prove that ordinary Python cannot reach worker globals, fetch, postMessage, IndexedDB, Cache Storage, OPFS, navigator, location, or privileged wrapper objects through js, pyodide.http, pyodide.ffi or any custom module.
+- Use a fresh in-memory filesystem per run. Do not mount IDBFS/OPFS or register a service worker for the first proof. Establish whether browser caches and origin storage can create cross-run state.
+- Specify a versioned message protocol bound to run ID, attempt ID, nonce and sequence. Limit message count, individual payload bytes, cumulative output and event rate. Reject stale, duplicate, malformed and forged terminal messages.
+- Test external fetch/XHR/WebSocket/EventSource, same-origin API access, app-origin access, nested workers, remote module imports, storage writes, message flooding, runtime tampering, iframe navigation and stale worker messages.
+- Test worker cooperative interrupt and hard termination separately. Record stop request, termination invocation, terminal observation, output completeness, and resource recovery as separate facts. A lost page or missing message is UNKNOWN, not success.
+- Measure input, output, runtime payload, cold/warm startup, memory pressure, CPU behavior and repeat-run stability. Do not claim hard per-run memory or CPU limits from browser behavior.
+- Repeat the security/cancellation subset on exact supported iOS Safari and installed PWA versions. Keep device/browser/PWA results separate.
+
+**Canonical traceability:** browser proof informs LOOP-01, LOOP-02, LOOP-03, LOOP-05, LOOP-07, LOOP-08, LOOP-09, LOOP-10, LOOP-11 and LOOP-12, plus CASE-01..10, CASE-14 and CASE-15 where applicable. This is not a new acceptance mapping approval. BR-01..BR-12 are research test labels only and must not be promoted to canonical IDs or remapped without a formal crosswalk.
+
+**Hard boundary:** if app credentials, private APIs, arbitrary Internet egress, unbounded message paths, persistent cross-run state, or false-success lifecycle paths remain reachable, the browser path may be considered only a limited local convenience for trusted/small tasks. It must not be described as a verified hostile-code sandbox. Browser worker termination and browser CSP do not establish a server-side trusted deadline, OS-enforced CPU quota, or hard memory ceiling.
+
+**Dependencies:** static-only execution origin design; pinned Pyodide core asset set; exact supported iOS/Safari/PWA device; controlled external request sink; no provider/account/billing requirement. Device testing is BLOCKED until owner has device/test access and explicit test authorization.
+
+**Exit evidence:** exact origin and response headers; cookie/API inventory; pinned runtime digests; observed JS capability tests; external request sink evidence; bounded message and output evidence; correct run/attempt rejection; cancellation/lifecycle evidence; repeat-run/storage evidence; exact device/browser versions; explicit residual limitations. A source review or mocked CSP assertion is not sufficient.
+
+**Stop rules:** no product implementation, package installation, account creation, provider workload, budget change, Actions run, deployment, PR change or canonical acceptance change is authorized by this work package. Keep all results DOCUMENTED/SOURCE-COVERED/OBSERVED/VERIFIED according to the existing evidence labels. Under current phone-only constraints, design/research can proceed but physical iOS proof remains NOT RUN.
