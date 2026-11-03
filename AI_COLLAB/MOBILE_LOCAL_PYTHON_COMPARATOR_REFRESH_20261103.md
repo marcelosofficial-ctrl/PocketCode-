@@ -92,13 +92,14 @@ Use the exact frozen `main.py` and `items.csv` bytes and the same success and ma
 
 ### Suggested comparator set
 
-1. iOS local IDE: Pyodios first; Carnets as a second iOS local-Python control if time permits.
-2. iOS terminal: a-Shell as a power-user control, not a novice baseline.
-3. Android local IDE: Pydroid 3 first.
-4. Android terminal: Termux as a power-user control.
-5. Browser-local Pyodide: only if a browser/PWA path remains strategically relevant; test iOS file import/export, page backgrounding, reload and truthful timeout recovery.
-6. Manual copy/paste to an AI assistant: no PocketCode execution; baseline for report comprehension and correction.
-7. PocketCode prototype: simulated UI only; do not award execution, correctness, lifecycle, or artifact points.
+1. **iOS $0 terminal baseline:** a-Shell first, because the owner-designated iOS competitive baseline already identifies it as the strongest simple offline terminal control.
+2. **iOS native embedded-Python IDE:** Python Code Editor & IDE if it is available on the owner's Belgian storefront; otherwise Pyto's free tier. Coilbook is optional if its App Store availability is confirmed. These are the native-app controls recommended by the existing iOS competitive baseline.
+3. **iOS Pyodide lifecycle contrast:** Pyodios is a high-value additional comparator, especially for its documented non-interruptible run/120-second UI-timeout behavior. It is not a substitute for the native-interpreter comparison because it uses Pyodide/WebAssembly. Carnets is a secondary notebook-oriented control if that workflow matters.
+4. **Android local IDE:** Pydroid 3 first.
+5. **Android terminal:** Termux as a power-user control.
+6. **Browser-local Pyodide:** only if a browser/PWA path remains strategically relevant; test iOS file import/export, page backgrounding, reload and truthful timeout recovery.
+7. **Manual copy/paste to an AI assistant:** no PocketCode execution; baseline for report comprehension and correction.
+8. **PocketCode prototype:** simulated UI only; do not award execution, correctness, lifecycle, or artifact points.
 
 Do not install or run these apps as part of desk research. Any hands-on test requires separate owner authorization and target-device availability.
 
