@@ -612,7 +612,7 @@ No apps were installed, no tasks run, and no canonical LOOP/CASE meanings change
 
 ## 13. Mobile local-Python comparator refresh — 2026-11-03
 
-Read `AI_COLLAB/MOBILE_LOCAL_PYTHON_COMPARATOR_REFRESH_20261103.md`, blob `0b9dc92784ed3e71d6001edea558b11a8e1461a8`.
+Read `AI_COLLAB/MOBILE_LOCAL_PYTHON_COMPARATOR_REFRESH_20261103.md`, blob `f41e0706fe5590a5f8607514283030392cfe2fc9`.
 
 Public-source desk research adds iOS comparators Pyodios, Carnets and a-Shell, plus Android Pydroid 3 and Termux. The fixed CSV-to-JSON task is not differentiated by basic on-device Python execution, editing, terminal access or file import/export alone. Do not build a second general-purpose mobile Python IDE without evidence of an unmet need.
 
