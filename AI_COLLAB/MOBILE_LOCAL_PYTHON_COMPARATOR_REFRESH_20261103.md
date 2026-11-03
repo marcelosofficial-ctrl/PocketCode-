@@ -7,7 +7,7 @@
 
 ## 1. Executive verdict
 
-The local-mobile Python landscape is stronger than the current comparison table's shortlist suggests. There are mature local Python tools on both iOS and Android:
+The local-mobile Python landscape is stronger than the current comparison table's shortlist suggests. This document supplements `AI_COLLAB/IOS_PYTHON_RUNNER_COMPETITIVE_BASELINE_20261103.md` (blob `81d155e4d0ccdacc9122e05e23db01d5dd5c3024`), which already covers Pyto, Pythonista, Coilbook and Python Code Editor & IDE in greater iOS depth. This refresh adds Android's direct local-Python IDE baseline and consolidates current iOS local alternatives. There are mature local Python tools on both iOS and Android:
 
 - iOS: Pyodios, Carnets, and a-Shell.
 - Android: Pydroid 3, with Termux as a command-line/power-user comparison path.
