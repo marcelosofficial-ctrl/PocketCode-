@@ -595,3 +595,48 @@ Required regression cases:
 - Confirm a fresh run does not create duplicate ActionEvents or duplicate observation-like results for the same tool_call_id.
 
 No source/tests/workload changed or run. This is source-derived and existing-test-supported, not runtime-tested.
+
+
+### 21.10 PAUSED correction: distinguish synchronous tool execution from the asynchronous LLM-I/O window — 2026-11-03
+
+This section supersedes the specific claim in Section 21.9 that the existing pause test proves ordinary pause can persist PAUSED while an already-running blocking tool remains in flight. It does not change the separate conclusion that startup recovery skips persisted PAUSED conversations or that a reachable async pause race requires a regression test.
+
+#### Existing pause test, correctly interpreted
+
+Pinned test:
+
+- `tests/sdk/conversation/local/test_conversation_pause_functionality.py`, blob `66c93f3cd28dfe3e581e3842073ea55df4d4fb33`
+- `TestConversationPauseFunctionality.test_pause_while_running_continuous_actions`, lines 331–408.
+
+The test launches **synchronous** `conversation.run()` on a worker thread, waits until its blocking tool executor signals entry, then calls `conversation.pause()`. The synchronous run holds the conversation state lock over the step. The pause caller must acquire that same lock, so it waits until the tool step returns and the result event is emitted. Only then does pause persist PAUSED. The test proves that a pause request during a tool step stops the next iteration; it does **not** prove the persisted sequence “PAUSED while the current tool is still executing.”
+
+The pinned `LocalConversation.pause()` docstring also says pause takes effect between agent steps and that a call during LLM completion waits until the current LLM call completes. Its implementation acquires the conversation state lock before setting PAUSED and emitting PauseEvent (`local_conversation.py:2807–2835`).
+
+#### A distinct asynchronous race remains source-supported
+
+The async agent path deliberately releases the state lock around only the LLM network wait:
+
+- `openhands-sdk/openhands/sdk/agent/agent.py`, `Agent._astep()`, pinned blob `bb59bf7ae795029f166a4e8ee21136bb5117f8b6`, lines 1030–1042.
+- After the await returns, it classifies the model response and dispatches TOOL_CALLS through `_ahandle_tool_calls()`; the inspected response path contains no execution-status recheck before dispatch (`agent.py` approximately lines 1120–1145; `response_dispatch.py` lines 203–250).
+- `LocalConversation.pause()` can therefore acquire the temporarily released lock, persist PAUSED and append PauseEvent while the LLM call is still outstanding.
+- When the LLM returns a tool-call response, the async agent can continue through action-event creation and tool dispatch while the state is already PAUSED.
+- If the process is terminated while that newly dispatched tool is executing and before its result is persisted, the restored state can be PAUSED with an unmatched ActionEvent.
+- Startup recovery in `event_service.py:1424–1436` is gated on RUNNING and skips this PAUSED state.
+- On explicit resume, `LocalConversation.arun()` makes the resumable state RUNNING, and the agent's pending-action path checks unmatched actions on the active branch before making a new LLM request. The action can therefore be dispatched again.
+
+This is a narrower, asynchronous pause-during-LLM / post-response-dispatch race. It is separate from the ordinary synchronous pause-during-tool test and from `interrupt()`, which cancels the tracked async run and has a synthetic orphan-error path.
+
+#### Updated verdict and test requirement
+
+| Claim | Reconciled verdict |
+|---|---|
+| Ordinary synchronous pause persists PAUSED while a blocking tool is still running | **FALSIFIED by the lock ordering for this test path.** The pause waits for the current step/result. |
+| Pause can persist PAUSED while async LLM I/O is outstanding | **SOURCE-CONFIRMED reachable race.** The lock is explicitly released for the LLM wait. |
+| A tool-call response may be dispatched after PAUSED was persisted | **SOURCE-CONFIRMED path; deterministic integration test NOT RUN.** No status check was found before tool dispatch. |
+| Startup recovery skips PAUSED | **SOURCE-CONFIRMED.** Recovery only handles RUNNING. |
+| Resume can execute an unmatched active-branch action | **SOURCE-CONFIRMED dispatch path.** Full server restore/restart and side-effect sequence NOT RUN. |
+| A duplicate external side effect occurred | **UNKNOWN / NOT ESTABLISHED.** Missing observation does not prove whether the first external effect happened. |
+
+Required deterministic regression (not executed): block a scripted asynchronous LLM request; call normal pause from another thread and verify durable PAUSED; release a tool-call response; assert whether the tool starts after PauseEvent/PAUSED; kill the server while the local blocking tool is active; restore via real EventService; assert startup's status decision, active branch and pending action; resume and record whether the action dispatches again. Keep separate controls for synchronous pause during an already-running tool and interrupt cancellation. Record external side-effect outcomes independently.
+
+No OpenHands source or test was run or modified. No provider workload or host action occurred.
