@@ -387,3 +387,81 @@ No provider selection, API call, account, workload, local host test, implementat
 ### RES-10 implementation evidence precision
 
 The Firecracker API schema defines the serial rate limiter as optional. When configured, over-rate guest writes are silently dropped and counted in `uart.rate_limiter_dropped_bytes`; when absent, serial output is not rate-limited. Therefore a test must verify the effective configuration and read the metric, not infer rate limiting from the existence of Firecracker. The production host guide separately requires bounded handling of VMM stdout and guest-influenced log files. Sources: https://github.com/firecracker-microvm/firecracker/blob/main/src/firecracker/swagger/firecracker.yaml ; https://github.com/firecracker-microvm/firecracker/blob/main/docs/prod-host-setup.md.
+
+
+## 11. Pinned Linux strict-service source audit — 2026-11-03
+
+**Evidence class:** PINNED SOURCE INSPECTION and upstream test-source review only. No compile, test execution, host setup, device test, workflow run, provider call, or workload occurred. This section does not select or adopt Happy Agent, change PocketCode's contract, or amend canonical acceptance.
+
+### 11.1 Scope and source pins
+
+Reviewed the Linux service implementation in `slopus/happy-agent` at immutable commit `fb9f68ff10333068b87436bd1d531d6d353f5c93`, including:
+
+- `platform/service_filesystem.rs` blob `ec7a980b3e757c255b5678efc21d1f97df5c82d2`
+- `platform/service_cgroup.rs` blob `c7a831261f5fcacd0f38263f01ef7dc00439f6b9`
+- `service_policy.rs` blob `6fce0adcb5c9fe2605bd638e1e9e665bf24bdc86`
+- `platform/linux.rs` blob `65e0df6e5c603d9a288fa52a4ba5611191df251a`
+- `exec.rs` blob `f4f98f482f791b9f807ec7504a24689e38a62fe4`
+- `policy.rs` blob `262cb36881b719b9198d0c616142af706e053ff6`
+- `proxy/hosts.rs` blob `145f8762a9781cae3ac9178cb09ef0e7c47ab4f8`
+- `proxy/egress.rs` blob `7e797ad21086834dcd253bcebdadc357d03c992f`
+- `platform/service_bridge.rs` blob `25964e69011c487e5387125e640d9ddc708702b6`
+- Native service tests in `platform/supervisor/tests/services.rs` at the same commit.
+
+### 11.2 Controls that are genuinely present in source
+
+1. **Private filesystem construction.** The service starts from an empty, private, daemon-owned root. It mounts a bounded tmpfs root, a fixed read-only runtime, private home/temp areas, and only explicitly selected workspace inputs. It does not expose the normal host home, general host `/etc`, `/var`, or daemon state through this service root.
+2. **Pinned read-only input mounts.** Input sources are opened with `openat2` using no-symlink/no-magic-link resolution, then mounted through the held file descriptor. This reduces path-swap and symlink redirection races. Input directories are recursively mounted read-only and marked `NODEV`/ `NOSUID`.
+3. **Clean execution environment.** The service uses an explicit environment allowlist: `PATH`, `HOME`, `TMPDIR`, `TERM`, `NO_COLOR`, `PAGER`, and `LANG`, plus explicit supervisor overrides. It does not merge the supervisor's ambient credentials into the service child.
+4. **Kernel memory and process controls.** A unique cgroup v2 is created per execution. The service sets `memory.max`, `memory.swap.max=0`, `memory.oom.group=1`, and `pids.max`; the workload is moved into it before `execve`. Cleanup requires `cgroup.events` to report `populated 0` before the group is removed.
+5. **Namespace and syscall restrictions.** The workload enters user, mount, PID, IPC, UTS and isolated network namespaces. Capabilities are dropped and privilege transitions locked. The service seccomp filter blocks selected namespace/mount operations, `io_uring`, Unix-domain sockets/socketpairs, and other escape-relevant operations. This is a targeted deny filter, not a demonstrated default-deny syscall allowlist.
+6. **Network-off is structurally fail-closed.** Service policy validation requires an empty outbound list, `egress=false`, and no outgoing proxy when network access is disabled. When egress is enabled, service policy requires an outbound list and proxy. The workload has no direct route to the host network.
+7. **DNS check/connect consistency.** For proxy egress, the requested hostname and exact port are checked, name resolution is performed once, and the filtered addresses from that same resolution are the addresses passed to TCP connect. This avoids a second-resolution DNS rebinding gap.
+8. **Lifecycle evidence.** The controller identity is checked during startup; native process identities include PID plus process start time; startup readiness is committed before the workload is admitted; and the parent waits for namespace-init exit, stops the egress process, and checks cgroup emptiness. The bridge has a private directory, authenticated token, bounded connection count, and connection timeouts.
+
+The upstream native test source includes cases for private environment/filesystem, read-only selected inputs, detached descendants, memory and PID limits, host Unix-socket denial, symlinked input rejection, authenticated bridge operation, abrupt supervisor death, and the distinction between application exit 125 and native startup failure. Many of these tests are marked ignored unless delegated cgroups are available; their inclusion in source or a release script is not evidence that CI or a real kernel run passed.
+
+### 11.3 Gaps against PocketCode's one-shot execution contract
+
+| Gap | Source-level finding | PocketCode consequence |
+|---|---|---|
+| No wall-clock deadline | Service policy has no deadline field and the Linux supervisor waits for namespace init without an internal absolute execution deadline. | **CASE-04 is not satisfied.** A non-yielding or blocked workload can persist until an external controller intervenes. A client timeout is not a substitute. |
+| No CPU quota or CPU-time budget | The service cgroup requires memory and pids controllers only. It does not configure `cpu.max` or a CPU-time budget. | Memory/PID containment must not be described as full resource containment. CPU bandwidth, CPU time and wall time remain separate controls. |
+| No complete storage/file budget | The root, home, temp and scratch mounts use tmpfs size limits, but there is no explicit total workspace byte/file-count contract, per-file output cap, or independent disk quota in this service policy. | The existing PocketCode input/output caps and artifact rules still need independent enforcement. A tmpfs size option is not proof of all file-count, file-size and output-collector requirements. |
+| Special input files are not comprehensively excluded | The source opens selected paths and contains an explicit comment that named pipes in selected inputs are accepted in the first version. | FIFO/device/socket/special-file inputs need a defined policy. A FIFO can block a task, reinforcing the need for an enforced deadline and regular-file-only input validation. |
+| Inputs are live mounts, not immutable snapshots | The mount pins the selected source inode/path against redirection, but does not copy/hash an immutable content snapshot. | Host-side edits to a selected input tree may be visible during execution. PocketCode should stage bounded regular-file snapshots and bind their hashes to the run, or explicitly accept live-input semantics. |
+| Scratch overlap is under-specified | Input destination mounts are checked for overlap. Scratch paths are normalized, but there is no equivalent complete duplicate/ancestor/descendant overlap validation across scratch entries and input destinations. | Reject ambiguous overlapping mounts or define and test deterministic overlay semantics before reuse. |
+| Egress-on address filter has gaps | The service checks exact hostname/port and blocks many private/special ranges, but its hand-maintained IP filter is not a complete positive global-unicast policy. It omits IANA special ranges including IPv4 `192.88.99.2/32` and IPv6 documentation `3fff::/20`. | Keep egress disabled for the first proof. Any later egress broker needs an up-to-date positive destination policy and tests for all IANA special-purpose ranges, not only RFC1918/private addresses. |
+| Hostname approval is not full application-host binding | The proxy authorizes the TCP destination hostname/port, then relays a byte tunnel. It does not establish that TLS SNI or HTTP Host inside that tunnel matches the approved hostname. | Do not claim strict domain-level egress enforcement from a TCP connect allowlist alone. Shared CDN/IP routing and domain-fronting behavior require L7 enforcement or a narrower broker. |
+| Egress child has a parent-death race | The Linux egress child calls `PR_SET_PDEATHSIG` but does not check the return value or re-check its expected parent PID before serving. Linux documents a fork-to-`prctl` race where the parent can exit before the setting takes effect. | Fix with checked setup plus parent-identity recheck and an adversarial parent-death regression test before treating proxy teardown as reliable. |
+| End-to-end output caps are not established by this service layer | The inspected service supervisor does not itself define PocketCode's stdout/stderr collector budget or report truncation contract. | The caller/compute layer must prove streaming byte caps before unbounded buffering, overflow disposition, collector survival and truthful truncation. Display clipping alone does not qualify. |
+| Platform boundary is Linux-specific | This strict service requires Linux namespace/cgroup facilities and delegated cgroup v2 controllers. The service path is explicitly unavailable in the macOS adapter and is not a phone-local iOS/Android runtime. | This is a server/host-side reference pattern only. It does not solve PocketCode's on-phone runtime or Windows execution boundary. |
+
+The IP-range findings are independently checked against the IANA special-purpose registries: `192.88.99.2/32` is not globally reachable in the [IPv4 registry](https://www.iana.org/assignments/iana-ipv4-special-registry/iana-ipv4-special-registry.xhtml), and `3fff::/20` is documentation space and not globally reachable in the [IPv6 registry](https://www.iana.org/assignments/iana-ipv6-special-registry/iana-ipv6-special-registry.xhtml). The Linux parent-death behavior is documented in [PR_SET_PDEATHSIG](https://man7.org/linux/man-pages/man2/PR_SET_PDEATHSIG.2const.html).
+
+### 11.4 Mapping to existing PocketCode acceptance
+
+- **LOOP-12 / CASE-15:** the Linux service is a useful source-level example for private filesystem, environment allowlisting, process/resource containment and default-deny networking. It is not PocketCode evidence and is not verified against our cases. Egress-off configuration is the correct first-proof posture.
+- **CASE-04:** blocked by the missing trusted wall-clock deadline and confirmed termination path.
+- **CASE-07 / LOOP-07:** output collector byte/time budgets and report truncation semantics are not established by this service source.
+- **CASE-08 / CASE-14:** normalized paths and selected input mounts are useful patterns, but special-file rejection, immutable input staging, bounded output files and release-time authorization remain separate requirements.
+- **CASE-13:** a unique execution ID does not prove durable coordinator idempotency, lost-ack recovery or exactly-once reservation.
+- **CASE-16:** per-execution cgroups support isolation by identity, but concurrent report/output isolation and cross-run correctness are not proven by these source tests.
+- **RES/TDN:** use this source as a test-design reference for resource enforcement and cleanup reconciliation. Keep RES/TDN supplementary; no canonical ID or lifecycle status is added or remapped.
+
+### 11.5 Adaptation sequence for PocketCode
+
+1. **Keep the first proof narrow:** fixed Python entrypoint, pinned runtime, no general shell, no arbitrary package install, no user-selected privilege, no provider credentials, and egress fully disabled. Continue comparing local/browser and other paths on the same frozen task; do not select Pyodide or a hosted runtime from this source audit.
+2. **Make it a real bounded job:** trusted monotonic wall deadline recorded before dispatch; CPU bandwidth cap and, where required, CPU-time budget; hard memory/swap and process limits; bounded workspace/storage/file count/per-file/output sizes; independent worker/collector limits. Each limit needs effective-configuration evidence.
+3. **Make inputs deterministic:** accept individually selected regular files only; reject symlinks, FIFOs, devices, sockets and unsupported file types; enforce per-file/aggregate byte and count caps; stage immutable snapshots and bind content digests to the attempt. Reject overlapping input/scratch mount destinations.
+4. **Make timeout/cleanup authoritative:** the watchdog must live outside the workload kill domain; use a race-safe whole-cgroup termination mechanism where supported; capture exit/signal, limit counters, deadline cause and process-tree state before resource removal; report cleanup separately and keep UNKNOWN when causation or termination cannot be proved.
+5. **Keep egress off:** if a later requirement justifies network access, introduce a separate broker with exact hostname+port policy, positive IANA global-unicast validation, DNS/connect budgets, L7 destination binding, no ambient proxy variables, and explicit tests for rebinding, special ranges, tunnels and domain fronting.
+6. **Prove each layer in order:** pure contract tests; fake-adapter ordering/retry tests; durable reservation and crash-recovery tests; real isolated Linux kernel tests; then provider-specific tests only after owner-approved zero-cost/consent gates. Physical iOS/Android workflow tests remain separate and cannot be inferred from Linux results.
+
+### 11.6 Decision
+
+**Retain Happy Agent Linux strict-service as the strongest inspected Linux containment reference, not as a PocketCode dependency, provider, or approved architecture.** Reuse its patterns for clean environments, private filesystems, scoped cgroups, pinned input mounts, egress brokering and reconciliation. Do not copy the service unchanged: the missing absolute deadline and CPU limit alone prevent it from satisfying PocketCode's bounded-run requirement. Fix the identified lifecycle, input and egress gaps before any future reuse assessment.
+
+The separate Happy Agent Windows adapter remains unsuitable as-is for untrusted execution, for the previously recorded root-wide read-access and inherited-environment concerns. It is not an equivalent fallback.
+
+**Current state:** source reviewed; upstream test sources inspected; actual upstream tests NOT RUN; PocketCode adaptation NOT IMPLEMENTED; canonical LOOP/CASE unchanged; provider/runtime NONE; budget $0; local PC state UNKNOWN.
