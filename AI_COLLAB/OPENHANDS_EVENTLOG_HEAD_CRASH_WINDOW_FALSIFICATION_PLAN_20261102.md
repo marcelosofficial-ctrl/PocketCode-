@@ -732,3 +732,74 @@ No fix is selected in this plan. Before considering a batch-preserving recovery 
 A reverse-order error chain is only one candidate topology and is not preferred by default. It must be compared against preserving a single batch boundary or explicit per-action interruption records. The correct design depends on the provider-facing history contract and partial-completion semantics established by the tests.
 
 **Status:** All tests above remain NOT RUN. No OpenHands source/tests, PocketCode source/tests/schema/acceptance, provider workload, Actions, PR #2/#3, account, billing, deployment, or PC/RevDev host/queue state was changed. The OpenHands pin remains `98849457621881ae2414719b82b8bc1cf535b4ab`.
+
+
+## 21.13 ChatGPT exact-ref recheck: provider-facing batch history and async pause — 2026-11-03
+
+**Status:** pinned-source recheck and test-oracle refinement only. No OpenHands test was executed. No upstream source, PocketCode source, test, schema, canonical acceptance ID, owner decision, PR, or main branch was changed.
+
+Pinned repository/ref: `OpenHands/software-agent-sdk` / `98849457621881ae2414719b82b8bc1cf535b4ab`.
+
+### A. Multi-action crash recovery: exact model-facing consequence
+
+The following source chain is now checked at the pinned ref:
+
+1. `ResponseDispatchMixin._ahandle_tool_calls()` iterates every tool call in the LLM response. For each accepted call, `_get_action_event()` emits an `ActionEvent` with the same `llm_response_id`. Each event is persisted before the batch is executed. See `openhands-sdk/openhands/sdk/agent/response_dispatch.py`, lines 216–255, and `openhands-sdk/openhands/sdk/agent/agent.py`, lines 1340–1460.
+2. The conversation tree stamps ordinary events against the current leaf, so the emitted actions form an ordered parent chain. The batch then executes through `_ActionBatch.aprepare()`. It collects every tool's returned events in memory and only after the whole batch returns does `_ActionBatch.emit()` persist those results in original action order. See `agent.py`, lines 237–381. Therefore, a crash during batch execution can leave all ActionEvents unmatched even when an earlier tool's external side effect already completed. A tool result returned in worker memory is not yet a persisted ObservationEvent.
+3. Startup recovery scans the full EventLog, selects `unmatched_actions[0]`, and explicitly constructs one `AgentErrorEvent(parent_id=first_action.id, ...)`. See `openhands-agent-server/openhands/agent_server/event_service.py`, lines 1424–1467.
+4. `ConversationState.view` is rebuilt from the active branch path. The view properties then operate on that branch-derived event set. `BatchAtomicityProperty` compares against the `all_events` argument supplied to that view reconstruction; it cannot discover sibling actions already detached from the selected ancestry. `ToolCallMatchingProperty` sees the first action paired with its recovery error and preserves that pair. See `state.py`, `view.py`, `context/view/properties/batch_atomicity.py`, and `context/view/properties/tool_call_matching.py`.
+5. `LLMConvertibleEvent.events_to_messages()` combines only the ActionEvents present in the current view that share an `llm_response_id`. With a fully unmatched three-action batch A1→A2→A3 and recovery error E1 parented to A1, the active branch contains A1→E1, not A2/A3. The reconstructed model history can therefore contain the first tool call and its error while omitting the later calls from the original response. See `event/base.py`, lines 108–148 and 178–200.
+6. Normal pending-action detection also uses `state.active_branch()`. The detached A2/A3 actions are not automatically picked up by that pending-action scan. The resumed agent can instead call the LLM with an incomplete representation of the original multi-tool response.
+
+**Interpretation:** this is a source-confirmed loss of later tool-call identities from the active model-facing history after the described all-unmatched recovery path. It is not proof that the model will repeat an operation, nor proof of a duplicate external side effect. Those outcomes depend on the next model response and the independently observed state of each tool's external effect.
+
+**Partial-completion refinement:** because observations are emitted only after the entire execution batch returns, a crash during execution can leave even completed earlier operations without persisted observations. If a crash occurs during the later ordered emission phase, some earlier results may already be persisted; recovery then selects the first remaining unmatched action and explicitly parents its error there. Later sibling actions still require ancestry and provider-history inspection. Do not model all crashes as the all-zero-observation case.
+
+### B. Required OH-RCV-02 assertions
+
+Retain OH-RCV-02. Strengthen its oracle without adding a new canonical acceptance ID:
+
+- Use a deterministic local `TestLLM` response with at least three tool calls and one shared `llm_response_id`; do not contact a provider.
+- Assert all ActionEvents are persisted before tool execution starts and record their exact IDs, tool_call_ids, parent IDs and response ID.
+- Give each fake tool an independent durable side-effect ledger. Record whether each operation entered, committed its effect, returned, and had its ObservationEvent persisted. Do not infer side-effect state from EventLog.
+- Inject a crash during batch execution and a separate crash during ordered result emission. Include at least one partial-completion arrangement.
+- Restore through a real disposable LocalFileStore/EventService path. Capture the full EventLog, restored leaf, active ancestry, `state.view.events`, and the exact `Message` objects received by the resumed TestLLM. This last capture is the provider-facing-history oracle; source reconstruction alone is not a runtime assertion.
+- Assert which original tool_call_ids are represented in the resumed messages, which are absent, and which actions the active-branch pending-action scan considers executable.
+- Count any subsequent dispatch against the independent ledger. Report repeat dispatch and actual duplicate side effect separately.
+
+Do not adopt reverse-order error chaining or another recovery topology until the partial-observation, late-result, identity and provider-history cases are covered. Preserve the historical `tool_call_id` duplicate-suppression fixes.
+
+### C. Async pause race: exact server-path sequence
+
+The pause race remains source-supported, with this exact qualification:
+
+1. `LocalConversation._arun()` holds the state lock across an agent step, but `_released_state_lock_during_io()` releases it around the awaited LLM network call. The helper explicitly releases and later reacquires the lock. See `local_conversation.py`, lines 1956–1977, and the run-loop comments around lines 2280–2320.
+2. The normal EventService pause path calls `LocalConversation.pause()` through `run_in_executor()`, so it can acquire the temporarily released lock while the native async LLM call is outstanding. See `event_service.py`, lines 2108–2116.
+3. When the LLM response returns, `Agent._astep()` classifies it and routes TOOL_CALLS to `_ahandle_tool_calls()`. That path persists the ActionEvents and executes the batch; the inspected path does not re-check PAUSED before dispatch. See `agent.py`, lines 1030–1042 and 1122–1141, plus `response_dispatch.py`, lines 216–255.
+4. The run loop observes PAUSED at the next iteration, after the current `astep()` has returned. Thus a PauseEvent/PAUSED status can precede ActionEvents and tool execution from the already-outstanding LLM response.
+5. Startup recovery only handles persisted RUNNING status. A persisted PAUSED conversation bypasses that startup recovery. On an explicit later resume, `LocalConversation._arun()` resets PAUSED to RUNNING, and `Agent._step()` checks unmatched actions on the active branch and executes them before requesting a new LLM response. See `event_service.py`, lines 1424–1467; `local_conversation.py`, lines 2215–2245; and `agent.py`, lines 735–756.
+
+**Interpretation:** the source supports a path where pause is recorded during LLM I/O, the outstanding response subsequently dispatches a tool, a crash occurs before its observation is persisted, startup skips RUNNING-only recovery because status is PAUSED, and a later resume can dispatch the unmatched action again. This is a repeat-dispatch risk. Whether the external side effect actually duplicates remains UNKNOWN until independently observed.
+
+The existing `test_pause_while_running_continuous_actions` is not this test: it uses synchronous `conversation.run()` and a blocking-test executor that signals entry and returns immediately. It does not exercise the native async LLM-wait lock-release path, EventService pause, persisted PAUSED restart, or resumed tool dispatch.
+
+### D. Required OH-RCV-03 assertions
+
+Retain OH-RCV-03 and make the event order explicit:
+
+- Prove EventService selected the native async `conversation.arun()` path.
+- Block a local fake LLM inside `agenerate()`; call the normal EventService pause method while the state lock is released.
+- Before releasing the fake LLM response, independently read persisted state and assert PAUSED plus a PauseEvent.
+- Release a TOOL_CALLS response. Assert whether ActionEvents are appended after PauseEvent and whether tool dispatch begins while status remains PAUSED.
+- Have a disposable fake tool write a durable side-effect record, then block before returning its observation. Terminate the process at that boundary.
+- Restore the conversation through EventService. Assert startup did not apply the RUNNING-only recovery branch to PAUSED state.
+- Resume explicitly. Record whether the unmatched action is dispatched again, and compare dispatch count with independently persisted side-effect count.
+- Keep `interrupt()` as a separate control. It cancels the async task and sets the cancellation token; it is not equivalent to ordinary pause.
+
+A missing ObservationEvent remains evidence only that the result was not persisted. It does not prove that the external operation did not happen.
+
+### E. Scope and decision boundary
+
+These findings describe the pinned OpenHands reference implementation. They are useful falsification inputs for PocketCode's own lifecycle and evidence requirements, not proof that PocketCode shares the same defect or should copy OpenHands' state model.
+
+No OpenHands tests were executed. OH-RCV-01…08 remain NOT RUN. No provider request, paid workload, source/test edit, PocketCode implementation, canonical acceptance change, schema freeze, PR action, deployment, or PC/RevDev host/queue operation occurred. No fix is selected.
