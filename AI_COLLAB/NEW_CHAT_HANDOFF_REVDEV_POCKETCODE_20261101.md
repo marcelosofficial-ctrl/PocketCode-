@@ -742,3 +742,18 @@ The authoritative new-chat entry point is now the complete handoff in the RevDev
 Read it fully before continuing. It consolidates both product goals, separate repository/acceptance/security boundaries, three-AI roles, PC-free/$0/authorization constraints, current RevDev P0/P8U/OD-06 status, Work Coach manifest validation gap, PocketCode owner decisions and fixed-task research, pinned OpenHands findings and OH-RCV-01…08 test sequence, shared SCF review status, exact repository/PR snapshot and ordered next actions.
 
 **Live-count supersession:** latest 2026-11-03 compare is RevDev 451 ahead / 0 behind main and PocketCode 602 ahead / 0 behind main. Earlier notes in this handoff recording 445/0 and 595/0 predate the last continuity commits and are superseded. PR #2 and #3 remain open draft and untouched. No PR action, source/test execution, provider workload, Actions, host/queue operation or deployment occurred.
+
+
+## 2026-11-03 continuation: report verdict precedence audit
+
+A read-only static audit added:
+- `AI_COLLAB/REPORT_VERDICT_TIMEOUT_EXIT_CODE_PRECEDENCE_AUDIT_20261103.md`
+
+Pinned source findings:
+- `scripts/report_contract.py` blob `2459137b6f8d4b6bfadd6218e5a9bd92e75b0817`
+- `scripts/test_report_contract.py` blob `85109f056009d65a274e9306deb39b68e1fefbd2`
+- `PRODUCT/EXECUTION_LOOP_ACCEPTANCE.md` blob `c6714c27db52b2962fe8d1c7e6a16829d46a8338`
+
+The current helper checks any integer nonzero exit code before lifecycle status. Therefore `timed_out + 137`, `cancelled + 143`, and `infrastructure_failed + nonzero` currently classify as FAIL. The current timeout test passes `None`, so it does not expose this case. This conflicts with the acceptance intent that trusted timeout and infrastructure failure are INCOMPLETE; nonzero termination codes may be consequences of those controls, not proof of program failure.
+
+Recommended next step: obtain Claude's semantics/implementation review and Gemini's independent trust-boundary review, then approve a pure-helper truth table. In particular, keep `succeeded + nonzero` as a separate contradictory-evidence decision rather than assuming precedence. No source/test or canonical acceptance change was made. No tests were executed. PR #2/#3 remain untouched.
