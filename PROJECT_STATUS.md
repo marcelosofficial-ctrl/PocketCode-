@@ -230,3 +230,10 @@ Research addendum: [PYODIDE_ATTENUATION_EXECUTION_BOUNDARY_AND_LIFECYCLE_MATRIX_
 - PR #2 and #3 remain OPEN/DRAFT/UNMERGED at their previously verified head SHAs eb8b7ea83cb0e8fe1880351276c485b761431791 and 0ddcc0bc97bac5d446aefedf3d71f99411bd841d. Both remain untouched.
 - The PC-return checklist is still a draft plan. Current PC/source/runtime/binary/queue state remains UNKNOWN. No local tests, builds, installs, host changes, or execution tests were performed.
 - All updates in this continuation are documentation-only on the authorized research branch. No source/tests, canonical acceptance, PR, Actions, provider, account, workload, spend, host, queue, runtime, install, deployment or merge changed.
+
+
+## 2026-11-03 branch-pointer reconciliation
+
+The owner-designated PocketCode research branch for this continuation is pocketcode-ai-workflow-director-research-2026-10-28. Its live comparison was 556 ahead / 0 behind main 555840d8d83342513d9cd353d4d1522d46a5c82d. PR #2 and #3 remain OPEN / DRAFT / UNMERGED at their unchanged protected heads eb8b7ea83cb0e8fe1880351276c485b761431791 and 0ddcc0bc97bac5d446aefedf3d71f99411bd841d.
+
+A separate RevDev handoff references pocketcode-execution-boundary-crosswalk-2026-11-01 at a previously reported 602-ahead snapshot. This is a different branch. Do not silently switch, merge, copy branch-specific files or conflate blob IDs. Continue on the branch explicitly designated by the owner unless clarified.
