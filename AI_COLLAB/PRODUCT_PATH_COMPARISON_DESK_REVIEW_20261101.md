@@ -356,3 +356,137 @@ The browser-local Pyodide candidate may still provide a valuable low-cost, phone
 6. page/PWA lifecycle transitions do not turn a lost observation into a false success.
 
 Until then, use browser Pyodide as a **browser-local comparator / limited-execution candidate**, not as a verified hostile-code sandbox or a substitute for a server-side OS boundary. The distinction preserves the existing LOOP-12 and CASE-15 meanings.
+
+
+### 10.9 Proposed cross-origin execution topology
+
+The preferred browser-local design should not host untrusted execution on the authenticated PocketCode app origin. A same-origin worker can still make same-origin requests and potentially interact with same-origin browser facilities. The stronger candidate topology is:
+
+PocketCode app origin (authenticated)
+- Project/UI/session state and authenticated API credentials.
+- Creates a sandboxed cross-origin iframe.
+- Transfers only bounded input and a run-scoped message port.
+
+Dedicated execution origin (static-only, no credentials)
+- No login, cookies, private API, server functions or user secrets.
+- Minimal iframe bootstrap and immutable pinned assets.
+- Creates a module Web Worker.
+
+Dedicated execution worker
+- Pinned Pyodide 314.0.7 core.
+- Fresh in-memory filesystem per run.
+- No arbitrary package installation.
+- No privileged JS bridge.
+- Bounded input/output protocol.
+
+The execution origin should be a different registrable domain from the authenticated app, not merely a sibling subdomain, unless cookie scope is proven host-only and no parent-domain cookie can be sent to the execution host. It must not serve authenticated APIs, user-specific responses, signed download endpoints, or server-side functions. Prefer immutable static files only. The app must never send access tokens, session cookies, provider credentials, Git credentials, or private project secrets to this origin.
+
+A cross-origin iframe can be sandboxed with scripts enabled while retaining its own distinct origin. The allow-same-origin token is safe only while the iframe remains genuinely cross-origin from its parent. Never serve the execution iframe from the authenticated app origin. Do not grant top navigation, popups, downloads, forms, modals, pointer lock or other capabilities unless a later case proves they are necessary.
+
+The parent app should:
+- Pin the exact expected execution origin and iframe window reference.
+- Use a fresh cryptographically random run nonce and a fresh MessageChannel for each attempt.
+- Bind every message to protocol version, run ID, attempt ID, nonce and monotonically increasing sequence number.
+- Reject messages from the wrong origin, wrong window, wrong port, stale attempt, duplicate sequence, unexpected message type or invalid state transition.
+- Enforce a strict maximum message count, per-message byte size, cumulative bytes, output bytes and execution duration.
+- Never accept a worker message as proof of trusted exit, termination or security policy. It is untrusted program/worker output.
+- Treat a closed port, iframe navigation, page loss or missing terminal message as UNKNOWN/INCOMPLETE until independently reconciled. A parent timeout does not prove the worker stopped.
+
+The iframe bootstrap is a relay, not an authority. It validates the parent message schema, creates the worker from a fixed same-origin URL, passes only the run input, and forwards bounded worker messages. It has no access to the app's credentials or authenticated API. The worker's terminal message is a claim from the browser execution context, not a remote trusted attestation.
+
+### 10.10 Candidate CSP and capability policy
+
+The following is a starting policy for a prototype, not a verified cross-browser configuration. Test the exact response headers and Pyodide boot sequence on each supported browser. CSP is defence in depth; it is not a process sandbox.
+
+Execution iframe response (illustrative):
+
+    Content-Security-Policy: default-src 'none'; script-src 'self'; style-src 'self'; worker-src 'self'; connect-src 'self'; img-src 'none'; font-src 'none'; media-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors https://app.example
+    Referrer-Policy: no-referrer
+    Permissions-Policy: camera=(), microphone=(), geolocation=(), accelerometer=(), gyroscope=(), magnetometer=(), usb=(), serial=(), bluetooth=()
+
+Dedicated module worker response (illustrative):
+
+    Content-Security-Policy: default-src 'none'; script-src 'self' 'wasm-unsafe-eval'; connect-src 'self'; worker-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'
+    Referrer-Policy: no-referrer
+
+Interpretation and caveats:
+
+- script-src self permits only pinned same-origin worker/runtime scripts. wasm-unsafe-eval is required for WebAssembly compilation under CSP without enabling JavaScript unsafe-eval; it must not be broadened to unsafe-eval.
+- connect-src self allows the worker to fetch only public static assets from its own execution origin. It does not mean networking is absent. The execution origin must therefore be static-only, with no authenticated or sensitive endpoints and no dynamic write API.
+- The runtime, .wasm, standard library archive, lockfile and any allowed package files must be pinned, immutable and served from that same origin. Do not leave an unreviewed third-party CDN in connect-src.
+- worker-src none in the worker response is intended to prevent user code from creating nested workers. Verify actual browser behavior; do not assume every CSP directive is enforced identically on all supported iOS versions.
+- The iframe frame-ancestors must allow only the exact PocketCode app origin. The app's own frame-src should allow only the execution origin.
+- No CORS policy is a substitute for CSP. CORS controls whether a response can be read by a caller; it is not a reliable outbound-network denial control.
+- The worker response must carry its own CSP. A normal network-loaded worker does not generally inherit the creating document's policy. A blob/data worker inherits creator policy, but then its exact CSP, module-loading and iOS behavior need separate proof.
+- wasm-unsafe-eval permits WebAssembly compilation/instantiation. It is not a restriction on what the Python program computes inside its WASM runtime, and it does not impose memory or CPU limits.
+- CSP does not remove browser storage, timing, CPU, memory or all browser API capabilities. The separate origin and restricted JS bridge remain important.
+
+The static-only execution origin may still receive requests to its own public assets. That is an accepted and bounded capability for this candidate, not a claim of zero network. The first proof must demonstrate that no request can reach the app origin, arbitrary Internet destinations, or any endpoint carrying private data.
+
+### 10.11 Pyodide JavaScript-global minimization hypothesis
+
+Pyodide 314.0.7 documents PyodideConfig.jsglobals as the object used for the Python js module, defaulting to globalThis. This gives us a potential capability-reduction experiment: initialize Pyodide with a frozen, null-prototype, empty JavaScript object rather than the worker's actual global object, and expose no custom JS modules to user code.
+
+This may prevent ordinary Python code from obtaining fetch, postMessage, indexedDB, caches, navigator, location, close, globalThis, or other worker capabilities through import js. It is a hypothesis, not a verified sandbox feature or a guarantee against runtime/browser vulnerabilities. Pyodide's internal modules and the Python pyodide.ffi bridge must also be examined.
+
+Required isolated proof:
+1. Load pinned Pyodide 314.0.7 with an empty frozen null-prototype jsglobals object.
+2. Verify ordinary standard-library task behavior and stdout/stderr capture still work.
+3. From untrusted Python, attempt to resolve js.fetch, js.postMessage, js.indexedDB, js.caches, js.navigator, js.location, js.globalThis, pyodide.http.pyfetch, and access through pyodide.ffi.
+4. Attempt to import/use every custom JS module or proxy exposed by the host wrapper. The intended first proof exposes none.
+5. Inspect the resulting Python-visible object graph for references to worker globals, functions, ports, message handlers, Pyodide loader objects and host capabilities.
+6. Repeat on iOS Safari and installed PWA. Verify that the configuration behaves the same and does not silently fall back to globalThis.
+
+If the test cannot demonstrate that Python lacks direct access to the worker's privileged APIs, do not rely on this option. Keep the execution origin credential-free and assume the Python code can use any worker API permitted by the browser and CSP.
+
+### 10.12 Storage, cross-run state and message-flood controls
+
+A dedicated origin separates the worker from app credentials, but a reused execution origin can still create persistent browser state. A fresh Worker alone does not clear IndexedDB, Cache Storage, OPFS, service-worker state or browser caches.
+
+For the first comparison:
+- Do not mount IDBFS or OPFS; use a fresh in-memory Pyodide filesystem for each attempt.
+- Do not expose browser storage APIs through jsglobals or custom JS modules.
+- Do not register a service worker on the execution origin.
+- Pin and verify immutable runtime assets; do not let a user task install packages or mutate runtime files.
+- Clear per-run memory/filesystem state after termination. Treat browser cache as public immutable runtime cache, not user workspace.
+- If the API-minimization proof cannot prevent persistent storage access, evaluate a per-run unique execution origin or an opaque-origin iframe design. Both introduce deployment and iOS compatibility questions; neither is selected.
+
+The message channel is also an attack surface. The parent must not trust the iframe to enforce output bounds. Use a strict schema with small fixed-size chunks, maximum event count, cumulative output cap, and a parent-side monotonic deadline. On the first over-limit or malformed message, close the channel and request worker/iframe termination. Record the request and external stop observation separately. Do not buffer an arbitrary structured-clone object and only then decide it is too large; the worker wrapper and protocol must prevent oversized messages from being generated in the normal path, while the parent independently limits accepted cumulative data.
+
+A malicious program may attempt to flood logs or create a huge result object. The UI must not render arbitrary HTML, Markdown or links from worker output without escaping and length bounds. The final report must distinguish complete, truncated, unavailable and uncollected output.
+
+### 10.13 Browser boundary threat cases to add to the proof matrix
+
+These are test cases for the existing fixed-task proof, not new canonical acceptance IDs:
+
+| Threat case | Attack | Required observation |
+|---|---|---|
+| BR-01 | Python calls js.fetch to an external collector | Request blocked by worker CSP; collector receives nothing |
+| BR-02 | Python calls XHR/WebSocket/EventSource to external host | Blocked; no external connection established |
+| BR-03 | Python calls same-origin private API path | No such API exists on execution origin; request returns no sensitive data |
+| BR-04 | Python attempts app-origin fetch | CSP blocks it; app API sees no request |
+| BR-05 | Python inspects JS globals | Restricted jsglobals exposes no worker/app privileged references, or candidate fails this hardening gate |
+| BR-06 | Python attempts IndexedDB/Cache Storage/OPFS writes | API unavailable to Python; no cross-run state persists |
+| BR-07 | Python forges terminal/result messages | Parent rejects untrusted or malformed schema; no false success |
+| BR-08 | Python floods messages/stdout/stderr | Parent enforces event/byte caps and records truncation/termination honestly |
+| BR-09 | Iframe navigates or closes during execution | Parent does not treat disappearance as success or confirmed cancellation |
+| BR-10 | Old worker/iframe sends delayed output after retry | Run/attempt/nonce/sequence binding rejects stale message |
+| BR-11 | Runtime or lockfile is changed between runs | Pinned digest/version check rejects unexpected bytes |
+| BR-12 | User code tries to create nested workers or import remote modules | CSP blocks; no unapproved script is loaded |
+
+No BR identifier is a canonical LOOP/CASE acceptance ID. These are proposed test names only. They must remain in this research matrix unless an explicit crosswalk is approved.
+
+### 10.14 Decision and next proof order
+
+The cross-origin execution origin plus restrictive iframe/worker CSP is the preferred browser-local architecture candidate. It reduces direct access to app credentials and narrows network reachability without requiring a hosted execution provider. It is not equivalent to a Linux namespace/cgroup sandbox and cannot honestly claim hard CPU or memory quotas.
+
+The next browser proof should be a tiny, isolated harness rather than product implementation:
+1. Serve a static-only execution origin with the exact response headers and no cookies/API.
+2. Load the pinned Pyodide module worker from that origin.
+3. Test the empty jsglobals capability hypothesis.
+4. Run the frozen CSV task and malformed-input case unchanged.
+5. Exercise all BR-01..12 threat cases with a controlled external request sink and same-origin route inventory.
+6. Measure message limits, worker termination, cold/warm startup and memory pressure.
+7. Repeat the security/cancellation subset on target iOS Safari and installed PWA.
+
+If any app credential, app API, arbitrary external request, unbounded message path or false-success lifecycle path remains reachable, browser execution stays a limited local convenience and must not be advertised as a hostile-code sandbox. No provider selection or canonical acceptance change follows from this proposal.
