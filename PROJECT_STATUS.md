@@ -486,3 +486,10 @@ No source/test/provider/host action or canonical acceptance change occurred.
 The pinned OpenHands recovery review now has a consolidated, non-duplicative regression sequence in [OPENHANDS_EVENTLOG_HEAD_CRASH_WINDOW_FALSIFICATION_PLAN_20261102.md](AI_COLLAB/OPENHANDS_EVENTLOG_HEAD_CRASH_WINDOW_FALSIFICATION_PLAN_20261102.md), Section 21.12. It prioritizes (1) explicit parent/active-ancestry assertion for the existing one-action recovery path, (2) three-action batch crash/restart ancestry and resumed request history, (3) the native async pause-during-LLM race, then (4) navigation/stale-observation, partial completion, interrupt, side-effect ambiguity and multi-file durability cases.
 
 The plan explicitly distinguishes existing unit/integration/F31 coverage from what remains untested. It does not select a recovery fix; reverse-order error chaining remains only one candidate and must be tested against provider-facing history and partial completion. All OpenHands tests remain NOT RUN. No source/test/provider/Actions/PR/host changes occurred. PR #2/#3 remain protected and untouched.
+
+
+## Complete cross-project continuation handoff — 2026-11-03
+
+Use the complete [RevDev + PocketCode handoff](https://github.com/marcelosofficial-ctrl/DevRelay-Missions/blob/review/revdev-adaptive-ai-workshare-2026-10-27/resume/revdev/NEW_CHAT_HANDOFF_REVDEV_POCKETCODE_2026-11-03.md) as the new-chat entry point. It contains current goals, boundaries, three-AI roles, owner constraints, latest repository and PR state, RevDev P0/P8U/OD-06 truth, PocketCode owner decisions, OpenHands pinned findings and test sequence, shared fixture status, competitor research and exact next actions.
+
+Latest live compare on 2026-11-03: PocketCode branch is 598 ahead / 0 behind main (merge base `555840d8d83342513d9cd353d4d1522d46a5c82d`); RevDev is 447 ahead / 0 behind main (merge base `058f9025319d12e76195659c715ccb4afce133b8`). Earlier notes of 595/0 and 445/0 are superseded by later documentation commits. PR #2/#3 remain open draft and untouched.
