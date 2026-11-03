@@ -515,3 +515,14 @@ Key findings:
 Good existing safeguards to preserve: visible simulated-execution banner; example buttons do not claim to run; both copied artifacts state no code was executed; debugging prompt includes editor code, sample CSV and report; README warns against putting private data in the public demo.
 
 Recommended next design order: canonical task alignment; truthful compact receipt with execution/disposition/streams/artifact states; distinguish sample from actual input; reserve timeout/cancellation UI; complete accessibility and later test on actual browsers. This is a design audit only. No source/tests, browser/device interaction, clipboard test, accessibility audit, execution, installation, Actions, deployment, provider workload or spend occurred. Prototype remains simulated; product-path comparison and differentiator remain NOT RUN / UNVALIDATED.
+
+
+## 2026-11-03 latest live branch reconciliation
+
+A fresh GitHub comparison of the owner-designated PocketCode research branch \`pocketcode-ai-workflow-director-research-2026-10-28\` reports **561 ahead / 0 behind** main, merge base \`555840d8d83342513d9cd353d4d1522d46a5c82d\`. This supersedes the earlier 555/556-ahead snapshots recorded above. It is a divergence count, not a merge-readiness assessment.
+
+PR #2 remains OPEN / DRAFT / UNMERGED at unchanged head \`eb8b7ea83cb0e8fe1880351276c485b761431791\`; PR #3 remains OPEN / DRAFT / UNMERGED at unchanged head \`0ddcc0bc97bac5d446aefedf3d71f99411bd841d\`. Both were re-fetched and left untouched.
+
+RevDev's separate research branch currently compares 463 ahead / 0 behind its own main, merge base \`058f9025319d12e76195659c715ccb4afce133b8\`. Do not conflate repository branch counts or copy branch-specific blob references.
+
+No PR/source/test/Actions/provider/account/workload/spend/host/queue/runtime/install/deployment/merge changes occurred. The frozen task product-path comparison and paired AI correction experiment remain NOT RUN; the differentiator remains UNVALIDATED.
