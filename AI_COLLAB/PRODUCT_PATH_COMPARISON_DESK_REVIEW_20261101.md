@@ -501,6 +501,7 @@ If any app credential, app API, arbitrary external request, unbounded message pa
 ### 10.15 Sources for the browser boundary review
 - Pinned Pyodide 314.0.7 source: [api.ts](https://github.com/pyodide/pyodide/blob/314.0.7/src/js/api.ts) registers both js and pyodide_js and exposes FS/_module/_api; [pyodide.ts](https://github.com/pyodide/pyodide/blob/314.0.7/src/js/pyodide.ts) defines jsglobals; [test_pyodide.py](https://github.com/pyodide/pyodide/blob/314.0.7/src/tests/test_pyodide.py) marks the restrictive-CSP test xfail on Safari; [test_csp.html](https://github.com/pyodide/pyodide/blob/314.0.7/src/templates/test_csp.html) uses wasm-unsafe-eval; [api.ts FS docs](https://github.com/pyodide/pyodide/blob/314.0.7/src/js/api.ts) list IDBFS among the filesystem backends.
 - Pyodide 314.0.7 Python API source: [pyodide.code.run_js](https://github.com/pyodide/pyodide/blob/314.0.7/src/py/pyodide/code.py) delegates to JavaScript eval through the js module.
+- Pyodide 314.0.7 capability attenuation source: [Python import-hook registration/unregistration](https://github.com/pyodide/pyodide/blob/314.0.7/src/py/_pyodide/_importhook.py), [package import notes](https://github.com/pyodide/pyodide/blob/314.0.7/src/py/pyodide/__init__.py), [webloop dependency on pyodide_js](https://github.com/pyodide/pyodide/blob/314.0.7/src/py/pyodide/webloop.py), and [HTTP fetch dependency on js.fetch](https://github.com/pyodide/pyodide/blob/314.0.7/src/py/pyodide/http/_pyfetch.py).
 
 Official sources checked 2026-11-03:
 
