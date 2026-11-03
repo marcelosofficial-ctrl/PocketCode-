@@ -470,3 +470,12 @@ Sources and preflight are recorded in [the existing fixed-task worksheet](AI_COL
 **Product implication:** local Python execution on an iPhone is already available as a free workaround. PocketCode should not claim differentiation from code execution alone. The stronger hypothesis to test is whether it adds a trustworthy run-bound receipt, honest timeout/cancellation and side-effect semantics, source/input/output identity, explicit permissions/egress, and a portable handoff usable by any AI assistant. These are proposed differentiators, not demonstrated PocketCode capabilities or validated market demand.
 
 Execution location remains undecided. No provider/runtime/framework is selected. Budget remains $0. PR #2 and #3 remain open draft and untouched. No install, workload, test, provider call, Actions run, merge, deployment or spend occurred.
+
+
+### OpenHands server async path and F31 test-scope clarification — 2026-11-03
+
+The pinned `EventService.run()` selects native `LocalConversation.arun()` for the normal `LocalConversation` + `Agent` combination, so the lock-release around LLM I/O in `Agent._astep()` is relevant to the normal agent-server path. The existing synchronous pause test still does not prove a running tool can coexist with persisted PAUSED; the narrower pause-during-async-LLM / post-response-tool-dispatch race remains source-confirmed, with integration test NOT RUN.
+
+F31's crash-tool-call `TOOL_AGENT` is explicitly configured to a local `openai/qa-stub` endpoint; the DeepSeek key/preset in the broader feature-map setup is tied to a separate real-model `F31.no-plaintext-at-rest` run. The crash subfeature's model target is local, but the reduced standalone no-DeepSeek bootstrap remains unverified. See the 2026-11-03 addendum follow-up in the crash-window plan and pinned recovery addendum.
+
+No source/test/provider/host action or canonical acceptance change occurred.
