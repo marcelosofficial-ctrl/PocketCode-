@@ -268,3 +268,12 @@ No PR, source, test, Actions, provider, account, workload, spend, host, queue, r
 ## 2026-11-03 branch-count snapshot supersession
 
 The 561-ahead PocketCode figure in the preceding addendum is superseded. The latest comparison immediately before this documentation update reported this owner-designated branch at **563 ahead / 0 behind** main, merge base \`555840d8d83342513d9cd353d4d1522d46a5c82d\`. This is a historical snapshot taken before the present continuity commits, not a live count after them. Re-fetch the branch comparison before making any decision. PR #2/#3 remain open, draft, unmerged, at their unchanged protected heads.
+
+
+## 2026-11-03 mobile prototype next-pass design decision
+
+Added [MOBILE_RUNNER_TASK_ALIGNED_RECEIPT_SPEC_20261103.md](AI_COLLAB/MOBILE_RUNNER_TASK_ALIGNED_RECEIPT_SPEC_20261103.md), blob \`2b2b05bd0efbd339cdef2dff14cd404bc25f168b\`.
+
+The design reference aligns the simulated mobile prototype with the frozen CSV-to-JSON task rather than the unrelated sales-summary example. It defines truthful success and malformed-header example receipts, separate stdout/stderr sample expectation labels, job disposition, duration/runtime unknowns, artifact/cleanup/release distinctions, and existing LOOP/CASE mapping. It deliberately does not add a fake file picker, Run action, cancellation behavior, new acceptance IDs, or a runtime decision.
+
+Decision remains design-only. The prototype remains simulated. No source/tests/browser/device/file-import/clipboard/runtime/provider/Actions/host/queue/PR changes occurred. Fixed-task product-path comparison and paired AI correction experiment remain NOT RUN; differentiator remains UNVALIDATED.
