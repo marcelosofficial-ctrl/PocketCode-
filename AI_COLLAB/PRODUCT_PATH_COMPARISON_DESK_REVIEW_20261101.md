@@ -515,3 +515,28 @@ Official sources checked 2026-11-03:
 - WebAssembly CSP proposal for wasm-unsafe-eval: https://github.com/WebAssembly/content-security-policy/blob/main/proposals/CSP.md
 
 These sources document browser and runtime capabilities. They do not establish that the proposed iframe/origin/CSP topology works on iOS, that Pyodide jsglobals can be safely minimized, or that worker memory/CPU/termination guarantees satisfy LOOP-12. Those remain proof obligations.
+
+
+### 10.11.1 Potential trusted-bootstrap attenuation experiment
+
+The pinned 314.0.7 source gives a possible, testable mitigation path, but it is not yet proven:
+
+- The JS API exposes unregisterJsModule. It delegates to the Python import hook's unregister_js_module, which removes a named JavaScript proxy from the import finder.
+- Pyodide's Python package documentation explicitly says both js and pyodide_js are available for import after Pyodide is initialized.
+- The import hook documents that unregistering a JS module does not remove an already imported module from sys.modules; that cache must also be cleared.
+- pyodide.webloop imports pyodide_js._api.scheduleCallback when loaded, and pyodide.http.pyfetch imports js.fetch and pyodide_js._api.abortSignalAny. Those features may stop working if the privileged JS module is removed. They are not needed by the frozen synchronous CSV task, but this must be measured rather than assumed.
+- pyodide.ffi exposes register_js_module and unregister_js_module to Python. A hostile script may re-register a module using a JsProxy it can obtain. The proof must show that Python can only construct proxies for objects it already owns and cannot recover the original host API object or worker global.
+
+Candidate trusted bootstrap, to be tested in a throwaway harness only:
+1. Initialize Pyodide with a frozen null-prototype empty jsglobals object and no custom JS modules.
+2. Keep the returned Pyodide API object only in the trusted worker wrapper's lexical closure. Do not assign it to globalThis, a worker property, a message payload, or any object reachable from Python.
+3. Before dispatching user code, call the trusted JS API's unregisterJsModule("pyodide_js").
+4. Remove any already-imported pyodide_js and pyodide_js.* entries from sys.modules using trusted bootstrap code. Verify that later imports fail because the import finder no longer contains that registration.
+5. Keep the host-only FS handle, stdout/stderr callbacks and worker message port in private wrapper variables. Do not expose them through jsglobals, pyodide_js, pyodide.ffi, registered modules or Python globals.
+6. Verify pyodide.code.run_js fails because js.eval is absent. Verify this remains true on Safari even if a compatibility CSP policy has to permit WebAssembly using unsafe-eval.
+7. Attempt to re-register pyodide_js and js from Python using pyodide.ffi.register_js_module and only Python-created JsProxy objects. Confirm that this cannot restore the original API, worker globals, FS handle, message port or eval reference.
+8. Test the exact standard-library fixture, file I/O, bounded stdout/stderr and exception reporting after attenuation. Explicitly test which optional Pyodide features stop working.
+
+This candidate is acceptable only if the full hostile-Python test corpus cannot recover a privileged object. It is not enough that a few known names raise ImportError. The wrapper must retain its private handles, and the Python-visible import/module/object graph must be audited after each runtime update. If this requires patching Pyodide internals or maintaining a fork, treat that as a significant dependency and maintenance cost under the $0 constraint.
+
+**Safari CSP qualification:** Pyodide 314.0.7's own test suite marks the restrictive-CSP test as an expected failure on Safari with the reason "Safari doesn't support wasm-unsafe-eval". Its fixture uses wasm-unsafe-eval to permit WebAssembly without JavaScript unsafe-eval. A Safari deployment may therefore need unsafe-eval or a weaker script policy to load Pyodide. Since unsafe-eval also permits JavaScript eval/Function code generation, it is only a candidate if the preceding API attenuation is proven and a target-device test demonstrates that untrusted Python still cannot obtain eval. If that cannot be shown, reject the browser path for hostile-code execution on that Safari version. Do not quietly weaken CSP to make the demo work.
