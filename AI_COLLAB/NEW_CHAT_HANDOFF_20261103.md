@@ -574,3 +574,12 @@ No canonical LOOP/CASE IDs or meanings changed. No code/tests/browser/device tes
 - RevDev PR #1 remains OPEN / DRAFT / UNMERGED at head `59f88dc0bd884872cf379c8aeb6272c9a70c71ce`.
 - No PR was modified, no Actions run was triggered, and no source/test/runtime/host/queue change occurred.
 
+
+
+## Final branch chronology correction — 2026-11-03
+
+Earlier same-day counts of 569 ahead / 0 behind for PocketCode and 471 ahead / 0 behind for RevDev were captured before the final Pyodide audit and P8U documentation commits. A fresh comparison immediately before this handoff correction found:
+- PocketCode owner-designated branch: head `2d6e6c478dfa22a1e6efeeaf1e672ff2d1871be6`, **572 ahead / 0 behind**, merge base `555840d8d83342513d9cd353d4d1522d46a5c82d`.
+- RevDev research branch: head `01e0858bfd8733070b7c0f78b0f62bafe1fd2649`, **477 ahead / 0 behind**, merge base `058f9025319d12e76195659c715ccb4afce133b8`.
+
+These are pre-correction snapshots. The present handoff update advances the PocketCode branch again, so re-fetch exact refs before the next consequential action. PR #2/#3 and RevDev PR #1 remain OPEN / DRAFT / UNMERGED; their heads were unchanged in the latest metadata read.
