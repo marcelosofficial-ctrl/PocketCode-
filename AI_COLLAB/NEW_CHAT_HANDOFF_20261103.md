@@ -439,3 +439,46 @@ Start by verifying the current GitHub state and then continue with task 1. Do no
 ---
 
 End of handoff.
+
+
+## 2026-11-03 continuation addendum — first three research tasks completed
+
+The next chat should read the companion audit:
+[PYODIDE_ATTENUATION_EXECUTION_BOUNDARY_AND_LIFECYCLE_MATRIX_20261103.md](PYODIDE_ATTENUATION_EXECUTION_BOUNDARY_AND_LIFECYCLE_MATRIX_20261103.md).
+
+### Pyodide 314.0.7 decision
+
+The pinned source audit is complete. Do not continue the trusted-bootstrap attenuation experiment as a no-fork hostile-code sandbox candidate.
+
+Verified source details:
+- unregister_js_module removes a JS import-finder mapping but does not revoke already imported modules or clear sys.modules.
+- pyodide.ffi exposes register_js_module and unregister_js_module.
+- pyodide._package_loader imports and retains pyodide_js.loadedPackages.
+- pyodide.webloop imports and retains pyodide_js._api.scheduleCallback.
+- pyodide._state.save_state() explicitly says there is no general way to track all module global state.
+- JsProxy exposes a JavaScript object's constructor; to_js creates JS object proxies. A constructor/code-generation route is CSP-dependent and was not executed.
+- Pyodide 314.0.7's restrictive-CSP test is expected-fail on Safari because Safari does not support wasm-unsafe-eval.
+
+Decision: reject as a maintainable hostile-code sandbox without a fork or recurring private patch/audit. Retain Pyodide only as a possible trusted/small-task convenience comparator. The fixed standard-library CSV-to-JSON task does not inherently require JS, pyodide_js, network, package installation or async execution, but its operation after any attenuation remains untested. No runtime, exploit, Safari, PWA or device test was performed.
+
+### Execution-boundary comparison completed
+
+The companion audit compares browser Pyodide, the pinned Happy Agent Linux strict-service reference, a future user-owned remote PC, and manual copy/paste. It maps all four against canonical LOOP-01..14 and CASE-01..16.
+
+Key decisions:
+- Linux strict-service remains the strongest inspected containment reference, not an adopted provider/dependency; CASE-04 is blocked by missing internal absolute deadline, and CPU quota/storage/output/lifecycle gaps remain.
+- A remote PC is a future option only. Current PC, checkout, runtime, binary, credentials, network and queue remain UNKNOWN. Remote transport is not a sandbox.
+- Manual copy/paste is the $0 first workflow baseline, but not PocketCode execution evidence.
+- No runtime/provider/framework was selected.
+
+### Lifecycle/evidence matrix completed
+
+The companion audit defines nine independent stages: user intent, policy decision/application, authorization, reservation/dispatch, execution, program result/job disposition, cleanup, artifact integrity/release, and report creation/publication. It preserves UNKNOWN and the separation between execution outcome, job disposition, cleanup, artifact release and report state. D-01..D-08 remain owner-open/proposed; LOOP/CASE IDs and meanings are unchanged.
+
+### Current remaining priorities
+
+1. Continue focused product-value validation of the first useful manual phone workflow and report/correction loop. The fixed-task product-path comparison remains NOT RUN; paired AI correction experiment remains designed but NOT RUN; differentiator UNVALIDATED.
+2. Keep PC-return checklist current. Do not assume any PC state until fresh owner evidence is supplied.
+3. Continue RevDev P8U work separately, preserving its acceptance meanings and all local-state UNKNOWN conditions.
+4. Do not restart broad provider/runtime surveys. Reopen execution selection only with concrete, evidence-backed $0-capable boundary candidates.
+5. Keep PR #2/#3 open, draft, untouched and unmerged. No product source/tests, Actions, provider workloads, spend, account, runtime, queue, install, deploy, merge or host state was changed by this continuation.
