@@ -526,3 +526,8 @@ PR #2 remains OPEN / DRAFT / UNMERGED at unchanged head \`eb8b7ea83cb0e8fe188035
 RevDev's separate research branch currently compares 463 ahead / 0 behind its own main, merge base \`058f9025319d12e76195659c715ccb4afce133b8\`. Do not conflate repository branch counts or copy branch-specific blob references.
 
 No PR/source/test/Actions/provider/account/workload/spend/host/queue/runtime/install/deployment/merge changes occurred. The frozen task product-path comparison and paired AI correction experiment remain NOT RUN; the differentiator remains UNVALIDATED.
+
+
+## 2026-11-03 branch-count snapshot supersession
+
+The 561-ahead PocketCode figure in the preceding addendum is superseded. The latest comparison immediately before this documentation update reported this owner-designated branch at **563 ahead / 0 behind** main, merge base \`555840d8d83342513d9cd353d4d1522d46a5c82d\`. This is a historical snapshot taken before the present continuity commits, not a live count after them. Re-fetch the branch comparison before making any decision. PR #2/#3 remain open, draft, unmerged, at their unchanged protected heads.
