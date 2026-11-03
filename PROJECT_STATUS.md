@@ -210,3 +210,12 @@ Research addendum: [PYODIDE_ATTENUATION_EXECUTION_BOUNDARY_AND_LIFECYCLE_MATRIX_
 - Completed comparison of browser Pyodide, isolated Linux service reference, future user-owned remote PC, and manual copy/paste against LOOP-01..14 and CASE-01..16.
 - Added nine-stage lifecycle/evidence matrix: user intent, policy, authorization, reservation/dispatch, execution, result/disposition, cleanup, artifact release, and report publication. Unknown states and D-01..D-08 remain intact. No canonical IDs or acceptance meanings changed.
 - No runtime/device/security test, provider workload, implementation, Actions, PR, account, spend, host, queue, or local PC state changed. Fixed-task product comparison and paired AI correction experiment remain NOT RUN; differentiator UNVALIDATED.
+
+
+## 2026-11-03 continuation read-back verification
+
+- Companion audit: [PYODIDE_ATTENUATION_EXECUTION_BOUNDARY_AND_LIFECYCLE_MATRIX_20261103.md](AI_COLLAB/PYODIDE_ATTENUATION_EXECUTION_BOUNDARY_AND_LIFECYCLE_MATRIX_20261103.md), blob SHA 016b5e5145aa891a6503be58b29f2fa9bebe96c7, 179 lines.
+- Updated primary handoff: [NEW_CHAT_HANDOFF_20261103.md](AI_COLLAB/NEW_CHAT_HANDOFF_20261103.md), blob SHA 357600e42dd3649e006c83e7fcc659df92a2591e, 485 lines.
+- Before this status read-back pointer commit, research branch head df495036cfb045a58b68eaa5989cffb2f48118e3; comparison to main: 552 ahead / 0 behind. Main remains 555840d8d83342513d9cd353d4d1522d46a5c82d.
+- PR #2 remains OPEN/DRAFT/UNMERGED at eb8b7ea83cb0e8fe1880351276c485b761431791. PR #3 remains OPEN/DRAFT/UNMERGED at 0ddcc0bc97bac5d446aefedf3d71f99411bd841d. Both re-fetched after the documentation commits and left untouched.
+- This continuation made three documentation-only commits on the authorized research branch. No source/tests, canonical acceptance, PRs, Actions, provider, account, workload, spend, host, queue, runtime, install, deployment or merge changed.
