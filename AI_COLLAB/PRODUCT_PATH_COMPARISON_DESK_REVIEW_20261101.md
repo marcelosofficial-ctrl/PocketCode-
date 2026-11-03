@@ -490,3 +490,20 @@ The next browser proof should be a tiny, isolated harness rather than product im
 7. Repeat the security/cancellation subset on target iOS Safari and installed PWA.
 
 If any app credential, app API, arbitrary external request, unbounded message path or false-success lifecycle path remains reachable, browser execution stays a limited local convenience and must not be advertised as a hostile-code sandbox. No provider selection or canonical acceptance change follows from this proposal.
+
+
+### 10.15 Sources for the browser boundary review
+
+Official sources checked 2026-11-03:
+
+- Pyodide 314.0.7 JavaScript API, including the jsglobals option: https://pyodide.org/en/stable/usage/api/js-api.html
+- Pyodide 314.0.7 type translations and JavaScript global access: https://pyodide.org/en/stable/usage/type-conversions.html
+- Pyodide 314.0.7 Web Worker guide: https://pyodide.org/en/stable/usage/webworker.html
+- Pyodide 314.0.7 service-worker guide and module worker setup: https://pyodide.org/en/stable/usage/service-worker.html
+- MDN CSP worker policy placement and blob/data inheritance exception: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Security-Policy
+- MDN connect-src controlled APIs and examples: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Security-Policy/connect-src
+- MDN worker-src scope: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Security-Policy/worker-src
+- MDN WorkerGlobalScope fetch: https://developer.mozilla.org/en-US/docs/Web/API/WorkerGlobalScope/fetch
+- WebAssembly CSP proposal for wasm-unsafe-eval: https://github.com/WebAssembly/content-security-policy/blob/main/proposals/CSP.md
+
+These sources document browser and runtime capabilities. They do not establish that the proposed iframe/origin/CSP topology works on iOS, that Pyodide jsglobals can be safely minimized, or that worker memory/CPU/termination guarantees satisfy LOOP-12. Those remain proof obligations.
