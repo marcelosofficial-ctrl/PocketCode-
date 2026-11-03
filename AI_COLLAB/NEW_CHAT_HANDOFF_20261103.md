@@ -482,3 +482,10 @@ The companion audit defines nine independent stages: user intent, policy decisio
 3. Continue RevDev P8U work separately, preserving its acceptance meanings and all local-state UNKNOWN conditions.
 4. Do not restart broad provider/runtime surveys. Reopen execution selection only with concrete, evidence-backed $0-capable boundary candidates.
 5. Keep PR #2/#3 open, draft, untouched and unmerged. No product source/tests, Actions, provider workloads, spend, account, runtime, queue, install, deploy, merge or host state was changed by this continuation.
+
+
+### PC-return checklist refresh and branch snapshot
+
+- Refreshed [PC_RETURN_CHECKLIST_DRAFT_20261028.md](PC_RETURN_CHECKLIST_DRAFT_20261028.md), blob SHA 6bfa59becb1992bb02ae46500673c85f3aa858a7. The addendum preserves the existing first-session order, explicitly rejects spending the first PC session on the no-fork Pyodide hostile-sandbox experiment, and adds fresh-state, remote-host-boundary and PR-protection reminders.
+- The branch snapshot immediately before this checklist/handoff refresh was head 528702bf720f3d5659bcba918195bb030497f920, 553 ahead / 0 behind main 555840d8d83342513d9cd353d4d1522d46a5c82d. The current final head and comparison are recorded in PROJECT_STATUS.md after the final read-back.
+- The original handoff header's c051404 head is the historical preparation snapshot. It was superseded first by the owner's supplied 4368a78 head, then by the documentation-only continuation commits. Always re-fetch the live ref rather than treating a handoff snapshot as current.
