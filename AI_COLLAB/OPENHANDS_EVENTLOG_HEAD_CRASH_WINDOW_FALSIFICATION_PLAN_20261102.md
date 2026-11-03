@@ -677,3 +677,58 @@ Reconciled conclusion:
 - **UNRESOLVED:** the feature-map does not supply a complete independently documented reduced launch/bootstrap command proving every server-default/config prerequisite can be omitted. Do not claim the entire F31 recipe is provider-free.
 
 No server, provider, fixture, test or host workload was executed. Do not run the DeepSeek-dependent subfeature under the $0/no-provider boundary.
+
+
+### 21.12 Consolidated minimum regression suite and execution priority — 2026-11-03
+
+**Purpose:** Convert Sections 21.8–21.11 into the smallest non-duplicative test sequence. This is a test-design refinement only. It does not prescribe a fix, map OpenHands behavior onto PocketCode acceptance, or authorize a workload.
+
+#### Existing coverage to retain as controls
+
+| Existing test/recipe | What it already establishes | What it does not establish |
+|---|---|---|
+| `TestEventServiceStartWithRunningStatus` unit tests | RUNNING recovery branch selection, no-unmatched behavior, non-RUNNING skip, and tool_call_id duplicate suppression | Real persisted restore, explicit parent assertion, active ancestry, multi-action batch behavior |
+| `test_get_unmatched_actions` | Helper-level action/observation matching by tool_call_id | Server crash/restart, branch ancestry, provider-facing history |
+| Parallel execution integration tests | Multiple tool calls execute as a batch and normal observations preserve input order | Crash during a partially completed batch and restart recovery |
+| F31.crash-tool-call | Documented local-stub single-action server crash/restart baseline | Multi-action ancestry, async pause race, branch navigation, power-loss durability, or external side-effect certainty |
+
+Do not duplicate these controls without a specific uncovered assertion. First extend their assertions where that is sufficient.
+
+#### Ordered regression set
+
+| Priority | Test | Setup and injected boundary | Required observations | Current source-derived concern |
+|---|---|---|---|---|
+| P0 | OH-RCV-01: one-action persisted recovery control | One unmatched ActionEvent, persisted RUNNING, real LocalFileStore restore through EventService | Recovery event has `parent_id == action.id`; restored active ancestry is action → recovery error; exactly one error; no duplicate action dispatch | Existing unit coverage does not assert parent or real ancestry |
+| P0 | OH-RCV-02: multi-action batch recovery | Three ActionEvents from one tool-call response, no observations, persisted RUNNING, server restart | Full EventLog retains all actions; current recovery selects first unmatched action; capture active ancestry and resumed model request history; assert whether later action/result pairs are detached | Source confirms one recovery error parented to first unmatched action, not a batch-preserving chain |
+| P0 | OH-RCV-03: async pause during outstanding LLM call | Block native async LLM response; pause through normal server path; release TOOL_CALLS response; terminate during tool execution before observation | Durable status and event order; whether tool dispatch begins after PAUSED; restored status; active pending actions; resume dispatch count; independent external side-effect record | Source-supported status-check gap after LLM await; complete persisted server sequence remains untested |
+| P1 | OH-RCV-04: navigation and stale observation | Create Action A + Observation O1, navigate active HEAD back to A, crash before a new observation, restore and resume | Full log versus active ancestry; pending-action result; recovery suppression decision; whether the same stored action is dispatched again | Full-log duplicate suppression can disagree with active-branch pending-action detection |
+| P1 | OH-RCV-05: partial batch completion | Three actions with mixed observations, including a late observation and a matching tool_call_id on an abandoned branch | Per-action match, parent, active ancestry and provider-facing tool history; no observation is silently attached to the wrong action | First-unmatched recovery and log-wide tool_call_id matching need combined coverage |
+| P1 | OH-RCV-06: interrupt control | Repeat the async pause setup but use `interrupt()` | Cancellation token/task state, tool completion ordering, synthetic orphan error, no unintended resume redispatch | Must remain distinct from ordinary pause and its LLM-I/O race |
+| P1 | OH-RCV-07: side-effect ambiguity | Tool writes to an independently inspectable disposable side-effect sink; kill before observation persistence | Record side effect as occurred/not occurred/unknown independently from coordinator observation; no automatic retry solely because observation is absent | Recovery error cannot prove whether an external effect happened |
+| P2 | OH-RCV-08: persistence durability boundary | Exercise event JSON, length marker, and base-state replacement crash points on a declared local filesystem | Separate event-file validity, index discoverability, active HEAD, ancestry and acknowledgement; process-kill results only | Individual atomic file replacement does not make multi-file updates transactional; directory fsync/power-loss durability remains unproven |
+
+#### Test implementation order and stop rules
+
+1. Add the explicit parent assertion to the existing one-action startup unit test. This is the cheapest regression and should not require a new harness.
+2. Add a real local-file persistence/restore integration test for one action, then extend it to three actions. Do not jump directly to a redesigned recovery algorithm.
+3. Add the async pause race using a deterministic fake LLM response barrier and a disposable tool. The test must prove the normal EventService native async path is used.
+4. Add navigation/abandoned-branch and partial-observation cases only after the base ancestry oracle is working.
+5. Use an independent side-effect ledger for every crash/retry test. A missing ObservationEvent is never proof of no external effect.
+6. Keep process termination and power-loss claims separate. Do not use a process-kill harness to claim rename durability after sudden power loss.
+7. Record each result against the exact pinned commit, filesystem, dependency lock, harness hash and raw artifacts. A failing regression is source/version-specific; it does not authorize copying an unreviewed fix into PocketCode.
+
+#### Fix-design decision gate
+
+No fix is selected in this plan. Before considering a batch-preserving recovery change, require a test oracle that proves all of the following:
+
+- every persisted ActionEvent from one model response remains represented in one coherent active history;
+- completed observations remain paired with their originating actions;
+- unmatched actions are represented as interrupted/unknown without implying the external operation did not occur;
+- late observations cannot create duplicate or contradictory result records;
+- resume cannot silently repeat an operation whose prior external outcome is unknown;
+- tool-call order and provider-facing message validity are preserved;
+- existing `tool_call_id` duplicate-suppression behavior and historical fixes remain covered.
+
+A reverse-order error chain is only one candidate topology and is not preferred by default. It must be compared against preserving a single batch boundary or explicit per-action interruption records. The correct design depends on the provider-facing history contract and partial-completion semantics established by the tests.
+
+**Status:** All tests above remain NOT RUN. No OpenHands source/tests, PocketCode source/tests/schema/acceptance, provider workload, Actions, PR #2/#3, account, billing, deployment, or PC/RevDev host/queue state was changed. The OpenHands pin remains `98849457621881ae2414719b82b8bc1cf535b4ab`.
