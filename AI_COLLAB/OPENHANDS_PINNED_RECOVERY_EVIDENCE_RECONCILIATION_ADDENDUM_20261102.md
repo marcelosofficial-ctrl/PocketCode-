@@ -300,3 +300,13 @@ The next independent pass should be implementation-level and narrowly targeted. 
 - Parsed != policy-approved != authorized. Preserve execution outcome, job/coordination disposition, evidence persistence, publication, artifact release, transfer and user-facing verdict as separate concepts.
 - The shared 18 fixtures remain provisional and do not replace canonical acceptance.
 - Do not invent missing evidence, source refs, test results, or owner decisions.
+
+
+## 10. Follow-up source confirmation — EventService async path and F31 local-stub boundary (2026-11-03)
+
+Two source details sharpen the earlier reconciliation:
+
+1. **PAUSED race applies to the normal server async path.** At pinned commit `98849457621881ae2414719b82b8bc1cf535b4ab`, `EventService.run()` in `openhands-agent-server/openhands/agent_server/event_service.py` explicitly prefers `await conversation.arun()` when the conversation and agent supply native async overrides. `LocalConversation` and the normal `Agent` meet those conditions. The lock release around LLM I/O in `Agent._astep()` is therefore part of the ordinary agent-server path, not an isolated direct-SDK-only condition. The complete pause → dispatch → crash → restore → resume test remains NOT RUN.
+2. **F31's crash conversation itself targets a local stub.** The exact F31 feature-map blob `5082730e1ba1d333daeaf321c21214ad4924cd12` configures `TOOL_AGENT` with model `openai/qa-stub`, fake key `qa-stub-key`, local `$TOOL/v1` base URL and zero retries. The broader F31 precondition explicitly ties `DEEPSEEK_API_KEY` to one real model run in `F31.no-plaintext-at-rest`; the overall setup also runs a DeepSeek preset. The crash-tool-call subfeature does not target DeepSeek, but a fully reduced standalone bootstrap that omits the preset/key has not been independently proven from the documented command sequence.
+
+These are source/documentation conclusions only. No upstream source/test was run or changed, no provider request was made, and no runtime/host action occurred. Preserve the distinction between “local stub is the model target for this subfeature” and “the complete F31 setup has been proven to run without a provider key.”
