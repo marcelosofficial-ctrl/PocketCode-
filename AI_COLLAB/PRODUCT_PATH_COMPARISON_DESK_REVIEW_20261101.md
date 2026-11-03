@@ -316,3 +316,43 @@ The report must label browser-local execution honestly: worker termination is cl
 Keep **Pyodide 314.0.7 core-only** as the leading browser-local candidate for the fixed standard-library task, but only as a candidate for the comparison. Do not adopt the full distribution by default, do not rely on `setInterruptBuffer` as the sole timeout mechanism, and do not assert that current iOS stable Safari has the WebKit 289686 fix without an authoritative build mapping or on-device test.
 
 This leaves the product recommendation unchanged: browser-local Python is one candidate execution path, not PocketCode's complete execution/security architecture. Safari/PWA behavior, worker-stop certainty, resource pressure, storage and file handoff remain NOT RUN. No runtime, provider, app, account or package was installed; no workload or device test was performed.
+
+
+### 10.6 Browser API and network confinement
+
+A Web Worker improves UI responsiveness and removes direct DOM access, but it is not a network-disabled process. The stable Pyodide JavaScript API documents that `jsglobals` defaults to `globalThis`; its own browser example imports `fetch` from Python's `js` module. A worker's `WorkerGlobalScope` also exposes `fetch()`. Therefore Python code can reach browser networking capabilities through JavaScript interop unless the execution context constrains them.
+
+**CSP placement is a critical detail.** The worker's policy is not generally inherited from the document that created it. For a normal network-loaded worker, the worker script response itself needs a `Content-Security-Policy` response header. MDN documents that the exception is a worker loaded from a globally unique `blob:` or `data:` URL, which inherits its creator's policy. The CSP `connect-src` directive controls `fetch()`, XHR, WebSocket, EventSource and `sendBeacon()`. A restrictive policy on the app page alone is not adequate evidence for a separately loaded worker.
+
+Recommended browser-local boundary for the first fixed-task comparison:
+
+- Put execution in a dedicated, static-only origin with no authenticated application endpoints, no user/session cookies, no API credentials, no secret-bearing local storage and no privileged JS bridge.
+- Serve the worker script with its own restrictive CSP response header. Keep `worker-src` and `script-src` narrow, and restrict `connect-src` to the minimum needed to load pinned runtime assets. The preferred first-task deployment is same-origin, immutable runtime assets on that static-only origin, with no third-party package fetch while user code is running.
+- Do not allow the run origin to share a parent-domain authentication cookie. Same-origin `fetch` is still possible if CSP permits it, so the origin must not host private APIs or sensitive responses.
+- Treat every message from the worker as untrusted output. Accept only a versioned message schema, enforce byte limits before parsing/rendering, and never execute worker-supplied commands in the app context.
+- Test attempted Python-to-JS `fetch`, XHR, WebSocket, EventSource and `sendBeacon` to external endpoints, plus attempts to reach same-origin API paths. Verify CSP violation evidence and that no request reached the test sink. Repeat this on iOS Safari and installed PWA.
+
+This is a proposed design constraint, not an already implemented PocketCode boundary. A CSP failure, unexpected same-origin endpoint, cookie presence or unbounded worker message must fail the test, not be papered over by CORS or by hiding APIs from the Python prompt.
+
+### 10.7 Stable browser memory limits
+
+A second important version distinction: stable Pyodide 314.0.7's official `loadPyodide()` configuration does not list `maxMemoryBytes`. The option appears in current development/314.1.0.dev documentation, where it caps WebAssembly heap growth and returns `MemoryError` after the configured maximum. A search of the stable 314.0.7 JavaScript API returns no such option.
+
+Consequences:
+- Do not configure or document `maxMemoryBytes` as a supported stable 314.0.7 feature.
+- A WebAssembly build-time maximum, browser/device memory pressure and a product-configured per-run quota are different things. Do not treat one as proof of another.
+- Until a stable Pyodide release exposes a supported cap, a browser-local runner cannot claim a product-controlled hard per-run memory ceiling solely from its Pyodide configuration.
+- Input, archive expansion, output and message sizes still need explicit application-level bounds. These reduce accidental pressure but do not replace a hard heap limit.
+- Memory exhaustion tests must record whether the worker failed, the tab/PWA was terminated, the browser stayed responsive, and the next run recovered. They must not infer a clean resource-limit outcome from a generic allocation error or page reload.
+
+### 10.8 Browser-path acceptance boundary
+
+The browser-local Pyodide candidate may still provide a valuable low-cost, phone-first execution experience for small bounded tasks. However, a worker plus Pyodide alone does **not** meet the full meaning of LOOP-12. To be considered a constrained execution boundary, the implementation must independently demonstrate:
+1. no app secrets or privileged same-origin endpoints are reachable from the run context;
+2. external network attempts are blocked by the worker's applied policy;
+3. worker messages and output collection are bounded before app-side buffering;
+4. deadline enforcement stops a non-yielding worker on supported iOS builds;
+5. memory pressure is safely contained and does not destabilize the app/device;
+6. page/PWA lifecycle transitions do not turn a lost observation into a false success.
+
+Until then, use browser Pyodide as a **browser-local comparator / limited-execution candidate**, not as a verified hostile-code sandbox or a substitute for a server-side OS boundary. The distinction preserves the existing LOOP-12 and CASE-15 meanings.
