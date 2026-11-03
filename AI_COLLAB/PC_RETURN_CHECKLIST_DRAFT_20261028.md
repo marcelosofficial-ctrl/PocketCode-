@@ -195,3 +195,16 @@ The first session is successful when:
 - the next code review task is small, concrete, and supported by the evidence.
 
 It is **not** successful merely because dependencies install, test methods exist, a provider is selected, or a simulated UI displays plausible output.
+
+
+## 2026-11-03 continuation preflight addendum
+
+This addendum preserves the existing first-session order and does not authorize a live execution/provider test.
+
+- Read the current primary handoff and [Pyodide attenuation / execution-boundary / lifecycle audit](PYODIDE_ATTENUATION_EXECUTION_BOUNDARY_AND_LIFECYCLE_MATRIX_20261103.md) before selecting any execution path.
+- Do not spend the first PC session trying to revive the Pyodide trusted-bootstrap sandbox experiment. The no-fork attenuation approach is rejected for hostile-code execution. Pyodide may be reconsidered only as a trusted/small-task convenience path, with separate device/runtime proof.
+- Happy Agent Linux strict-service remains a source reference only. It is not installed, selected, or approved; its missing absolute deadline, CPU quota, and output/storage controls remain blockers.
+- A user-owned remote PC is not automatically a safe execution boundary. Before any remote run, inspect the actual host and design a separate least-privilege disposable boundary with no ambient credentials, enforced egress policy, external deadline, bounded resources/output, cleanup reconciliation, and run-scoped artifact release.
+- At PC return, first establish fresh facts: device/OS/build, current repository locations and refs, uncommitted changes, installed runtimes/toolchains, RevDev source/runtime/binary/queue state, and available storage. Historical paths and hashes in older handoffs are not proof of current state.
+- Keep PR #2/#3 untouched. Re-fetch their state and exact heads, but do not edit, retarget, close, mark ready, or merge them. Run offline tests only from exact checked-in files after recording source hashes and runtime versions; do not use GitHub Actions as a shortcut.
+- Keep PocketCode and RevDev repositories, clients, adapters, runtimes, acceptance suites, security boundaries and release gates separate.
