@@ -395,6 +395,8 @@ The parent app should:
 The iframe bootstrap is a relay, not an authority. It validates the parent message schema, creates the worker from a fixed same-origin URL, passes only the run input, and forwards bounded worker messages. It has no access to the app's credentials or authenticated API. The worker's terminal message is a claim from the browser execution context, not a remote trusted attestation.
 
 ### 10.10 Candidate CSP and capability policy
+**Safari-specific blocker:** Pyodide 314.0.7's own browser test suite marks its restrictive-CSP test as an expected failure on Safari with the explicit reason that Safari does not support wasm-unsafe-eval. The fixture policy uses wasm-unsafe-eval to permit WebAssembly while withholding JavaScript unsafe-eval. This means the proposed worker CSP is not currently proven to load Pyodide on iOS Safari. Do not silently add unsafe-eval as a workaround: that directive also permits JavaScript eval/Function code generation and materially weakens the policy. If the target Safari requires unsafe-eval, the Python-visible API must first be proven unable to reach eval or equivalent code-generation paths, and the result remains a major residual risk. Otherwise, the browser Pyodide path may be unavailable under the desired CSP on iOS.
+
 
 The following is a starting policy for a prototype, not a verified cross-browser configuration. Test the exact response headers and Pyodide boot sequence on each supported browser. CSP is defence in depth; it is not a process sandbox.
 
@@ -425,17 +427,20 @@ The static-only execution origin may still receive requests to its own public as
 
 ### 10.11 Pyodide JavaScript-global minimization hypothesis
 
-Pyodide 314.0.7 documents PyodideConfig.jsglobals as the object used for the Python js module, defaulting to globalThis. This gives us a potential capability-reduction experiment: initialize Pyodide with a frozen, null-prototype, empty JavaScript object rather than the worker's actual global object, and expose no custom JS modules to user code.
+Pyodide 314.0.7 documents PyodideConfig.jsglobals as the object used for the Python js module, defaulting to globalThis. This gives us a potential capability-reduction experiment: initialize Pyodide with a frozen, null-prototype, empty JavaScript object rather than the worker's actual global object. However, source inspection of the exact 314.0.7 tag shows that this is only one of two automatically registered JavaScript modules. Pyodide also registers pyodide_js, backed by its public API object. That object exposes FS, PATH, ERRNO_CODES, _module and _api, and its API includes methods such as loadPackage, runPython, runPythonAsync and module registration. The documented FS exposes persistent filesystem backends including IDBFS. Therefore, an empty jsglobals object does NOT remove the broader Pyodide JavaScript API or prevent Python from reaching its filesystem/runtime objects through import pyodide_js.
 
-This may prevent ordinary Python code from obtaining fetch, postMessage, indexedDB, caches, navigator, location, close, globalThis, or other worker capabilities through import js. It is a hypothesis, not a verified sandbox feature or a guarantee against runtime/browser vulnerabilities. Pyodide's internal modules and the Python pyodide.ffi bridge must also be examined.
+Pyodide also exposes pyodide.code.run_js(), which imports eval from the js module and evaluates JavaScript. An empty jsglobals object should make that particular import unavailable, but this must be tested against the exact runtime and every other exposed API. Do not treat jsglobals alone as a capability boundary. The source-level proof must account for both js and pyodide_js, the full Python-visible Pyodide API, and the Emscripten FS object.
 
 Required isolated proof:
-1. Load pinned Pyodide 314.0.7 with an empty frozen null-prototype jsglobals object.
-2. Verify ordinary standard-library task behavior and stdout/stderr capture still work.
-3. From untrusted Python, attempt to resolve js.fetch, js.postMessage, js.indexedDB, js.caches, js.navigator, js.location, js.globalThis, pyodide.http.pyfetch, and access through pyodide.ffi.
-4. Attempt to import/use every custom JS module or proxy exposed by the host wrapper. The intended first proof exposes none.
-5. Inspect the resulting Python-visible object graph for references to worker globals, functions, ports, message handlers, Pyodide loader objects and host capabilities.
-6. Repeat on iOS Safari and installed PWA. Verify that the configuration behaves the same and does not silently fall back to globalThis.
+1. Inspect the exact pinned Pyodide tag's import-hook registration and public API. In 314.0.7, pyodide_js is automatically registered as a Python-importable module and the public API object exposes FS, _module and _api. Confirm the exact runtime's exposed properties, not only the docs summary.
+2. Determine whether pyodide_js can be unregistered or replaced with a minimal safe facade before untrusted code runs. Remove or attenuate FS, _module, _api, package loading, JS-module registration, stream setters and any other privileged API not needed by the fixed task. Prove that deleting sys.modules entries does not allow re-import through the JS import hook. Verify required Pyodide internals continue to work.
+3. Prove that the Python-visible surface cannot mount IDBFS or other persistent filesystems, access OPFS/IndexedDB/Cache Storage, mutate host streams, register JS modules, or recover the original worker global. A fresh in-memory FS is not enough if pyodide_js.FS remains exposed.
+4. Load pinned Pyodide 314.0.7 with an empty frozen null-prototype jsglobals object.
+5. Verify ordinary standard-library task behavior and stdout/stderr capture still work.
+6. From untrusted Python, attempt to resolve js.fetch, js.postMessage, js.indexedDB, js.caches, js.navigator, js.location, js.globalThis, pyodide.http.pyfetch, and access through pyodide.ffi.
+7. Attempt to import/use pyodide_js and every custom JS module or proxy exposed by the host wrapper. The intended first proof exposes no privileged JS API.
+8. Inspect the resulting Python-visible object graph for references to worker globals, functions, ports, message handlers, Pyodide loader objects and host capabilities.
+9. Repeat on iOS Safari and installed PWA. Verify that the configuration behaves the same and does not silently fall back to globalThis.
 
 If the test cannot demonstrate that Python lacks direct access to the worker's privileged APIs, do not rely on this option. Keep the execution origin credential-free and assume the Python code can use any worker API permitted by the browser and CSP.
 
@@ -493,6 +498,8 @@ If any app credential, app API, arbitrary external request, unbounded message pa
 
 
 ### 10.15 Sources for the browser boundary review
+- Pinned Pyodide 314.0.7 source: [api.ts](https://github.com/pyodide/pyodide/blob/314.0.7/src/js/api.ts) registers both js and pyodide_js and exposes FS/_module/_api; [pyodide.ts](https://github.com/pyodide/pyodide/blob/314.0.7/src/js/pyodide.ts) defines jsglobals; [test_pyodide.py](https://github.com/pyodide/pyodide/blob/314.0.7/src/tests/test_pyodide.py) marks the restrictive-CSP test xfail on Safari; [test_csp.html](https://github.com/pyodide/pyodide/blob/314.0.7/src/templates/test_csp.html) uses wasm-unsafe-eval; [api.ts FS docs](https://github.com/pyodide/pyodide/blob/314.0.7/src/js/api.ts) list IDBFS among the filesystem backends.
+- Pyodide 314.0.7 Python API source: [pyodide.code.run_js](https://github.com/pyodide/pyodide/blob/314.0.7/src/py/pyodide/code.py) delegates to JavaScript eval through the js module.
 
 Official sources checked 2026-11-03:
 
