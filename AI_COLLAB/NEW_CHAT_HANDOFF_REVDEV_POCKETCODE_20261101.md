@@ -626,3 +626,23 @@ Plan Section 21.9 adds a second source-confirmed OpenHands risk: pause() can set
 ### 23.2 Latest GitHub continuity status (2026-11-02)
 
 Working branch pocketcode-execution-boundary-crosswalk-2026-11-01 compares 580 ahead, 0 behind main (base 555840d8d83342513d9cd353d4d1522d46a5c82d). PR #2 and PR #3 were rechecked and remain OPEN; neither was modified. Recent branch commits are documentation-only OpenHands evidence corrections. Main and both PRs remain untouched.
+
+
+### 24. OpenHands PAUSED lifecycle correction — 2026-11-03
+
+Read Section 21.10 of `AI_COLLAB/OPENHANDS_EVENTLOG_HEAD_CRASH_WINDOW_FALSIFICATION_PLAN_20261102.md` and `AI_COLLAB/OPENHANDS_PINNED_RECOVERY_EVIDENCE_RECONCILIATION_ADDENDUM_20261102.md` before continuing. This supersedes the broad wording in Section 23.1 that says the existing pause test proves PAUSED can persist while an already-running tool remains in flight.
+
+The existing test `test_pause_while_running_continuous_actions` uses synchronous `conversation.run()`. The state lock is held over the tool step; `pause()` waits for the step/result before persisting PAUSED. The test proves a pause request stops later iterations, not that it persists PAUSED during the already-running tool.
+
+A narrower async race remains source-supported: `Agent._astep()` releases the state lock while awaiting `llm.agenerate()`. A normal pause can persist PAUSED during that LLM wait. When a tool-call response returns, the inspected async dispatch path does not recheck PAUSED before action creation/tool execution. If the process is killed during that newly dispatched tool before its result event is persisted, startup recovery skips it because startup repair only handles RUNNING. An explicit resume then reaches the unmatched-action path on the active branch and may dispatch again.
+
+Use the following status:
+- Synchronous pause during an already-running tool leaves PAUSED-until-step-completes unsupported by the current lock/test evidence. The call waits.
+- Async pause during outstanding LLM I/O, followed by tool-call dispatch after PAUSED, is a source-confirmed race path; deterministic persisted restart test NOT RUN.
+- Startup skips PAUSED: source-confirmed.
+- Resume can dispatch an unmatched active-branch action: source-confirmed path; complete server restart integration NOT RUN.
+- Actual duplicate external side effect: UNKNOWN until independently observed.
+
+Keep `interrupt()` separate: it cancels the async run and has a synthetic orphan-error path. Do not infer that a missing ObservationEvent proves no external side effect.
+
+No upstream source/tests were changed or run. No provider workload, spend, PR, merge, deployment, PC/host or queue action occurred.
