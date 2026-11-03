@@ -621,3 +621,17 @@ The stronger product hypothesis is the workflow around execution: exact run/atte
 The comparator refresh is public-source research only. No app was installed, no task/device/browser test was run, and no runtime was selected. The frozen task product-path comparison and paired AI correction experiment remain NOT RUN. Keep the manual copy/paste control; compare identical source/input/observed facts in every condition. Do not award simulated prototype screens execution or correctness points.
 
 The latest primary handoff remains this AI Workflow Director branch. The separate execution-boundary-crosswalk branch and its OpenHands research remain separate; do not copy or merge artifacts between branches without explicit authorization.
+
+
+## 14. PocketCode verdict-provenance audit — cross-branch source pin
+
+A read-only audit was added to the RevDev continuity branch:
+`resume/revdev/CONTINUATION_ADDENDUM_VERDICT_PROVENANCE_BRANCH_GOVERNANCE_2026-11-03.md` (RevDev branch `review/revdev-adaptive-ai-workshare-2026-10-27`, blob `2edabe714653935ca6023047a126bfc2b148271c`).
+
+The audited PocketCode source is pinned to the separate `pocketcode-execution-boundary-crosswalk-2026-11-01` branch:
+- `scripts/report_contract.py`, blob `2459137b6f8d4b6bfadd6218e5a9bd92e75b0817`
+- `scripts/test_report_contract.py`, blob `85109f056009d65a274e9306deb39b68e1fefbd2`
+
+Expanded finding: verdict precedence is not the only issue. The pure helper explicitly accepts caller-supplied evidence and does not authenticate its provenance. The formatter's `Evidence source` field is also caller-supplied text. The test named `test_nonzero_exit_overrides_script_printed_pass` does not supply script output; it tests contradictory `succeeded + nonzero exit` metadata. Keep script claims, trusted lifecycle status and process exit evidence separate. Add evidence-ingress/run-binding/terminal-conflict tests before claiming trustworthy verdicts.
+
+This is source/static analysis only. No code/tests were changed or run. Do not copy PocketCode source/audit files across branches. The owner-designated PocketCode branch remains this AI Workflow Director branch; the execution-boundary branch remains separate research.
