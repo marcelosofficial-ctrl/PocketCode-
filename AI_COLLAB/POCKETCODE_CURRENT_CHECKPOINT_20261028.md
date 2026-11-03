@@ -276,3 +276,24 @@ Re-ranked the existing open-source reuse cases against the actual first-proof bo
 5. **Defer:** REUSE-RECOVERY-01 until a concrete external side effect can commit separately from its receipt; REUSE-STALE-01 until persistent workspace/file writes enter scope. Existing CASE-13 remains the run-level ambiguous-response baseline.
 
 Regardless of the nonzero-exit FAILED-vs-INCOMPLETE decision, artifact release remains a separate fail-closed gate. This is static scope-based prioritization only; it does not resolve the owner decision, change contracts/tests, or claim execution evidence.
+
+
+## 2026-11-03 current research checkpoint
+
+**Direction unchanged:** phone-first run → inspect → report → correct → rerun; execution location remains undecided. The AI Workflow Director stays a supporting continuity/packet feature, not a replacement for proving the core execution/report loop.
+
+### Current priorities and durable evidence
+
+1. **OpenHands reference audit:** pinned recovery reconciliation is recorded in [the evidence addendum](OPENHANDS_PINNED_RECOVERY_EVIDENCE_RECONCILIATION_ADDENDUM_20261102.md), with PAUSED correction in Section 21.10 of the [crash-window plan](OPENHANDS_EVENTLOG_HEAD_CRASH_WINDOW_FALSIFICATION_PLAN_20261102.md). Source-level multi-action recovery and full-log/active-branch mismatches remain high-priority test candidates; the ordinary synchronous pause test does not prove PAUSED while a running tool remains in flight. The async LLM-I/O pause race is the narrower source-supported case. All upstream tests remain NOT RUN.
+2. **Local execution comparison:** the [fixed-task worksheet](PRODUCT_FIXED_TASK_COMPARISON_WORKSHEET_20261028.md) now records current Pyodios, Carnets and optional Pyto sources. Pyodios is the leading zero-cost local iPhone baseline for the small CSV/JSON task, but its documented inability to interrupt running Python is a significant reliability limitation. No app install or fixed-task run occurred; no winner was selected.
+3. **Shared golden fixtures:** the [preliminary review](SHARED_CONTRACT_GOLDEN_FIXTURE_CATALOGUE_CHATGPT_PRELIMINARY_REVIEW_20261101.md) now contains separate copy-ready independent review assignments for Claude (architecture/oracle feasibility) and Gemini (security/false-PASS red team). Preserve all SCF-001..018; do not freeze a schema or map concepts to native acceptance IDs without exact semantic equivalence.
+4. **Product status:** discovery/research only; no runtime/provider/framework selected; budget $0; fixed-task comparison NOT RUN; canonical LOOP/CASE and PocketCode acceptance NOT RUN; PR #2/#3 remain open draft and untouched.
+
+### Next bounded work
+
+- Obtain the independent SCF-001..018 reviews using the new prompts, then reconcile concrete counterexamples against the exact catalogue and crosswalk.
+- Keep the same CSV-to-JSON success and malformed-input task for the first hands-on comparison if a future attempt is separately authorized. Record process-stop behavior independently from client timeout; never treat Pyodios' timeout notice as proof of termination.
+- Keep OpenHands research to the three missing combined regression scenarios and close source questions only with exact evidence. Do not let it displace PocketCode's core task comparison.
+- Re-fetch exact branch heads, PR #2/#3 and canonical acceptance before any consequential action.
+
+No source/test/schema, canonical acceptance, owner decision, PR, provider, account, workflow, Actions, billing, deployment, PC host or queue was changed or exercised. This is a documentation and public-source research checkpoint only.
