@@ -262,3 +262,57 @@ The correct current disposition is therefore:
 - **Product hypothesis / report differentiator:** UNVALIDATED.
 
 This is a chronology and status reconciliation, not a new experiment, product decision, schema approval, or acceptance change. The earlier Section 5 recommendation to add the paired protocol has been satisfied by the later worksheet commits. Do not duplicate the protocol or treat its design completion as product-path evidence.
+
+
+## 10. iOS browser-runtime and worker-cancellation revalidation — 2026-11-03
+
+This is a narrow update to the browser-local execution comparison. It does not select Pyodide or change the fixed-task experiment.
+
+### 10.1 Current Pyodide release and payload implication
+
+The current official Pyodide stable documentation and release page still identify **314.0.7** as the latest stable version. The release page lists **315.0.0-alpha.2** as the prerelease/next channel, not the stable default. The full 314.0.7 distribution is documented as 200+ MB; the smaller `pyodide-core` archive contains the minimum runtime files and is intended for deployments that retrieve optional packages separately.
+
+Implication for PocketCode: do not use the 200+ MB full distribution as the assumed first-run payload. The frozen CSV-to-JSON task uses Python's standard library, so a core-only build may be a better comparator. This is a hypothesis to measure, not a verified payload size or load-time claim. Record first cold download, warm cache startup, offline/reload behavior, memory pressure and package requests separately. Pin the exact runtime and lockfile; do not use the moving `dev` CDN channel.
+
+### 10.2 Interrupt and hard termination are separate controls
+
+Pyodide 314.0.7 documents `pyodide.setInterruptBuffer()` as a web-worker-only mechanism that consumes a `SharedArrayBuffer` shared with another browser thread. Writing SIGINT (2) requests a Python `KeyboardInterrupt`. This is a cooperative language-level interrupt path. It is not an operating-system kill, a memory cap, or proof that every WebAssembly instruction/C extension will yield to Python signal handling.
+
+The browser `Worker.terminate()` path is the independent host-controlled stop mechanism. Do not conflate the two:
+- `setInterruptBuffer`: graceful/cooperative interrupt attempt; record whether the code actually handles and returns from it.
+- `Worker.terminate()`: host termination attempt; record worker exit, resource recovery and whether the page remains responsive.
+- App/page close, reload, backgrounding, or PWA suspension: separate lifecycle events, not substitutes for a confirmed worker-stop observation.
+
+SharedArrayBuffer availability is conditional on the browser's security/isolation context. Feature-detect `crossOriginIsolated` and `SharedArrayBuffer` at runtime; do not make them a required assumption for all deployed iOS contexts. A COOP/COEP setup also affects cross-origin resource loading, so the exact runtime/CDN and service-worker deployment must be tested together.
+
+### 10.3 WebKit fix status: do not over-credit stable iOS
+
+WebKit bug 289686 concerned a worker running non-yielding WebAssembly/atomic wait that could continue after `worker.terminate()` or page reload, with a possible high-CPU spin symptom. The bug is now marked RESOLVED FIXED. The fix landed in WebKit main as commit `03e836de2f7bd5627a95f60357633d59fb6bb18` (319508@main) on 2026-08-20.
+
+The release evidence needs careful interpretation:
+- The fix is explicitly listed in the official [Safari Technology Preview 252 release notes](https://webkit.org/blog/18304/release-notes-for-safari-technology-preview-252/).
+- Safari 27.0 became the stable iOS/WebKit generation in September 2026, but the official [Safari 27.0 resolved-issues page](https://webkit.org/blog/18325/webkit-features-for-safari-27-0/) does not enumerate bug 289686 / 147482360.
+- The current [Safari 27.2 release notes](https://webkit.org/blog/18515/webkit-features-for-safari-27-2/) list 20 fixes, but do not enumerate this worker-termination fix.
+- Apple confirms [iOS 27.2 and iPadOS 27.2 shipped on 2026-10-26](https://support.apple.com/en-us/149230). The Safari 27.2 release-note page confirms Safari 27.2 is included in iOS 27.2.
+
+Therefore, the defensible conclusion is: **the code fix exists in WebKit main and is present in Safari Technology Preview 252, but public stable-release notes reviewed here do not establish that the exact fix is present in the stable iOS 27.2 engine.** Absence from release notes is not proof the change was omitted. It is also not sufficient evidence to claim the fix shipped. Only a target-device test or an authoritative release-build mapping closes this uncertainty.
+
+### 10.4 Required iPhone proof matrix before relying on local execution
+
+Run these only when the device and explicit test conditions are available. Test both Safari tab and installed PWA where the PWA route is supported:
+
+1. **Capability inventory:** exact iOS/Safari build; browser vs PWA; `crossOriginIsolated`; `SharedArrayBuffer`; module-worker creation; worker startup; OPFS availability; actual Pyodide/core and package versions.
+2. **Cooperative interrupt:** a bounded Python loop that can process SIGINT; assert that a `KeyboardInterrupt` is observed, the worker reports a terminal message and the UI remains responsive.
+3. **Hard stop:** a non-yielding Python loop, a compiled WebAssembly tight loop, and an `Atomics.wait`/shared-memory worker. Trigger `Worker.terminate()`; verify the worker cannot continue consuming CPU, battery or memory after the stop is reported.
+4. **Page lifecycle:** reload, close, background/resume, app switch, PWA suspend/resume, force quit and page-process termination. Distinguish a lost UI from a confirmed stopped worker.
+5. **Recovery and leakage:** repeat start/stop at least 20 times, then inspect responsiveness, memory recovery, stale worker messages, storage consistency and whether previous run output can appear in the next run.
+6. **Resource pressure:** bounded memory stress and large file input/output; observe actual failure behavior, browser termination, persisted workspace and user-facing uncertainty. Do not infer a hard memory quota from an OOM or tab reload.
+7. **Cold/warm runtime delivery:** measure core-only standard-library startup and cached startup separately from the full build. Verify that an offline/reload scenario does not silently fetch arbitrary packages or produce a misleading success.
+
+The report must label browser-local execution honestly: worker termination is client/browser evidence, not trusted remote-host evidence; a local `KeyboardInterrupt` is not the same as a server-enforced deadline; and browser-origin APIs exposed to Python remain part of the capability surface.
+
+### 10.5 Decision
+
+Keep **Pyodide 314.0.7 core-only** as the leading browser-local candidate for the fixed standard-library task, but only as a candidate for the comparison. Do not adopt the full distribution by default, do not rely on `setInterruptBuffer` as the sole timeout mechanism, and do not assert that current iOS stable Safari has the WebKit 289686 fix without an authoritative build mapping or on-device test.
+
+This leaves the product recommendation unchanged: browser-local Python is one candidate execution path, not PocketCode's complete execution/security architecture. Safari/PWA behavior, worker-stop certainty, resource pressure, storage and file handoff remain NOT RUN. No runtime, provider, app, account or package was installed; no workload or device test was performed.
