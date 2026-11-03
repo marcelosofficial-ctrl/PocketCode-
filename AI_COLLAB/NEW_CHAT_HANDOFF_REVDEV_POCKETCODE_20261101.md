@@ -705,3 +705,15 @@ Multi-action recovery explicitly parents one error to the first unmatched action
 5. Refresh exact branch/main refs and PR #2/#3 before further consequential work.
 
 No source/test/acceptance change, schema freeze, PR action, provider workload, account, billing, install, Actions, merge, deployment, PC host, queue or runtime operation occurred. PR #2/#3 remain open draft and untouched; main remains unchanged; budget remains $0.
+
+
+## 26. OpenHands server-path and F31 source follow-up — 2026-11-03
+
+See Section 21.11 of the [crash-window plan](OPENHANDS_EVENTLOG_HEAD_CRASH_WINDOW_FALSIFICATION_PLAN_20261102.md) and Section 10 of the [pinned recovery addendum](OPENHANDS_PINNED_RECOVERY_EVIDENCE_RECONCILIATION_ADDENDUM_20261102.md).
+
+- Pinned `EventService.run()` explicitly selects native `await conversation.arun()` when the conversation and agent have async overrides. The normal `LocalConversation` + `Agent` combination meets those conditions. Thus the pause-during-LLM-I/O race is relevant to the ordinary agent-server route, not only a direct SDK invocation.
+- The existing pause test still proves the synchronous pause-during-tool case waits for the current step/result; it does not prove PAUSED is persisted during that tool.
+- The narrow async race remains: while `Agent._astep()` has released the lock awaiting LLM I/O, normal pause can persist PAUSED; the returned tool-call response may then dispatch without checking PAUSED. Startup only repairs RUNNING. End-to-end persisted server test remains NOT RUN.
+- F31's `TOOL_AGENT` explicitly targets a local `openai/qa-stub` endpoint at `$TOOL/v1` with a placeholder key and zero retries. The documented DeepSeek key requirement is tied to a separate `F31.no-plaintext-at-rest` real-model run; a reduced no-DeepSeek bootstrap for crash-tool-call is plausible but not fully command-verified.
+
+No OpenHands source/tests or workloads changed or ran. No provider request, spend, Actions, host/queue operation, PR change, merge or deployment occurred.
