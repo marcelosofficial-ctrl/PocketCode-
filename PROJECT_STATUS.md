@@ -198,3 +198,15 @@ After creating the handoff and adding this status pointer, the research branch w
 - Status pointer read-back blob before this append: `5c6abae101c32222ea80908718b40a42b8c7ac46`.
 - PR #2 and #3 were re-fetched after handoff creation; both remain OPEN, DRAFT, UNMERGED. Their protected head SHAs remain `eb8b7ea83cb0e8fe1880351276c485b761431791` and `0ddcc0bc97bac5d446aefedf3d71f99411bd841d`.
 - This is a documentation-only status append. No PR, source/test, canonical acceptance, Action/workflow, provider, account, workload, host, queue, installation, merge, deployment or spend changed.
+
+
+## 2026-11-03 Pyodide attenuation decision and lifecycle crosswalk
+
+Research addendum: [PYODIDE_ATTENUATION_EXECUTION_BOUNDARY_AND_LIFECYCLE_MATRIX_20261103.md](AI_COLLAB/PYODIDE_ATTENUATION_EXECUTION_BOUNDARY_AND_LIFECYCLE_MATRIX_20261103.md).
+
+- Completed pinned Pyodide 314.0.7 source audit of import-hook unregister behavior, FFI re-registration, package-loader and webloop JS proxy references, state snapshots, to_js/JsProxy, and Safari CSP.
+- Decision: reject the trusted-bootstrap attenuation experiment as a maintainable no-fork hostile-code sandbox. Keep Pyodide only as a possible trusted/small-task convenience comparator. The fixed synchronous standard-library fixture does not inherently require JS/network/async APIs, but post-attenuation operation remains untested.
+- Exact source shows unregister removes the import-finder registration but not cached imports; package_loader retains loadedPackages; webloop retains scheduleCallback; FFI exposes module registration; _state admits there is no general way to track all module global state. Pyodide 314.0.7 marks restrictive CSP expected-fail on Safari because wasm-unsafe-eval is unsupported.
+- Completed comparison of browser Pyodide, isolated Linux service reference, future user-owned remote PC, and manual copy/paste against LOOP-01..14 and CASE-01..16.
+- Added nine-stage lifecycle/evidence matrix: user intent, policy, authorization, reservation/dispatch, execution, result/disposition, cleanup, artifact release, and report publication. Unknown states and D-01..D-08 remain intact. No canonical IDs or acceptance meanings changed.
+- No runtime/device/security test, provider workload, implementation, Actions, PR, account, spend, host, queue, or local PC state changed. Fixed-task product comparison and paired AI correction experiment remain NOT RUN; differentiator UNVALIDATED.
