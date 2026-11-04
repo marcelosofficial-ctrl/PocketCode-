@@ -743,3 +743,18 @@ The Apache-2.0-derived workspace helper now has a prominent source-file modifica
 After that source-header change, the eight workspace-path tests were rerun on CPython 3.13.5/Linux and passed 8/8. The OpenHands MIT atomic writer remains an exact upstream source blob and its five tests passed 5/5. Full commands, environment and source/test hashes are recorded in [REFERENCE_COPY_TEST_RESULTS_20261105.md](../RESEARCH/vendor/REFERENCE_COPY_TEST_RESULTS_20261105.md), latest blob `63c3b68ba15b2aa5e06066c510fd983c9dbd7f1e`.
 
 This is reference-utility verification only. No product integration, Windows/mobile/device, concurrency, power-loss durability or hostile-code security claim is made. Both utilities remain under `RESEARCH/vendor/` with no production imports.
+
+
+## 23. 2026-11-05 competitive landscape correction: Cursor, Codex and Claude mobile
+
+The competitor deep dive now includes native mobile coding-agent control:
+- Cursor for iOS starts/supervises cloud agents and controls local-computer agents; current docs say no in-app editor/terminal/file browser, iOS 26+, Android planned, paid access for cloud/remote agents. Remote Control still needs the computer awake and online.
+- Codex in the ChatGPT mobile app can start/continue work in a cloud environment or connected Mac/Windows host, guide tasks, approve actions, and inspect changes/diffs/test results. Codex Remote was announced GA for all ChatGPT plans on 2026-06-25; workspace/usage/environment availability still matters.
+- Claude Code supports a mobile Code tab, session teleport and `/remote-control` for controlling local sessions from phone/web; spawning a local session from mobile requires supported CLI and paid plans.
+
+The product decision is stronger now: **do not compete on remote agent inboxes, chat streaming, generic task approvals or PR review alone.** These are already well covered. PocketCode's opportunity is provider-neutral, portable execution/evidence/artifact/correction workflow, with a safe and genuinely useful no-PC execution path only if one can be proven. That last point remains unproven.
+
+New primary docs:
+- Cursor: https://prod.cursor.com/docs/cloud-agent/mobile
+- Codex: https://learn.chatgpt.com/docs/mobile and ChatGPT release notes June 25, 2026
+- Claude Code: https://support.claude.com/en/articles/14554000-claude-code-power-user-tips
