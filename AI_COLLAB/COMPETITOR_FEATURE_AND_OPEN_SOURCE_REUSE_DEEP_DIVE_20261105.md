@@ -50,7 +50,44 @@ Sources:
 
 **PocketCode response:** do not duplicate a hosted browser IDE or PR agent. The useful niche is the portable workflow between AI assistants and execution: import/paste source and inputs, run under an explicit policy, verify what happened, export a useful report/artifact, and continue elsewhere. Consider optional GitHub issue/PR handoff later, not a required backend.
 
-### 2.2 Phone as a remote control for a computer
+### 2.2 Native mobile control of coding agents is now a crowded category
+
+A current product check expands the direct competitors beyond GitHub and Replit:
+
+**Cursor for iOS**
+- A native iPhone/iPad app can start and supervise cloud agents, and control agents running on the user's own computer.
+- Its mobile flow includes live work updates, follow-up prompts, subagent transcript inspection, diffs, PR review/merge, push notifications/Live Activities, screenshots/visual direction, voice input, slash commands, skills and MCP.
+- Cursor explicitly says the mobile app itself has no code editor, terminal or file browser: it is for directing/reviewing agents, not replacing the desktop IDE.
+- Remote Control moves the agent loop to Cursor's cloud while tool calls (terminal, file edits, tests, Git) run on the user's computer. The computer must remain awake and online; repository secrets and credentials stay on the machine while needed context/tool results go to Cursor.
+- The current official page says iOS/iPadOS 26+, Android planned, and paid-plan access for cloud agents/remote control. Free accounts can sign in but cannot start agents under the cited plan terms.
+
+Sources:
+- https://cursor.com/mobile
+- https://prod.cursor.com/docs/cloud-agent/mobile
+- https://prod.cursor.com/help/ai-features/mobile-app
+
+**Codex in the ChatGPT mobile app**
+- Current documentation says users can choose a cloud environment or connected Mac/Windows computer, start/continue tasks, steer them, approve commands and inspect changed files, diffs and test results.
+- Codex Remote became generally available on all ChatGPT plans in the June 25, 2026 release note; actual cloud/host capability, usage and workspace availability still depend on environment, rollout and settings.
+- Remote host connections use one-to-one QR pairing and keep files, credentials, permissions and tools on the connected machine. This is a strong mobile control plane, not a phone-local general-purpose runner.
+
+Sources:
+- https://learn.chatgpt.com/docs/mobile
+- https://learn.chatgpt.com/docs/remote-connections
+- https://help.openai.com/en/articles/6825453-chatgpt-release-notes (June 25, 2026 entry)
+
+**Claude Code mobile / Remote Control**
+- The current Claude Code guide describes an iOS/Android Claude app Code tab, teleporting cloud sessions between devices, and `/remote-control` to control a local session from phone/web.
+- `claude remote-control` can launch a new local session from the mobile app on supported CLI versions and paid plan tiers.
+- This remains an interaction surface around a machine/session; don't mistake it for a no-PC local execution runtime.
+
+Sources:
+- https://support.claude.com/en/articles/14554000-claude-code-power-user-tips
+- https://code.claude.com/docs/en/remote-control
+
+**Executive comparison:** Cursor, Codex and Claude Code have largely occupied the "phone as control plane for an agent" space. PocketCode should not compete on remote chat streaming, approvals, agent inboxes, push notifications or PR review alone. Those are now table stakes in this category. Compete on the workflow *after and around execution*: portable task/input contract, clear execution location, attempt identity, honest process/lifecycle and cleanup evidence, exact artifact integrity, and a report that works with any assistant and does not require the agent vendor's workspace. Whether PocketCode can make safe, useful execution truly independent of a PC remains the critical product proof, not an assumed differentiator.
+
+### 2.3 Phone as a remote control for a computer
 
 **Happy**
 
@@ -65,7 +102,7 @@ Sources:
 
 **PocketCode response:** preserve remote PC/SSH/Tailscale as a later execution adapter, not the only path. Make remote control optional and visibly different from on-device/local execution. Every run report must identify where execution occurred and who controls the environment.
 
-### 2.3 Mobile Python editors and local runtimes
+### 2.4 Mobile Python editors and local runtimes
 
 Prior research covered Pyodios, Carnets, a-Shell, Pyto, Pythonista, Coilbook, Python Code Editor & IDE, Pydroid 3 and Termux. They demonstrate that local interpreter access, editing, notebooks, packages, console and file import/export are not unique.
 
