@@ -1,3 +1,8 @@
+# Copyright 2026 Sebastian Raschka
+# Adapted by the PocketCode project from rasbt/mini-coding-agent.
+# Modifications: extracted the path guard into standalone functions and added
+# an explicit existing-workspace-root check. See the adjacent README and LICENSE.
+
 from pathlib import Path
 
 
