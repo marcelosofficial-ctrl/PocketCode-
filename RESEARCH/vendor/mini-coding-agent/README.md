@@ -9,7 +9,8 @@
 - Upstream source: `mini_coding_agent.py`, blob `1bf2403e5033227e24954faad7f7ba4442f7e4c2`
 - Source functions: `MiniAgent.path_is_within_root` and `MiniAgent.path`
 - Upstream license: Apache-2.0, LICENSE blob `1e79798da4aac546989b7ca4f26bf1acfea64864`
-- This folder contains the relevant license terms and retains the upstream attribution.
+- This folder contains the full upstream LICENSE. The source file is visibly marked as modified, as required by Apache-2.0.
+- Adapted PocketCode source blob after adding the required modification notice: `d91b205e6c9a23732fb95a214ddcac0731b0c27f`.
 
 The adaptation makes the functions standalone and adds an explicit requirement that the workspace root already exist. It is not a verbatim copy of the complete source module.
 
