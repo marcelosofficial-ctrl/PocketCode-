@@ -705,3 +705,14 @@ The retry audit confirms the maintenance-source success path drops earlier faile
 The target-class audit separates immutable by-mission result, mutable latest pointers, timestamped history/evidence, evidence index and mutable handoff. Its restart behavior is conditional on the by-mission preflight: existing path triggers early return and skips history/evidence/handoff; absent path allows a fresh snapshot. This narrows earlier broad statements about every restart regenerating history/evidence.
 
 All these findings are limited to the tracked RevDev maintenance copy. They do not prove installed/live behavior. RevDev P0 remains OPEN/release-blocking, P8U/P0-D NOT RUN, and the recovered P8U mission must never be replayed. No source or tests were changed or run.
+
+
+## 20. 2026-11-04 latest repository comparison before handoff close
+
+| Repository / branch | Ahead of main | Behind | Merge base |
+|---|---:|---:|---|
+| RevDev `review/revdev-adaptive-ai-workshare-2026-10-27` | 506 | 0 | `058f9025319d12e76195659c715ccb4afce133b8` |
+| PocketCode owner-designated `pocketcode-ai-workflow-director-research-2026-10-28` | 591 | 0 | `555840d8d83342513d9cd353d4d1522d46a5c82d` |
+| PocketCode separate `pocketcode-execution-boundary-crosswalk-2026-11-01` | 605 | 0 | `555840d8d83342513d9cd353d4d1522d46a5c82d` |
+
+These comparisons were fetched immediately before this handoff edit. They are divergence counts, not merge-readiness evidence. Both PocketCode branches remain separate; no transfer/merge was performed. PR #1/#2/#3 remain open and untouched; the review-list calls in this continuation returned no submitted reviews.
