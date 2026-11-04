@@ -277,6 +277,7 @@ Upstream:
 - Commit `717cae4ff10d01773bd12951f62a575825053414`
 - Source blob `1bf2403e5033227e24954faad7f7ba4442f7e4c2`
 - License blob `1e79798da4aac546989b7ca4f26bf1acfea64864`. The copied LICENSE was replaced with the complete upstream file and its blob equals the upstream license blob.
+- Adapted PocketCode helper blob after adding the required Apache-2.0 modification notice: `d91b205e6c9a23732fb95a214ddcac0731b0c27f`.
 
 The adaptation resolves the workspace root, resolves symlinks before containment check, checks nearest existing ancestor with samefile(), and permits creating a not-yet-existing file beneath an existing internal parent.
 
