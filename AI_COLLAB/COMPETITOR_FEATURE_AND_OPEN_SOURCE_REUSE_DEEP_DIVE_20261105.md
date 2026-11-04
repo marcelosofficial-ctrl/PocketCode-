@@ -33,7 +33,7 @@ Competitors have already solved many adjacent UX problems. We should adopt the s
 
 **GitHub Copilot coding agent / GitHub Mobile**
 
-GitHub documentation describes starting and tracking coding-agent sessions from GitHub Mobile: assign an issue, choose an environment and model/agent, let the agent work in the background on a branch, inspect changes and create a pull request. GitHub also documents mobile workflows for asking the agent to research/plan and make changes without immediately creating a PR, and for resolving merge conflicts on mobile. These are strong adjacent capabilities for a no-PC coding workflow. They remain tied to GitHub's hosted agent product, account/plan entitlements, repository permissions and PR workflow; they do not replace PocketCode's cross-provider, arbitrary-input-file, local/offline or execution-evidence goals. <Cite refs={["turn724813search0","turn724813search11","turn724813search10"]}/>
+GitHub documentation describes starting and tracking coding-agent sessions from GitHub Mobile: assign an issue, choose an environment and model/agent, let the agent work in the background on a branch, inspect changes and create a pull request. GitHub also documents mobile workflows for asking the agent to research/plan and make changes without immediately creating a PR, and for resolving merge conflicts on mobile. These are strong adjacent capabilities for a no-PC coding workflow. They remain tied to GitHub's hosted agent product, account/plan entitlements, repository permissions and PR workflow; they do not replace PocketCode's cross-provider, arbitrary-input-file, local/offline or execution-evidence goals. (GitHub’s official docs describe these mobile capabilities; see the linked product and changelog references below.)
 
 Sources:
 - https://docs.github.com/en/copilot/how-tos/use-copilot-agents/use-copilot-coding-agent
@@ -42,7 +42,7 @@ Sources:
 
 **Replit mobile**
 
-Replit advertises starting and editing web projects with Agent, following progress, previewing and deploying a live website/app. It is a compelling "create something from a phone" competitor, particularly for web apps. Replit's mobile app is not a general arbitrary-code evidence runner; the full native iOS app workflow (Expo/React Native build/preview/App Store pathway) is described through Replit's web environment, not as a complete native mobile-app creation path within the mobile app itself. Cloud execution and Replit's own product/billing terms are central. <Cite refs={["turn724813search1","turn724813search7","turn724813search8"]}/>
+Replit advertises starting and editing web projects with Agent, following progress, previewing and deploying a live website/app. It is a compelling "create something from a phone" competitor, particularly for web apps. Replit's mobile app is not a general arbitrary-code evidence runner; the full native iOS app workflow (Expo/React Native build/preview/App Store pathway) is described through Replit's web environment, not as a complete native mobile-app creation path within the mobile app itself. Cloud execution and Replit's own product/billing terms are central. (These are vendor descriptions, not hands-on device test results.)
 
 Sources:
 - https://replit.com/mobile
@@ -56,7 +56,7 @@ Sources:
 
 Happy's phone experience is strong for inspecting and resuming agent sessions running on a user's own computer, with encrypted cross-device communication and support for several coding-agent harnesses. This is a good model for the *remote companion* use case. It does not remove the need for a computer to host the agent/runtime, so it does not solve PocketCode's no-PC-first requirement by itself.
 
-Current project messaging has moved toward Happy Desktop; the older `happy` CLI is described as maintenance-mode. The source snapshot reviewed below is an older CLI-era pinned revision. Do not mistake its server/client layout for the newest desktop architecture. <Cite refs={["turn907529search6","turn907529search8","turn907529search12","turn907529search13"]}/>
+Current project messaging has moved toward Happy Desktop; the older `happy` CLI is described as maintenance-mode. The source snapshot reviewed below is an older CLI-era pinned revision. Do not mistake its server/client layout for the newest desktop architecture. (This distinction reflects current Happy documentation and should not be projected backward onto the older CLI source snapshot.)
 
 Sources:
 - https://happy.engineering/
@@ -233,7 +233,7 @@ Implementation:
 - Repo: https://github.com/SWE-agent/mini-swe-agent
 - Pinned commit `04d809ceab9df28f9adaed044884180159172930`; MIT.
 - The project documents a small linear agent loop with one Bash tool and independent subprocess calls, plus pluggable local/container/bwrap environments.
-- Take the small loop, transcript transparency, independent command invocation and replaceable environment seam. Do not give arbitrary Bash to untrusted code without proven OS sandbox, egress policy, resource limit, process-tree teardown and artifact boundary. <Cite refs={["turn907529search11"]}/>
+- Take the small loop, transcript transparency, independent command invocation and replaceable environment seam. Do not give arbitrary Bash to untrusted code without proven OS sandbox, egress policy, resource limit, process-tree teardown and artifact boundary. (See the upstream v2 README and environment documentation.)
 
 ### 4.7 Aider: bounded repository context and verification
 
