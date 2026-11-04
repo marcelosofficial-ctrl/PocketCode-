@@ -653,7 +653,7 @@ These are divergence counts, not merge-readiness evidence. The two PocketCode br
 ## 16. 2026-11-04 report projection and publisher follow-up
 
 New owner-branch audit:
-- [Report verdict/provenance projection audit](REPORT_VERDICT_PROVENANCE_PROJECTION_AUDIT_20261104.md), blob `26d6c567260feef37f9302894c6a82d7f7361228`.
+- [Report verdict/provenance projection audit](REPORT_VERDICT_PROVENANCE_PROJECTION_AUDIT_20261104.md), blob `f35dd2b9b310b2587d13d3fd0fb4e729864b4acb`.
 
 It reconciles the pinned helper with the existing adapter-envelope design. The formatter should remain a pure projection. The actual gate is that a trusted coordinator must authenticate and bind evidence before calling it. The audit expands the static precedence truth table and prepares focused Claude/Gemini review questions. No source/test or canonical acceptance change was made; D-01..D-04 remain OPEN; tests NOT RUN.
 
@@ -692,3 +692,16 @@ Fresh read-only compare against each repository's `main`, captured before this h
 These are divergence counts only, not merge-readiness evidence. The owner-designated branch remains `pocketcode-ai-workflow-director-research-2026-10-28`. The OpenHands source-research branch remains distinct and untouched; do not copy or merge its artifacts here.
 
 PR #2/#3 and RevDev PR #1 remain open and untouched. Their review lists were empty in the latest review-list read. No PR action occurred.
+
+
+## 19. RevDev publisher target-class and retry-trace refinements — 2026-11-04
+
+The RevDev research branch now has:
+- [P8U-03/P8U-06 retry/access audit](https://github.com/marcelosofficial-ctrl/DevRelay-Missions/blob/review/revdev-adaptive-ai-workshare-2026-10-27/resume/revdev/P8U03_P8U06_MAINTENANCE_PUBLISHER_RETRY_ACCESS_AUDIT_2026-11-04.md), latest blob `e2cebf6b3274bc8c2137fb7d59a329928a886349`.
+- [Publisher target classes/restart-idempotency audit](https://github.com/marcelosofficial-ctrl/DevRelay-Missions/blob/review/revdev-adaptive-ai-workshare-2026-10-27/resume/revdev/PUBLISHER_TARGET_CLASSES_AND_RESTART_IDEMPOTENCY_AUDIT_2026-11-04.md), latest blob `7ac2762bb630df0d34bdb7c80c7f164289981f8f`.
+
+The retry audit confirms the maintenance-source success path drops earlier failed PATCH response text when a later attempt succeeds; only the final attempt count remains. The full API status/header/wait/attempt sequence is not durably retained. The GitHub private-resource 404 finding is further qualified: documented 404 causes also include malformed URLs/path parameters and unsupported methods, so a text match cannot establish exact-target absence.
+
+The target-class audit separates immutable by-mission result, mutable latest pointers, timestamped history/evidence, evidence index and mutable handoff. Its restart behavior is conditional on the by-mission preflight: existing path triggers early return and skips history/evidence/handoff; absent path allows a fresh snapshot. This narrows earlier broad statements about every restart regenerating history/evidence.
+
+All these findings are limited to the tracked RevDev maintenance copy. They do not prove installed/live behavior. RevDev P0 remains OPEN/release-blocking, P8U/P0-D NOT RUN, and the recovered P8U mission must never be replayed. No source or tests were changed or run.
