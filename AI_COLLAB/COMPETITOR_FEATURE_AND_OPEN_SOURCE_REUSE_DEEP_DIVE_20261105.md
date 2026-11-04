@@ -282,7 +282,7 @@ The adaptation resolves the workspace root, resolves symlinks before containment
 
 Limits: not a sandbox and does not prevent TOCTOU replacement after validation. Does not handle hard links, Windows reparse-point subtleties, ACLs, mount points, devices, archive extraction or file-handle races. Never claim hostile-code isolation.
 
-**Verification:** reference files and project-authored test files are committed. No test execution is claimed in this document. No mobile/Windows/product test was performed.
+**Verification:** reference files and project-authored test files are committed. Exact local Git blob hashes were computed for the helper and test files; they match the PocketCode source/test blobs. Both reference suites were executed on CPython 3.13.5/Linux on 2026-11-05: OpenHands helper 5/5 passed; workspace path helper 8/8 passed. This does not constitute mobile, Windows, app integration, hostile-code isolation, or product acceptance testing.
 
 ## 6. What should be built, in priority order
 
