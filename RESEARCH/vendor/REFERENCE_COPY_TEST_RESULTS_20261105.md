@@ -41,7 +41,7 @@ Upstream:
 - Repository: `rasbt/mini-coding-agent`
 - Commit: `717cae4ff10d01773bd12951f62a575825053414`
 - Upstream source file blob: `1bf2403e5033227e24954faad7f7ba4442f7e4c2`
-- Adapted PocketCode helper blob: `ecb5dba4c06ce716d7dd5e47301653422ad7ea9f`
+- Adapted PocketCode helper blob: `d91b205e6c9a23732fb95a214ddcac0731b0c27f` (includes the required Apache-2.0 modification notice)
 - PocketCode test blob: `a244c6c0db6e884d9e0c6ae51c393c87a7a36435`
 - Upstream Apache-2.0 LICENSE blob: `1e79798da4aac546989b7ca4f26bf1acfea64864` (PocketCode license blob exactly matches upstream)
 
