@@ -660,3 +660,20 @@ It reconciles the pinned helper with the existing adapter-envelope design. The f
 RevDev also added [P8U-03/P8U-06 maintenance publisher audit](https://github.com/marcelosofficial-ctrl/DevRelay-Missions/blob/review/revdev-adaptive-ai-workshare-2026-10-27/resume/revdev/P8U03_P8U06_MAINTENANCE_PUBLISHER_RETRY_ACCESS_AUDIT_2026-11-04.md), a static review of the tracked maintenance publisher only. It finds no explicit response-header-aware Retry-After handling and text-based 404 absence classification. This maps to existing P8U-03/P8U-06; live publisher parity remains UNKNOWN. P0 is still release-blocking; P8U/P0-D remain NOT RUN.
 
 No tests, provider workloads, app installs, browser/device checks, Actions, PR changes, host/queue/runtime operations or deployments occurred.
+
+
+## 17. 2026-11-04 shared semantic crosswalk with RevDev
+
+Read the RevDev-side [identity, result and publication crosswalk](https://github.com/marcelosofficial-ctrl/DevRelay-Missions/blob/review/revdev-adaptive-ai-workshare-2026-10-27/resume/revdev/REVDEV_POCKETCODE_IDENTITY_RESULT_PUBLICATION_CROSSWALK_2026-11-04.md), blob `4c3b98e039cbaf5bde6cfc1ce1c2e7cd0efbbfbf`.
+
+The shared product goal remains one coherent PC-and-phone programme with separate repositories, roadmaps, clients, adapters, acceptance suites, release gates and security boundaries. The crosswalk recommends aligning reusable invariants only:
+- stable attempt identity and exact-content idempotence;
+- immutable evidence/history and explicit conflict handling;
+- execution outcome separate from publication/report state;
+- ambiguous acknowledgement recovery without blind replay;
+- mutable current pointers separate from immutable results;
+- trusted provenance before report projection.
+
+Important non-equivalences: RevDev Mission ID is not PocketCode job ID; RevDev runId is the closest attempt-level counterpart but not automatically interchangeable with PocketCode attempt_id; GitHub publication is not artifact release/download; RevDev grouped interaction-cycle/audio requirements remain native.
+
+This is a design reconciliation only. No canonical acceptance IDs/expected strings, owner decisions, schemas, source, tests, runtimes, providers, PRs or security boundaries changed.
