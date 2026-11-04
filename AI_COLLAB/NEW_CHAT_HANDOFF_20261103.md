@@ -677,3 +677,18 @@ The shared product goal remains one coherent PC-and-phone programme with separat
 Important non-equivalences: RevDev Mission ID is not PocketCode job ID; RevDev runId is the closest attempt-level counterpart but not automatically interchangeable with PocketCode attempt_id; GitHub publication is not artifact release/download; RevDev grouped interaction-cycle/audio requirements remain native.
 
 This is a design reconciliation only. No canonical acceptance IDs/expected strings, owner decisions, schemas, source, tests, runtimes, providers, PRs or security boundaries changed.
+
+
+## 18. Latest cross-project branch comparison snapshot — 2026-11-04
+
+Fresh read-only compare against each repository's `main`, captured before this handoff update:
+
+| Repository / branch | Ahead | Behind | Merge base |
+|---|---:|---:|---|
+| RevDev `review/revdev-adaptive-ai-workshare-2026-10-27` | 498 | 0 | `058f9025319d12e76195659c715ccb4afce133b8` |
+| PocketCode owner-designated `pocketcode-ai-workflow-director-research-2026-10-28` | 589 | 0 | `555840d8d83342513d9cd353d4d1522d46a5c82d` |
+| PocketCode separate `pocketcode-execution-boundary-crosswalk-2026-11-01` | 605 | 0 | `555840d8d83342513d9cd353d4d1522d46a5c82d` |
+
+These are divergence counts only, not merge-readiness evidence. The owner-designated branch remains `pocketcode-ai-workflow-director-research-2026-10-28`. The OpenHands source-research branch remains distinct and untouched; do not copy or merge its artifacts here.
+
+PR #2/#3 and RevDev PR #1 remain open and untouched. Their review lists were empty in the latest review-list read. No PR action occurred.
