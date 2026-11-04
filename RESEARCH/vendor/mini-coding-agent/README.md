@@ -20,7 +20,7 @@ The adaptation makes the functions standalone and adds an explicit requirement t
 - Checks the nearest existing ancestor with `samefile()`, allowing a not-yet-created output path beneath an in-root directory.
 - Rejects parent traversal, absolute outside paths and symlink escapes.
 
-The accompanying eight tests are project-authored, not upstream tests.
+The accompanying eight tests are project-authored, not upstream tests. They were executed successfully on 2026-11-05 using CPython 3.13.5 on Linux: `python -m unittest discover -s /tmp/pocketcode_vendor_test/workspace_paths -v` (8 passed, 0 failed, 0 skipped). The test source blob is `a244c6c0db6e884d9e0c6ae51c393c87a7a36435`; the adapted helper blob is `ecb5dba4c06ce716d7dd5e47301653422ad7ea9f`.
 
 ## Limitations
 
