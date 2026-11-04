@@ -734,3 +734,12 @@ Reference-code test evidence:
 - Both suites passed under CPython 3.13.5/Linux in the isolated container: atomic writer 5/5; workspace path helper 8/8. Their exact local Git blob hashes match the PocketCode source/test files. This proves only the isolated utility behavior on Linux, not PocketCode app integration, Windows/mobile path semantics, hostile-code isolation, power-loss durability or product acceptance.
 
 No runtime/provider/store selected; no PocketCode source integration or canonical acceptance change; D-01..D-08 remain as recorded; LOOP/CASE unchanged. No paid services, browser/device testing, provider workloads, Actions, PR changes, install, host, merge or deployment.
+
+
+## 22. 2026-11-05 reference-code licensing and test re-verification
+
+The Apache-2.0-derived workspace helper now has a prominent source-file modification notice, and its README preserves the complete upstream license attribution. Latest helper blob: `d91b205e6c9a23732fb95a214ddcac0731b0c27f`.
+
+After that source-header change, the eight workspace-path tests were rerun on CPython 3.13.5/Linux and passed 8/8. The OpenHands MIT atomic writer remains an exact upstream source blob and its five tests passed 5/5. Full commands, environment and source/test hashes are recorded in [REFERENCE_COPY_TEST_RESULTS_20261105.md](../RESEARCH/vendor/REFERENCE_COPY_TEST_RESULTS_20261105.md), latest blob `63c3b68ba15b2aa5e06066c510fd983c9dbd7f1e`.
+
+This is reference-utility verification only. No product integration, Windows/mobile/device, concurrency, power-loss durability or hostile-code security claim is made. Both utilities remain under `RESEARCH/vendor/` with no production imports.
