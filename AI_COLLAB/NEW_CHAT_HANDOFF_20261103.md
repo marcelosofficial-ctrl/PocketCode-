@@ -716,3 +716,21 @@ All these findings are limited to the tracked RevDev maintenance copy. They do n
 | PocketCode separate `pocketcode-execution-boundary-crosswalk-2026-11-01` | 605 | 0 | `555840d8d83342513d9cd353d4d1522d46a5c82d` |
 
 These comparisons were fetched immediately before this handoff edit. They are divergence counts, not merge-readiness evidence. Both PocketCode branches remain separate; no transfer/merge was performed. PR #1/#2/#3 remain open and untouched; the review-list calls in this continuation returned no submitted reviews.
+
+
+## 21. 2026-11-05 competitor and open-source reuse research
+
+Read [Competitor feature and open-source reuse deep dive](COMPETITOR_FEATURE_AND_OPEN_SOURCE_REUSE_DEEP_DIVE_20261105.md), latest blob `97ef35cb50739381b127579481dca4ab0326ba72`.
+
+Executive direction:
+- Do not build a generic mobile Python IDE or cloud coding clone. GitHub Copilot Mobile and Replit already offer phone-started hosted coding workflows; Happy is a remote companion for agent sessions running on a computer and does not itself remove the PC requirement.
+- PocketCode's differentiator remains a portable task/run/evidence/artifact/correction loop across assistants, with explicit import and no clipboard polling.
+- Adopt Cline checkpoint semantics, OpenCode durable in-flight claims and bounded restart recovery, Goose typed task progress/approval patterns, Scion worktree isolation principles, E2B disconnect-vs-kill semantics, and Aider's bounded repo-map/verify-loop patterns. These are design patterns, not imported runtimes.
+- No Cline/Goose/Scion/OpenCode/E2B framework code was copied because of stack coupling and unselected platform/backend.
+- Two small third-party references were copied only into research-only folders: OpenHands MIT atomic file writer and Mini-Coding-Agent Apache-2.0 workspace path guard. Neither is imported by production code. The Apache license is the complete upstream file.
+
+Reference-code test evidence:
+- [Reference copy test results](../RESEARCH/vendor/REFERENCE_COPY_TEST_RESULTS_20261105.md), blob `6a4c8031cc87a7b7dd6ff86726e7068e5fb47b7e`.
+- Both suites passed under CPython 3.13.5/Linux in the isolated container: atomic writer 5/5; workspace path helper 8/8. Their exact local Git blob hashes match the PocketCode source/test files. This proves only the isolated utility behavior on Linux, not PocketCode app integration, Windows/mobile path semantics, hostile-code isolation, power-loss durability or product acceptance.
+
+No runtime/provider/store selected; no PocketCode source integration or canonical acceptance change; D-01..D-08 remain as recorded; LOOP/CASE unchanged. No paid services, browser/device testing, provider workloads, Actions, PR changes, install, host, merge or deployment.
