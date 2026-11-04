@@ -364,4 +364,4 @@ Limits: not a sandbox and does not prevent TOCTOU replacement after validation. 
 - Source observations are pinned to commits/file blobs above; re-pin before implementation.
 - PocketCode prototype remains static/simulated. No execution runtime/provider/store selected.
 - Two copied utilities are in research-only folders; no product integration.
-- No implementation, provider workload, account, spend, test, build, browser/device acceptance, Actions, PR update, install, restart, host/queue, merge or deployment was performed in this research pass.
+- No PocketCode product implementation/test/build, browser/device acceptance, provider workload, account, spend, Actions, PR update, install, restart, host/queue, merge or deployment was performed. The only executed tests were the 5 OpenHands writer and 8 workspace-path reference tests, documented separately in `RESEARCH/vendor/REFERENCE_COPY_TEST_RESULTS_20261105.md`.
