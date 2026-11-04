@@ -623,18 +623,18 @@ The comparator refresh is public-source research only. No app was installed, no 
 The latest primary handoff remains this AI Workflow Director branch. The separate execution-boundary-crosswalk branch and its OpenHands research remain separate; do not copy or merge artifacts between branches without explicit authorization.
 
 
-## 14. PocketCode verdict-provenance audit — cross-branch source pin
+## 14. PocketCode verdict-provenance audit — pinned helper present on both branches
 
 A read-only audit was added to the RevDev continuity branch:
 `resume/revdev/CONTINUATION_ADDENDUM_VERDICT_PROVENANCE_BRANCH_GOVERNANCE_2026-11-03.md` (RevDev branch `review/revdev-adaptive-ai-workshare-2026-10-27`, blob `2edabe714653935ca6023047a126bfc2b148271c`).
 
-The audited PocketCode source is pinned to the separate `pocketcode-execution-boundary-crosswalk-2026-11-01` branch:
+The exact PocketCode helper/test blobs were first reconciled on the separate `pocketcode-execution-boundary-crosswalk-2026-11-01` branch and were then freshly fetched from this owner-designated AI Workflow Director branch with identical SHAs:
 - `scripts/report_contract.py`, blob `2459137b6f8d4b6bfadd6218e5a9bd92e75b0817`
 - `scripts/test_report_contract.py`, blob `85109f056009d65a274e9306deb39b68e1fefbd2`
 
-Expanded finding: verdict precedence is not the only issue. The pure helper explicitly accepts caller-supplied evidence and does not authenticate its provenance. The formatter's `Evidence source` field is also caller-supplied text. The test named `test_nonzero_exit_overrides_script_printed_pass` does not supply script output; it tests contradictory `succeeded + nonzero exit` metadata. Keep script claims, trusted lifecycle status and process exit evidence separate. Add evidence-ingress/run-binding/terminal-conflict tests before claiming trustworthy verdicts.
+The earlier audit correctly noted that the pure helper accepts caller-supplied data and does not authenticate it, but this is not automatically a defect in the helper: its own docstring says it is a formatter/projection, and the existing `ADAPTER_RESULT_ENVELOPE_AND_FAKE_PROTOCOL_20261029.md` assigns evidence validation to a trusted coordinator. The unresolved issue is that no production ingress/call path has been implemented or proven to enforce that boundary.
 
-This is source/static analysis only. No code/tests were changed or run. Do not copy PocketCode source/audit files across branches. The owner-designated PocketCode branch remains this AI Workflow Director branch; the execution-boundary branch remains separate research.
+The helper also returns FAIL for any integer nonzero exit code before considering lifecycle status, including nonterminal and other statuses. The current tests do not cover `accepted/queued/running/rejected/timed_out/cancelled/infrastructure_failed/unknown + nonzero`. Its test named `test_nonzero_exit_overrides_script_printed_pass` does not supply script output; it exercises `succeeded + nonzero` metadata. Keep script claims, lifecycle observations and natural child-exit versus wrapper/termination codes separate.
 
 
 ## 15. Latest branch comparison snapshot — 2026-11-03
@@ -648,3 +648,15 @@ Fresh read-only comparisons against each repository's `main` after the documenta
 | PocketCode separate `pocketcode-execution-boundary-crosswalk-2026-11-01` | 605 | 0 | `555840d8d83342513d9cd353d4d1522d46a5c82d` |
 
 These are divergence counts, not merge-readiness evidence. The two PocketCode branches remain separate. No branch merge, rebase, PR update, or cross-branch artifact transfer was performed. PR #2/#3 remain protected and untouched; re-fetch exact PR metadata before any consequential PR decision.
+
+
+## 16. 2026-11-04 report projection and publisher follow-up
+
+New owner-branch audit:
+- [Report verdict/provenance projection audit](REPORT_VERDICT_PROVENANCE_PROJECTION_AUDIT_20261104.md), blob `26d6c567260feef37f9302894c6a82d7f7361228`.
+
+It reconciles the pinned helper with the existing adapter-envelope design. The formatter should remain a pure projection. The actual gate is that a trusted coordinator must authenticate and bind evidence before calling it. The audit expands the static precedence truth table and prepares focused Claude/Gemini review questions. No source/test or canonical acceptance change was made; D-01..D-04 remain OPEN; tests NOT RUN.
+
+RevDev also added [P8U-03/P8U-06 maintenance publisher audit](https://github.com/marcelosofficial-ctrl/DevRelay-Missions/blob/review/revdev-adaptive-ai-workshare-2026-10-27/resume/revdev/P8U03_P8U06_MAINTENANCE_PUBLISHER_RETRY_ACCESS_AUDIT_2026-11-04.md), a static review of the tracked maintenance publisher only. It finds no explicit response-header-aware Retry-After handling and text-based 404 absence classification. This maps to existing P8U-03/P8U-06; live publisher parity remains UNKNOWN. P0 is still release-blocking; P8U/P0-D remain NOT RUN.
+
+No tests, provider workloads, app installs, browser/device checks, Actions, PR changes, host/queue/runtime operations or deployments occurred.
