@@ -8,8 +8,8 @@
 
 | Repository / owner-designated branch | Head | Ahead of main | Behind | Merge base |
 |---|---|---:|---:|---|
-| PocketCode `pocketcode-ai-workflow-director-research-2026-10-28` | `8839e91f8a6f17ae74dff4260e909895e414d730` | 592 | 0 | `555840d8d83342513d9cd353d4d1522d46a5c82d` |
-| RevDev `review/revdev-adaptive-ai-workshare-2026-10-27` | `c1c726d18c7cb339946dd94ef8acec96d9b14846` | 507 | 0 | `058f9025319d12e76195659c715ccb4afce133b8` |
+| PocketCode `pocketcode-ai-workflow-director-research-2026-10-28` | `4325e477b5c08a29dbe7d81ae7321d562ecdb851` | 598 | 0 | `555840d8d83342513d9cd353d4d1522d46a5c82d` |
+| RevDev `review/revdev-adaptive-ai-workshare-2026-10-27` | `aa342fa02ee92d2dfe78d477eb8f40c310d8fa97` | 508 | 0 | `058f9025319d12e76195659c715ccb4afce133b8` |
 
 These are divergence counts, not merge-readiness evidence.
 
@@ -48,6 +48,8 @@ This is a **source-level projection/contract gap**, not evidence of a currently 
 6. D-01..D-08 remain owner-open/proposed as recorded in `AI_COLLAB/OWNER_DECISION_REGISTER_20261029.md`. Do not change LOOP-01..14 or CASE-01..16.
 
 ### Targeted review/test matrix to prepare before implementation
+
+A more precise 20-case review matrix is now recorded in [Verdict Evidence and Exit Provenance Matrix, November 5](VERDICT_EVIDENCE_EXIT_PROVENANCE_MATRIX_20261105.md). It adds the previously untested `program_failed + natural child exit 0` contradiction and separates natural child exit, wrapper exit, forced termination, and coordinator lifecycle. This is design-only; the helper and tests remain unchanged.
 
 The pure projection review should cross lifecycle states (`accepted`, `queued`, `running`, `succeeded`, `program_failed`, `timed_out`, `cancelled`, `rejected`, `infrastructure_failed`, `unknown`) with distinct evidence classes:
 - no child exit observed;
@@ -118,6 +120,10 @@ Keep mutable latest pointers, timestamped history, evidence index and handoff se
 
 No source fix is approved. Current PC/live publisher/source parity remains UNKNOWN; historical P8V live and maintenance hashes differed. Do not rerun the recovered P8U mission. P8U/P0-D remain NOT RUN; P0 remains OPEN/release-blocking; OD-04 remains OPEN.
 
+### RevDev follow-up: consolidated publisher source findings
+
+The latest static pass also reconciled the separate P8U-03/P8U-06 audit and the conditional P8U-08 source-risk review. See [R5 Maintenance Publisher Consolidated Source Findings, November 5](https://github.com/marcelosofficial-ctrl/DevRelay-Missions/blob/review/revdev-adaptive-ai-workshare-2026-10-27/resume/revdev/R5_MAINTENANCE_PUBLISHER_CONSOLIDATED_SOURCE_FINDINGS_20261105.md). It preserves the distinction between four maintenance-source gaps and a conditional cross-writer race hypothesis. OD-04 remains OPEN; no installed/live defect is inferred.
+
 ## 5. Next work order
 
 1. Prepare a narrowly scoped Claude/Gemini review of the PocketCode verdict matrix and the existing report-projection audit. Ask only whether the proposed separation of child exit, wrapper exit, forced termination and lifecycle precedence is consistent with canonical LOOP/CASE and D-01..D-04. Do not treat a review response as owner approval.
@@ -133,3 +139,11 @@ No source fix is approved. Current PC/live publisher/source parity remains UNKNO
 - No tests, builds, app/browser/device runs, provider workloads or AI-to-AI contacts occurred.
 - No source/tests, runtime, queue, host, accounts, secrets, Actions, PRs, deployments or merges were changed.
 - Canonical acceptance IDs/expected strings and owner-open decisions remain unchanged.
+
+
+## 7. November 5 continuation update
+
+- PocketCode owner-designated branch now points to `4325e477b5c08a29dbe7d81ae7321d562ecdb851` (598 ahead / 0 behind main). New matrix blob: `f146bd45cdbc3e7f6f1301ad3c0e172ffa4443d7`.
+- RevDev owner-designated branch now points to `aa342fa02ee92d2dfe78d477eb8f40c310d8fa97` (508 ahead / 0 behind main). New consolidated publisher audit blob: `c6f3c5cd2380f68bd83a84467b992ded0909d89f`.
+- Protected PRs were re-read after the documentation commits: PocketCode #2/#3 and RevDev #1 remain OPEN / DRAFT / UNMERGED and untouched.
+- No source/tests, runtime, local host, queue, provider, account, Actions, installation, restart, deployment, merge or mission replay occurred.
