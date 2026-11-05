@@ -388,3 +388,14 @@ The 2026-11-06 branch compare is 710 ahead / 0 behind main, merge base `555840d8
 OpenAI's current Free Tier FAQ explains that context-full is based on the amount of information in the current conversation, including user and assistant messages, not a fixed message count. Free users should not assume a new chat will recall every earlier project chat. The new GitHub entrypoint therefore becomes mandatory for continuity.
 
 Canonical LOOP/CASE/D acceptance remains unchanged. Product phase remains Discovery; no runtime/provider/runner selected; $0 default budget remains. The owner-reported Pyodios device test is still awaiting owner observations; no device execution or product acceptance was performed by this continuity update.
+
+
+## 2026-11-06 — Multi-chat continuity process extension
+
+The 2026-11-06 chat continuity system has been strengthened for months/hundreds of conversations. The current live entrypoint and protocol in `AI_COLLAB/CHAT_START_HERE.md` and `AI_COLLAB/CHAT_CONTINUITY_AND_MULTI_CHAT_OPERATING_PROTOCOL_20261106.md` are authoritative.
+
+New operating requirements: checkpoint every two or three meaningful passes or after significant source/test/review/decision events; rotate before context exhaustion; keep the append-only log and entrypoint current during work; do not rely on a nearly full chat to create a giant handoff. Use one lead writer per branch/work item, parallelize independent reads, and serialize shared-branch writes. For related multi-file changes, use one Git Data API tree/commit with an expected-head ref lease and exact read-back. On tool failures, re-fetch live state, determine whether a write occurred, recover and report instead of silently stopping.
+
+ChatGPT may lead bounded implementation when source/tools are available; Claude and Gemini remain scoped reviewers/co-developers, with the owner forwarding reports manually. This process update does not select a runtime/provider, change PocketCode implementation, redefine LOOP/CASE/D semantics, or alter its phone-first/security/$0 constraints.
+
+RevDev-only lesson: query push-triggered Actions runs through the repository Actions runs API when the default connector's commit-workflow lookup is PR-filtered. Never infer that CI did not run from an empty partial status view. Do not copy RevDev implementation or acceptance results into PocketCode.
