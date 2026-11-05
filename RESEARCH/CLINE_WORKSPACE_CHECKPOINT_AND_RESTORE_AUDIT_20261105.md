@@ -504,3 +504,10 @@ Critical ambiguous boundary: after command bytes may have reached the host but b
 - Apple and Android platform behavior must be checked against each supported OS/device version at implementation time.
 - No runtime, backend, execution-host protocol or persistence adapter was selected.
 - Existing canonical LOOP-01..14, CASE-01..16 and D-01..D-08 remain unchanged.
+### 9.8 Additional source-level caveat: outbox acknowledgement persistence
+
+A closer read of Happy's iOS IntentOutbox found that successful delivery calls the storage deletion with a best-effort try? and then removes the row from the in-memory projection. A failed durable deletion can therefore leave a stale row to be retried after relaunch. This is not necessarily a product defect if the endpoint is idempotent, but it means the durable acknowledgement boundary is weaker than "acknowledged exactly once." PocketCode must not copy this error-handling shape for non-idempotent execution commands.
+
+For PocketCode, persist an acknowledgement/tombstone and verify its commit before treating an outbox row as durably consumed. If that local commit fails after the remote host accepted the command, retain DISPATCH_UNKNOWN and reconcile by the original command ID. Do not mint a replacement ID. Likewise, persist retry-attempt metadata successfully before assuming the backoff schedule survived process death.
+
+This is a source review observation, not an upstream runtime reproduction or test result. It strengthens the decision to port invariants and tests rather than transplant the outbox implementation wholesale.
