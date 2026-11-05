@@ -110,3 +110,18 @@ Sources: [Carnets developer page](https://holzschu.github.io/Carnets_Jupyter/), 
 The focused [Open-Source Reuse Audit](../AI_COLLAB/OPEN_SOURCE_REUSE_AUDIT_20261029.md) reviews RunSeal (Apache-2.0), AndroidHarness (MIT), PhoneCode (Apache-2.0 original code with separately licensed bundled components), OpenHand (MIT), Pairlet (MIT root project; check dependency closure) and OpenHands (MIT core with enterprise carve-out). It records direct source links and adoption boundaries.
 
 The prior-art scan confirms that structured run history, tool receipts, safe diagnostics, interrupted-task recovery, capability matrices, provider abstraction and event replay are already explored in open-source projects. These are not defensible differentiators by themselves. Strongest patterns to adapt to PocketCode's existing proposal are: authoritative lifecycle ownership; process outcome separated from wrapper failure; confirmed timeout/cancellation; explicit unsupported capabilities; recovery that inspects uncertain side effects instead of blindly replaying; privacy-whitelisted diagnostics with missing evidence explicit; and deterministic adversarial conformance tests. See the audit for platform and license caveats. No code was copied, no competitor was run, and no product decision is validated by source review alone.
+
+
+## Dated research delta — open-source agent architectures (2026-11-05)
+
+A source-level review of adjacent open-source agents materially raises the competitive bar. See [Open-source agent architecture and code-adoption review](OPEN_SOURCE_AGENT_ARCHITECTURE_AND_CODE_ADOPTION_REVIEW_2026-11-05.md) for pinned commits, file hashes, licenses, implementation notes and adoption gates.
+
+Newly emphasized competitors:
+- **AndroidHarness**: direct no-PC Android agent with Kotlin/Compose UI, local Linux toolchain, shell/Git/Python/Node, browser, subagents, tool-call cards, persistent recovery, queued prompts, context meter and fixed-whitelist diagnostics. Its own SECURITY.md explicitly limits its shell/workspace boundary claims; it is not a complete process sandbox.
+- **Atlan**: Termux/proot Android developer cockpit, deterministic verification/build automation and diagnostic Doctor; iOS is cloud-client-only.
+- **Happy / Pairlet**: cross-device remote agent sessions, approval, reconnect/backfill and encrypted relay patterns, but they depend on a remote agent host.
+- **Cline / OpenCode / Goose / Aider**: workspace checkpoints, Plan/Act permissions, reusable recipes/subrecipes, and Architect→Editor with automatic lint/test correction.
+
+The direct competitor overlap means the run/inspect/report/iterate loop cannot be claimed unique. The existing fixed-task benchmark must compare against AndroidHarness, Atlan (where setup is feasible), Pairlet/Happy remote host, Pyodide local execution and manual copy/paste. No benchmark has run.
+
+Code reuse decision: no code copied while PocketCode remains discovery-stage and no app/runtime framework is selected. MIT/Apache candidates are pinned and assessed in the adoption review; crypto and native sandbox code are explicitly not to be transplanted as shortcuts.
