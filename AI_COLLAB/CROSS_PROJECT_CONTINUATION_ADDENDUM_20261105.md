@@ -163,3 +163,15 @@ This section is a continuity correction only. It does not change canonical accep
 - RevDev owner-designated branch now points to `aa342fa02ee92d2dfe78d477eb8f40c310d8fa97` (508 ahead / 0 behind main). New consolidated publisher audit blob: `c6f3c5cd2380f68bd83a84467b992ded0909d89f`.
 - Protected PRs were re-read after the documentation commits: PocketCode #2/#3 and RevDev #1 remain OPEN / DRAFT / UNMERGED and untouched.
 - No source/tests, runtime, local host, queue, provider, account, Actions, installation, restart, deployment, merge or mission replay occurred.
+
+
+## 9. November 5 RevDev publication operation plan
+
+A companion RevDev design artifact now translates the canonical P8U-01..12 scenarios into an ordered publication-operation state model and synthetic fault-injection cut points F0-F14:
+
+- [P8U Publication Operation State Machine and Fault-Injection Plan](https://github.com/marcelosofficial-ctrl/DevRelay-Missions/blob/review/revdev-adaptive-ai-workshare-2026-10-27/resume/revdev/P8U_PUBLICATION_OPERATION_STATE_MACHINE_AND_FAULT_INJECTION_PLAN_2026-11-05.md)
+- [R5 Maintenance Publisher Consolidated Source Findings](https://github.com/marcelosofficial-ctrl/DevRelay-Missions/blob/review/revdev-adaptive-ai-workshare-2026-10-27/resume/revdev/R5_MAINTENANCE_PUBLISHER_CONSOLIDATED_SOURCE_FINDINGS_20261105.md)
+
+This is planning for a future isolated synthetic transport harness, not implementation or live evidence. It preserves execution/publication separation, exact immutable content identity, ambiguity-safe recovery, independent mutable-view verification, and no duplicate execution/terminal/audio effects. Canonical P8U JSON and owner decisions remain unchanged; OD-01..OD-08 remain OPEN.
+
+The latest pre-this-addendum-write comparison reported PocketCode 627 ahead / 0 behind main and RevDev 519 ahead / 0 behind main. The PocketCode addendum update itself adds one commit, so refresh the branch comparison before using an ahead count as current. Comparison responses do not expose current tip SHAs. Protected PR searches still find PocketCode #2/#3 and RevDev #1 open; the latest search did not independently return all draft/merge metadata.
