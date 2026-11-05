@@ -114,3 +114,7 @@ ChatGPT may be the lead writer for a bounded PocketCode task when it has the nec
 The owner should not need to request a giant handoff at the context limit. Maintain the live entrypoint and append-only work log throughout the work. When a chat is rotated, the minimum packet is: repo, branch, entrypoint, last verified commit, active bounded task, exact next action, test evidence/status and any owner action. The new chat fetches its own current source. The transcript is optional.
 
 Close each meaningful pass with: **Completed**, **Evidence**, **Still open**, **Next exact action**. If the task spans multiple turns, checkpoint after two or three meaningful passes or sooner when context strain is visible.
+
+### CI run discovery when the connector view is partial
+
+For push-triggered or scheduled workflows, query the repository Actions run collection directly: `GET /repos/{owner}/{repo}/actions/runs?branch={branch}&per_page=...`. Match the workflow path/name, event, head branch and exact SHA; inspect job summaries and download the relevant logs. Some commit-run connectors expose only pull-request-triggered runs, so an empty result is not proof that push CI did not run. Record the run URL, exact head SHA, job conclusion and test counts.
