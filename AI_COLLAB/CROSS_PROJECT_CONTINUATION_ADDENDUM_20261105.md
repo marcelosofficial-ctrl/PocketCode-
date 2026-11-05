@@ -203,3 +203,13 @@ Two companion design artifacts now turn the competitor research into concrete, r
 New source-level references inspected include LangGraph's checkpoint/pending-write contract, Hatchet's explicit task/attempt/idempotency projection, and Temporal's workflow/run/attempt metadata. These are design references, not selected dependencies. LangGraph's broad default checkpoint deserialization is specifically rejected for untrusted task state; use a strict data-only schema and explicit type allowlist.
 
 No framework or runtime is selected, no additional code was copied in this pass, and no implementation/test claim is made. The existing isolated reference copies and RevDev JCS research copy retain their previous non-production status. Both proposals require Claude architecture review and Gemini security/spec review before any schema is frozen.
+
+
+## Scope reconciliation for the new manifest proposals
+
+A cross-check against the pre-existing contracts found important overlap that must be preserved rather than duplicated:
+
+- PocketCode already has the provider-neutral boundary sketch, adapter result envelope/fake protocol, and a bounded offline AI Workflow Director plan with its own AWD acceptance IDs. The new task manifest is a later planning/execution layer. It does **not** expand the initial offline Director slice into code execution, select a provider/runtime, or replace the existing job/attempt/evidence contract. Existing contracts remain authoritative for their covered fields and gates.
+- RevDev already has REVDEV_OPERATION_ENVELOPE_AND_DURABLE_ORCHESTRATION_DESIGN_2026-11-05.md for P0-first publication operation identity, prepared bytes, transport attempts, target obligations and concurrency. The new work-packet proposal is the parent product-batch/recipe layer. It does not replace the detailed publication design or the separate AI Work Coach evaluation trial schema.
+
+Both proposals now state these boundaries explicitly. This avoids two competing run IDs, duplicate lifecycle state machines, and scope creep. The proposals remain unfrozen and require independent Claude/Gemini review.
