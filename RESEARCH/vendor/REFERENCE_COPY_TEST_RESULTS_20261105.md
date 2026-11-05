@@ -59,6 +59,37 @@ Result:
 
 Covered: workspace root and nested files, non-existent target under an in-root parent, parent traversal, absolute outside path, symlink escape, internal symlink, unrelated root and missing workspace root.
 
+## MCP Tasks poll-interval helper
+
+Upstream:
+- Repository: `modelcontextprotocol/ext-tasks`
+- Commit: `cc9aaac1047a9440b07486e38f37060bbebeef4c`
+- Source file: `packages/ext-tasks/src/client/execution.ts`
+- Source blob: `60f097b5accc6e4582f57ac7d8c8215a2357202e`
+- License: Apache-2.0; the full license is retained adjacent to the copied helper.
+
+Copied reference: `RESEARCH/vendor/mcp-tasks/task_poll_interval.ts`. The companion test imports the TypeScript source directly through Node's experimental type stripping.
+
+Command:
+```bash
+node --experimental-strip-types --test task_poll_interval.test.mjs
+```
+
+Environment:
+- Node.js 22.16.0
+- Built-in `node:test` and `node:assert/strict`
+- No npm install, network request, MCP server, provider, service or account
+
+Result:
+- 3 tests run
+- 3 passed
+- 0 failed
+- 0 skipped
+
+Covered: one-second fallback when no hint exists; 10 ms floor for zero/short/negative hints; largest supplied hint selected.
+
+Limitations: helper only. No runtime validation of untrusted values, timer maximum, polling loop, task protocol, reconnect, cancellation, durability, concurrency or PocketCode integration is tested. Node reports type stripping as experimental. No product code imports this file.
+
 ## Scope and limitations
 
 These tests verify only the isolated helper functions under Linux/CPython 3.13.5. They do not verify:
