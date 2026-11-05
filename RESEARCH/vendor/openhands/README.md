@@ -33,3 +33,18 @@ The five tests were executed successfully on 2026-11-05 using CPython 3.13.5 on 
 ## Adoption decision
 
 **Keep as a candidate utility, not a selected component.** If PocketCode later selects a native Python persistence component, this is a useful starting point for atomic replacement of individual small state files. It is not sufficient for the event log, report history, idempotency reservation, concurrent run state, or cross-store publication contract. Compare it with the selected platform's native persistence primitive before adopting it.
+
+
+## Capability-gated idempotent create retry reference
+
+The adjacent `idempotent_create_retry.ts` is a small PocketCode-oriented adaptation of the retry decision in OpenHands' TypeScript `ConversationClient.createConversation()`.
+
+- Upstream project: [OpenHands/software-agent-sdk](https://github.com/OpenHands/software-agent-sdk)
+- Pinned upstream main commit inspected: `e6c074fe5fd96c6ce0f7a52905d529e27d24bb7b`
+- Upstream source: `clients/typescript/src/client/conversation-client.ts`, blob `f5639275181c0eab78df2a6acbd894a5da0bb8d2`
+- Upstream regression test inspected: `clients/typescript/src/__tests__/conversation-create-retry.test.ts`, blob `afc865506466da9cc952097fdfaed5eaa0c3d366`
+- Upstream license: MIT; the full upstream license is retained in this directory.
+
+The adaptation accepts an already serialized body and a stable caller-owned operation ID. It retries once only for a transport failure, only after the exact server/auth scope confirms an idempotent-create capability, and resends the same body and ID. It does not retry HTTP responses, treat a failed capability probe as permission, or generate a new ID after uncertainty.
+
+**Limits:** this is an isolated research reference, not imported by PocketCode product code. It has not been compiled or tested in this continuation. It is unsafe unless the remote service actually deduplicates that ID, binds it to the request fingerprint, rejects same-ID/different-payload conflicts, and scopes the capability to the same endpoint and authenticated principal. It is not a durable outbox, a result-reconciliation mechanism, or proof of exactly-once side effects.
