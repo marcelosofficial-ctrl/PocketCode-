@@ -441,3 +441,40 @@ Be proactive and thorough, but conservative with claims. Distinguish source-insp
 ## 13. Handoff maintenance rule
 
 When the next chat materially advances the work, update this primary handoff and the RevDev companion handoff on their existing research branches, preserve prior history, and read both back. Do not generate a new handoff every few turns. A new handoff is warranted only when the chat is genuinely long or the project reaches a meaningful transfer point.
+
+
+## 14. Continuation update — 2026-11-05 (post-handoff work)
+
+### GitHub state refreshed
+
+The live research branch refs and comparisons were re-fetched after the work below. Snapshot immediately before this handoff refresh commit:
+- PocketCode branch `pocketcode-ai-workflow-director-research-2026-10-28`: HEAD `b616510ae5a9062f56c6208d2b30cdec231db9c7`; ahead 657 / behind 0 from `main`; merge base `555840d8d83342513d9cd353d4d1522d46a5c82d`.
+- RevDev branch `review/revdev-adaptive-ai-workshare-2026-10-27`: HEAD `0d18b232935dd53a462446d513b562c01f8a02ac`; ahead 563 / behind 0 from `main`; merge base `058f9025319d12e76195659c715ccb4afce133b8`.
+
+The previous §4 snapshot (PocketCode e382… / 650 ahead; RevDev 9dea… / 555 ahead) was stale by five commits per branch. These counts are branch divergence, not quality or merge-readiness signals. Re-fetch before consequential work.
+
+Protected PRs were re-fetched through GitHub's pull-request API:
+- PocketCode PR #2: OPEN / DRAFT / UNMERGED; head `chat-continuity-report-regressions-2026-10-26` at `eb8b7ea83cb0e8fe1880351276c485b761431791`, base `main`.
+- PocketCode PR #3: OPEN / DRAFT / UNMERGED; head `pocketcode-pass0-audit-2026-10-26` at `0ddcc0bc97bac5d446aefedf3d71f99411bd841d`, base `main`.
+- RevDev PR #1: OPEN / DRAFT / UNMERGED; head `continuity/relayref-handoff-2026-10-27` at `59f88dc0bd884872cf379c8aeb6272c9a70c71ce`, base `main`.
+
+No protected PR was modified, reviewed, approved, retargeted, merged or closed.
+
+### Completed documentation-only passes and read-back
+
+1. **EVAL-06 fairness audit** appended to `AI_COLLAB/AI_WORKFLOW_DIRECTOR_EVALUATION_KIT_20261028.md`; blob SHA `a0047790b93c8a1502271536831481f209f30220`. It defines the estimand as the complete hand-authored Director prompt bundle versus baseline, adds EVAL-06-specific scoring anchors, cross-chat memory/personalization parity, order/blinding controls, confound handling and ceiling/sample-size limits. It explicitly distinguishes EVAL-06 from the separate CSV-to-JSON product-path worksheet. EVAL-06 remains NOT RUN.
+2. **Mobile receipt sourceability classification** appended to `RESEARCH/MOBILE_RUNNER_EVIDENCE_SOURCEABILITY_MATRIX_20261105.md`; blob SHA `73cecc15eac55f27ad4ff26f6ddfc59565860176`. It separates mandatory representation from conditional/optional/unavailable/derived facts and maps each receipt concept to its authority. It also records the gap between receipt evidence and durable history/publication proof.
+3. **RevDev P8U/OD reconciliation audit** appended to `resume/revdev/P8U_PUBLICATION_OPERATION_STATE_MACHINE_AND_FAULT_INJECTION_PLAN_2026-11-05.md`; blob SHA `c5d33f2cf9366f00a4ec326f711d00fb2da1c05a`. It maps P8U-01…12 and OD-01…08 without changing canonical JSON, IDs or owner choices. It identifies unresolved send-boundary/OD-03, no-runner-start/OD-06, fallback dependency/OD-07, audio layer/OD-08, log-flood metric/OD-05, and CAS/writer-topology proof gaps.
+4. **Claude/Gemini review packet refinement** appended to `resume/revdev/THREE_AI_REVIEW_PACKET_DURABLE_PUBLISHER_AND_ORCHESTRATION_2026-11-05.md`; blob SHA `cf18bb3fd98eb793b13cab253fa0dcdf6e33b362`. The overlay focuses both reviewers on the exact publication state machine, with distinct architecture and adversarial security tasks and required evidence format. READY TO SEND; no reviewer response received.
+5. **PC-return read-only inspection plan** created at `resume/revdev/PC_RETURN_READ_ONLY_INSPECTION_PLAN_2026-11-05.md`; blob SHA `c95e4f9092515db99291ec7eee5ae2f8eb171758`. It covers source/installed parity, writer topology, queue/result identity, safe GitHub GET-only observation, stop conditions and prohibited mutations. It is NOT EXECUTED and is not an authorization to inspect the PC.
+
+Every file above was fetched again after the write; the appended sections and expected content were present. The SHA values are blob IDs, not test evidence.
+
+### Reconciled evidence and non-actions
+
+- EVAL-06 fairness is suitable only for an exploratory comparison of the complete hand-authored prompt bundle. It cannot isolate profile effects or prove a future PocketCode implementation. Ceiling performance is plausible; if baseline and Director tie, report no demonstrated bundle advantage.
+- Receipt sourceability remains design-only. No mobile runner is selected; no iOS/Android/browser/hosted receipt was produced or tested. An unavailable process/exit/termination fact must remain unavailable/unknown, not be inferred from a UI or HTTP response.
+- RevDev state machine remains design-only. P8U-01…12 and P0-D 1–10 remain NOT RUN; P0 remains OPEN/release-blocking; OD-01…08 remain OPEN. Happy Agent's at-least-once queue remains unsuitable as an immutable result archive.
+- No source/test changes or test execution, no provider workload, PC inspection, mission replay, queue/host/API/sink mutation, install/restart, GitHub Actions, deployment or release occurred.
+
+The next work should be to forward the focused review packet to Claude and Gemini, then reconcile their actual responses against the unchanged P8U JSON and OD register. Do not repeat broad competitor discovery.
