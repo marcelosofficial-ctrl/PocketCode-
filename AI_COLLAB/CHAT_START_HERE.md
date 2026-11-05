@@ -106,3 +106,11 @@ PocketCode remains on its own priority: CASE-04 timeout classification and repor
 ## Streaming interruption recovery
 
 If a long response is interrupted, resume from this entrypoint and live GitHub state. The continuity protocol now has an explicit recovery sequence: re-fetch branch/file state before replaying writes, verify commits/read-back, inspect CI by exact head SHA, and report the last confirmed checkpoint. The assistant cannot diagnose or repair the ChatGPT iOS stream itself. Do not assume a missing final response means GitHub changes failed or succeeded. This is process-only and does not change PocketCode product architecture or acceptance.
+
+## 2026-11-06 — Final cross-project CI process update (RevDev only)
+
+RevDev's typed GitHub HTTP parser and publisher preflight source increment is now CI-verified: GitHub Actions run #17 completed **24/24** Windows PowerShell 5.1 / Pester 5.7.1 tests at commit `c559aa7db595cb890981544184807381991e7490`: https://github.com/marcelosofficial-ctrl/DevRelay-Missions/actions/runs/42132258538. This supersedes the prior run #13 15/15 status and the #17 pending note. Test scope is RevDev's tracked maintenance source/parser/static fixtures only, not live GitHub networking, installed product, P0 or canonical P8U/P0-D acceptance.
+
+PocketCode should reuse only the CI-discovery and checkpoint lessons: query actual repository Actions runs/jobs/logs at the exact head SHA when a partial connector status view hides push runs; update the live entrypoint/work log with the verified result; keep implementation and acceptance evidence separate. Do not adopt RevDev source, schemas, or test results.
+
+PocketCode's next product work remains CASE-04 timeout classification and report-contract correction in `scripts/report_contract.py`, followed by degraded collector/teardown semantics and synchronous pre-execution network isolation. Keep the $0 budget, phone-first model, explicit paste-to-context, no runtime/provider decision, owner-observation device test status, and separate LOOP/CASE/D contracts unchanged.

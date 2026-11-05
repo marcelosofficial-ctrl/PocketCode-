@@ -770,3 +770,10 @@ PocketCode must continue its own CASE-04 timeout/report-contract priority and ke
 The earlier continuation note described RevDev Actions runs #11/#12 as in progress. That was the last observation at that time and is now superseded: RevDev run #13 passed **15/15** Windows PowerShell 5.1 / Pester 5.7.1 tests at commit `77fc32587d61f086bbcaafd479b52dd85e091629`. Exact run: https://github.com/marcelosofficial-ctrl/DevRelay-Missions/actions/runs/42130948334.
 
 The useful lesson for PocketCode chats is operational: do not rely only on a PR-filtered commit-workflow view. Query the repository Actions runs collection, then verify exact workflow path/name, event, branch, head SHA, job conclusion and test counts from logs. This result is not PocketCode evidence and does not alter PocketCode architecture, code, LOOP/CASE/D suites, device status or release gates.
+
+
+## 2026-11-06 RevDev CI run #17 final status (process lesson only)
+
+The earlier notes recorded RevDev run #17 as pending. It is now complete and passed **24/24** Windows PowerShell 5.1 / Pester 5.7.1 tests at commit `c559aa7db595cb890981544184807381991e7490`: https://github.com/marcelosofficial-ctrl/DevRelay-Missions/actions/runs/42132258538. This supersedes previous RevDev run #13 15/15 snapshot. No RevDev source/test schema, P8U/P0-D ID or acceptance conclusion is adopted into PocketCode.
+
+The reusable lesson: don't infer CI from empty/partial connector status. Query the repository Actions run list, match workflow path/event/branch/head SHA, inspect job summary and retrieve logs for test counts. Record result in the live entrypoint and work log before chat rotation.

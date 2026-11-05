@@ -413,3 +413,10 @@ PocketCode remains Discovery; CASE-04 timeout/report-contract correction remains
 Owner-provided transcription of the installed app screens reports Pyodios **1.1.0 / Build 7**, Pyodide **314.0.5**, Python **3.14.2**, and WebAssembly (WASM) runtime. Settings also displayed 13 cached packages / 0 KB cache, 85,557 objects / 0 referrers, and GC stats 1,650 collected / 0 uncollectable. These are owner-reported observations, not independently inspected by ChatGPT; the memory and GC counters are transient diagnostics, not performance or capacity measurements. The app/runtime values match the public v1.1.0 documentation.
 
 This resolves the installed app/build/runtime baseline. Device model and iOS version remain unknown. No fixed-task execution has been reported: success/failure behavior, real artifact integrity/export, and normal relaunch persistence remain NOT RUN. Follow `AI_COLLAB/PYODIOS_DEVICE_BASELINE_AND_HANDS_ON_PROTOCOL_20261106.md`; do not restart or clear the current session merely to reset counters. This does not select Pyodios as PocketCode's runtime or change any acceptance contract.
+
+
+## 2026-11-06 — Final cross-project CI result (RevDev only)
+
+RevDev's typed HTTP parser and publisher preflight increment passed GitHub Actions run #17 with **24/24** tests on Windows PowerShell 5.1 / Pester 5.7.1 at commit `c559aa7db595cb890981544184807381991e7490`: https://github.com/marcelosofficial-ctrl/DevRelay-Missions/actions/runs/42132258538. This is RevDev source/test evidence only. It validates the continuity rule to inspect the repository Actions run collection and job logs by exact head SHA when a connector's commit workflow view is incomplete.
+
+PocketCode remains independent. Its next implementation priority is CASE-04 timeout classification/report-contract integrity in `scripts/report_contract.py`; no runtime/provider is selected, device comparison awaits owner observations, $0 budget and phone-first constraints remain, and canonical LOOP/CASE/D suites remain unchanged. PR #2/#3 are not modified by this update.

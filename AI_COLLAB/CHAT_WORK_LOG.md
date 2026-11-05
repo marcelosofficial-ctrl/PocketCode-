@@ -64,3 +64,9 @@ Owner reports recurring iOS “Streaming interrupted. Waiting for complete messa
 **Process changes:** added explicit interrupted-response recovery to PocketCode's continuity protocol. Re-fetch live GitHub head/files before replaying any write; treat missing user-visible tool output as ambiguous; verify commits/read-back; query CI by exact SHA; keep write batches bounded and operate on one repository at a time. This is process-only. PocketCode's CASE-04, phone-first product, security boundaries, no-runtime-selected status and $0 budget remain unchanged.
 
 **Next PocketCode task:** resume the existing PocketCode-specific CASE-04 timeout/report-contract correction. Do not adopt RevDev publisher code or test suites.
+
+## 2026-11-06 — PC-2026-11-06-P04 — RevDev CI lesson final result
+
+RevDev's current typed HTTP parser/publisher preflight source passed GitHub Actions run #17: 24 tests discovered, **24 passed, 0 failed**, Windows PowerShell 5.1 / Pester 5.7.1, head `c559aa7db595cb890981544184807381991e7490`. URL: https://github.com/marcelosofficial-ctrl/DevRelay-Missions/actions/runs/42132258538. This supersedes the earlier pending #17 observation and prior #13 15/15 result. The result is RevDev-only test evidence. PocketCode reuses only the process lesson to query workflow runs/jobs/logs at exact head SHA when connector status is partial.
+
+PocketCode implementation was not changed by this cross-project status update. Its next exact task remains CASE-04 in `scripts/report_contract.py`; inspect existing tests and evidence first, correct the timeout verdict ordering, add tests for timed-out + nonzero exit and degraded collector/teardown outcomes, then run the repo's actual CI. Preserve all canonical LOOP/CASE/D strings and separate project boundaries.
