@@ -365,3 +365,142 @@ These are proposed test cases only. They do not add canonical acceptance IDs or 
 - **Do not implement yet:** until runtime/host selection, storage ownership, target filesystem matrix, schema migration policy and user-visible export requirements are approved.
 
 This proposal complements the provider-neutral recipe/run/attempt model. It must not duplicate execution receipts, remote dispatch reservations, artifact release records or GitHub publisher state. Canonical LOOP-01..14, CASE-01..16 and D-01..D-08 remain unchanged.
+## 9. Mobile process-death and reconnect research (2026-11-05)
+
+**Status:** Source-reviewed design research. No PocketCode implementation or mobile-device validation. Happy Coder was inspected at immutable commit 7e32e09454c26aa78e86df0d378b1e49375b743d (MIT LICENSE). Platform rules were checked against current Apple and Android developer documentation.
+
+### 9.1 Executive decision
+
+PocketCode must not promise that a phone continues arbitrary coding-agent execution after backgrounding, suspension, process death or force-quit. Treat the mobile app as a durable command/observation client. A remote execution host (when selected and connected) owns long-running work; a local runner owns only work it can checkpoint and safely resume under explicit platform constraints.
+
+Preserve user intent before network dispatch; exact task/attempt identity and immutable submitted payload; remote execution identity and authoritative lifecycle state; durable event/message cursor; local receipt/result state and artifact references; and a separate UI observation cursor and sync status.
+
+A socket reconnect is not proof of execution resumption. A local process restart is not proof that a remote task stopped. Never automatically submit a second task just because the first task's acknowledgement or live connection was lost.
+
+### 9.2 Competitor inspected: Happy Coder
+
+Repository: https://github.com/slopus/happy  
+Pinned source revision: 7e32e09454c26aa78e86df0d378b1e49375b743d (2026-11-05)  
+License: MIT, confirmed from repository LICENSE. Preserve the copyright and license notice if any substantial portion is copied.
+
+This is the strongest mobile companion/reconnect reference found in this pass. Its architecture is native Swift and Kotlin, so it is not a drop-in PocketCode dependency. The useful parts are concrete patterns and tests:
+
+**iOS source reviewed**
+- SyncStorage.swift (blob 42ebadb8e079da06b27792479a046a772b6ef39e): SQLite-backed account-scoped checkpoint, cursor, pending-setting mutation IDs, migration-based schema, actor isolation, account-close guard, and a revision check preventing an old bootstrap from overwriting newer acknowledgements.
+- Outbox.swift: stable message ID, exact payload/workspace capture, optional files and mode persisted with queued message.
+- IntentOutbox.swift: durable intent interface, per-slot coalescing, oldest-first due delivery, backoff, exact-ID acknowledgement removal, refusal handling and wake/reconnect behavior.
+- SyncEngine.swift: generation token invalidates stale asynchronous work; bootstrap and cursor checkpointing; reconnect and pause; message delivery and event stream reconciliation.
+- docs/offline-first.md: disk-first UI, durable optimistic actions, account-specific stores, reconnect sync, pending-wins overlays, and lost-ack retry semantics.
+
+**iOS tests reviewed**
+- SyncStorageTests.swift: checkpoint and pending setting survive database reopen; old acknowledgement cannot erase newer intent; account stores isolated; closed store rejects late response; stale bootstrap cannot overwrite newer checkpoint.
+- SyncEngineTests.swift: persisted message drains after reopening without opening its conversation; ambiguous send acknowledgement retains exact payload and pauses retries until engine restart; persisted intent survives offline relaunch and flushes on reconnect.
+- IntentOutboxTests.swift: per-slot coalescing, acknowledgement race, ordering, transient backoff, refusal and reopen persistence.
+- SendingOutboxTests.swift: bounded attempts, next-attempt scheduling, failure isolation, dependency handling and explicit retry/discard.
+
+**Android source reviewed**
+- SyncEngine.kt: serial sync via mutex; independent stream failure collection; delta sync by cursor; message sync by server sequence; every data write and its watermark commit together; sync on sign-in, socket reconnect and foreground return.
+- HappyStore.kt: SQLite transactions, transaction-scoped change publication, sequence/watermark management, contiguous message insertion and gap detection.
+- MessageSync.kt: per-session mutex serializes page fetches, live messages and catch-up; gaps are fetched from the last stored sequence.
+- LiveUpdates.kt: contiguous next-sequence fast path; noncontiguous/gapped updates require reconciliation.
+- research/offline-first.md: cold start, account switch, foreground and reconnect data paths; distinguishes stored cursors from ephemeral relay socket state.
+
+**Android tests reviewed**
+- SyncEngineTest.kt: cursor pagination, boundary overlap to avoid missing same-millisecond updates, delta message sync and settings conflict behavior.
+- MessageSyncTest.kt: page ordering, failure retains cursor and can retry, repeated page must not falsely advance.
+- LiveUpdatesTest.kt: network restoration reconnects immediately, reconnect runs delta sync, contiguous live event fast path, sequence gap fetch and replay idempotence.
+- OutboxBatchTest.kt, PendingReceiptSendTest.kt, SessionResumeTest.kt: batching, pending receipt delivery and explicit session-resume outcome handling.
+
+**What to reuse**
+1. Port protocol concepts, not Swift/Kotlin classes: stable client-generated operation ID; immutable payload; durable local outbox; exact-ID conditional acknowledgement; per-slot coalescing only for state-setting intents; pending overlay until authoritative confirmation; bounded exponential backoff; per-account isolation.
+2. Adopt atomic data-plus-watermark transactions. Never commit a cursor beyond data that has not committed locally.
+3. Use server sequence numbers for ordered execution messages. Apply contiguous events directly; on a gap, stop advancing the cursor and fetch missing events.
+4. Use generation/epoch tokens to ignore stale in-flight bootstrap/reconnect responses after pause, account switch or newer sync.
+5. Test real database close/reopen, not only in-memory fake stores.
+6. Distinguish message-send outbox from generic intent outbox and remote execution command dispatch. They have different retry/idempotency contracts.
+
+**What not to copy blindly**
+- Happy's backend protocol, account model, product-specific intent routes and Swift/Kotlin persistence wrappers.
+- Retrying transient failures is appropriate only when server routes are idempotent or accept a mutation ID. It is unsafe for arbitrary shell commands, file writes or code execution.
+- A mobile UI reconnecting to a running agent does not establish that a local process continued in the background.
+- Native SQLite wrappers do not select PocketCode's database/storage layer; our host/runtime remains undecided.
+
+### 9.3 Platform constraints and resulting adapter policy
+
+**iOS/iPadOS**
+- UIKit beginBackgroundTask is a finite grace period, not a background daemon. Apple requires an expiration handler to clean up/end the task; failure to end it can terminate the app. Call before entering background where possible.
+- BackgroundTasks scheduling is opportunistic and can expire/cancel. Use it for deferrable reconciliation, not as a guarantee of continuous agent execution.
+- Background URLSession is appropriate for durable upload/download transfer, not arbitrary interactive compute.
+- On expiration: persist local state, stop issuing new side effects, close/release transient resources, record the local worker as interrupted/unknown unless a stronger runner receipt exists, and let remote execution continue independently.
+
+**Android**
+- WorkManager is appropriate for durable deferrable work, retry and constraints. Long-running workers use foreground service behavior and a user-visible notification.
+- Android 16 imposes job quotas even for long-running workers using foreground services. User-initiated data transfer jobs are a distinct path for qualifying transfers.
+- Foreground services are not an unlimited compute loophole. Respect service types, user visibility, OS restrictions and quota behavior.
+- Use WorkManager for reconciliation, artifact transfer and resumable bounded local work, not as a promise of indefinitely running a local coding agent.
+
+**Portable rule:** the platform adapter reports what the OS granted and what happened. It must not promote a scheduling request, task enqueue or socket-open event into proof that work is running or complete.
+
+### 9.4 Proposed PocketCode task lifecycle boundaries
+
+Keep these identities and state machines separate:
+
+1. Command outbox: locally accepted user command, stable command ID, exact payload digest, workspace/checkpoint reference, idempotency scope, dispatch attempt history.
+2. Remote execution: host-issued execution ID, lease/owner generation, authoritative status, monotonic event sequence/cursor, last heartbeat and cancellation state.
+3. Local runner: process identity where available, local attempt ID, platform scheduling state, interruption reason, resumability capability and last durable checkpoint.
+4. Observation sync: last event cursor committed with its event rows; connection state; gap/reconciliation status.
+5. Result/receipt: immutable execution receipt, output/artifact references and provenance, separately acknowledged artifact upload/release state.
+6. Workspace checkpoint: snapshot identity and coverage, separate from task execution state.
+
+Suggested user-facing states: QUEUED_LOCALLY, DISPATCH_UNKNOWN, ACCEPTED_REMOTE, RUNNING_REMOTE, RUNNING_LOCAL_FOREGROUND, LOCAL_INTERRUPTED, AWAITING_RECONCILIATION, SUCCEEDED, FAILED, CANCELLED, OUTCOME_UNKNOWN. These are design vocabulary only, not new canonical LOOP/CASE IDs or a frozen enum.
+
+Critical ambiguous boundary: after command bytes may have reached the host but before an acknowledgement is durably recorded, mark DISPATCH_UNKNOWN. Query/reconcile by the same command ID. Do not mint a new command ID or resend a non-idempotent command unless the host's idempotency contract proves it safe.
+
+### 9.5 Proposed fault-injection matrix (not executed)
+
+| Fault boundary | Required result |
+|---|---|
+| App killed after local enqueue, before dispatch | Reopen shows same command ID and exact payload; dispatch once under idempotency contract |
+| Request sent, acknowledgement lost | DISPATCH_UNKNOWN; reconcile by stable ID; no duplicate execution |
+| Remote host accepted, phone dies | Remote execution remains queryable; phone resumes observation, not execution |
+| Phone resumes with stale event cursor | Server returns replay or explicit gap; reconcile snapshot before claiming live |
+| Event sequence gap | Do not advance committed cursor beyond missing sequence |
+| Event rows written but cursor not written, or vice versa | Both commit in one transaction; no half-advanced checkpoint |
+| Old bootstrap returns after newer event | Generation/revision guard prevents stale overwrite |
+| Account switch during request | Old account response cannot write into new account store |
+| Local worker gets OS expiration | Stop safely, persist checkpoint and interruption evidence; no false success |
+| Local worker process dies mid-side-effect | Mark outcome unknown unless side-effect idempotency/receipt proves outcome; never blind replay |
+| User force-quits iOS app | No reliance on scheduled continuation; remote task remains authoritative; reconcile on next launch |
+| Network restored before backoff expires | Reconnect immediately and reconcile |
+| Duplicate/replayed event | Idempotent upsert by stable event/message identity and sequence |
+| Artifact upload interrupted | Resume transfer by stable artifact ID/range/digest; do not rerun the task to recreate output |
+
+### 9.6 Implementation sequence and gates
+
+**P0 safety contract (before remote or local execution is advertised as recoverable)**
+- Freeze command identity, dispatch idempotency scope and ambiguous-ack semantics.
+- Define remote status query and monotonic event replay/gap response.
+- Define local process interruption and side-effect uncertainty.
+- Persist outbox, attempt history, event data and cursor with explicit durability acknowledgements.
+- Prevent automatic duplicate dispatch after an ambiguous request.
+
+**P1 reliable mobile experience**
+- Disk-first project/task screens.
+- Durable command outbox with exact-payload retries only where idempotency is guaranteed.
+- Background/foreground adapters: iOS short grace + transfer APIs; Android WorkManager/foreground service as appropriate.
+- Resume UI that says whether execution is remote, local interrupted, reconnecting or outcome unknown.
+- User-visible reconnect and reconciliation progress.
+
+**P2 resilience and optimization**
+- Delta sync, per-session sequence cursors, batching, per-task event streams, bounded backoff, transfer resume, and stale-response generation guards.
+- Local-only resumable runner only after target runtime can checkpoint side effects and platform/device matrix is tested.
+
+**Device validation gates:** physical iOS and Android devices; app background, OS kill, force-quit, reboot, offline/online transitions, low storage, quota/permission denial, account switch, simultaneous app instances and interrupted artifact transfer. Simulator tests alone are insufficient for OS lifecycle behavior.
+
+### 9.7 Research limitations
+
+- Happy source was read at the pinned revision above; no dependency was installed, no code was copied into PocketCode, and no upstream tests were run.
+- Happy patterns are source-level observations, not proof of PocketCode runtime behavior.
+- Apple and Android platform behavior must be checked against each supported OS/device version at implementation time.
+- No runtime, backend, execution-host protocol or persistence adapter was selected.
+- Existing canonical LOOP-01..14, CASE-01..16 and D-01..D-08 remain unchanged.
