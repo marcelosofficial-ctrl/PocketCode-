@@ -529,3 +529,7 @@ The source-level reuse review was extended with SQLite-backed recovery and OPFS:
 - No dependency installed or code copied. No product code/tests changed.
 
 PocketCode research commit: `b045710958d6ea1631add4bfac18b96160212a68`.
+
+### SQLite durability nuance added
+
+A final source check corrected a possible over-inference: safe-fs-ops' SqliteEngineConfig dataclass says NORMAL by default, but SqliteStore passes synchronous=None when constructing the engine, so the helper does not set that pragma on its standard path. Effective runtime PRAGMA synchronous must be queried, not inferred from the dataclass. SQLite WAL + NORMAL may lose a recent commit on power loss; WAL + FULL adds a sync per commit. PocketCode's future storage layer must expose effective journal/sync mode and distinguish app-crash recovery from power-loss durability. Source review blob now `0a30f35e0eed6a1dd48325ebe40d2ad9a55c5260`.
