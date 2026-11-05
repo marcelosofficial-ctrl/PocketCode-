@@ -478,3 +478,11 @@ This is a candidate architecture, not an approved implementation. No SQLite sche
 4. Test two tabs/app instances and verify exactly one owner; no silent fallback to two writers.
 5. Verify export can reconstruct the project after OPFS is cleared or evicted.
 6. Do not report a save as durable until the relevant database commit and blob sync contracts have succeeded and their exact acknowledgement is recorded.
+### 10.7 SQLite durability configuration nuance
+
+A further read of `safe-fs-ops/src/safe_fs_ops/sqlite_store/store.py` (blob `77208fef4c84c2e0241e4c480b8e74af8dd6a528`) and `persistence/sqlalchemy.py` (blob `f5b675e48fcc8e5e440d5ca007de3bc89753baae`) prevents a misleading conclusion:
+- `SqliteEngineConfig`'s standalone dataclass default is `synchronous="NORMAL"` and `enable_wal=True`.
+- But `SqliteStore` constructs the engine as `SqliteEngineConfig(self.path, synchronous=None)`, so this path does **not** issue a `PRAGMA synchronous=NORMAL`. It leaves the effective SQLite connection default in place. The custom connection-factory path also does not set synchronous explicitly.
+- SQLite's own documentation says WAL + NORMAL preserves consistency but a just-committed transaction may roll back after power loss; WAL + FULL adds a WAL sync per commit for power-loss durability. The SQLite runtime default is normally FULL, but this must be queried on the actual connection rather than inferred from a config dataclass or docs.
+
+**Required audit rule:** any future PocketCode SQLite backend must expose and record the effective `PRAGMA journal_mode` and `PRAGMA synchronous` at startup, select the mode explicitly for the product's durability promise, and test abrupt process termination separately from OS/power-loss assumptions. A successful SQL COMMIT under NORMAL is not proof of power-loss durability. For browser OPFS, validate the VFS `xSync`/flush behavior and actual device implementation; do not infer physical persistence solely from API success.
