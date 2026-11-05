@@ -781,4 +781,4 @@ The competitor review was tightened after reading the pinned tests and implement
 - OpenCode docs describe last-match-wins and mostly permissive defaults; `always` scope differs between current docs and a public v2 issue. PocketCode should use exact operation-bound approvals and default ask/deny for mutations.
 - Cline checkpointing can be storage/latency heavy when taken after every tool call. Snapshot at meaningful transaction boundaries.
 
-Updated PocketCode adoption review latest blob: `c1b9f90a23c11ac495a6d2ccb18b7a250573208f`. No code was copied; no runtime/framework is selected.
+Updated PocketCode adoption review latest blob: `e668630e9ff53740e01ad047e8d36aadf3de0239`. It now also records Atlan's explicit proot/Bash confinement caveat and Goose's experimental parallel-worker limits. No code was copied; no runtime/framework is selected.
