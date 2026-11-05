@@ -354,3 +354,12 @@ After the latest documentation-only continuity updates, live GitHub comparison r
 
 
 - 2026-11-05: Extended the existing fixed-task comparison worksheet with Section 5D, a staged interruption/reconnect/receipt/artifact-recovery protocol. It separates natural iOS/browser interruption from remote-host reconnect and controlled product fault injection; requires inspect-before-retry, same-attempt identity, exact artifact read-back, report-to-source reconciliation, and transfer integrity. Explicitly separated this CSV execution/recovery experiment from EVAL-06 (the independent compact-checkpoint prompt-bundle comparison) and from the raw-evidence-versus-portable-report A/B. Read-back verified the worksheet update at blob `c883ccd45e78758997642861623351957c1d31a1`. This is documentation-only; all hands-on paths, interruption cases and paired experiments remain NOT RUN. No canonical fixture, LOOP/CASE ID, schema, provider/runtime choice, owner decision, source/test, PR, Action, account, workload, spend, merge or deployment changed.
+
+
+## 2026-11-05 owner authorization update
+
+The owner has superseded the earlier blanket documentation-only/no-implementation restriction across the RevDev + PocketCode programme. ChatGPT should carry out useful implementation, test authoring/execution, builds and CI work when the actual environment and target are available. Do not treat the old temporary phone-only safeguard as a permanent project limitation.
+
+PocketCode's own product phase remains Discovery and product definition; this authorization does not select a runtime/provider, prove product demand, or justify a paid workload. The $0 default budget remains in force. Continue hosted/local source and prototype work where no-cost access is verified, and keep the product's security and execution boundaries intact. The owner's Windows PC and installed RevDev runtime remain inaccessible, so no PC parity or local runtime claim is possible.
+
+RevDev has a separate narrow maintenance-source hardening change on its own repository/branch. See [the RevDev fail-closed publisher patch note](https://github.com/marcelosofficial-ctrl/DevRelay-Missions/blob/review/revdev-adaptive-ai-workshare-2026-10-27/resume/revdev/R5_MAINTENANCE_PUBLISHER_FAIL_CLOSED_PATCH_2026-11-05.md). This does not change PocketCode code, architecture, acceptance IDs or release gates.
