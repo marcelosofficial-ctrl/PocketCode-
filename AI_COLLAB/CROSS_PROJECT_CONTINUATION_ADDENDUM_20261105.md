@@ -141,6 +141,22 @@ The latest static pass also reconciled the separate P8U-03/P8U-06 audit and the 
 - Canonical acceptance IDs/expected strings and owner-open decisions remain unchanged.
 
 
+
+## 8. November 5 later ref comparison and snapshot qualification
+
+A later read-only comparison against each repository's `main` returned:
+
+| Repository / owner-designated branch | Merge base | Ahead of main | Behind |
+|---|---|---:|---:|
+| PocketCode `pocketcode-ai-workflow-director-research-2026-10-28` | `555840d8d83342513d9cd353d4d1522d46a5c82d` | 619 | 0 |
+| RevDev `review/revdev-adaptive-ai-workshare-2026-10-27` | `058f9025319d12e76195659c715ccb4afce133b8` | 510 | 0 |
+
+The comparison response exposed the branch names, merge bases and ahead/behind counts, but did not expose either current tip SHA. Therefore the tip SHAs in Sections 1 and 7 are historical snapshots, not verified current heads. Do not use them as current branch pins. The previous counts (598/508) are superseded by this later comparison (619/510). This addendum correction itself creates one additional PocketCode commit, so the 619 count is the pre-correction snapshot; refresh both refs and comparisons before the next consequential action.
+
+The protected PR search was repeated for both repositories. PocketCode #2 and #3 and RevDev #1 remain discoverable as open PRs. No PR was edited, converted, reviewed, merged, or closed in this pass. The earlier verified draft/unmerged status remains the last full PR-metadata snapshot; the latest search response did not independently return every PR field.
+
+This section is a continuity correction only. It does not change canonical acceptance, owner decisions, source, tests, runtime, queue, provider, installation, Actions, or deployment state.
+
 ## 7. November 5 continuation update
 
 - PocketCode owner-designated branch now points to `4325e477b5c08a29dbe7d81ae7321d562ecdb851` (598 ahead / 0 behind main). New matrix blob: `f146bd45cdbc3e7f6f1301ad3c0e172ffa4443d7`.
