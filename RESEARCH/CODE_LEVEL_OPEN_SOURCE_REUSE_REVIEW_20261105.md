@@ -252,3 +252,8 @@ Before source implementation is considered:
 - add evidence-source mapping to each recipe output so a model-generated summary cannot become its own verification.
 
 These are design tasks only. They do not authorize source changes, new acceptance IDs, PR changes, provider workloads or runtime selection.
+
+
+## Happy Agent daemon source audit
+
+The deeper PC-host agent review is now captured in [Happy Agent Daemon Source Audit](HAPPY_AGENT_DAEMON_SOURCE_AUDIT_20261105.md). It inspects the daemon's durable operation queue, event journal, process timeout/cancellation paths, permission system, sandbox OS coverage and database migration rules. The central warning is that the generic durable queue is at-least-once and deletes completed pending rows, so it is not an immutable execution or publication journal. No backend or runtime is selected.
