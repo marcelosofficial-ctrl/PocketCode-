@@ -334,3 +334,8 @@ The current Atlan README explicitly warns that Bash is not OS-sandboxed inside p
 ### 9.2 Goose parallelism is also experimental
 
 The current Goose parallel subrecipe documentation says isolated workers can run concurrently (up to ten in the documented feature), but labels this experimental. RevDev/PocketCode should not inherit that concurrency count or semantics. Any parallelism must be bounded by owner-approved resource limits, dependency graph, isolated workspaces and explicit result collection.
+
+
+## Code-level follow-up
+
+The deeper source and test review is documented in [Code-Level Open-Source Reuse Review](CODE_LEVEL_OPEN_SOURCE_REUSE_REVIEW_20261105.md). It adds pinned MCP Tasks, Happy, Goose, a-Shell and Aider implementation findings, records the small Apache-2.0 MCP poll-helper copy, and explicitly separates reuse patterns from product adoption. The existing runtime/framework decision remains open.
