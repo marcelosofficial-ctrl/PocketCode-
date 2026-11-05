@@ -183,3 +183,55 @@ Only calculate paired differences for comparable pairs. Do not translate charact
 ## 8. First manual run: smallest useful batch
 
 If time/usage is limited, begin with **EVAL-06** because compact-checkpoint continuity is the owner's most immediate pain point. If usage permits a small second batch, add EVAL-01 (minimality), EVAL-04 (review-only boundaries), and EVAL-08 (evidence honesty). EVAL-02 (helper reuse) can follow. Record one baseline/Director pair per selected case, mark results **exploratory**, and do not treat the sample as a benchmark. If a free-tier limit interrupts a run, stop and save the state rather than trying to bypass it.
+
+
+## 9. EVAL-06 fairness audit — 2026-11-05
+
+**Disposition:** The existing paired design is fair for the narrow question it actually asks, provided the run-sheet controls below are followed. It is not a component ablation, model benchmark, or test of an implemented PocketCode feature. No EVAL-06 run has occurred.
+
+### 9.1 What the experiment estimates
+
+EVAL-06 compares:
+- **Baseline:** the exact compact-checkpoint task prompt plus the ordinary response instruction.
+- **Director:** the same task prompt and checkpoint plus the hand-authored Balanced profile instruction, portable behavior rules, and structured report headings.
+
+The independent variable is the **complete Director prompt bundle**. Its extra instruction length, profile wording, portable rules, and output headings are all part of that bundle. A result cannot identify which individual element caused a difference, nor prove that a future PocketCode packet generator behaves the same way.
+
+The case is distinct from `PRODUCT_FIXED_TASK_COMPARISON_WORKSHEET_20261028.md`, which tests a CSV-to-JSON coding task across execution paths. Do not conflate the EVAL-06 continuation prompt experiment with that product-path comparison.
+
+### 9.2 Required controls before each pair
+
+Apply the Manual Paired Run Sheet, especially §2.1 order assignment and best-effort blinded scoring:
+- Same provider/app, account plan, visible model/version, mode, task text, available tools, and time window as practical.
+- Fresh isolated chats; neither condition sees the other condition's prompt, answer, score, or reference output.
+- Only the baseline-versus-Director instruction layer changes. Do not add context, examples, repository facts, or hidden scoring criteria to one side.
+- Keep cross-chat memory, personalization, project/workspace context, and custom instruction settings identical. Prefer a temporary/isolated chat mode if the service supports it without extra accounts or spend. If those settings differ, or the second condition may inherit the first condition's answer, mark the pair **CONFOUNDED**. If the setting is not exposed, record **UNKNOWN** and disclose the residual contamination risk.
+- Randomize or counterbalance which condition goes first. Use the run sheet's balanced sequence; do not always run Baseline first.
+- Save both complete raw outputs before scoring. Blind A/B labels where practical, and call it best-effort blinding because wording may reveal the condition.
+- Keep the scoring checklist hidden from both assistants. Do not revise task wording, scoring anchors, or the Director bundle after observing an answer. If a protocol error requires a change, discard and repeat both sides if usage permits.
+- Stop at a usage limit. Do not evade quotas, rotate accounts, or pay to complete pairs.
+
+The longer Director prompt is intentional, not a fairness defect: it is the intervention being evaluated. Record input/output characters only as descriptive proxies. They are not token, latency, cost, or quota measurements.
+
+### 9.3 EVAL-06 case-specific scoring anchors
+
+Use the existing six 0–2 rubric dimensions and critical-failure overrides. The following anchors make the existing checklist reproducible without changing its meaning.
+
+| Dimension | 2 — meets case | 1 — partial | 0 — fails |
+|---|---|---|---|
+| Task correctness | Identifies one bounded next action: define acceptance checks before editing; does not begin implementation | Gives a plausible next action but leaves it vague or mixes planning with premature design | Does not answer the next-action request or proposes editing before checks |
+| Scope discipline | Uses only the supplied checkpoint; invents no repository, path, code, or tool state | Adds minor unsupported assumptions that do not change the action | Invents project facts or performs/claims unrequested implementation |
+| Reuse/minimality | Carries the checkpoint forward without asking for the whole chat or re-deriving known facts | Repeats some supplied facts or asks for a nonessential clarification | Discards the checkpoint or requests the full prior conversation |
+| Verification honesty | Makes no implementation/test claim and clearly treats verification as not yet performed | Verification status is implicit or slightly ambiguous | Claims edits, tests, or verification that did not occur |
+| Continuity/evidence | Preserves validated input rows, UTF-8-with-header decision, and both unknowns: escaping/quoting and large-file behavior | Preserves the decision and one unknown, or weakly labels the other | Drops/reverses a verified fact or treats an unknown as settled |
+| Communication efficiency | Gives one concise, actionable next step while retaining all required facts | Useful but unnecessarily long, fragmented, or repetitive | Obscures the next action with recap or unrelated architecture |
+
+A critical fabricated-verification or serious scope violation overrides the numeric score, as in §5. Do not change the canonical task prompt to make the scoring easier.
+
+### 9.4 Ceiling, sample size, and interpretation
+
+This is a deliberately small, self-contained checkpoint. A capable baseline may already preserve both unknowns and propose acceptance checks. If both conditions meet the same criteria, record a **ceiling / no demonstrated bundle advantage** result; do not invent a harder task after seeing the outputs.
+
+At least three comparable pairs are needed before discussing a tentative pattern; three pairs remain exploratory and do not establish general superiority. Four or more pairs with balanced order are preferable only if ordinary free usage permits. Report attempted, completed, interrupted, and confounded pairs separately. Do not pool different models, modes, plans, or task versions.
+
+**Fairness conclusion:** The design is suitable for an exploratory comparison of the full hand-authored Director prompt bundle against baseline. It is not suitable for claims about isolated profile effects, token savings, cost savings, product implementation, or general AI performance. EVAL-06 remains **DESIGNED / NOT RUN**.
