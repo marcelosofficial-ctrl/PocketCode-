@@ -441,3 +441,98 @@ Inspired by the [Open-Source Reuse Audit](OPEN_SOURCE_REUSE_AUDIT_20261029.md), 
 | Stale file/edit protection | If an operation is based on a prior file revision, detect a conflicting revision before overwrite | Stale content silently overwrites newer user changes |
 
 These are proposed acceptance checks, not results. Keep cases that apply to the selected execution path; the remote reconnect case is conditional. A test is not PASS until the exact implementation/revision is run and evidence is saved.
+
+
+## 5D. Interruption, reconnect, receipt correctness and artifact recovery protocol
+
+**Status: design-only extension; NOT RUN.** This extends the existing fixed task and adversarial cases. It does not change the task source, inputs, expected outputs, report contract, canonical LOOP/CASE IDs, or authorize installation/execution.
+
+### Purpose and comparison boundary
+
+The success and malformed-input cases establish ordinary correctness. They do not establish that a result survives app suspension, force quit, browser reload, transport loss, a lost acknowledgement, or interrupted export. Evaluate recovery as a separate dimension, never as an assumed property of a successful run.
+
+Keep four different experiments separate:
+
+1. **Fixed-task execution comparison:** same frozen `main.py`, input bytes, expected output, and failure behavior across feasible paths.
+2. **Natural mobile interruption:** background, app switch, lock, browser reload, app termination/relaunch, and later inspection. These are observations of the selected app/OS path, not deterministic crash injection.
+3. **Remote reconnect:** applicable only when a reachable remote host actually owns the execution. Disconnecting the phone is not stopping the host. Reconnect must query the original operation/attempt and replay observations, not submit the command again.
+4. **Controlled crash-window tests:** lost acknowledgements, storage commit failures, and faults between artifact creation and receipt persistence require an instrumented product adapter or test harness. They cannot be fairly claimed as competitor-device results unless that exact path exposes an equivalent controllable boundary. Do not add sleeps or modify the canonical task script to manufacture timing.
+
+### Recovery scenarios
+
+| Scenario | Procedure | Required evidence | Fail / inconclusive conditions |
+|---|---|---|---|
+| R1. Background and return | Start the unchanged task; background/switch away or lock the device at a naturally observed point; return and inspect before taking another action | App lifecycle observation; last visible run state; same workspace contents; whether execution/result can be reattached; actual artifact bytes | FAIL if UI claims completion without evidence or silently starts a second run; INCONCLUSIVE if the interruption point or authoritative run state cannot be established |
+| R2. Force quit / relaunch | Start only if safe; force-quit the app/browser process; relaunch and inspect the original workspace before rerunning | Whether the workspace survives; whether run/session identity survives; whether status/output/receipt survives; actual file inventory and artifact digest | FAIL if a stale success is presented as a fresh run or a second run is silently launched; UNKNOWN if app termination makes execution outcome unavailable |
+| R3. Browser reload / tab loss | For browser-local WASM, run in a fresh origin/workspace, then reload or close/reopen at a recorded point; test the actual storage mode separately | Browser/version; runtime and filesystem mode (MEMFS/IDBFS/OPFS or other, if known); persisted files; report/history; export result | FAIL if the UI represents volatile state as durable; INCONCLUSIVE if storage mode or lifecycle point is unknown |
+| R4. Remote client disconnect | Only for a real remote-host path: start once, disconnect the phone/client without cancelling the host, reconnect to the same host and original attempt | Stable command/attempt identity; host-side lifecycle read-back; event cursor; replayed sequence; gap/duplicate handling; exact artifact identity | FAIL if reconnect creates a replacement execution, loses a known event without disclosure, or treats tunnel loss as termination; NOT_APPLICABLE for a path with no remote host |
+| R5. Artifact committed, receipt/ack uncertain | Controlled product/adapter test only: inject failure after the output file is committed but before the local receipt/ack is durably recorded; reopen and reconcile | Pre/post workspace inventory; exact `summary.json` bytes and digest; operation/attempt identity; receipt persistence state; retry/reconciliation trace | FAIL if the script is blindly rerun, a newer artifact is overwritten, or an ambiguous outcome is called success; NOT_RUN where no controllable boundary exists |
+| R6. Export/share interrupted | After a real artifact is verified, begin user-initiated export/share and interrupt the transfer if the platform permits; recover the same artifact and retry only the transfer | Source artifact digest/size; transfer state; destination read-back digest/size where available; user action and OS completion result | FAIL if partial transfer is labelled complete or the artifact is regenerated as a substitute; UNKNOWN if destination receipt/integrity cannot be checked |
+
+### Mandatory recovery invariants
+
+- **Inspect before retry:** after any ambiguous interruption, inspect the same workspace and reconcile the existing attempt before considering a new execution. Never use a blind rerun to discover whether the first run completed.
+- **No identity, no reattachment claim:** if a local app exposes no stable run/attempt identity, record that limitation. Reopening a project is not proof of resuming the same execution.
+- **Separate lifecycle axes:** app state, connectivity, execution, receipt persistence, artifact state and transfer state are independent. App closed does not mean process stopped; a visible file does not mean a receipt is durable; file existence does not mean export completed.
+- **Exact artifact recovery:** preserve the original `summary.json` bytes. Where bytes can be read, record a digest as an experimental observation, not as a new mandatory report field. Compare the recovered bytes with the pre-interruption bytes; do not accept filename-only matching.
+- **No stale-result substitution:** each scenario starts in a fresh workspace, except the interruption/recovery continuation of that same scenario. Do not reuse a prior successful `summary.json` to satisfy the malformed-input case.
+- **Truthful report reconciliation:** compare every report claim against its source observation. Keep child/process status, wrapper/app status, timeout, cancellation, termination confirmation, output capture, artifact inventory, cleanup and export separate. Mark unsupported fields UNKNOWN/UNAVAILABLE, not empty or successful.
+- **Replay completeness:** for remote paths, record cursor support, retention limits, duplicate suppression, sequence gaps and snapshot consistency. If the host does not expose replay, say so; do not infer complete history from a current status snapshot.
+- **No security inference:** successful recovery or digest equality does not prove sandboxing, egress control, isolation, deletion, or power-loss durability.
+
+### Per-scenario recovery record
+
+Add one record for each R1–R6 attempt, and preserve each interruption point as observed rather than reconstructed:
+
+```text
+Recovery case: R1 | R2 | R3 | R4 | R5 | R6
+Path / exact app or build / version:
+Device / OS / browser:
+Evidence class: DIRECTLY OBSERVED | SOURCE REVIEW | CONTROLLED TEST | NOT RUN
+Task source and input fixture unchanged: YES | NO | UNKNOWN
+Fresh workspace before initial run: YES | NO | UNKNOWN
+Original run/command/attempt identity:
+Identity source / unavailable reason:
+Interruption trigger and exact observed point:
+App lifecycle state:
+Connectivity state:
+Last authoritative execution state:
+Was execution termination confirmed? YES | NO | UNKNOWN | NOT APPLICABLE
+Reopen/reconnect action sequence:
+Did the same attempt reattach? YES | NO | UNKNOWN | NOT SUPPORTED
+Did any redispatch/re-execution occur? YES | NO | UNKNOWN
+Event cursor / snapshot / replay result:
+Sequence gaps / duplicates / retention expiry:
+Artifact inventory before interruption:
+Artifact inventory after recovery:
+summary.json exact bytes or digest:
+Receipt/report persisted and recovered:
+Receipt facts checked against source observations:
+Export/transfer state:
+Destination read-back integrity:
+Cleanup observation:
+User effort / recovery steps:
+Failure, disqualifier or unknown:
+Scenario result: PASS | FAIL | INCONCLUSIVE | BLOCKED | NOT RUN | NOT APPLICABLE
+```
+
+### Path-specific interpretation
+
+- **Pyodios:** treat its documented fresh Python session on app launch and its documented timeout behavior as source claims until observed on the target device. Test project-file persistence separately from interpreter/session persistence. Its UI timeout must not be scored as confirmed termination unless the execution boundary proves termination.
+- **Carnets:** notebook/kernel state, notebook document persistence, working-directory permission and exported artifact persistence are separate. Do not assume a surviving notebook means the kernel or process resumed.
+- **Safari/Pyodide:** explicitly identify the filesystem mode. MEMFS loss on reload, IDBFS synchronization and OPFS persistence are different behaviors. Do not treat OPFS as a direct Files-directory mount or a browser reload as a remote reconnect.
+- **Remote clients:** the host owns execution. Query the original attempt and replay from its cursor. If the host cannot deduplicate or retrieve the original operation, record dispatch outcome as uncertain and do not automatically submit a replacement.
+- **Manual AI chat:** a copied transcript or plausible JSON answer is not a real run, process status, artifact or recoverable execution. It remains a reasoning baseline, not an execution PASS.
+- **PocketCode prototype:** simulated output is ineligible for all execution/recovery scores. It can be reviewed only for whether its labels preserve unknowns and avoid claiming recovery.
+
+### Experiment separation: EVAL-06 is not this task
+
+EVAL-06 in the AI Workflow Director Evaluation Kit is the compact-checkpoint continuation prompt experiment. It compares the hand-authored baseline prompt with the complete Director prompt bundle, using a toy checkpoint and its own six-dimension rubric. It does **not** run the CSV-to-JSON task, test a mobile runner, or measure interruption recovery. Keep its pair IDs, prompts, rubric and conclusions separate from this worksheet.
+
+Likewise, the raw-evidence versus portable-report paired correction experiment is a separate report-layer experiment. It can begin only after a real execution path has produced the same underlying observed evidence for both conditions. A synthetic PocketCode report can test comprehension/layout only. Do not combine EVAL-06, runner comparison and report A/B into one result or attribute a full prompt-bundle effect to a single PocketCode feature.
+
+### Current decision and status
+
+The existing source research justifies testing recovery explicitly, but no path has yet supplied direct target-device evidence. Pyodios remains the first iOS local comparator; Carnets remains a secondary local comparator; Safari/Pyodide is a distinct browser path; remote-host paths are conditional on a reachable host. The first useful real attempt should capture the ordinary success and malformed-input cases, then perform only safe natural interruption observations. R4–R6 controlled fault cases remain separate and may be NOT_APPLICABLE or NOT_RUN for third-party apps.
+
+**Status remains NOT RUN.** This extension changes no canonical fixture, product contract, acceptance ID, schema, runner selection, provider selection or owner decision. No install, execution, device test, provider workload, account, billing, source/test change, Action, PR, merge or deployment is authorized by this worksheet.
