@@ -175,3 +175,12 @@ A companion RevDev design artifact now translates the canonical P8U-01..12 scena
 This is planning for a future isolated synthetic transport harness, not implementation or live evidence. It preserves execution/publication separation, exact immutable content identity, ambiguity-safe recovery, independent mutable-view verification, and no duplicate execution/terminal/audio effects. Canonical P8U JSON and owner decisions remain unchanged; OD-01..OD-08 remain OPEN.
 
 The latest pre-this-addendum-write comparison reported PocketCode 627 ahead / 0 behind main and RevDev 519 ahead / 0 behind main. The PocketCode addendum update itself adds one commit, so refresh the branch comparison before using an ahead count as current. Comparison responses do not expose current tip SHAs. Protected PR searches still find PocketCode #2/#3 and RevDev #1 open; the latest search did not independently return all draft/merge metadata.
+
+
+## 2026-11-05 source-level follow-up
+
+- PocketCode code-level competitor/source review: [Code-Level Open-Source Reuse Review](../RESEARCH/CODE_LEVEL_OPEN_SOURCE_REUSE_REVIEW_20261105.md).
+- PocketCode evidence authority map: [Mobile Runner Evidence Sourceability Matrix](../RESEARCH/MOBILE_RUNNER_EVIDENCE_SOURCEABILITY_MATRIX_20261105.md).
+- RevDev companion design review: [P8U Upstream Recovery and Outbox Pattern Review](https://github.com/marcelosofficial-ctrl/DevRelay-Missions/blob/review/revdev-adaptive-ai-workshare-2026-10-27/resume/revdev/P8U_UPSTREAM_RECOVERY_AND_OUTBOX_PATTERN_REVIEW_2026-11-05.md).
+
+These are research/design references only. They do not change separate-repository boundaries, canonical acceptance suites, PR states or owner decisions.
