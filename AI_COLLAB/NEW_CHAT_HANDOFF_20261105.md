@@ -688,3 +688,16 @@ Fresh GitHub verification: branch 690 ahead / 0 behind main, observed head `27a8
 Immediately before this entry, PocketCode research branch head was cdf80d50ae5732008caad44500579a3aa2736c51, 695 ahead / 0 behind main. RevDev research branch head was 6fc3b515d2b2bd65ba5fea7d414d087e6ad514c0, 669 ahead / 0 behind main. Merge bases remain 555840d8d83342513d9cd353d4d1522d46a5c82d and 058f9025319d12e76195659c715ccb4afce133b8 respectively. These are accumulated documentation/research histories only.
 
 PR #2/#3 PocketCode and PR #1 RevDev were re-read: all OPEN / DRAFT / UNMERGED, bases main, original PR heads unchanged. No PR was modified.
+
+
+### Upstream fault-test inspection addendum
+
+The remote-agent audit was extended after inspecting targeted upstream test files:
+- OpenHands session stream tests verify replay/live ordering, no duplicate durable frames, stable sequence across a lost event file, and slow-consumer disconnect.
+- OpenHands lease tests verify takeover generation increments and stale-owner guarded writes fail.
+- Cline SSH tests verify strict host-key checking, content-addressed helper bootstrap without network download, loopback-only tunnel, concurrent connection reuse, failure cleanup, and recovery of persisted cleanup after tunnel loss.
+- Cline cron ingress tests inject partial fan-out/status failures, verify transaction rollback, reopen SQLite before redelivery, and ensure another connection cannot see partial acceptance.
+- Cline runner tests verify work isolation/progress for a blocked schedule and explicitly assert wildcard auto-approval when the tool list is omitted. This is a tested unsafe default and is rejected by PocketCode.
+- We did not find a targeted report-writer-failure regression in the inspected portions of Cline's runner tests. The source writes terminal state first, but that particular failure path is not treated as upstream-test-proven.
+
+All source test files were inspected only. No upstream suite was run by PocketCode. Exact paths and blob SHAs are recorded in Section 10.10 of the linked [remote-agent audit](../RESEARCH/REMOTE_AGENT_CONTROL_PLANE_AND_WORKFLOW_PROTOCOL_RESEARCH_20261105.md).
