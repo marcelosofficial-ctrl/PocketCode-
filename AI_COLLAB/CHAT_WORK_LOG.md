@@ -23,3 +23,8 @@ Append-only continuity ledger. Keep entries concise; detailed evidence remains i
 **Verification:** GitHub file writes/read-backs to follow. No PocketCode execution, device tests, fixed-task comparison or runtime/provider decision was performed by this continuity update.
 
 **Next:** inspect `scripts/report_contract.py` and exact tests for CASE-04; continue Pyodios device comparison only from owner-supplied observations.
+
+
+### 2026-11-06 — post-write branch recheck
+
+After all continuity files and status/handoff updates were committed, live compare reported PocketCode at **715 ahead / 0 behind** main. Merge base unchanged. The earlier 710 count above was the pre-update snapshot. Ahead count is branch-history divergence, not product progress.
