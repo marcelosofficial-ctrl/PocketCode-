@@ -361,3 +361,120 @@ However, the inspected apply implementation is not safe to copy as PocketCode's 
 | Happy | Invariant reference only | Atomic cursor/snapshot and exact ack; generic outbox coalesces intents |
 
 **Copy decision:** no additional upstream code is copied in this pass. The candidate components are not yet tied to a selected PocketCode application framework, storage engine, runtime or workspace model. Copying a runnable worker, editor internals or filesystem apply routine now would create an unowned integration surface and could falsely imply a tested product path. The existing isolated MCP polling helper remains the only research-only code extraction recorded above. No production code was changed.
+## 10. Workspace durability deep dive: SQLite-backed recovery and browser OPFS (2026-11-05)
+
+This pass targeted the gap left by Plandex: durable workspace checkpoints and restart recovery. It inspected implementation and tests from `tgbender/safe-fs-ops`, `openclaw/fs-safe`, `opfs-vfs/opfs-vfs`, and official `sqlite/sqlite-wasm`. No dependency was installed and no product code was changed.
+
+### 10.1 safe-fs-ops: strongest end-to-end recovery reference
+
+Pinned upstream:
+- Repository: [tgbender/safe-fs-ops](https://github.com/tgbender/safe-fs-ops)
+- Main commit observed: `d52afaaec4f6050bd2ac70219ac8bbd7bc9d652e` (2026-09-07)
+- Package version `0.1.1`, MIT, Python >=3.12, SQLAlchemy >=2.0.49; alpha / pre-1.0.
+- `src/safe_fs_ops/filesystem_ops/content_addressed.py`, blob `d1b099c390c8b3474b5e298b5a01b238c791f3f7`
+- `src/safe_fs_ops/filesystem_ops/tree_backups.py`, blob `ea7b7f80dcf6d70e5e322a93e582723478814c3c`
+- `src/safe_fs_ops/operation_journal/journal_batch.py`, blob `dda5c05a2a613b480d51204d6ac586121acbeb2f`
+- `src/safe_fs_ops/operation_journal/filesystem_mutation_checkpoints.py`, blob `2f8a34e99f1832d78d41551aa2a6dfa1c5a1791e`
+- `src/safe_fs_ops/operation_journal/recovery_runner.py`, blob `d2120bd6eb1db353c17152e287c4eb882383fa25`
+- `src/safe_fs_ops/workspace_state/leases.py`, blob `b932378a7ee320a15768df56a1d1a5d7d7941df7`
+- `docs/RECOVERY_MODEL.md`, blob `15756cca8da4d53659dd6fe840561600d95e8608`
+- `docs/FILESYSTEM_PRIMITIVES.md`, blob `87557301644a695e6172b7580610bb4be142ab2b`
+- `docs/SOURCE_REVIEW.md`, blob `eb348f21abd5a0d102eb3f79ee2fde4d9dfa10e8`.
+
+Useful implementation patterns confirmed in source:
+1. SHA-256 content-addressed objects at `sha256/<prefix>/<digest>`; stream hashing, source identity checks before/after capture, staged temp writes, fsync, hash verification and no-replace installation.
+2. Explicit `backup_tree(root, relative_paths)` rather than claiming a full recursive filesystem snapshot. It captures regular files and symlink targets for named paths. Directory metadata and empty directories are not captured.
+3. Restore preflight checks every entry and content reference before changing any destination. Default conflict policy is no-replace; replacement is opt-in. Content is reverified before copying.
+4. SQLite journal records planned intent, idempotency key, lease identity/fencing token, before checkpoint, backup-artifact intent, durable artifact references, after checkpoint, failures, recovery intent and recovery action outcomes.
+5. Partial content-addressed artifacts are checkpointed immediately as refs are created, so an interrupted backup can account for artifact cleanup debt.
+6. Recovery actions have stable action IDs and append-only planned/attempting/succeeded/failed/skipped/manual-intervention statuses, tied to a specific recovery attempt. Re-running a terminal action does not repeat it.
+7. Cross-process leases use a secret token and monotonically increasing fencing counter. Old workers cannot append after takeover. Python locks are not treated as the authority.
+8. Recovery is proof-dependent: if the target no longer matches expected state, content is missing/tampered, path safety is unknown or restore partially fails, it requires manual intervention instead of overwriting.
+
+Relevant upstream tests inspected (not run here):
+- `tests/filesystem_ops/test_content_addressed.py`: object digest, deduplication, tamper rejection, symlinked store-root/prefix refusal.
+- `tests/filesystem_ops/test_tree_backups.py`: explicit file restore, metadata, symlink capture, no-replace conflicts, unsupported safe symlink replacement.
+- `tests/operation_journal/test_tree_backup_recovery.py`: partial artifact checkpointing, shared-store races, artifact cleanup revalidation, lease loss during failure recording, recovery.
+- `tests/operation_journal/test_journal_store_recovery_fencing.py`: idempotent concurrent starts, invalid transitions, forged lease rejection, takeover fencing.
+- `tests/operation_journal/test_recovery_runner.py`: action state progression, replay of terminal actions, interrupted attempting actions, slow-recovery tests.
+- Docs state the default suite excludes opt-in stress and slow recovery tests; Windows, macOS and Linux are in the test workflow matrix. That is upstream's stated coverage, not independent execution or proof for PocketCode.
+
+Limitations / adoption:
+- Alpha API and broad implementation surface. It is Python 3.12 plus SQLAlchemy, not a drop-in mobile TypeScript library.
+- Tree backups cover explicit file/symlink paths, not a whole-tree image; no empty dirs or directory permissions. This is a deliberate tradeoff but may not satisfy full project restore.
+- Filesystem group operations remain non-transactional. The journal makes recovery explicit; it does not make a batch atomic.
+- Not a sandbox. External tools can make unrecorded changes.
+- No independent full audit or tests were run in this project.
+
+**Decision:** best architecture and test-pattern reference found so far for RevDev's Python reference/evidence tooling. Do not add it as a PocketCode dependency. Reconsider a bounded pilot only if the product gains a supported Python backend and after the target OS/filesystem matrix is selected. For a TypeScript/mobile implementation, port the *contracts* (CAS blobs, explicit manifest, per-action journal, fencing, proof-based recovery), not this Python implementation.
+
+### 10.2 openclaw/fs-safe: strong path-boundary primitives, not a workspace transaction system
+
+Pinned upstream:
+- Repository: [openclaw/fs-safe](https://github.com/openclaw/fs-safe)
+- MIT; Node >=22; current package has platform-specific native bindings.
+- `docs/security-model.md`, blob `5eb1f6881c0f590e2205cb7a491344ee16e09641`
+- `docs/atomic.md` (upstream documentation) and `test/atomic-fault-matrix.test.ts`, `test/atomic-callback-substitution.test.ts`, `test/atomic-mutation-authority.test.ts`, `test/directory-durability.test.ts`, `test/file-lock-concurrency-stress.test.ts`.
+
+Useful: capability-style root handles, path containment, symlink/hardlink defenses, identity checks, sibling-temp + rename, optional file and parent-directory fsync, sidecar locks, content hashing, and a large fault/adversarial test catalogue. Its docs explicitly distinguish Linux kernel-atomic native paths from best-effort macOS/Windows/JavaScript fallback paths. It explicitly says it is not a sandbox and per-call checks do not defeat an arbitrary same-UID process continuously racing namespace changes.
+
+**Decision:** reference the threat model and atomic-write test cases. Do not add as a PocketCode dependency until Node runtime and native addon support are confirmed. Browser JS cannot use Node filesystem descriptors or these native bindings. It does not provide multi-file workspace transactions or durable mission semantics.
+
+### 10.3 OPFS VFS: valuable crash testing, rejected dependency due licence
+
+Pinned upstream:
+- Repository: [opfs-vfs/opfs-vfs](https://github.com/opfs-vfs/opfs-vfs)
+- Package `@opfs-vfs/opfs-vfs` version `2.1.0`.
+- Package licence: **PolyForm-Noncommercial-1.0.0**. This is incompatible with our intended commercial product direction. Do not copy or depend on it.
+- `packages/opfs-vfs/src/__tests__/physical-recovery.test.ts`, blob `4dd6e75d7ae26a23b1d11b34e71a8957f268f2a2`
+- `packages/opfs-vfs/src/__tests__/data-wal.test.ts`, blob `65853e4680479b6e143e6571486d6b95ad22ead0`
+- `packages/opfs-vfs/src/__tests__/crash-consistency-worker.ts`, blob `d5a51f2fa0112c544be34a422d9c1542fcae9c90`
+- `packages/opfs-vfs/src/__tests__/crash-integrity-worker.ts`, blob `30ffbbf9a9d67acbc5968c0261b7c090c8c7b66f`
+- `packages/opfs-vfs/src/__tests__/storage-fault-worker.ts`, blob `481c54444299c0cb904c74e075a9a288cd2db78d`.
+
+The tests are unusually relevant: WAL frame checksums, partial trailing records, corruption offsets, physical mapping truncation, crash consistency/integrity, and persistence/recovery audit. They are useful as *test-design inspiration only*. Do not port source under the noncommercial licence.
+
+### 10.4 Official SQLite Wasm + browser OPFS: better PocketCode candidate
+
+Pinned upstream:
+- Repository: [sqlite/sqlite-wasm](https://github.com/sqlite/sqlite-wasm)
+- Main commit observed: `ccbb81134a3b5a824f8a3cc3c5d8edd6e799ab5a`
+- npm package version `3.54.1-build1`, Apache-2.0 wrapper (SQLite core itself is public domain).
+- `demos/sahpool-demo/src/workers/worker.ts`, blob `adbb157342c804388b947740b8fd9c6f2bc1f6be`
+- `demos/opfs-demo/src/workers/worker.ts`, blob `176ebf02c4d506372621442293a1ede207be16eb`
+- `src/__tests__/sqlite3-sahpool-vfs.browser.test.ts`, blob `f749c6a89e483cff6b224448e43b3bcde6cea3a2`
+- `src/__tests__/workers/sqlite3-sahpool.worker.ts`, blob `2d8c3b5650921bd3831d12be384101b6cbcbc6f2`.
+
+The official worker demo initializes SQLite inside a dedicated worker, installs the OPFS SyncAccessHandle Pool VFS, performs database operations, closes/reopens the database and verifies persistence. The test worker also exercises pause/unpause and checks that an active DB handle prevents pausing. This is a much smaller and more directly reusable foundation than adopting a full custom VFS.
+
+Important tradeoffs from SQLite's official persistence documentation:
+- OPFS only works from worker context.
+- The regular `opfs` VFS supports more concurrency but needs COOP/COEP and has Safari sub-worker compatibility caveats for Safari <17.
+- `opfs-sahpool` is intended to work across major browsers since March 2023 and does not need COOP/COEP, but does not support multiple simultaneous database connections/instances. It pre-allocates handles and locks them. A second app/tab instance can fail to initialize.
+- `opfs-wl` uses Web Locks but requires `Atomics.waitAsync()`, so it is less portable.
+- WAL mode on OPFS has special constraints: SQLite's WASM build lacks shared-memory APIs; WAL requires exclusive locking, which removes concurrency benefits. Do not assume conventional desktop SQLite WAL settings transfer unchanged.
+- OPFS is private to the origin, subject to quota/eviction, and clearing site data deletes it. It is not a user-visible project folder. Important changes need an explicit storage sync/commit contract and an export/backup route.
+
+**Decision:** strongest current dependency candidate for a *browser/PWA PocketCode local metadata/journal database*, conditional on confirming that the app is a web/PWA runtime. Use a dedicated worker and start by evaluating the SAHPool single-owner model. If multi-tab editing is required, design and test an explicit single-writer ownership/lock protocol before selecting a different VFS. Do not use OPFS database storage as the only copy of user project files; maintain export/backup and quota/eviction recovery. It is not a native iOS/Android storage choice and must not be assumed to work in an arbitrary WebView without device tests.
+
+### 10.5 Proposed PocketCode storage split
+
+If browser/PWA is the chosen client, the candidate design is:
+
+- SQLite Wasm + OPFS: task/project metadata, immutable attempt/result index, event/journal rows, leases and checkpoint manifests.
+- OPFS project object area: content-addressed immutable file blobs, named by SHA-256, with explicit project tree manifests and metadata.
+- Atomic logical update: write/verify all new blobs, then commit one SQLite manifest/reference transaction. Old manifest remains the recoverable state until the commit is acknowledged.
+- Startup recovery: inspect incomplete intent/attempt rows, verify referenced blob hashes, rebuild indexes from durable manifests, and expose missing/corrupt artifacts as recovery-required rather than silently emptying a project.
+- User backup/export: produce a portable project bundle with manifest, blob digests, schema version and integrity check. Storage persistence request is advisory; never promise browser storage cannot be evicted.
+- Single-writer owner: one worker/instance holds the DB. Other tabs communicate with it or fail closed with an actionable "workspace already open" state. A worker restart requires re-opening and reconciling journal state, not replaying unacknowledged writes blindly.
+
+This is a candidate architecture, not an approved implementation. No SQLite schema, runtime or product acceptance ID is changed by this research.
+
+### 10.6 Next validation gates
+
+1. Confirm app runtime (native React Native, Capacitor/WebView, or browser/PWA) before choosing OPFS.
+2. Test iOS Safari/PWA and Android Chrome on actual devices for OPFS, worker startup, SAH creation, quota, persistence, app background/suspend, force-kill and reopen.
+3. Inject worker termination at each boundary: before blob write, after blob sync, before SQLite transaction, after transaction commit but before reply, and during export.
+4. Test two tabs/app instances and verify exactly one owner; no silent fallback to two writers.
+5. Verify export can reconstruct the project after OPFS is cleared or evicted.
+6. Do not report a save as durable until the relevant database commit and blob sync contracts have succeeded and their exact acknowledgement is recorded.
