@@ -701,3 +701,10 @@ The remote-agent audit was extended after inspecting targeted upstream test file
 - We did not find a targeted report-writer-failure regression in the inspected portions of Cline's runner tests. The source writes terminal state first, but that particular failure path is not treated as upstream-test-proven.
 
 All source test files were inspected only. No upstream suite was run by PocketCode. Exact paths and blob SHAs are recorded in Section 10.10 of the linked [remote-agent audit](../RESEARCH/REMOTE_AGENT_CONTROL_PLANE_AND_WORKFLOW_PROTOCOL_RESEARCH_20261105.md).
+
+
+### Last storage-boundary clarification
+
+The deeper OpenHands read shows its LocalFileStore text writes use same-directory temp + file fsync + rename, but the helper does not fsync the parent directory. EventLog's event append precedes in-memory indexing, and its length-marker advance is best-effort. Its FileLock/flock is explicitly unreliable on NFS/network filesystems. Treat OpenHands as an event replay and ordering reference, not proof of portable power-loss or distributed-storage durability.
+
+Cline's SQLite tests prove expiry reclaim with a new token and a sequential bun:sqlite capacity check, not a demonstrated multi-process claim race. Its separate event ingress tests do verify atomic fan-out visibility across a peer SQLite connection. These are different claims. See Sections 10.10–10.11 of the remote-agent audit for exact files and SHAs.
