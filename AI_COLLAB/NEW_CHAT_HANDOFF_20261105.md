@@ -681,3 +681,10 @@ PR state rechecked: PocketCode #2 and #3 OPEN / DRAFT / UNMERGED; RevDev #1 OPEN
 Read [PROJECT_PROGRESS_AND_NEXT_EXECUTION_GATES_2026-11-05.md](PROJECT_PROGRESS_AND_NEXT_EXECUTION_GATES_2026-11-05.md) first. Current PocketCode estimate is approximately **20% toward a dependable MVP**, qualitative only. Static/simulated UI and extensive research exist, but no selected real execution backend, mobile runner integration, durable real receipt, or end-to-end run/inspect/report/correct/rerun proof. The first usable MVP is not close yet. Next priority is the existing fixed-task execution-path comparison, followed by one bounded vertical slice. Do not broaden features.
 
 Fresh GitHub verification: branch 690 ahead / 0 behind main, observed head `27a89fbed6a5b1c4d3a44e5398026fc220f918d6`; PR #2/#3 OPEN / DRAFT / UNMERGED, untouched. The progress document is commit `843b4bab96d8d0f41141d2062bf3a6c5d484ba84`. Branch divergence is not implementation progress.
+
+
+### Last live branch/PR check — 2026-11-05
+
+Immediately before this entry, PocketCode research branch head was cdf80d50ae5732008caad44500579a3aa2736c51, 695 ahead / 0 behind main. RevDev research branch head was 6fc3b515d2b2bd65ba5fea7d414d087e6ad514c0, 669 ahead / 0 behind main. Merge bases remain 555840d8d83342513d9cd353d4d1522d46a5c82d and 058f9025319d12e76195659c715ccb4afce133b8 respectively. These are accumulated documentation/research histories only.
+
+PR #2/#3 PocketCode and PR #1 RevDev were re-read: all OPEN / DRAFT / UNMERGED, bases main, original PR heads unchanged. No PR was modified.
