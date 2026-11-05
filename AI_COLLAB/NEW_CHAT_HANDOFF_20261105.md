@@ -584,3 +584,40 @@ The mobile interruption research report was extended with §10 acceptance tracea
 Created `AI_COLLAB/MOBILE_INTERRUPTION_RECOVERY_REVIEW_PACKET_20261105.md`, blob in initial create commit `77c2b2744d81f14d5df0be5005cb8ecc54864aa3`. It is READY TO SEND to Claude and Gemini, reviews not received. It asks Claude for lifecycle/architecture/crash-window review and Gemini for adversarial identity/idempotency/cursor/storage/OS security review. No implementation authority is implied.
 
 Latest PocketCode branch HEAD at this update: `77c2b2744d81f14d5df0be5005cb8ecc54864aa3`. Review the two mobile research artifacts before implementation planning. No product code/tests or canonical acceptance changed.
+
+
+## 2026-11-05 continuation: Cline/OpenHands source audit and programme status
+
+Read [RESEARCH/REMOTE_EXECUTION_EVENT_RECOVERY_AND_SCHEDULER_COMPETITOR_AUDIT_20261105.md](../RESEARCH/REMOTE_EXECUTION_EVENT_RECOVERY_AND_SCHEDULER_COMPETITOR_AUDIT_20261105.md) before further architecture work. It pins Cline main commit d3ecc4890e8f9bcb77182b96c77fa90575e8e145 (Apache-2.0) and OpenHands software-agent-sdk main commit 7dab3f2f461ffc848d5fab7036badc552a385f43 (MIT), with exact file/test blob SHAs.
+
+Key additions:
+- Cline remote environment service is a useful future SSH adapter reference: profile and connection lifecycle, remote inspection, bounded command/transfer/tunnel timeouts, output cap and cleanup tracking. It is Node/desktop oriented and does not establish mobile support, sandboxing, safe egress or remote process termination.
+- Cline SQLite scheduler is a useful bounded-work claim/lease reference for RevDev scheduling: durable run identity, claim tokens, renewal, stale-worker rejection, concurrency and tests. SQLite local claims are not distributed coordination; lease expiry does not make external side effects exactly-once. Its headless auto-approval defaults must not be copied.
+- OpenHands supports same-ID create retry only when server advertises idempotent_conversation_create_v1. Its test covers server commit followed by dropped acknowledgement. This is a conversation-create guarantee, not command idempotency. PocketCode needs its own explicit command dedupe/query capabilities.
+- OpenHands event store has useful stable IDs/sequences/cursors but bridges missing ancestry in some paths and has a test expecting storage listing errors to appear as an empty log. Do not copy either behavior into authoritative PocketCode or RevDev evidence. Empty, unavailable, corrupt and partial are distinct states.
+- No code was copied; upstream tests were inspected, not run.
+
+### Current programme assessment (planning estimate, not a test result)
+
+**Overall dependable combined product progression: approximately 20%.** This is a qualitative estimate of the product journey, not code completion. Requirements, acceptance semantics, source research and risk analysis are ahead of implementation, integration and hands-on validation.
+
+PocketCode: static/simulated UI prototype and extensive design/acceptance/research baseline exist. No real execution backend, selected execution path, mobile runner integration, durable real receipt or demonstrated end-to-end run/inspect/report/correct/re-run loop exists. A usable MVP is not close yet. The next meaningful milestone is one real, bounded vertical slice, not more feature breadth.
+
+RevDev: historical Windows product/source exists, but current PC checkout, installed binary, runtime, publisher parity, queue and writer topology are UNKNOWN. P0 publisher recovery remains OPEN/release-blocking; P8U-01…12 and P0-D 1…10 remain NOT RUN; OD-01…08 remain OPEN. No implementation claim can be made from the research branch.
+
+Progress is smooth in research and contract clarification, but not in executable product delivery. The current bottleneck is intentional: no reliable PC access, no selected PocketCode execution path, and no current RevDev host inventory. Reduce scope creep by stopping broad competitor catalogues and prioritize the first end-to-end proof when the relevant environment is available.
+
+### Fresh GitHub verification on 2026-11-05
+
+- PocketCode research branch head before this handoff refresh: 0cea0c183ef8d6649f7266b21d1952afa04981d5; compare against main: 684 ahead / 0 behind; merge base 555840d8d83342513d9cd353d4d1522d46a5c82d.
+- RevDev research branch head before its paired update: a73337083d07462086d8b5c008f305a3e9e259f5; compare against main: 648 ahead / 0 behind; merge base 058f9025319d12e76195659c715ccb4afce133b8.
+- PocketCode PR #2 and #3 remain OPEN / DRAFT / UNMERGED; RevDev PR #1 remains OPEN / DRAFT / UNMERGED. All are protected and untouched.
+- Ahead counts reflect accumulated research-branch history, not functional feature completion. Re-fetch before future consequential work.
+
+### Immediate next work order
+
+1. Stop adding broad competitor lists. Investigate only implementation gaps that could alter the chosen first slice.
+2. Prepare the existing fixed-task execution-path comparison and make the path decision only with explicit cost/security/availability evidence.
+3. Define the minimum command capability contract: stable command ID, same-ID dedupe, status lookup, ordered event replay, cancel semantics, termination confirmation and artifact transfer.
+4. After an execution path is selected, prove project/input -> explicit authorization -> real execution -> output/exit provenance -> artifact integrity -> durable receipt -> AI handoff -> reviewed correction -> linked rerun.
+5. Keep LOOP/CASE/D IDs unchanged. No provider, host, app installation, test, source change, PR update, Actions or spend without the required authorization.
