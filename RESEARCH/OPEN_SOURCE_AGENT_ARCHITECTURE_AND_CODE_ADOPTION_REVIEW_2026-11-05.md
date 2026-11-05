@@ -339,3 +339,8 @@ The current Goose parallel subrecipe documentation says isolated workers can run
 ## Code-level follow-up
 
 The deeper source and test review is documented in [Code-Level Open-Source Reuse Review](CODE_LEVEL_OPEN_SOURCE_REUSE_REVIEW_20261105.md). It adds pinned MCP Tasks, Happy, Goose, a-Shell and Aider implementation findings, records the small Apache-2.0 MCP poll-helper copy, and explicitly separates reuse patterns from product adoption. The existing runtime/framework decision remains open.
+
+
+## Happy Agent source-level architecture follow-up
+
+See [Happy Agent Daemon Source Audit](HAPPY_AGENT_DAEMON_SOURCE_AUDIT_20261105.md) for the pinned commit/source map and deeper code/test inspection. The daemon is a strong PC-host reference, not a phone-native runtime or a mandatory dependency. It also exposes important timeout distinctions and at-least-once side-effect semantics.
