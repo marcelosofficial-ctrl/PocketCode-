@@ -533,3 +533,15 @@ PocketCode research commit: `b045710958d6ea1631add4bfac18b96160212a68`.
 ### SQLite durability nuance added
 
 A final source check corrected a possible over-inference: safe-fs-ops' SqliteEngineConfig dataclass says NORMAL by default, but SqliteStore passes synchronous=None when constructing the engine, so the helper does not set that pragma on its standard path. Effective runtime PRAGMA synchronous must be queried, not inferred from the dataclass. SQLite WAL + NORMAL may lose a recent commit on power loss; WAL + FULL adds a sync per commit. PocketCode's future storage layer must expose effective journal/sync mode and distinguish app-crash recovery from power-loss durability. Source review blob now `0a30f35e0eed6a1dd48325ebe40d2ad9a55c5260`.
+## Workspace checkpoint contract pass — 2026-11-05
+
+Extended `RESEARCH/CLINE_WORKSPACE_CHECKPOINT_AND_RESTORE_AUDIT_20261105.md` with §8, a backend-neutral checkpoint storage contract. Latest blob SHA: `5260729e4af0bd8ef9fe0f09dc9fc0a5825e49aa`.
+
+The contract reconciles Cline's Git checkpoint/restore safeguards with safe-fs-ops' immutable content objects, durable journal, per-action recovery and fencing patterns. It defines distinct workspace/checkpoint/capture/restore identities; explicit capture coverage and COMPLETE/PARTIAL/FAILED/UNKNOWN semantics; blob-before-manifest publication ordering; restore preflight and conflict detection; mandatory complete pre-restore capture; per-action journal and crash reconciliation; backend-specific Git/blob/OPFS constraints; and proposed fault-injection tests.
+
+Decisions:
+- P1 user-visible checkpoint/diff/selective restore feature.
+- P0 safety precondition before unattended destructive multi-file repair: verified COMPLETE preimage or explicit user confirmation.
+- No runtime, storage backend, schema or implementation selected. No code/tests changed or run.
+- Canonical LOOP-01..14, CASE-01..16 and D-01..D-08 unchanged.
+- The design does not replace execution receipts, dispatch reservations, artifact release, or RevDev's remote publisher journal.
