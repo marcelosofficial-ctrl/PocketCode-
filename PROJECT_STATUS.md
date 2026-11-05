@@ -323,3 +323,5 @@ Adopt as future design ideas: provider capability negotiation, same-session reco
 No new code copied. No runtime/provider/cloud/sandbox selected; $0 default budget remains. Fixed-task comparison and AI Director evaluation remain NOT RUN. LOOP/CASE and AWD acceptance remain unchanged. PR #2/#3 untouched.
 
 - Final live branch verification after this pass: `pocketcode-ai-workflow-director-research-2026-10-28` is **665 ahead / 0 behind** `main`. PocketCode PR #2 and #3 remain the only open PRs and were not modified. New research document read-back blob: `d63d840e8730ab2ec472889c94a5580d8da43a7b`. No code copied or executed.
+
+- Additional OpenWOP security refinement: RFC 0229 documents a persisted secret-digest confirmation-oracle risk. PocketCode receipts, task fingerprints, caches and AI debugging packets must exclude secret values structurally, not only redact logs. The RFC's own history records provisional acceptance and a steward override of the comment-window rule; protocol status is not independent assurance. Updated research note blob: `bdc17692e25e9938bbca94d6b8be1ab0613dc196`.
