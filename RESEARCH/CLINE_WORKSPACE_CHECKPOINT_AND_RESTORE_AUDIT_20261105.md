@@ -100,7 +100,7 @@ Pinned tests:
 - \`sdk/packages/core/src/session/checkpoint-restore.test.ts\`, blob \`f5da1142b405f4950bc85c70504ccef6ea3dc9bd\`.
 - \`sdk/packages/core/src/hooks/checkpoint-hooks.test.ts\`, blob \`?\` (not pinned in this review).
 
-The inspected diff tests cover:
+The inspected hook tests cover one checkpoint per root user run, inclusion of untracked files as a third parent, no overwrite on reopened-session resume, compacted/seeded prompt numbering, clean-worktree HEAD fallback, deduplication, subagent exclusion, snapshot telemetry without paths, stale scratch-index cleanup, disappeared untracked files, nested repositories/gitlinks, stale index-lock recovery and repository settings that would otherwise break change detection. The inspected diff tests cover:
 - tracked changes, deleted files and newly untracked files;
 - reading checkpoint-time untracked content from a third parent;
 - excluding unchanged pre-existing untracked files from the diff;
