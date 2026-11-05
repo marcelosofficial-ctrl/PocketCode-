@@ -771,3 +771,14 @@ Atlan is a strong mobile cockpit and deterministic verification reference, but i
 Critical recovery lesson from AndroidHarness: its `RecoveryLedger` matches by tool name + normalized JSON args, not a stable operation identity. Two distinct identical calls may collide, and key-order changes may fail to match. Its focused test covers only a single call. Do not copy unchanged; PocketCode needs run/attempt/operation IDs, exact argument/result hashes and an explicit UNKNOWN state for started-without-result.
 
 **Code copying decision:** none this pass. PocketCode's own README still says discovery/product definition and no app/runtime/framework is selected. Importing Kotlin, Rust, TypeScript, Node or crypto code now would silently choose a stack or create an orphan. Candidate source files, hashes, licenses, adoption decisions and gates are pinned in the review. Reconsider actual transplantation after the fixed-task comparison and vertical-slice stack decision. PR #2/#3 untouched.
+
+
+### 2026-11-05 source review refinement
+
+The competitor review was tightened after reading the pinned tests and implementation details:
+- AndroidHarness recovery test coverage is narrow: one tool call is reused, one missing result is blocked, and one changed-argument call is not matched. No test for two distinct identical calls, JSON key-order differences or multi-process TaskControlStore writes. Its `@Synchronized` methods coordinate one instance; file sync + rename is not proof of cross-process serialization or full power-loss durability.
+- Goose subrecipes are explicitly experimental in the reviewed docs, isolated in separate sessions, do not share state/memory and cannot nest in that version. Pass explicit inputs/results.
+- OpenCode docs describe last-match-wins and mostly permissive defaults; `always` scope differs between current docs and a public v2 issue. PocketCode should use exact operation-bound approvals and default ask/deny for mutations.
+- Cline checkpointing can be storage/latency heavy when taken after every tool call. Snapshot at meaningful transaction boundaries.
+
+Updated PocketCode adoption review latest blob: `c1b9f90a23c11ac495a6d2ccb18b7a250573208f`. No code was copied; no runtime/framework is selected.
