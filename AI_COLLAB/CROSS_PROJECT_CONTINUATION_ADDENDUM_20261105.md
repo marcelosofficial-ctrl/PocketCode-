@@ -220,3 +220,11 @@ Both proposals now state these boundaries explicitly. This avoids two competing 
 - [Cline Workspace Checkpoint and Restore Audit](../RESEARCH/CLINE_WORKSPACE_CHECKPOINT_AND_RESTORE_AUDIT_20261105.md) evaluates snapshot, diff, transactional rollback and branch-safety patterns for PocketCode's correction loop.
 
 Recommendation: keep workspace checkpoints a P1 feature, but require a reversible checkpoint or explicit approval before future unattended multi-file repair. Workspace snapshots must not replace immutable task/attempt evidence. No implementation or canonical acceptance changes were made.
+
+
+## New-chat handoff pointers (2026-11-05)
+
+- Primary complete programme handoff: [NEW_CHAT_HANDOFF_20261105.md](NEW_CHAT_HANDOFF_20261105.md).
+- RevDev companion handoff: https://github.com/marcelosofficial-ctrl/DevRelay-Missions/blob/review/revdev-adaptive-ai-workshare-2026-10-27/resume/revdev/NEW_CHAT_HANDOFF_REVDEV_POCKETCODE_2026-11-05.md.
+
+The handoffs are documentation-only continuity artifacts. They do not change product implementation, canonical acceptance, owner decisions or PR state.
