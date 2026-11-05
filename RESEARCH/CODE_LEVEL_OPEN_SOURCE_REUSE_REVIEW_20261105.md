@@ -257,3 +257,10 @@ These are design tasks only. They do not authorize source changes, new acceptanc
 ## Happy Agent daemon source audit
 
 The deeper PC-host agent review is now captured in [Happy Agent Daemon Source Audit](HAPPY_AGENT_DAEMON_SOURCE_AUDIT_20261105.md). It inspects the daemon's durable operation queue, event journal, process timeout/cancellation paths, permission system, sandbox OS coverage and database migration rules. The central warning is that the generic durable queue is at-least-once and deletes completed pending rows, so it is not an immutable execution or publication journal. No backend or runtime is selected.
+
+
+## Cline checkpoint follow-up
+
+The deeper source review of Cline's workspace checkpoint implementation and restore tests is recorded in [Cline Workspace Checkpoint and Restore Audit](CLINE_WORKSPACE_CHECKPOINT_AND_RESTORE_AUDIT_20261105.md). The recommendation is to add recoverable workspace checkpoints as a P1 PocketCode feature and as a safety precondition before any future unattended multi-file correction. Do not copy its Git implementation until PocketCode chooses between a separate shadow object store, protected refs in the workspace repository, and a non-Git manifest backend.
+
+**MCP Tasks versioning caution:** the 2026-07-28 MCP Tasks extension source is explicitly marked Draft. Keep it an optional adapter and pin the protocol revision in any adapter; do not freeze PocketCode's core task model to draft wire semantics. The extension's cancellation is cooperative and cannot be treated as proof that remote execution stopped. See the [draft specification](https://modelcontextprotocol.io/specification/2026-07-28/extensions/tasks).
