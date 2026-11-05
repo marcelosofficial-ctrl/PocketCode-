@@ -310,3 +310,14 @@ PocketCode's differentiation should be the provider-neutral **task/evidence/reco
 The frozen CSV-to-JSON task remains a workflow benchmark, not proof of runtime advantage or sandbox security. First controlled comparison should use a-Shell plus one current native IDE (Python Code Editor & IDE if available in the owner's Belgian storefront, otherwise Pyto free tier), optionally Coilbook if store availability is confirmed. Do not install/run anything without explicit owner/device authorization. Mark capabilities advertised-but-unverified, unknown or verified; do not treat silence in marketing as absence.
 
 No apps were installed, no tasks run, and no canonical LOOP/CASE meanings changed. Runtime/provider selection remains NONE; budget remains $0; fixed-task product comparison remains NOT RUN. Full rationale, source links, benchmark dimensions and go/no-go criteria are in the competitive baseline.
+
+
+## 2026-11-05 focused remote-agent and workflow-protocol research
+
+Added [Remote Agent Control Plane and Workflow Protocol Research](RESEARCH/REMOTE_AGENT_CONTROL_PLANE_AND_WORKFLOW_PROTOCOL_RESEARCH_20261105.md), commit `dfe5c0bae5169bfc6623adc8b211ff56dc355795`. It source-audits Happier, Cretli, agent-device and OpenWOP, including MIT/Apache license checks and selected implementation files.
+
+Executive decision: do not pivot PocketCode into a generic remote agent control room. Happier and Cretli control agents that still require a reachable host; they do not solve the no-PC execution problem. Preserve PocketCode's run/inspect/report/iterate hypothesis and differentiate through truthful execution evidence, portable receipts, safe AI correction and attempt lineage.
+
+Adopt as future design ideas: provider capability negotiation, same-session reconnect using durable cursors, explicit native-fork vs replay-fork choices, separate permission approvals from user questions, partial-commit reporting, request/effect idempotency separation, and witness-based conformance. Cretli's local lock/JSON persistence is not distributed coordination and its network terminal exposes a full shell. OpenWOP's own known-limits page reports no independent tier-3 host and no witnessed multi-instance/multi-region durability. agent-device may be an optional UI/device QA adapter, not a user-code runner.
+
+No new code copied. No runtime/provider/cloud/sandbox selected; $0 default budget remains. Fixed-task comparison and AI Director evaluation remain NOT RUN. LOOP/CASE and AWD acceptance remain unchanged. PR #2/#3 untouched.
