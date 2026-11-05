@@ -325,3 +325,12 @@ The pinned OpenCode permission docs blob is `a33cab7c01ef51c4ca0869a0a4f00feccf5
 ### Cline checkpoint cost
 
 Cline's checkpoint docs explicitly warn that snapshots after each tool use can consume significant storage and slow large repositories. If adopted, RevDev should checkpoint at meaningful transaction boundaries or before risky mutation groups, not automatically snapshot every tiny tool event without measuring cost.
+
+
+### 9.1 Atlan's Android confinement boundary
+
+The current Atlan README explicitly warns that Bash is not OS-sandboxed inside proot: the tool profile gates the builder/verifier agent, while proot confines the process to the Termux app sandbox. It directs untrusted/autonomous work to a native Linux host for a real OS sandbox, and says the Doctor displays the available tier. This sharpens the distinction between app-level workspace confinement, Android app sandboxing, proot isolation and OS-level per-process sandboxing. PocketCode must name the actual boundary, not call every one of these a sandbox.
+
+### 9.2 Goose parallelism is also experimental
+
+The current Goose parallel subrecipe documentation says isolated workers can run concurrently (up to ten in the documented feature), but labels this experimental. RevDev/PocketCode should not inherit that concurrency count or semantics. Any parallelism must be bounded by owner-approved resource limits, dependency graph, isolated workspaces and explicit result collection.
