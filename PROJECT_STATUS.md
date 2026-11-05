@@ -406,3 +406,10 @@ RevDev-only lesson: query push-triggered Actions runs through the repository Act
 RevDev's previously unknown push-triggered Windows test workflow was directly queried through the GitHub Actions runs API. After fixing its source byte-decoding order and stale Pester source assertions, run #13 passed 15/15 on Windows PowerShell 5.1 / Pester 5.7.1: https://github.com/marcelosofficial-ctrl/DevRelay-Missions/actions/runs/42130948334. This validates only RevDev's tracked maintenance source/test contract. PocketCode should reuse the method of querying exact workflow runs and logs, not RevDev code or its acceptance suites.
 
 PocketCode remains Discovery; CASE-04 timeout/report-contract correction remains the next implementation task; device comparison is awaiting owner observations; no runtime/provider is selected; $0 default budget and separate canonical LOOP/CASE/D semantics remain unchanged. PocketCode branch was 723 ahead / 0 behind main at this recorded snapshot; this is commit history, not product progress. PR #2/#3 remain open drafts and untouched.
+
+
+## 2026-11-06 — Pyodios installed build confirmed by owner
+
+Owner-provided transcription of the installed app screens reports Pyodios **1.1.0 / Build 7**, Pyodide **314.0.5**, Python **3.14.2**, and WebAssembly (WASM) runtime. Settings also displayed 13 cached packages / 0 KB cache, 85,557 objects / 0 referrers, and GC stats 1,650 collected / 0 uncollectable. These are owner-reported observations, not independently inspected by ChatGPT; the memory and GC counters are transient diagnostics, not performance or capacity measurements. The app/runtime values match the public v1.1.0 documentation.
+
+This resolves the installed app/build/runtime baseline. Device model and iOS version remain unknown. No fixed-task execution has been reported: success/failure behavior, real artifact integrity/export, and normal relaunch persistence remain NOT RUN. Follow `AI_COLLAB/PYODIOS_DEVICE_BASELINE_AND_HANDS_ON_PROTOCOL_20261106.md`; do not restart or clear the current session merely to reset counters. This does not select Pyodios as PocketCode's runtime or change any acceptance contract.
