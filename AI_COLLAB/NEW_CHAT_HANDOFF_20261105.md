@@ -545,3 +545,15 @@ Decisions:
 - No runtime, storage backend, schema or implementation selected. No code/tests changed or run.
 - Canonical LOOP-01..14, CASE-01..16 and D-01..D-08 unchanged.
 - The design does not replace execution receipts, dispatch reservations, artifact release, or RevDev's remote publisher journal.
+## Mobile process-death and reconnect research — 2026-11-05
+
+Added §9 to `RESEARCH/CLINE_WORKSPACE_CHECKPOINT_AND_RESTORE_AUDIT_20261105.md`. Latest blob SHA `68a0077b0cc9b587fec9481094fa3613839c9247`. It records a pinned Happy Coder source audit at commit `7e32e09454c26aa78e86df0d378b1e49375b743d` (MIT), iOS/Android source and test paths, Apple/Android background execution constraints, a command/remote-execution/local-runner/observation-sync/result/checkpoint separation, fault-injection proposals, and staged P0/P1/P2 implementation gates.
+
+Executive decisions:
+- Do not promise arbitrary local coding-agent work continues in background or after process death.
+- Remote host owns long-running execution where selected; phone owns durable command intent, local drafts, credentials and observation/reconciliation.
+- Use a durable outbox with stable command ID and immutable payload. Ambiguous dispatch acknowledgement becomes DISPATCH_UNKNOWN and is reconciled by the same ID, never blind-resubmitted.
+- Commit event rows and event cursor atomically. Sequence gaps require replay/reconciliation.
+- Happy's native Swift/Kotlin code is not a drop-in dependency. Reuse protocol patterns and test cases; no code copied, dependencies installed, or upstream tests run.
+- Do not transplant its generic retry behavior to non-idempotent shell/file/code execution.
+- Existing canonical LOOP-01..14, CASE-01..16 and D-01..D-08 unchanged. Runtime/backend remain unselected.
