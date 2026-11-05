@@ -576,3 +576,11 @@ Competitor sources inspected at code level:
 Executive decision: durable intent + authoritative execution + resumable observation. Separate phone lifecycle, transport lifecycle and runner lifecycle. Persist request+outbox before dispatch; on ambiguous ack reconcile same ID rather than blind redispatch. Apply each event projection and cursor in one transaction; cursor gaps require snapshot catch-up; terminal receipts stay outside bounded event logs. Phone background APIs are for transfer/sync only, not untrusted code execution. Distinguish “Reconnect to this run” from “Run again”.
 
 No upstream code was copied because PocketCode still has no selected client stack and no application source tree. Happy's native code is not drop-in; OpenHands' hook is not durable enough. The design and tests are adopted as a compatibility-neutral contract, with code adaptation conditional on stack selection. $0 budget, no provider/run/device test, no product code/test edit. Canonical LOOP/CASE/AWD/D unchanged; PR #2/#3 untouched.
+
+### Mobile recovery source audit and three-AI review packet — 2026-11-05
+
+The mobile interruption research report was extended with §10 acceptance traceability. Latest report blob: `4e8cfafb4563f7e8948e73ec10b4d519e51e27ff`. The mapping uses existing LOOP/CASE only; no new IDs. In particular, mobile app background expiration is NOT CASE-04 timeout; a Cancel tap is NOT CASE-05 termination; a socket reconnect is not CASE-11 recovery until the same run is read back; and transfer success is not LOOP-03 PASS.
+
+Created `AI_COLLAB/MOBILE_INTERRUPTION_RECOVERY_REVIEW_PACKET_20261105.md`, blob in initial create commit `77c2b2744d81f14d5df0be5005cb8ecc54864aa3`. It is READY TO SEND to Claude and Gemini, reviews not received. It asks Claude for lifecycle/architecture/crash-window review and Gemini for adversarial identity/idempotency/cursor/storage/OS security review. No implementation authority is implied.
+
+Latest PocketCode branch HEAD at this update: `77c2b2744d81f14d5df0be5005cb8ecc54864aa3`. Review the two mobile research artifacts before implementation planning. No product code/tests or canonical acceptance changed.
