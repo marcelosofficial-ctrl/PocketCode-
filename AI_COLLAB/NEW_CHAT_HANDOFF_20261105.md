@@ -478,3 +478,12 @@ Every file above was fetched again after the write; the appended sections and ex
 - No source/test changes or test execution, no provider workload, PC inspection, mission replay, queue/host/API/sink mutation, install/restart, GitHub Actions, deployment or release occurred.
 
 The next work should be to forward the focused review packet to Claude and Gemini, then reconcile their actual responses against the unchanged P8U JSON and OD register. Do not repeat broad competitor discovery.
+
+
+## 15. Follow-on tightening pass — 2026-11-05
+
+After the previous continuation update, the exact EVAL-06 manual run sheet and human-authored reference fixture were fetched and cross-checked against the new fairness audit. The existing EVAL-06 task is specifically compact-checkpoint continuation, not the separate CSV-to-JSON fixed-task execution-path worksheet. Its exact supplied facts are: input rows already validated; decision to export UTF-8 with header; escaping/quoting and large-file behavior unchecked; next step is define acceptance checks before editing. The Balanced Director prompt adds only the assigned profile instruction plus the run sheet's portable behavior rules and compact report headings.
+
+The evaluation kit received §9.5, cross-checking the run sheet/reference fixture. It now explicitly says to save both raw answers before consulting the human reference, keep the hidden scoring checklist out of both chats, preserve canonical scoring over any new anchor interpretation, record memory/project/custom-instruction parity as SAME/DIFFERENT/UNKNOWN, and retain confounded/interrupted pair counts without pooling incomparable results. New blob SHA: `ec408b648727f362f51b15fc3a19bd327dfbb568`. EVAL-06 remains DESIGNED / NOT RUN.
+
+No user experiment was run. No additional account, provider spend or quota workaround was used.
