@@ -235,3 +235,23 @@ This is a deliberately small, self-contained checkpoint. A capable baseline may 
 At least three comparable pairs are needed before discussing a tentative pattern; three pairs remain exploratory and do not establish general superiority. Four or more pairs with balanced order are preferable only if ordinary free usage permits. Report attempted, completed, interrupted, and confounded pairs separately. Do not pool different models, modes, plans, or task versions.
 
 **Fairness conclusion:** The design is suitable for an exploratory comparison of the full hand-authored Director prompt bundle against baseline. It is not suitable for claims about isolated profile effects, token savings, cost savings, product implementation, or general AI performance. EVAL-06 remains **DESIGNED / NOT RUN**.
+
+
+### 9.5 Cross-check against the canonical manual run sheet and reference fixture
+
+This audit was checked against:
+- `AI_WORKFLOW_DIRECTOR_MANUAL_RUN_SHEET_20261028.md` §1, §2, §2.1, §4 and EVAL-06 fixture;
+- `AI_WORKFLOW_DIRECTOR_REFERENCE_FIXTURES_20261028.md`, EVAL-06 example and scoring notes;
+- this kit's EVAL-06 canonical task and six-dimension scoring checklist.
+
+The run must use the exact EVAL-06 task text: validated input rows; UTF-8 with header decision; escaping/quoting and large-file behavior not checked; define acceptance checks before editing. The Director condition inserts only the Balanced profile instruction and the complete portable-rules/report-heading bundle from the manual run sheet. Do not replace this with the CSV-to-JSON fixed-task worksheet, a live PocketCode task, or an improvised checkpoint.
+
+**Reference-output blinding:** neither assistant sees the human-authored EVAL-06 reference fixture or hidden scoring checklist. Save both complete raw answers first; only then consult the reference fixture and score. The reference output is an example of acceptable behavior, not an exact phrase template.
+
+**Memory/context parity limitation:** fresh chats reduce direct answer leakage but do not by themselves guarantee isolation from provider-level memory, project context, custom instructions or personalization. Record each setting as SAME / DIFFERENT / UNKNOWN where observable. If material context differs, mark the pair CONFOUNDED; if it cannot be observed, retain UNKNOWN and disclose the residual risk. Do not create extra accounts or pay to force parity.
+
+**Scoring interpretation:** the added anchors in §9.3 operationalize, but do not replace, the canonical six dimensions in §5 or the EVAL-06 checklist. A concise response need not produce a JSON capsule because EVAL-06 does not request one. Score the next action and preservation of unknowns, not adherence to the human reference wording. Any disagreement between a new anchor and the canonical checklist is resolved in favor of the canonical fixture/checklist and must be recorded before any run.
+
+**Evidence record:** retain condition order, pair ID, provider/model/mode/plan labels, observable context settings, raw prompts, raw outputs, timestamps, character counts if available, confounders, six scores and critical-failure assessment. Character counts are not token/cost evidence. Keep interrupted and confounded pairs in the denominator/report, but calculate paired differences only for comparable completed pairs.
+
+No run has occurred. EVAL-06 remains DESIGNED / NOT RUN.
