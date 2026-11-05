@@ -325,3 +325,24 @@ No new code copied. No runtime/provider/cloud/sandbox selected; $0 default budge
 - Final live branch verification after this pass: `pocketcode-ai-workflow-director-research-2026-10-28` is **665 ahead / 0 behind** `main`. PocketCode PR #2 and #3 remain the only open PRs and were not modified. New research document read-back blob: `d63d840e8730ab2ec472889c94a5580d8da43a7b`. No code copied or executed.
 
 - Additional OpenWOP security refinement: RFC 0229 documents a persisted secret-digest confirmation-oracle risk. PocketCode receipts, task fingerprints, caches and AI debugging packets must exclude secret values structurally, not only redact logs. The RFC's own history records provisional acceptance and a steward override of the comment-window rule; protocol status is not independent assurance. Updated research note blob: `bdc17692e25e9938bbca94d6b8be1ab0613dc196`.
+
+## 2026-11-05 execution-readiness and competitor research checkpoint
+
+Latest focused source audit: [Remote Execution, Event Recovery and Scheduler Competitor Audit](RESEARCH/REMOTE_EXECUTION_EVENT_RECOVERY_AND_SCHEDULER_COMPETITOR_AUDIT_20261105.md), created in commit 4728e5a6108ef187065441f706331d67a0bd4f90.
+
+New source-backed findings:
+- Cline Apache-2.0: SSH remote environment service with explicit profile/connection states, remote host inspection, SSH tunnel ownership, bounded command/transfer deadlines, output cap and pending cleanup. Useful as a future optional user-owned-PC adapter pattern, not a mobile implementation or sandbox proof.
+- Cline Apache-2.0: SQLite scheduler with durable run rows, claim token/lease, renew/complete transitions, concurrency controls and tests for competing claims and stale tokens. Design/test reference only; local SQLite is not distributed coordination and leases do not make external side effects exactly-once.
+- OpenHands Agent SDK MIT: caller-selected conversation ID plus capability-negotiated retry after a lost create acknowledgement. The exact test commits then drops the first response and verifies same-ID retry avoids duplicate creation. Adapt as a command-dispatch contract only if the host explicitly guarantees deduplication for the same command ID and payload.
+- OpenHands event-store gaps: sequence/cursor and stable IDs are useful, but some ancestry traversal bridges missing parent files and a file-store listing error is tested as an empty log. PocketCode must never use this behavior for authoritative execution evidence; unavailable/corrupt/partial history must be distinct from truly empty history.
+
+Executive priority reset:
+1. Stop broad competitor cataloguing unless a finding changes a concrete decision.
+2. Complete the smallest provider-neutral command/receipt contract and choose one execution path only after the existing fixed-task comparison.
+3. Prove one vertical slice before adding schedules, SSH, multi-agent features or IDE breadth.
+4. Preserve separate command outbox, remote execution, local runner, observation sync, immutable receipt and workspace checkpoint identities.
+5. Keep $0 budget and all no-provider/no-host/no-live-run restrictions.
+
+**Product progression estimate:** approximately 20% toward a dependable combined product, as a qualitative planning estimate only. Discovery, acceptance semantics and risk research are materially ahead of implementation and integration. PocketCode has a static/simulated UI prototype but no real execution backend, selected runner, real receipt or demonstrated end-to-end workflow. Therefore the first usable PocketCode MVP is not close yet. Current work is productive in definition and risk reduction, but implementation progress is blocked by the phone-only period and unselected execution path. Commit counts are not product progress.
+
+Canonical LOOP-01..14, CASE-01..16 and D-01..D-08 unchanged. Fixed-task comparison and EVAL-06 remain NOT RUN. No product code/test, runtime, provider, account, workload, device test, Actions, deployment or PR change occurred. PR #2/#3 remain protected.
