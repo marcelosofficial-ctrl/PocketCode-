@@ -346,3 +346,8 @@ Executive priority reset:
 **Product progression estimate:** approximately 20% toward a dependable combined product, as a qualitative planning estimate only. Discovery, acceptance semantics and risk research are materially ahead of implementation and integration. PocketCode has a static/simulated UI prototype but no real execution backend, selected runner, real receipt or demonstrated end-to-end workflow. Therefore the first usable PocketCode MVP is not close yet. Current work is productive in definition and risk reduction, but implementation progress is blocked by the phone-only period and unselected execution path. Commit counts are not product progress.
 
 Canonical LOOP-01..14, CASE-01..16 and D-01..D-08 unchanged. Fixed-task comparison and EVAL-06 remain NOT RUN. No product code/test, runtime, provider, account, workload, device test, Actions, deployment or PR change occurred. PR #2/#3 remain protected.
+
+
+### GitHub verification correction — 2026-11-05
+
+After the latest documentation-only continuity updates, live GitHub comparison reports the PocketCode research branch at **691 ahead / 0 behind** main, merge base 555840d8d83342513d9cd353d4d1522d46a5c82d. The branch head immediately before the final handoff refresh was 27a89fbed6a5b1c4d3a44e5398026fc220f918d6. This count is accumulated branch history, not implementation progress. PR #2 and #3 remain OPEN / DRAFT / UNMERGED, untouched. Re-fetch before future consequential work.
