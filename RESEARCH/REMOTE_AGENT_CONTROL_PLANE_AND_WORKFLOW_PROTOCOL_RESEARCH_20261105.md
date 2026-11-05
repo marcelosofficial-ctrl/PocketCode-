@@ -193,3 +193,94 @@ This is a deliberate no-copy decision, not a failure to inspect code. Reuse shou
 Inspected OpenWOP RFC 0229 at commit ec214ef38d1f515c275abc48194e4ec73ed9d3be, source blob d24e69b086f409a8019a5e644a394efc0ec1ec0b0. It documents a concrete host bug where run-supplied secret values entered a persisted idempotency request digest. The RFC treats a digest as a confirmation oracle and requires secret values to be excluded from persisted/derived digests, not merely hidden in logs. For PocketCode, keep user credentials and secret environment values out of receipts, cache keys, task fingerprints, event logs and AI debugging packets; preserve only safe references or an explicit redacted/unavailable marker.
 
 The same RFC's status history records provisional acceptance pending retrospective review and a steward override of the protocol's own full comment-window rule for a certification/secret-material change. RFC 0156 separately documents the need for independent maintainers, external audit and Tier-3 implementation evidence. Therefore use OpenWOP's technical ideas selectively, but do not equate an Accepted RFC or large conformance corpus with independent security assurance.
+
+
+## 10. Source-code pass: OpenHands retry/replay and Cline remote/scheduler internals — 2026-11-05
+
+**Status:** Pinned upstream implementation review. This is desk/source inspection, not an integration test. OpenHands and Cline code was inspected on their current `main` refs as fetched on 2026-11-05; re-pin again before implementation.
+
+### 10.1 OpenHands: lost-create-ack protection
+
+Upstream: `OpenHands/software-agent-sdk`, current `main` at `e6c074fe5fd96c6ce0f7a52905d529e27d24bb7b`, MIT.
+
+- `clients/typescript/src/client/conversation-client.ts`, blob `f5639275181c0eab78df2a6acbd894a5da0bb8d2`: conversation creation sends once. It retries after a non-HTTP transport error only when the caller supplied a stable conversation ID and a server-info capability probe confirms `idempotent_conversation_create_v1`. HTTP responses, missing caller ID, and unavailable capability probe surface the original error. A supported retry resends the same payload and ID.
+- `clients/typescript/src/__tests__/conversation-create-retry.test.ts`, blob `afc865506466da9cc952097fdfaed5eaa0c3d366`: tests the commit-then-drop-response case, no-capability no-retry, missing-ID no-retry, and HTTP validation no-retry. Inspected, NOT RUN by PocketCode.
+- PocketCode adoption: a small isolated adaptation is now in `RESEARCH/vendor/openhands/idempotent_create_retry.ts`; the adjacent README records provenance and limitations. It is reference-only, not imported by product code, and has not been compiled or tested in this pass.
+
+**Mandatory PocketCode constraints around this pattern:** persist one operation ID and exact serialized request before send; same ID + same immutable request replays, while same ID + changed request is an integrity conflict. Retry only against the same server, authenticated principal, tenant/account and explicitly negotiated capability. The server must durably deduplicate the ID and bind it to a canonical request fingerprint that structurally excludes secrets. A client retry helper alone does not make an operation idempotent, and it does not prove exactly-once side effects.
+
+### 10.2 OpenHands: event replay, live stream ordering and ownership
+
+Source map:
+
+| File | Blob | Relevant source-level behavior |
+|---|---|---|
+| `openhands-sdk/openhands/sdk/conversation/event_store.py` | `0a42fdf4a851109d6f60c990e621c6e1b654f035` | Append-oriented event log, stable on-disk sequence cursor, lookup/index, gaps are not reused, missing event warnings and recovery of surviving ancestry |
+| `openhands-agent-server/openhands/agent_server/session_socket.py` | `7d6c7dfad52f1c4352ee339638516be387182ef4` | Replays durable frames with sequence; buffers concurrent live events while history drains; suppresses duplicates at the replay/live boundary; byte-bounded send queue disconnects slow consumers rather than silently dropping durable frames |
+| `openhands-agent-server/openhands/agent_server/conversation_lease.py` | `195904d81f340d39480ec94f549892267561e371` | Owner + monotonically increasing generation + expiry, guarded writes, renewal, stale-owner rejection |
+
+Useful design to adopt: durable event rows are the authority; stream frames are delivery. Reconnect by sequence cursor, replay retained history, buffer live delivery during replay, and discard any buffered event already included in the replay. If the stream queue reaches its byte budget, disconnect with a resumable cursor rather than dropping a durable event. Detect sequence gaps and request reconciliation. A snapshot is a current-state projection, not a replacement for event history.
+
+Limits matter. OpenHands documents that `flock` locking for its local FileStore is not reliable on NFS/network filesystems. The inspected source does not establish universal fsync/power-loss durability. Its lease lock is a local coordination design, not proof of a database-backed distributed fencing primitive. Do not transplant this file store or claim its guarantees for OPFS, iOS, Android, Windows, or network storage.
+
+### 10.3 Cline: SSH remote environment
+
+Upstream: `cline/cline`, current `main` at `d3ecc4890e8f9bcb77182b96c77fa90575e8e145`, Apache-2.0.
+
+- `sdk/packages/core/src/remote/remote-environments.ts`, blob `a632a03c10b07a314a2f5ed4bebe73708fd1b2a4`: connection profiles; remote OS/architecture inspection; content-hashed helper binary; temporary upload followed by permission change and rename; remote Hub loopback binding; SSH local tunnel; StrictHostKeyChecking, BatchMode and keepalive; profile file mode 0600 and fsync+rename; persisted cleanup records when remote shutdown cannot be confirmed.
+- The source supports Linux/macOS x64/arm64 helper targets. It depends on Node process/filesystem APIs and local SSH. This is a useful remote-host architecture reference, not a ready-made iOS/Android implementation, Windows host implementation, or PocketCode dependency.
+- It separates connection loss from remote execution completion. A broken SSH tunnel is not evidence that remote work stopped. The client must reconnect to the same host/session and reconcile status.
+
+Adoption: optional remote-host adapter for PocketCode after a phone-native vertical slice proves its value. Keep the mobile client as observer/controller, and let the selected remote host own long-running work. Make SSH trust, identity binding, helper version/hash, workspace selection, and remote cleanup explicit. Do not auto-install a helper from the network. A later Windows RevDev host adapter must be independently designed and reviewed.
+
+### 10.4 Cline: transactional scheduling and guarded run claims
+
+Source map:
+
+| File | Blob | Relevant behavior |
+|---|---|---|
+| `sdk/packages/core/src/cron/store/sqlite-cron-store.ts` | `b7e998154891cabcc211923599f75d3d9762e86d` | SQLite `BEGIN IMMEDIATE` claims, global/per-spec concurrency checks inside the write transaction, claim token + expiry, token-conditional renew/complete/requeue/session attachment; event transaction helper |
+| `sdk/packages/core/src/cron/events/cron-event-ingress.ts` | `a8947d78724477aab40a3641db46ecbd14f9c76c` | Event acceptance, event deduplication and all matching-run materialization inside one transaction; rollback allows safe redelivery after a partial fan-out failure |
+| `sdk/packages/core/src/cron/runner/cron-runner.ts` | `ac3cfc3551bb4ad9559030f6532c2d8cf6e8c593` | Polling separated from long-running execution; claim renewal; abort on lost lease; status is persisted before optional report creation; report-write failure is logged without replaying a completed agent turn |
+
+Adopt concepts: atomic queue materialization; single-transaction global and per-project capacity checks; attempt-counted claims with a fresh ownership token; renew before expiry; condition every state transition on the current token; and persist canonical terminal status before writing a derived Markdown report or dashboard projection.
+
+Do not overclaim. The claim token fences the scheduler database row, not arbitrary shell, filesystem, network or Git side effects. Abort is cooperative. The inspected scheduler does not establish idempotent session-start behavior after a start request reaches a remote runtime but its acknowledgement is lost. An expired lease can prevent stale database updates while a stale worker may still be completing a non-fenced external effect. PocketCode must reconcile the remote command identity and effect before dispatching anything again.
+
+**Security rejection:** Cline's headless `buildToolPolicies` defaults to wildcard auto-approval when a schedule omits its tool list. Explicit tool lists disable the wildcard, but the no-list branch is too permissive for PocketCode/RevDev unattended execution. Do not copy that policy. Our unattended execution must be default-deny, with a bounded explicit capability list, exact target/workspace binding, policy revision binding and approval expiry. A missing policy is a block, not "approve all".
+
+### 10.5 Cline: stale UI transition fencing
+
+`apps/vscode/src/sdk/sdk-task-control-coordinator.ts`, blob `5054e8f18398160232264c59ea0197c870ff10f1`, increments a task-view generation before async history reads and checks the generation after awaited steps. Its cancel fence is raised synchronously before the abort request so late events from the old task view cannot overwrite the new state.
+
+Adopt for PocketCode navigation/state projection: project switch, attempt selection, reconnect bootstrap and tab changes should allocate a generation synchronously; stale async results may be observed/logged but must not repaint or mutate the newly selected view. This is a UI consistency fence, not remote execution fencing or command idempotency.
+
+### 10.6 Protocol interpretation: ACP and MCP Tasks
+
+The live protocol documents clarify three distinct layers:
+
+- ACP v2 `session/resume` restores an agent session and optionally replays retained conversation updates from a replay cursor. It requires a current-state snapshot before the resume response. This is a session/context adapter; it is not a durable PocketCode command identity or a guarantee that a side effect ran once. Unsupported replay cursors must be rejected, not silently downgraded. ACP `session/cancel` concerns foreground work; background work may continue, and clients should wait for the cancelled idle-state update before treating the cancellation as confirmed. [ACP session setup](https://github.com/agentclientprotocol/agent-client-protocol/blob/main/docs/protocol/v2/session-setup.mdx) [ACP schema](https://github.com/agentclientprotocol/agent-client-protocol/blob/main/docs/protocol/v2/schema.mdx)
+- MCP Tasks provides a durable server task handle, status polling and final result retrieval. Its cancellation acknowledgement is only an intent signal: processing is eventually consistent, the task may remain working, and cancellation is cooperative rather than guaranteed. Persist task IDs locally and reconcile; do not treat the cancel response as proof of termination. [MCP Tasks specification](https://modelcontextprotocol.github.io/ext-tasks/specification/2026-07-28/tasks.html)
+- Neither should replace a product-level identity split between user command, remote execution, runner attempt, external effect, event observation and result receipt.
+
+### 10.7 PocketCode contract direction
+
+Before selecting an adapter, require the following transport-neutral behavior:
+
+1. **Dispatch identity:** stable `CommandId` + immutable, secret-free request descriptor/body + target/account scope + workspace/checkpoint identity + policy revision. A unique `DispatchAttemptId` records each transmission. A server-issued `ExecutionId` is a different identity.
+2. **Ambiguous acknowledgement:** after send may have reached the host but no durable acknowledgement was recorded, enter `DISPATCH_UNKNOWN`. Query by the same `CommandId`. Retry the exact same bytes and ID only if the host explicitly guarantees idempotent create for that scope. Never mint a replacement ID or silently replay a shell task.
+3. **Execution evidence:** host reports monotonic sequence, execution lifecycle, heartbeat, cancellation request and observed result separately. Event rows and cursor advance commit atomically. Sequence gaps trigger replay/reconciliation, not a fabricated continuous stream.
+4. **Transport recovery:** reconnect session, recover current snapshot, replay from supported durable cursor, merge live updates without duplicates. Stream overflow drops the connection with cursor retained; durable events are never silently skipped.
+5. **Cancellation:** request, acknowledgement, observed termination and final result are separate facts. A client timeout, tunnel loss or cancel acknowledgement does not prove process termination.
+6. **Result:** persist immutable execution receipt before deriving portable report. Artifact transfer/release acknowledgement is separate from execution completion.
+7. **Capability negotiation:** explicit versioned flags for idempotent create, replay cursor, cancellation confirmation, result retention, and artifact resume. Unsupported means unavailable, not best-effort.
+
+Candidate statuses remain design vocabulary, not frozen enum or acceptance IDs: `QUEUED_LOCALLY`, `DISPATCH_UNKNOWN`, `ACCEPTED_REMOTE`, `RUNNING_REMOTE`, `RUNNING_LOCAL_FOREGROUND`, `LOCAL_INTERRUPTED`, `AWAITING_RECONCILIATION`, `SUCCEEDED`, `FAILED`, `CANCELLED`, `OUTCOME_UNKNOWN`.
+
+### 10.8 RevDev boundary reminder
+
+Cline's queue/run store is not RevDev's GitHub publisher journal. A run claim, session ID, event cursor, or terminal Markdown report does not prove a Git ref moved. RevDev still needs a prepared immutable publication envelope, operation/effect identities, durable send-boundary observation, exact remote read-back, branch-head race handling and stale-writer fencing. Likewise, a successful Git commit/read-back does not prove a runner receipt or exactly-once mission execution. Preserve the existing RevDev P8U/P0-D/OD register and keep publication recovery separate from PocketCode command dispatch.
+
+### 10.9 Evidence limits and non-actions
+
+Upstream source and tests were inspected; no OpenHands/Cline test suite was run in this pass. The small OpenHands helper was added only under `RESEARCH/vendor/openhands/` with provenance. It is not product integration. No production source, product tests, runtime, provider, sandbox, runner, credential, remote host, device, job, queue, workflow, PR, release or deployment was touched. PocketCode fixed-task comparison and EVAL-06 remain NOT RUN. Canonical LOOP/CASE IDs and owner-open D-01…D-08 are unchanged.
