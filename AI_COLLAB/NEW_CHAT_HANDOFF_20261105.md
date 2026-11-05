@@ -752,3 +752,14 @@ New operating documents:
 The owner wants this project to progress across hundreds of chats over months without waiting until a conversation is 100% full and then attempting a handoff. Treat every chat as a replaceable worker. GitHub is the durable memory. Checkpoint after two or three meaningful passes or any important code/test/review/decision event. Update the compact entrypoint and append the work log before context exhaustion. New chats should read the entrypoint and task-specific evidence, not reload every old handoff or transcript.
 
 Keep PocketCode fully separate from RevDev's implementation, roadmap, adapters, tests, acceptance suites, release gates and security boundaries. Only reuse the continuity method. Preserve $0 default budget, no runtime/provider selected, phone-first design, explicit paste-to-context and all canonical LOOP/CASE/D semantics.
+
+
+## 2026-11-06 process update for the next PocketCode chat
+
+The owner explicitly asks the PocketCode chat to adopt the improved multi-chat operating method. Read the live `AI_COLLAB/CHAT_START_HERE.md` rather than relying on this historical handoff. GitHub is the durable memory; each chat is a replaceable worker. Checkpoint every two or three meaningful passes or after a source/test/review/decision event, append the work log, refresh the entrypoint, and rotate before context exhaustion. Do not wait for a full-chat warning and do not require a giant end-of-chat handoff.
+
+Efficiency practices: parallelize independent reads; serialize writes to a shared branch; for multi-file changes use a single Git Data API tree/commit and expected-head ref lease where safe; read back every changed file. On tool failure, re-fetch the state and recover instead of silently stopping. ChatGPT may lead bounded implementation where source/tools permit; Claude/Gemini remain scoped reviewers/co-developers. Exactly one lead writer per repo/branch/work item.
+
+RevDev's current source/CI progress is context only: its publisher Windows Actions workflow was found through the push-runs API. A previous run had 13 passed / 1 failed from an obsolete static function-name assertion; the remote-byte decode ordering defect was fixed and a regression test added. New runs #11/#12 were still IN_PROGRESS at the last check. This finding does not change PocketCode's architecture or acceptance.
+
+PocketCode must continue its own CASE-04 timeout/report-contract priority and keep all LOOP/CASE/D wording, schemas, phone-first constraints, security boundaries, no-runtime-selected status and $0 budget unchanged. PR #2 and #3 remain untouched.

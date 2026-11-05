@@ -99,3 +99,18 @@ Official references:
 ```text
 Continue PocketCode from GitHub. First read AI_COLLAB/CHAT_START_HERE.md on branch pocketcode-ai-workflow-director-research-2026-10-28, then verify live branch/PR/CI state and read only the evidence needed for the active task. GitHub is durable project memory; this conversation is replaceable. Do not restart discovery or ask me to reconstruct a handoff. Continue the highest-value bounded task, implement and test where possible, and distinguish IMPLEMENTED, TESTED, VERIFIED, NOT RUN, BLOCKED, UNKNOWN and PROPOSED. Update CHAT_START_HERE.md and append CHAT_WORK_LOG.md after meaningful work so future chats can resume without this transcript. Keep PocketCode independent from RevDev and preserve the $0 budget, no-runtime-selected status, security boundaries and canonical LOOP/CASE/D suites.
 ```
+
+
+## 12. Atomic multi-file writes and failure recovery
+
+When several related PocketCode docs or source/test files need to change together, prefer a single Git Data API checkpoint: create blobs, build one tree on the verified current tree, create one commit with the live head as parent, update the branch with an expected-head ref lease, and read back all changed files. This avoids extra branch commits and prevents CI from observing an intermediate source/test mismatch. Use the Contents API for appropriate single-file edits. Never blind-retry a rejected ref lease; re-fetch and reconcile.
+
+If a tool/script fails, fetch the exact branch/file state and determine whether the write occurred before continuing. Recover from the last confirmed commit and still close the user-facing response with exact changed/not-changed state. Never silently stop or imply background work. Parallelize independent reads, serialize shared-branch writes.
+
+## 13. ChatGPT implementation authority and concise rotation packet
+
+ChatGPT may be the lead writer for a bounded PocketCode task when it has the necessary source and tools, while retaining continuity/evidence/acceptance responsibilities. Claude/Gemini remain available for independently scoped review or disjoint work. Keep only one lead writer per branch/work item.
+
+The owner should not need to request a giant handoff at the context limit. Maintain the live entrypoint and append-only work log throughout the work. When a chat is rotated, the minimum packet is: repo, branch, entrypoint, last verified commit, active bounded task, exact next action, test evidence/status and any owner action. The new chat fetches its own current source. The transcript is optional.
+
+Close each meaningful pass with: **Completed**, **Evidence**, **Still open**, **Next exact action**. If the task spans multiple turns, checkpoint after two or three meaningful passes or sooner when context strain is visible.

@@ -1,6 +1,6 @@
 # PocketCode Chat Start Here
 
-**Last refreshed:** 2026-11-06  
+**Last refreshed:** 2026-11-06 (cross-project continuity update)  
 **Authority:** live PocketCode branch state plus canonical source/spec/test records. This file is the compact first-read entrypoint for every new PocketCode chat.
 
 ## First action
@@ -83,3 +83,22 @@ A new conversation is a replaceable worker. Checkpoint after two or three meanin
 ```text
 Continue PocketCode from GitHub. Read AI_COLLAB/CHAT_START_HERE.md on branch pocketcode-ai-workflow-director-research-2026-10-28, verify live branch/PR/CI state, and continue the highest-value bounded task. GitHub is the source of truth, not this chat's memory. Do not restart discovery or ask me to recreate context. Implement and test where the environment permits; be explicit about evidence status. Update CHAT_START_HERE.md and append CHAT_WORK_LOG.md after meaningful work so this conversation can be replaced safely. Keep PocketCode separate from RevDev, preserve canonical LOOP/CASE/D suites, and keep the default budget at $0.
 ```
+
+
+## 2026-11-06 cross-project continuity and workflow improvements
+
+The owner is coordinating work across months and potentially hundreds of ChatGPT conversations. PocketCode must remain resumable without asking an almost-full chat to create a giant handoff.
+
+Use the same continuity method now used by RevDev, but keep all PocketCode product work independent:
+- GitHub is durable memory; each chat is a replaceable worker.
+- Start with this file, re-fetch the live branch/PR/CI state, then read only task-specific source/evidence.
+- Checkpoint every two or three meaningful passes, and immediately after important code/test/review/decision events.
+- Append the work log and update this entrypoint as soon as active status or next action changes. Never wait for a context-full warning.
+- Keep one lead writer per branch/work item. Other AIs can review read-only or work on disjoint files.
+- For several related files, prefer one Git Data API blob/tree/commit with an expected-head ref lease, followed by exact read-back. This avoids intermediate partially updated states and unnecessary CI runs.
+- On tool/script failure, re-fetch the confirmed GitHub state, determine whether the attempted mutation occurred, recover and close the response. Never silently stop or claim an unverified write/test.
+- ChatGPT may lead a bounded implementation task when source/tools are available; Claude and Gemini remain scoped independent reviewers/co-developers. Owner forwards their reports manually.
+
+RevDev-only update (context, not PocketCode implementation): the Windows PowerShell 5.1 Actions workflow was located through the push-triggered Actions API. Run #10 failed 13/14 because a static test expected an obsolete helper name; a source ordering defect was also fixed. Updated source/test runs #11/#12 were IN_PROGRESS at the last poll. This demonstrates why actual workflow runs must be queried rather than inferred from an incomplete connector status view. Do not copy RevDev publisher source, schemas, P8U/AWC/P0-D acceptance or verdicts into PocketCode.
+
+PocketCode remains on its own priority: CASE-04 timeout classification and report-contract integrity in `scripts/report_contract.py`, then degraded collector/teardown semantics and the synchronous pre-execution network isolation barrier. No runtime/provider is selected, the device comparison is still awaiting owner observations, and the $0 default budget remains.
