@@ -1,12 +1,31 @@
 # Pyodios device baseline and hands-on protocol — 2026-11-06
 
-**Status:** Public documentation reconciled; owner reports app installed; device execution NOT YET OBSERVED. This is a test plan and source audit, not a product acceptance result.
+**Status:** Public documentation reconciled; installed build/runtime directly reported by owner from About and Settings; device execution NOT YET OBSERVED. This is a test plan and source audit, not a product acceptance result.
 **Target:** Pyodios on the owner's iPhone, using the existing frozen CSV-to-JSON fixture without edits.
 **Budget/privacy:** $0; synthetic inputs only; no account, provider, remote kernel, package install, private file, or network workload required.
 
+## 1A. Owner-reported installed-device baseline (2026-11-06)
+
+**Evidence source:** owner transcribed the About and Settings screens. Treat the values below as DIRECTLY OBSERVED by the owner, relayed in chat; ChatGPT did not inspect the device directly.
+
+| Field | Owner-reported value |
+|---|---|
+| Pyodios app version | 1.1.0 |
+| Build | 7 |
+| Pyodide | 314.0.5 |
+| Python | 3.14.2 |
+| Runtime | WebAssembly (WASM) |
+| Cached packages | 13 |
+| Package cache size | 0 KB |
+| Python Session memory display | 85,557 objects; 0 referrers |
+| GC stats | 1,650 collected; 0 uncollectable |
+| Available controls | Run Garbage Collection, Clear All Variables, Restart Python Session |
+
+The app/runtime values match the public v1.1.0 documentation. The package-cache count/size and memory/GC counters are transient session diagnostics, not performance measurements or proof of available memory. Do not clear variables, run garbage collection, or restart the session merely to capture a cleaner baseline. Device model and iOS version remain UNKNOWN.
+
 ## 1. Current public-source baseline
 
-The official Pyodios site currently describes v1.1.0, CPython 3.14.2 on Pyodide 314.0.5, iOS/iPadOS 26+, and local on-device execution. These are vendor claims until the installed device's About / Python Session screens are inspected.
+The official Pyodios site currently describes v1.1.0, CPython 3.14.2 on Pyodide 314.0.5, iOS/iPadOS 26+, and local on-device execution. The owner directly reports matching values from the installed device's About / Python Session screens (app 1.1.0, Build 7; Pyodide 314.0.5; Python 3.14.2). This confirms the reported installed version, not execution behavior.
 
 Official sources:
 - Product/runtime: https://pyodios.caffeinatedmath.com/
@@ -62,13 +81,10 @@ Use the frozen CSV with the `unit_price` header removed, in a separate fresh pro
 
 ## 3. Minimal hands-on sequence
 
-### A. Capture installed build before running
+### A. Capture remaining device details before running
 
-In Pyodios, inspect About and Settings > Python Session. Record:
-- app version/build;
-- Python version;
-- Pyodide version;
-- iOS version and iPhone model (as displayed in Settings);
+App/build and runtime versions are already owner-reported in Section 1A. Still record, if convenient:
+- iOS version and iPhone model (as displayed in iOS Settings);
 - whether a project is already active;
 - whether the app reports any runtime or memory warning.
 
@@ -79,7 +95,7 @@ Do not restart the Python session merely to inspect it.
 1. In More > Projects, create a new project named `PC-FIXED-SUCCESS-01`.
 2. Import the exact `main.py` and success `items-success.csv` into that project, then rename the imported CSV to `items.csv` using Files > … > Import File (or the iOS Files share-to-Pyodios flow).
 3. If files were imported through Files/iOS while the project was already open, follow the app's documented project-refresh behavior and reopen the project before execution if needed.
-4. Confirm both filenames appear in the active project. Open `items.csv) and verify its header and two rows.
+4. Confirm both filenames appear in the active project. Open `items.csv` and verify its header and two rows.
 5. Open `main.py` in Editor. Ensure no text is selected. Run the entire script once.
 6. Record the visible output and any status/diagnostic the app exposes.
 7. Open Files and confirm a newly modified `summary.json` exists in this project. Open it and inspect values.
@@ -89,7 +105,7 @@ Do not restart the Python session merely to inspect it.
 ### C. Malformed-input path
 
 1. Create a separate new project named `PC-FIXED-FAILURE-01`.
-2. Import the exact same `main.py) and malformed `items.csv` fixture.
+2. Import the exact same `main.py` and malformed `items.csv` fixture.
 3. Confirm no `summary.json` exists before running.
 4. Run the whole script exactly once.
 5. Record visible error text, stderr separation if available, status/exit exposure, and whether `summary.json` exists.
@@ -171,9 +187,9 @@ It cannot establish:
 
 Pyodios is now the first hands-on iPhone local comparator because the owner reports it is installed. This does not make it the selected PocketCode runtime or a product dependency. Its documented no-interrupt behavior and session reset are especially important limitations for future recovery design.
 
-**Status:** DOCUMENTATION REVIEW COMPLETE / DEVICE TEST AWAITING OWNER OBSERVATIONS / PRODUCT ACCEPTANCE NOT RUN. No product source, test, canonical fixture, LOOP/CASE ID, schema, provider, runner selection, PR, merge or deployment changed.
+**Status:** DOCUMENTATION REVIEW COMPLETE / INSTALLED BUILD AND RUNTIME OWNER-OBSERVED / DEVICE EXECUTION AWAITING / PRODUCT ACCEPTANCE NOT RUN. No product source, test, canonical fixture, LOOP/CASE ID, schema, provider, runner selection, PR, merge or deployment changed.
 
 
 ## 8. Owner-ready fixture archive
 
-A phone-importable ZIP was prepared from the canonical fixture without changing the Python source. Archive: `pocketcode_pyodios_fixed_task.zip`. Contents: `README.txt`, `main.py`, `items-success.csv`, and `items-missing-unit-price.csv`. Archive SHA-256: `706c6a87d07c496d5a461c9395fb0b967b961fa9c430c719d9799998df5b4099`. The embedded `main.py) is 1,939 bytes and its SHA-256 exactly matches the frozen worksheet sanity-check value `70c66ad3a0132923cbf3190eb3546093fcc2c61c1bdcbf3b171696e1ae7521e7`. The archive is a convenience copy only; it does not replace the canonical worksheet fixture.
+A phone-importable ZIP was prepared from the canonical fixture without changing the Python source. Archive: `pocketcode_pyodios_fixed_task.zip`. Contents: `README.txt`, `main.py`, `items-success.csv`, and `items-missing-unit-price.csv`. Archive SHA-256: `706c6a87d07c496d5a461c9395fb0b967b961fa9c430c719d9799998df5b4099`. The embedded `main.py` is 1,939 bytes and its SHA-256 exactly matches the frozen worksheet sanity-check value `70c66ad3a0132923cbf3190eb3546093fcc2c61c1bdcbf3b171696e1ae7521e7`. The archive is a convenience copy only; it does not replace the canonical worksheet fixture.
