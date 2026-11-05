@@ -186,3 +186,10 @@ This is a deliberate no-copy decision, not a failure to inspect code. Reuse shou
 - LOOP/CASE and AWD acceptance definitions remain unchanged.
 - No app installed, user code executed, device test run, provider workload or cost incurred.
 - No source/runtime/PR/Actions/deployment change. PR #2 and #3 remain protected and untouched.
+
+
+### Additional OpenWOP secret-digest and assurance caveat
+
+Inspected OpenWOP RFC 0229 at commit ec214ef38d1f515c275abc48194e4ec73ed9d3be, source blob d24e69b086f409a8019a5e644a394efc0ec1ec0b0. It documents a concrete host bug where run-supplied secret values entered a persisted idempotency request digest. The RFC treats a digest as a confirmation oracle and requires secret values to be excluded from persisted/derived digests, not merely hidden in logs. For PocketCode, keep user credentials and secret environment values out of receipts, cache keys, task fingerprints, event logs and AI debugging packets; preserve only safe references or an explicit redacted/unavailable marker.
+
+The same RFC's status history records provisional acceptance pending retrospective review and a steward override of the protocol's own full comment-window rule for a certification/secret-material change. RFC 0156 separately documents the need for independent maintainers, external audit and Tier-3 implementation evidence. Therefore use OpenWOP's technical ideas selectively, but do not equate an Accepted RFC or large conformance corpus with independent security assurance.
