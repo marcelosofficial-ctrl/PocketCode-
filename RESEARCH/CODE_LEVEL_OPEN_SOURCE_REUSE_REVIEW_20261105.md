@@ -264,3 +264,100 @@ The deeper PC-host agent review is now captured in [Happy Agent Daemon Source Au
 The deeper source review of Cline's workspace checkpoint implementation and restore tests is recorded in [Cline Workspace Checkpoint and Restore Audit](CLINE_WORKSPACE_CHECKPOINT_AND_RESTORE_AUDIT_20261105.md). The recommendation is to add recoverable workspace checkpoints as a P1 PocketCode feature and as a safety precondition before any future unattended multi-file correction. Do not copy its Git implementation until PocketCode chooses between a separate shadow object store, protected refs in the workspace repository, and a non-Git manifest backend.
 
 **MCP Tasks versioning caution:** the 2026-07-28 MCP Tasks extension source is explicitly marked Draft. Keep it an optional adapter and pin the protocol revision in any adapter; do not freeze PocketCode's core task model to draft wire semantics. The extension's cancellation is cooperative and cannot be treated as proof that remote execution stopped. See the [draft specification](https://modelcontextprotocol.io/specification/2026-07-28/extensions/tasks).
+## 9. Additional source-level pass: editor state, Pyodide interruption, bounded agents and staged edits (2026-11-05)
+
+This pass adds four implementation-level comparisons. These are pinned upstream source observations, not product integration or runtime selection.
+
+### 9.1 Pyodide worker execution and interruption: useful architecture, strict limits
+
+Pinned upstream:
+- Repository: `pyodide/pyodide`
+- Commit: `620c16a62d51be6613cb2208b563b2cf6f9f65d0` (2026-11-04)
+- `docs/usage/webworker.md`, blob `95c694c95874c1bc57de1fb1df8f4ad0e5a7489f`
+- `docs/usage/keyboard-interrupts.md`, blob `465611fe1aa24e5b4858f83bf68e562388f756fb`
+- `src/js/api.ts`, blob `f08d4199bc0291d030034edc90ac3822b9e57b5d`
+- `src/tests/test_pyodide.py`, blob `b324c98053f1a47e183fd208647d493cd76c85c5`
+- License: MPL-2.0 (source tree license; review file-level notices before copying).
+
+The official worker example loads Pyodide once in a module worker, sends each request with a unique ID, executes asynchronously, and returns result/error with the same ID. This is a credible UI-responsiveness pattern. It is not itself a complete runner contract: the sample has no durable attempt journal, bounded output, queue policy, request cancellation lifecycle, or restart-safe correlation.
+
+The interrupt documentation is more important than the happy path:
+- WebAssembly does not support native preemptive Python interruption.
+- Pyodide's interrupt mechanism requires a worker and a shared `SharedArrayBuffer`.
+- Deployment must provide the required cross-origin-isolation headers.
+- The main thread writes the SIGINT marker; Pyodide raises `KeyboardInterrupt` when it processes the marker.
+- The API source exposes `setInterruptBuffer`; upstream tests exercise the signal path.
+
+**PocketCode decision:** retain Pyodide as a candidate for the browser/PWA Python lane, not as a selected runtime. A future adapter must expose separate facts for interrupt requested, Python acknowledged interruption, worker terminated, output drained, cleanup completed and final result captured. A client timeout or sent interrupt is not proof that execution stopped. If the worker is terminated to regain UI responsiveness, its in-memory interpreter state is lost and the attempt must be reconciled from durable evidence, not silently retried. The SharedArrayBuffer header requirement is a deployment gate that must be tested on actual supported iOS Safari/PWA contexts; do not assume it is available in every hosting mode.
+
+Do not copy the documentation's simple worker wrapper as a production runner. It is a teaching example with no durability or resource policy.
+
+### 9.2 CodeMirror state: immutable editor transactions, not an execution ledger
+
+Pinned upstream:
+- Repository: `codemirror/state`
+- Commit: `9c801279cb83011e6f92af778f4443406e8f1200`
+- `src/state.ts`, blob `f83d92f9f00cb4c9a5567728658c6602afcbdcd2`
+- `test/test-state.ts`, blob `66317aa0b27cac964cc9170301638b3a249fc3ed`
+- `LICENSE`, blob `9a91f48619f481743ffb278a3f0ac05176ad7102`
+- License: MIT.
+
+The source implements persistent/immutable editor state: updates are transactions that produce a new state rather than mutating the prior document. It also supports JSON serialization/deserialization of the document, selection and explicitly registered serializable state fields. The tests exercise state updates and serialization.
+
+**PocketCode decision:** if CodeMirror 6 is selected for the editor, reuse its packages rather than copying editor internals. Use transaction/change sets for in-editor editing, undo/redo and mapping selections across changes. Do not treat editor state JSON or transaction history as the authoritative project/run journal. Persist project files and run attempts through a separate storage contract with explicit versions, atomicity, provenance and recovery. The editor's immutable in-memory model is not a crash-safe filesystem or checkpoint store.
+
+### 9.3 mini-SWE-agent: strong bounded-loop and test patterns, unsafe environment default
+
+Pinned upstream:
+- Repository: `SWE-agent/mini-swe-agent`
+- Commit: `04d809ceab9df28f9adaed044884180159172930` (2026-09-03)
+- `src/minisweagent/agents/default.py`, blob `ca310e37d7c61888c576f73f5e1790ac769407b1`
+- `tests/agents/test_default.py`, blob `cb8587475a25abd23612107dd655435187bb12d9`
+- `src/minisweagent/environments/local.py`, blob `2b12d33ec90c8db7bb8a36002ba09706be6e7f45`
+- `LICENSE.md`: MIT.
+
+The agent loop enforces independent step, model-cost and wall-clock limits. It persists a serialized trajectory in a `finally` block after each step, records model call/cost metadata and versioned trajectory format, and has deterministic fake-model tests for successful completion, step limits, cost limits, timeout handling, partial output on timeout and multi-step continuation. The local environment uses a process group on POSIX and kills that group on timeout, then captures output.
+
+Important limits found in the same source:
+- The local environment executes shell commands directly on the host; it is not a sandbox.
+- stdout and stderr are merged.
+- Exceptions use a synthetic return code `-1`, so this is not a fully typed exit/termination receipt.
+- The trajectory save uses a direct `Path.write_text` JSON replacement, not an atomic temp-file/fsync/rename protocol or append-only transaction journal. The per-step `finally` save is valuable but does not prove crash-safe persistence.
+- The project tests are upstream tests inspected, not executed by PocketCode.
+
+**PocketCode decision:** adopt the *shape* of the bounded director loop and deterministic fake-adapter tests: explicit step/cost/time budgets, save/checkpoint after every step, preserve partial output, and test continuation after timeout. Do not copy its local shell environment or elevate its trajectory file to canonical evidence. PocketCode still needs a provider-neutral budget policy that can operate with a $0 manual-AI workflow and does not imply hidden provider usage or quota bypass.
+
+### 9.4 Plandex: reviewable staged edits are useful; its apply/rollback code is not a durability baseline
+
+Pinned upstream:
+- Repository: `plandex-ai/plandex`
+- Last main commit observed: `e2d772072efadbe41d2946d97d79be55532dbab5` (2025-10-03). The repository appears stale relative to the 2026 review date; treat as a historical reference, not an actively maintained dependency.
+- License: MIT, LICENSE blob `4aa379f2105798e6d6a8a4f1020ba272f23995f4`.
+- `app/cli/lib/apply.go`, blob `067da509ae4d0a67717dab1921554737e695e064`
+- `app/server/syntax/structured_edits_test.go`, blob `55b338acab1d8428a2292d3b35101e6983e70f30`
+- `app/server/model/plan/build_structured_edits.go`, blob `1a0665246a95018aad30d79885bd08c850bbd97f`.
+
+The structured-edit tests show a useful technique: preserve existing code around explicit insertion/replacement regions and verify the exact reconstructed file against fixtures. The product's cumulative diff review and separate apply action are good UX concepts.
+
+However, the inspected apply implementation is not safe to copy as PocketCode's transactional workspace layer:
+- It records prior file contents/modes in an in-memory rollback object, not a durable checkpoint.
+- File writes/removals run concurrently.
+- A failure can occur after some files have already changed; the caller's error path has its rollback call commented out in this pinned source.
+- The shell apply script executes through the user's configured shell with inherited environment. This is not a sandbox.
+- The rollback plan's project-path cleanup is broad enough that a future implementation must guard against concurrent workspace changes and must not delete files it did not create.
+- The inspected test file validates structured text reconstruction; it does not prove crash-atomic multi-file apply/rollback.
+
+**PocketCode decision:** adopt review-before-apply, structured edit fixtures and visible diff concepts. Do not import the Plandex apply/rollback code. Implement any future workspace checkpoint using a durable, content-addressed shadow store or another explicitly selected backend, with path containment, symlink handling, atomic per-file replacement, crash recovery and concurrent-edit protection tested separately. This is a design requirement, not an approved storage choice.
+
+### 9.5 Net adoption ranking after this pass
+
+| Candidate | Reuse decision | Why |
+|---|---|---|
+| CodeMirror 6 | Strong dependency candidate if web editor is chosen | MIT, mature immutable editor state and tested transaction model; not a run journal |
+| Pyodide | Candidate runtime only | Useful worker and Python ecosystem; interrupt deployment constraints and no hard-stop proof |
+| mini-SWE-agent | Pattern/reference only | Excellent bounded loop and deterministic tests; unsafe direct-shell default and non-atomic trajectory save |
+| Plandex | UX/test-pattern reference only | Reviewable diff and structured edit fixtures; stale repository and weak apply/rollback durability |
+| MCP Tasks | Optional adapter only | Draft/versioned remote task lifecycle; never core product task identity |
+| Happy | Invariant reference only | Atomic cursor/snapshot and exact ack; generic outbox coalesces intents |
+
+**Copy decision:** no additional upstream code is copied in this pass. The candidate components are not yet tied to a selected PocketCode application framework, storage engine, runtime or workspace model. Copying a runnable worker, editor internals or filesystem apply routine now would create an unowned integration surface and could falsely imply a tested product path. The existing isolated MCP polling helper remains the only research-only code extraction recorded above. No production code was changed.
