@@ -24,6 +24,8 @@ PocketCode remains a phone-first Agentic Orchestration Control Plane for iOS and
 
 No real execution backend, runner, provider, cloud host, or sandbox has been selected. The UI prototype is simulated. A full end-to-end PocketCode run has not been demonstrated.
 
+Boundary policy: project boundaries are revisable when evidence shows a benefit. Do not preserve temporary safeguards as permanent restrictions. Record any revised authority, risks and verification controls. The $0 default budget remains unless separately changed.
+
 ## Owner constraints and boundaries
 
 - $0 default budget. No paid provider, host, service, account, workload or subscription without a separate budget decision.
