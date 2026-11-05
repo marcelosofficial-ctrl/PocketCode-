@@ -77,7 +77,7 @@ Do not restart the Python session merely to inspect it.
 ### B. Success path
 
 1. In More > Projects, create a new project named `PC-FIXED-SUCCESS-01`.
-2. Import the exact `main.py` and success `items.csv` into that project using Files > … > Import File (or the iOS Files share-to-Pyodios flow).
+2. Import the exact `main.py` and success `items-success.csv` into that project, then rename the imported CSV to `items.csv` using Files > … > Import File (or the iOS Files share-to-Pyodios flow).
 3. If files were imported through Files/iOS while the project was already open, follow the app's documented project-refresh behavior and reopen the project before execution if needed.
 4. Confirm both filenames appear in the active project. Open `items.csv) and verify its header and two rows.
 5. Open `main.py` in Editor. Ensure no text is selected. Run the entire script once.
@@ -172,3 +172,8 @@ It cannot establish:
 Pyodios is now the first hands-on iPhone local comparator because the owner reports it is installed. This does not make it the selected PocketCode runtime or a product dependency. Its documented no-interrupt behavior and session reset are especially important limitations for future recovery design.
 
 **Status:** DOCUMENTATION REVIEW COMPLETE / DEVICE TEST AWAITING OWNER OBSERVATIONS / PRODUCT ACCEPTANCE NOT RUN. No product source, test, canonical fixture, LOOP/CASE ID, schema, provider, runner selection, PR, merge or deployment changed.
+
+
+## 8. Owner-ready fixture archive
+
+A phone-importable ZIP was prepared from the canonical fixture without changing the Python source. Archive: `pocketcode_pyodios_fixed_task.zip`. Contents: `README.txt`, `main.py`, `items-success.csv`, and `items-missing-unit-price.csv`. Archive SHA-256: `706c6a87d07c496d5a461c9395fb0b967b961fa9c430c719d9799998df5b4099`. The embedded `main.py) is 1,939 bytes and its SHA-256 exactly matches the frozen worksheet sanity-check value `70c66ad3a0132923cbf3190eb3546093fcc2c61c1bdcbf3b171696e1ae7521e7`. The archive is a convenience copy only; it does not replace the canonical worksheet fixture.
