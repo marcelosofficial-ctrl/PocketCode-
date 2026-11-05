@@ -558,3 +558,21 @@ Executive decisions:
 - Do not transplant its generic retry behavior to non-idempotent shell/file/code execution.
 - Existing canonical LOOP-01..14, CASE-01..16 and D-01..D-08 unchanged. Runtime/backend remain unselected.
 Additional Happy source-review caveat: its iOS IntentOutbox uses best-effort storage removal/update calls (try?) and updates its in-memory projection. If durable acknowledgement deletion fails after remote success, a stale row may be retried after relaunch. Idempotent endpoints can tolerate this; arbitrary execution commands cannot. PocketCode should persist and verify an acknowledgement/tombstone before declaring a command durably consumed; otherwise retain DISPATCH_UNKNOWN and reconcile with the original command ID. This is a source-level inference, not a reproduced upstream failure.
+
+## Mobile interruption recovery and native sync research — 2026-11-05
+
+Added `RESEARCH/MOBILE_INTERRUPTION_RECOVERY_AND_OPEN_SOURCE_SYNC_AUDIT_20261105.md`, latest blob `5798d090a078c653712b6eeffe7ac58351d745b6`.
+
+Current official platform findings:
+- iOS `beginBackgroundTask` is a short finite extension, not a durable compute host. `BGProcessingTask` is interruptible and device-idle only. Background URLSession can keep file-backed HTTP(S) transfers alive across ordinary system suspension/termination, but user force-quit cancels transfers and blocks automatic relaunch until the user opens the app.
+- Android WorkManager persists eligible work across app restart/reboot but is not an immediate/unlimited compute guarantee. Android 16 applies job quotas to long-running workers that use foreground services. UIDT is for user-initiated data transfer, not arbitrary code execution.
+- Expo BackgroundTask wraps WorkManager/BGTaskScheduler for deferrable sync. It is not an execution runtime; TaskManager work must be globally registered and is not available on web.
+
+Competitor sources inspected at code level:
+- Happy Coder native iOS/Android, MIT, reviewed main `7e32e09454c26aa78e86df0d378b1e49375b743d`: SQLite snapshot+cursor, durable message/action outbox, stable IDs, exact acknowledgements, disk-first UI, foreground/reconnect catch-up, per-session locks. iOS and Android source blobs and test SHAs are pinned in the research doc.
+- Critical Happy caveats: its generic intent queue coalesces set-like actions and must not be used for immutable run/command/attempt/evidence; selected storage errors are swallowed by `try?` in iOS IntentOutbox, so PocketCode must not copy this aspect. An outbox is transport state, not immutable evidence archive. At-least-once retries need receiver idempotency.
+- OpenHands Mobile MIT, reviewed commit `47f815b1d111b6a71b405dcb77acb3682da59b85`: good REST-history/WebSocket/version-handshake and host/direct separation patterns, but the inspected React hook reuses an initial timestamp anchor and has no durable outbox/cursor. The retry counter resets on socket open, making immediate-close reconnect churn a source-level risk hypothesis, not a reproduced defect.
+
+Executive decision: durable intent + authoritative execution + resumable observation. Separate phone lifecycle, transport lifecycle and runner lifecycle. Persist request+outbox before dispatch; on ambiguous ack reconcile same ID rather than blind redispatch. Apply each event projection and cursor in one transaction; cursor gaps require snapshot catch-up; terminal receipts stay outside bounded event logs. Phone background APIs are for transfer/sync only, not untrusted code execution. Distinguish “Reconnect to this run” from “Run again”.
+
+No upstream code was copied because PocketCode still has no selected client stack and no application source tree. Happy's native code is not drop-in; OpenHands' hook is not durable enough. The design and tests are adopted as a compatibility-neutral contract, with code adaptation conditional on stack selection. $0 budget, no provider/run/device test, no product code/test edit. Canonical LOOP/CASE/AWD/D unchanged; PR #2/#3 untouched.
