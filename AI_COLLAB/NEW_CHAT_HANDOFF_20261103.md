@@ -758,3 +758,16 @@ New primary docs:
 - Cursor: https://prod.cursor.com/docs/cloud-agent/mobile
 - Codex: https://learn.chatgpt.com/docs/mobile and ChatGPT release notes June 25, 2026
 - Claude Code: https://support.claude.com/en/articles/14554000-claude-code-power-user-tips
+
+
+## 21. Open-source competitor source review — 2026-11-05
+
+New source-level review: [Open-source agent architecture and code-adoption review](../RESEARCH/OPEN_SOURCE_AGENT_ARCHITECTURE_AND_CODE_ADOPTION_REVIEW_2026-11-05.md), created in this branch.
+
+Executive finding: AndroidHarness is a much closer direct Android competitor than the prior scan captured. Its README advertises no-PC/no-root Kotlin app, local Linux toolchain, file editing, shell/Git/Python/Node, browser, subagents, inspectable tool cards, persistent recovery, queued prompts, context meter and fixed-whitelist diagnostics. Its SECURITY.md is candid that workspace/path/shell checks are not a complete process/filesystem sandbox, normal processes run as app UID, symlink checks do not contain arbitrary code, remembered shell approvals are command-prefix grants, and Full Access skips normal controls. This directly raises the bar for PocketCode differentiation.
+
+Atlan is a strong mobile cockpit and deterministic verification reference, but its local Android path is Termux/proot and iOS is cloud-client-only. Happy and Pairlet are stronger cross-device remote-session references than local execution competitors. Cline provides transactional workspace checkpoints, Goose provides reusable recipes/subrecipes, OpenCode provides action/resource permission rules, Aider provides Architect→Editor plus lint/test loops, LangGraph provides resumable checkpoints, and Pyodide remains a candidate local Python runtime.
+
+Critical recovery lesson from AndroidHarness: its `RecoveryLedger` matches by tool name + normalized JSON args, not a stable operation identity. Two distinct identical calls may collide, and key-order changes may fail to match. Its focused test covers only a single call. Do not copy unchanged; PocketCode needs run/attempt/operation IDs, exact argument/result hashes and an explicit UNKNOWN state for started-without-result.
+
+**Code copying decision:** none this pass. PocketCode's own README still says discovery/product definition and no app/runtime/framework is selected. Importing Kotlin, Rust, TypeScript, Node or crypto code now would silently choose a stack or create an orphan. Candidate source files, hashes, licenses, adoption decisions and gates are pinned in the review. Reconsider actual transplantation after the fixed-task comparison and vertical-slice stack decision. PR #2/#3 untouched.
