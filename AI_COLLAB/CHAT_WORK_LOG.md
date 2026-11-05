@@ -56,3 +56,11 @@ After all continuity files and status/handoff updates were committed, live compa
 **PocketCode impact:** process-only. No RevDev publisher implementation, schema, P8U/AWC/P0-D contract or verdict has been imported. PocketCode remains prioritizing CASE-04 in `scripts/report_contract.py`; no runtime/provider selection, device test, product code or PR change occurred.
 
 **Live branch snapshot:** PocketCode 723 ahead / 0 behind main; RevDev 732 ahead / 0 behind. These are history divergence counts, not product progress. PR #2/#3 and RevDev PR #1 remain open drafts and untouched.
+
+## 2026-11-06 — PC-2026-11-06-P03 — Streaming interruption resilience
+
+Owner reports recurring iOS “Streaming interrupted. Waiting for complete message” during longer, higher-thinking project turns. Root cause is UNKNOWN; the assistant cannot inspect client transport/generation logs. The current OpenAI status page reports a ChatGPT Work and Dots incident under monitoring, but that is not evidence it caused this ChatGPT interruption. OpenAI Help Center guidance recommends status checks, trying a new chat/restarting, switching networks/devices and collecting timestamps/request IDs for Support if persistent.
+
+**Process changes:** added explicit interrupted-response recovery to PocketCode's continuity protocol. Re-fetch live GitHub head/files before replaying any write; treat missing user-visible tool output as ambiguous; verify commits/read-back; query CI by exact SHA; keep write batches bounded and operate on one repository at a time. This is process-only. PocketCode's CASE-04, phone-first product, security boundaries, no-runtime-selected status and $0 budget remain unchanged.
+
+**Next PocketCode task:** resume the existing PocketCode-specific CASE-04 timeout/report-contract correction. Do not adopt RevDev publisher code or test suites.
