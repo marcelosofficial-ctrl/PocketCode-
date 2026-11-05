@@ -11,7 +11,7 @@ This handoff continues the 2026-11-05 handoff and canonical project docs. It cha
 - Re-fetch refs before consequential work.
 
 ## Owner/device update
-The owner reports Pyodios is installed on the iPhone. No device execution has yet been reported or observed. Installed app/build, iOS version and runtime version remain UNKNOWN.
+The owner reports Pyodios is installed on the iPhone. No device execution has yet been reported. Owner-transcribed About / Settings screens confirm Pyodios 1.1.0 / Build 7, Pyodide 314.0.5, Python 3.14.2, WebAssembly runtime. Device model and iOS version remain UNKNOWN. These are owner-reported observations, not independently inspected by ChatGPT.
 
 A fixture archive was created in the conversation:
 - pocketcode_pyodios_fixed_task.zip, 2,184 bytes
@@ -77,3 +77,7 @@ Evidence rules:
 5. Continue source-level implementation/test work on provider-neutral task/receipt logic only where the existing product/acceptance contract supports it. Keep proposals separate from verified product behavior.
 
 **Current evidence state:** public Pyodios review COMPLETE; fixture archive hash VERIFIED; device attempt AWAITING OWNER; PocketCode product acceptance and recovery suites NOT RUN.
+
+
+## Owner-reported build confirmation (2026-11-06)
+The owner reports the Settings screen showed 13 cached packages / 0 KB cache, 85,557 objects / 0 referrers, and GC stats 1,650 collected / 0 uncollectable. These counters are transient diagnostics, not performance/capacity measurements. Do not clear variables, run GC, or restart merely to reset them. The installed app/runtime baseline is now known; the actual fixed-task execution, artifact export, and relaunch-persistence checks remain NOT RUN. See the updated device protocol for the next low-risk steps.
