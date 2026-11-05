@@ -621,3 +621,49 @@ Progress is smooth in research and contract clarification, but not in executable
 3. Define the minimum command capability contract: stable command ID, same-ID dedupe, status lookup, ordered event replay, cancel semantics, termination confirmation and artifact transfer.
 4. After an execution path is selected, prove project/input -> explicit authorization -> real execution -> output/exit provenance -> artifact integrity -> durable receipt -> AI handoff -> reviewed correction -> linked rerun.
 5. Keep LOOP/CASE/D IDs unchanged. No provider, host, app installation, test, source change, PR update, Actions or spend without the required authorization.
+
+
+## 2026-11-05 source-level remote-agent recovery follow-up
+
+A focused implementation pass inspected live upstream OpenHands and Cline source rather than relying on feature pages. The durable decision record is:
+- [Remote agent control-plane and workflow-protocol research](../RESEARCH/REMOTE_AGENT_CONTROL_PLANE_AND_WORKFLOW_PROTOCOL_RESEARCH_20261105.md)
+- [OpenHands isolated reference-copy README](../RESEARCH/vendor/openhands/README.md)
+- [OpenHands idempotent-create retry helper](../RESEARCH/vendor/openhands/idempotent_create_retry.ts)
+
+### Pinned source findings
+
+**OpenHands** — current main inspected at `e6c074fe5fd96c6ce0f7a52905d529e27d24bb7b`, MIT.
+- TypeScript `ConversationClient.createConversation()` retries an opaque transport failure only when the caller supplied a stable conversation ID and the server advertises `idempotent_conversation_create_v1`; HTTP responses, missing IDs and failed capability probes do not retry.
+- Its regression tests model server commit followed by dropped acknowledgement, plus no-capability, missing-ID and HTTP-400 cases. Tests inspected, NOT RUN in this continuation.
+- EventLog uses stable durable sequence cursors; session socket buffers history/live overlap and disconnects slow consumers rather than silently dropping durable frames; ConversationLease uses owner/generation/expiry and guarded writes.
+- The local FileStore lock explicitly does not guarantee correct locking on NFS/network filesystems. The reviewed EventLog source does not prove universal fsync/power-loss durability.
+
+**Cline** — current main inspected at `d3ecc4890e8f9bcb77182b96c77fa90575e8e145`, Apache-2.0.
+- SSH remote environment stages a content-hashed helper, binds the remote Hub to loopback, uses strict SSH host-key checking and a local tunnel, and persists failed cleanup for retry. The shipped helper targets are Linux/macOS x64/arm64 and the implementation uses Node/process/filesystem APIs; this is not a ready-made mobile or Windows adapter.
+- Its scheduler performs claim/capacity checks inside SQLite write transactions, uses per-claim tokens and lease renewal, and transactionally accepts events plus schedule-run fan-out.
+- It persists terminal run status before writing its derived Markdown report. A report write failure is logged and does not replay a completed agent turn.
+- The claim token fences scheduler rows, not arbitrary shell/network/filesystem effects; abort is cooperative. The reviewed path does not prove idempotent remote session-start after a lost acknowledgement.
+- Security rejection: Cline's headless cron `buildToolPolicies` defaults to wildcard auto-approval when a schedule omits its tool list. Do NOT copy this behavior. PocketCode remains default-deny with explicit bounded tools/capabilities and policy revision binding.
+
+**Protocols**
+- ACP v2 session resume is a context/history reconnect with optional replay cursor and a required current-state snapshot. It does not create a stable execution-command idempotency guarantee. Its cancellation covers foreground work; background work may continue.
+- MCP Tasks supplies a durable task handle and polling/result retrieval, but cancellation is cooperative and its empty acknowledgement is not termination proof.
+- Keep protocol sessions, command identity, remote execution identity, attempts, event cursors and result receipts separate.
+
+### Isolated code copy
+
+Added `RESEARCH/vendor/openhands/idempotent_create_retry.ts`, an attributed, MIT-compatible small adaptation of OpenHands' capability-gated create retry decision. It takes an already serialized immutable request string plus a stable operation ID, only retries once for a transport-only failure after a capability probe succeeds, and resends the identical string and ID. The full MIT license was already present in the folder; README provenance has been updated.
+
+This is a research reference only. It is not imported by product code, was not compiled or tested in this continuation, and is unsafe unless the exact target/auth scope implements durable same-ID deduplication and same-ID/different-body conflict detection. It does not provide an outbox, result reconciliation or exactly-once side effects.
+
+### Decisions and status
+
+- PocketCode transport-neutral direction now explicitly separates CommandId, DispatchAttemptId, ExecutionId, ordered ObservationId/sequence, result receipt and artifact release.
+- A lost acknowledgement after a possibly accepted dispatch becomes `DISPATCH_UNKNOWN`; query the same ID; retry exact bytes only after negotiated idempotency. Never mint a new ID or silently replay a side-effecting command.
+- Reconnect through durable event cursor + history/live overlap reconciliation; treat a stream overflow as disconnect, not permission to drop durable events.
+- Cancellation request/acknowledgement/observed termination/result are distinct facts.
+- This work does not select ACP, MCP Tasks, OpenHands, Cline, SSH, Pyodide, a cloud runtime, or an execution provider as PocketCode's product stack.
+- LOOP-01…14 and CASE-01…16 unchanged; D-01…D-08 remain open. Fixed-task comparison and EVAL-06 remain NOT RUN.
+- No product source/tests, integration, build, upstream test, device test, provider workload, credential, host, queue, workflow, deployment, or protected PR action occurred.
+
+The source-level recommendations are not implementation evidence. Re-pin these upstream commits before any later code adoption. The owner remains the authority for product/runtime decisions and restricted actions.
