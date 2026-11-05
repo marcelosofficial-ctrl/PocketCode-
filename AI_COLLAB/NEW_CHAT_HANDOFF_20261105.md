@@ -674,3 +674,10 @@ The source-level recommendations are not implementation evidence. Re-pin these u
 The earlier branch snapshot in this handoff is superseded. Immediately before this correction, PocketCode branch head was 27a89fbed6a5b1c4d3a44e5398026fc220f918d6 and RevDev branch head was 9c5037625b27e2d35a5ee786964a34fe85f93e46. Live compare results: PocketCode 691 ahead / 0 behind main; RevDev 664 ahead / 0 behind main. Merge bases remain PocketCode 555840d8d83342513d9cd353d4d1522d46a5c82d and RevDev 058f9025319d12e76195659c715ccb4afce133b8. These are documentation/research branch commit counts only, not product progress.
 
 PR state rechecked: PocketCode #2 and #3 OPEN / DRAFT / UNMERGED; RevDev #1 OPEN / DRAFT / UNMERGED. Their heads and metadata were not modified. The latest PocketCode competitor audit is read-back verified at blob 79be3b0c5e09c2c441465e18d82574a0360ea3a2; latest PocketCode status blob before this correction is f82fa983fdd28e9e5e184e5a4978ae0ae2926c80. Latest RevDev competitor audit blob 5bf366e529f78d5eb264db0d9094b2a1249b645f; current goals blob 1ad5109c72475a5fe4bacd90f7b4862d55ab2d32; review packet blob 8c36e593339fe99e5c626fb721e906f4c35c8819. Re-fetch live heads after this commit and before consequential work.
+
+
+## 2026-11-05 latest executive checkpoint
+
+Read [PROJECT_PROGRESS_AND_NEXT_EXECUTION_GATES_2026-11-05.md](PROJECT_PROGRESS_AND_NEXT_EXECUTION_GATES_2026-11-05.md) first. Current PocketCode estimate is approximately **20% toward a dependable MVP**, qualitative only. Static/simulated UI and extensive research exist, but no selected real execution backend, mobile runner integration, durable real receipt, or end-to-end run/inspect/report/correct/rerun proof. The first usable MVP is not close yet. Next priority is the existing fixed-task execution-path comparison, followed by one bounded vertical slice. Do not broaden features.
+
+Fresh GitHub verification: branch 690 ahead / 0 behind main, observed head `27a89fbed6a5b1c4d3a44e5398026fc220f918d6`; PR #2/#3 OPEN / DRAFT / UNMERGED, untouched. The progress document is commit `843b4bab96d8d0f41141d2062bf3a6c5d484ba84`. Branch divergence is not implementation progress.
