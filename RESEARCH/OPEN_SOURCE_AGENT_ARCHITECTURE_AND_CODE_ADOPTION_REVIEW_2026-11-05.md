@@ -302,3 +302,26 @@ No source files were copied into PocketCode in this pass. This is intentional an
 - No provider, paid workload, CI, device, sandbox, relay, deployment or account action performed.
 - PR #2 and PR #3 untouched.
 - This is research and a proposal, not an accepted architecture or product decision.
+
+
+## 9. Additional source-level caveats found during test review
+
+### AndroidHarness recovery test scope
+
+The pinned `TaskControlTest.kt` blob is `bc1c4814c441ed5ce55ea78755f1de5d625cdc34`. Its recovery test verifies one assistant message with two different tool calls, one completed result, and one missing result. The `RecoveryLedger` test verifies one call reused under a new call ID, one missing result blocked, and one changed argument not matched. It does not test two distinct identical tool calls in the same recovery history, JSON key-order equivalence, or two independent store instances/processes writing the same task file.
+
+`TaskControlStore` uses `@Synchronized` methods on one store instance, writes a temp file, calls `FileDescriptor.sync()`, then renames it. The synchronization shown is instance-local. The tests exercise concurrent appends through one store object, not multiple processes or store instances. The inspected write helper does not show a parent-directory fsync. Therefore the source supports atomic-replacement and same-instance concurrency claims, not multi-process coordination or full power-loss durability claims.
+
+These are test-coverage boundaries and questions for independent validation, not proof that the app loses data in production.
+
+### Goose subrecipes are explicitly experimental
+
+The pinned Goose subrecipe documentation blob is `8064d1dafb2f8071c784d674358fa6c54f4af44f`. It labels the feature experimental, states each subrecipe runs in a separate session with its own context, and says subrecipes do not share conversation history, memory or state with the parent or sibling subrecipes. Nesting is not supported in the described version. This isolation is useful for context control, but it means RevDev/PocketCode must pass explicit typed inputs and collect explicit outputs rather than assume shared state.
+
+### OpenCode permission defaults and precedence
+
+The pinned OpenCode permission docs blob is `a33cab7c01ef51c4ca0869a0a4f00feccf59b286`. They document last-matching-rule-wins semantics and permissive defaults for most tools unless overridden. The `always` action in this doc is described as session-scoped, while public issue #30779 describes a v2 project-scoped persistence behavior. These are version/system-specific differences; never transfer a permission scope claim between versions without checking the exact implementation. For our projects, default deny/ask for mutation is safer than inheriting a permissive default.
+
+### Cline checkpoint cost
+
+Cline's checkpoint docs explicitly warn that snapshots after each tool use can consume significant storage and slow large repositories. If adopted, RevDev should checkpoint at meaningful transaction boundaries or before risky mutation groups, not automatically snapshot every tiny tool event without measuring cost.
