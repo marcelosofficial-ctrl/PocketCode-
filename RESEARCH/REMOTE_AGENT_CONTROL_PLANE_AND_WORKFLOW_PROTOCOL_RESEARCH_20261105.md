@@ -305,3 +305,21 @@ Additional Cline security evidence: the runner test explicitly asserts the defau
 Test-coverage caution: the inspected `cron-runner.test.ts` normal path asserts a Markdown report exists. I did not find a specific injected report-writer-failure regression in the inspected test portions. The source ordering and changelog statement support the intended no-replay behavior, but the upstream failure-path test coverage is not established here. Treat it as an adoption test requirement, not as upstream-tested proof.
 
 All test results above are upstream source assertions inspected only. They are not results run by us and do not prove platform parity, power-loss durability, provider correctness, production integration or our acceptance suites.
+
+
+### 10.11 Final durability nuance and claim-test scope
+
+A closer read of OpenHands' actual storage adapter tightens the durability statement:
+
+- `openhands-sdk/openhands/sdk/io/local.py`, blob `b31d270068557f125b45e48095c7ebbc3c0825fc`, routes text writes through its `atomic_write_text` helper, then updates its in-memory cache. That helper writes a same-directory temporary file, flushes/fsyncs the file and replaces the target. It does not fsync the parent directory after rename. Binary writes use a direct `open(..., "wb")` + `write` path and are not atomic through this method.
+- `EventLog.append` acquires the FileStore lock, writes one event file, updates in-memory indexes and then best-effort advances a sidecar length marker. Marker update errors are logged and swallowed; the marker is an optimization, and a later disk scan can recover the event file. This is not a multi-record transaction with a conversation snapshot, and it does not establish power-loss durability of the directory entry.
+- `LocalFileStore.lock` uses `FileLock`; the code and base interface explicitly warn that flock/file locks do not work reliably on NFS/network filesystems. The implementation's cache assumes exclusive access to the files and can become stale under external modifications.
+
+Conclusion: OpenHands is a useful local event-history/replay implementation, but do not copy its persistence layer as a durability proof. PocketCode must test the selected backend's actual write/rename/commit/fsync behavior on each supported platform, after process crash and power loss if those guarantees are required. Event ordering, event append, index rebuild, cursor retention, and durable commit are different properties.
+
+Cline claim-test boundary:
+- `sqlite-cron-store.test.ts`, blob `368661d40f03f9af9f057db4192c984e1af88735`, explicitly tests one due claim, then reclaims the same run after lease expiry with a new claim token and incremented attempt count. It also exercises the bun:sqlite capacity case via two sequential claim calls (`[1, 0]`), not a demonstrated simultaneous multi-process race in the test reviewed.
+- `cron-runner.test.ts`, blob `a9d11ef4cce1f86f653678472c0bb01a5411dd71`, forces a live run's lease expiry while its turn is blocked and verifies another schedule can progress; it does not establish that a stale process's arbitrary external side effect is fenced.
+- `cron-event-ingress.test.ts` does include a second SQLite connection and verifies no partial event/run fan-out becomes visible. That is useful transactional isolation evidence, but it is not a multi-host queue claim or publisher-target fencing test.
+
+Do not call Cline's claim protocol distributed exactly-once execution. Its transaction and token semantics are strong inspiration for local shared-store claims, bounded concurrency and transactional ingress, but production multi-process/multi-host proof remains an implementation-specific acceptance requirement.
