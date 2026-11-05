@@ -213,3 +213,10 @@ A cross-check against the pre-existing contracts found important overlap that mu
 - RevDev already has REVDEV_OPERATION_ENVELOPE_AND_DURABLE_ORCHESTRATION_DESIGN_2026-11-05.md for P0-first publication operation identity, prepared bytes, transport attempts, target obligations and concurrency. The new work-packet proposal is the parent product-batch/recipe layer. It does not replace the detailed publication design or the separate AI Work Coach evaluation trial schema.
 
 Both proposals now state these boundaries explicitly. This avoids two competing run IDs, duplicate lifecycle state machines, and scope creep. The proposals remain unfrozen and require independent Claude/Gemini review.
+
+
+## Workspace recovery feature research
+
+- [Cline Workspace Checkpoint and Restore Audit](../RESEARCH/CLINE_WORKSPACE_CHECKPOINT_AND_RESTORE_AUDIT_20261105.md) evaluates snapshot, diff, transactional rollback and branch-safety patterns for PocketCode's correction loop.
+
+Recommendation: keep workspace checkpoints a P1 feature, but require a reversible checkpoint or explicit approval before future unattended multi-file repair. Workspace snapshots must not replace immutable task/attempt evidence. No implementation or canonical acceptance changes were made.
