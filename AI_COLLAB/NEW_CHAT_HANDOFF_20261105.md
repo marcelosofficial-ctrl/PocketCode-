@@ -517,3 +517,15 @@ Decision: keep PocketCode's core run/inspect/report/iterate hypothesis. Do not p
 No production runner/provider/cloud/sandbox selected; $0 default budget remains. Fixed-task product comparison and AWD evaluation remain NOT RUN. LOOP/CASE unchanged. No app installed, user code run, device test run, provider workload or spend. PR #2/#3 remain untouched. See the research document for pinned source blobs, license evidence, security caveats and prioritized feature recommendations.
 
 Follow-on security note: OpenWOP RFC 0229 source blob `d24e69b086f409a8019a5e644a394efc0ec1ec0b0` records a concrete secret-in-persisted-digest oracle. PocketCode must exclude secret values from durable fingerprints, caches, receipts and AI debugging packets before hashing/serialization. Its own RFC history records provisional acceptance and a steward override of the comment-window rule; do not equate Accepted status with independent security assurance. The PocketCode research note was updated to blob `bdc17692e25e9938bbca94d6b8be1ab0613dc196`.
+## Workspace durability and browser storage research — 2026-11-05
+
+The source-level reuse review was extended with SQLite-backed recovery and OPFS:
+- PocketCode source review blob: `7bb2f46619377ca7d84a451ddcdbe23d4154d336`.
+- Official SQLite Wasm: `sqlite/sqlite-wasm` main commit `ccbb81134a3b5a824f8a3cc3c5d8edd6e799ab5a`, package `3.54.1-build1`, Apache-2.0 wrapper. Dedicated worker demo uses OPFS SAH Pool VFS and reopens the DB to verify persistence. SAH Pool is single-owner/no simultaneous instance; OPFS VFS alternatives have COOP/COEP and Safari <17 caveats; WAL on OPFS has exclusive-lock constraints.
+- `opfs-vfs/opfs-vfs` has excellent WAL/crash/fault test patterns but package `2.1.0` is PolyForm Noncommercial 1.0.0. Do NOT adopt/copy its code for the commercial product direction.
+- `tgbender/safe-fs-ops` main commit `d52afaaec4f6050bd2ac70219ac8bbd7bc9d652e`, MIT, alpha, Python 3.12/SQLAlchemy. It has SHA-256 content objects, explicit backup manifests, partial-artifact checkpoints, SQLite journal/idempotency, fenced leases, append-only recovery actions and proof-based restore. Best architecture reference, not a mobile dependency.
+- `openclaw/fs-safe` MIT Node >=22 offers root-bounded paths, symlink/hardlink defenses and atomic writes, but native bindings/Node filesystem assumptions make it unsuitable for browser/mobile until the runtime is confirmed.
+- Proposed only: if browser/PWA runtime is selected, evaluate SQLite Wasm + OPFS for metadata/journal and content-addressed OPFS blobs with a single writer and mandatory export/backup. OPFS is origin-private, quota/eviction prone and deleted with site data. No runtime/framework choice or acceptance ID changed.
+- No dependency installed or code copied. No product code/tests changed.
+
+PocketCode research commit: `b045710958d6ea1631add4bfac18b96160212a68`.
