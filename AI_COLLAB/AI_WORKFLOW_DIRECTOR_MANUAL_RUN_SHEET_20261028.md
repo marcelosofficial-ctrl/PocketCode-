@@ -38,15 +38,29 @@ The canonical evaluation kit assigns profiles per case. **Do not use Balanced fo
 8. Capture both answers before scoring. If interrupted, record the missing output honestly; do not reconstruct it from memory.
 9. Character counts are not token counts. Fewer characters or turns is not automatically better if correctness or evidence honesty declines.
 
+## 2.1 Order assignment and blinded scoring
+
+The original procedure listed Baseline first, which creates a systematic order effect. Use this order control without changing any canonical case fixture or prompt content:
+
+1. Before starting a pair, choose which condition goes first. Alternate the first condition across pairs or use a recorded random choice. Do not always run Baseline first.
+2. Across three pairs, use a balanced sequence such as Baseline→Director, Director→Baseline, Baseline→Director, or its reverse. With four or more pairs, aim for equal counts of both orders.
+3. Run the two conditions in the same short time window where practical. Record the model label/version shown by the app. If the app changes model or mode between conditions, record the pair as confounded unless equivalence can be established.
+4. Keep each condition in its own fresh chat. Do not expose the other condition's prompt, answer, scores or reference output.
+5. Save both raw answers before scoring. Where practical, relabel them A and B, shuffle which answer receives each label, and score without seeing the condition mapping. The wording of an answer may still reveal the condition, so describe this as best-effort blinding, not guaranteed blindness.
+6. Reveal the mapping only after the scores and critical-failure assessment have been recorded. Preserve the order and mapping in the record.
+
+If the service limit prevents completion of a pair, keep the incomplete pair in the record and do not reconstruct or impute the missing answer. Three pairs remain exploratory only; four pairs with balanced order are preferable when the free-tier allowance permits it. Never create extra accounts, evade limits or pay to complete a sample.
+
+
 ## 3. Procedure
 
 For the selected case:
 
 1. Copy the canonical task prompt and any provided toy context from Section 5 below.
-2. Open a fresh chat and send the **Baseline prompt** template, replacing the fixture placeholder with the exact task and context. Save the complete answer.
-3. Open another fresh chat in the same app/model. Send the **Director prototype prompt**, using only the profile-specific instruction assigned to this case and the exact same task/context. Save the complete answer.
+2. Use the preselected order from Section 2.1. Open a fresh chat for the first condition and send its exact template, replacing the fixture placeholder with the task and context. Save the complete answer.
+3. Open another fresh chat in the same app/model for the other condition. Send its exact template with the same task/context and only the baseline-versus-Director instruction layer changed. Save the complete answer.
 4. Record both prompt and answer character counts if convenient; record turns, interruption, tools, and actual evidence.
-5. Score both answers separately using the canonical evaluation kit. Use the reference output only after both answers are saved.
+5. After both answers are saved, apply the A/B relabeling and blinded-scoring process in Section 2.1 where practical. Score both answers separately using the canonical evaluation kit. Use the reference output only after both answers are saved.
 6. One pair is exploratory, not a benchmark. The kit recommends at least three repeats per case before suggesting even a tentative pattern, if free usage allows. Report actual sample counts and do not force a comparison when a limit is reached.
 
 ## 4. Copy/paste templates
