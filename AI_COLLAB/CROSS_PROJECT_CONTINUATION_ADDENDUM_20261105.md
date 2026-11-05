@@ -191,3 +191,15 @@ These are research/design references only. They do not change separate-repositor
 - [Happy Agent Daemon Source Audit](../RESEARCH/HAPPY_AGENT_DAEMON_SOURCE_AUDIT_20261105.md) adds a code-level review of PC-host orchestration, durable work, process sessions, sandboxing and event replay.
 
 This is architectural research only; no host backend, process runtime, provider, sandbox or dependency has been selected.
+
+
+## Provider-neutral recipe and durable work packet proposals
+
+Two companion design artifacts now turn the competitor research into concrete, reviewable contracts while preserving separate product/runtime boundaries:
+
+- PocketCode: [Provider-Neutral Recipe and Durable Task Manifest Proposal](PROVIDER_NEUTRAL_RECIPE_AND_DURABLE_TASK_MANIFEST_PROPOSAL_20261105.md). Defines separate recipe, run, attempt, step-attempt, approval, evidence and derived-report identities; bounded DAGs; permission scopes; strict checkpoint deserialization; approval binding; and lifecycle/evidence separation. It maps at suite level to LOOP-01..14 and CASE-01..16 without inventing individual case meanings.
+- RevDev: [Bounded Operation Recipe and Durable Work Packet Proposal](https://github.com/marcelosofficial-ctrl/DevRelay-Missions/blob/review/revdev-adaptive-ai-workshare-2026-10-27/resume/revdev/BOUNDED_OPERATION_RECIPE_AND_DURABLE_WORK_PACKET_PROPOSAL_2026-11-05.md). Applies the same conceptual vocabulary to RevDev's one-action bounded batch, dependency-aware stepper, repair continuation and separately identified publication operation. It preserves AEC/AWC/P8U/P0-D suites and OD-01..OD-08.
+
+New source-level references inspected include LangGraph's checkpoint/pending-write contract, Hatchet's explicit task/attempt/idempotency projection, and Temporal's workflow/run/attempt metadata. These are design references, not selected dependencies. LangGraph's broad default checkpoint deserialization is specifically rejected for untrusted task state; use a strict data-only schema and explicit type allowlist.
+
+No framework or runtime is selected, no additional code was copied in this pass, and no implementation/test claim is made. The existing isolated reference copies and RevDev JCS research copy retain their previous non-production status. Both proposals require Claude architecture review and Gemini security/spec review before any schema is frozen.
