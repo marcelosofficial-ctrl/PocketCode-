@@ -375,3 +375,16 @@ Key public-source constraints now recorded: v1.1.0 advertises CPython 3.14.2 / P
 
 
 The owner-ready fixture archive was also generated and checked: `pocketcode_pyodios_fixed_task.zip` (2,184 bytes; SHA-256 `706c6a87d07c496d5a461c9395fb0b967b961fa9c430c719d9799998df5b4099`). Its embedded `main.py` is 1,939 bytes and SHA-256 matches the worksheet's canonical source hash `70c66ad3a0132923cbf3190eb3546093fcc2c61c1bdcbf3b171696e1ae7521e7`. Archive includes README, exact source, success CSV and malformed-input CSV. It is a convenience import package; canonical source remains the worksheet. No mobile execution was performed by ChatGPT.
+
+
+## 2026-11-06 multi-chat continuity operating model
+
+PocketCode now has a compact live chat entrypoint at `AI_COLLAB/CHAT_START_HERE.md`, an append-only work log at `AI_COLLAB/CHAT_WORK_LOG.md`, and a reusable operating protocol at `AI_COLLAB/CHAT_CONTINUITY_AND_MULTI_CHAT_OPERATING_PROTOCOL_20261106.md`.
+
+This changes how long-running work is coordinated, not the product's execution/runtime status. GitHub is the durable source of truth; each chat is a replaceable worker. New chats read the live entrypoint and only the task-specific source/evidence. Meaningful passes are checkpointed every two or three passes or after any important source/test/review/decision event. Rotation occurs before context exhaustion, never after a full-chat error.
+
+The 2026-11-06 branch compare is 710 ahead / 0 behind main, merge base `555840d8d83342513d9cd353d4d1522d46a5c82d`; this is branch-history divergence, not implementation progress. PR #2 and #3 remain open and unchanged.
+
+OpenAI's current Free Tier FAQ explains that context-full is based on the amount of information in the current conversation, including user and assistant messages, not a fixed message count. Free users should not assume a new chat will recall every earlier project chat. The new GitHub entrypoint therefore becomes mandatory for continuity.
+
+Canonical LOOP/CASE/D acceptance remains unchanged. Product phase remains Discovery; no runtime/provider/runner selected; $0 default budget remains. The owner-reported Pyodios device test is still awaiting owner observations; no device execution or product acceptance was performed by this continuity update.
