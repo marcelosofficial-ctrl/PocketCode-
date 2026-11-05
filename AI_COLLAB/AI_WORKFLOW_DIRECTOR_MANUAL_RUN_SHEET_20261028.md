@@ -155,6 +155,8 @@ Continue from this checkpoint only. Do not pretend earlier context is available.
 
 Provided context: all facts are contained in the task prompt above. Do not invent a repository path or request the entire old conversation.
 
+**Interpretation limit:** EVAL-06 tests continuation from a compact checkpoint under the defined baseline-versus-Director prompt conditions. It does not isolate a single Director component or prove the entire AI Workflow Director product. Any observed difference must be attributed to the tested prompt bundle, not to an individual feature.
+
 ### EVAL-08 — Evidence report with unsupported success claim (profile: Careful)
 
 Task prompt:
@@ -171,6 +173,9 @@ Use the same pair ID for baseline and Director (for example, `EVAL-06-A`). Write
 | Field | Record |
 |---|---|
 | Pair ID | |
+| Pair order (Baseline→Director / Director→Baseline) | |
+| Blind scoring used? | Yes / No / Partial |
+| A/B mapping recorded separately? | Yes / No |
 | Case ID | EVAL-01 / EVAL-02 / EVAL-04 / EVAL-06 / EVAL-08 |
 | Condition | Baseline / Director |
 | Date and local time | |
