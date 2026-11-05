@@ -218,3 +218,15 @@ Before implementation, create a row-by-row traceability table quoting the exact 
 3. Reconcile both reviews against canonical LOOP/CASE and D-01..D-08 without changing them.
 4. Only after owner review, decide whether this contract should become a schema specification and whether a small existing library can implement a bounded piece.
 5. Select a runtime/host only after the product's $0 constraint, iOS/Android lifecycle, execution boundary and security evidence are supportable.
+
+
+## Relationship to existing PocketCode contracts and MVP staging
+
+This proposal is a *planning layer* above, not a replacement for the existing execution boundary:
+
+- [Provider-Neutral Boundary Contract Sketch](PROVIDER_NEUTRAL_BOUNDARY_CONTRACT_SKETCH_20261029.md) remains the authority for reservation-before-dispatch, authenticated event ingress, append-only evidence, report versions, artifact release and typed boundary outcomes.
+- [Adapter Result Envelope and Fake Protocol](ADAPTER_RESULT_ENVELOPE_AND_FAKE_PROTOCOL_20261029.md) remains the authority for the proposed trusted-coordinator/adapter seam, child versus wrapper observations, policy-before-dispatch, output collection, and artifact gates.
+- The existing [AI Workflow Director Bounded Implementation Plan](AI_WORKFLOW_DIRECTOR_BOUNDED_IMPLEMENTATION_PLAN_20261028.md) describes the earlier offline/local packet-builder and continuation-capsule slice (G0-G5), with its own AWD acceptance IDs. That local/offline Director slice is not the same thing as executing a manifest or running user code. Do not pull runtime, provider, remote execution, or the full manifest engine into that first slice.
+- This manifest proposal describes a later, optional executable task-plan layer. It must be staged only after the offline Director scope and the execution boundary are independently approved. Its suite-level LOOP/CASE mapping is not an attempt to replace the existing AWD-01..16 traceability.
+
+The existing envelope already has job/attempt identity, policy binding, event provenance and report-version concepts. Do not duplicate these as competing fields. During a future schema pass, define one canonical field and map the recipe/run/step identities into the existing boundary contract. If an existing contract already covers a requirement, reference it instead of creating a second source of truth.
