@@ -737,3 +737,18 @@ Immediately before this handoff update, GitHub reported:
 - PocketCode research branch: 704 ahead / 0 behind main; merge base 555840d8d83342513d9cd353d4d1522d46a5c82d. PR #2 and PR #3 open.
 - RevDev research branch: 705 ahead / 0 behind main; merge base 058f9025319d12e76195659c715ccb4afce133b8. PR #1 open.
 The snapshot commits themselves advance their respective branches; re-fetch before later work. Ahead counts are history divergence, not product progress.
+
+
+---
+
+## 2026-11-06 continuation update — chat continuity and long-term work
+
+**Read first in every new PocketCode chat:** [AI_COLLAB/CHAT_START_HERE.md](CHAT_START_HERE.md). It is the compact live entrypoint and supersedes the handoff's historical branch/status snapshot. Re-fetch the live branch, PRs and CI state before consequential work.
+
+New operating documents:
+- [Chat continuity and multi-chat operating protocol](CHAT_CONTINUITY_AND_MULTI_CHAT_OPERATING_PROTOCOL_20261106.md)
+- [Append-only chat work log](CHAT_WORK_LOG.md)
+
+The owner wants this project to progress across hundreds of chats over months without waiting until a conversation is 100% full and then attempting a handoff. Treat every chat as a replaceable worker. GitHub is the durable memory. Checkpoint after two or three meaningful passes or any important code/test/review/decision event. Update the compact entrypoint and append the work log before context exhaustion. New chats should read the entrypoint and task-specific evidence, not reload every old handoff or transcript.
+
+Keep PocketCode fully separate from RevDev's implementation, roadmap, adapters, tests, acceptance suites, release gates and security boundaries. Only reuse the continuity method. Preserve $0 default budget, no runtime/provider selected, phone-first design, explicit paste-to-context and all canonical LOOP/CASE/D semantics.
