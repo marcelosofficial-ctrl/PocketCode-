@@ -118,3 +118,21 @@ Close each meaningful pass with: **Completed**, **Evidence**, **Still open**, **
 ### CI run discovery when the connector view is partial
 
 For push-triggered or scheduled workflows, query the repository Actions run collection directly: `GET /repos/{owner}/{repo}/actions/runs?branch={branch}&per_page=...`. Match the workflow path/name, event, head branch and exact SHA; inspect job summaries and download the relevant logs. Some commit-run connectors expose only pull-request-triggered runs, so an empty result is not proof that push CI did not run. Record the run URL, exact head SHA, job conclusion and test counts.
+
+## 14. Streaming interruption and long-operation resilience
+
+A client message such as “Streaming interrupted” is not proof that model reasoning, a tool call, or a GitHub write failed. It is also not proof that the operation succeeded. Treat the displayed response as potentially incomplete and GitHub/tool read-back as the authority.
+
+**Recovery sequence:**
+1. Re-fetch the exact branch head and the files involved in the last attempted write.
+2. If the expected commit exists, verify every changed file and its blob/content; do not repeat the mutation.
+3. If it does not exist, inspect the current head and rebuild the change from that live state. Never blindly replay a stale write or overwrite another worker.
+4. Query CI by workflow run, event, branch and exact head SHA. Do not infer status from a missing/partial connector response.
+5. Append the work log and refresh the entrypoint with completed, failed, pending and not-run distinctions.
+6. Reply with the last confirmed state, exact recovery action and remaining work. Do not claim that a background operation will finish after the response.
+
+**Reduce interruption exposure:** use bounded work passes; one repository at a time for write batches; parallelize independent read-only fetches; avoid oversized multi-repo scripts; checkpoint after each material implementation/test/decision event; keep user-visible updates concise and independently useful. Do not let the need for a polished final handoff delay durable commits. The compact entrypoint and append-only log are the handoff.
+
+**Client diagnosis:** the assistant cannot inspect the ChatGPT iOS app's internal streaming logs or guarantee that a higher-thinking request will stream reliably. Do not claim Think mode is the cause without diagnostics. For repeated failures, record timestamp/time zone, exact error text, model/thinking selection, whether Wi-Fi or cellular was used, whether the same prompt works in a new chat or on chatgpt.com, and any request ID shown. Check status.openai.com. Follow current OpenAI Help Center guidance and contact Support if it persists across networks/devices. Never ask the owner to share passwords or unrelated private data.
+
+**Product boundary:** this protocol is process-only. It does not import RevDev code, runtime assumptions, schemas, or acceptance suites into PocketCode.
