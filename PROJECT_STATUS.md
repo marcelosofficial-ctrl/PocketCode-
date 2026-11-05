@@ -399,3 +399,10 @@ New operating requirements: checkpoint every two or three meaningful passes or a
 ChatGPT may lead bounded implementation when source/tools are available; Claude and Gemini remain scoped reviewers/co-developers, with the owner forwarding reports manually. This process update does not select a runtime/provider, change PocketCode implementation, redefine LOOP/CASE/D semantics, or alter its phone-first/security/$0 constraints.
 
 RevDev-only lesson: query push-triggered Actions runs through the repository Actions runs API when the default connector's commit-workflow lookup is PR-filtered. Never infer that CI did not run from an empty partial status view. Do not copy RevDev implementation or acceptance results into PocketCode.
+
+
+## 2026-11-06 — Cross-project Actions discovery result (RevDev only)
+
+RevDev's previously unknown push-triggered Windows test workflow was directly queried through the GitHub Actions runs API. After fixing its source byte-decoding order and stale Pester source assertions, run #13 passed 15/15 on Windows PowerShell 5.1 / Pester 5.7.1: https://github.com/marcelosofficial-ctrl/DevRelay-Missions/actions/runs/42130948334. This validates only RevDev's tracked maintenance source/test contract. PocketCode should reuse the method of querying exact workflow runs and logs, not RevDev code or its acceptance suites.
+
+PocketCode remains Discovery; CASE-04 timeout/report-contract correction remains the next implementation task; device comparison is awaiting owner observations; no runtime/provider is selected; $0 default budget and separate canonical LOOP/CASE/D semantics remain unchanged. PocketCode branch was 723 ahead / 0 behind main at this recorded snapshot; this is commit history, not product progress. PR #2/#3 remain open drafts and untouched.

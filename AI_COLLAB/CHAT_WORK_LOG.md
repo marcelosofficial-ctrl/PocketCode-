@@ -45,3 +45,14 @@ After all continuity files and status/handoff updates were committed, live compa
 **PocketCode next task:** continue the PocketCode-specific CASE-04 timeout/report-contract correction, then audit degraded collection/teardown and the synchronous pre-execution network-isolation barrier.
 
 **Verification:** this documentation batch is committed in one Git tree checkpoint and read back. No PocketCode code, device test, runtime/provider selection, workload, CI or PR change is part of this process update. PR #2/#3 remain untouched.
+
+
+## 2026-11-06 — PC-2026-11-06-P03 — RevDev CI process lesson corrected
+
+**Purpose:** keep PocketCode's live continuation page aligned with the completed cross-project workflow research while preserving separate product evidence.
+
+**Update:** RevDev's push-triggered Windows PowerShell 5.1 workflow was found through the repository Actions runs API. After source/test corrections, run #13 passed 15/15 on Pester 5.7.1 at commit `77fc32587d61f086bbcaafd479b52dd85e091629`: https://github.com/marcelosofficial-ctrl/DevRelay-Missions/actions/runs/42130948334. This supersedes the earlier in-progress observation recorded at the time of PC-P02. The process lesson is to inspect actual workflow runs/jobs/logs by head SHA when a connector status view is partial.
+
+**PocketCode impact:** process-only. No RevDev publisher implementation, schema, P8U/AWC/P0-D contract or verdict has been imported. PocketCode remains prioritizing CASE-04 in `scripts/report_contract.py`; no runtime/provider selection, device test, product code or PR change occurred.
+
+**Live branch snapshot:** PocketCode 723 ahead / 0 behind main; RevDev 732 ahead / 0 behind. These are history divergence counts, not product progress. PR #2/#3 and RevDev PR #1 remain open drafts and untouched.

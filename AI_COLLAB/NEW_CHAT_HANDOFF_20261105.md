@@ -763,3 +763,10 @@ Efficiency practices: parallelize independent reads; serialize writes to a share
 RevDev's current source/CI progress is context only: its publisher Windows Actions workflow was found through the push-runs API. A previous run had 13 passed / 1 failed from an obsolete static function-name assertion; the remote-byte decode ordering defect was fixed and a regression test added. New runs #11/#12 were still IN_PROGRESS at the last check. This finding does not change PocketCode's architecture or acceptance.
 
 PocketCode must continue its own CASE-04 timeout/report-contract priority and keep all LOOP/CASE/D wording, schemas, phone-first constraints, security boundaries, no-runtime-selected status and $0 budget unchanged. PR #2 and #3 remain untouched.
+
+
+## 2026-11-06 RevDev CI status closeout (process lesson only)
+
+The earlier continuation note described RevDev Actions runs #11/#12 as in progress. That was the last observation at that time and is now superseded: RevDev run #13 passed **15/15** Windows PowerShell 5.1 / Pester 5.7.1 tests at commit `77fc32587d61f086bbcaafd479b52dd85e091629`. Exact run: https://github.com/marcelosofficial-ctrl/DevRelay-Missions/actions/runs/42130948334.
+
+The useful lesson for PocketCode chats is operational: do not rely only on a PR-filtered commit-workflow view. Query the repository Actions runs collection, then verify exact workflow path/name, event, branch, head SHA, job conclusion and test counts from logs. This result is not PocketCode evidence and does not alter PocketCode architecture, code, LOOP/CASE/D suites, device status or release gates.
