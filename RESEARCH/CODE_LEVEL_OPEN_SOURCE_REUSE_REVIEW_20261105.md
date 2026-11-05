@@ -185,3 +185,70 @@ A native or simulated screenshot is not execution evidence. A code-path review i
 - No device runner, browser runner, hosted service or actual AI assistant evaluation was executed.
 - No canonical LOOP/CASE wording, expected value, test identity, release gate or protected PR was changed.
 - No credentials, accounts, paid services, installations, workflows, PRs or deployments were used or modified.
+
+
+## 10. November 5 competitor capability refresh: mobile agents are now a direct baseline
+
+This refresh adds current official product documentation to the pinned source review above. These are public product capabilities, not hands-on tests.
+
+### Claude Code mobile and remote control
+
+Anthropic's current help material describes the Claude mobile app's Code tab, remote control of a local Claude Code session from phone/web, session teleport between mobile/web/desktop/terminal, and cloud-scheduled jobs. Availability differs by plan and CLI version. The important architecture distinction is that remote control exposes a session running on the user's computer; it does not make the phone an independent execution host.
+
+**PocketCode decision:** remote PC/CLI control remains an optional adapter, not the product foundation. The phone-first workflow must still function with explicit paste-to-context and an approved local or remote runner. Do not claim a remote-controlled host is available when PC state is UNKNOWN.
+
+Source: https://support.claude.com/en/articles/14554000-claude-code-power-user-tips
+
+### GitHub Copilot coding agent on GitHub Mobile
+
+GitHub documents starting coding-agent work from GitHub Mobile, selecting a repository and prompt, letting the agent work in the background, creating a draft PR, receiving a notification when ready, and tracking active agent tasks in a centralized Agents view. Current GitHub Copilot product material also describes per-task sessions, cross-surface continuation, scheduled/triggered automations and code review.
+
+**RevDev decision:** adopt the product pattern of one visible durable task/session per bounded work packet, background progress, a centralized work queue and an explicit review gate before publication. A generated draft PR is not proof that the work is correct, accepted, merged or deployed. Keep current PR protection and explicit authorization boundaries intact.
+
+**PocketCode decision:** a task inbox and resumable attempt list are useful only if they display the same authoritative task/attempt identity and evidence receipt as the runner. Do not add a cosmetic agent inbox that merely mirrors chat sessions.
+
+Sources:
+- https://github.blog/changelog/2025-09-24-start-and-track-copilot-coding-agent-tasks-in-github-mobile/
+- https://github.com/features/copilot
+
+### Replit mobile
+
+Replit advertises a mobile app for building web apps with Agent, viewing progress, deploying to a live URL and continuing on desktop. Its current mobile page distinguishes native iOS app development, for which the full workflow is directed to the web/desktop path.
+
+**Decision:** Replit demonstrates that mobile-first AI-assisted web-app creation and deployment are established features. It does not remove the gap PocketCode is testing: faithful execution evidence, portable results, recovery and controlled correction across arbitrary small tasks. Do not compete by copying its hosted web-app builder or deployment model.
+
+Source: https://replit.com/products/mobile
+
+### Goose recipes and bounded parallelism
+
+Current Goose documentation describes recipes that bundle instructions, parameters, activities, extensions, model/provider settings, structured response schemas and subrecipes. Its parallel subrecipe execution is explicitly experimental, supports up to ten concurrent workers, and recommends sequential execution when shared resources, ordering or resource limits matter.
+
+**Adopt the useful product shape, not the full Goose runtime:** a versioned task recipe should declare validated inputs, bounded steps, tool permissions, step dependencies, expected evidence, structured outputs, maximum pass count and whether a step is safe to parallelize. Independent read-only research/review may run concurrently; mutations to a shared workspace, branch, queue, immutable result or mutable pointer must be serialized or guarded by explicit concurrency policy. Every delegated result remains untrusted until reconciled against evidence.
+
+Sources:
+- https://goose-docs.ai/docs/guides/recipes/
+- https://goose-docs.ai/docs/guides/recipes/recipe-reference/
+- https://goose-docs.ai/docs/tutorials/subrecipes-in-parallel/
+
+### Competitive conclusion and feature priority
+
+The competitive floor has moved upward: mobile kickoff, background agent sessions, notifications, cross-device continuation, recipes and task tracking are no longer unique. The product distinction must be stronger and testable.
+
+1. **PocketCode P0:** trustworthy attempt identity, real lifecycle/output/artifact evidence, honest unknown states, durable reconnect/recovery without re-execution, portable receipt and approved correction lineage.
+2. **PocketCode P1:** declarative bounded recipes and a task inbox that is backed by durable state, not chat history.
+3. **RevDev P0:** durable batch manifest, operation/step identity, append-only evidence, per-operation verification, repair continuation and publication recovery.
+4. **RevDev P1:** recipe templates, dependency-aware batching, independent read-only parallel review, notifications and a single reviewable completion summary.
+5. **Both:** separate planning from execution; approval binds to exact operation/arguments/policy version; progress events are projections of durable state; notifications are best-effort and never the source of truth.
+
+No additional third-party code is copied in this refresh. The existing isolated reference copies remain the only copied utilities: OpenHands atomic text writer (MIT), adapted Mini-Coding-Agent path guard (Apache-2.0), and MCP Tasks poll interval helper (Apache-2.0). Reusing whole agent stacks would introduce framework/runtime assumptions and dependencies that are not justified by the current $0, provider-neutral, phone-first product constraints.
+
+## 11. Next implementation-ready research questions
+
+Before source implementation is considered:
+- define a small provider-neutral recipe manifest and validation contract without importing Goose's provider/extension model;
+- map each RevDev recipe step to existing AEC/AWC/P8U/P0-D assertions without creating or renumbering acceptance IDs;
+- specify a durable task-inbox projection from task/attempt/step events, including stale/unknown/reconnect behavior;
+- decide which operations may be parallelized and prove shared-resource isolation before enabling concurrency;
+- add evidence-source mapping to each recipe output so a model-generated summary cannot become its own verification.
+
+These are design tasks only. They do not authorize source changes, new acceptance IDs, PR changes, provider workloads or runtime selection.
