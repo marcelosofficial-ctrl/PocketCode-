@@ -9,6 +9,10 @@ GitHub is PocketCode's durable project memory. Every ChatGPT conversation is a r
 
 PocketCode remains a distinct product and repository from RevDev. Reuse the continuity process, not implementation, runtime, schemas, clients, adapters, security boundaries or acceptance suites.
 
+## 2. Boundaries are revisable
+
+Do not turn temporary safeguards or old chat instructions into permanent limitations. The owner explicitly permits changing operating boundaries when evidence shows a benefit to PocketCode. Evaluate the product/security impact, reversibility, budget, affected acceptance contracts and verification path; record changed authority and remaining guardrails in GitHub. Routine implementation does not require repeated permission. The $0 default budget and genuinely reserved owner decisions remain in force until changed by the owner.
+
 ## 2. Three continuity layers
 
 1. **Live entrypoint:** `AI_COLLAB/CHAT_START_HERE.md`. First file read by every new chat. It carries current branch, current product phase, active task, constraints, test evidence, and links to canonical documents.
