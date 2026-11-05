@@ -220,3 +220,148 @@ No checkpoint should replace:
 - No mobile, browser or PC runner was selected or tested.
 - No PocketCode canonical LOOP/CASE IDs or expected values changed.
 - No RevDev P8U/AEC/AWC/P0-D IDs, owner decisions or source code changed by this report.
+## 8. Follow-on design pass: backend-neutral checkpoint storage contract
+
+**Status:** Proposed contract for architecture review. Not a frozen schema, implementation, runtime choice, or new canonical acceptance suite. This section reconciles the Cline Git-checkpoint approach with the content-addressed/journal patterns inspected in safe-fs-ops.
+
+### 8.1 Executive decision
+
+Use a **content-addressed immutable snapshot manifest plus a durable checkpoint journal** as the conceptual contract. Permit multiple backend adapters:
+- Git object/ref backend when a workspace is a Git repository and its object/ref behavior is proven on the target platform.
+- File/object blob backend for non-Git workspaces or where Git metadata must not be touched.
+- A browser-local backend only after the actual PocketCode host/runtime is selected and its persistence semantics are tested.
+
+Do not force every workspace into Git. Do not make the user's branch, index, stash, or visible commit history the product's checkpoint database. Do not store checkpoint state only in the chat transcript or an in-memory map.
+
+### 8.2 Core records and immutable identities
+
+Conceptual records (names illustrative):
+- `workspace_id`: stable logical workspace identity; not a filesystem path.
+- `checkpoint_id`: immutable identity for one capture.
+- `checkpoint_sequence`: monotonic sequence within a workspace, allocated by the durable journal.
+- `parent_checkpoint_id`: optional prior checkpoint for ancestry; not proof that the snapshots are complete.
+- `capture_id`: one capture attempt. A failed retry gets a new capture ID and preserves the failed attempt.
+- `restore_id`: one requested restore operation.
+- `restore_attempt_id`: one execution attempt to apply a restore.
+- `entry_id`: stable within the immutable manifest; identifies a captured path entry.
+- `blob_digest`: SHA-256 over exact captured bytes for regular-file content. Symlink target metadata is separately typed and hashed/encoded; never follow a symlink as if it were a regular file.
+- `manifest_digest`: SHA-256 over a canonical, versioned serialization of the manifest, including its coverage/completeness declarations.
+
+Task/run/attempt/step IDs remain distinct. A checkpoint may be associated with a task and attempt, but must not replace those identities. A checkpoint is not an execution receipt, PASS verdict, or artifact-release authorization.
+
+### 8.3 Capture coverage is part of the data, not a UI footnote
+
+A snapshot must record an explicit coverage policy and outcome:
+- root identity and capture boundary;
+- included regular files, symlinks and supported metadata;
+- ignored/excluded paths and exclusion rule/version;
+- nested repositories or mount boundaries;
+- unsupported file types, sockets, devices, FIFOs and reparse points;
+- files skipped for size, permissions, mutation during read, path races or I/O failure;
+- empty directories and directory metadata, if supported;
+- case-sensitivity/collision behavior;
+- file count, total bytes and configured limits;
+- whether the workspace changed during capture.
+
+Completeness is a computed result, never a default. Suggested states:
+- `COMPLETE`: all paths required by the declared capture policy were captured and verified.
+- `PARTIAL`: at least one required path or required metadata was not captured.
+- `FAILED`: no usable manifest was committed.
+- `UNKNOWN`: recovery cannot establish whether capture finished or whether its stored data is intact.
+
+A checkpoint with PARTIAL/UNKNOWN coverage may be useful for inspection or selective recovery, but must never authorize whole-workspace restore or deletion of paths absent from the manifest. A missing manifest entry is not proof that a file did not exist.
+
+### 8.4 Capture and publication ordering
+
+Proposed sequence:
+1. Allocate and durably record `capture_id` and intent, bound to workspace identity and capture policy version.
+2. Enumerate paths under a defined root policy. Reject path escape, traversal, unsupported link/reparse behavior and ambiguous aliases.
+3. For each regular file, capture to a temporary object, hash the bytes actually captured, verify size/digest, then install the immutable blob without replacing an existing digest object.
+4. Record each completed blob reference in the capture journal as it becomes durable. A crash must not leave unaccounted partial objects.
+5. Recheck file identity/metadata (and where feasible content digest) after read. If the file changed during capture, mark that entry unstable and the snapshot PARTIAL unless a retry captures a consistent version.
+6. Canonicalize and hash the manifest. Verify every referenced blob exists and matches its digest.
+7. Commit the manifest and transition the checkpoint to COMPLETE only after all required object and metadata checks succeed.
+8. Acknowledge checkpoint completion to the caller only after the backend's documented durable-commit boundary succeeds.
+
+A database transaction cannot atomically include arbitrary filesystem/object-store writes. The journal must therefore track staged blobs, manifest publication and cleanup debt explicitly. Content-addressed objects are immutable; the manifest/reference transaction is the logical commit point. Garbage collection may remove only proven-unreferenced objects after a safe retention window and a fresh reference scan.
+
+### 8.5 Restore is a new transaction, not a reverse copy loop
+
+Before changing any workspace path:
+1. Authenticate the caller and validate workspace ownership.
+2. Validate checkpoint identity, manifest digest, schema version, completeness and every referenced blob.
+3. Enumerate the current workspace and compute the proposed change set.
+4. Compare current path identity/content against the expected restore base or the state captured during preview. Detect changed, new, missing and type-changed entries.
+5. Reject or request explicit resolution for conflicts. Never silently overwrite a file changed after checkpoint creation or preview.
+6. Capture a **pre-restore recovery checkpoint** of the current state. If that capture is incomplete, block destructive restore.
+7. Persist restore intent and a per-entry action plan before mutation.
+8. Apply writes through temporary sibling files/atomic replacement where the platform supports it; record each completed action and verify the resulting digest.
+9. Apply deletions only when the selected checkpoint is COMPLETE for the relevant deletion scope and the current entry still matches the exact expected identity/version. Deletion is never inferred from a missing manifest entry in a PARTIAL snapshot.
+10. Verify the resulting workspace against the target manifest and commit the restore journal.
+11. If any phase fails, restore from the pre-restore checkpoint only when conflict checks still prove that rollback will not overwrite newer external changes. Otherwise stop and require manual intervention.
+
+This is not an all-or-nothing filesystem transaction. It is a recoverable sequence with explicit partial states and conservative stop conditions.
+
+### 8.6 State model and crash reconciliation
+
+Keep checkpoint lifecycle separate from restore lifecycle.
+
+Checkpoint: `CAPTURE_INTENT`, `CAPTURING`, `MANIFEST_STAGED`, `VERIFYING`, `COMPLETE`, `PARTIAL`, `FAILED`, `UNKNOWN`, `EXPIRED`.
+
+Restore: `RESTORE_INTENT`, `PREFLIGHTED`, `PREIMAGE_COMPLETE`, `APPLYING`, `VERIFYING`, `RESTORED`, `ROLLED_BACK`, `CONFLICTED`, `MANUAL_INTERVENTION`, `UNKNOWN`.
+
+These are proposed internal states, not public receipt verdicts or changes to LOOP/CASE acceptance.
+
+On startup, reconcile incomplete operations from durable journal and exact object verification. Never replay a restore action merely because a lease expired. Each action has a stable action ID, restore attempt ID, expected precondition, intended postcondition and observed result. Use a monotonic fencing token if multiple processes/workers can own the same workspace. A process-local mutex is insufficient evidence of cross-process exclusivity.
+
+### 8.7 Backend-specific constraints
+
+**Git backend**
+- Cline's use of namespaced refs, a private scratch index, stash-created snapshots and `update-ref <ref> <new> <old>` is a useful reference.
+- Preserve the user's actual index and branch. Record whether the snapshot includes tracked, untracked, ignored and nested-repository content.
+- Never use `git clean` or move HEAD unless the checkpoint coverage and exact preconditions prove the operation safe.
+- Git object existence is not proof of complete workspace coverage; HEAD-only fallback is degraded.
+- Validate ref CAS and crash behavior on the actual Git version/platform before relying on it.
+
+**Blob/object backend**
+- Immutable digest-named blobs, canonical manifests and no-replace installation are appropriate.
+- The manifest commit/reference update is the logical snapshot publication boundary.
+- Filesystem atomic rename, fsync and directory durability vary by OS/filesystem. Adapter must declare actual guarantees, not claim universal atomicity.
+
+**Browser OPFS backend**
+- Use only if the chosen product host supports it and the app's worker/storage lifecycle is verified.
+- Keep database metadata and file blobs logically separate; never treat a database commit as proof that every blob has been synced.
+- Query effective SQLite journal/synchronous settings and document the VFS flush/sync behavior.
+- Handle quota, eviction, origin-data clearing, single-writer ownership and export/restore.
+- OPFS is not the only copy of user data; export must reconstruct a project independently.
+
+### 8.8 Proposed falsification tests (not new canonical IDs)
+
+| Scenario | Required safe outcome |
+|---|---|
+| Crash after blob write but before journal reference | Orphan object is discoverable and collectible only after safe reference scan; checkpoint remains incomplete |
+| Crash after some blob references but before manifest commit | Resume/reconcile same capture or mark PARTIAL; never report COMPLETE |
+| File changes while being read | Entry marked unstable/recaptured; no false consistent snapshot |
+| Permission denied or oversized file | Explicit partial coverage; absent entry cannot authorize deletion |
+| Symlink/reparse point points outside root | Capture link metadata or reject according to policy; never follow outside root |
+| Case-colliding names on target filesystem | Reject ambiguous restore or apply platform-specific conflict policy; never silently overwrite |
+| Blob digest mismatch or missing object | Checkpoint invalid for restore; no workspace mutation |
+| Manifest schema version unsupported | Preserve bytes and journal; no best-guess migration or destructive restore |
+| Workspace changes after preview | Precondition/CAS conflict; stop before overwriting newer content |
+| Crash after restore action but before action acknowledgement | Read back exact target digest and reconcile; do not repeat blindly |
+| Crash halfway through restore | Use pre-restore checkpoint if still safe; otherwise MANUAL_INTERVENTION |
+| Pre-restore checkpoint partial | Destructive restore blocked |
+| Stale worker resumes after takeover | Fencing rejects writes/actions from old owner |
+| Garbage collection races with checkpoint publication | No referenced blob is deleted; collector must use a safe mark/sweep snapshot or generation boundary |
+| Export interrupted or quota exhausted | Export marked partial; original workspace and checkpoint remain intact |
+
+These are proposed test cases only. They do not add canonical acceptance IDs or establish test results.
+
+### 8.9 Roadmap and adoption decision
+
+- **P1 feature:** visible workspace checkpoints, diffs and selective restore for the correction loop.
+- **P0 precondition:** before unattended multi-file repair or destructive automatic correction, require a verified COMPLETE preimage checkpoint or an explicit user confirmation that accepts the loss risk.
+- **MVP:** one workspace writer, bounded snapshot size, explicit coverage report, immutable blobs, manifest digest, pre-restore capture, conflict detection, manual resolution. Avoid multi-writer merge, background GC, and arbitrary filesystem type support in the first slice.
+- **Do not implement yet:** until runtime/host selection, storage ownership, target filesystem matrix, schema migration policy and user-visible export requirements are approved.
+
+This proposal complements the provider-neutral recipe/run/attempt model. It must not duplicate execution receipts, remote dispatch reservations, artifact release records or GitHub publisher state. Canonical LOOP-01..14, CASE-01..16 and D-01..D-08 remain unchanged.
