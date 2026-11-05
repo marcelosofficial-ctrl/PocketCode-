@@ -191,3 +191,27 @@ These deepen run/inspect/report/iterate without turning PocketCode into a generi
 ## 9. Non-actions
 
 No stack/provider/host selected; $0 budget unchanged. No production source/tests changed. No upstream source copied or vendored. Happy/OpenHands source/tests inspected, not executed by PocketCode. No device lifecycle tests, provider API, secret access, workload, or spend. PR #2/#3 and canonical LOOP/CASE/AWD/D decisions unchanged. This report is research/design evidence only.
+
+## 10. Traceability to existing acceptance (no new IDs)
+
+The following maps interruption scenarios to the current canonical acceptance text in PRODUCT/EXECUTION_LOOP_ACCEPTANCE.md (blob c6714c27db52b2962fe8d1c7e6a16829d46a8338). It is a scope crosswalk, not a change to acceptance.
+
+| Mobile scenario | Existing requirement(s) | How the mobile case exercises it | Boundary |
+|---|---|---|---|
+| Background/disconnect while remote worker continues | CASE-11; LOOP-02, LOOP-05 | Reconnect to authoritative state; cannot infer completion/failure from lost socket. | Remote execution integration + device |
+| Ambiguous send acknowledgement and user retry | CASE-13; LOOP-05 | Reconcile same request identity; no second execution while original outcome unresolved. | Durable client store + coordinator/provider adapter |
+| User asks to cancel while disconnected/backgrounded | CASE-05; LOOP-02, LOOP-05 | Cancel remains requested until execution authority confirms termination; otherwise show uncertainty. | Runner/supervisor integration + device |
+| App killed during local execution with no terminal result | CASE-06; LOOP-05, LOOP-13 | Report remains INCOMPLETE/UNKNOWN; app/process death is not program success or confirmed timeout/cancel. | Local runner + actual OS device |
+| Terminal result arrives after client reconnects | LOOP-07, LOOP-08; CASE-12 | Preserve trusted terminal facts and make truthful bounded copyable report available. | Evidence/report integration |
+| Two attempts complete out of order | CASE-16; LOOP-09 | Each output/report remains bound to its run/attempt; later completion cannot overwrite earlier attempt history. | Persistence + concurrency integration |
+| Input/artifact transfer interrupted | LOOP-01, LOOP-10 | Transfer and digest are separate from execution status; resumed transfer cannot silently create another run or substitute bytes. | Platform transfer adapter + artifact store |
+| User reruns after a correction | LOOP-09 | New attempt identity and preserved prior report; reconnecting to old run differs from running again. | Product workflow + persistence |
+| App claims background execution or automatic cross-app capture without OS proof | LOOP-13 | Mobile capability wording remains bounded by platform/device evidence. | Device acceptance |
+| Device/app storage inaccessible or corrupt on relaunch | LOOP-05, CASE-06, CASE-12 | Do not synthesize empty queue or blank successful report; represent unresolved storage evidence explicitly. | Local persistence/recovery integration |
+
+Important non-mappings:
+- Phone background expiration is not CASE-04 timed_out. CASE-04 still requires trusted execution-control evidence of timeout.
+- A Cancel tap or stopped phone client is not CASE-05 confirmed cancellation.
+- A WebSocket reconnect is not CASE-11 recovery unless authoritative state for the same run is read back.
+- Successful upload is not LOOP-03 PASS and not proof that the program executed.
+- No new canonical acceptance ID is proposed. Device/adapter test variants must be placed under the exact existing cases they exercise; additional requirements require a separate owner decision.
