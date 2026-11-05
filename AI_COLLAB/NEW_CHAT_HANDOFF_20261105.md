@@ -498,3 +498,20 @@ The latest code-level reuse review now includes a source-pinned pass over Pyodid
 - No additional upstream code was copied. The existing isolated MCP polling helper remains the only research-only extraction. No product source/test was changed.
 
 Current PocketCode research branch head after this work: `95d75bd2954aada7bef57d2d01a83fc05e21370b`. Research branch remains 660 ahead / 0 behind main at the pre-write comparison snapshot; re-fetch before further work. PR #2/#3 remain open draft unmerged and untouched.
+
+
+
+
+## 2026-11-05 continuation: focused remote-agent and workflow-protocol research
+
+Added `RESEARCH/REMOTE_AGENT_CONTROL_PLANE_AND_WORKFLOW_PROTOCOL_RESEARCH_20261105.md` (commit `dfe5c0bae5169bfc6623adc8b211ff56dc355795`). This is a narrow source-level update to the earlier competitor research, not a new product direction.
+
+Findings:
+- Happier is a strong mobile/multi-agent control-plane competitor: unified session inbox, provider adapters, attach/resume, cross-agent delegation, approval and structured question flows, native/replay fork choice, and encrypted multi-device sync. It still needs a running host. Its source explicitly reports partial commit when two canonical writers cannot share a transaction.
+- Cretli demonstrates phone terminal/chat/files/Git/browser/workspace breadth and has useful delegation/mailbox/worker patterns. Its own security policy says a reachable terminal grants arbitrary shell as the host user; Plan mode is not a sandbox for all harnesses. Its JSON atomic rename is last-writer-wins across processes and its promise lock is process-local.
+- agent-device is a MIT-licensed CLI/MCP/typed Node API for cross-platform UI/device automation, accessibility snapshots and evidence capture. Optional QA adapter only, not a runner or sandbox.
+- OpenWOP contributes request/effect idempotency separation, stable effect identity, typed interrupts, event/replay semantics and witness-based conformance. Its known-limits page says no tier-3 independent host profile certification and no multi-instance/multi-region durability witness.
+
+Decision: keep PocketCode's core run/inspect/report/iterate hypothesis. Do not pivot into a generic remote control room; remote-host control remains optional and cannot solve no-host execution. Keep AI Workflow Director secondary. No code copied because each candidate is either a large monorepo, runtime-specific, or a separate QA tool. Do not add dependencies or provider costs.
+
+No production runner/provider/cloud/sandbox selected; $0 default budget remains. Fixed-task product comparison and AWD evaluation remain NOT RUN. LOOP/CASE unchanged. No app installed, user code run, device test run, provider workload or spend. PR #2/#3 remain untouched. See the research document for pinned source blobs, license evidence, security caveats and prioritized feature recommendations.
