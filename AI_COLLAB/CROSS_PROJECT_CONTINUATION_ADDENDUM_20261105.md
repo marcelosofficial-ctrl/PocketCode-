@@ -184,3 +184,10 @@ The latest pre-this-addendum-write comparison reported PocketCode 627 ahead / 0 
 - RevDev companion design review: [P8U Upstream Recovery and Outbox Pattern Review](https://github.com/marcelosofficial-ctrl/DevRelay-Missions/blob/review/revdev-adaptive-ai-workshare-2026-10-27/resume/revdev/P8U_UPSTREAM_RECOVERY_AND_OUTBOX_PATTERN_REVIEW_2026-11-05.md).
 
 These are research/design references only. They do not change separate-repository boundaries, canonical acceptance suites, PR states or owner decisions.
+
+
+## Happy Agent daemon follow-up
+
+- [Happy Agent Daemon Source Audit](../RESEARCH/HAPPY_AGENT_DAEMON_SOURCE_AUDIT_20261105.md) adds a code-level review of PC-host orchestration, durable work, process sessions, sandboxing and event replay.
+
+This is architectural research only; no host backend, process runtime, provider, sandbox or dependency has been selected.
