@@ -487,3 +487,14 @@ After the previous continuation update, the exact EVAL-06 manual run sheet and h
 The evaluation kit received §9.5, cross-checking the run sheet/reference fixture. It now explicitly says to save both raw answers before consulting the human reference, keep the hidden scoring checklist out of both chats, preserve canonical scoring over any new anchor interpretation, record memory/project/custom-instruction parity as SAME/DIFFERENT/UNKNOWN, and retain confounded/interrupted pair counts without pooling incomparable results. New blob SHA: `ec408b648727f362f51b15fc3a19bd327dfbb568`. EVAL-06 remains DESIGNED / NOT RUN.
 
 No user experiment was run. No additional account, provider spend or quota workaround was used.
+## Follow-on source research — 2026-11-05
+
+The latest code-level reuse review now includes a source-pinned pass over Pyodide, CodeMirror 6, mini-SWE-agent and Plandex:
+- `RESEARCH/CODE_LEVEL_OPEN_SOURCE_REUSE_REVIEW_20261105.md`, blob `a7eb9692b748815c3f2ad16f8663c3dd727ae23b`.
+- Pyodide main commit `620c16a62d51be6613cb2208b563b2cf6f9f65d0`: worker execution example and SharedArrayBuffer interrupt mechanism. Interrupt requested is not proof of process/worker termination; deployment requires cross-origin isolation headers.
+- CodeMirror state commit `9c801279cb83011e6f92af778f4443406e8f1200`: immutable EditorState transactions and JSON serialization. Good editor dependency candidate if CodeMirror is selected, not a project/run journal.
+- mini-SWE-agent commit `04d809ceab9df28f9adaed044884180159172930`: bounded step/cost/wall-clock loop and deterministic fake-model tests. Its direct-shell environment is not a sandbox and its trajectory save is not an atomic durable journal.
+- Plandex commit `e2d772072efadbe41d2946d97d79be55532dbab5` (last main commit observed 2025-10-03): reviewable diff and structured edit fixtures are useful, but its inspected apply/rollback implementation is not crash-atomic or safe to copy.
+- No additional upstream code was copied. The existing isolated MCP polling helper remains the only research-only extraction. No product source/test was changed.
+
+Current PocketCode research branch head after this work: `95d75bd2954aada7bef57d2d01a83fc05e21370b`. Research branch remains 660 ahead / 0 behind main at the pre-write comparison snapshot; re-fetch before further work. PR #2/#3 remain open draft unmerged and untouched.
