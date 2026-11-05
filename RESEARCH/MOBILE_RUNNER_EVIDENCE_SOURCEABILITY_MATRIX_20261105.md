@@ -105,3 +105,44 @@ Before a real receipt is accepted:
 9. State unsupported capabilities as unavailable/unknown rather than simulating them.
 
 **Current state:** no mobile runner, browser runner or hosted boundary has been selected or tested. The current prototype remains a labelled simulation. This document is not evidence of an actual run.
+
+
+## 7. Field-level sourceability and requirement classification — 2026-11-05
+
+This classification is about what a truthful receipt must represent, not a promise that every runner can produce every fact. **Mandatory representation** means the receipt must state the value or an explicit unavailable/unknown state when the concept applies. It does not authorize fabricating a value to fill a field.
+
+| Receipt concept | Requirement class | Authoritative source | Safe representation when unavailable | Prohibited inference |
+|---|---|---|---|---|
+| Task/attempt identity | Mandatory when an actual attempt exists | Coordinator-created identity before dispatch, or local runner identity at actual run creation | No run ID for a simulation; UNKNOWN if an existing attempt cannot be recovered | UI/demo identifier treated as a real run |
+| Execution status | Mandatory for an actual attempt | Lifecycle owner: local supervisor, remote worker, or browser runner adapter | UNKNOWN / NOT OBSERVED if authority cannot be queried | UI phase, spinner, HTTP response, assistant claim |
+| Job disposition | Conditional: only if a scheduler/remote job was dispatched | Scheduler/control plane with durable job ID and typed state | NOT_APPLICABLE for purely local execution; UNKNOWN if a dispatched job cannot be read back | Inventing a job ID or treating HTTP 200 as execution |
+| Runtime identity/version | Conditional: a runtime was selected and launched | Actual interpreter/runtime metadata captured at launch; worker image/manifest | NOT_SELECTED before launch; UNAVAILABLE/UNKNOWN if launch metadata is not exposed | Language label or planned version as actual runtime |
+| Start/end/duration | Optional unless an existing case explicitly requires it | Execution boundary with a monotonic clock; duration is DERIVED from same-clock observations | NOT OBSERVED / UNAVAILABLE | Wall-clock subtraction across unrelated clocks or UI timestamps |
+| Exit status | Conditional: only where the execution boundary exposes a command/process result | Child process or runner result, with scope stated | UNAVAILABLE for a path with no native child exit; UNKNOWN if lost | HTTP, wrapper, collector, or coordinator exit substituted for child exit |
+| stdout and stderr | Mandatory capture-state representation for each stream; raw bytes are conditional on safe capture/export | Per-attempt output collector | CAPTURED EMPTY only after collector observes zero bytes; otherwise UNAVAILABLE or NOT OBSERVED | Blank panel interpreted as empty; one stream inferred from the other |
+| Truncation/byte counts | Conditional when output is bounded; truncation state mandatory if a cap is reached | Collector at the point bytes are counted/discarded | UNKNOWN if collector metadata is lost | Treating retained prefix as complete output |
+| Timeout | Conditional when a deadline actually fires | Trusted execution supervisor that owns/enforces the deadline and observes terminal/termination state | Distinguish client wait timeout from execution timeout; UNKNOWN if process termination is unconfirmed | Client timer, request timeout, missing response or UI stop treated as runner termination |
+| Cancellation | Conditional when cancellation is requested | Execution boundary's typed cancellation and terminal/termination evidence | REQUESTED / ACCEPTED / TERMINATION_UNCONFIRMED as separately observed; UNKNOWN if authority is unavailable | Button press or cancel HTTP request treated as confirmed cancellation |
+| Artifacts | Conditional when the selected path has a workspace/artifact store | Same-attempt filesystem inventory or runner artifact store read-back | NOT_APPLICABLE only if no workspace/artifact capability exists; UNKNOWN if inventory failed | Fixture expectation, stale file, UI card, or filename alone treated as generated artifact |
+| Artifact digest | Optional derived evidence | Hash over actual bytes read from the same-attempt artifact | UNAVAILABLE if bytes cannot be read safely | Hash of expected fixture content treated as observed artifact integrity |
+| Cleanup | Conditional when the runner allocates resources requiring teardown | Boundary that owns workspace/process/resource cleanup | NOT_APPLICABLE only when no such resource was allocated; otherwise UNKNOWN/FAILED/NOT_CONFIRMED | App close, hidden card, missing directory, or execution success treated as cleanup |
+| Artifact release/export | Conditional when user requests export/share | OS file/share boundary and successful completion result | NOT_IMPLEMENTED / NOT_AUTHORIZED / NOT_OBSERVED as appropriate | File existence or execution success treated as a completed export |
+| Error/stage provenance | Conditional when an error occurs; source label mandatory | Process stderr or typed runner/coordinator/transport failure at the owning stage | UNAVAILABLE / UNKNOWN with the failing stage preserved if known | User-code failure inferred from wrapper/network failure |
+| Field provenance/redaction | Mandatory for every emitted fact | Report builder's allowlisted projection tied to source observations | OBSERVED / DERIVED / FIXTURE-DEFINED / UNAVAILABLE / UNKNOWN | Copying unrestricted environment, credentials, private logs, or model-generated facts |
+
+### 7.1 Control-plane evidence that is separate from the receipt
+
+Durable result commit, publication acknowledgement, journal recovery, and history retention are essential to the product's continuity goals, but they are not interchangeable with execution observations. Keep them as separate control-plane/storage evidence unless the canonical receipt contract is explicitly revised. A UI displaying a result does not prove it was durably committed; a storage acknowledgement does not prove the child program succeeded.
+
+### 7.2 Sourceability gaps and current disposition
+
+- **No selected mobile runner:** no actual iOS/Android lifecycle, exit, output, artifact, cleanup, cancellation, or timeout source has been verified. All target-product evidence remains NOT RUN.
+- **iOS local execution:** app backgrounding/suspension is an interruption risk. A local runner must prove its own lifecycle and termination semantics; a phone-side timeout cannot stand in for them.
+- **Browser/WASM:** runtime and virtual-filesystem observations may be available from an adapter, but a browser runtime does not inherently expose a native child process, native exit code, OS process-tree termination, or hard resource enforcement.
+- **Remote PC:** the PC/agent is authoritative for execution and cleanup. The phone's disconnect or timeout is only a client observation; reconnect must query the same attempt identity rather than redispatch.
+- **Hosted worker:** acceptance, queue state, execution result, cleanup and artifact release belong to different authorities and must be read back separately.
+- **a-Shell reference:** inspected source provides actual command status and separate stdout/stderr, but the reviewed reference has no execution timeout or client cancellation and is not a sandbox. It is a capability comparator, not proof for PocketCode.
+- **Artifact release:** an actual Files/share-sheet completion result is not currently implemented or tested in PocketCode. Do not show a real downloadable artifact in the simulation.
+- **Durability:** receipt sourceability does not prove the history journal/outbox is durable or recoverable. That requires separate storage/transaction/restart evidence.
+
+No row in this table is an implementation claim. The matrix remains a design/sourceability audit; LOOP-01..14 and CASE-01..16 are unchanged, and no mobile receipt or runner test has run.
