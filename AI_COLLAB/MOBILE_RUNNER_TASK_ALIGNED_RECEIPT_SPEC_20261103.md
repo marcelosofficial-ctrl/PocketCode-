@@ -232,3 +232,8 @@ This spec maps to existing requirements; it creates no new LOOP/CASE IDs and doe
 No source/test files were modified. No browser/device tests, app installation, file import, clipboard test, runtime execution, provider workload, account, spend, GitHub Actions, merge, deployment, or host/queue operation occurred.
 
 **Decision:** adopt this as the next design reference, not as implementation approval. The mobile runner remains simulated; the execution location remains unselected; fixed-task product-path comparison remains NOT RUN; paired AI correction experiment remains NOT RUN; the report differentiator remains UNVALIDATED.
+
+
+## Evidence sourceability companion
+
+See [Mobile Runner Evidence Sourceability Matrix](../RESEARCH/MOBILE_RUNNER_EVIDENCE_SOURCEABILITY_MATRIX_20261105.md) for the field-to-authority review. It does not add receipt fields or change this specification. Its core rule is that unavailable or unknown evidence stays unavailable/unknown; UI state, fixture expectations, HTTP status and client timers must not be presented as process facts.
