@@ -284,3 +284,24 @@ Cline's queue/run store is not RevDev's GitHub publisher journal. A run claim, s
 ### 10.9 Evidence limits and non-actions
 
 Upstream source and tests were inspected; no OpenHands/Cline test suite was run in this pass. The small OpenHands helper was added only under `RESEARCH/vendor/openhands/` with provenance. It is not product integration. No production source, product tests, runtime, provider, sandbox, runner, credential, remote host, device, job, queue, workflow, PR, release or deployment was touched. PocketCode fixed-task comparison and EVAL-06 remain NOT RUN. Canonical LOOP/CASE IDs and owner-open D-01…D-08 are unchanged.
+
+
+### 10.10 Targeted upstream regression-test review
+
+The following tests were inspected at the pinned repository heads, but were NOT run by PocketCode:
+
+| Upstream test | Blob | What its assertions demonstrate |
+|---|---|---|
+| OpenHands `clients/typescript/src/__tests__/conversation-create-retry.test.ts` | `afc865506466da9cc952097fdfaed5eaa0c3d366` | Commit-then-drop acknowledgement retries only with the advertised ID-dedupe capability; no retry without capability, caller ID, or on HTTP validation error |
+| OpenHands `tests/agent_server/test_session_socket.py` | `f172870f169bc4e1addcc307ee81eb7288b1da5b` | Durable sequence frames; no duplicate at replay/live boundary; sequence survives a lost event file; persisted state-update events are deduped; slow socket disconnects rather than stalls publisher |
+| OpenHands `tests/agent_server/test_conversation_lease.py` | `c4b9083d3a2dc343b133046aa3a7f3f610cbad6f` | Lease renewal, live-owner rejection, takeover generation increment, stale owner blocked from guarded writes and old owner release cannot remove new owner lease |
+| Cline `sdk/packages/core/src/remote/remote-environments.test.ts` | `4035684f7b22c82755079d059ba957549b36686c` | Process output limits/termination, delayed SSH diagnostics, cleanup persisted after tunnel loss, cleanup recovery after helper removal, private atomic profile writes, strict SSH flags, content-addressed helper, loopback tunnel, concurrent-connect reuse and failed switch rollback |
+| Cline `sdk/packages/core/src/cron/events/cron-event-ingress.test.ts` | `91b7ebc263a7c514233b7c5c87e3f5b04e29ae94` | Injected first-run/second-run/status-write failures roll back event and fan-out; store is reopened before redelivery; only one complete fan-out remains; peer connection cannot observe partial acceptance |
+| Cline `sdk/packages/core/src/cron/store/sqlite-cron-store.test.ts` | `368661d40f03f9af9f057db4192c984e1af88735` | Spec and run persistence, uniqueness and schema-migration regression cases. Further claim tests exist later in this file but were not fully enumerated in this pass |
+| Cline `sdk/packages/core/src/cron/runner/cron-runner.test.ts` | `a9d11ef4cce1f86f653678472c0bb01a5411dd71` | Other schedules progress while one turn is pending; expired claim does not immediately duplicate same-spec work; normal success/error/report paths and concurrency capacity are exercised |
+
+Additional Cline security evidence: the runner test explicitly asserts the default `toolPolicies["*"]` is `{ autoApprove: true }` for an unattended one-off run with no explicit tool list, and that the ASK tool is disabled. This is a concrete tested behavior, not an inference from naming. It is unsuitable for our security posture and is explicitly rejected above.
+
+Test-coverage caution: the inspected `cron-runner.test.ts` normal path asserts a Markdown report exists. I did not find a specific injected report-writer-failure regression in the inspected test portions. The source ordering and changelog statement support the intended no-replay behavior, but the upstream failure-path test coverage is not established here. Treat it as an adoption test requirement, not as upstream-tested proof.
+
+All test results above are upstream source assertions inspected only. They are not results run by us and do not prove platform parity, power-loss durability, provider correctness, production integration or our acceptance suites.
