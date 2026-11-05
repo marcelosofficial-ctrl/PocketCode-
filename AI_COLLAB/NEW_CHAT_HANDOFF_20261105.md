@@ -90,8 +90,8 @@ The owner manually forwards work. Do not say you contacted Claude or Gemini. Use
 ### PocketCode
 - Repository: marcelosofficial-ctrl/PocketCode-
 - Research branch: pocketcode-ai-workflow-director-research-2026-10-28
-- Current branch head fetched from GitHub: e382a73f4468eaa6b13c63d212e0ed25c6c96a4e
-- Compare against main: ahead 650, behind 0.
+- Current branch head at pre-update snapshot: ab16f6942f2c1fd29826f03e2680f6121b29f15f
+- Compare against main: ahead 704, behind 0.
 - Merge base: 555840d8d83342513d9cd353d4d1522d46a5c82d.
 - PR #2: open, titled “Add chat checkpoints and harden report-contract regressions”. Current search result did not expose draft/head metadata. Do not infer those fields.
 - PR #3: open, titled “Draft: Add evidence-led PocketCode research baseline”. Current search result did not expose draft/head metadata. Do not infer those fields.
@@ -100,8 +100,8 @@ The owner manually forwards work. Do not say you contacted Claude or Gemini. Use
 ### RevDev
 - Repository: marcelosofficial-ctrl/DevRelay-Missions
 - Research branch: review/revdev-adaptive-ai-workshare-2026-10-27
-- Current branch head fetched from GitHub: 9deaf93c56d61ad112e2f71ab678e2c95770e60d
-- Compare against main: ahead 555, behind 0.
+- Current branch head at the companion handoff snapshot: 674b18ee566aaf86a567c5162a78cc130740461b
+- Compare against main: ahead 705, behind 0.
 - Merge base: 058f9025319d12e76195659c715ccb4afce133b8.
 - PR #1: open, titled “docs(revdev): add RelayRef continuity handoff (2026-10-27)”. Current search result did not expose draft/head metadata.
 - PR #1 was not modified in this work.
@@ -730,3 +730,10 @@ The patch removes false idempotent/duplicate-suppressed PASS when the legacy pub
 ### Execution policy for future chats
 
 Proceed with repository implementation, tests, builds and CI when useful. If the necessary target is unavailable, do the maximum meaningful hosted work and state exactly what remains untestable. Do not claim a hosted test proves Windows installed behavior, or that a source patch proves runtime parity. Keep PocketCode and RevDev repositories, adapters, acceptance suites and release gates separate. Shared direction does not authorize shared implementation.
+
+### Final live repository snapshot for this continuation
+
+Immediately before this handoff update, GitHub reported:
+- PocketCode research branch: 704 ahead / 0 behind main; merge base 555840d8d83342513d9cd353d4d1522d46a5c82d. PR #2 and PR #3 open.
+- RevDev research branch: 705 ahead / 0 behind main; merge base 058f9025319d12e76195659c715ccb4afce133b8. PR #1 open.
+The snapshot commits themselves advance their respective branches; re-fetch before later work. Ahead counts are history divergence, not product progress.
