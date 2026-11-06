@@ -241,3 +241,8 @@ Continue receipt integration with artifact manifest and authorization evidence, 
 - End-to-end conformance now exercises reservation/claim/dispatch, trusted success and direct-child exit, typed collection and cleanup, receipt creation, artifact staging and release, and failed-then-successful report-copy retry against the same receipt. This is a test composition, not a production pipeline.
 - Test-driven fixes: the first restricted-unfenced implementation missed the JSON import and initially allowed the flag without attempt scope; both were corrected and the final exact SHA is green.
 - Still not established: durable atomicity, concurrent writers, cryptographic producer authentication, mobile/device integration, real provider execution, hostile-code sandboxing, malware scanning or production authorization.
+
+
+## Proposed durable adapter contract
+
+New normative design draft: [AI_COLLAB/DURABLE_ADAPTER_CONTRACT_20261106.md](AI_COLLAB/DURABLE_ADAPTER_CONTRACT_20261106.md). It defines adapter-neutral T1–T10 transaction boundaries for reservation, lease/fence, dispatch, acknowledgement/reconciliation, event append, typed observations, immutable receipt revision, artifact staging/release and report publication; concurrency/uniqueness invariants; crash matrix; adapter conformance tests; storage evaluation gate; and security limitations. It deliberately selects no database, provider, runtime, backend or cloud host. Treat this as proposed contract until independently reviewed by Claude and Gemini.

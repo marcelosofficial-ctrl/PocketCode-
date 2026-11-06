@@ -390,3 +390,8 @@ Next task: owner runs only the read-only Pyodios sys.last_exc / sys.last_value C
 - End-to-end conformance test composes terminal evidence, typed collection and cleanup, receipt creation, artifact release, and report-copy failure/retry on the same receipt. The test is not evidence of production integration.
 - CI failures during development exposed a missing JSON import and an incomplete validation of the public unfenced flag. Both were fixed before the final green SHA.
 - Limits remain in-memory, synchronous and non-cryptographic. No durable transaction, concurrency, mobile, provider, sandbox or production policy authority is proven.
+
+
+## Proposed durable adapter contract
+
+New normative design draft: [AI_COLLAB/DURABLE_ADAPTER_CONTRACT_20261106.md](AI_COLLAB/DURABLE_ADAPTER_CONTRACT_20261106.md). It defines adapter-neutral T1–T10 transaction boundaries for reservation, lease/fence, dispatch, acknowledgement/reconciliation, event append, typed observations, immutable receipt revision, artifact staging/release and report publication; concurrency/uniqueness invariants; crash matrix; adapter conformance tests; storage evaluation gate; and security limitations. It deliberately selects no database, provider, runtime, backend or cloud host. Treat this as proposed contract until independently reviewed by Claude and Gemini.

@@ -661,3 +661,10 @@ Next: await owner-provided read-only Pyodios saved-exception probe output; prese
 - CI exact SHA `3a3ee64e50c78134ef4a45f759533003dd533538`: [run 42311540457](https://github.com/marcelosofficial-ctrl/PocketCode-/actions/runs/42311540457), Ubuntu 24.04 / Python 3.12, **214 passed, 0 failed**.
 - Intermediate failed CI surfaced missing JSON import and overly broad no-fence flag semantics; both were corrected before the final green commit.
 - No durable/concurrent/provider/device/sandbox/production authorization claims.
+
+
+## 2026-11-06 — PC-2026-11-06-P30 — durable adapter contract draft
+
+- Created `AI_COLLAB/DURABLE_ADAPTER_CONTRACT_20261106.md`, a proposed adapter-neutral T1–T10 contract for reservation, lease/fencing, dispatch, acknowledgement/reconciliation, event journal, typed observations, receipt revision, artifact staging/release and publication.
+- Added concurrency/uniqueness invariants, crash/recovery matrix, required adapter conformance tests, storage evaluation criteria and security-boundary reminders.
+- No storage/provider/runtime/backend/cloud choice made. The document is a proposal for Claude and Gemini review, not implementation evidence.
