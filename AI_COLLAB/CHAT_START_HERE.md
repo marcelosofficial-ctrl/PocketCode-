@@ -20,7 +20,7 @@ GitHub is the durable project state. Do not rely on a last-minute full-chat hand
 **Important limitation:** this protocol reduces avoidable context pressure and tool stalls; it cannot prevent platform context limits, service outages or execution failures. The goal is graceful interruption with no lost project state.
 
 
-**Last refreshed:** 2026-11-06 (RevDev run #49 closeout; PocketCode triage preserved)  
+**Last refreshed:** 2026-11-06 (Pyodios Error Log checked; full chat handoff and state ledger)  
 **Authority:** live PocketCode branch state plus canonical source/spec/test records. This file is the compact first-read entrypoint for every new PocketCode chat.
 
 ## Current cross-project note
@@ -35,7 +35,7 @@ Read this file, verify the live branch/PR/CI state, and fetch only the linked ta
 
 - Repo: https://github.com/marcelosofficial-ctrl/PocketCode-
 - Branch: `pocketcode-ai-workflow-director-research-2026-10-28`
-- Live branch snapshot immediately before the 2026-11-06 artifact-status checkpoint: `4353aaa646b3bdfcaa3fee8e17226128bdbaf800`, **798 ahead / 0 behind** `main`; merge base `555840d8d83342513d9cd353d4d1522d46a5c82d`. This is a pre-checkpoint snapshot; fetch live refs before consequential writes. Ahead count is accumulated branch-history divergence, not product progress.
+- Live branch snapshot immediately before the final handoff updates: `e7abaabff55f3bc25a793f2e814852d8e7aa246d`, **807 ahead / 0 behind** `main`; merge base `555840d8d83342513d9cd353d4d1522d46a5c82d`. This is a pre-checkpoint snapshot; fetch live refs before consequential writes. Ahead count is accumulated branch-history divergence, not product progress.
 - Open PR #2: [Add chat checkpoints and harden report-contract regressions](https://github.com/marcelosofficial-ctrl/PocketCode-/pull/2), OPEN/DRAFT from branch `chat-continuity-report-regressions-2026-10-26`.
 - Open PR #3: [Draft: Add evidence-led PocketCode research baseline](https://github.com/marcelosofficial-ctrl/PocketCode-/pull/3), OPEN/DRAFT from branch `pocketcode-pass0-audit-2026-10-26`.
 - PR #2/#3 are not this active research branch and were not modified. Do not infer the active branch's commits are included in either PR.
@@ -74,7 +74,7 @@ Current device comparison:
 
 ## Current priority order
 
-1. Preserve the already matching `summary.json`; inspect the timestamped **More → Settings → Error Log → View Error Log** entry, then use the read-only `sys.last_exc` / `sys.last_value` Console probe if the log is unhelpful. Do not rerun the success project. See `PYODIOS_PYTHONERROR_BRIDGE_TRIAGE_20261106.md`.
+1. Preserve the exact-match `summary.json`. The owner already checked **More → Settings → Error Log → View Error Log**; only `Editor: PythonError` appeared, without traceback. Next run only the read-only `sys.last_exc` / `sys.last_value` Console probe in the existing session. Do not rerun, overwrite, restart, clear or reset the success project. See `PYODIOS_PYTHONERROR_BRIDGE_TRIAGE_20261106.md`.
 2. Resolve typed child-exit / wrapper-exit / termination / lifecycle projection before changing `scripts/report_contract.py`; preserve CASE-04 INCOMPLETE/timed_out and all existing IDs.
 3. Audit degraded observation collection, teardown, artifact integrity/release and cleanup semantics separately from execution outcome.
 4. Source-audit the synchronous pre-execution network-isolation barrier for exact ordering and fail-closed behavior.
@@ -89,7 +89,9 @@ Current device comparison:
 
 ## Canonical detailed records
 
-- Latest full handoff: [AI_COLLAB/NEW_CHAT_HANDOFF_20261106.md](NEW_CHAT_HANDOFF_20261106.md)
+- Current state ledger: [AI_COLLAB/STATE_LEDGER_20261106.md](STATE_LEDGER_20261106.md)
+- Latest full handoff and copy/paste bootstrap prompt: [AI_COLLAB/NEW_CHAT_HANDOFF_20261106.md](NEW_CHAT_HANDOFF_20261106.md)
+- Pyodios bridge diagnostic: [AI_COLLAB/PYODIOS_PYTHONERROR_BRIDGE_TRIAGE_20261106.md](PYODIOS_PYTHONERROR_BRIDGE_TRIAGE_20261106.md)
 - Current project status/history: [PROJECT_STATUS.md](../PROJECT_STATUS.md)
 - Fixed-task worksheet and interruption/reconnect protocol: retrieve from the repository's existing evaluation/acceptance records; do not create a new fixture or redefine the task.
 - Pyodios device baseline/protocol: [PYODIOS_DEVICE_BASELINE_AND_HANDS_ON_PROTOCOL_20261106.md](PYODIOS_DEVICE_BASELINE_AND_HANDS_ON_PROTOCOL_20261106.md)
@@ -211,7 +213,7 @@ RevDev run #42 `42180012296` completed **81 passed, 0 failed, 0 skipped** on Win
 PocketCode must continue its own CASE-04 timeout/report-contract work. No RevDev implementation, test count, or acceptance transfers. Reusable method: exact-SHA CI, fake process boundaries, semantic contract assertions, explicit UNKNOWN/INCOMPLETE outcomes, review partial-failure paths, and update GitHub before rotating chats.
 
 
-**Latest Pyodios result (2026-11-06):** the owner confirmed the existing `summary.json` exactly matches the fixed success oracle despite the Editor showing `[Bridge/executePython] PythonError`. Classify as artifact-level functional success, bridge error unresolved, full run inconclusive. Preserve the success project and do not rerun/overwrite. Next obtain the timestamped Error Log, then the read-only saved-exception probe if needed. See `PYODIOS_PYTHONERROR_BRIDGE_TRIAGE_20261106.md` and `NEW_CHAT_HANDOFF_20261106.md`.
+**Latest Pyodios result (2026-11-06):** the owner confirmed the existing `summary.json` exactly matches the fixed success oracle despite the Editor showing `[Bridge/executePython] PythonError`. The Error Log was checked and contained only `Editor: PythonError`, no traceback. Classification: artifact-level functional success, bridge error unresolved, full run inconclusive. Preserve the success project. Next run only the read-only saved-exception probe in the existing session. See `PYODIOS_PYTHONERROR_BRIDGE_TRIAGE_20261106.md`, `STATE_LEDGER_20261106.md` and `NEW_CHAT_HANDOFF_20261106.md`.
 
 **Latest Pyodios diagnostic:** Error Log inspection yielded only `Editor: PythonError`, no traceback. Root cause remains unknown. Next use the read-only `sys.last_exc` / `sys.last_value` Console probe. Preserve the exact-match success artifact and do not rerun the canonical task. See the triage note and 2026-11-06 handoff.
 
