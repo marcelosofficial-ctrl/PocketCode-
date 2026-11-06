@@ -140,3 +140,12 @@ FakeCoordinator now appends typed lifecycle, child-exit and program-failure obse
 ### Next verification gate
 
 Stress the composed receipt projection with contradictory collector/teardown evidence, stale/revoked release authorization, cross-effect artifact IDs, artifact digest tampering and process interruption. Then specify atomic durable receipt/artifact publication without choosing a storage engine prematurely.
+
+
+## Latest verified test checkpoint
+
+- Exact SHA: `b6eef9a8cc1df704ff2519a69fb9e347a2bcedf9`
+- CI: https://github.com/marcelosofficial-ctrl/PocketCode-/actions/runs/42310444948
+- Python 3.12 / Ubuntu 24.04; 205 passed, 0 failed.
+- Lifecycle progression supports monotonic accepted/queued/running updates followed by at most one terminal state; unknown, malformed, regressive or forked states fail closed. PASS requires succeeded + natural child exit zero.
+- Always re-check the live branch head before relying on this checkpoint.

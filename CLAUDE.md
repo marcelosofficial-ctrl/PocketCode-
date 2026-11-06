@@ -127,3 +127,15 @@ When assigned work: inspect current code, define narrow acceptance criteria, imp
 - Event identity now includes the bound EffectId/DispatchAttemptId scope, preventing same source/event ID and payload from being replayed into a different attempt. The verdict reader fails closed on valid JSON that is not an object. Terminal observations require the current unexpired dispatch lease; expired/reconciling workers must use authoritative reconciliation.
 - Receipt verdicts are derived from accepted typed observations through `execution_projection.py`; a caller-supplied label must match the projection. Projection reason is included in the immutable receipt fingerprint.
 - This is standard-library Python CI only. It does not establish mobile/device behavior, durable atomicity, concurrent safety, cryptographic producer authentication, provider behavior, hostile-code sandboxing or production artifact authorization. Later source commits need a fresh exact-SHA run.
+
+
+## Latest exact-SHA CI result (2026-11-06)
+
+- Run: https://github.com/marcelosofficial-ctrl/PocketCode-/actions/runs/42310444948
+- Exact tested commit: `b6eef9a8cc1df704ff2519a69fb9e347a2bcedf9`
+- Environment: GitHub-hosted Ubuntu 24.04, Python 3.12.
+- Command: `python -m unittest discover -s scripts -p "test_*.py" -v`
+- Result: **205 tests passed, 0 failed**.
+- Lifecycle projection now accepts monotonic nonterminal progression (`accepted → queued → running`) followed by at most one terminal lifecycle state. Regressive transitions, multiple terminal observations, unknown statuses and malformed non-string statuses fail closed to INCOMPLETE. A valid succeeded lifecycle still needs natural direct-child exit 0 for PASS.
+- Current lease fencing, event scope binding, receipt evidence binding and release authorization caveats remain as described in the state ledger.
+- This is standard-library Python CI only. It does not establish mobile/device behavior, durable atomicity, concurrency, cryptographic producer authentication, provider behavior, hostile-code sandboxing or production artifact authorization. Later source commits need a fresh exact-SHA run.

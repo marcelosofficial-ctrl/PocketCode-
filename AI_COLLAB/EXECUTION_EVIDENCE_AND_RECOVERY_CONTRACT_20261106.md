@@ -316,3 +316,10 @@ The fake coordinator now requires a terminal lifecycle, child-exit or program-fa
 EventJournal duplicate identity includes EffectId/DispatchAttemptId scope. Reusing the same source/event ID and payload for another attempt is quarantined, not treated as a duplicate. Verdict reconstruction also fails closed when an accepted payload is valid JSON but not an object.
 
 CI on exact SHA `f82e853323d9c0c526eeaa8ad31cb47da199e249`: 199/199 passed. These are synchronous in-memory tests only; durable fencing and atomic append remain unimplemented.
+
+
+## 2026-11-06 lifecycle progression reduction
+
+The fake coordinator now reduces accepted lifecycle observations in ObservationSequence order. Nonterminal states may progress monotonically through `accepted → queued → running` (including skipped intermediate states and repeated same-state observations), followed by at most one terminal state. A regression, unknown/malformed status, or multiple terminal observations returns INCOMPLETE and requires reconciliation. The latest valid lifecycle observation is passed to the unchanged `execution_projection.project_verdict()` semantics. PASS still requires trusted `succeeded` plus natural direct-child exit 0; terminal lifecycle alone is insufficient for success.
+
+Exact-SHA CI: `b6eef9a8cc1df704ff2519a69fb9e347a2bcedf9`, 205/205 passed. This is a test model only; source authenticity, durable ordering and concurrency remain open.

@@ -635,3 +635,10 @@ Next: await owner-provided read-only Pyodios saved-exception probe output; prese
 **Implemented:** verdict derived from typed accepted terminal evidence via `execution_projection.py`; caller-supplied verdict/lifecycle labels must match; terminal observations require live current lease; stale-fence terminal evidence yields INCOMPLETE; receipt binds accepted event evidence; artifact release binds receipt/object/attempt/scope and checks expiry/revocation on every request.
 
 **Limits:** all in-memory. Producer identity, authorization and revocation are not cryptographically verified; no durable atomicity/concurrency, real mobile artifact release, malware scanning or provider integration.
+
+
+## 2026-11-06 — PC-2026-11-06-P31 — monotonic lifecycle projection green
+
+- CI: [run 42310444948](https://github.com/marcelosofficial-ctrl/PocketCode-/actions/runs/42310444948), exact SHA `b6eef9a8cc1df704ff2519a69fb9e347a2bcedf9`, Ubuntu 24.04 / Python 3.12, **205 passed, 0 failed**.
+- Lifecycle observation reduction now supports valid nonterminal progression and one terminal state. Regressive transitions, multiple terminal states, unknown values and non-string status values remain INCOMPLETE. PASS requires succeeded + natural direct-child exit zero.
+- The verdict helper is still not an authentication boundary; accepted event producers must be authenticated by a future trusted adapter. No durable transaction, concurrent safety, device, provider, sandbox or release acceptance is implied.

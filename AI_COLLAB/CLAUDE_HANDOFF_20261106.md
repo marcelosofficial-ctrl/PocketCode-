@@ -202,3 +202,15 @@ Continue receipt integration with artifact manifest and authorization evidence, 
 - Terminal observations require a current unexpired dispatch lease; expired/reconciling attempts must use authoritative reconciliation. This remains a caller-constructible in-memory model, not cryptographic producer authentication.
 - Artifact release now binds to a receipt manifest, exact object version, attempt, principal/tenant, operation scope, authorization snapshot, expiry and revocation flag, and rechecks on every request. The authorization snapshot is still caller supplied, not an external policy decision.
 - Current receipt publication and artifact storage are in-memory; no durable transactions, actual mobile release, malware scanning or provider integration are established. Fetch live head and exact-SHA CI before relying on this checkpoint.
+
+
+## Latest exact-SHA CI result (2026-11-06)
+
+- Run: https://github.com/marcelosofficial-ctrl/PocketCode-/actions/runs/42310444948
+- Exact tested commit: `b6eef9a8cc1df704ff2519a69fb9e347a2bcedf9`
+- Environment: GitHub-hosted Ubuntu 24.04, Python 3.12.
+- Command: `python -m unittest discover -s scripts -p "test_*.py" -v`
+- Result: **205 tests passed, 0 failed**.
+- Lifecycle projection now accepts monotonic nonterminal progression (`accepted → queued → running`) followed by at most one terminal lifecycle state. Regressive transitions, multiple terminal observations, unknown statuses and malformed non-string statuses fail closed to INCOMPLETE. A valid succeeded lifecycle still needs natural direct-child exit 0 for PASS.
+- Current lease fencing, event scope binding, receipt evidence binding and release authorization caveats remain as described in the state ledger.
+- This is standard-library Python CI only. It does not establish mobile/device behavior, durable atomicity, concurrency, cryptographic producer authentication, provider behavior, hostile-code sandboxing or production artifact authorization. Later source commits need a fresh exact-SHA run.

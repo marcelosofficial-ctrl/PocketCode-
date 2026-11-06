@@ -341,3 +341,8 @@ Latest branch checkpoint passed **187/187** repository Python tests on exact com
 ## 2026-11-06 — latest exact-SHA CI checkpoint
 
 Latest source checkpoint passed **199/199** repository Python tests on exact commit `f82e853323d9c0c526eeaa8ad31cb47da199e249`, Ubuntu 24.04 / Python 3.12: [GitHub Actions run 42310127313](https://github.com/marcelosofficial-ctrl/PocketCode-/actions/runs/42310127313). Terminal observations are lease-fenced, expired workers must reconcile, event identity is attempt-scoped, malformed payload shapes fail closed, and receipt verdicts are derived from typed evidence.
+
+
+## 2026-11-06 — latest exact-SHA CI checkpoint
+
+Latest source checkpoint passed **205/205** repository Python tests on exact commit `b6eef9a8cc1df704ff2519a69fb9e347a2bcedf9`, Ubuntu 24.04 / Python 3.12: [GitHub Actions run 42310444948](https://github.com/marcelosofficial-ctrl/PocketCode-/actions/runs/42310444948). Lifecycle progression is monotonic, unknown/malformed states fail closed, and PASS still requires succeeded lifecycle plus natural child exit 0.

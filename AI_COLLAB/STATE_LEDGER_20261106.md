@@ -364,3 +364,10 @@ Next task: owner runs only the read-only Pyodios sys.last_exc / sys.last_value C
 - Terminal observations require a current unexpired dispatch lease; expired/reconciling attempts must use authoritative reconciliation. This remains a caller-constructible in-memory model, not cryptographic producer authentication.
 - Artifact release now binds to a receipt manifest, exact object version, attempt, principal/tenant, operation scope, authorization snapshot, expiry and revocation flag, and rechecks on every request. The authorization snapshot is still caller supplied, not an external policy decision.
 - Current receipt publication and artifact storage are in-memory; no durable transactions, actual mobile release, malware scanning or provider integration are established. Fetch live head and exact-SHA CI before relying on this checkpoint.
+
+
+## 2026-11-06 — monotonic lifecycle projection CI green
+
+- Exact-SHA run: https://github.com/marcelosofficial-ctrl/PocketCode-/actions/runs/42310444948 at `b6eef9a8cc1df704ff2519a69fb9e347a2bcedf9`; Ubuntu 24.04 / Python 3.12; full suite **205 passed, 0 failed**.
+- Lifecycle projection now reduces monotonic nonterminal progression (`accepted → queued → running`) and permits at most one terminal lifecycle state. It rejects regressions, terminal-state forks, unknown status strings and non-string status payloads. PASS still requires trusted succeeded lifecycle plus natural direct-child exit 0.
+- This is an in-memory conformance model. It does not establish durable/concurrent event storage, cryptographic producer authentication, mobile, provider, sandbox or production release behavior.
