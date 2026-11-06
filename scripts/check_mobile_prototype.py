@@ -66,8 +66,12 @@ def main() -> int:
     else:
         source = html_lib.unescape(source_match.group(1))
         source_bytes = source.encode("utf-8")
-        if len(source_bytes) != 1939 or hashlib.sha256(source_bytes).hexdigest() != "70c66ad3a0132923cbf3190eb3546093fcc2c61c1bdcbf3b171696e1ae7521e7":
-            errors.append("Embedded main.py does not match the frozen canonical SHA-256")
+        source_sha256 = hashlib.sha256(source_bytes).hexdigest()
+        if len(source_bytes) != 1939 or source_sha256 != "70c66ad3a0132923cbf3190eb3546093fcc2c61c1bdcbf3b171696e1ae7521e7":
+            errors.append(
+                "Embedded main.py does not match the frozen canonical SHA-256 "
+                f"(bytes={len(source_bytes)}, sha256={source_sha256})"
+            )
 
     input_match = re.search(r'<pre class="csv" id="inputData">(.*?)</pre>', html, re.DOTALL)
     expected_input = "item,quantity,unit_price\nnotebook,2,3.50\npen,3,1.25\n"

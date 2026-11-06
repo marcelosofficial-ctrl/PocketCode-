@@ -511,3 +511,10 @@ Next: await owner-provided read-only Pyodios saved-exception probe output; prese
 
 - Closed additional outbox/journal crash windows: lease claims and dispatch intent now persist their timestamps and have idempotent repair methods. Projection explicitly identifies missing claim/intent events.
 - Added tests for interrupted lease-claim and dispatch-intent event appends. GitHub Actions workflow `PocketCode Python conformance tests` is running the complete repository unittest discovery against the exact branch commit.
+
+
+## 2026-11-06 — CI failure triage
+
+- First repository-wide CI run: 151 tests, 2 failures. Both failures are pre-existing mobile-prototype checker fixture failures caused by the embedded canonical main.py byte/hash guard. All other 149 tests passed, including the new recovery models.
+- Second run after reconciliation repair: 153 tests, 3 failures. The two prototype failures persisted; one additional regression showed the projection incorrectly preferred missing dispatch-intent event over the stronger `reconciliation_required` outbox state. Fixed projection precedence.
+- Added observed source byte length and SHA-256 to the checker failure diagnostic while preserving the frozen expected digest. Await next run before deciding whether the fixture or frozen hash is stale.

@@ -241,3 +241,9 @@ Next task: owner runs only the read-only Pyodios sys.last_exc / sys.last_value C
 - Persisted lease-claim and dispatch-intent timestamps in the fake outbox. Added idempotent journal repair operations for both transitions.
 - Projection now exposes `lease_claim_unjournaled` and `dispatch_intent_unjournaled` when the outbox transition is committed but its event is absent. This complements acknowledgement and final-absence repair.
 - Added focused crash-window test cases. These are model tests; actual canonical test results are tracked by the new branch-scoped GitHub Actions workflow.
+
+
+## 2026-11-06 first canonical CI findings
+
+- Added branch-scoped Python unittest workflow and ran it on the repository checkout (Python 3.12). The run on `01ba09e` found 2 failures in the existing mobile prototype checker: both valid-fixture tests rejected the embedded `main.py` frozen hash. The run on `333212a` found those same 2 failures plus a projection-order regression: after expired dispatch intent, state must remain `reconciliation_required` even if the dispatch-intent event is also missing. The latter was corrected by prioritizing reconciliation-required state.
+- Checker diagnostics now include the observed embedded source byte count and SHA-256 without changing the frozen expected hash. The next CI run will identify whether the fixture mismatch is in byte length, source content, or expected digest.

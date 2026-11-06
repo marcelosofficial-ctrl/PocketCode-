@@ -244,12 +244,12 @@ class FakeCoordinator:
         has_claim = any(payload.get("kind") == "lease_claimed" for _, payload in matching)
         if record.state in {"leased", "dispatching", "reconciling", "acknowledged", "retry_authorized", "terminal"} and not has_claim:
             state = "lease_claim_unjournaled"
-        elif record.state in {"dispatching", "reconciling", "acknowledged", "retry_authorized", "terminal"} and not seen_dispatch_intent and record.dispatch_intent_at is not None:
+        elif record.state == "reconciling":
+            state = "reconciliation_required"
+        elif record.state in {"dispatching", "acknowledged", "retry_authorized", "terminal"} and not seen_dispatch_intent and record.dispatch_intent_at is not None:
             state = "dispatch_intent_unjournaled"
         elif record.state == "dispatching" and not seen_dispatch_intent:
             state = "dispatch_intent_unjournaled"
-        elif record.state == "reconciling":
-            state = "reconciliation_required"
         elif record.state == "acknowledged" and not seen_acknowledgement:
             state = "acknowledgement_unjournaled"
         elif record.state == "retry_authorized" and not any(
