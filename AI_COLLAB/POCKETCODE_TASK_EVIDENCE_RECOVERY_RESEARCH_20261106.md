@@ -303,3 +303,68 @@ The in-toto Attestation Framework v1.2 separates predicate (claims), statement (
 | Cline shadow Git checkpoints | Source/input snapshots, compare/restore, task resumption UX. | Checkpoints are not execution receipts or artifact provenance. |
 | in-toto v1.2 | Subject digest + typed predicate separation; explicit envelope trust boundary. | No signature claim before producer identity and key lifecycle exist. |
 | SLSA v1.2 | Trusted builder identity and provenance verification concepts for PocketCode's own binary builds. | Do not apply build provenance to arbitrary end-user script runs or claim a SLSA level without meeting builder requirements. |
+
+
+## 13. Exit and mobile execution boundary: source-level correction — 2026-11-06
+
+### Python 3.14 platform boundary
+
+The current Python 3.14 platform documentation states that Python on mobile must be embedded. For iOS, subprocess, multiprocessing and IPC are unavailable; on Android, subprocess creation may work but is officially unsupported. The same documentation says subprocess on WebAssembly is non-functional even if the module can be imported. This is stronger and more specific than treating an embedded interpreter exception as a process exit.
+
+PocketCode decision: mobile embedded Python is an execution model candidate for suitable tasks, but it cannot satisfy a contract that requires an isolated child-process wait status. Its receipt must use host-observed return/exception/SystemExit and app lifecycle observations. A separate native helper or remote runner would be a different adapter and security boundary, not a transparent property of the embedded interpreter.
+
+### Exit code and signal semantics
+
+Python subprocess APIs distinguish negative return codes on POSIX when the child was terminated by a signal. Bash documents a conventional 128 + N shell status for fatal signal N. Therefore a generic integer such as 137 does not independently prove whether the child naturally exited with 137, a shell translated a signal, or a wrapper chose that code. Preserve wait status, signal, wrapper code and coordinator disposition separately.
+
+### Source freshness and license pinning
+
+GitHub metadata was queried directly for current release and root LICENSE:
+- OpenHands software-agent-sdk v1.60.1, published 2026-11-05, MIT.
+- Cline v4.1.26, published 2026-10-26, Apache-2.0.
+- Temporal Python SDK 1.35.0, published 2026-10-28, MIT.
+
+These are current-at-retrieval facts, not a recommendation to add dependencies. OpenHands/Cline remain pattern references; Temporal has a separate workflow service and Activities are at-least-once. No new dependency or copied code was added.
+
+## 14. Dispatch reliability: idempotency and the outbox are separate mechanisms
+
+Google AIP-155 allows APIs to define the duration for which request IDs are honored and notes that duplicate create calls may return a stale or current resource state. AWS EC2 client-token behavior has operation and scope constraints, including regional/zonal semantics and mismatch errors. AWS transactional outbox guidance warns about duplicate delivery and requires idempotent consumers.
+
+Correction: do not say same idempotency key guarantees exactly once. Record the provider contract per exact API operation, authenticated account, region/zone, normalized request fingerprint, retention window, lookup consistency and conflict response. A transactional outbox gives atomic local persistence of intent; the delivery path can remain at-least-once. Reconciliation must query the same effect and attempt before any replay decision.
+
+## 15. Event identity and time: retain the producer namespace
+
+CloudEvents defines identity by the pair (source, id) and scopes uniqueness to the producer. A consumer may treat identical pairs as duplicate deliveries, but PocketCode must not treat an ID without source as globally unique. Keep an internal event ID alongside the source-scoped ID; reject same-source/same-ID payload changes as conflicts.
+
+OpenTelemetry distinguishes source event Timestamp from collector ObservedTimestamp. Retain both. Use PocketCode's durable per-attempt sequence to order accepted events; use timestamps for diagnostic correlation and clock-skew analysis, not as the source of ordering truth.
+
+## 16. Open-source code adoption and trust boundaries
+
+### License and current release findings
+
+The current root license and latest release metadata were inspected for OpenHands, Cline and Temporal as listed in section 13. Existing isolated vendor references in this repository were also inspected:
+- OpenHands atomic text writer: MIT attribution retained; same-directory temporary file, file flush/fsync, atomic replace. The source itself does not fsync the containing directory and provides no multi-writer locking, append-only event log, transaction or power-loss guarantee.
+- OpenHands idempotent-create retry adaptation: capability-gated and uses the same serialized request body and operation ID, but it was not compiled or tested in this pass; provider capability and deduplication contract remain prerequisites.
+- MCP Tasks poll interval helper: Apache-2.0 attribution retained; interval selection only, not network scheduling, recovery, authorization or server execution.
+
+No code from these examples was integrated into product paths during this pass. The pure exit-projection helper created in this pass is original PocketCode-scoped code; it is a proposed decision kernel, not an authenticated execution boundary.
+
+### Attestation boundary
+
+A content digest binds receipt/artifact identity to exact bytes but does not authenticate the producer or establish execution truth. A signed in-toto-style envelope should be a later decision only after identity, key custody, rotation, revocation, verifier trust roots and policy are defined. SLSA provenance is for trusted builds of PocketCode's own distributable artifacts; do not claim SLSA provenance for arbitrary user-program execution.
+
+## 17. Primary-source additions
+
+- Python 3.14 platform support: https://docs.python.org/3.14/library/intro.html
+- Python subprocess semantics: https://docs.python.org/3.14/library/subprocess.html
+- Python SystemExit: https://docs.python.org/3.14/library/exceptions.html#SystemExit
+- Bash exit status: https://www.gnu.org/software/bash/manual/html_node/Exit-Status.html
+- Linux wait(2): https://man7.org/linux/man-pages/man2/wait.2.html
+- Google API request identification: https://google.aip.dev/155
+- AWS EC2 idempotency: https://docs.aws.amazon.com/ec2/latest/devguide/ec2-api-idempotency.html
+- AWS transactional outbox: https://docs.aws.amazon.com/prescriptive-guidance/latest/cloud-design-patterns/transactional-outbox.html
+- Temporal Python failure detection: https://docs.temporal.io/develop/python/failure-detection
+- CloudEvents core: https://github.com/cloudevents/spec/blob/main/cloudevents/spec.md
+- OpenTelemetry Logs Data Model: https://opentelemetry.io/docs/specs/otel/logs/data-model/
+
+Status: research/design only; runtime, provider, storage, schema, budget, canonical acceptance IDs, PRs and deployment remain unchanged.
