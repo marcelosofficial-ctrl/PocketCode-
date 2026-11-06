@@ -74,6 +74,10 @@ PocketCode implementation was not changed by this cross-project status update. I
 
 ## 2026-11-06 — PC-2026-11-06-P06 — Cross-project fake-process testing lesson
 
-RevDev's transport harness now invokes a real child-process boundary through a controlled fake `.cmd` executable, testing HTTP status/body, native exit code, stdout/stderr and rate-limit headers. The first CI run found a Pester module import-scope issue, now corrected. RevDev run #21 (`42133707971`) was pending at checkpoint; this is not a passed result yet.
-
+RevDev's transport harness now invokes a real child-process boundary through a controlled fake `.cmd` executable, testing HTTP status/body, native exit code, stdout/stderr and rate-limit headers. 
 PocketCode can reuse the test technique, not the code: place its own provider/execution boundary behind injectable adapters and deterministically test timeout, cancellation, partial output, collector degradation, teardown failure and cleanup. Do not select a runtime/provider or claim product acceptance from these RevDev tests. PocketCode's CASE-04 remains its own next implementation task; device comparison remains awaiting owner observations.
+
+
+## 2026-11-06 — RevDev fake-process test result (process lesson only)
+
+RevDev run #21 `42133707971` is now verified **34/34 passed, 0 failed, 0 skipped** on Windows PowerShell 5.1 / Pester 5.7.1 at `65d9b95ed346c42ed22bd920d70cb4e5c4429a26`: https://github.com/marcelosofficial-ctrl/DevRelay-Missions/actions/runs/42133707971. This supersedes the earlier pending status. PocketCode impact is methodology only: use controlled fake adapters for deterministic failure-path tests, but no RevDev code or acceptance transfer. CASE-04 remains next.
