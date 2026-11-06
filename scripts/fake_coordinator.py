@@ -351,6 +351,10 @@ class FakeCoordinator:
             raise OutboxConflict("caller-supplied verdict conflicts with accepted evidence projection")
         if lifecycle_disposition != projection.execution_status:
             raise OutboxConflict("caller-supplied lifecycle disposition conflicts with accepted evidence projection")
+        if collection_state != "unknown" or cleanup_state != "unknown":
+            raise OutboxConflict(
+                "collection and cleanup require typed observations; caller assertions are not evidence"
+            )
         execution_outcome = projection.verdict
         lifecycle_disposition = projection.execution_status
         events = [event for event in self.journal.events

@@ -249,7 +249,7 @@ class FakeCoordinatorTests(unittest.TestCase):
         receipt = self.coordinator.create_result_receipt(
             receipt_store, effect_id="effect-1", attempt_id="attempt-1",
             revision_key="rev-1", contract_version="pc-v1",
-            execution_outcome="INCOMPLETE", collection_state="complete",
+            execution_outcome="INCOMPLETE", collection_state="unknown",
             lifecycle_disposition="unknown", cleanup_state="unknown",
             artifact_ids=(), created_at_ms=22,
         )
@@ -279,7 +279,7 @@ class FakeCoordinatorTests(unittest.TestCase):
         second = self.coordinator.create_result_receipt(
             receipt_store, effect_id="effect-1", attempt_id="attempt-1",
             revision_key="rev-2", contract_version="pc-v1",
-            execution_outcome="INCOMPLETE", collection_state="complete",
+            execution_outcome="INCOMPLETE", collection_state="unknown",
             lifecycle_disposition="unknown", cleanup_state="unknown",
             artifact_ids=(), created_at_ms=21,
             predecessor_receipt_id=first.receipt_id, revision_reason="new lease evidence",
@@ -329,8 +329,8 @@ class FakeCoordinatorTests(unittest.TestCase):
         receipt = self.coordinator.create_result_receipt(
             store, effect_id="effect-1", attempt_id="attempt-1",
             revision_key="pass-receipt", contract_version="pc-v1",
-            execution_outcome="PASS", collection_state="complete",
-            lifecycle_disposition="succeeded", cleanup_state="complete",
+            execution_outcome="PASS", collection_state="unknown",
+            lifecycle_disposition="succeeded", cleanup_state="unknown",
             artifact_ids=(), created_at_ms=23,
         )
         self.assertEqual(receipt.execution_outcome, "PASS")
@@ -352,8 +352,8 @@ class FakeCoordinatorTests(unittest.TestCase):
         receipt = self.coordinator.create_result_receipt(
             ResultReceiptStore(), effect_id="effect-1", attempt_id="attempt-1",
             revision_key="derived-pass", contract_version="pc-v1",
-            collection_state="complete", lifecycle_disposition="succeeded",
-            cleanup_state="complete", artifact_ids=(), created_at_ms=23,
+            collection_state="unknown", lifecycle_disposition="succeeded",
+            cleanup_state="unknown", artifact_ids=(), created_at_ms=23,
         )
         self.assertEqual(receipt.execution_outcome, "PASS")
 
@@ -369,8 +369,8 @@ class FakeCoordinatorTests(unittest.TestCase):
         receipt = self.coordinator.create_result_receipt(
             store, effect_id="effect-1", attempt_id="attempt-1",
             revision_key="fail-receipt", contract_version="pc-v1",
-            execution_outcome="FAIL", collection_state="complete",
-            lifecycle_disposition="program_failed", cleanup_state="complete",
+            execution_outcome="FAIL", collection_state="unknown",
+            lifecycle_disposition="program_failed", cleanup_state="unknown",
             artifact_ids=(), created_at_ms=22,
         )
         self.assertEqual(receipt.execution_outcome, "FAIL")
@@ -504,6 +504,25 @@ class FakeCoordinatorTests(unittest.TestCase):
                 cleanup_state="unknown", artifact_ids=(), created_at_ms=22,
             )
 
+    def test_receipt_rejects_unobserved_collection_or_cleanup_claims(self):
+        from result_receipts import ResultReceiptStore
+        lease = self.coordinator.claim("effect-1", "worker-A", now=20, lease_seconds=10)
+        self.coordinator.mark_dispatching(lease, now=20)
+        with self.assertRaises(OutboxConflict):
+            self.coordinator.create_result_receipt(
+                ResultReceiptStore(), effect_id="effect-1", attempt_id="attempt-1",
+                revision_key="unverified-collection", contract_version="pc-v1",
+                collection_state="complete", lifecycle_disposition="unknown",
+                cleanup_state="unknown", artifact_ids=(), created_at_ms=21,
+            )
+        with self.assertRaises(OutboxConflict):
+            self.coordinator.create_result_receipt(
+                ResultReceiptStore(), effect_id="effect-1", attempt_id="attempt-1",
+                revision_key="unverified-cleanup", contract_version="pc-v1",
+                collection_state="unknown", lifecycle_disposition="unknown",
+                cleanup_state="complete", artifact_ids=(), created_at_ms=22,
+            )
+
     def test_dispatch_only_journal_cannot_create_pass_or_fail_receipt(self):
         from result_receipts import ResultReceiptStore
         store = ResultReceiptStore()
@@ -512,8 +531,8 @@ class FakeCoordinatorTests(unittest.TestCase):
                 self.coordinator.create_result_receipt(
                     store, effect_id="effect-1", attempt_id="attempt-1",
                     revision_key="forbidden-" + outcome, contract_version="pc-v1",
-                    execution_outcome=outcome, collection_state="complete",
-                    lifecycle_disposition="succeeded", cleanup_state="complete",
+                    execution_outcome=outcome, collection_state="unknown",
+                    lifecycle_disposition="succeeded", cleanup_state="unknown",
                     artifact_ids=(), created_at_ms=30,
                 )
         self.assertEqual(store.receipts, ())
