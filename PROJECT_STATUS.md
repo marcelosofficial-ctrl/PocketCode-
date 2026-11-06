@@ -545,3 +545,10 @@ The proposed process adds:
 OpenAI's current help guidance says conversation context is content-based, not a fixed message count; generated new-chat summaries may omit exact earlier wording. Free ChatGPT Projects allow five files. GitHub remains authoritative.
 
 PR #4 contains the process changes and is based on an earlier working-branch snapshot. It must be reconciled with the latest Pyodios handoff/triage updates before merging. This is process-only. PocketCode product scope, budget, runtime/provider status, canonical fixtures and LOOP/CASE/D acceptance remain unchanged.
+
+
+## 2026-11-06 — Process proposal reconciled with latest Pyodios artifact evidence
+
+The owner confirmed the existing Pyodios summary.json exactly matches the frozen success oracle. Classification is artifact-level functional success, Editor bridge error unresolved, full run inconclusive. Preserve the project; next inspect the timestamped Error Log, then the read-only saved-exception probe if needed. Do not rerun or overwrite. Malformed-input testing must use a separate fresh project after diagnostics. CASE-04 remains INCOMPLETE/timed_out pending trusted exit provenance.
+
+The multi-chat process proposal is in draft PR #4 and is based on an earlier working-branch snapshot. It must be reconciled against the latest handoff/triage/work-log updates before merging. No product source, canonical fixture, runtime/provider, LOOP/CASE/D acceptance or release gate changed.
