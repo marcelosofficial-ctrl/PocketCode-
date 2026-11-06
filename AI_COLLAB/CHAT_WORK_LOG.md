@@ -431,3 +431,15 @@ Next: await owner-provided read-only Pyodios saved-exception probe output; prese
 - Final source review found the same test method name was defined twice in the expanded dispatch suite. Python unittest would silently replace the earlier method in the class namespace, so a regex-based method count overstated unique coverage.
 - Removed the duplicate definition. The final test file now has 34 test methods and 34 unique method names. The 34-case suite remains NOT RUN after this correction.
 - Final test blob: 7bcfa95c5a077b3a5d31825f0db73f593ac4d6a9. This supersedes the earlier P25 test blob SHA.
+
+
+## P25 final closeout — 2026-11-06
+
+- Latest verified branch checkpoint: 25a2083e6509d9fee2ad4ce7727405a70558813a.
+- Final dispatch helper blob: 165d141bc6ab47ad9d19d1ba537ab0e3e39aa16d.
+- Final dispatch tests blob: 7bcfa95c5a077b3a5d31825f0db73f593ac4d6a9. Read-back confirms 34 test methods with 34 unique names; duplicate method removed. Latest 34-case suite NOT RUN.
+- Contract, research, entrypoint, ledger and work log were read back at their exact blob SHAs in this checkpoint.
+- Exact-head Actions runs: 0; check-runs: 0; combined status pending with no individual statuses.
+- PR #2/#3 remain OPEN/DRAFT at their original head SHAs. No PR mutation, merge, deployment, provider execution, billing or runtime/storage selection.
+- Branch compare: 847 ahead / 0 behind main; merge base 555840d8d83342513d9cd353d4d1522d46a5c82d. Ahead count is history divergence, not product progress.
+- Next: implement a deterministic fake outbox/store with atomic reserve + outbox, duplicate delivery, lease fencing, crash-point recovery and event dedupe. Keep it isolated and explicitly non-production until a real durable store is selected and crash-tested.
