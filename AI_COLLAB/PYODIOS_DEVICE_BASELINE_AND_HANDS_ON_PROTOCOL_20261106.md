@@ -203,15 +203,18 @@ Before rerunning, inspect the same project's Files tab for `summary.json`. If pr
 
 A CLI-style `raise SystemExit(main())` crossing the embedded Python/JavaScript bridge is plausible but not confirmed. Pyodide 314.0.5 documents Python exceptions crossing that boundary as `PythonError`; Python documents `sys.exit()` as raising `SystemExit`. Missing input visibility or another exception remains possible. The label alone is insufficient.
 
-If the Error Log is unhelpful, open the Pyodios Console and run this read-only probe to print Pyodide's saved `sys.last_value` from the previous exception; this does not rerun the task:
+If the Error Log is unhelpful, open the Pyodios Console and run this read-only probe to print Pyodide's saved `sys.last_exc` (preferred on Python 3.14), falling back to `sys.last_value`; this does not rerun the task:
 
 ```python
 import sys
 import traceback
 
-exc = getattr(sys, "last_value", None)
+exc = getattr(sys, "last_exc", None)
 if exc is None:
-    print("No previous Python exception is available as sys.last_value.")
+    exc = getattr(sys, "last_value", None)
+
+if exc is None:
+    print("No previous Python exception is available.")
 else:
     print("EXCEPTION TYPE:", type(exc).__name__)
     print("EXCEPTION VALUE:", repr(exc))
