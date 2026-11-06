@@ -20,7 +20,7 @@ GitHub is the durable project state. Do not rely on a last-minute full-chat hand
 **Important limitation:** this protocol reduces avoidable context pressure and tool stalls; it cannot prevent platform context limits, service outages or execution failures. The goal is graceful interruption with no lost project state.
 
 
-**Last refreshed:** 2026-11-06 (Pyodios Error Log checked; full chat handoff and state ledger)  
+**Last refreshed:** 2026-11-06 (cross-project working-method upgrade incorporated; live state rechecked)  
 **Authority:** live PocketCode branch state plus canonical source/spec/test records. This file is the compact first-read entrypoint for every new PocketCode chat.
 
 ## Current cross-project note
@@ -237,3 +237,8 @@ RevDev run #49 `42182731390` passed **93/93** at exact source/test SHA `a6defbb0
 Owner explicitly requested that PocketCode adopt the improved multi-chat operating method. Read [RevDev continuity update for PocketCode](REVDEV_CONTINUITY_UPDATE_20261106.md) before the next substantial pass. GitHub is durable project memory; each chat is a replaceable worker. Checkpoint every 2–3 meaningful passes or after source/test/review/decision events, keep this entrypoint current, append the work log and rotate before context exhaustion. The forwardable note includes a complete copy/paste instruction for a new PocketCode chat and method-only RevDev lessons. No RevDev code, architecture, runtime, acceptance or security decision transfers.
 
 RevDev run #49 passed 93/93 at exact SHA `a6defbb0e8b0902e8ecc20777d0a10dc25ae344b` (Windows PowerShell 5.1 / Pester 5.7.1): https://github.com/marcelosofficial-ctrl/DevRelay-Missions/actions/runs/42182731390. This is RevDev-only method evidence. PocketCode priorities remain CASE-04 provenance and the read-only Pyodios saved-exception probe. Preserve the exact-match success artifact; do not rerun/overwrite. PR #2/#3 remain untouched.
+
+
+## Bounded work, operation identity and interruption recovery
+
+Each pass has one objective, bounded scope, expected result, evidence requirements and stopping condition. Prefer completing a useful vertical slice over opening many unfinished tasks. Batch independent read-only work in modest groups; serialize dependent reads and shared writes. Keep outputs compact. For mutations, preserve stable EffectId across retries, a fresh AttemptId per actual attempt, exact input/argument hashes, dependencies and authorization scope. Maintain durable operation history, per-operation progress/evidence, heartbeats/leases, fencing, bounded retries and exact reconciliation of ambiguous external effects. Never replay a possibly completed mutation before re-fetching and reconciling live state. Keep execution outcome, observation/collection, lifecycle disposition, cleanup, publication and acceptance distinct. Checkpoint every 2–3 meaningful passes and immediately after consequential implementation, tests, reviews, CI or decisions. Rotate chats before context becomes unhealthy. Operation count is not completion: completion requires receiving, interpreting and verifying the outcome. These are working-method controls, not changes to PocketCode product identity or acceptance contracts.

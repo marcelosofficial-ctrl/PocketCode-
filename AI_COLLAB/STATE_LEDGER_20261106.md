@@ -2,8 +2,8 @@
 
 **Repository:** marcelosofficial-ctrl/PocketCode-  
 **Branch:** pocketcode-ai-workflow-director-research-2026-10-28  
-**Last verified pre-handoff head:** e7abaabff55f3bc25a793f2e814852d8e7aa246d  
-**Compare:** 807 ahead / 0 behind main; merge base 555840d8d83342513d9cd353d4d1522d46a5c82d. Ahead count is branch-history divergence, not product progress. Fetch live refs before work.
+**Last verified before this checkpoint:** 4446135bf1345f37aa5d221d27c0eabbdbcef5c7  
+**Compare before this checkpoint:** 820 ahead / 0 behind main; merge base 555840d8d83342513d9cd353d4d1522d46a5c82d. Ahead count is branch-history divergence, not product progress. Fetch live refs before consequential work.
 
 ## Goal
 Build a phone-first, provider-neutral Agentic Orchestration Control Plane that makes AI-generated technical tasks executable from iOS/Android and returns truthful, portable evidence for AI correction. It is not a generic Python IDE. RevDev and PocketCode are intended to converge into one PC-and-phone product/program while retaining separate repos, roadmaps, clients, adapters, runtimes, security boundaries, acceptance suites and release gates.
@@ -48,3 +48,23 @@ Build a phone-first, provider-neutral Agentic Orchestration Control Plane that m
 - Actions run query for active branch returned no items; this is not proof no CI activity exists.
 - Latest pass changes documentation/continuity only; no PocketCode product code/tests/runtime/provider/fixture/schema/acceptance/PR/merge/deployment changed.
 - Read first: AI_COLLAB/CHAT_START_HERE.md, then this ledger, then AI_COLLAB/PYODIOS_PYTHONERROR_BRIDGE_TRIAGE_20261106.md and AI_COLLAB/NEW_CHAT_HANDOFF_20261106.md.
+
+
+## 2026-11-06 — Cross-project working-method upgrade
+
+Authority: owner-provided RevDev working-method decision. Applies to PocketCode continuity and engineering process only; does not replace product goals, revise runtime/security/budget boundaries, or transfer RevDev code, architecture or acceptance evidence.
+
+- GitHub is durable project memory; chats are replaceable workers. New chats resume from live GitHub state, not hidden context.
+- Read compact entrypoint, latest ledger and active handoff first. Retrieve only task-specific source/tests/review packets; search/index large records before expanding. Avoid duplicate master documents and historical rereads without a concrete question.
+- Use bounded substantial passes with objective, scope, expected result, evidence requirements and stop condition. Prefer a verified vertical slice over many open threads.
+- Batch independent read-only operations in modest groups. Serialize dependent work and shared writes. Keep outputs compact. Verify every write by exact read-back.
+- On interruption/tool failure, do not assume success or failure. Re-fetch live branch and target objects, inspect commits and exact blobs, reconcile whether the operation happened, then resume. Never blindly replay a possibly completed mutation.
+- Durable operation model: stable EffectId across retries; fresh AttemptId per actual attempt; exact input/argument hashes; explicit dependencies and authorization scope; durable operation history; per-operation progress/evidence; heartbeats/leases; fencing; bounded retries; exact reconciliation of ambiguous external effects.
+- Keep execution outcome, collection state, lifecycle/job disposition, cleanup, publication and final acceptance distinct. Successful execution is not automatically a published or accepted result.
+- Checkpoint every 2–3 meaningful passes and immediately after consequential implementation, testing, review, CI or architectural decisions. Update entrypoint and ledger, append work log, pin exact branch/source/test hashes, and rotate before context becomes unhealthy.
+- Roles remain Claude lead developer/reviewer; Gemini co-developer and independent security/spec auditor; ChatGPT continuity/evidence/acceptance/cross-project coordinator. Owner forwards reports manually; one lead writer per shared work item.
+- RevDev and PocketCode remain one PC-and-phone product direction with separate repos, roadmaps, clients, adapters, runtimes, security boundaries, acceptance suites and release gates. Share provider-neutral concepts only; never transfer acceptance evidence.
+
+Verification at checkpoint start: branch HEAD 4446135bf1345f37aa5d221d27c0eabbdbcef5c7; main 555840d8d83342513d9cd353d4d1522d46a5c82d; compare 820 ahead / 0 behind. PR #2 head eb8b7ea83cb0e8fe1880351276c485b761431791 and PR #3 head 0ddcc0bc97bac5d446aefedf3d71f99411bd841d remain OPEN/DRAFT. Branch-filtered Actions query returned zero runs; exact-head status/check-runs have no individual checks. Current branch CI is UNKNOWN, not PASS. No product code, tests, device state, schema, acceptance IDs, budget or runtime/provider decision changed.
+
+Next task: owner runs only the read-only Pyodios sys.last_exc / sys.last_value Console probe in the existing successful session. Preserve exact-match summary.json; do not rerun, overwrite, restart, clear, GC or run the wrapper there. After device evidence, continue typed child/wrapper/termination/lifecycle provenance before any CASE-04 formatter change.

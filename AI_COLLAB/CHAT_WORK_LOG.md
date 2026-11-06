@@ -266,3 +266,22 @@ RevDev CI run #49 passed 93/93 at exact SHA `a6defbb0e8b0902e8ecc20777d0a10dc25a
 **Verification:** source documents read from live branch. PR #2 and #3 checked OPEN/DRAFT, unmerged, unchanged. Actions run query for this branch returned an empty list; this does not prove no other workflow source or CI activity exists. No PocketCode code/test/device operation was executed in this pass. No product source, fixture, schema, acceptance suite, runtime/provider, budget, PR, merge or deployment changed.
 
 **Next:** owner runs the saved-exception probe once and shares its output (redacted). Then continue the typed CASE-04 exit-provenance contract and degraded collection/teardown/network-isolation audit. Keep CASE-04 INCOMPLETE/timed_out and all canonical IDs.
+
+
+## 2026-11-06 — PC-2026-11-06-P17 — RevDev working-method upgrade incorporated
+
+Objective: adopt the owner-approved cross-project continuity and orchestration method without repeating product research or changing PocketCode product boundaries.
+
+Completed:
+- Re-read the live compact entrypoint and state ledger; fetched current work-log tail.
+- Re-fetched live branch and compared against main: branch HEAD 4446135bf1345f37aa5d221d27c0eabbdbcef5c7, main 555840d8d83342513d9cd353d4d1522d46a5c82d, 820 ahead / 0 behind.
+- Rechecked PR #2/#3: both OPEN/DRAFT, separate heads, untouched.
+- Queried branch-filtered Actions: zero runs returned. Exact-head combined status/check-runs contain no individual checks; current branch CI remains UNKNOWN, not PASS.
+- Added bounded-pass, modest batching, serialized writes, exact read-back, interruption reconciliation, durable EffectId/AttemptId and fencing principles to continuity guidance.
+- Preserved existing active task and all product/acceptance boundaries.
+
+Changed paths: AI_COLLAB/CHAT_START_HERE.md, AI_COLLAB/STATE_LEDGER_20261106.md, AI_COLLAB/CHAT_WORK_LOG.md.
+
+Verification required: one atomic multi-file commit using expected-head lease, then exact read-back of all three files and branch head. No PocketCode product source/tests/device/runtime/provider/schema/acceptance/PR/merge/deployment changed. No RevDev code or acceptance evidence imported.
+
+Next: await owner-provided read-only Pyodios saved-exception probe output; preserve the successful project. Then resolve typed child-exit vs wrapper-exit vs forced-termination and lifecycle provenance before CASE-04 code changes.
