@@ -245,3 +245,20 @@ The authoritative, absence_final, and idempotency-contract fields are not crypto
 ## 16. Malformed provider lookup input
 
 The dispatch decision helper also rejects non-string lookup outcomes before membership tests. A malformed lookup outcome such as a list must resolve to hold_unknown, not raise an exception. Non-string dispatch state similarly resolves to conflict. These are defensive shape checks only; authenticated provenance remains an adapter responsibility.
+
+
+## 17. Fake outbox recovery model
+
+The deterministic in-memory model is implemented in scripts/fake_outbox.py with 19 regression cases in scripts/test_fake_outbox.py. See AI_COLLAB/FAKE_OUTBOX_MODEL_20261106.md for the exact scope and limits.
+
+Required semantics demonstrated by the model:
+- Persist reservation and dispatch intent at one local transaction boundary.
+- Preserve stable EffectId across attempts and bind each DispatchAttemptId to immutable request bytes/fingerprint.
+- Require prior terminal state and explicit authorization before allocating a new attempt for the same effect.
+- Fence worker mutations by lease owner, expiry and monotonically increasing fence token.
+- Recover expired pre-dispatch leases to pending; recover expired post-dispatch intent to reconciliation, never blind redispatch.
+- Adopt only an exact authoritative found result; treat uncertain/non-final absence as UNKNOWN; allow same-attempt retry only after exact adapter-verified final absence.
+- Deduplicate fake receiver deliveries by EffectId and request fingerprint; changed fingerprint is a conflict.
+
+**Verification:** 19/19 deterministic in-memory tests passed under CPython 3.13.5; both files compiled. This does not prove database transaction atomicity, concurrent races, process-crash/power-loss durability, provider idempotency, authentication or production execution. The model's reconciliation flags are caller assertions, not proof. Do not wire it to a real provider or UI verdict.
+

@@ -443,3 +443,26 @@ Next: await owner-provided read-only Pyodios saved-exception probe output; prese
 - PR #2/#3 remain OPEN/DRAFT at their original head SHAs. No PR mutation, merge, deployment, provider execution, billing or runtime/storage selection.
 - Branch compare: 847 ahead / 0 behind main; merge base 555840d8d83342513d9cd353d4d1522d46a5c82d. Ahead count is history divergence, not product progress.
 - Next: implement a deterministic fake outbox/store with atomic reserve + outbox, duplicate delivery, lease fencing, crash-point recovery and event dedupe. Keep it isolated and explicitly non-production until a real durable store is selected and crash-tested.
+
+
+## 2026-11-06 — PC-2026-11-06-P26 — Chat retrieval failure investigation and fake outbox model
+
+**ChatGPT error investigation**
+- Investigated the exact reported iOS error string: APIClientInterface.ConversationDetailError.DetailError error 1.
+- Public OpenAI documentation does not identify this internal error code. Conversation-detail retrieval is the best layer hypothesis from the symbol names, not a confirmed diagnosis.
+- OpenAI's official incident history includes elevated ChatGPT conversation errors on 2026-10-30, resolved. This establishes that service-side conversation failures occur, but does not prove correlation with this user's event.
+- Added AI_COLLAB/CHATGPT_IOS_CONVERSATION_DETAIL_ERROR_RUNBOOK_20261106.md with controlled comparison steps (same conversation on web, short chat in app, alternate network, status timestamp) and Support evidence requirements.
+- Decision: no claim that PocketCode can repair OpenAI's client/backend. Mitigation is durable GitHub checkpoints, replaceable chats, concise bootstrap and exact-head recovery after interrupted writes.
+
+**Fake outbox implementation**
+- Added scripts/fake_outbox.py and scripts/test_fake_outbox.py; documented in AI_COLLAB/FAKE_OUTBOX_MODEL_20261106.md.
+- Implemented synchronous in-memory model for reservation/dispatch-intent atomic commit point, EffectId across attempts, explicit new-attempt authorization, lease fencing, crash-before-send recovery, post-dispatch reconciliation, exact-found adoption, final-absence retry gate and receiver duplicate handling.
+- Red-team correction: a stable EffectId must not be conflated with one AttemptId. Model now stores attempts independently and only permits a new attempt after prior terminal state and explicit authorization.
+- Local CPython 3.13.5: 19/19 tests passed; py_compile passed. The fake store is not durable and the test failpoint is not a power-loss/transaction test. No provider adapter or runtime integration.
+- No canonical IDs, report formatter, CASE-04, runtime/provider/storage decision, budget, PR, merge or deployment changed.
+
+**Verification and current state**
+- Verified branch handoff HEAD d62429cbb246b181ecaf5862b49169cc95bee1c2.
+- Committed runbook, fake model and test artifacts in follow-on commits; latest pre-doc checkpoint 56bcc7167b33554a29b68c8fdccc448b9383b6b6.
+- Exact-head Actions and combined status must be checked after the documentation checkpoint. PR #2/#3 remain OPEN/DRAFT and untouched.
+- Next: append-only event journal/provenance model and durable-store test boundary. Pyodios read-only saved-exception probe remains the owner action; preserve existing success project and do not rerun/overwrite.
