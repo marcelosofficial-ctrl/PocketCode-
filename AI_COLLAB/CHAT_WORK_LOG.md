@@ -189,3 +189,12 @@ No fixture, product source, acceptance suite, runtime/provider, security boundar
 **Current PocketCode owner task:** preserve the original Pyodios Editor attempt. Inspect existing summary artifact, timestamped Error Log, then read-only `sys.last_exc` / `sys.last_value` probe; only then consider diagnostic wrapper. Do not rerun canonical fixture. CASE-04 remains INCOMPLETE/timed_out pending trusted exit provenance.
 
 No product source, canonical fixture, runtime/provider choice, LOOP/CASE/D suite, PR #2/#3 or release gate changed.
+
+
+## 2026-11-06 — PC-2026-11-06-P13 correction — artifact-level success confirmed
+
+The working branch advanced after the first process proposal snapshot. Owner inspected the existing Pyodios project's summary.json and confirmed it exactly matches the frozen success oracle: grand_total string 10.75, 2 line items, notebook 7.00, pen 3.75. The Editor still displayed [Bridge/executePython] PythonError.
+
+Current classification: ARTIFACT-LEVEL FUNCTIONAL SUCCESS (owner-inspected) / EDITOR BRIDGE ERROR UNRESOLVED / FULL RUN INCONCLUSIVE. This supersedes the earlier UNKNOWN artifact outcome. Do not rerun or overwrite the successful project. Next inspect More → Settings → Error Log → View Error Log at the attempt timestamp; if unhelpful, use the read-only sys.last_exc/sys.last_value probe. Malformed-input testing must use a separate fresh project after diagnostics are preserved. CASE-04 remains INCOMPLETE/timed_out pending trusted child/wrapper/termination provenance.
+
+PR #4 remains a documentation/process proposal and must be reconciled with the latest working-branch commits before merge. No PocketCode source, canonical fixture, runtime/provider, LOOP/CASE/D acceptance, PR #2/#3 or release gate changed.
