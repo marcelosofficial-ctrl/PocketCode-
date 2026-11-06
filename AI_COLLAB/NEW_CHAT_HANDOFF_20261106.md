@@ -45,10 +45,10 @@ Read AI_COLLAB/PYODIOS_DEVICE_BASELINE_AND_HANDS_ON_PROTOCOL_20261106.md.
 **SUPERSEDING CURRENT INSTRUCTION (2026-11-06):** the owner has already imported `main.py` and `items.csv` into one project and attempted the green Editor run. It displayed only `[Bridge/executePython] PythonError`. Do not follow the older generic run sequence below yet. Preserve the attempt and follow `PYODIOS_PYTHONERROR_BRIDGE_TRIAGE_20261106.md`.
 
 1. Inspect the current project's Files tab for `summary.json`. If present, open it and compare it with the exact success oracle. Do not rerun or overwrite it.
-2. Inspect Settings → Diagnostics → Error Logs → View Error Log at the attempt timestamp. Redact local paths and source before sharing.
+2. Inspect More → Settings → Error Log → View Error Log at the attempt timestamp. Redact local paths and source before sharing.
 3. If the Error Log is unhelpful, use the documented read-only Console probe in the triage note to print `sys.last_exc` (with legacy fallback) from the prior exception. It does not rerun `main.py`.
 4. Only if the log and saved exception are unavailable and no `summary.json` exists, use the separately attached guarded diagnostic wrapper. It has only passed local CPython checks, not Pyodios device execution.
-5. Once the cause and current artifact state are understood, resume the remaining fresh success/malformed fixture, export/read-back and normal-relaunch checks.
+5. Once the bridge diagnostic is captured, run only the malformed-input case in a separate fresh project. Keep export/read-back and normal-relaunch persistence as separate later checks; do not rerun the success project.
 
 Do not intentionally force-quit during active execution or run an infinite loop. First pass is low-risk ordinary success/failure and file-persistence observation.
 
@@ -78,18 +78,18 @@ Evidence rules:
 4. Run raw-evidence vs portable-report correction only after a real path supplies the same underlying evidence for both conditions.
 5. Continue source-level implementation/test work on provider-neutral task/receipt logic only where the existing product/acceptance contract supports it. Keep proposals separate from verified product behavior.
 
-**Current evidence state:** public Pyodios review COMPLETE; fixture archive hash VERIFIED; first Editor attempt OBSERVED; underlying exception and artifact outcome UNKNOWN; PocketCode product acceptance and recovery suites NOT RUN.
+**Current evidence state:** public Pyodios review COMPLETE; fixture archive hash VERIFIED; first Editor attempt OBSERVED; existing `summary.json` owner-inspected and MATCHES the canonical success oracle; Editor bridge error/root cause and native exit status UNKNOWN; export/read-back, relaunch persistence, malformed-input path and PocketCode product acceptance/recovery suites NOT RUN.
 
 
 ## Owner-reported build confirmation (2026-11-06)
-The owner reports the Settings screen showed 13 cached packages / 0 KB cache, 85,557 objects / 0 referrers, and GC stats 1,650 collected / 0 uncollectable. These counters are transient diagnostics, not performance/capacity measurements. Do not clear variables, run GC, or restart merely to reset them. The installed app/runtime baseline is now known; the actual fixed-task execution, artifact export, and relaunch-persistence checks remain NOT RUN. See the updated device protocol for the next low-risk steps.
+The owner reports the Settings screen showed 13 cached packages / 0 KB cache, 85,557 objects / 0 referrers, and GC stats 1,650 collected / 0 uncollectable. These counters are transient diagnostics, not performance/capacity measurements. Do not clear variables, run GC, or restart merely to reset them. The installed app/runtime baseline is known; the fixed success task generated the exact expected `summary.json` artifact, owner-inspected. Export/read-back, normal relaunch persistence and malformed-input testing remain NOT RUN. See the updated device protocol for the next low-risk steps.
 
 
 ## 2026-11-06 — First Editor attempt
 
-The owner reports that the green whole-file Editor run of the unchanged `main.py`, with `items.csv` in the same Pyodios project, displayed only `[Bridge/executePython] PythonError`. No traceback was visible. This is an observed attempt, but the cause and presence/content of `summary.json` remain UNKNOWN. Do not rerun the canonical script yet.
+The owner reports that the green whole-file Editor run of the unchanged `main.py`, with `items.csv` in the same Pyodios project, displayed only `[Bridge/executePython] PythonError`. No traceback was visible. This was initially an observed attempt with cause and artifact presence UNKNOWN. The later owner inspection recorded below confirmed the existing `summary.json` matches the success oracle exactly; the bridge cause and native exit status remain UNKNOWN. Do not rerun the canonical script yet.
 
-Read `PYODIOS_PYTHONERROR_BRIDGE_TRIAGE_20261106.md`. First inspect the same project's Files tab for `summary.json`; preserve and read it if present. Then inspect Settings → Diagnostics → Error Logs → View Error Log around the attempt timestamp. Redact unrelated source and local paths before sharing. The separate wrapper is available as a current-conversation attachment and has passed 4/4 local CPython 3.13.5 oracle/safety checks; the read-only saved-exception probe also passed a local smoke test. Neither has been run on Pyodios.
+Read `PYODIOS_PYTHONERROR_BRIDGE_TRIAGE_20261106.md`. The existing `summary.json` has already been inspected and exactly matches the success oracle; preserve it and do not rerun or overwrite the success project. Then inspect Settings → Diagnostics → Error Logs → View Error Log around the attempt timestamp. Redact unrelated source and local paths before sharing. The separate wrapper is available as a current-conversation attachment and has passed 4/4 local CPython 3.13.5 oracle/safety checks; the read-only saved-exception probe also passed a local smoke test. Neither has been run on Pyodios.
 
 Do not follow the older start-page instruction to change classifier precedence directly. The exit-provenance matrix requires resolving child exit, wrapper exit, termination confirmation and contradictory observations before any classifier change. Preserve CASE-04 as INCOMPLETE / timed_out.
 
