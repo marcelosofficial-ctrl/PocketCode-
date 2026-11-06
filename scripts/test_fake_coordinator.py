@@ -419,6 +419,37 @@ class FakeCoordinatorTests(unittest.TestCase):
         self.assertEqual(projection.verdict, "INCOMPLETE")
         self.assertEqual(projection.reason, "lifecycle_transition_conflict")
 
+    def test_unknown_lifecycle_status_cannot_be_ignored_before_success(self):
+        lease = self.coordinator.claim("effect-1", "worker-A", now=20, lease_seconds=20)
+        self.coordinator.mark_dispatching(lease, now=20)
+        self.coordinator.record_lifecycle_observation(
+            "effect-1", "attempt-1", event_id="life-unknown",
+            status="future_status", fence=lease.fence, now=21,
+        )
+        self.coordinator.record_lifecycle_observation(
+            "effect-1", "attempt-1", event_id="life-success",
+            status="succeeded", fence=lease.fence, now=22,
+        )
+        self.coordinator.record_exit_observation(
+            "effect-1", "attempt-1", event_id="child-exit-zero",
+            producer="direct_child_wait", kind="natural_exit",
+            exit_code=0, fence=lease.fence, now=23,
+        )
+        projection = self.coordinator.project_attempt_verdict("effect-1", "attempt-1")
+        self.assertEqual(projection.verdict, "INCOMPLETE")
+        self.assertEqual(projection.reason, "lifecycle_status_unknown")
+
+    def test_non_string_lifecycle_status_fails_closed_without_exception(self):
+        lease = self.coordinator.claim("effect-1", "worker-A", now=20, lease_seconds=20)
+        self.coordinator.mark_dispatching(lease, now=20)
+        self.coordinator.record_lifecycle_observation(
+            "effect-1", "attempt-1", event_id="life-list-status",
+            status=["succeeded"], fence=lease.fence, now=21,
+        )
+        projection = self.coordinator.project_attempt_verdict("effect-1", "attempt-1")
+        self.assertEqual(projection.verdict, "INCOMPLETE")
+        self.assertEqual(projection.reason, "lifecycle_status_invalid")
+
     def test_multiple_terminal_lifecycle_observations_require_reconciliation(self):
         lease = self.coordinator.claim("effect-1", "worker-A", now=20, lease_seconds=20)
         self.coordinator.mark_dispatching(lease, now=20)

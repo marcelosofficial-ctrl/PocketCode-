@@ -314,6 +314,10 @@ class FakeCoordinator:
             terminal_seen = False
             for observation in lifecycle_items:
                 status = observation.status
+                if not isinstance(status, str):
+                    return VerdictProjection("INCOMPLETE", "lifecycle_status_invalid", "unknown")
+                if status not in nonterminal_rank and status not in terminal:
+                    return VerdictProjection("INCOMPLETE", "lifecycle_status_unknown", status)
                 if status in nonterminal_rank:
                     if terminal_seen or nonterminal_rank[status] < previous_rank:
                         return VerdictProjection(
