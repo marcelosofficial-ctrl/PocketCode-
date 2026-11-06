@@ -1,6 +1,6 @@
 # Pyodios PythonError bridge triage — 2026-11-06
 
-**Current status:** The owner-reported Editor attempt produced a `summary.json` artifact that the owner inspected and confirmed matches the canonical oracle exactly. The Editor still displayed `[Bridge/executePython] PythonError`. Classification: **ARTIFACT-LEVEL FUNCTIONAL SUCCESS / BRIDGE ERROR UNRESOLVED / FULL RUN INCONCLUSIVE**. The underlying Python exception and native process exit status remain UNKNOWN. The separate wrapper passed four local CPython checks; neither wrapper nor saved-exception probe has run on the phone.
+**Current status:** The owner-reported Editor attempt produced a `summary.json` artifact that the owner inspected and confirmed matches the canonical oracle exactly. The Editor displayed `[Bridge/executePython] PythonError`. The owner then checked More → Settings → Error Log → View Error Log; the only detail was `Editor: PythonError`, with no traceback. Classification: **ARTIFACT-LEVEL FUNCTIONAL SUCCESS / BRIDGE ERROR UNRESOLVED / FULL RUN INCONCLUSIVE**. The underlying Python exception and trusted native process exit status remain UNKNOWN. The saved-exception Console probe and separate wrapper have not run on the phone.
 **Authority:** No change to canonical fixture, LOOP/CASE/D acceptance, runtime/provider selection, security boundary or $0 budget.
 
 ## Observed attempt
@@ -18,7 +18,7 @@ The canonical fixture is unchanged. Its final entrypoint is `raise SystemExit(ma
 
 | Rank | Gap | Reason and action |
 |---|---|---|
-| 1 | Pyodios bridge error has no visible root cause | First hands-on observation is inconclusive. Inspect an existing `summary.json` and timestamped Error Log before rerunning. |
+| 1 | Pyodios bridge error has no visible root cause | The artifact and Error Log are already checked. Run the read-only `sys.last_exc` / `sys.last_value` Console probe in the existing session; do not rerun the task. |
 | 2 | CLI exit semantics differ from embedded-interpreter semantics | `SystemExit` is an exception, not a native child-process result. Preserve the fixture and use a separate catch-and-report wrapper only if no artifact exists and the log is unhelpful. |
 | 3 | Project and Python working-folder sync | Files added externally while a project is open may not reach Python until the project is reopened. Reopen after external file changes. |
 | 4 | Generic exit-code provenance is underspecified | The integer may be child exit, wrapper exit, forced termination, stale or contradictory evidence. Resolve typed provenance before changing `classify_verdict()`. |
@@ -48,13 +48,12 @@ Python's `runpy` documentation explicitly says it executes in the current proces
 
 ## Owner diagnostic sequence
 
-**Do not run `main.py` again yet. Preserve the current attempt.**
+**Do not run `main.py` again. Preserve the current attempt and exact-match artifact. The Error Log has already been checked and yielded only `Editor: PythonError`, without traceback.**
 
 1. Open the same active Pyodios project and its Files tab.
 2. The owner has already inspected the existing `summary.json`; it matches the oracle: `grand_total` = `"10.75"`; `line_items` = `2`; `totals_by_item.notebook` = `"7.00"`; `totals_by_item.pen` = `"3.75"`. Preserve this file. Do not overwrite or rerun the success project.
-3. On iPhone, open **More → Settings**, scroll to **Error Log**, and tap **View Error Log**. Find the entry timestamped around the green-play attempt.
-4. Inspect it before sharing. Copy only the relevant entry/traceback; redact personal paths and unrelated source. Do not clear the log.
-5. If the log is unhelpful, open the Pyodios Console and run this read-only probe for Pyodide's saved exception (`sys.last_exc` preferred on Python 3.14, falling back to `sys.last_value`). It does not rerun `main.py`:
+3. Already completed by the owner: More → Settings → Error Log → View Error Log. The only available detail was `Editor: PythonError`; no traceback or underlying exception was exposed. Do not clear the log.
+4. Next, open the Pyodios Console in the existing session and run this read-only probe for Pyodide's saved exception (`sys.last_exc` preferred on Python 3.14, falling back to `sys.last_value`). It does not rerun `main.py`:
 
 ```python
 import sys
@@ -73,7 +72,7 @@ else:
     print("".join(traceback.format_exception(type(exc), exc, exc.__traceback__)))
 ```
 
-6. Only if no useful Error Log or saved exception is available, and the artifact does not exist, import the separate downloadable wrapper attachment `pocketcode_pyodios_runpy_diagnostic.py` and run it once. It refuses to execute if an input is absent or an earlier `summary.json` exists.
+6. If the probe returns no saved exception, do not infer that no exception occurred. Do not run the wrapper in the success project. If a further controlled diagnosis is justified, use a separate disposable project and preserve the current success project untouched.
 
 | Observation | Interpretation |
 |---|---|
@@ -82,7 +81,7 @@ else:
 | Log shows `SystemExit` with request 0 | Supports the bridge hypothesis; still verify the file values. |
 | Log shows `SystemExit` with request 2 and missing-file message | Likely fixture-handled file visibility issue; reopen project and confirm files before any later attempt. |
 | Log shows another exception | Follow that exact traceback; `SystemExit` hypothesis is insufficient. |
-| No JSON and no useful log | Cause remains UNKNOWN; wrapper is a controlled next diagnostic. |
+| No saved exception from the Console probe | Cause remains UNKNOWN; absence is unavailable evidence, not proof that no exception occurred. Consider any further wrapper test only in a separate disposable project. |
 
 ## Separate diagnostic wrapper and local verification
 
