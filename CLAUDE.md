@@ -7,6 +7,7 @@ Read [AGENTS.md](AGENTS.md) first. It contains shared rules for all agents.
 - Repository: https://github.com/marcelosofficial-ctrl/PocketCode-
 - Main entrypoint: [AI_COLLAB/CHAT_START_HERE.md](AI_COLLAB/CHAT_START_HERE.md)
 - Claude continuation brief: [AI_COLLAB/CLAUDE_HANDOFF_20261106.md](AI_COLLAB/CLAUDE_HANDOFF_20261106.md)
+- Full repository navigation and project map: [AI_COLLAB/CLAUDE_PROJECT_MAP_20261106.md](AI_COLLAB/CLAUDE_PROJECT_MAP_20261106.md)
 - State ledger: [AI_COLLAB/STATE_LEDGER_20261106.md](AI_COLLAB/STATE_LEDGER_20261106.md)
 - Execution/recovery contract: [AI_COLLAB/EXECUTION_EVIDENCE_AND_RECOVERY_CONTRACT_20261106.md](AI_COLLAB/EXECUTION_EVIDENCE_AND_RECOVERY_CONTRACT_20261106.md)
 - Product/architecture/safety: [PRODUCT_SPEC.md](PRODUCT_SPEC.md), [ARCHITECTURE.md](ARCHITECTURE.md), [SECURITY.md](SECURITY.md), [ROADMAP.md](ROADMAP.md), [DECISIONS.md](DECISIONS.md)

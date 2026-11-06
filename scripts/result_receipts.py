@@ -232,8 +232,20 @@ class ResultReceiptStore:
             if self._revision_fingerprints[revision_key] == fingerprint:
                 return prior
             raise ReceiptConflict("revision key already binds a different immutable receipt")
-        version = 1 + sum(1 for receipt in self._receipts
-                          if receipt.effect_id == effect_id and receipt.attempt_id == attempt_id)
+
+        history = [receipt for receipt in self._receipts
+                   if receipt.effect_id == effect_id and receipt.attempt_id == attempt_id]
+        latest = max(history, key=lambda receipt: receipt.version) if history else None
+        if latest is None and predecessor_receipt_id is not None:
+            raise ReceiptConflict("first receipt version cannot name a predecessor")
+        if latest is not None and predecessor_receipt_id != latest.receipt_id:
+            raise ReceiptConflict("new receipt version must extend the latest version without forking")
+        if predecessor_receipt_id is not None:
+            predecessor = next(receipt for receipt in self._receipts
+                               if receipt.receipt_id == predecessor_receipt_id)
+            if predecessor.effect_id != effect_id or predecessor.attempt_id != attempt_id:
+                raise ReceiptConflict("predecessor must belong to the same effect and attempt")
+        version = latest.version + 1 if latest is not None else 1
         receipt_id = f"receipt-{len(self._receipts) + 1}"
         receipt = ResultReceipt(
             receipt_id, revision_key, version, effect_id, attempt_id, contract_version,

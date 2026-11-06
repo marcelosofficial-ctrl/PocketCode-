@@ -559,3 +559,10 @@ Next: await owner-provided read-only Pyodios saved-exception probe output; prese
 **Implemented model:** `scripts/result_receipts.py` plus 23 tests. Receipt revisions are immutable and idempotent by revision key; evidence refs pair with SHA-256; artifact manifests bind exact byte size/digest to an attempt; partial writes and digest mismatches quarantine; safe logical basenames prevent path traversal; release checks current authorization and current attempt on each call; failed report publication retries the same receipt ID and never calls execution.
 
 **Limits:** pure in-memory conformance model, not durable, signed, authenticated, malware-scanned, mobile-integrated or a production artifact-release service. Current authorization is a supplied typed value, not an external policy verification.
+
+
+## 2026-11-06 — PC receipt chain and Claude map
+
+- Red-team review found that receipt versions could previously point to a predecessor from a different effect/attempt or fork from an older version. Enforced a single linear receipt revision chain per `(EffectId, DispatchAttemptId)`; first receipt has no predecessor, every later receipt extends the latest, and predecessor identity must match both dimensions.
+- Added cross-effect/cross-attempt and stale-predecessor tests. Receipt suite now has 25 test methods; CI pending.
+- Added `AI_COLLAB/CLAUDE_PROJECT_MAP_20261106.md` and linked it from `CLAUDE.md` and the Claude continuation brief. It supplies GitHub entrypoints, branch, docs/code paths, project mission, constraints, roles and next steps.

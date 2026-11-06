@@ -5,6 +5,10 @@ Research branch: \`pocketcode-ai-workflow-director-research-2026-10-28\`
 Branch: https://github.com/marcelosofficial-ctrl/PocketCode-/tree/pocketcode-ai-workflow-director-research-2026-10-28  
 Always fetch the live branch head before work. The commit that adds this brief is not a permanent latest pin.
 
+## Full repository map
+
+Read [CLAUDE_PROJECT_MAP_20261106.md](CLAUDE_PROJECT_MAP_20261106.md) for the canonical GitHub links, repository navigation, code/test map, product direction, boundaries, team roles and next actions.
+
 ## Mission
 
 PocketCode is a phone-first, provider-neutral AI orchestration and execution control plane for iOS and Android. It aims to turn AI-generated technical tasks into bounded execution, truthful evidence and artifacts, durable recovery, and user-mediated correction through any AI assistant. It is not another generic mobile Python IDE.

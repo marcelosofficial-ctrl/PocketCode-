@@ -287,3 +287,10 @@ Next task: owner runs only the read-only Pyodios sys.last_exc / sys.last_value C
 - Successful exact-SHA CI: https://github.com/marcelosofficial-ctrl/PocketCode-/actions/runs/42308449590 at `ce7409ac9077154f5f058799b0d6028fb3e98ee0`, Ubuntu 24.04 / Python 3.12, **177 passed, 0 failed**.
 - This is an in-memory conformance model. It does not authenticate evidence producers, sign receipts, scan artifacts, persist across restarts, provide actual download/share, or prove current authorization outside the passed test object.
 - Next: compose receipts with accepted coordinator events, verify immutable later versions and publication retry semantics, then design durable atomicity requirements without selecting a store prematurely.
+
+
+## 2026-11-06 receipt revision chain red-team refinement
+
+- New receipt versions now form one linear chain per `(EffectId, DispatchAttemptId)`: the first version has no predecessor; each later version must name the latest version; a predecessor from another effect/attempt or a stale predecessor that would fork history is rejected. Exact revision-key replay remains idempotent.
+- Added regression tests for cross-attempt/cross-effect links and stale-predecessor forks. New test count: 25 in the receipt model; branch CI pending for this commit.
+- Added `AI_COLLAB/CLAUDE_PROJECT_MAP_20261106.md` with canonical GitHub links, navigation order, project/code/test map, roles, boundaries and Claude's next actions. Linked it from `CLAUDE.md` and the Claude handoff.

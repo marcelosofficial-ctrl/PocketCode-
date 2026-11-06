@@ -316,3 +316,8 @@ The branch-scoped, test-only workflow `PocketCode Python conformance tests` pass
 ## Latest verified CI and new receipt model
 
 The branch-scoped Python suite now passes **177/177** at exact commit `ce7409ac9077154f5f058799b0d6028fb3e98ee0`, Python 3.12 / Ubuntu 24.04: https://github.com/marcelosofficial-ctrl/PocketCode-/actions/runs/42308449590. New files: `scripts/result_receipts.py` and `scripts/test_result_receipts.py`. They model immutable receipt revisions, attempt-bound artifact digests/quarantine, current authorization checks for each release, and report-copy retries using the same receipt. This remains an in-memory model, not durable storage or real release/security enforcement. Recheck live branch head before relying on this CI result.
+
+
+## 2026-11-06 — receipt chain and Claude repository map
+
+Receipt version history is now linear per effect/attempt, preventing cross-effect/cross-attempt predecessor links and stale-predecessor forks. New receipt-model tests are pending CI. Claude's navigation and project context is consolidated in [AI_COLLAB/CLAUDE_PROJECT_MAP_20261106.md](CLAUDE_PROJECT_MAP_20261106.md), linked from root `CLAUDE.md` and [Claude handoff](CLAUDE_HANDOFF_20261106.md).

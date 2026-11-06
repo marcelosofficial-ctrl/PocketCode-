@@ -119,6 +119,36 @@ class ResultReceiptTests(unittest.TestCase):
         self.assertEqual(len(self.store.receipts), 2)
         self.assertEqual(first.collection_state, "complete")
 
+    def test_revision_predecessor_must_match_effect_and_attempt(self):
+        predecessor = self.create(attempt_id="attempt-2", artifact_ids=())
+        with self.assertRaises(ReceiptConflict):
+            self.create(revision_key="wrong-attempt-link",
+                        predecessor_receipt_id=predecessor.receipt_id,
+                        revision_reason="invalid cross-attempt link", created_at_ms=101)
+        same_attempt_other_effect = self.create(
+            revision_key="other-effect", effect_id="effect-2", artifact_ids=(),
+        )
+        with self.assertRaises(ReceiptConflict):
+            self.create(revision_key="wrong-effect-link",
+                        predecessor_receipt_id=same_attempt_other_effect.receipt_id,
+                        revision_reason="invalid cross-effect link", created_at_ms=102)
+
+    def test_receipt_versions_must_extend_latest_without_forking(self):
+        first = self.create()
+        second = self.create(
+            revision_key="receipt-rev-2", created_at_ms=110,
+            predecessor_receipt_id=first.receipt_id,
+            revision_reason="late collector evidence",
+            collection_state="degraded",
+            uncertainties=("stderr collector incomplete",),
+        )
+        with self.assertRaises(ReceiptConflict):
+            self.create(revision_key="receipt-rev-3-fork", created_at_ms=120,
+                        predecessor_receipt_id=first.receipt_id,
+                        revision_reason="attempt to fork history")
+        self.assertEqual(second.version, 2)
+        self.assertEqual(len(self.store.receipts), 2)
+
     def test_receipt_rejects_mismatched_artifact_attempt(self):
         self.store.stage_artifact(ArtifactInput(
             "artifact-other", "other.json", "application/json", "attempt-2", b"x", True,
