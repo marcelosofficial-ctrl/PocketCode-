@@ -217,3 +217,24 @@ RevDev run #48 42181302862 passed 91/91 at exact source/test SHA 935108a6937f15b
 RevDev then found its clean installer overwrote R5_INSTALLED.txt without including it in rollback. It added backup/restore and remove-new-marker behavior, plus two tests. Latest RevDev source SHA a6defbb0e8b0902e8ecc20777d0a10dc25ae344b, 93 authored tests, run #49 42182731390 pending. This is not PocketCode evidence.
 
 Transferable lesson: package/install/update/rollback are part of the execution boundary. Trace every imported runtime dependency through the actual installer and include mutable provenance markers in rollback. For any multi-file update, fetch all files from one immutable source commit. Continue CASE-04 independently; no RevDev implementation or acceptance transfers.
+
+
+## 2026-11-06 — PC-2026-11-06-P15 — Pyodios bridge source triage and test-boundary red-team
+
+**Objective:** continue from the owner-reported Pyodios Editor attempt, resolve artifact and bridge evidence without overwriting the successful fixture, and reconcile stale guidance.
+
+**Ranked gaps worked:** (1) bridge root cause remains unknown after Error Log exposed only `Editor: PythonError`; next read-only session exception probe; (2) embedded interpreter versus CLI `SystemExit`; (3) project folder versus Python working-folder synchronization; (4) generic `exit_code` provenance before CASE-04 classifier change; (5) Pyodios no-interrupt / UI timeout does not prove termination.
+
+**Primary-source research:** opened Pyodide 314.0.5 type conversion docs and exact source `src/core/error_handling.c`; reviewed Python 3.14 `sys.last_exc` and `SystemExit`; compared exact Pyodide source logic at 314.0.5 and 314.0.7; reviewed Pyodios v1.1.0 Editor, Projects, Files, Settings/Error Log and FAQ docs. `SystemExit` remains only a plausible bridge lead because Pyodios does not document `PyConfig.inspect`. Python 3.14 probe reads `sys.last_exc` first then `sys.last_value`; absence of either is unavailable evidence, not proof there was no exception.
+
+**Red-team fixes:** (1) define `PythonError` as JS-side Python-boundary exception, not root cause; (2) preserve canonical CLI fixture and isolate `SystemExit` catch in a separate diagnostic wrapper; (3) distinguish Files-list pull-to-refresh from reopening the project to synchronize external additions into the Python session; (4) replace stale CASE-04 precedence-only instruction with typed provenance-first rule; (5) correct device state to owner-inspected exact artifact success with bridge/full-run inconclusive; (6) correct stdout-only test assertion to inspect stderr for malformed-input diagnostic; (7) correct Error Log navigation and log privacy warning; (8) correct old handoff instructions to prohibit rerunning the successful project.
+
+**Deliverables:** expanded `AI_COLLAB/PYODIOS_PYTHONERROR_BRIDGE_TRIAGE_20261106.md`; refreshed device baseline/protocol, continuation handoff, `PROJECT_STATUS.md`, `CHAT_START_HERE.md` and this log. Separate wrapper retained as a conversation attachment only, not product source. Local CPython 3.13.5 wrapper verification: **4/4** (success oracle, malformed input/stderr, existing-output refusal with unchanged sentinel, missing-input refusal). Read-only exception probe smoke test passed locally. Neither wrapper nor probe is tested on Pyodios.
+
+**Latest device evidence:** success `summary.json` exact-match was owner-inspected. Error Log was then checked; its only entry was `Editor: PythonError`, without traceback. Current classification remains **ARTIFACT-LEVEL FUNCTIONAL SUCCESS / BRIDGE ERROR UNRESOLVED / FULL RUN INCONCLUSIVE**. Next: run only the read-only `sys.last_exc` / `sys.last_value` Console probe in the existing session. Preserve success artifact. Do not rerun, overwrite, restart session, clear variables/logs or run GC. Malformed-input case comes later in a separate fresh project.
+
+**CASE-04 decision:** no `report_contract.py` or test patch. Resolve typed child exit vs wrapper exit vs forced termination, lifecycle evidence and contradictions at the coordinator boundary first. Preserve CASE-04 INCOMPLETE/timed_out and all canonical LOOP/CASE/D IDs.
+
+**Repository snapshot before this pass record:** branch `b18fc0c5b58825b54fe98c5486cfee48cecbbb56`, 805 ahead / 0 behind `main`; merge base `555840d8d83342513d9cd353d4d1522d46a5c82d`. PR #2 and #3 OPEN/DRAFT and unchanged. Ahead count is history divergence, not product progress.
+
+**Boundaries:** $0 default retained. No product implementation, fixture, schema, suite, runtime/provider, PR, Actions, deployment, merge or PC-side operation changed.
