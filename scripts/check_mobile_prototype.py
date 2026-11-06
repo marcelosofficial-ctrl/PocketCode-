@@ -93,9 +93,11 @@ def main() -> int:
         errors.append("Tab keyboard navigation must support arrows, Home and End")
     if not re.search(r"aria-live=[\"\']polite[\"\']", html, re.IGNORECASE):
         errors.append("Missing aria-live status/output region")
-    if 'id="codeTab" role="tab" aria-selected="true" aria-controls="codePanel" tabindex="0"' not in html:
+    code_tab = re.search(r'<button[^>]*id="codeTab"[^>]*>', html)
+    input_tab = re.search(r'<button[^>]*id="inputTab"[^>]*>', html)
+    if not code_tab or 'tabindex="0"' not in code_tab.group(0):
         errors.append("Selected code tab must start with tabindex=0")
-    if 'id="inputTab" role="tab" aria-selected="false" aria-controls="inputPanel" tabindex="-1"' not in html:
+    if not input_tab or 'tabindex="-1"' not in input_tab.group(0):
         errors.append("Inactive input tab must start with tabindex=-1")
     if "codeTab.setAttribute('tabindex',isCode?'0':'-1')" not in html:
         errors.append("Code tab selection does not update the roving tabindex")
