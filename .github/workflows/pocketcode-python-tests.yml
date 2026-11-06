@@ -1,0 +1,31 @@
+name: PocketCode Python conformance tests
+
+on:
+  push:
+    branches:
+      - pocketcode-ai-workflow-director-research-2026-10-28
+    paths:
+      - "scripts/**"
+      - ".github/workflows/pocketcode-python-tests.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pocketcode-python-tests-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  unittest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out exact commit
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Run repository Python conformance suite
+        run: python -m unittest discover -s scripts -p "test_*.py" -v
