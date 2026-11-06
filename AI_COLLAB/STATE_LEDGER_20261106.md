@@ -274,3 +274,8 @@ Next task: owner runs only the read-only Pyodios sys.last_exc / sys.last_value C
 - Added an isolated in-memory model for immutable versioned result receipts, exact-byte artifact manifests, quarantine, per-request current authorization checks and same-receipt publication retries. See `scripts/result_receipts.py` and `scripts/test_result_receipts.py`.
 - The model is not durable, signed, malware-scanned, provider-authenticated or production-integrated. Digests establish byte integrity relative to stored values, not producer authenticity or safety. A later observation creates a linked receipt version; it never mutates an earlier receipt. Report-copy retry uses the same receipt and does not trigger task execution.
 - Test result is pending the branch-scoped Python CI run at the next source commit.
+
+
+## 2026-11-06 receipt-model CI defect
+
+- First CI run including the receipt model discovered one implementation typo: the publication-attempt collection was initialized as a dictionary but consumed as an append-only list. Corrected initialization to an empty list. The failure was in receipt publication bookkeeping, not the recovery/outbox suite.

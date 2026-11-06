@@ -545,3 +545,8 @@ Next: await owner-provided read-only Pyodios saved-exception probe output; prese
 
 - Started the next boundary from the execution/recovery contract: immutable receipt versions, attempt-bound artifact manifest, exact byte digest/size, partial-write and digest-mismatch quarantine, current authorization on every release, and copy/share retry against the same receipt without rerunning work.
 - Added `scripts/result_receipts.py` and `scripts/test_result_receipts.py`. This remains a pure in-memory model; CI result pending.
+
+
+## 2026-11-06 — receipt model first CI defect
+
+- CI run `42308334955` discovered `_publication_attempts` was initialized as `{}` while the append-only publication API uses `.append()`. Corrected it to `[]`. The run had 174 tests and one error; the next exact-SHA run will verify the fix and the additional receipt validation tests.

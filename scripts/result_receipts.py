@@ -102,7 +102,7 @@ class ResultReceiptStore:
         self._receipts: list[ResultReceipt] = []
         self._receipt_by_revision: dict[str, ResultReceipt] = {}
         self._revision_fingerprints: dict[str, str] = {}
-        self._publication_attempts: list[PublicationAttempt] = {}
+        self._publication_attempts: list[PublicationAttempt] = []
 
     @property
     def receipts(self) -> tuple[ResultReceipt, ...]:
