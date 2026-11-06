@@ -18,8 +18,7 @@ Recent verified work:
 
 CI evidence:
 - RevDev run #37 passed 73/73 on Windows PowerShell 5.1 / Pester 5.7.1 at exact older head `c483d8b5c21c362d4236b521b8958572fb223f8f`: https://github.com/marcelosofficial-ctrl/DevRelay-Missions/actions/runs/42178716235
-- The next RevDev change adds publisher request-identity tests and quarantine safeguards. Current exact head `40a8698060b50b3a94f946fe443caf201fd0f168` has 81 authored Pester cases (59 publisher + 22 local-result/recovery/quarantine). Run #42 `42180012296` was still in progress during this note: https://github.com/marcelosofficial-ctrl/DevRelay-Missions/actions/runs/42180012296
-- Do not call the 81-case revision verified until run #42 is complete and its exact head/count are confirmed.
+- The next RevDev change adds publisher request-identity tests and quarantine safeguards. Current exact source/test head `40a8698060b50b3a94f946fe443caf201fd0f168` has 81 authored Pester cases (59 publisher + 22 local-result/recovery/quarantine). Run #42 `42180012296` completed SUCCESS with **81 passed, 0 failed, 0 skipped, 0 inconclusive, 0 not run** under Windows PowerShell 5.1 / Pester 5.7.1: https://github.com/marcelosofficial-ctrl/DevRelay-Missions/actions/runs/42180012296. Later commits in RevDev's branch were documentation-only at this checkpoint. Do not interpret this as live product or canonical P8U/P0-D acceptance.
 - These are RevDev maintenance-source tests only. No live GitHub API, queue/watcher/mission execution, installed-PC parity or canonical P8U/P0-D acceptance is claimed. P0 remains open.
 
 ## Transferable engineering lessons for PocketCode
@@ -53,3 +52,8 @@ GitHub is durable project memory. A ChatGPT conversation is a temporary worker, 
 
 Continue PocketCode's own highest-value task: inspect and fix `scripts/report_contract.py` CASE-04 timeout classification so trusted `timed_out` evidence wins over a nonzero exit code and produces INCOMPLETE/timed_out, with a complete evidence fixture. Reconcile Gemini's concern that degraded collectors/teardown cannot produce PASS/FAIL. Then run PocketCode's own exact suite and update its own evidence. Do not let the RevDev work displace CASE-04.
 
+
+
+## CI verification closeout
+
+RevDev's run #42 exact source/test revision passed 81/81. This supersedes the pending status earlier in this note. The next RevDev step is independent Claude/Gemini review of local-result discovery, digest/request identity binding, READ_ONLY RUN_ONCE policy, quarantine multi-step failure semantics, and PowerShell native process state. PocketCode should continue CASE-04 independently.
