@@ -1,6 +1,6 @@
 # PocketCode Chat Start Here
 
-**Last refreshed:** 2026-11-06 (final cross-project CI update)  
+**Last refreshed:** 2026-11-06 (RevDev CI closeout and cross-project handoff)  
 **Authority:** live PocketCode branch state plus canonical source/spec/test records. This file is the compact first-read entrypoint for every new PocketCode chat.
 
 ## Current cross-project note
@@ -15,7 +15,7 @@ Read this file, verify the live branch/PR/CI state, and fetch only the linked ta
 
 - Repo: https://github.com/marcelosofficial-ctrl/PocketCode-
 - Branch: `pocketcode-ai-workflow-director-research-2026-10-28`
-- Last observed pre-entrypoint-refresh snapshot 2026-11-06: **740 ahead / 0 behind** main; branch head `99bbfa9d3b3e479f206e0ce7725d49cb7e227e97`; merge base `555840d8d83342513d9cd353d4d1522d46a5c82d`. Re-fetch before consequential work. Ahead count is branch-history divergence, not product progress.
+- Last verified PocketCode branch head at this checkpoint: `a68e9237c606c6812ec8b6169423319563dc6842`. Ahead/behind comparison not refreshed; fetch live compare before consequential work. Historical merge base: `555840d8d83342513d9cd353d4d1522d46a5c82d`. Ahead count is branch-history divergence, not product progress.
 - Open PR #2: [Add chat checkpoints and harden report-contract regressions](https://github.com/marcelosofficial-ctrl/PocketCode-/pull/2), OPEN/DRAFT from branch `chat-continuity-report-regressions-2026-10-26`.
 - Open PR #3: [Draft: Add evidence-led PocketCode research baseline](https://github.com/marcelosofficial-ctrl/PocketCode-/pull/3), OPEN/DRAFT from branch `pocketcode-pass0-audit-2026-10-26`.
 - PR #2/#3 are not this active research branch and were not modified. Do not infer the active branch's commits are included in either PR.
