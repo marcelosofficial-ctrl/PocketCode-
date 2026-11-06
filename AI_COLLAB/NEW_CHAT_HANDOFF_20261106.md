@@ -92,3 +92,10 @@ The owner reports that the green whole-file Editor run of the unchanged `main.py
 Read `PYODIOS_PYTHONERROR_BRIDGE_TRIAGE_20261106.md`. First inspect the same project's Files tab for `summary.json`; preserve and read it if present. Then inspect Settings → Diagnostics → Error Logs → View Error Log around the attempt timestamp. Redact unrelated source and local paths before sharing. The separate wrapper is available as a current-conversation attachment and has passed 4/4 local CPython 3.13.5 oracle/safety checks; the read-only saved-exception probe also passed a local smoke test. Neither has been run on Pyodios.
 
 Do not follow the older start-page instruction to change classifier precedence directly. The exit-provenance matrix requires resolving child exit, wrapper exit, termination confirmation and contradictory observations before any classifier change. Preserve CASE-04 as INCOMPLETE / timed_out.
+
+
+## Latest device result: exact success artifact, bridge error unresolved (2026-11-06)
+
+Owner inspected the existing Pyodios project's Files tab. `summary.json` exists and exactly matches the frozen oracle: `grand_total: "10.75"`, `line_items: 2`, `totals_by_item: {notebook: "7.00", pen: "3.75"}`. The Editor still displayed only `[Bridge/executePython] PythonError`.
+
+Classify as **artifact-level functional success (owner-inspected), bridge error unresolved, full run inconclusive**. This replaces the prior UNKNOWN artifact outcome. Do not rerun or overwrite the success project. Obtain the timestamped Pyodios Error Log first, redact sensitive details, then use the documented read-only `sys.last_exc` / `sys.last_value` Console probe if needed. `SystemExit` remains a hypothesis only. Once diagnostics are captured, run malformed input only in a separate fresh project. Do not claim a process exit status unless Pyodios directly exposes it.
