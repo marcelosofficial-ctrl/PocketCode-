@@ -302,3 +302,8 @@ A third safety issue was found: even an authenticated provider lookup can be eve
 - Exact duplicate identity now requires same source/event ID, issuer+subject, exact payload bytes and occurrence timestamp. Observation timestamp may differ on replay.
 - Same issuer+subject with a rotated key ID remains an exact duplicate. Different producer principal, changed payload, or changed occurrence timestamp is quarantined.
 - This distinction avoids false conflict on credential rotation while preserving event-fact immutability. Current event's key ID remains recorded on first accepted event; production adapter must retain its own verification audit.
+
+
+## Latest recovery composition checkpoint (2026-11-06)
+
+The next increment composes the fake outbox and event journal in `scripts/fake_coordinator.py`, with tests in `scripts/test_fake_coordinator.py`. This remains an in-memory conformance model. It covers reservation repair, lease/fence-bound dispatch intent, post-send reconciliation, acknowledgement repair and deterministic read-model rebuild. The fake outbox now persists reservation creation and acknowledgement observation timestamps so event repair reuses stable occurrence times. The two stores are not transactionally atomic; concurrency, process/power-loss durability and product integration are NOT ESTABLISHED. See `AI_COLLAB/CLAUDE_HANDOFF_20261106.md` for Claude's full navigation brief.

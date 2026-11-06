@@ -210,3 +210,11 @@ Next task: owner runs only the read-only Pyodios sys.last_exc / sys.last_value C
 - Same authenticated issuer+subject with rotated key ID and identical event facts is now deduplicated. Key rotation should not create a false event identity conflict.
 - Exact duplicate also requires the same occurrence timestamp; observation timestamp may differ. Changed occurrence time is an altered event fact and is quarantined.
 - Expanded local suite to 21 tests; 21/21 passed. GitHub source/test files were updated in follow-on commits. Authentication and durable atomicity limitations remain unchanged.
+
+
+## 2026-11-06 coordinator composition increment
+
+- Added `scripts/fake_coordinator.py` and `scripts/test_fake_coordinator.py` to compose the in-memory outbox and append-only event journal.
+- Persisted reservation creation time and acknowledgement observation time in the fake outbox so interrupted event appends can be repaired using stable event occurrence timestamps.
+- Scope remains deterministic in-memory modeling. Durable atomicity, concurrent writers, process/power-loss recovery, real provider authentication, product integration and CI are NOT ESTABLISHED.
+- Claude navigation: read `CLAUDE.md` and `AI_COLLAB/CLAUDE_HANDOFF_20261106.md` before taking the next implementation/review task.

@@ -148,6 +148,22 @@ class FakeOutboxTests(unittest.TestCase):
         with self.assertRaises(OutboxConflict):
             self.store.claim("effect-1", "worker-B", now=6, lease_seconds=5)
 
+    def test_reservation_persists_creation_timestamp_for_recovery(self):
+        reservation = self.store.reserve(
+            "effect-time", "attempt-time", "sha256:t", b'{"t":1}', created_at_ms=123,
+        )
+        self.assertEqual(reservation.created_at_ms, 123)
+        replay = self.store.reserve(
+            "effect-time", "attempt-time", "sha256:t", b'{"t":1}', created_at_ms=999,
+        )
+        self.assertEqual(replay.created_at_ms, 123)
+
+    def test_acknowledgement_persists_observation_timestamp(self):
+        lease = self.store.claim("effect-1", "worker-A", now=10, lease_seconds=20)
+        self.store.mark_dispatching(lease, now=11)
+        self.store.acknowledge(lease, "provider-time", now=12)
+        self.assertEqual(self.store.get("effect-1").acknowledged_at, 12)
+
     def test_acknowledgement_requires_current_dispatch_lease(self):
         lease = self.store.claim("effect-1", "worker-A", now=0, lease_seconds=5)
         self.store.mark_dispatching(lease, now=1)

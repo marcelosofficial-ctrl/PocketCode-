@@ -25,6 +25,7 @@ class Reservation:
     request_fingerprint: str
     request_bytes: bytes
     sequence: int
+    created_at_ms: Optional[int] = None
 
 
 @dataclass(frozen=True)
@@ -44,6 +45,7 @@ class OutboxRecord:
     lease_expires_at: Optional[int] = None
     fence: int = 0
     provider_reference: Optional[str] = None
+    acknowledged_at: Optional[int] = None
 
 
 @dataclass(frozen=True)
@@ -74,7 +76,7 @@ class FakeOutboxStore:
     def reserve(
         self, effect_id: str, attempt_id: str, request_fingerprint: str,
         request_bytes: bytes, *, fail_before_commit: bool = False,
-        new_attempt_authorized: bool = False,
+        new_attempt_authorized: bool = False, created_at_ms: Optional[int] = None,
     ) -> Reservation:
         """Atomically add reservation + dispatch intent, or add neither."""
         if not all(isinstance(v, str) and v.strip() for v in
@@ -82,6 +84,8 @@ class FakeOutboxStore:
             raise ValueError("reservation identity fields must be non-empty strings")
         if not isinstance(request_bytes, bytes) or not request_bytes:
             raise ValueError("request_bytes must be non-empty immutable bytes")
+        if created_at_ms is not None and (isinstance(created_at_ms, bool) or not isinstance(created_at_ms, int) or created_at_ms < 0):
+            raise ValueError("created_at_ms must be a non-negative integer when supplied")
         key = (effect_id, attempt_id)
         existing = self._records.get(key)
         if existing is not None:
@@ -99,7 +103,7 @@ class FakeOutboxStore:
         # until after the injected crash point.
         reservation = Reservation(
             effect_id, attempt_id, request_fingerprint, bytes(request_bytes),
-            self._sequence + 1,
+            self._sequence + 1, created_at_ms,
         )
         record = OutboxRecord(reservation=reservation)
         if fail_before_commit:
@@ -175,6 +179,7 @@ class FakeOutboxStore:
             raise ValueError("provider reference must be non-empty")
         self._records[(lease.effect_id, lease.attempt_id)] = replace(
             record, state="acknowledged", provider_reference=provider_reference,
+            acknowledged_at=now,
         )
 
     def resolve_reconciliation(

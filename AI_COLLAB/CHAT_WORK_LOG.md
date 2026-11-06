@@ -481,3 +481,13 @@ Next: await owner-provided read-only Pyodios saved-exception probe output; prese
 - Red-team refinement: deduplicate across signing-key rotation for the same issuer+subject; require exact occurrence time as part of event facts; permit observation time to differ on replay.
 - Different producer principal, changed bytes, or changed occurrence timestamp now quarantine under the same source/event ID.
 - Updated source and tests; local run 21/21 passed. Documentation reflects revised semantics.
+
+
+## 2026-11-06 — fake coordinator composition and Claude handoff
+
+- Re-read the live entrypoint, state ledger, execution recovery contract, product/spec/architecture/security/roadmap/decision files, Claude instructions and current outbox/journal/projection/reconciliation prototypes.
+- Added a deterministic coordinator composition model and 13 focused tests for reservation repair, event replay, lease/fence binding, stale acknowledgements, post-send reconciliation, acknowledgement repair and projection rebuild.
+- Added persisted reservation creation and acknowledgement observation timestamps to the fake outbox. Recovery uses these stored timestamps rather than inventing event occurrence times.
+- Added a Claude continuation brief and expanded root CLAUDE.md with repository paths, product direction, role boundaries, current code map, device evidence and next gate.
+- Verification caveat: the 13 coordinator tests were exercised in this session against API-compatible in-memory test doubles, not the canonical repository modules in a checkout. This is NOT canonical integration-test evidence. The repository test suite must be run by Claude or in a real checkout before promoting the result.
+- No provider, runtime, database, cloud host, paid service, deployment, merge or unrelated PR was selected or changed.
