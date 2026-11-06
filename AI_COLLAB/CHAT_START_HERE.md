@@ -20,7 +20,7 @@ GitHub is the durable project state. Do not rely on a last-minute full-chat hand
 **Important limitation:** this protocol reduces avoidable context pressure and tool stalls; it cannot prevent platform context limits, service outages or execution failures. The goal is graceful interruption with no lost project state.
 
 
-**Last refreshed:** 2026-11-06 (Pyodios first-run triage and CASE-04 provenance correction)  
+**Last refreshed:** 2026-11-06 (CASE-04 priority and RevDev 91-case cross-project CI closeout)  
 **Authority:** live PocketCode branch state plus canonical source/spec/test records. This file is the compact first-read entrypoint for every new PocketCode chat.
 
 ## Current cross-project note
