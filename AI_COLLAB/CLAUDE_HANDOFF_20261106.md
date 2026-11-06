@@ -131,3 +131,14 @@ Inspect current branch/source, define narrow acceptance criteria, implement one 
 - Includes 23 result receipt tests for immutable revision replay, evidence digest binding, attempt-bound artifacts, partial-write/digest quarantine, current authorization revalidation, stale-attempt release denial and retrying report publication against the same receipt.
 - Model limitations remain: in-memory only, no signature/producer authenticity, no malware scanning, no durable object store, no real authorization provider, no mobile integration, and no concurrent/power-loss guarantees.
 - Next gate: adversarially compose receipts with coordinator evidence and prove that later observation/reconciliation creates a new immutable receipt version while report publication retries do not trigger execution or mutate prior receipt bytes.
+
+
+## Latest exact-SHA CI result (2026-11-06)
+
+- Run: https://github.com/marcelosofficial-ctrl/PocketCode-/actions/runs/42308764330
+- Exact tested commit: `4d4d66561b176b560b49fb00c6b600617bbeef97`
+- Environment: GitHub-hosted Ubuntu 24.04, Python 3.12.
+- Command: `python -m unittest discover -s scripts -p "test_*.py" -v`
+- Result: **179 tests passed, 0 failed**. This includes the receipt version-chain regression tests.
+- Receipt revisions now form one linear chain per `(EffectId, DispatchAttemptId)`: first version has no predecessor; later versions must extend the latest version; cross-effect, cross-attempt and stale-predecessor forks are rejected.
+- This validates only the repository's standard-library Python test suite at this exact SHA. It does not establish iOS/Android/Pyodios behavior, durable atomic transactions, concurrent safety, real provider authentication, hostile-code sandboxing, artifact malware safety or release acceptance. Later source commits need their own exact-SHA run.

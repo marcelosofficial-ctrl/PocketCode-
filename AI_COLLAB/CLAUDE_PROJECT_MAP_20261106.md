@@ -75,3 +75,11 @@ Finish the fake end-to-end recovery-to-receipt-to-artifact publication conforman
 4. Independently review the receipt model for version-chain and authorization weaknesses.
 5. Run the exact Python suite and report exact commit/environment/results.
 6. Keep the next increment small enough to prove; update the ledger and work log with limitations.
+
+
+## Latest verified test checkpoint
+
+- Exact SHA: `4d4d66561b176b560b49fb00c6b600617bbeef97`
+- CI run: https://github.com/marcelosofficial-ctrl/PocketCode-/actions/runs/42308764330
+- Python 3.12 / Ubuntu 24.04; 179 passed, 0 failed.
+- Latest receipt version-chain implementation is included. Always re-check branch head before relying on this checkpoint.

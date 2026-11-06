@@ -321,3 +321,8 @@ The branch-scoped Python suite now passes **177/177** at exact commit `ce7409ac9
 ## 2026-11-06 — receipt chain and Claude repository map
 
 Receipt version history is now linear per effect/attempt, preventing cross-effect/cross-attempt predecessor links and stale-predecessor forks. New receipt-model tests are pending CI. Claude's navigation and project context is consolidated in [AI_COLLAB/CLAUDE_PROJECT_MAP_20261106.md](CLAUDE_PROJECT_MAP_20261106.md), linked from root `CLAUDE.md` and [Claude handoff](CLAUDE_HANDOFF_20261106.md).
+
+
+## 2026-11-06 — latest exact-SHA conformance result
+
+The latest branch source checkpoint passed **179/179** repository Python tests on exact commit `4d4d66561b176b560b49fb00c6b600617bbeef97`, Ubuntu 24.04 / Python 3.12: [GitHub Actions run 42308764330](https://github.com/marcelosofficial-ctrl/PocketCode-/actions/runs/42308764330). This includes linear receipt version-chain tests. This is not device, durable-storage, concurrency, provider, sandbox or release acceptance.

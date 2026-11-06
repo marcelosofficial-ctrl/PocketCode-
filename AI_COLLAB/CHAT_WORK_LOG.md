@@ -566,3 +566,11 @@ Next: await owner-provided read-only Pyodios saved-exception probe output; prese
 - Red-team review found that receipt versions could previously point to a predecessor from a different effect/attempt or fork from an older version. Enforced a single linear receipt revision chain per `(EffectId, DispatchAttemptId)`; first receipt has no predecessor, every later receipt extends the latest, and predecessor identity must match both dimensions.
 - Added cross-effect/cross-attempt and stale-predecessor tests. Receipt suite now has 25 test methods; CI pending.
 - Added `AI_COLLAB/CLAUDE_PROJECT_MAP_20261106.md` and linked it from `CLAUDE.md` and the Claude continuation brief. It supplies GitHub entrypoints, branch, docs/code paths, project mission, constraints, roles and next steps.
+
+
+## 2026-11-06 — PC-2026-11-06-P26 — receipt version chain green
+
+- CI: [run 42308764330](https://github.com/marcelosofficial-ctrl/PocketCode-/actions/runs/42308764330), exact SHA `4d4d66561b176b560b49fb00c6b600617bbeef97`, Ubuntu 24.04 / Python 3.12, `python -m unittest discover -s scripts -p "test_*.py" -v`, **179 passed, 0 failed**.
+- Receipt revision history now enforces a linear predecessor chain per `(EffectId, DispatchAttemptId)`; cross-effect/cross-attempt links and stale-predecessor forks fail closed. Exact revision-key replay remains idempotent.
+- Claude project map is available at `AI_COLLAB/CLAUDE_PROJECT_MAP_20261106.md` and linked from root `CLAUDE.md` and the continuation brief.
+- Limits remain: in-memory model only, no durable atomicity/concurrency, cryptographic authorization, provider, device, sandbox or production artifact store.

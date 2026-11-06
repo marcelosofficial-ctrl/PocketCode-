@@ -71,3 +71,14 @@ When assigned work: inspect current code, define narrow acceptance criteria, imp
 - Exact tested commit: `ce7409ac9077154f5f058799b0d6028fb3e98ee0`
 - Python 3.12 / Ubuntu 24.04; `python -m unittest discover -s scripts -p "test_*.py" -v`; **177 passed, 0 failed**.
 - This includes the result-receipt/artifact model. See `AI_COLLAB/STATE_LEDGER_20261106.md` for scope and limitations. Later commits need fresh exact-SHA CI evidence.
+
+
+## Latest exact-SHA CI result (2026-11-06)
+
+- Run: https://github.com/marcelosofficial-ctrl/PocketCode-/actions/runs/42308764330
+- Exact tested commit: `4d4d66561b176b560b49fb00c6b600617bbeef97`
+- Environment: GitHub-hosted Ubuntu 24.04, Python 3.12.
+- Command: `python -m unittest discover -s scripts -p "test_*.py" -v`
+- Result: **179 tests passed, 0 failed**. This includes the receipt version-chain regression tests.
+- Receipt revisions now form one linear chain per `(EffectId, DispatchAttemptId)`: first version has no predecessor; later versions must extend the latest version; cross-effect, cross-attempt and stale-predecessor forks are rejected.
+- This validates only the repository's standard-library Python test suite at this exact SHA. It does not establish iOS/Android/Pyodios behavior, durable atomic transactions, concurrent safety, real provider authentication, hostile-code sandboxing, artifact malware safety or release acceptance. Later source commits need their own exact-SHA run.

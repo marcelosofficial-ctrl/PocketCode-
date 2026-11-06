@@ -294,3 +294,10 @@ Next task: owner runs only the read-only Pyodios sys.last_exc / sys.last_value C
 - New receipt versions now form one linear chain per `(EffectId, DispatchAttemptId)`: the first version has no predecessor; each later version must name the latest version; a predecessor from another effect/attempt or a stale predecessor that would fork history is rejected. Exact revision-key replay remains idempotent.
 - Added regression tests for cross-attempt/cross-effect links and stale-predecessor forks. New test count: 25 in the receipt model; branch CI pending for this commit.
 - Added `AI_COLLAB/CLAUDE_PROJECT_MAP_20261106.md` with canonical GitHub links, navigation order, project/code/test map, roles, boundaries and Claude's next actions. Linked it from `CLAUDE.md` and the Claude handoff.
+
+
+## 2026-11-06 — receipt version-chain CI green
+
+- Exact-SHA run: https://github.com/marcelosofficial-ctrl/PocketCode-/actions/runs/42308764330 at `4d4d66561b176b560b49fb00c6b600617bbeef97`; Ubuntu 24.04 / Python 3.12; command `python -m unittest discover -s scripts -p "test_*.py" -v`; **179 passed, 0 failed**.
+- The run includes the new receipt version-chain tests: per effect/attempt, the first receipt has no predecessor and every later version extends the latest, preventing cross-effect/cross-attempt predecessor links and stale-predecessor forks.
+- CI is test-only. No device, durable transaction, concurrency, provider, sandbox or artifact safety acceptance is implied.
