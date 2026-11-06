@@ -45,6 +45,14 @@ class EventJournalTests(unittest.TestCase):
         self.assertEqual(result.disposition, "duplicate")
         self.assertEqual(result.sequence, 1)
 
+    def test_same_source_event_id_cannot_be_replayed_across_attempt_scope(self):
+        first = self.append(effect_id="effect-A", attempt_id="attempt-A")
+        replay = self.append(effect_id="effect-B", attempt_id="attempt-B")
+        self.assertEqual(first.disposition, "accepted")
+        self.assertEqual(replay.disposition, "quarantined")
+        self.assertEqual(self.journal.events[0].effect_id, "effect-A")
+        self.assertEqual(self.journal.events[0].attempt_id, "attempt-A")
+
     def test_same_payload_with_changed_occurrence_time_is_quarantined(self):
         self.append()
         result = self.append(occurred_at_ms=101)

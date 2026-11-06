@@ -217,9 +217,28 @@ class FakeCoordinator:
     def recover_expired(self, effect_id: str, *, now: int) -> str:
         return self.store.recover_expired(effect_id, now=now)
 
+    def _require_live_observation_lease(self, effect_id: str, attempt_id: str,
+                                        fence: int, now: int) -> None:
+        try:
+            record = self.store.get(effect_id, attempt_id)
+        except KeyError as exc:
+            raise OutboxConflict("observation has no matching reserved attempt") from exc
+        if (isinstance(fence, bool) or not isinstance(fence, int) or fence <= 0
+                or record.fence != fence
+                or record.state not in {"dispatching", "acknowledged"}
+                or record.lease_claimed_at is None
+                or record.lease_expires_at is None
+                or isinstance(now, bool) or not isinstance(now, int)
+                or now < record.lease_claimed_at or now >= record.lease_expires_at):
+            raise OutboxConflict(
+                "worker observation requires the current unexpired dispatch lease; "
+                "expired or reconciling attempts must use authoritative reconciliation"
+            )
+
     def record_lifecycle_observation(self, effect_id: str, attempt_id: str, *,
                                     event_id: str, status: str, fence: int,
                                     now: int) -> AppendResult:
+        self._require_live_observation_lease(effect_id, attempt_id, fence, now)
         return self._append(
             kind="lifecycle_observation", effect_id=effect_id, attempt_id=attempt_id,
             event_id=event_id, at_ms=now, fence=fence,
@@ -230,6 +249,7 @@ class FakeCoordinator:
                                 event_id: str, producer: str, kind: str,
                                 fence: int, now: int, exit_code=None,
                                 signal_number=None) -> AppendResult:
+        self._require_live_observation_lease(effect_id, attempt_id, fence, now)
         return self._append(
             kind="exit_observation", effect_id=effect_id, attempt_id=attempt_id,
             event_id=event_id, at_ms=now, fence=fence,
@@ -241,6 +261,7 @@ class FakeCoordinator:
                                           event_id: str, producer: str,
                                           confirmed: bool, fence: int,
                                           now: int) -> AppendResult:
+        self._require_live_observation_lease(effect_id, attempt_id, fence, now)
         return self._append(
             kind="program_failure_observation", effect_id=effect_id, attempt_id=attempt_id,
             event_id=event_id, at_ms=now, fence=fence,
@@ -260,6 +281,8 @@ class FakeCoordinator:
                 payload = json.loads(event.payload.decode("utf-8"))
             except (UnicodeDecodeError, json.JSONDecodeError):
                 return VerdictProjection("INCOMPLETE", "accepted_event_payload_invalid", "unknown")
+            if not isinstance(payload, dict):
+                return VerdictProjection("INCOMPLETE", "accepted_event_payload_not_object", "unknown")
             kind = payload.get("kind")
             if kind == "lifecycle_observation":
                 lifecycle_items.append(LifecycleObservation(

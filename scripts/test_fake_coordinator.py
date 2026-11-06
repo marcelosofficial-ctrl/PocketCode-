@@ -289,9 +289,33 @@ class FakeCoordinatorTests(unittest.TestCase):
         self.assertGreater(len(second.evidence_refs), len(first.evidence_refs))
         self.assertEqual(first.lifecycle_disposition, "pending")
 
+    def test_non_object_journal_payload_projects_incomplete(self):
+        self.journal.append(
+            producer=self.producer, source="pocketcode.coordinator",
+            event_id="non-object-payload", payload=b"[]",
+            occurred_at_ms=11, observed_at_ms=11,
+            effect_id="effect-1", attempt_id="attempt-1",
+        )
+        projection = self.coordinator.project_attempt_verdict("effect-1", "attempt-1")
+        self.assertEqual(projection.verdict, "INCOMPLETE")
+        self.assertEqual(projection.reason, "accepted_event_payload_not_object")
+
+    def test_expired_lease_cannot_append_terminal_observation_before_new_fence(self):
+        lease = self.coordinator.claim("effect-1", "worker-A", now=20, lease_seconds=1)
+        self.coordinator.mark_dispatching(lease, now=20)
+        self.coordinator.recover_expired("effect-1", now=21)
+        with self.assertRaises(OutboxConflict):
+            self.coordinator.record_lifecycle_observation(
+                "effect-1", "attempt-1", event_id="late-success",
+                status="succeeded", fence=lease.fence, now=21,
+            )
+        self.assertFalse(any(b'"kind":"lifecycle_observation"' in e.payload
+                             for e in self.journal.events))
+
     def test_succeeded_lifecycle_and_natural_child_zero_produce_pass_receipt(self):
         from result_receipts import ResultReceiptStore
         lease = self.coordinator.claim("effect-1", "worker-A", now=20, lease_seconds=20)
+        self.coordinator.mark_dispatching(lease, now=20)
         self.coordinator.record_lifecycle_observation(
             "effect-1", "attempt-1", event_id="lifecycle-success",
             status="succeeded", fence=lease.fence, now=21,
@@ -315,6 +339,7 @@ class FakeCoordinatorTests(unittest.TestCase):
     def test_receipt_builder_derives_verdict_when_caller_omits_label(self):
         from result_receipts import ResultReceiptStore
         lease = self.coordinator.claim("effect-1", "worker-A", now=20, lease_seconds=20)
+        self.coordinator.mark_dispatching(lease, now=20)
         self.coordinator.record_lifecycle_observation(
             "effect-1", "attempt-1", event_id="lifecycle-success",
             status="succeeded", fence=lease.fence, now=21,
@@ -335,6 +360,7 @@ class FakeCoordinatorTests(unittest.TestCase):
     def test_program_failed_lifecycle_produces_fail_receipt(self):
         from result_receipts import ResultReceiptStore
         lease = self.coordinator.claim("effect-1", "worker-A", now=20, lease_seconds=20)
+        self.coordinator.mark_dispatching(lease, now=20)
         self.coordinator.record_lifecycle_observation(
             "effect-1", "attempt-1", event_id="lifecycle-failed",
             status="program_failed", fence=lease.fence, now=21,
@@ -352,6 +378,7 @@ class FakeCoordinatorTests(unittest.TestCase):
 
     def test_succeeded_without_natural_child_exit_stays_incomplete(self):
         lease = self.coordinator.claim("effect-1", "worker-A", now=20, lease_seconds=20)
+        self.coordinator.mark_dispatching(lease, now=20)
         self.coordinator.record_lifecycle_observation(
             "effect-1", "attempt-1", event_id="lifecycle-success",
             status="succeeded", fence=lease.fence, now=21,
