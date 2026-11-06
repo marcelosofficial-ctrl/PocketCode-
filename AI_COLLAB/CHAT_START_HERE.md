@@ -20,7 +20,7 @@ GitHub is the durable project state. Do not rely on a last-minute full-chat hand
 **Important limitation:** this protocol reduces avoidable context pressure and tool stalls; it cannot prevent platform context limits, service outages or execution failures. The goal is graceful interruption with no lost project state.
 
 
-**Last refreshed:** 2026-11-06 (CASE-04 priority and RevDev 91-case cross-project CI closeout)  
+**Last refreshed:** 2026-11-06 (Pyodios saved-exception probe and current handoff correction)  
 **Authority:** live PocketCode branch state plus canonical source/spec/test records. This file is the compact first-read entrypoint for every new PocketCode chat.
 
 ## Current cross-project note
@@ -89,7 +89,7 @@ Current device comparison:
 
 ## Canonical detailed records
 
-- Latest full handoff: [AI_COLLAB/NEW_CHAT_HANDOFF_20261105.md](NEW_CHAT_HANDOFF_20261105.md)
+- Latest full handoff: [AI_COLLAB/NEW_CHAT_HANDOFF_20261106.md](NEW_CHAT_HANDOFF_20261106.md)
 - Current project status/history: [PROJECT_STATUS.md](../PROJECT_STATUS.md)
 - Fixed-task worksheet and interruption/reconnect protocol: retrieve from the repository's existing evaluation/acceptance records; do not create a new fixture or redefine the task.
 - Pyodios device baseline/protocol: [PYODIOS_DEVICE_BASELINE_AND_HANDS_ON_PROTOCOL_20261106.md](PYODIOS_DEVICE_BASELINE_AND_HANDS_ON_PROTOCOL_20261106.md)
