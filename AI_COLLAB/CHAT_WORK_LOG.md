@@ -177,3 +177,13 @@ Red-team correction: the 2026-11-06 handoff still contained an older generic ins
 Latest verified branch snapshot before this log entry: `37d381fbacd14c6ab9b5204d07a7dfc1889f9cc2`, 777 ahead / 0 behind `main`. PR #2 and PR #3 remain OPEN/DRAFT and untouched. Ahead count is branch divergence, not completed product work.
 
 No fixture, product source, acceptance suite, runtime/provider, security boundary, PR, deployment or budget changed. Device exception and artifact remain UNKNOWN; no device rerun occurred.
+
+## 2026-11-06 — PC-2026-11-06-P12 addendum — Python 3.14 probe and diagnostic re-verification
+
+Refined the Pyodios diagnostic procedure using exact Pyodide 314.0.5 type-translation docs: the bridge's original Python exception is retained in `sys.last_value`; CPython 3.14 prefers `sys.last_exc`, and `last_value` remains a deprecated fallback. The read-only probe now checks `last_exc` first. This probe passed a local smoke test with both no-exception and synthetic saved-exception cases; it has NOT run on the phone.
+
+Checked exact upstream Pyodide `src/core/error_handling.c` at tags 314.0.5 and 314.0.7. The inspected `SystemExit` / `PyConfig.inspect` comment and wrapping block are the same. Upstream marks 314.0.7 Latest (2026-09-14), while Pyodios v1.1.0 docs still pin 314.0.5 / Python 3.14.2. Do not manually replace the runtime; the newer release is not evidence this app's bridge issue is fixed.
+
+Expanded wrapper verification to 4/4 local checks: exact success JSON; malformed input outputs its missing-column diagnostic on stderr and creates no JSON; existing `summary.json` causes a no-run refusal and is preserved byte-for-byte; missing `items.csv` causes a no-run refusal. A first assertion pass incorrectly searched stdout only for the malformed diagnostic; corrected the harness to inspect stdout plus stderr and reran all checks. This was a harness assertion bug, not a fixture failure.
+
+Navigation verified against current Pyodios iPhone docs: More → Settings → Error Log → View Error Log. The log can include user Python source; inspect/redact before sharing. Project import synchronization also remains project-reopen based.
