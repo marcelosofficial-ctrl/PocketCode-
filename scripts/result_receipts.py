@@ -99,6 +99,7 @@ class PublicationAttempt:
     attempt_number: int
     disposition: str
     observed_at_ms: int
+    idempotency_key: Optional[str] = None
 
 
 class ResultReceiptStore:
@@ -113,6 +114,7 @@ class ResultReceiptStore:
         self._receipt_by_revision: dict[str, ResultReceipt] = {}
         self._revision_fingerprints: dict[str, str] = {}
         self._publication_attempts: list[PublicationAttempt] = []
+        self._publication_by_key: dict[tuple[str, str, str], tuple[str, PublicationAttempt]] = {}
 
     @property
     def receipts(self) -> tuple[ResultReceipt, ...]:
@@ -344,7 +346,8 @@ class ResultReceiptStore:
                              authorization.authorization_id)
 
     def publish_report(self, receipt_id: str, destination: str, *,
-                       success: bool, observed_at_ms: int) -> PublicationAttempt:
+                       success: bool, observed_at_ms: int,
+                       idempotency_key: Optional[str] = None) -> PublicationAttempt:
         """Record a copy/share attempt for the same immutable receipt, never rerun work."""
         if not isinstance(receipt_id, str) or not receipt_id.strip():
             raise ReceiptConflict("receipt ID must be a non-empty string")
@@ -352,17 +355,33 @@ class ResultReceiptStore:
             raise ReceiptConflict("cannot publish an unknown receipt")
         if not isinstance(destination, str) or not destination.strip():
             raise ReceiptConflict("publication destination is required")
+        if idempotency_key is not None and (
+            not isinstance(idempotency_key, str) or not idempotency_key.strip()
+        ):
+            raise ReceiptConflict("publication idempotency key must be non-empty when supplied")
         if type(success) is not bool:
             raise ReceiptConflict("publication success must be a literal boolean")
         if isinstance(observed_at_ms, bool) or not isinstance(observed_at_ms, int) or observed_at_ms < 0:
             raise ReceiptConflict("publication observation time must be non-negative integer")
+        fingerprint = f"{'published' if success else 'failed'}:{observed_at_ms}"
+        key = ((receipt_id, destination, idempotency_key)
+               if idempotency_key is not None else None)
+        if key is not None and key in self._publication_by_key:
+            prior_fingerprint, prior_attempt = self._publication_by_key[key]
+            if prior_fingerprint != fingerprint:
+                raise ReceiptConflict(
+                    "publication idempotency key already binds different request details"
+                )
+            return prior_attempt
         attempt_number = 1 + sum(
             1 for item in self._publication_attempts
             if item.receipt_id == receipt_id and item.destination == destination
         )
         item = PublicationAttempt(
             receipt_id, destination, attempt_number,
-            "published" if success else "failed", observed_at_ms,
+            "published" if success else "failed", observed_at_ms, idempotency_key,
         )
         self._publication_attempts.append(item)
+        if key is not None:
+            self._publication_by_key[key] = (fingerprint, item)
         return item

@@ -336,5 +336,35 @@ class ResultReceiptTests(unittest.TestCase):
             self.store.publish_report("missing", "clipboard", success=True, observed_at_ms=1)
 
 
+    def test_publication_request_replay_with_same_key_returns_original_attempt(self):
+        first = self.store.publish_report(self.receipt.receipt_id, "clipboard", success=False, observed_at_ms=150, idempotency_key="copy-request-1")
+        replay = self.store.publish_report(self.receipt.receipt_id, "clipboard", success=False, observed_at_ms=150, idempotency_key="copy-request-1")
+        self.assertEqual(replay, first)
+        self.assertEqual(len(self.store.publication_attempts), 1)
+
+    def test_publication_key_cannot_be_reused_with_changed_result(self):
+        self.store.publish_report(self.receipt.receipt_id, "clipboard", success=False, observed_at_ms=150, idempotency_key="copy-request-1")
+        with self.assertRaises(ReceiptConflict):
+            self.store.publish_report(self.receipt.receipt_id, "clipboard", success=True, observed_at_ms=151, idempotency_key="copy-request-1")
+        self.assertEqual(len(self.store.publication_attempts), 1)
+
+    def test_new_publication_key_records_a_real_retry(self):
+        first = self.store.publish_report(self.receipt.receipt_id, "clipboard", success=False, observed_at_ms=150, idempotency_key="copy-request-1")
+        retry = self.store.publish_report(self.receipt.receipt_id, "clipboard", success=True, observed_at_ms=160, idempotency_key="copy-request-2")
+        self.assertEqual((first.attempt_number, retry.attempt_number), (1, 2))
+        self.assertEqual(len(self.store.publication_attempts), 2)
+
+    def test_publication_idempotency_key_is_scoped_to_destination(self):
+        first = self.store.publish_report(self.receipt.receipt_id, "clipboard", success=False, observed_at_ms=150, idempotency_key="copy-request-1")
+        other = self.store.publish_report(self.receipt.receipt_id, "share-sheet", success=True, observed_at_ms=151, idempotency_key="copy-request-1")
+        self.assertEqual((first.attempt_number, other.attempt_number), (1, 1))
+        self.assertEqual(len(self.store.publication_attempts), 2)
+
+    def test_empty_publication_idempotency_key_rejected(self):
+        with self.assertRaises(ReceiptConflict):
+            self.store.publish_report(self.receipt.receipt_id, "clipboard", success=False, observed_at_ms=150, idempotency_key=" ")
+
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
