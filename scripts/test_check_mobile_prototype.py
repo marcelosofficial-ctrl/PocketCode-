@@ -20,6 +20,80 @@ VALID_HTML = """
 <button id="inputTab" role="tab" aria-selected="false" aria-controls="inputPanel">Input</button>
 <section id="codePanel" role="tabpanel" aria-labelledby="codeTab"></section>
 <section id="inputPanel" role="tabpanel" aria-labelledby="inputTab"></section>
+<pre class="csv" id="inputData">item,quantity,unit_price
+notebook,2,3.50
+pen,3,1.25
+</pre>
+<code id="sourceCode">import csv
+import json
+import sys
+from collections import defaultdict
+from decimal import Decimal, InvalidOperation
+from pathlib import Path
+
+INPUT = Path("items.csv")
+OUTPUT = Path("summary.json")
+REQUIRED = {"item", "quantity", "unit_price"}
+
+
+def main():
+    try:
+        with INPUT.open("r", encoding="utf-8", newline="") as source:
+            reader = csv.DictReader(source)
+            headers = set(reader.fieldnames or [])
+            missing = sorted(REQUIRED - headers)
+            if missing:
+                raise ValueError("missing required CSV column(s): " + ", ".join(missing))
+
+            totals = defaultdict(Decimal)
+            line_items = 0
+            for row_number, row in enumerate(reader, start=2):
+                item = (row.get("item") or "").strip()
+                if not item:
+                    raise ValueError(f"row {row_number}: item is empty")
+                try:
+                    quantity = int(row["quantity"])
+                    unit_price = Decimal(row["unit_price"])
+                except (ValueError, InvalidOperation, TypeError):
+                    raise ValueError(f"row {row_number}: invalid quantity or unit_price")
+                totals[item] += Decimal(quantity) * unit_price
+                line_items += 1
+
+        grand_total = sum(totals.values(), Decimal("0"))
+        result = {
+            "grand_total": format(grand_total, ".2f"),
+            "line_items": line_items,
+            "totals_by_item": {
+                item: format(totals[item], ".2f") for item in sorted(totals)
+            },
+        }
+        OUTPUT.write_text(
+            json.dumps(result, indent=2, sort_keys=True) + "\n",
+            encoding="utf-8",
+        )
+        print(f"Wrote {OUTPUT.name}")
+        return 0
+    except (OSError, csv.Error, ValueError) as error:
+        print(f"ERROR: {error}", file=sys.stderr)
+        return 2
+
+
+    def test_rejects_changed_canonical_source(self):
+        html = VALID_HTML.replace("raise SystemExit(main())", "raise SystemExit(mainx())")
+        result = self.run_checker(html)
+        self.assertEqual(result.returncode, 1)
+        self.assertIn("frozen canonical SHA-256", result.stdout)
+
+    def test_rejects_changed_success_input(self):
+        html = VALID_HTML.replace("pen,3,1.25", "pen,4,1.25")
+        result = self.run_checker(html)
+        self.assertEqual(result.returncode, 1)
+        self.assertIn("canonical success fixture", result.stdout)
+
+if __name__ == "__main__":
+    raise SystemExit(main())
+</code>
+
 <button id="successExample">Show success expectation</button>
 <button id="failureExample">Show malformed-header expectation</button>
 <button id="copyReport">Copy example report</button>
