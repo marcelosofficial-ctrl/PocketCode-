@@ -20,7 +20,7 @@ GitHub is the durable project state. Do not rely on a last-minute full-chat hand
 **Important limitation:** this protocol reduces avoidable context pressure and tool stalls; it cannot prevent platform context limits, service outages or execution failures. The goal is graceful interruption with no lost project state.
 
 
-**Last refreshed:** 2026-11-06 (Pyodios saved-exception probe and current handoff correction)  
+**Last refreshed:** 2026-11-06 (owner-inspected success artifact and bridge-error triage)  
 **Authority:** live PocketCode branch state plus canonical source/spec/test records. This file is the compact first-read entrypoint for every new PocketCode chat.
 
 ## Current cross-project note
@@ -35,7 +35,7 @@ Read this file, verify the live branch/PR/CI state, and fetch only the linked ta
 
 - Repo: https://github.com/marcelosofficial-ctrl/PocketCode-
 - Branch: `pocketcode-ai-workflow-director-research-2026-10-28`
-- Live branch snapshot immediately before the 2026-11-06 Pyodios diagnostic checkpoint: `aa7580ff6e482ff1f4d5920d70de75fddf3e274e`, **784 ahead / 0 behind** `main`; merge base `555840d8d83342513d9cd353d4d1522d46a5c82d`. This is a pre-checkpoint snapshot; fetch live refs before consequential writes. Ahead count is accumulated branch-history divergence, not product progress.
+- Live branch snapshot immediately before the 2026-11-06 artifact-status checkpoint: `4353aaa646b3bdfcaa3fee8e17226128bdbaf800`, **798 ahead / 0 behind** `main`; merge base `555840d8d83342513d9cd353d4d1522d46a5c82d`. This is a pre-checkpoint snapshot; fetch live refs before consequential writes. Ahead count is accumulated branch-history divergence, not product progress.
 - Open PR #2: [Add chat checkpoints and harden report-contract regressions](https://github.com/marcelosofficial-ctrl/PocketCode-/pull/2), OPEN/DRAFT from branch `chat-continuity-report-regressions-2026-10-26`.
 - Open PR #3: [Draft: Add evidence-led PocketCode research baseline](https://github.com/marcelosofficial-ctrl/PocketCode-/pull/3), OPEN/DRAFT from branch `pocketcode-pass0-audit-2026-10-26`.
 - PR #2/#3 are not this active research branch and were not modified. Do not infer the active branch's commits are included in either PR.
