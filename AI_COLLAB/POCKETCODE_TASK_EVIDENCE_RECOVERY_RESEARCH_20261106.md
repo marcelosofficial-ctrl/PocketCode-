@@ -110,7 +110,7 @@ Preserve `CommandId → DispatchAttemptId → ExecutionId → ObservationSequenc
 - **Request fingerprint:** exact source/input/runtime/policy/argument identity.
 - **Fence/lease:** stale workers cannot append terminal observations or publish for a superseded attempt.
 
-Same EffectId + same fingerprint may reconcile/replay the existing effect. Same EffectId + changed fingerprint is a conflict. A user-approved correction creates a new logical effect and attempt lineage.
+Same EffectId + same fingerprint means look up and reconcile the same logical effect; it is not permission to execute again. A start retry is permitted only when the selected provider's documented idempotent-start contract covers that exact key and fingerprint, or authoritative lookup proves the original dispatch was not accepted. If acceptance is ambiguous or lookup is UNKNOWN, do not redispatch automatically. Same EffectId + changed fingerprint is a conflict. A user-approved correction creates a new logical effect and attempt lineage.
 
 ### 5.3 Boundary-specific observations
 
@@ -138,7 +138,7 @@ Reducer rules:
 
 **Local journal candidate:** SQLite. In one local transaction reserve the semantic effect/attempt and persist dispatch intent; after adapter response append observations and receipt references transactionally. If WAL is selected, specify `synchronous=FULL` where power-loss durability is required and validate on target iOS hardware. Choose Apple file-protection class deliberately.
 
-**Remote side effects:** outbox/inbox reconciliation. Local commit and provider dispatch are not one atomic transaction. After crash between dispatch and acknowledgement, query by idempotency key before retry. If no reliable reconciliation exists, preserve UNKNOWN and stop automatic replay.
+**Remote side effects:** outbox/inbox reconciliation. Local commit and provider dispatch are not one atomic transaction. After crash between dispatch and acknowledgement, query the original attempt by its provider idempotency key. Redispatch only if authoritative lookup proves the original start was not accepted, or the provider contract guarantees an identical start retry is idempotent for that same key and fingerprint. If lookup is UNKNOWN or the provider lacks that guarantee, preserve UNKNOWN and stop automatic replay.
 
 ### 5.5 Receipt and artifacts
 
