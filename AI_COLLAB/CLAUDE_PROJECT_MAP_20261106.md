@@ -111,3 +111,8 @@ The current FakeCoordinator receipt builder only permits INCOMPLETE because its 
 - Python 3.12 / Ubuntu 24.04; 187 passed, 0 failed.
 - FakeCoordinator receipt builder only permits INCOMPLETE until trusted terminal execution evidence is integrated. PASS/FAIL must come from `execution_projection.py`, not caller-supplied labels.
 - Always re-check the live branch head before relying on this checkpoint.
+
+
+### Typed terminal evidence integration (in progress)
+
+FakeCoordinator now appends typed lifecycle, child-exit and program-failure observations and reconstructs a verdict through `execution_projection.py`. Receipt composition derives the verdict from accepted attempt-bound journal evidence and records the projection reason. Multiple same-kind observations fail closed. This remains in-memory and does not authenticate the payload's producer class. CI pending for the current source increment.

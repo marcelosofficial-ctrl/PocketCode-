@@ -300,3 +300,10 @@ Initial reservation evidence is attempt-bound before a lease fence exists. Once 
 ## 2026-11-06 terminal verdict gating in the fake coordinator
 
 The current FakeCoordinator journal contains reservation, lease, dispatch, acknowledgement and reconciliation evidence. It does not yet contain the trusted terminal lifecycle plus natural child-exit evidence required to derive PASS, nor trusted program-failure evidence required to derive FAIL. Therefore `FakeCoordinator.create_result_receipt()` currently permits only `INCOMPLETE`. It rejects caller-supplied PASS/FAIL rather than allowing dispatch evidence or caller assertion to manufacture a terminal verdict. The generic ResultReceiptStore remains a storage-shaped model and does not itself authenticate verdict provenance. A later execution-event integration may enable PASS/FAIL only by deriving them through the typed `execution_projection` rules using authenticated, attempt-bound observations.
+
+
+## 2026-11-06 typed terminal evidence composition (in progress)
+
+FakeCoordinator now has explicit methods to append typed lifecycle, direct-child exit and trusted program-failure observations to the accepted event journal. `project_attempt_verdict()` reconstructs those observations from accepted attempt-bound events, uses the journal's ObservationSequence, rejects multiple same-kind observations as requiring reconciliation, and delegates verdict semantics to `execution_projection.project_verdict()`. Receipt composition derives its verdict from this projection; a caller-supplied label must match the projection or the operation is rejected. The receipt records the projection reason.
+
+The model remains in-memory and does not authenticate payload producer classes. In production, the coordinator must verify producer identity, attempt/tenant authorization, current fence and event schema before appending. A natural child exit must come from a trusted direct-child wait boundary. CI pending for this increment.

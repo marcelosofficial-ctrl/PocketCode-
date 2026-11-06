@@ -104,6 +104,12 @@ class ResultReceiptTests(unittest.TestCase):
         self.assertEqual(first, second)
         self.assertEqual(len(self.store.receipts), 1)
 
+    def test_projection_reason_is_part_of_immutable_receipt(self):
+        receipt = self.create(projection_reason="insufficient_terminal_evidence")
+        self.assertEqual(receipt.projection_reason, "insufficient_terminal_evidence")
+        with self.assertRaises(ReceiptConflict):
+            self.create(projection_reason="different reason")
+
     def test_revision_key_cannot_be_reused_for_changed_content(self):
         self.create()
         with self.assertRaises(ReceiptConflict):

@@ -12,9 +12,17 @@ from typing import Optional
 try:
     from fake_outbox import FakeOutboxStore, Lease, OutboxConflict
     from event_journal import AuthenticatedProducer, EventJournal, AppendResult
+    from execution_projection import (
+        ExitObservation, LifecycleObservation, ProgramFailureObservation,
+        VerdictProjection, project_verdict,
+    )
 except ModuleNotFoundError:
     from scripts.fake_outbox import FakeOutboxStore, Lease, OutboxConflict
     from scripts.event_journal import AuthenticatedProducer, EventJournal, AppendResult
+    from scripts.execution_projection import (
+        ExitObservation, LifecycleObservation, ProgramFailureObservation,
+        VerdictProjection, project_verdict,
+    )
 
 
 @dataclass(frozen=True)
@@ -209,6 +217,72 @@ class FakeCoordinator:
     def recover_expired(self, effect_id: str, *, now: int) -> str:
         return self.store.recover_expired(effect_id, now=now)
 
+    def record_lifecycle_observation(self, effect_id: str, attempt_id: str, *,
+                                    event_id: str, status: str, fence: int,
+                                    now: int) -> AppendResult:
+        return self._append(
+            kind="lifecycle_observation", effect_id=effect_id, attempt_id=attempt_id,
+            event_id=event_id, at_ms=now, fence=fence,
+            status=status, producer="coordinator",
+        )
+
+    def record_exit_observation(self, effect_id: str, attempt_id: str, *,
+                                event_id: str, producer: str, kind: str,
+                                fence: int, now: int, exit_code=None,
+                                signal_number=None) -> AppendResult:
+        return self._append(
+            kind="exit_observation", effect_id=effect_id, attempt_id=attempt_id,
+            event_id=event_id, at_ms=now, fence=fence,
+            producer=producer, exit_kind=kind, exit_code=exit_code,
+            signal_number=signal_number,
+        )
+
+    def record_program_failure_observation(self, effect_id: str, attempt_id: str, *,
+                                          event_id: str, producer: str,
+                                          confirmed: bool, fence: int,
+                                          now: int) -> AppendResult:
+        return self._append(
+            kind="program_failure_observation", effect_id=effect_id, attempt_id=attempt_id,
+            event_id=event_id, at_ms=now, fence=fence,
+            producer=producer, confirmed=confirmed,
+        )
+
+    def project_attempt_verdict(self, effect_id: str, attempt_id: str) -> VerdictProjection:
+        self.store.get(effect_id, attempt_id)
+        matching = [event for event in self.journal.events
+                    if event.effect_id == effect_id and event.attempt_id == attempt_id]
+        matching.sort(key=lambda event: event.sequence)
+        lifecycle_items = []
+        exit_items = []
+        failure_items = []
+        for event in matching:
+            try:
+                payload = json.loads(event.payload.decode("utf-8"))
+            except (UnicodeDecodeError, json.JSONDecodeError):
+                return VerdictProjection("INCOMPLETE", "accepted_event_payload_invalid", "unknown")
+            kind = payload.get("kind")
+            if kind == "lifecycle_observation":
+                lifecycle_items.append(LifecycleObservation(
+                    attempt_id, payload.get("status"), payload.get("producer"), event.sequence,
+                ))
+            elif kind == "exit_observation":
+                exit_items.append(ExitObservation(
+                    attempt_id, payload.get("producer"), payload.get("exit_kind"),
+                    event.sequence, payload.get("exit_code"), payload.get("signal_number"),
+                ))
+            elif kind == "program_failure_observation":
+                failure_items.append(ProgramFailureObservation(
+                    attempt_id, payload.get("producer"), payload.get("confirmed"), event.sequence,
+                ))
+        if len(lifecycle_items) > 1 or len(exit_items) > 1 or len(failure_items) > 1:
+            return VerdictProjection("INCOMPLETE", "multiple_terminal_observations_require_reconciliation", "unknown")
+        return project_verdict(
+            attempt_id,
+            lifecycle_items[0] if lifecycle_items else None,
+            exit_items[0] if exit_items else None,
+            failure_items[0] if failure_items else None,
+        )
+
     def create_result_receipt(self, receipt_store, *, effect_id: str, attempt_id: str,
                               revision_key: str, contract_version: str,
                               execution_outcome: str, collection_state: str,
@@ -217,13 +291,11 @@ class FakeCoordinator:
                               uncertainties: tuple[str, ...] = (),
                               predecessor_receipt_id: Optional[str] = None,
                               revision_reason: Optional[str] = None):
-        """Create a progress receipt only; terminal verdict needs execution evidence."""
-        if execution_outcome != "INCOMPLETE":
-            raise OutboxConflict(
-                "coordinator journal currently proves dispatch/recovery only; "
-                "PASS or FAIL requires separately accepted terminal execution evidence"
-            )
-        self.store.get(effect_id, attempt_id)
+        """Create a receipt whose verdict is derived from accepted attempt evidence."""
+        projection = self.project_attempt_verdict(effect_id, attempt_id)
+        if execution_outcome is not None and execution_outcome != projection.verdict:
+            raise OutboxConflict("caller-supplied verdict conflicts with accepted evidence projection")
+        execution_outcome = projection.verdict
         events = [event for event in self.journal.events
                   if event.effect_id == effect_id and event.attempt_id == attempt_id]
         events.sort(key=lambda event: event.sequence)
@@ -240,6 +312,7 @@ class FakeCoordinator:
             collection_state=collection_state, lifecycle_disposition=lifecycle_disposition,
             cleanup_state=cleanup_state, evidence_refs=evidence_refs,
             evidence_sha256=evidence_digests, artifact_ids=artifact_ids,
+            projection_reason=projection.reason,
             uncertainties=uncertainties, created_at_ms=created_at_ms,
             predecessor_receipt_id=predecessor_receipt_id,
             revision_reason=revision_reason,

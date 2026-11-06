@@ -338,3 +338,10 @@ Next task: owner runs only the read-only Pyodios sys.last_exc / sys.last_value C
 
 - Exact-SHA run: https://github.com/marcelosofficial-ctrl/PocketCode-/actions/runs/42309370781 at `78286ad6b802a7925a2d7bba6dfb472dfde5c2a3`; Ubuntu 24.04 / Python 3.12; `python -m unittest discover -s scripts -p "test_*.py" -v`; **187 passed, 0 failed**.
 - FakeCoordinator receipt composition currently permits only INCOMPLETE because its accepted journal events prove dispatch/recovery, not terminal program success/failure. Caller-supplied PASS/FAIL are rejected; future terminal outcomes must be derived through typed execution evidence and `execution_projection.py`.
+
+
+## 2026-11-06 typed terminal evidence integration started
+
+- Added FakeCoordinator append methods for typed lifecycle, exit and program-failure observations, plus reconstruction of a `VerdictProjection` from accepted attempt-bound journal events using journal sequence numbers.
+- Receipt composition now derives the outcome from accepted evidence; an optional caller label must equal the projection. Projection reason is stored in the immutable receipt hash. Multiple observations of the same kind currently fail closed to INCOMPLETE/reconciliation rather than guessing a precedence.
+- Added PASS/FAIL/INCOMPLETE integration tests. CI pending. These methods remain an unauthenticated in-memory model; production producer authentication and event schema validation are not implemented.

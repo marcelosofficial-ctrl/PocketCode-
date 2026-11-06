@@ -289,6 +289,69 @@ class FakeCoordinatorTests(unittest.TestCase):
         self.assertGreater(len(second.evidence_refs), len(first.evidence_refs))
         self.assertEqual(first.lifecycle_disposition, "pending")
 
+    def test_succeeded_lifecycle_and_natural_child_zero_produce_pass_receipt(self):
+        from result_receipts import ResultReceiptStore
+        lease = self.coordinator.claim("effect-1", "worker-A", now=20, lease_seconds=20)
+        self.coordinator.record_lifecycle_observation(
+            "effect-1", "attempt-1", event_id="lifecycle-success",
+            status="succeeded", fence=lease.fence, now=21,
+        )
+        self.coordinator.record_exit_observation(
+            "effect-1", "attempt-1", event_id="child-exit-zero",
+            producer="direct_child_wait", kind="natural_exit",
+            exit_code=0, fence=lease.fence, now=22,
+        )
+        store = ResultReceiptStore()
+        receipt = self.coordinator.create_result_receipt(
+            store, effect_id="effect-1", attempt_id="attempt-1",
+            revision_key="pass-receipt", contract_version="pc-v1",
+            execution_outcome="PASS", collection_state="complete",
+            lifecycle_disposition="succeeded", cleanup_state="complete",
+            artifact_ids=(), created_at_ms=23,
+        )
+        self.assertEqual(receipt.execution_outcome, "PASS")
+        self.assertEqual(receipt.projection_reason, "trusted_success_and_child_exit_zero")
+
+    def test_program_failed_lifecycle_produces_fail_receipt(self):
+        from result_receipts import ResultReceiptStore
+        lease = self.coordinator.claim("effect-1", "worker-A", now=20, lease_seconds=20)
+        self.coordinator.record_lifecycle_observation(
+            "effect-1", "attempt-1", event_id="lifecycle-failed",
+            status="program_failed", fence=lease.fence, now=21,
+        )
+        store = ResultReceiptStore()
+        receipt = self.coordinator.create_result_receipt(
+            store, effect_id="effect-1", attempt_id="attempt-1",
+            revision_key="fail-receipt", contract_version="pc-v1",
+            execution_outcome="FAIL", collection_state="complete",
+            lifecycle_disposition="program_failed", cleanup_state="complete",
+            artifact_ids=(), created_at_ms=22,
+        )
+        self.assertEqual(receipt.execution_outcome, "FAIL")
+        self.assertEqual(receipt.projection_reason, "coordinator_confirmed_program_failure")
+
+    def test_succeeded_without_natural_child_exit_stays_incomplete(self):
+        lease = self.coordinator.claim("effect-1", "worker-A", now=20, lease_seconds=20)
+        self.coordinator.record_lifecycle_observation(
+            "effect-1", "attempt-1", event_id="lifecycle-success",
+            status="succeeded", fence=lease.fence, now=21,
+        )
+        projection = self.coordinator.project_attempt_verdict("effect-1", "attempt-1")
+        self.assertEqual(projection.verdict, "INCOMPLETE")
+        self.assertEqual(projection.reason, "success_without_natural_child_exit")
+
+    def test_multiple_lifecycle_observations_require_reconciliation(self):
+        lease = self.coordinator.claim("effect-1", "worker-A", now=20, lease_seconds=20)
+        for event_id, status, now in (("life-running", "running", 21),
+                                      ("life-succeeded", "succeeded", 22)):
+            self.coordinator.record_lifecycle_observation(
+                "effect-1", "attempt-1", event_id=event_id,
+                status=status, fence=lease.fence, now=now,
+            )
+        projection = self.coordinator.project_attempt_verdict("effect-1", "attempt-1")
+        self.assertEqual(projection.verdict, "INCOMPLETE")
+        self.assertEqual(projection.reason, "multiple_terminal_observations_require_reconciliation")
+
     def test_dispatch_only_journal_cannot_create_pass_or_fail_receipt(self):
         from result_receipts import ResultReceiptStore
         store = ResultReceiptStore()

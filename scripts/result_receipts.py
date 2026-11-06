@@ -49,6 +49,7 @@ class ResultReceipt:
     attempt_id: str
     contract_version: str
     execution_outcome: str
+    projection_reason: str
     collection_state: str
     lifecycle_disposition: str
     cleanup_state: str
@@ -168,6 +169,7 @@ class ResultReceiptStore:
         artifact_ids: tuple[str, ...], uncertainties: tuple[str, ...] = (),
         created_at_ms: int, predecessor_receipt_id: Optional[str] = None,
         revision_reason: Optional[str] = None,
+        projection_reason: Optional[str] = None,
     ) -> ResultReceipt:
         identity = (revision_key, effect_id, attempt_id, contract_version,
                     execution_outcome, collection_state, lifecycle_disposition,
@@ -208,6 +210,10 @@ class ResultReceiptStore:
             not isinstance(revision_reason, str) or not revision_reason.strip()
         ):
             raise ReceiptConflict("revision reason cannot be empty")
+        if projection_reason is not None and (
+            not isinstance(projection_reason, str) or not projection_reason.strip()
+        ):
+            raise ReceiptConflict("projection reason cannot be empty")
         if predecessor_receipt_id is not None and predecessor_receipt_id not in {
             receipt.receipt_id for receipt in self._receipts
         }:
@@ -232,6 +238,7 @@ class ResultReceiptStore:
             "uncertainties": list(uncertainties), "created_at_ms": created_at_ms,
             "predecessor_receipt_id": predecessor_receipt_id,
             "revision_reason": revision_reason,
+            "projection_reason": projection_reason,
         }
         fingerprint = sha256(json.dumps(canonical, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
         prior = self._receipt_by_revision.get(revision_key)
@@ -258,7 +265,7 @@ class ResultReceiptStore:
             receipt_id, revision_key, version, effect_id, attempt_id, contract_version,
             execution_outcome, collection_state, lifecycle_disposition, cleanup_state,
             evidence_refs, evidence_sha256, tuple(manifest), uncertainties,
-            predecessor_receipt_id, revision_reason, created_at_ms, fingerprint,
+            predecessor_receipt_id, revision_reason, created_at_ms, projection_reason, fingerprint,
         )
         self._receipts.append(receipt)
         self._receipt_by_revision[revision_key] = receipt

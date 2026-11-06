@@ -610,3 +610,10 @@ Next: await owner-provided read-only Pyodios saved-exception probe output; prese
 - CI: [run 42309370781](https://github.com/marcelosofficial-ctrl/PocketCode-/actions/runs/42309370781), exact SHA `78286ad6b802a7925a2d7bba6dfb472dfde5c2a3`, Ubuntu 24.04 / Python 3.12, full suite **187 passed, 0 failed**.
 - Dispatch/recovery evidence alone cannot produce PASS or FAIL. FakeCoordinator receipt composition now permits only INCOMPLETE until trusted terminal lifecycle plus natural child-exit evidence or trusted program-failure evidence is integrated and projected through `execution_projection.py`. Caller-supplied terminal labels are rejected.
 - This preserves canonical PASS/FAIL/INCOMPLETE semantics and is not a new product verdict definition.
+
+
+## 2026-11-06 — typed terminal evidence composition (in progress)
+
+- Began connecting `execution_projection.py` to coordinator receipt generation. Coordinator can append typed lifecycle, direct-child exit and trusted runtime failure observations; projection reconstructs accepted events by sequence and delegates to the existing fail-closed verdict helper.
+- Receipt verdict is derived, not trusted from caller input. Caller-supplied verdict mismatch is rejected. Added immutable `projection_reason` field to receipt fingerprint. Multiple same-kind observations return INCOMPLETE until explicit reconciliation rules exist.
+- Tests added for PASS from succeeded + natural child exit 0, FAIL from coordinator program_failed, missing child exit => INCOMPLETE, and multiple lifecycle observations => INCOMPLETE. CI pending.
