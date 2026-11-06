@@ -142,3 +142,18 @@ The note also reinforces the GitHub-backed multi-chat operating method: live sta
 RevDev run #42 `42180012296` completed **81 passed, 0 failed, 0 skipped** on Windows PowerShell 5.1 / Pester 5.7.1 at exact source/test commit `40a8698060b50b3a94f946fe443caf201fd0f168`. Run: https://github.com/marcelosofficial-ctrl/DevRelay-Missions/actions/runs/42180012296. It covers 59 publisher identity/transport cases plus 22 local-result/recovery/quarantine cases. This is maintenance-source CI evidence only, not live network/queue/watcher/mission execution, installed-PC parity, or P0/P8U acceptance. The RevDev branch has docs-only commits after the tested source SHA.
 
 PocketCode must continue its own CASE-04 timeout/report-contract work. No RevDev implementation, test count, or acceptance transfers. Reusable method: exact-SHA CI, fake process boundaries, semantic contract assertions, explicit UNKNOWN/INCOMPLETE outcomes, review partial-failure paths, and update GitHub before rotating chats.
+
+
+## 2026-11-06 — PC-2026-11-06-P12 — Pyodios bridge triage and CASE-04 provenance correction
+
+**Owner evidence:** first green Editor run of the unchanged canonical `main.py` with `items.csv` displayed only `[Bridge/executePython] PythonError`. Record as ATTEMPT OBSERVED / underlying exception UNKNOWN / artifact outcome UNKNOWN. No PASS/FAIL assigned.
+
+**Research:** verified Pyodide 314.0.5 exception conversion; Python 3.14 `SystemExit` and `runpy`; Pyodios project file-copy rules, timestamped Error Log, log privacy warning, and no-interrupt/120-second timeout behavior. Unhandled `SystemExit` crossing the editor bridge is plausible but unconfirmed. Missing input visibility and other exceptions remain possible. Pyodios docs list bundled third-party licences but do not prove that the app/bridge source is open; no bridge code adopted.
+
+**Deliverables:** added `AI_COLLAB/PYODIOS_PYTHONERROR_BRIDGE_TRIAGE_20261106.md`; updated the 2026-11-06 device protocol, continuation handoff, `PROJECT_STATUS.md` and `CHAT_START_HERE.md`. A separate guarded runpy wrapper checks inputs/output before execution, catches `SystemExit` as a script-requested exit (not an OS exit status), prints other tracebacks and compares the JSON oracle. CPython 3.13.5 local harness passed 2/2 success/malformed checks. Pyodios/Pyodide device execution of the wrapper is NOT RUN. Wrapper is diagnostic-only and not a sandbox.
+
+**Red-team corrections:** (1) `PythonError` is the JS-side exception type for a Python exception crossing the bridge, not a root-cause label; (2) prior fixture instructions omitted CLI `SystemExit` semantics under an embedded interpreter; (3) vendor docs say reopen the project after external file additions, not pull-to-refresh; (4) direct CASE-04 precedence reorder conflicts with the exit-provenance matrix; (5) device status changed from no observation to observed/inconclusive.
+
+**Decision:** no edit to frozen `main.py`, `report_contract.py`, tests, LOOP/CASE/D suites, provider/runtime, PR #2/#3 or Actions. The provenance matrix says child exit, wrapper exit, forced termination, stale and contradictory facts must be reconciled before changing the pure classifier. Preserve CASE-04 as INCOMPLETE/timed_out. $0 remains.
+
+**Immediate next action:** owner inspects current project `summary.json`, then the Pyodios Settings → Diagnostics → Error Logs entry around the attempt; redact source/private paths before sharing. Do not rerun canonical script yet.
