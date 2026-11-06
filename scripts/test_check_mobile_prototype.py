@@ -145,6 +145,18 @@ class PrototypeCheckerTests(unittest.TestCase):
         result = self.run_checker(html)
         self.assertEqual(result.returncode, 1)
         self.assertIn("Debugging prompt omits inputData.textContent", result.stdout)
+    def test_rejects_missing_roving_tabindex(self):
+        html = VALID_HTML.replace('tabindex="-1"', '')
+        result = self.run_checker(html)
+        self.assertEqual(result.returncode, 1)
+        self.assertIn("Inactive input tab must start with tabindex=-1", result.stdout)
+
+    def test_rejects_missing_tabindex_update(self):
+        html = VALID_HTML.replace("codeTab.setAttribute('tabindex',isCode?'0':'-1');", "")
+        result = self.run_checker(html)
+        self.assertEqual(result.returncode, 1)
+        self.assertIn("Code tab selection does not update the roving tabindex", result.stdout)
+
     def test_rejects_changed_canonical_source(self):
         html = VALID_HTML.replace("raise SystemExit(main())", "raise SystemExit(mainx())")
         result = self.run_checker(html)
