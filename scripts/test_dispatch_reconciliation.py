@@ -196,6 +196,14 @@ class DispatchReconciliationTests(unittest.TestCase):
         got = decide_ambiguous_dispatch(None, None)
         self.assertEqual(got.action, "conflict")
 
+    def test_non_string_lookup_outcome_fails_closed(self):
+        lookup = ProviderLookup(outcome=[])
+        self.assertEqual(decide_ambiguous_dispatch(CTX, lookup).action, "hold_unknown")
+
+    def test_non_string_context_state_fails_closed(self):
+        ctx = DispatchContext(**{**CTX.__dict__, "state": []})
+        self.assertEqual(decide_ambiguous_dispatch(ctx, None).action, "conflict")
+
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)

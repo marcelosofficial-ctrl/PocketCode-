@@ -417,3 +417,10 @@ Next: await owner-provided read-only Pyodios saved-exception probe output; prese
 - Latest helper/test Git objects are source 6760b3301e818956f71fdf02e369407e3b5cdaf7 and tests f1949ebcfd525c5715af7fd9e022d5d35f8f1063 (33 test methods). Branch commit and read-back pending.
 - The 33-case expanded suite was NOT RUN. Previous 61/61 applies only to earlier code; do not claim it for this revision.
 - Architecture: local atomic outbox and provider idempotency/final-absence are independent gates. If neither provider proof exists, remain hold_unknown.
+
+
+## 2026-11-06 — PC-2026-11-06-P25 — Malformed input guard
+
+- Added explicit string validation for ProviderLookup.outcome before set membership, preventing TypeError for unhashable malformed values.
+- Added two regression tests: non-string lookup outcome and non-string dispatch state. Latest dispatch test file contains 35 methods.
+- Latest 35-case test revision NOT RUN. Exact source/test blobs 165d141bc6ab47ad9d19d1ba537ab0e3e39aa16d and e65968cc2162dca8eb75d446e10eec06c0ab9220. This is a defensive pure-helper revision, not a provider integration.

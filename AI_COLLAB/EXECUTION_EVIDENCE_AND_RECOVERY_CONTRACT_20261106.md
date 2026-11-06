@@ -240,3 +240,8 @@ A provider lookup returning "not found" is not, by itself, proof that a prior re
 Likewise, an idempotency contract is not one generic boolean. It must be pinned per provider API operation and version, including the exact key scope, request-parameter comparison, concurrency behavior, when the provider begins retaining a result, and retention/pruning behavior. Provider API versions can have materially different semantics. For example, Stripe's current documentation distinguishes API v1 (replay of the first saved status/body, including 500, with keys eligible for pruning after at least 24 hours) from API v2 (different retry behavior for successful versus failed/partially failed operations). This is why the model includes provider and API version and why adapter-specific contract tests are mandatory.
 
 The authoritative, absence_final, and idempotency-contract fields are not cryptographic proofs. They are claims made by the trusted adapter after authentication and source verification. The current pure helper cannot authenticate them and must not be exposed as an authorization boundary.
+
+
+## 16. Malformed provider lookup input
+
+The dispatch decision helper also rejects non-string lookup outcomes before membership tests. A malformed lookup outcome such as a list must resolve to hold_unknown, not raise an exception. Non-string dispatch state similarly resolves to conflict. These are defensive shape checks only; authenticated provenance remains an adapter responsibility.

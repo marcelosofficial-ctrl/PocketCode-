@@ -156,3 +156,10 @@ Next task: owner runs only the read-only Pyodios sys.last_exc / sys.last_value C
 - Latest helper/test Git objects: source 6760b3301e818956f71fdf02e369407e3b5cdaf7; tests f1949ebcfd525c5715af7fd9e022d5d35f8f1063 (33 test methods). They are not branch-durable until committed and read back.
 - Local test execution of this expanded 33-case revision is NOT RUN in this pass. Previous 61/61 claim applies only to the earlier 30-case dispatch revision and must not be carried forward to this changed code.
 - No runtime/provider/database selection, PR mutation, merge, deployment, budget or canonical ID change.
+
+
+## 2026-11-06 — P25 malformed-input guard
+
+- Added a string-type guard for ProviderLookup.outcome before set membership; malformed unhashable values now hold_unknown rather than raising TypeError.
+- Added regression cases for non-string lookup outcome and non-string dispatch state. Latest test file contains 35 test methods. Execution NOT RUN for this latest revision.
+- Latest helper/test blobs: 165d141bc6ab47ad9d19d1ba537ab0e3e39aa16d and e65968cc2162dca8eb75d446e10eec06c0ab9220. Branch checkpoint pending.

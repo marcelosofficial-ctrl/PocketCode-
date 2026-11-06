@@ -128,7 +128,7 @@ def decide_ambiguous_dispatch(
         return _decision("do_not_replay", "attempt_already_terminal_new_attempt_requires_new_authorization", context)
 
     if lookup is not None:
-        if not isinstance(lookup, ProviderLookup) or lookup.outcome not in {"found", "not_found", "unknown"}:
+        if not isinstance(lookup, ProviderLookup) or not isinstance(lookup.outcome, str) or lookup.outcome not in {"found", "not_found", "unknown"}:
             return _decision("hold_unknown", "provider_lookup_invalid", context)
 
         if lookup.outcome in {"found", "not_found"}:
