@@ -187,3 +187,9 @@ Checked exact upstream Pyodide `src/core/error_handling.c` at tags 314.0.5 and 3
 Expanded wrapper verification to 4/4 local checks: exact success JSON; malformed input outputs its missing-column diagnostic on stderr and creates no JSON; existing `summary.json` causes a no-run refusal and is preserved byte-for-byte; missing `items.csv` causes a no-run refusal. A first assertion pass incorrectly searched stdout only for the malformed diagnostic; corrected the harness to inspect stdout plus stderr and reran all checks. This was a harness assertion bug, not a fixture failure.
 
 Navigation verified against current Pyodios iPhone docs: More → Settings → Error Log → View Error Log. The log can include user Python source; inspect/redact before sharing. Project import synchronization also remains project-reopen based.
+
+## 2026-11-06 — Pyodios triage correction: Files list versus Python working folder
+
+Correction to the preceding red-team note: it was wrong to say pull-to-refresh was unsupported. The Pyodios Files guide explicitly documents pull-down to refresh the Files browser list after external changes. The Projects guide separately says external file additions are not visible to Python until the project is reopened. These are distinct layers: refresh the Files list if that view is stale, then reopen the project to refresh the Python session's working-folder copy. The device protocol and triage note now state this distinction. Sources: https://pyodios.caffeinatedmath.com/guide/files and https://pyodios.caffeinatedmath.com/guide/projects.
+
+The canonical task attempt remains preserved. Inspect `summary.json`, then the Error Log and saved exception before another run. On iPhone the documented navigation is More → Settings → Error Log → View Error Log; the main triage note has the corrected path and privacy warning.
