@@ -1,6 +1,6 @@
 # Pyodios device baseline and hands-on protocol — 2026-11-06
 
-**Status:** Public documentation reconciled; installed build/runtime directly reported by owner from About and Settings; device execution NOT YET OBSERVED. This is a test plan and source audit, not a product acceptance result.
+**Status:** Public documentation reconciled; installed build/runtime owner-reported; success artifact owner-inspected and exactly matches the oracle; Editor bridge error unresolved; full run inconclusive; product acceptance not established.
 **Target:** Pyodios on the owner's iPhone, using the existing frozen CSV-to-JSON fixture without edits.
 **Budget/privacy:** $0; synthetic inputs only; no account, provider, remote kernel, package install, private file, or network workload required.
 
