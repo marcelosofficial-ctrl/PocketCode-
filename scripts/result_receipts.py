@@ -21,6 +21,7 @@ class ArtifactInput:
     artifact_id: str
     logical_name: str
     media_type: str
+    effect_id: str
     attempt_id: str
     content: bytes
     write_complete: bool
@@ -33,6 +34,7 @@ class ArtifactManifestEntry:
     object_version: str
     logical_name: str
     media_type: str
+    effect_id: str
     attempt_id: str
     byte_length: int
     sha256: str
@@ -128,7 +130,7 @@ class ResultReceiptStore:
         if not isinstance(item, ArtifactInput):
             raise ReceiptConflict("artifact input must be typed")
         if not all(isinstance(v, str) and v.strip() for v in
-                   (item.artifact_id, item.logical_name, item.media_type, item.attempt_id)):
+                   (item.artifact_id, item.logical_name, item.media_type, item.effect_id, item.attempt_id)):
             raise ReceiptConflict("artifact identity and media type are required")
         if not self._SAFE_NAME.fullmatch(item.logical_name) or item.logical_name in {".", ".."}:
             raise ReceiptConflict("artifact logical name must be a safe basename")
@@ -150,7 +152,7 @@ class ResultReceiptStore:
             integrity, quarantined = "digest_mismatch", True
         entry = ArtifactManifestEntry(
             item.artifact_id, f"{item.artifact_id}:v1", item.logical_name,
-            item.media_type, item.attempt_id, len(item.content), digest,
+            item.media_type, item.effect_id, item.attempt_id, len(item.content), digest,
             integrity, quarantined,
         )
         prior = self._artifacts.get(item.artifact_id)
@@ -224,8 +226,8 @@ class ResultReceiptStore:
             if artifact_id not in self._artifacts:
                 raise ReceiptConflict("receipt references an unknown artifact")
             entry = self._artifacts[artifact_id][0]
-            if entry.attempt_id != attempt_id:
-                raise ReceiptConflict("artifact attempt does not match receipt attempt")
+            if entry.effect_id != effect_id or entry.attempt_id != attempt_id:
+                raise ReceiptConflict("artifact effect/attempt does not match receipt identity")
             manifest.append(entry)
 
         canonical = {
@@ -314,7 +316,7 @@ class ResultReceiptStore:
             return ReleaseResult("denied_stale_or_mismatched_attempt", artifact_id, None, None,
                                  authorization.authorization_id)
         receipt = next((item for item in self._receipts if item.receipt_id == receipt_id), None)
-        if receipt is None or receipt.attempt_id != entry.attempt_id or not any(
+        if receipt is None or receipt.effect_id != entry.effect_id or receipt.attempt_id != entry.attempt_id or not any(
             manifest.artifact_id == artifact_id and manifest.object_version == entry.object_version
             for manifest in receipt.artifact_manifest
         ):

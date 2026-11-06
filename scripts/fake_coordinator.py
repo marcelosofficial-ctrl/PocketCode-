@@ -269,7 +269,6 @@ class FakeCoordinator:
         )
 
     def project_attempt_verdict(self, effect_id: str, attempt_id: str) -> VerdictProjection:
-        self.store.get(effect_id, attempt_id)
         record = self.store.get(effect_id, attempt_id)
         matching = [event for event in self.journal.events
                     if event.effect_id == effect_id and event.attempt_id == attempt_id]
@@ -282,8 +281,6 @@ class FakeCoordinator:
                 payload = json.loads(event.payload.decode("utf-8"))
             except (UnicodeDecodeError, json.JSONDecodeError):
                 return VerdictProjection("INCOMPLETE", "accepted_event_payload_invalid", "unknown")
-            if not isinstance(payload, dict):
-                return VerdictProjection("INCOMPLETE", "accepted_event_payload_not_object", "unknown")
             if not isinstance(payload, dict):
                 return VerdictProjection("INCOMPLETE", "accepted_event_payload_not_object", "unknown")
             kind = payload.get("kind")

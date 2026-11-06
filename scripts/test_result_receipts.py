@@ -17,7 +17,7 @@ class ResultReceiptTests(unittest.TestCase):
         self.content = b'{"ok":true}\n'
         self.digest = hashlib.sha256(self.content).hexdigest()
         self.artifact = self.store.stage_artifact(ArtifactInput(
-            "artifact-1", "summary.json", "application/json", "attempt-1",
+            "artifact-1", "summary.json", "application/json", "effect-1", "attempt-1",
             self.content, True, self.digest,
         ))
         self.receipt = self.create()
@@ -55,7 +55,7 @@ class ResultReceiptTests(unittest.TestCase):
 
     def test_exact_artifact_replay_is_idempotent(self):
         replay = self.store.stage_artifact(ArtifactInput(
-            "artifact-1", "summary.json", "application/json", "attempt-1",
+            "artifact-1", "summary.json", "application/json", "effect-1", "attempt-1",
             self.content, True, self.digest,
         ))
         self.assertEqual(replay, self.artifact)
@@ -64,13 +64,13 @@ class ResultReceiptTests(unittest.TestCase):
     def test_artifact_identity_cannot_overwrite_different_bytes(self):
         with self.assertRaises(ReceiptConflict):
             self.store.stage_artifact(ArtifactInput(
-                "artifact-1", "summary.json", "application/json", "attempt-1",
+                "artifact-1", "summary.json", "application/json", "effect-1", "attempt-1",
                 b'{"ok":false}', True,
             ))
 
     def test_partial_write_is_quarantined(self):
         item = self.store.stage_artifact(ArtifactInput(
-            "artifact-partial", "partial.json", "application/json", "attempt-1",
+            "artifact-partial", "partial.json", "application/json", "effect-1", "attempt-1",
             b'{"ok":', False,
         ))
         self.assertTrue(item.quarantined)
@@ -78,7 +78,7 @@ class ResultReceiptTests(unittest.TestCase):
 
     def test_digest_mismatch_is_quarantined(self):
         item = self.store.stage_artifact(ArtifactInput(
-            "artifact-bad", "bad.json", "application/json", "attempt-1",
+            "artifact-bad", "bad.json", "application/json", "effect-1", "attempt-1",
             self.content, True, "0" * 64,
         ))
         self.assertTrue(item.quarantined)
@@ -88,7 +88,7 @@ class ResultReceiptTests(unittest.TestCase):
         for name in ("../secret", "..", ".", "folder/file", "folder\\file", ""):
             with self.subTest(name=name), self.assertRaises(ReceiptConflict):
                 self.store.stage_artifact(ArtifactInput(
-                    "bad-" + str(len(name)), name, "text/plain", "attempt-1", b"x", True,
+                    "bad-" + str(len(name)), name, "text/plain", "effect-1", "attempt-1", b"x", True,
                 ))
 
     def test_receipt_binds_attempt_evidence_and_artifact_manifest(self):
@@ -160,9 +160,17 @@ class ResultReceiptTests(unittest.TestCase):
         self.assertEqual(second.version, 2)
         self.assertEqual(len(self.store.receipts), 2)
 
+    def test_receipt_rejects_artifact_from_different_effect_with_same_attempt_id(self):
+        self.store.stage_artifact(ArtifactInput(
+            "artifact-other-effect", "other.json", "application/json",
+            "effect-2", "attempt-1", b"x", True,
+        ))
+        with self.assertRaises(ReceiptConflict):
+            self.create(artifact_ids=("artifact-other-effect",))
+
     def test_receipt_rejects_mismatched_artifact_attempt(self):
         self.store.stage_artifact(ArtifactInput(
-            "artifact-other", "other.json", "application/json", "attempt-2", b"x", True,
+            "artifact-other", "other.json", "application/json", "effect-1", "attempt-2", b"x", True,
         ))
         with self.assertRaises(ReceiptConflict):
             self.create(artifact_ids=("artifact-other",))
@@ -198,7 +206,7 @@ class ResultReceiptTests(unittest.TestCase):
 
     def test_quarantined_artifact_cannot_be_released(self):
         partial = self.store.stage_artifact(ArtifactInput(
-            "artifact-partial", "partial.json", "application/json", "attempt-1",
+            "artifact-partial", "partial.json", "application/json", "effect-1", "attempt-1",
             b"partial", False,
         ))
         partial_receipt = self.store.create_receipt(
