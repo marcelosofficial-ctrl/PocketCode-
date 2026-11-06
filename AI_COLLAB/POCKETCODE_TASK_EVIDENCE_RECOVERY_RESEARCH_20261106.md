@@ -92,7 +92,7 @@ If PocketCode cannot prove measurable improvement in these areas, pivot to a por
 | in-toto | Subject digest and typed predicate separation. | Unsigned local receipts called attestations. |
 | SQLite | Atomic local reservation/event/receipt transactions; restart recovery; explicit journal/sync configuration. | Exactly-once remote side effects. |
 
-MCP is agent-to-tool; A2A is agent-to-agent. The legacy Agent Communication Protocol (ACP) is archived. No protocol selection is made in this pass.
+MCP is agent-to-tool; A2A is agent-to-agent. MCP Tasks were introduced in the 2025-11-25 specification and are explicitly experimental, so isolate them behind an adapter and pin the negotiated specification version. A2A v1.0.1 is the latest surfaced release (2026-05-26), Apache-2.0; its specification warns that streaming reconnects may miss status updates and not all task messages are guaranteed to persist in task history. Persist PocketCode's own receipt/event ledger rather than treating either protocol history as complete. The legacy Agent Communication Protocol (ACP) is archived. No protocol selection is made in this pass.
 
 ## 5. Proposed PocketCode architecture slice
 
@@ -136,7 +136,7 @@ Reducer rules:
 6. Conflicting terminal observations remain visible and produce INCOMPLETE pending reconciliation.
 7. UI snapshots derive from durable history; snapshots do not replace it.
 
-**Local journal candidate:** SQLite. In one local transaction reserve the semantic effect/attempt and persist dispatch intent; after adapter response append observations and receipt references transactionally. If WAL is selected, specify `synchronous=FULL` where power-loss durability is required and validate on target iOS hardware. Choose Apple file-protection class deliberately.
+**Local journal candidate:** SQLite. In one local transaction reserve the semantic effect/attempt and persist dispatch intent; after adapter response append observations and receipt references transactionally. If WAL is selected, specify `synchronous=FULL` where power-loss durability is required and validate on target iOS hardware. SQLite's current documentation identifies a WAL-reset corruption bug affecting some multi-connection concurrent-write/checkpoint combinations through 3.51.2, fixed in 3.51.3 (2026-03-13) with backports 3.44.6 and 3.50.7. Pin and verify a fixed SQLite build, constrain concurrent writers/checkpoints, and include the crash/concurrency reproducer in acceptance. Do not assume the OS-bundled SQLite meets the required version. WAL requires same-host shared-memory coordination and is unsuitable over network filesystems. Choose Apple file-protection class deliberately.
 
 **Remote side effects:** outbox/inbox reconciliation. Local commit and provider dispatch are not one atomic transaction. After crash between dispatch and acknowledgement, query the original attempt by its provider idempotency key. Redispatch only if authoritative lookup proves the original start was not accepted, or the provider contract guarantees an identical start retry is idempotent for that same key and fingerprint. If lookup is UNKNOWN or the provider lacks that guarantee, preserve UNKNOWN and stop automatic replay.
 
@@ -261,3 +261,21 @@ Do not test infinite loops or use Pyodios' 120-second UI timeout as a terminatio
 **NOT RUN:** PocketCode product tests, mobile browser interaction tests, provider workloads, new iPhone tests, crash-injection, hostile-code tests and canonical LOOP/CASE acceptance.
 
 No runtime, provider, paid service, account, workload, schema, canonical ID, PR, merge, deployment or product implementation was selected or changed by this research record.
+
+
+## 11. Fresh source findings and maintenance constraints — 2026-11-06
+
+### Pyodide and iOS execution boundaries
+
+- Pyodide's official worker guidance requires a module worker because its runtime entry point is an ES module. A worker isolates synchronous Python work from the UI thread and communicates through explicit messages. This is not proof of hard resource isolation or survival after page/app termination.
+- Pythonista's iOS FAQ states subprocess and multiprocessing launches fail with PermissionError and scripts run in the same app process. This corroborates the in-process evidence boundary, but its documented Python version is old and is not a current compatibility baseline.
+- BeeWare Briefcase documents iOS and Android packaging targets. Packaging capability alone does not prove arbitrary package compatibility, subprocesses, background execution or user-code security. It is a candidate packaging reference, not a chosen runtime.
+- Apple's lifecycle guidance requires saving state on deactivation/background transitions and preparing for suspension; UI restoration is not a substitute for a durable task journal. Treat lifecycle callbacks as opportunities to flush, never as guaranteed time to finish arbitrary work.
+
+### SQLite release gate
+
+In WAL mode, NORMAL may lose a recently committed transaction after power loss; FULL adds a WAL sync after each transaction. WAL requires same-host shared-memory coordination and is unsuitable over network filesystems. SQLite's WAL-reset bug affects a specific multi-connection write/checkpoint race through 3.51.2; 3.51.3 fixes it. Pin SQLite explicitly and add a multi-connection concurrent write/checkpoint crash test before selecting WAL.
+
+### Protocol limitations
+
+MCP Tasks are experimental in the 2025-11-25 specification. Task IDs are receiver-generated, task state is requestor-polled, and access control must bind tasks to authorization context when available. A2A v1.0.1 supports task states, artifact updates and polling/streaming/push, but streaming clients may miss status updates after disconnect and task history may omit transient messages. PocketCode's own durable receipt remains authoritative.
