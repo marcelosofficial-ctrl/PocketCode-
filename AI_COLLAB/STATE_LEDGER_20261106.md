@@ -203,3 +203,10 @@ Next task: owner runs only the read-only Pyodios sys.last_exc / sys.last_value C
 - Exact payload bytes and SHA-256 are retained. Occurrence and observation timestamps are separate; coordinator sequence alone orders events. Effect-linked events require the current attempt-scoped fence.
 - Red-team boundary: AuthenticatedProducer is forgeable by arbitrary Python callers. Only a trusted authentication adapter may construct/pass it after cryptographic credential verification, authorization, revocation and replay checks. Durable fence validation and append must be one atomic transaction.
 - No canonical IDs, CASE-04, runtime/provider/storage, budget, PR, merge or deployment changed. Next: fake coordinator spanning outbox + journal + projection rebuild, then durable-store selection only after semantics stabilize.
+
+## PC-2026-11-06-P27 refinement — event replay red-team
+
+- Re-reviewed duplicate semantics and corrected two edge cases.
+- Same authenticated issuer+subject with rotated key ID and identical event facts is now deduplicated. Key rotation should not create a false event identity conflict.
+- Exact duplicate also requires the same occurrence timestamp; observation timestamp may differ. Changed occurrence time is an altered event fact and is quarantined.
+- Expanded local suite to 21 tests; 21/21 passed. GitHub source/test files were updated in follow-on commits. Authentication and durable atomicity limitations remain unchanged.

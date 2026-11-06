@@ -475,3 +475,9 @@ Next: await owner-provided read-only Pyodios saved-exception probe output; prese
 - Red-team boundary: AuthenticatedProducer is a caller-constructible evidence value, not cryptographic proof. Production must verify credentials, source authorization, key state, revocation and replay policy outside the journal. Durable fence compare-and-advance and append must be atomic.
 - Existing outbox model remains isolated. Its 19/19 result is separate from this journal's 19/19. Dispatch helper's 34-case suite remains NOT RUN for final revision.
 - No canonical IDs, CASE-04, provider/runtime/storage selection, budget, PR, merge or deployment changed. Next: fake coordinator joining outbox + journal + projection rebuild.
+
+## 2026-11-06 — PC-2026-11-06-P27 refinement — event replay edge cases
+
+- Red-team refinement: deduplicate across signing-key rotation for the same issuer+subject; require exact occurrence time as part of event facts; permit observation time to differ on replay.
+- Different producer principal, changed bytes, or changed occurrence timestamp now quarantine under the same source/event ID.
+- Updated source and tests; local run 21/21 passed. Documentation reflects revised semantics.

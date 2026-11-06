@@ -18,7 +18,7 @@
 
 Command: `python -m unittest discover -s <working-copy> -p 'test_event_journal.py' -v`
 
-**19/19 passed** under the current local Python interpreter. This is a deterministic unit-test result only. It does not test multi-process races, durable append atomicity, process/power-loss recovery, key rotation, signature verification, credential revocation, or a mobile runtime.
+**21/21 passed** under the current local Python interpreter. This is a deterministic unit-test result only. It does not test multi-process races, durable append atomicity, process/power-loss recovery, key rotation, signature verification, credential revocation, or a mobile runtime.
 
 ## Security boundary and required production adapter
 
@@ -33,3 +33,7 @@ No event transport, signature algorithm, credential store, key-rotation mechanis
 ## Next gate
 
 Combine outbox and journal state in a fake coordinator, then test crash points across reservation, dispatch intent, event append, acknowledgement and projection rebuild. Only after those semantics are stable should a durable store be selected and tested with concurrent workers and process restart.
+
+## Red-team refinement — duplicate identity semantics
+
+The suite is now **21/21 passed**. An exact replay requires the same source/event ID, issuer and subject, exact payload bytes, and the same occurrence timestamp. Observation time may differ because it records when the journal saw the event again. A key rotation for the same issuer/subject does not break deduplication; the newly observed key ID remains a property of the authentication observation, while the first accepted event retains its original key ID. A different issuer/subject, changed payload, or changed occurrence timestamp is quarantined. This prevents key rotation from creating false conflicts while rejecting altered event facts.

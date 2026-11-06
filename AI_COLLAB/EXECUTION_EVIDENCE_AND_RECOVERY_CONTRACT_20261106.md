@@ -277,3 +277,9 @@ Required semantics demonstrated:
 - Require the current attempt-scoped fence for effect-linked observations.
 
 **Verification:** 19/19 local deterministic unit tests passed. This does not prove cryptographic authentication, durable atomic append, concurrent fencing, process/power-loss recovery or mobile integration. Production must atomically validate fence and append in its durable transaction.
+
+### 18.1 Event replay identity refinement
+
+Exact replay requires the same source/event ID, authenticated issuer+subject, immutable payload bytes and occurrence timestamp. Observation timestamp may differ because it describes a later observation. A changed key ID for the same issuer+subject does not create a new event or conflict; key rotation is an authentication detail, not a new producer principal. A different principal, changed payload, or changed occurrence time is quarantined.
+
+The refined suite contains 21 local deterministic unit tests passed. This remains a model-level result.

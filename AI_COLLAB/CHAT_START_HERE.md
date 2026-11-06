@@ -295,3 +295,10 @@ A third safety issue was found: even an authenticated provider lookup can be eve
 - Fence check and append are synchronous in-memory operations only. A durable store must atomically compare-and-advance the fence with append to close race windows.
 - New event journal tests are separate from the fake outbox 19/19 and dispatch reconciliation 34-case suite. No test counts are combined.
 - Next: build a fake coordinator joining outbox and journal; test interruption across reservation, dispatch intent, event append, acknowledgement and projection rebuild. Only then evaluate durable storage. No runtime/provider/database/budget selection.
+
+## Event journal red-team refinement
+
+- Expanded the event journal suite from 19 to 21 tests and reran locally: 21/21 passed.
+- Exact duplicate identity now requires same source/event ID, issuer+subject, exact payload bytes and occurrence timestamp. Observation timestamp may differ on replay.
+- Same issuer+subject with a rotated key ID remains an exact duplicate. Different producer principal, changed payload, or changed occurrence timestamp is quarantined.
+- This distinction avoids false conflict on credential rotation while preserving event-fact immutability. Current event's key ID remains recorded on first accepted event; production adapter must retain its own verification audit.
