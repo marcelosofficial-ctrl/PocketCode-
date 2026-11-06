@@ -149,3 +149,13 @@ Stress the composed receipt projection with contradictory collector/teardown evi
 - Python 3.12 / Ubuntu 24.04; 205 passed, 0 failed.
 - Lifecycle progression supports monotonic accepted/queued/running updates followed by at most one terminal state; unknown, malformed, regressive or forked states fail closed. PASS requires succeeded + natural child exit zero.
 - Always re-check the live branch head before relying on this checkpoint.
+
+
+## 2026-11-07 verified source checkpoint
+
+- Exact tested SHA: `e631e9ccda29e5632832a64ad6b5e8c4c0ae5765`
+- CI: https://github.com/marcelosofficial-ctrl/PocketCode-/actions/runs/42311165889
+- Result: 211 passed, 0 failed, Ubuntu 24.04 / Python 3.12.
+- Source changes: `scripts/event_journal.py`, `scripts/test_event_journal.py`, `scripts/fake_coordinator.py`; regression coverage also in `scripts/test_fake_coordinator.py`.
+- Reservation event remains unfenced because it precedes lease acquisition; replay and repair after claim preserve its original identity. Worker event deduplication includes fence generation and quarantines a replay under a newer fence.
+- Live branch head may have advanced beyond the tested SHA due documentation-only follow-up commits; always fetch the branch before starting.

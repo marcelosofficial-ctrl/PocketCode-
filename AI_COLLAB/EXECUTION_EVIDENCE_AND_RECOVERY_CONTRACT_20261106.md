@@ -328,3 +328,12 @@ Exact-SHA CI: `b6eef9a8cc1df704ff2519a69fb9e347a2bcedf9`, 205/205 passed. This i
 ## Reservation event fencing exception
 
 The initial `effect_reserved` event is attempt-bound but intentionally unfenced because reservation precedes worker lease acquisition. Its identity and payload remain immutable across later claims, so replay/repair after a claim must use the same unfenced identity. All lease-, dispatch-, reconciliation- and execution-observation events remain fence-required once a lease generation exists. The generic EventJournal exposes this as an explicit `require_fence=False` option; only the trusted coordinator may select it for the reservation event. The option rejects any supplied fence when disabled. This does not make worker observations unfenced.
+
+
+## 2026-11-07 reservation identity and fencing semantics
+
+Initial reservation occurs before a worker lease exists. Therefore `effect_reserved` is bound to EffectId/DispatchAttemptId but has no fence. That event must remain the same immutable event when replayed or repaired after a worker has claimed the attempt. FakeCoordinator explicitly selects the EventJournal's `require_fence=False` mode for reservation and reservation repair only; the mode rejects any non-null fence. Lease claims, dispatch intent, acknowledgements, reconciliation, lifecycle, child exit and program-failure observations continue to require the current fence.
+
+EventJournal exact duplicate recognition now includes the event's fence generation in addition to source/event ID, producer issuer/subject, attempt scope, exact payload bytes and occurrence timestamp. A worker event replay under a newer fence is a conflict and is quarantined. This prevents a new worker generation from inheriting the old generation's event identity.
+
+Exact-SHA CI: `e631e9ccda29e5632832a64ad6b5e8c4c0ae5765`, 211/211 passed: https://github.com/marcelosofficial-ctrl/PocketCode-/actions/runs/42311165889. This remains a synchronous in-memory conformance model; durable fencing/append atomicity, concurrency and cryptographic producer authentication remain open.

@@ -642,3 +642,12 @@ Next: await owner-provided read-only Pyodios saved-exception probe output; prese
 - CI: [run 42310444948](https://github.com/marcelosofficial-ctrl/PocketCode-/actions/runs/42310444948), exact SHA `b6eef9a8cc1df704ff2519a69fb9e347a2bcedf9`, Ubuntu 24.04 / Python 3.12, **205 passed, 0 failed**.
 - Lifecycle observation reduction now supports valid nonterminal progression and one terminal state. Regressive transitions, multiple terminal states, unknown values and non-string status values remain INCOMPLETE. PASS requires succeeded + natural direct-child exit zero.
 - The verdict helper is still not an authentication boundary; accepted event producers must be authenticated by a future trusted adapter. No durable transaction, concurrent safety, device, provider, sandbox or release acceptance is implied.
+
+
+## 2026-11-07 — PC-2026-11-07-P32 — reservation event fence exception and fence-sensitive deduplication
+
+- Added explicit unfenced attempt-bound reservation event path. Reservation event identity remains unchanged after a worker lease is claimed; reservation repair after claim is also safe. Only reservation uses this path; worker observations remain fence-required.
+- EventJournal exact duplicate comparison now includes fencing generation. Reuse of a worker event ID under a new fence is quarantined, preventing a newer worker from inheriting an older generation's accepted event.
+- CI exact SHA `e631e9ccda29e5632832a64ad6b5e8c4c0ae5765`: [run 42311165889](https://github.com/marcelosofficial-ctrl/PocketCode-/actions/runs/42311165889), Ubuntu 24.04 / Python 3.12, **211 passed, 0 failed**.
+- Test-driven corrections: an initial test did not initialize the first fence generation; fixed by advancing to fence 1 before appending. Reservation replay regression was fixed by preserving the pre-lease unfenced event identity.
+- No durable atomicity, concurrency, cryptographic identity, provider, mobile, sandbox or release claims are made.

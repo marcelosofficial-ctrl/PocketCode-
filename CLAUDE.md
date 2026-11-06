@@ -139,3 +139,16 @@ When assigned work: inspect current code, define narrow acceptance criteria, imp
 - Lifecycle projection now accepts monotonic nonterminal progression (`accepted → queued → running`) followed by at most one terminal lifecycle state. Regressive transitions, multiple terminal observations, unknown statuses and malformed non-string statuses fail closed to INCOMPLETE. A valid succeeded lifecycle still needs natural direct-child exit 0 for PASS.
 - Current lease fencing, event scope binding, receipt evidence binding and release authorization caveats remain as described in the state ledger.
 - This is standard-library Python CI only. It does not establish mobile/device behavior, durable atomicity, concurrency, cryptographic producer authentication, provider behavior, hostile-code sandboxing or production artifact authorization. Later source commits need a fresh exact-SHA run.
+
+
+## 2026-11-07 exact-SHA CI checkpoint: reservation fencing and replay identity
+
+- Exact tested commit: `e631e9ccda29e5632832a64ad6b5e8c4c0ae5765`
+- CI run: https://github.com/marcelosofficial-ctrl/PocketCode-/actions/runs/42311165889
+- Environment: GitHub-hosted Ubuntu 24.04 / Python 3.12.
+- Command: `python -m unittest discover -s scripts -p "test_*.py" -v`
+- Result: **211 tests passed, 0 failed**.
+- Reservation events are attempt-bound but intentionally unfenced because they precede worker lease acquisition. The coordinator now preserves this same unfenced event identity when replaying or repairing the reservation after a worker has claimed the attempt. This is an explicit `require_fence=False` path, rejects a supplied fence, and is selected only for `effect_reserved`; worker/dispatch/reconciliation/execution observations remain fence-required.
+- Journal duplicate identity now includes the fencing generation. Reusing the same source/event ID, producer, payload and attempt under a newer fence is quarantined rather than being misreported as an exact duplicate.
+- Earlier test runs exposed a fixture setup issue (first fence generation was not initialized) and a reservation replay regression; both were corrected before this exact-SHA green run.
+- This is standard-library Python CI only. It does not prove durable atomicity, concurrent safety, cryptographic producer authentication, mobile/device behavior, provider behavior, sandboxing or production artifact authorization. Re-check live branch head before relying on this checkpoint.

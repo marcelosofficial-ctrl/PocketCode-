@@ -371,3 +371,12 @@ Next task: owner runs only the read-only Pyodios sys.last_exc / sys.last_value C
 - Exact-SHA run: https://github.com/marcelosofficial-ctrl/PocketCode-/actions/runs/42310444948 at `b6eef9a8cc1df704ff2519a69fb9e347a2bcedf9`; Ubuntu 24.04 / Python 3.12; full suite **205 passed, 0 failed**.
 - Lifecycle projection now reduces monotonic nonterminal progression (`accepted → queued → running`) and permits at most one terminal lifecycle state. It rejects regressions, terminal-state forks, unknown status strings and non-string status payloads. PASS still requires trusted succeeded lifecycle plus natural direct-child exit 0.
 - This is an in-memory conformance model. It does not establish durable/concurrent event storage, cryptographic producer authentication, mobile, provider, sandbox or production release behavior.
+
+
+## 2026-11-07 — reservation exception and fence-bound duplicate identity green
+
+- Exact-SHA CI: https://github.com/marcelosofficial-ctrl/PocketCode-/actions/runs/42311165889 at `e631e9ccda29e5632832a64ad6b5e8c4c0ae5765`; Ubuntu 24.04 / Python 3.12; full suite **211 passed, 0 failed**.
+- Reservation is an attempt-bound, pre-lease event and stays unfenced. FakeCoordinator now explicitly uses `require_fence=False` only for initial reservation and reservation repair, so the same reservation event remains idempotent after a worker claim. Passing a fence to this path is rejected.
+- EventJournal exact replay now also compares fence generation. Same source/event ID and same producer/payload/attempt under a new fence is quarantined, not treated as a duplicate. All worker events still require the current fence.
+- CI failures encountered while building this edge case were resolved: first test fixture now initializes fence 1 before testing fence 2; reservation replay/repair uses the unfenced pre-lease identity. No remaining failures on exact tested SHA.
+- Limitations remain: in-memory only, no durable transaction/concurrent writer guarantee or cryptographic producer authentication; no mobile/provider/sandbox/production acceptance.
