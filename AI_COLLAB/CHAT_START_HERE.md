@@ -214,3 +214,12 @@ PocketCode must continue its own CASE-04 timeout/report-contract work. No RevDev
 **Latest Pyodios result (2026-11-06):** the owner confirmed the existing `summary.json` exactly matches the fixed success oracle despite the Editor showing `[Bridge/executePython] PythonError`. Classify as artifact-level functional success, bridge error unresolved, full run inconclusive. Preserve the success project and do not rerun/overwrite. Next obtain the timestamped Error Log, then the read-only saved-exception probe if needed. See `PYODIOS_PYTHONERROR_BRIDGE_TRIAGE_20261106.md` and `NEW_CHAT_HANDOFF_20261106.md`.
 
 **Latest Pyodios diagnostic:** Error Log inspection yielded only `Editor: PythonError`, no traceback. Root cause remains unknown. Next use the read-only `sys.last_exc` / `sys.last_value` Console probe. Preserve the exact-match success artifact and do not rerun the canonical task. See the triage note and 2026-11-06 handoff.
+
+
+## 2026-11-06 — RevDev installer-aware recovery update (method only)
+
+RevDev run #48 42181302862 passed **91/91** at exact source/test SHA 935108a6937f15b76f75850ebdbe70c69000be32 under Windows PowerShell 5.1 / Pester 5.7.1: https://github.com/marcelosofficial-ctrl/DevRelay-Missions/actions/runs/42181302862. The suite covers publisher/transport, local-result recovery/quarantine, and installer dependency/source-pin checks. The clean installer was not executed; no PC, live API, queue or mission was touched.
+
+A follow-up source review found the install marker itself was not rolled back. RevDev added backup/restore/removal logic and two tests. Current RevDev source SHA a6defbb0e8b0902e8ecc20777d0a10dc25ae344b, 93 authored tests, run #49 42182731390 IN_PROGRESS at last check. Do not call the latest 93-case revision green until the exact run completes. This is a method-only update, not PocketCode code or acceptance evidence.
+
+PocketCode's own immediate priority remains CASE-04 timeout/report-contract evidence provenance, with the Pyodios PythonError attempt preserved as artifact-level functional success / bridge error unresolved / full run inconclusive. Do not rerun or overwrite the preserved success project.

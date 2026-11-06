@@ -208,3 +208,12 @@ Owner inspected the existing Pyodios project Files tab after the Editor displaye
 ## 2026-11-06 — PC-2026-11-06-P14 — Error Log yielded no traceback
 
 Owner inspected the Pyodios Error Log for the canonical success attempt. The complete available entry was only `Editor: PythonError`; no underlying exception or traceback was exposed. This leaves the bridge root cause unknown. The existing `summary.json` still exactly matches the frozen oracle, so artifact-level functional success remains established while the overall Editor attempt is inconclusive. Next: run only the read-only Console probe for `sys.last_exc` / `sys.last_value`; do not rerun the canonical script or alter the successful project. If no exception is saved, classify the probe as unavailable and consider a guarded diagnostic wrapper only in a separate disposable project after preserving current evidence.
+
+
+## 2026-11-06 — PC-2026-11-06-P13 — RevDev installer-aware CI and rollback lesson (method only)
+
+RevDev run #48 42181302862 passed 91/91 at exact source/test SHA 935108a6937f15b76f75850ebdbe70c69000be32 under Windows PowerShell 5.1 / Pester 5.7.1. It covers 59 publisher/transport, 22 local-result/recovery/quarantine and 10 installer dependency/source-pin tests. No installer or PC/live runtime action occurred.
+
+RevDev then found its clean installer overwrote R5_INSTALLED.txt without including it in rollback. It added backup/restore and remove-new-marker behavior, plus two tests. Latest RevDev source SHA a6defbb0e8b0902e8ecc20777d0a10dc25ae344b, 93 authored tests, run #49 42182731390 pending. This is not PocketCode evidence.
+
+Transferable lesson: package/install/update/rollback are part of the execution boundary. Trace every imported runtime dependency through the actual installer and include mutable provenance markers in rollback. For any multi-file update, fetch all files from one immutable source commit. Continue CASE-04 independently; no RevDev implementation or acceptance transfers.

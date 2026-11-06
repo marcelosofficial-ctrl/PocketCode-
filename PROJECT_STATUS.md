@@ -538,3 +538,8 @@ Status is now **ARTIFACT-LEVEL FUNCTIONAL SUCCESS (owner-inspected) / EDITOR BRI
 
 
 **Pyodios diagnostic update (2026-11-06):** owner inspected the Error Log; its only detail was `Editor: PythonError`, with no underlying exception or traceback. Root cause remains unknown. Next is the read-only `sys.last_exc` / `sys.last_value` Console probe. Preserve the existing exact-match `summary.json`; do not rerun or overwrite the success project.
+
+
+## 2026-11-06 — Cross-project process lesson: installer dependency and provenance rollback
+
+RevDev's 91-case installer-aware CI pass revealed that runtime dependency closure must include the clean installer and rollback path, not just source imports. A later review found the installation marker itself also needed backup/restore/removal behavior. PocketCode may reuse the design-review method: inventory runtime imports, package/install them from one immutable source commit, validate dependency closure, and fault-test rollback of both runtime files and provenance markers. This is a transferable method only. No RevDev code or acceptance is adopted. PocketCode remains phone-first, $0, no PC requirement, no runtime/provider selected; CASE-04 remains immediate priority.

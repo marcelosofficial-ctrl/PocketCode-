@@ -71,3 +71,14 @@ This is RevDev-only. Its redirector/installer still fetch production files from 
 ## Installer-aware CI closeout
 
 RevDev run #48 passed all 91 tests at exact source/test head 935108a6937f15b76f75850ebdbe70c69000be32. This includes installer dependency closure/source pin tests. The clean installer was not executed and no PC/live API/queue/mission operation occurred. P0 remains open and P8U/P0-D remain NOT RUN. PocketCode should continue CASE-04 independently.
+
+
+## 2026-11-06 — RevDev current source/CI checkpoint and review request
+
+Current RevDev branch review/revdev-adaptive-ai-workshare-2026-10-27 has advanced to docs checkpoint 287b36a4cf7db1727ce3cf18e22b0dc2ea16170d. Latest source change is a6defbb0e8b0902e8ecc20777d0a10dc25ae344b; current authored suite is 93 cases. The preceding installer-aware source/test SHA 935108a6937f15b76f75850ebdbe70c69000be32 passed run #48, 91/91. The marker rollback fix is not included in #48. Run #49 42182731390 targets a6defbb0e8b0902e8ecc20777d0a10dc25ae344b and was IN_PROGRESS at the last check: https://github.com/marcelosofficial-ctrl/DevRelay-Missions/actions/runs/42182731390.
+
+Current source changes include strict local result discovery, SHA-256 binding from runner to watcher to publisher, request identity binding before API calls, typed process+HTTP classification, exact remote byte readback, fake native process tests for PowerShell 5.1 exit-state behavior, ambiguity-safe quarantine, and a clean installer that stages/backs up/installs/rolls back four sibling modules from one pinned main SHA. The latest installer fix includes the R5_INSTALLED.txt marker in rollback.
+
+Transfer only the method: hermetic real-boundary tests, exact-SHA CI evidence, semantic assertions, explicit UNKNOWN/INCOMPLETE states, dependency-closure tests, immutable source pinning and full rollback including provenance. Do not copy RevDev code or treat its tests as PocketCode acceptance.
+
+**PocketCode instruction:** continue the independent CASE-04 timeout/report-contract evidence-provenance work. Preserve the current Pyodios artifact-level success with unresolved bridge error; do not rerun or overwrite. Use the live AI_COLLAB/CHAT_START_HERE.md and current task-specific evidence.
