@@ -49,6 +49,8 @@ class OutboxRecord:
     acknowledgement_source: Optional[str] = None
     reconciliation_observed_at: Optional[int] = None
     reconciliation_outcome: Optional[str] = None
+    lease_claimed_at: Optional[int] = None
+    dispatch_intent_at: Optional[int] = None
 
 
 @dataclass(frozen=True)
@@ -131,7 +133,7 @@ class FakeOutboxStore:
         expires = now + lease_seconds
         self._records[(effect_id, record.reservation.attempt_id)] = replace(
             record, state="leased", lease_owner=owner,
-            lease_expires_at=expires, fence=fence,
+            lease_expires_at=expires, fence=fence, lease_claimed_at=now,
         )
         return Lease(effect_id, record.reservation.attempt_id, owner, fence, expires)
 
@@ -150,7 +152,7 @@ class FakeOutboxStore:
     def mark_dispatching(self, lease: Lease, *, now: int) -> None:
         """Persist send-intent before external I/O; expiry thereafter is ambiguous."""
         record = self._require_current_lease(lease, now=now)
-        self._records[(lease.effect_id, lease.attempt_id)] = replace(record, state="dispatching")
+        self._records[(lease.effect_id, lease.attempt_id)] = replace(record, state="dispatching", dispatch_intent_at=now)
 
     def recover_expired(self, effect_id: str, *, now: int) -> str:
         """Recover a crashed worker without confusing pre-send and post-intent."""

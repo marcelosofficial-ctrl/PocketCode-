@@ -204,6 +204,28 @@ class FakeCoordinatorTests(unittest.TestCase):
         self.assertEqual(self.coordinator.repair_missing_ack_event("effect-1"), "accepted")
         self.assertEqual(self.coordinator.repair_missing_ack_event("effect-1"), "duplicate")
 
+    def test_crash_after_lease_store_commit_is_visible_and_repairable(self):
+        lease = self.store.claim("effect-1", "worker-A", now=20, lease_seconds=5)
+        self.journal.advance_fence(lease.effect_id, lease.attempt_id, lease.fence)
+        self.assertEqual(self.coordinator.rebuild_effect("effect-1").state,
+                         "lease_claim_unjournaled")
+        self.assertEqual(self.coordinator.repair_missing_lease_claim_event("effect-1"),
+                         "accepted")
+        self.assertEqual(self.coordinator.repair_missing_lease_claim_event("effect-1"),
+                         "duplicate")
+
+    def test_crash_after_dispatch_intent_is_repairable(self):
+        lease = self.coordinator.claim("effect-1", "worker-A", now=20, lease_seconds=5)
+        self.store.mark_dispatching(lease, now=21)
+        self.assertEqual(self.coordinator.rebuild_effect("effect-1").state,
+                         "dispatch_intent_unjournaled")
+        self.assertEqual(self.coordinator.repair_missing_dispatch_intent_event("effect-1"),
+                         "accepted")
+        self.assertEqual(self.coordinator.repair_missing_dispatch_intent_event("effect-1"),
+                         "duplicate")
+        self.assertEqual(self.coordinator.rebuild_effect("effect-1").state,
+                         "dispatching")
+
     def test_wrong_audience_fails_closed(self):
         wrong = AuthenticatedProducer(
             issuer="other", subject="x", key_id="k", credential_fingerprint="f",

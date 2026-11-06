@@ -118,6 +118,31 @@ class FakeCoordinator:
             at_ms=now, fence=lease.fence, provider_reference=provider_reference,
         ).disposition
 
+    def repair_missing_lease_claim_event(self, effect_id: str) -> str:
+        record = self.store.get(effect_id)
+        if (record.state not in {"leased", "dispatching", "reconciling", "acknowledged", "retry_authorized"}
+                or record.lease_claimed_at is None or record.lease_owner is None):
+            raise OutboxConflict("no persisted lease claim is available to repair")
+        return self._append(
+            kind="lease_claimed", effect_id=effect_id,
+            attempt_id=record.reservation.attempt_id,
+            event_id=f"claim:{effect_id}:{record.reservation.attempt_id}:{record.fence}",
+            at_ms=record.lease_claimed_at, fence=record.fence,
+            owner=record.lease_owner, expires_at=record.lease_expires_at,
+        ).disposition
+
+    def repair_missing_dispatch_intent_event(self, effect_id: str) -> str:
+        record = self.store.get(effect_id)
+        if (record.state not in {"dispatching", "reconciling", "acknowledged", "retry_authorized", "terminal"}
+                or record.dispatch_intent_at is None):
+            raise OutboxConflict("no persisted dispatch intent is available to repair")
+        return self._append(
+            kind="dispatch_intent", effect_id=effect_id,
+            attempt_id=record.reservation.attempt_id,
+            event_id=f"dispatch:{effect_id}:{record.reservation.attempt_id}:{record.fence}",
+            at_ms=record.dispatch_intent_at, fence=record.fence,
+        ).disposition
+
     def repair_missing_ack_event(self, effect_id: str) -> str:
         record = self.store.get(effect_id)
         if (record.state not in {"acknowledged", "terminal"}
@@ -216,7 +241,12 @@ class FakeCoordinator:
         # The outbox is the recovery authority for state transitions whose
         # corresponding journal append may have been interrupted. Surface the
         # gap explicitly instead of silently projecting an earlier state.
-        if record.state == "dispatching" and not seen_dispatch_intent:
+        has_claim = any(payload.get("kind") == "lease_claimed" for _, payload in matching)
+        if record.state in {"leased", "dispatching", "reconciling", "acknowledged", "retry_authorized", "terminal"} and not has_claim:
+            state = "lease_claim_unjournaled"
+        elif record.state in {"dispatching", "reconciling", "acknowledged", "retry_authorized", "terminal"} and not seen_dispatch_intent and record.dispatch_intent_at is not None:
+            state = "dispatch_intent_unjournaled"
+        elif record.state == "dispatching" and not seen_dispatch_intent:
             state = "dispatch_intent_unjournaled"
         elif record.state == "reconciling":
             state = "reconciliation_required"

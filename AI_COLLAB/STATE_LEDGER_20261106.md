@@ -234,3 +234,10 @@ Next task: owner runs only the read-only Pyodios sys.last_exc / sys.last_value C
 - Provider-found reconciliation records `acknowledgement_source=reconciliation`; the acknowledgement repair path re-emits the same reconciliation event identity and timestamp.
 - Final exact absence now enters explicit `retry_authorized` state rather than generic pending. Projection exposes `retry_authorization_unjournaled` until the final-absence event is appended; a dedicated repair operation is idempotent.
 - This remains an in-memory model; atomic commit across outbox and journal is still not implemented.
+
+
+## 2026-11-06 lease and dispatch-intent crash repair
+
+- Persisted lease-claim and dispatch-intent timestamps in the fake outbox. Added idempotent journal repair operations for both transitions.
+- Projection now exposes `lease_claim_unjournaled` and `dispatch_intent_unjournaled` when the outbox transition is committed but its event is absent. This complements acknowledgement and final-absence repair.
+- Added focused crash-window test cases. These are model tests; actual canonical test results are tracked by the new branch-scoped GitHub Actions workflow.

@@ -505,3 +505,9 @@ Next: await owner-provided read-only Pyodios saved-exception probe output; prese
 
 - Follow-up review found a second crash window: the outbox could commit a provider-found or final-absence reconciliation while the corresponding journal append failed. Added persisted reconciliation source/time/outcome metadata, same-event repair for provider-found, and explicit retry_authorized state plus final-absence event repair.
 - Projection now reports retry_authorization_unjournaled until repaired. Added two crash-window tests. Canonical repository test execution remains pending.
+
+
+## 2026-11-06 — lease and dispatch-intent repair
+
+- Closed additional outbox/journal crash windows: lease claims and dispatch intent now persist their timestamps and have idempotent repair methods. Projection explicitly identifies missing claim/intent events.
+- Added tests for interrupted lease-claim and dispatch-intent event appends. GitHub Actions workflow `PocketCode Python conformance tests` is running the complete repository unittest discovery against the exact branch commit.

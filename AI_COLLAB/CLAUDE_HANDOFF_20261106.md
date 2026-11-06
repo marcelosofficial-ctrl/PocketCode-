@@ -90,3 +90,10 @@ Do not select SQLite/Postgres/Redis/cloud/provider as a side effect. Any SQLite 
 ## Change protocol
 
 Inspect current branch/source, define narrow acceptance criteria, implement one coherent increment, run focused tests in a real checkout, inspect diff, update ledger/work log. Record exact commit, paths, commands, interpreter, results and limitations. Never promote a stubbed contract-harness result to canonical repository test evidence.
+
+
+## Latest test automation and repair update
+
+- Branch-scoped test workflow: `.github/workflows/pocketcode-python-tests.yml`; run command `python -m unittest discover -s scripts -p "test_*.py" -v` under Python 3.12. It is test-only with `contents: read` permission and does not deploy.
+- Fake outbox now persists reservation, lease-claim, dispatch-intent, acknowledgement and reconciliation observation timestamps. Fake coordinator has idempotent repair operations for each corresponding event append. Projection surfaces unjournaled transitions rather than silently masking them.
+- Fetch the latest branch head and inspect CI before making claims. Existing in-progress test run at the time this note was authored: https://github.com/marcelosofficial-ctrl/PocketCode-/actions/runs/42307571937
