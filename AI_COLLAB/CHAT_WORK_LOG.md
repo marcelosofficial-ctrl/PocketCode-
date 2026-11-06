@@ -285,3 +285,19 @@ Changed paths: AI_COLLAB/CHAT_START_HERE.md, AI_COLLAB/STATE_LEDGER_20261106.md,
 Verification required: one atomic multi-file commit using expected-head lease, then exact read-back of all three files and branch head. No PocketCode product source/tests/device/runtime/provider/schema/acceptance/PR/merge/deployment changed. No RevDev code or acceptance evidence imported.
 
 Next: await owner-provided read-only Pyodios saved-exception probe output; preserve the successful project. Then resolve typed child-exit vs wrapper-exit vs forced-termination and lifecycle provenance before CASE-04 code changes.
+
+
+## 2026-11-06 — PC-2026-11-06-P18 — Task/evidence/recovery research and red-team correction
+
+**Completed:**
+- Re-read live entrypoint, ledger, handoff, status, execution acceptance, decisions, zero-budget plan, Pyodios triage/device protocol, report formatter/tests, lifecycle regression plan, execution-boundary matrix and iOS competitor baseline.
+- Opened primary sources for Python-on-iOS, Apple background/file protection, Pyodios/Pyodide, Cline, OpenHands, MCP Tasks, A2A, in-toto and SQLite; reviewed public competitor claims for a-Shell, Carnets, Pyto, Coilbook and Replit.
+- Added `AI_COLLAB/POCKETCODE_TASK_EVIDENCE_RECOVERY_RESEARCH_20261106.md` with competitor comparison, reuse/licence notes, architecture decision, boundary-specific observation model, recovery design, regression scenarios and source register.
+- Corrected five weaknesses: CASE-04 is not a precedence patch; legacy ACP is archived and A2A is current successor; iOS embedded Python cannot produce a child-process exit code; hashes do not prove producer authenticity; SQLite cannot make a remote side effect exactly-once.
+- Updated live entrypoint and ledger with research decision/protocol correction.
+
+**Decision:** PocketCode should own task/evidence/recovery/correction orchestration and interoperate with existing runners. Cline/OpenHands/MCP/A2A/in-toto/SQLite are scoped pattern references, not wholesale dependencies. No runtime/provider selected.
+
+**Verification:** source research opened; live branch/PR/CI state checked. Documentation writes are grouped in one atomic Git commit and read back. No product source, tests, runtime, provider, schema, canonical acceptance IDs, account, workload, budget, PR, merge or deployment changed. Starting HEAD had zero checks/runs; this research commit's CI must be queried once after checkpoint.
+
+**Next:** owner runs the read-only Pyodios `sys.last_exc` / `sys.last_value` probe in the existing session; source work defines typed boundary-specific observations before any CASE-04 formatter patch.

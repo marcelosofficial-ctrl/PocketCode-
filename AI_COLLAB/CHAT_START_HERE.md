@@ -20,12 +20,16 @@ GitHub is the durable project state. Do not rely on a last-minute full-chat hand
 **Important limitation:** this protocol reduces avoidable context pressure and tool stalls; it cannot prevent platform context limits, service outages or execution failures. The goal is graceful interruption with no lost project state.
 
 
-**Last refreshed:** 2026-11-06 (cross-project working-method upgrade incorporated; live state rechecked)  
+**Last refreshed:** 2026-11-06 (mobile execution, competitor, recovery and protocol research incorporated)  
 **Authority:** live PocketCode branch state plus canonical source/spec/test records. This file is the compact first-read entrypoint for every new PocketCode chat.
 
 ## Current cross-project note
 
 Read [RevDev progress and multi-chat continuity update](CROSS_PROJECT_UPDATE_REVDEV_2026-11-06.md) for transferable engineering lessons and the current RevDev status. This does not transfer RevDev implementation or acceptance evidence into PocketCode. PocketCode's immediate active work is resolving the first owner-reported Pyodios Editor attempt, followed by the typed CASE-04 exit-provenance contract. Do not make a precedence-only formatter patch.
+
+## Latest research decision (2026-11-06)
+
+Read [PocketCode task, evidence and recovery research](POCKETCODE_TASK_EVIDENCE_RECOVERY_RESEARCH_20261106.md). Key correction: iOS embedded Python has no child process, so do not fabricate child exit codes. CASE-04 is not a precedence patch; resolve typed child/wrapper/termination provenance first. PocketCode's differentiator is portable task/evidence/recovery/AI-correction orchestration, not another phone Python IDE. No runtime/provider selected.
 
 ## First action
 
@@ -35,7 +39,7 @@ Read this file, verify the live branch/PR/CI state, and fetch only the linked ta
 
 - Repo: https://github.com/marcelosofficial-ctrl/PocketCode-
 - Branch: `pocketcode-ai-workflow-director-research-2026-10-28`
-- Live branch snapshot immediately before the final handoff updates: `e7abaabff55f3bc25a793f2e814852d8e7aa246d`, **807 ahead / 0 behind** `main`; merge base `555840d8d83342513d9cd353d4d1522d46a5c82d`. This is a pre-checkpoint snapshot; fetch live refs before consequential writes. Ahead count is accumulated branch-history divergence, not product progress.
+- Historical pre-checkpoint snapshot: `e7abaabff55f3bc25a793f2e814852d8e7aa246d` (807 ahead / 0 behind at that earlier time). This is not current. Fetch live refs before consequential work; ahead count is branch-history divergence, not product progress.
 - Open PR #2: [Add chat checkpoints and harden report-contract regressions](https://github.com/marcelosofficial-ctrl/PocketCode-/pull/2), OPEN/DRAFT from branch `chat-continuity-report-regressions-2026-10-26`.
 - Open PR #3: [Draft: Add evidence-led PocketCode research baseline](https://github.com/marcelosofficial-ctrl/PocketCode-/pull/3), OPEN/DRAFT from branch `pocketcode-pass0-audit-2026-10-26`.
 - PR #2/#3 are not this active research branch and were not modified. Do not infer the active branch's commits are included in either PR.

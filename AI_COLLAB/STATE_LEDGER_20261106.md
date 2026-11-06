@@ -39,7 +39,7 @@ Build a phone-first, provider-neutral Agentic Orchestration Control Plane that m
 - Owner forwards reports manually. No direct AI-to-AI communication assumed. One lead writer per branch/work item; other AIs review read-only or take disjoint scopes.
 
 ## Research references and current open work
-- OpenHands and Cline are pattern references, not frameworks to adopt wholesale. MCP Tasks may adapt async task status; ACP may adapt agent sessions. Neither replaces PocketCode command/attempt identity or trusted receipts. Reject wildcard auto-approval.
+- OpenHands and Cline are pattern references, not frameworks to adopt wholesale. MCP Tasks may inform async tool-task status; the legacy Agent Communication Protocol (ACP) was archived 2025-08-27 and merged into A2A. Evaluate current A2A for agent-to-agent interoperability, not archived ACP. MCP/A2A task IDs do not replace PocketCode command/attempt identity or trusted receipts. Neither replaces PocketCode command/attempt identity or trusted receipts. Reject wildcard auto-approval.
 - After Pyodios probe: malformed-header fixture in separate fresh project; then export/read-back and natural relaunch persistence as separate tests. Do not overwrite success project.
 - Source work next: typed CASE-04 exit provenance; degraded collector/teardown/artifact release; synchronous pre-execution network-isolation barrier. Use fake adapters/processes and exact-SHA tests; no live services or spend.
 
@@ -68,3 +68,14 @@ Authority: owner-provided RevDev working-method decision. Applies to PocketCode 
 Verification at checkpoint start: branch HEAD 4446135bf1345f37aa5d221d27c0eabbdbcef5c7; main 555840d8d83342513d9cd353d4d1522d46a5c82d; compare 820 ahead / 0 behind. PR #2 head eb8b7ea83cb0e8fe1880351276c485b761431791 and PR #3 head 0ddcc0bc97bac5d446aefedf3d71f99411bd841d remain OPEN/DRAFT. Branch-filtered Actions query returned zero runs; exact-head status/check-runs have no individual checks. Current branch CI is UNKNOWN, not PASS. No product code, tests, device state, schema, acceptance IDs, budget or runtime/provider decision changed.
 
 Next task: owner runs only the read-only Pyodios sys.last_exc / sys.last_value Console probe in the existing successful session. Preserve exact-match summary.json; do not rerun, overwrite, restart, clear, GC or run the wrapper there. After device evidence, continue typed child/wrapper/termination/lifecycle provenance before any CASE-04 formatter change.
+
+
+## 2026-11-06 — Task/evidence/recovery research decision
+
+- Added `AI_COLLAB/POCKETCODE_TASK_EVIDENCE_RECOVERY_RESEARCH_20261106.md`, source-backed across mobile execution, competitors, event/task protocols, artifact provenance and durable local journaling.
+- Recommended differentiation: provider-neutral task packets, boundary-aware host observations, durable attempt history, immutable receipts/artifacts, no-rerun recovery and user-mediated AI correction. Do not build another general phone Python IDE.
+- Critical platform correction: iOS embedded Python cannot spawn subprocesses/multiprocessing/IPC. In-process return/exception must not be reported as child exit. Separate embedded, browser-worker, external-child and remote-supervisor evidence.
+- CASE-04 remains INCOMPLETE/timed_out on trusted timeout. Reject precedence-only formatter change; generic `exit_code` cannot distinguish child, wrapper, forced termination, stale or contradictory evidence.
+- Protocol correction: legacy ACP is archived; A2A v1.0.1 is current successor for agent-to-agent interoperability. MCP Tasks is a task-handle/status pattern. Neither replaces PocketCode identities or receipt ledger.
+- SQLite is a candidate local journal, with explicit WAL/synchronous durability and target-device crash tests. It cannot make a remote side effect exactly-once; use outbox/idempotency/reconciliation.
+- No runtime/provider, budget, canonical ID, product source, test, acceptance, PR or deployment decision changed. Owner Pyodios saved-exception probe remains NOT RUN; artifact preserved.
