@@ -38,7 +38,7 @@ Python documents `sys.exit()` as raising `SystemExit`, which an outer caller can
 
 Pyodios says the open project is the Python working directory. The project folder and Python session folder are copied at defined moments, not continuously; files added externally while a project is open are not visible until the project is reopened. Outputs created by Python should appear in the project Files tab after the cell finishes. Source: https://pyodios.caffeinatedmath.com/guide/projects
 
-Pyodios documents **Settings → Diagnostics → Error Logs → View Error Log**, with timestamps and error details. The app warns that Python code can appear in error messages; inspect and redact before sharing. Source: https://pyodios.caffeinatedmath.com/guide/settings
+Pyodios documents **on iPhone, **More → Settings**, then scroll to **Error Log → View Error Log****, with timestamps and error details. The app warns that Python code can appear in error messages; inspect and redact before sharing. Source: https://pyodios.caffeinatedmath.com/guide/settings
 
 Pyodios v1.1.0 says Python code cannot be interrupted once it starts. A 120-second UI timeout returns control while code continues in the background. Do not use an infinite loop or timeout as a termination test. Source: https://pyodios.caffeinatedmath.com/faq
 
@@ -52,7 +52,7 @@ Python's `runpy` documentation explicitly says it executes in the current proces
 
 1. Open the same active Pyodios project and its Files tab.
 2. Look for `summary.json`. If it exists, open it and compare: `grand_total` = `"10.75"`; `line_items` = `2`; `totals_by_item.notebook` = `"7.00"`; `totals_by_item.pen` = `"3.75"`. Do not overwrite or rerun.
-3. Open **Settings → Diagnostics → Error Logs → View Error Log**. Find the entry timestamped around the green-play attempt.
+3. Open **on iPhone, **More → Settings**, then scroll to **Error Log → View Error Log****. Find the entry timestamped around the green-play attempt.
 4. Inspect it before sharing. Copy only the relevant entry/traceback; redact personal paths and unrelated source. Do not clear the log.
 5. If the log is unhelpful, open the Pyodios Console and run this read-only probe for Pyodide's saved `sys.last_value` from the previous exception. It does not rerun `main.py`:
 
