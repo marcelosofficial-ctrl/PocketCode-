@@ -99,3 +99,8 @@ Do not follow the older start-page instruction to change classifier precedence d
 Owner inspected the existing Pyodios project's Files tab. `summary.json` exists and exactly matches the frozen oracle: `grand_total: "10.75"`, `line_items: 2`, `totals_by_item: {notebook: "7.00", pen: "3.75"}`. The Editor still displayed only `[Bridge/executePython] PythonError`.
 
 Classify as **artifact-level functional success (owner-inspected), bridge error unresolved, full run inconclusive**. This replaces the prior UNKNOWN artifact outcome. Do not rerun or overwrite the success project. Obtain the timestamped Pyodios Error Log first, redact sensitive details, then use the documented read-only `sys.last_exc` / `sys.last_value` Console probe if needed. `SystemExit` remains a hypothesis only. Once diagnostics are captured, run malformed input only in a separate fresh project. Do not claim a process exit status unless Pyodios directly exposes it.
+
+
+## Error Log follow-up (2026-11-06)
+
+Owner checked Pyodios Settings → Error Log for the attempt. The only available detail was `Editor: PythonError`; no underlying exception or traceback was exposed. Root cause remains UNKNOWN. Next action is the read-only Console probe for `sys.last_exc` / `sys.last_value` in the existing session. Preserve the exact-match `summary.json`; do not rerun or overwrite the success project. If the probe returns no saved exception, classify it as unavailable evidence, not proof that no exception occurred.
