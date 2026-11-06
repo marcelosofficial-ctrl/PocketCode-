@@ -142,3 +142,25 @@ This note and wrapper do not select Pyodios/Pyodide as PocketCode's runtime, cla
 ### Upstream Pyodide version cross-check
 
 As of 2026-11-06, the upstream Pyodide release list marks 314.0.7 as Latest (released 14 September 2026), while the installed Pyodios 1.1.0 documentation still specifies bundled Pyodide 314.0.5 / CPython 3.14.2. I fetched the exact `src/core/error_handling.c` files from both upstream tags 314.0.5 and 314.0.7: both contain the same `SystemExit` / `PyConfig.inspect` comment and exception-wrapping logic in the inspected function. This does not establish that other changes between the versions are irrelevant or that Pyodios can independently update its embedded runtime. Do not manually replace the bundled runtime; this is a compatibility/maintenance observation only. Sources: https://github.com/pyodide/pyodide/releases and https://raw.githubusercontent.com/pyodide/pyodide/314.0.5/src/core/error_handling.c and https://raw.githubusercontent.com/pyodide/pyodide/314.0.7/src/core/error_handling.c
+
+
+## 2026-11-06 — Owner-reported artifact result
+
+The owner inspected the existing project's Files tab after the first Editor attempt. `summary.json` exists and was reported with these exact contents:
+
+```json
+{
+  "grand_total": "10.75",
+  "line_items": 2,
+  "totals_by_item": {
+    "notebook": "7.00",
+    "pen": "3.75"
+  }
+}
+```
+
+This exactly matches the frozen success oracle. Classification is **ARTIFACT-LEVEL FUNCTIONAL SUCCESS (owner-inspected) / EDITOR BRIDGE ERROR UNRESOLVED / FULL RUN INCONCLUSIVE**. This supersedes the prior UNKNOWN artifact outcome. The complete visible Editor output remains `[Bridge/executePython] PythonError`. The artifact establishes that execution reached the correct file write, but not why the bridge then reported an error, nor a trusted process exit status, stderr behavior, export/read-back, relaunch persistence, or PocketCode acceptance.
+
+**Preserve this evidence. Do not rerun or overwrite the success project.** Next inspect Pyodios **More → Settings → Error Log → View Error Log** around the attempt timestamp. Redact source, private paths, tokens and personal data before sharing the relevant exception/traceback. If unhelpful, run the documented read-only Console probe for `sys.last_exc` then `sys.last_value`. Do not restart the Python session, clear variables/logs, or run GC merely to investigate.
+
+`SystemExit` or bridge completion handling remains a hypothesis, not a root-cause finding. Do not modify the canonical fixture based on the artifact alone. After preserving diagnostic evidence, run the malformed-input scenario only in a separate fresh project and record its diagnostic/artifact result; do not infer an exit status Pyodios does not expose.
