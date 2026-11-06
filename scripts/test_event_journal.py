@@ -1,10 +1,8 @@
 import unittest
-
 try:
     from event_journal import AuthenticatedProducer, EventJournal, JournalConflict
 except ModuleNotFoundError:
     from scripts.event_journal import AuthenticatedProducer, EventJournal, JournalConflict
-
 
 P = AuthenticatedProducer("issuer-A", "worker-7", "key-2", "sha256:credential",
                           "pocketcode-journal", ("worker-events", "provider-events"))
@@ -38,6 +36,21 @@ class EventJournalTests(unittest.TestCase):
         result = self.append(source="provider-events")
         self.assertEqual(result.disposition, "accepted")
         self.assertEqual(result.sequence, 2)
+
+    def test_key_rotation_for_same_producer_does_not_break_exact_duplicate(self):
+        self.append()
+        rotated = AuthenticatedProducer("issuer-A", "worker-7", "key-rotated", "sha256:new",
+                                        "pocketcode-journal", ("worker-events",))
+        result = self.append(producer=rotated)
+        self.assertEqual(result.disposition, "duplicate")
+        self.assertEqual(result.sequence, 1)
+
+    def test_same_payload_with_changed_occurrence_time_is_quarantined(self):
+        self.append()
+        result = self.append(occurred_at_ms=101)
+        self.assertEqual(result.disposition, "quarantined")
+        self.assertEqual(len(self.journal.events), 1)
+        self.assertEqual(len(self.journal.conflicts), 1)
 
     def test_same_source_event_id_from_different_authenticated_producer_is_quarantined(self):
         self.append()
@@ -126,9 +139,8 @@ class EventJournalTests(unittest.TestCase):
         self.assertEqual([e.sequence for e in self.journal.events], [1, 2])
 
     def test_event_payload_is_immutable_bytes_copy(self):
-        mutable = bytearray(b"payload")
         with self.assertRaises(ValueError):
-            self.append(payload=mutable)
+            self.append(payload=bytearray(b"payload"))
 
     def test_invalid_expected_audience_rejected(self):
         with self.assertRaises(ValueError):
