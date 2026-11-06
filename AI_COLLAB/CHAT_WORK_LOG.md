@@ -95,3 +95,8 @@ RevDev process integration initially passed 34/34 at run #21. A subsequent harde
 RevDev run #29 verified **36/36** Windows PowerShell 5.1 / Pester 5.7.1 tests at exact commit 5c0435d6e9412f3a1dc72410be6495a61acaeceb. It confirms the fake process harness and LASTEXITCODE lifecycle fix. A subsequent RevDev pass tightened 404 absence proof to require gh exit code 1, a complete parse-clean 404 and expected JSON Not Found body; auth exit 4 and cancellation exit 2 remain distinct. Current RevDev commit 144d0aa361343277aed9af76ad5736969c29abc9 contains 42 tests; run #30 42136315313 was in progress at last observation. Official gh exit-code reference: https://cli.github.com/manual/gh_help_exit-codes.
 
 PocketCode implementation was not changed by this cross-project update. The reusable lesson is exact-SHA CI, process-level fakes, and never treating malformed/ambiguous errors as proof of absence. CASE-04 remains PocketCode's next task.
+
+
+## 2026-11-06 — PC-2026-11-06-P09 — Static guard must follow abstraction changes
+
+RevDev run #30 had 41/42 tests pass; the single failure was a stale static assertion that searched for the old inline 404 condition after it had been extracted into Test-GhApiConfirmedNotFound. The guard now locates the helper call, and two additional malformed-body cases were added. Latest RevDev test commit 5a18ba76860be7ab466fc0fe6b43ebd3aa0349c6 contains 44 tests; run #31 42136717748 was in progress. PocketCode lesson: prefer behavioral/semantic assertions and update source guards when an implementation is intentionally refactored. Do not import RevDev implementation or acceptance.

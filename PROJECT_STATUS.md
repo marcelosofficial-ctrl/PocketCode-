@@ -437,3 +437,8 @@ Each project chat should checkpoint GitHub after every meaningful pass, refresh 
 ## 2026-11-06 — Cross-project CI evidence refresh
 
 RevDev run #29 passed 36/36 on Windows PowerShell 5.1 / Pester 5.7.1 at 5c0435d6e9412f3a1dc72410be6495a61acaeceb. Its latest 404 classification hardening is at commit 144d0aa361343277aed9af76ad5736969c29abc9 with 42 tests; run #30 42136315313 was in progress at last observation. This is RevDev-only evidence and implementation. PocketCode must continue with its own CASE-04/report-contract and independent CI.
+
+
+## 2026-11-06 — Cross-project testing-method note
+
+RevDev's 404 classifier change caused one stale static source assertion to fail after the implementation moved behind a helper; 41/42 tests otherwise passed. The test was updated to follow the helper boundary and two malformed-body cases were added. Latest RevDev commit 5a18ba76860be7ab466fc0fe6b43ebd3aa0349c6 has 44 tests; run #31 was in progress. PocketCode should favour semantic contract tests over brittle text matches where possible. This is process guidance only.

@@ -143,3 +143,10 @@ RevDev run #29 completed SUCCESS with **36/36** tests at exact source/test commi
 RevDev then tightened immutable mission-path absence classification. It now requires gh's documented general failure exit code 1, a complete parse-clean HTTP 404 and JSON message Not Found; authentication exit 4 and cancellation exit 2 cannot be mistaken for absence. This follows the official gh exit-code reference: https://cli.github.com/manual/gh_help_exit-codes. Current RevDev commit 144d0aa361343277aed9af76ad5736969c29abc9 contains 42 Pester cases; Actions run #30 42136315313 was IN_PROGRESS at last observation. Re-fetch before quoting its outcome.
 
 PocketCode may reuse the fail-closed classification/testing principle only at its own boundary. No RevDev code or acceptance transfers. PocketCode remains separate, CASE-04 remains next, and runtime/provider selection remains open.
+
+
+## 2026-11-06 — RevDev 404 classifier CI correction (method only)
+
+RevDev run #30 at commit 144d0aa361343277aed9af76ad5736969c29abc9 completed **41 passed / 1 failed**. The failure was a stale static test locator still searching for the removed `$existing.HttpStatus -ne 404` expression, not a classifier test failure. The guard was updated to locate `Test-GhApiConfirmedNotFound -Response $existing`; two more tests now cover invalid JSON and a 404 body without the expected message field. Current RevDev source/test commit is 5a18ba76860be7ab466fc0fe6b43ebd3aa0349c6 with 44 Pester cases; run #31 42136717748 was in progress at last observation. Re-fetch before quoting its outcome.
+
+This is a process lesson only: static guards must assert behavior through the current abstraction boundary, not stale source text. PocketCode should use semantic contract tests and avoid brittle checks against implementation spelling. No RevDev code or test evidence transfers to PocketCode.
