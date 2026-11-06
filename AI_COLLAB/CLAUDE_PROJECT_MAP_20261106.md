@@ -169,3 +169,8 @@ Stress the composed receipt projection with contradictory collector/teardown evi
 - The no-fence exception is limited to matching coordinator `effect_reserved` events. Worker events remain fence-required; event identity includes fence generation.
 - `scripts/test_fake_coordinator.py::test_end_to_end_attempt_receipt_artifact_release_and_copy_retry` composes typed terminal evidence, collection/cleanup, receipt creation, artifact release and same-receipt copy retry. This is an in-memory conformance test, not production integration.
 - Always fetch the live branch head and current CI before starting; later documentation or code commits may be beyond this tested SHA.
+
+
+## Durable adapter contract draft
+
+Read [DURABLE_ADAPTER_CONTRACT_20261106.md](DURABLE_ADAPTER_CONTRACT_20261106.md) after the execution/recovery contract. It defines T1–T10 adapter-neutral atomic boundaries, uniqueness/fencing invariants, a crash/recovery matrix, adapter conformance tests and storage selection criteria. It intentionally selects no persistence engine, provider, runtime, backend or cloud host. Treat it as a proposal for independent Claude/Gemini review.

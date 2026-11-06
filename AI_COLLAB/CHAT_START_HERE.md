@@ -356,3 +356,8 @@ The current reservation/fencing checkpoint passed **211/211** Python tests on ex
 ## 2026-11-07 latest verified checkpoint
 
 Latest source checkpoint passed **214/214** repository Python tests on exact SHA `3a3ee64e50c78134ef4a45f759533003dd533538`: [GitHub Actions run 42311540457](https://github.com/marcelosofficial-ctrl/PocketCode-/actions/runs/42311540457), Ubuntu 24.04 / Python 3.12. The unfenced exception is restricted to matching pre-lease reservation events; worker events remain fence-required. The E2E model now covers receipt, artifact release and copy retry after typed execution/collection/cleanup evidence. See `CLAUDE.md` and the Claude project map for full paths and working rules.
+
+
+## Durable adapter contract draft
+
+Read [DURABLE_ADAPTER_CONTRACT_20261106.md](DURABLE_ADAPTER_CONTRACT_20261106.md) after the execution/recovery contract. It defines T1–T10 adapter-neutral atomic boundaries, uniqueness/fencing invariants, a crash/recovery matrix, adapter conformance tests and storage selection criteria. It intentionally selects no persistence engine, provider, runtime, backend or cloud host. Treat it as a proposal for independent Claude/Gemini review.
