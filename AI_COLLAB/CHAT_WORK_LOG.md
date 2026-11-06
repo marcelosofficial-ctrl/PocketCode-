@@ -651,3 +651,13 @@ Next: await owner-provided read-only Pyodios saved-exception probe output; prese
 - CI exact SHA `e631e9ccda29e5632832a64ad6b5e8c4c0ae5765`: [run 42311165889](https://github.com/marcelosofficial-ctrl/PocketCode-/actions/runs/42311165889), Ubuntu 24.04 / Python 3.12, **211 passed, 0 failed**.
 - Test-driven corrections: an initial test did not initialize the first fence generation; fixed by advancing to fence 1 before appending. Reservation replay regression was fixed by preserving the pre-lease unfenced event identity.
 - No durable atomicity, concurrency, cryptographic identity, provider, mobile, sandbox or release claims are made.
+
+
+## 2026-11-07 — PC-2026-11-07-P33 — constrained reservation event exception and end-to-end composition
+
+- Restricted the no-fence journal path to exact `effect_reserved` events from `pocketcode.coordinator`, with embedded effect/attempt fields matching the event's bound scope. Malformed JSON, wrong kind/source/scope, missing attempt binding and supplied fence are rejected. Worker observations continue to require current fences.
+- Journal deduplication compares fence generation, so an old worker event ID cannot be silently reused by a new generation.
+- Added/retained E2E composition test: artifact staging → attempt reservation/claim/dispatch → succeeded + direct-child exit 0 → collection/cleanup observations → immutable receipt → artifact release → report-copy failure then retry using the same receipt. It verifies no second dispatch event is created by a copy retry.
+- CI exact SHA `3a3ee64e50c78134ef4a45f759533003dd533538`: [run 42311540457](https://github.com/marcelosofficial-ctrl/PocketCode-/actions/runs/42311540457), Ubuntu 24.04 / Python 3.12, **214 passed, 0 failed**.
+- Intermediate failed CI surfaced missing JSON import and overly broad no-fence flag semantics; both were corrected before the final green commit.
+- No durable/concurrent/provider/device/sandbox/production authorization claims.

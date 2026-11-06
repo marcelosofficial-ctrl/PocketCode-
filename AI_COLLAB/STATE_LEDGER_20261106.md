@@ -380,3 +380,13 @@ Next task: owner runs only the read-only Pyodios sys.last_exc / sys.last_value C
 - EventJournal exact replay now also compares fence generation. Same source/event ID and same producer/payload/attempt under a new fence is quarantined, not treated as a duplicate. All worker events still require the current fence.
 - CI failures encountered while building this edge case were resolved: first test fixture now initializes fence 1 before testing fence 2; reservation replay/repair uses the unfenced pre-lease identity. No remaining failures on exact tested SHA.
 - Limitations remain: in-memory only, no durable transaction/concurrent writer guarantee or cryptographic producer authentication; no mobile/provider/sandbox/production acceptance.
+
+
+## 2026-11-07 — restricted reservation exception and E2E chain CI green
+
+- Exact-SHA CI: https://github.com/marcelosofficial-ctrl/PocketCode-/actions/runs/42311540457 at `3a3ee64e50c78134ef4a45f759533003dd533538`; Ubuntu 24.04 / Python 3.12; full suite **214 passed, 0 failed**.
+- Unfenced EventJournal mode is restricted to a matching `pocketcode.coordinator` `effect_reserved` JSON event with exact effect/attempt binding. It rejects unfenced worker events, wrong kinds/scopes, malformed payloads and any supplied fence. All other effect-bound events remain fence-required.
+- Exact duplicate identity includes fence generation. Same source/event/payload/attempt under a newer worker fence is quarantined.
+- End-to-end conformance test composes terminal evidence, typed collection and cleanup, receipt creation, artifact release, and report-copy failure/retry on the same receipt. The test is not evidence of production integration.
+- CI failures during development exposed a missing JSON import and an incomplete validation of the public unfenced flag. Both were fixed before the final green SHA.
+- Limits remain in-memory, synchronous and non-cryptographic. No durable transaction, concurrency, mobile, provider, sandbox or production policy authority is proven.

@@ -227,3 +227,17 @@ Continue receipt integration with artifact manifest and authorization evidence, 
 - Journal duplicate identity now includes the fencing generation. Reusing the same source/event ID, producer, payload and attempt under a newer fence is quarantined rather than being misreported as an exact duplicate.
 - Earlier test runs exposed a fixture setup issue (first fence generation was not initialized) and a reservation replay regression; both were corrected before this exact-SHA green run.
 - This is standard-library Python CI only. It does not prove durable atomicity, concurrent safety, cryptographic producer authentication, mobile/device behavior, provider behavior, sandboxing or production artifact authorization. Re-check live branch head before relying on this checkpoint.
+
+
+## 2026-11-07 exact-SHA CI checkpoint: constrained reservation exception + E2E flow
+
+- Exact tested commit: `3a3ee64e50c78134ef4a45f759533003dd533538`
+- CI run: https://github.com/marcelosofficial-ctrl/PocketCode-/actions/runs/42311540457
+- Environment: GitHub-hosted Ubuntu 24.04 / Python 3.12.
+- Command: `python -m unittest discover -s scripts -p "test_*.py" -v`
+- Result: **214 tests passed, 0 failed**.
+- The pre-lease `effect_reserved` event is attempt-bound and intentionally unfenced. The unfenced journal mode is now restricted to a matching `pocketcode.coordinator` event whose JSON payload kind is `effect_reserved` and whose embedded EffectId/DispatchAttemptId match the event scope. It rejects worker events, wrong kinds/scopes, malformed payloads and supplied fences. This exception does not relax worker-event fencing.
+- Exact duplicate identity includes the fencing generation. A same-event replay under a newer worker fence is quarantined.
+- End-to-end conformance now exercises reservation/claim/dispatch, trusted success and direct-child exit, typed collection and cleanup, receipt creation, artifact staging and release, and failed-then-successful report-copy retry against the same receipt. This is a test composition, not a production pipeline.
+- Test-driven fixes: the first restricted-unfenced implementation missed the JSON import and initially allowed the flag without attempt scope; both were corrected and the final exact SHA is green.
+- Still not established: durable atomicity, concurrent writers, cryptographic producer authentication, mobile/device integration, real provider execution, hostile-code sandboxing, malware scanning or production authorization.

@@ -159,3 +159,13 @@ Stress the composed receipt projection with contradictory collector/teardown evi
 - Source changes: `scripts/event_journal.py`, `scripts/test_event_journal.py`, `scripts/fake_coordinator.py`; regression coverage also in `scripts/test_fake_coordinator.py`.
 - Reservation event remains unfenced because it precedes lease acquisition; replay and repair after claim preserve its original identity. Worker event deduplication includes fence generation and quarantines a replay under a newer fence.
 - Live branch head may have advanced beyond the tested SHA due documentation-only follow-up commits; always fetch the branch before starting.
+
+
+## 2026-11-07 latest verified checkpoint and end-to-end test
+
+- Exact SHA: `3a3ee64e50c78134ef4a45f759533003dd533538`
+- CI: https://github.com/marcelosofficial-ctrl/PocketCode-/actions/runs/42311540457
+- Python 3.12 / Ubuntu 24.04; **214 passed, 0 failed**.
+- The no-fence exception is limited to matching coordinator `effect_reserved` events. Worker events remain fence-required; event identity includes fence generation.
+- `scripts/test_fake_coordinator.py::test_end_to_end_attempt_receipt_artifact_release_and_copy_retry` composes typed terminal evidence, collection/cleanup, receipt creation, artifact release and same-receipt copy retry. This is an in-memory conformance test, not production integration.
+- Always fetch the live branch head and current CI before starting; later documentation or code commits may be beyond this tested SHA.

@@ -337,3 +337,10 @@ Initial reservation occurs before a worker lease exists. Therefore `effect_reser
 EventJournal exact duplicate recognition now includes the event's fence generation in addition to source/event ID, producer issuer/subject, attempt scope, exact payload bytes and occurrence timestamp. A worker event replay under a newer fence is a conflict and is quarantined. This prevents a new worker generation from inheriting the old generation's event identity.
 
 Exact-SHA CI: `e631e9ccda29e5632832a64ad6b5e8c4c0ae5765`, 211/211 passed: https://github.com/marcelosofficial-ctrl/PocketCode-/actions/runs/42311165889. This remains a synchronous in-memory conformance model; durable fencing/append atomicity, concurrency and cryptographic producer authentication remain open.
+
+
+## 2026-11-07 restricted pre-lease reservation event mode
+
+The EventJournal's `require_fence=False` mode is not a general escape hatch. It is accepted only for source `pocketcode.coordinator`, a valid JSON object with kind `effect_reserved`, and embedded EffectId/DispatchAttemptId values exactly matching the bound event scope. A non-null fence, malformed payload, wrong source/kind/scope or missing attempt binding is rejected. The trusted coordinator selects this mode only for initial reservation and reservation repair. All worker, dispatch, acknowledgement, reconciliation and terminal observation events remain fenced.
+
+Exact-SHA CI: `3a3ee64e50c78134ef4a45f759533003dd533538`, 214/214 passed: https://github.com/marcelosofficial-ctrl/PocketCode-/actions/runs/42311540457. The end-to-end fake model also composes collection/cleanup evidence, receipt creation, artifact release and same-receipt copy retry. This remains an in-memory conformance model, not a durable or authenticated production system.

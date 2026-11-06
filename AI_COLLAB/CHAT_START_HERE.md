@@ -351,3 +351,8 @@ Latest source checkpoint passed **205/205** repository Python tests on exact com
 ## 2026-11-07 latest verified checkpoint
 
 The current reservation/fencing checkpoint passed **211/211** Python tests on exact commit `e631e9ccda29e5632832a64ad6b5e8c4c0ae5765`: [GitHub Actions run 42311165889](https://github.com/marcelosofficial-ctrl/PocketCode-/actions/runs/42311165889). Initial reservation evidence remains attempt-bound and unfenced after worker claim; worker events remain fence-required; replay under a new fence is quarantined. Current source branch: `pocketcode-ai-workflow-director-research-2026-10-28`. See `CLAUDE.md` and `AI_COLLAB/CLAUDE_PROJECT_MAP_20261106.md` for project onboarding, paths and working boundaries.
+
+
+## 2026-11-07 latest verified checkpoint
+
+Latest source checkpoint passed **214/214** repository Python tests on exact SHA `3a3ee64e50c78134ef4a45f759533003dd533538`: [GitHub Actions run 42311540457](https://github.com/marcelosofficial-ctrl/PocketCode-/actions/runs/42311540457), Ubuntu 24.04 / Python 3.12. The unfenced exception is restricted to matching pre-lease reservation events; worker events remain fence-required. The E2E model now covers receipt, artifact release and copy retry after typed execution/collection/cleanup evidence. See `CLAUDE.md` and the Claude project map for full paths and working rules.
