@@ -66,11 +66,18 @@ class ResultReceipt:
 class ReleaseAuthorization:
     authorization_id: str
     policy_revision: str
+    principal_id: str
+    tenant_id: str
+    receipt_id: str
     artifact_id: str
+    object_version: str
     attempt_id: str
     current_attempt_id: str
+    scope: str
     authorized: bool
+    revoked: bool
     observed_at_ms: int
+    expires_at_ms: int
 
 
 @dataclass(frozen=True)
@@ -258,11 +265,12 @@ class ResultReceiptStore:
         self._revision_fingerprints[revision_key] = fingerprint
         return receipt
 
-    def release_artifact(self, artifact_id: str, authorization: ReleaseAuthorization) -> ReleaseResult:
-        """Check a caller-supplied authorization snapshot on every request.
+    def release_artifact(self, artifact_id: str, authorization: ReleaseAuthorization, *,
+                         receipt_id: str, now_ms: int, operation: str = "download") -> ReleaseResult:
+        """Revalidate receipt membership, object identity and current authorization per request.
 
-        This model does not authenticate or fetch the authority itself. The caller
-        must obtain a fresh, trusted authorization decision for each request.
+        Authorization fields are still caller-supplied model inputs, not proof that
+        a real policy authority authenticated the principal or checked revocation.
         """
         if not isinstance(artifact_id, str) or not artifact_id.strip():
             return ReleaseResult("denied_invalid_artifact_id", str(artifact_id), None, None, None)
@@ -272,25 +280,50 @@ class ResultReceiptStore:
         entry, content = stored
         if not isinstance(authorization, ReleaseAuthorization):
             return ReleaseResult("denied_missing_authorization", artifact_id, None, None, None)
-        if not all(isinstance(value, str) and value.strip() for value in (
+        string_fields = (
             authorization.authorization_id, authorization.policy_revision,
-            authorization.artifact_id, authorization.attempt_id,
-            authorization.current_attempt_id,
-        )):
+            authorization.principal_id, authorization.tenant_id,
+            authorization.receipt_id, authorization.artifact_id,
+            authorization.object_version, authorization.attempt_id,
+            authorization.current_attempt_id, authorization.scope,
+        )
+        if not all(isinstance(value, str) and value.strip() for value in string_fields):
             return ReleaseResult("denied_invalid_authorization", artifact_id, None, None,
                                  authorization.authorization_id if isinstance(authorization.authorization_id, str) else None)
-        if (authorization.artifact_id != artifact_id
+        if (isinstance(now_ms, bool) or not isinstance(now_ms, int) or now_ms < 0
+                or isinstance(authorization.observed_at_ms, bool)
+                or not isinstance(authorization.observed_at_ms, int)
+                or authorization.observed_at_ms < 0
+                or isinstance(authorization.expires_at_ms, bool)
+                or not isinstance(authorization.expires_at_ms, int)
+                or authorization.expires_at_ms < 0):
+            return ReleaseResult("denied_invalid_authorization", artifact_id, None, None,
+                                 authorization.authorization_id)
+        if (authorization.receipt_id != receipt_id
+                or authorization.artifact_id != artifact_id
+                or authorization.object_version != entry.object_version
                 or authorization.attempt_id != entry.attempt_id
                 or authorization.current_attempt_id != entry.attempt_id):
             return ReleaseResult("denied_stale_or_mismatched_attempt", artifact_id, None, None,
                                  authorization.authorization_id)
+        receipt = next((item for item in self._receipts if item.receipt_id == receipt_id), None)
+        if receipt is None or receipt.attempt_id != entry.attempt_id or not any(
+            manifest.artifact_id == artifact_id and manifest.object_version == entry.object_version
+            for manifest in receipt.artifact_manifest
+        ):
+            return ReleaseResult("denied_artifact_not_in_receipt", artifact_id, None, None,
+                                 authorization.authorization_id)
+        if operation not in {"download", "share"} or authorization.scope != f"artifact:{operation}":
+            return ReleaseResult("denied_scope_mismatch", artifact_id, None, None,
+                                 authorization.authorization_id)
         if type(authorization.authorized) is not bool or not authorization.authorized:
             return ReleaseResult("denied_by_current_authorization", artifact_id, None, None,
                                  authorization.authorization_id)
-        if (isinstance(authorization.observed_at_ms, bool)
-                or not isinstance(authorization.observed_at_ms, int)
-                or authorization.observed_at_ms < 0):
-            return ReleaseResult("denied_invalid_authorization", artifact_id, None, None,
+        if type(authorization.revoked) is not bool or authorization.revoked:
+            return ReleaseResult("denied_revoked_authorization", artifact_id, None, None,
+                                 authorization.authorization_id)
+        if authorization.observed_at_ms > now_ms or now_ms >= authorization.expires_at_ms:
+            return ReleaseResult("denied_expired_authorization", artifact_id, None, None,
                                  authorization.authorization_id)
         if entry.quarantined or entry.integrity_state != "verified":
             return ReleaseResult("denied_quarantined_artifact", artifact_id, None, None,

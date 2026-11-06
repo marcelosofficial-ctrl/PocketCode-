@@ -20,6 +20,7 @@ class ResultReceiptTests(unittest.TestCase):
             "artifact-1", "summary.json", "application/json", "attempt-1",
             self.content, True, self.digest,
         ))
+        self.receipt = self.create()
 
     def create(self, **overrides):
         args = dict(
@@ -36,8 +37,12 @@ class ResultReceiptTests(unittest.TestCase):
     def auth(self, **overrides):
         args = dict(
             authorization_id="auth-1", policy_revision="policy-1",
-            artifact_id="artifact-1", attempt_id="attempt-1",
-            current_attempt_id="attempt-1", authorized=True, observed_at_ms=101,
+            principal_id="user-1", tenant_id="tenant-1",
+            receipt_id=self.receipt.receipt_id, artifact_id="artifact-1",
+            object_version=self.artifact.object_version,
+            attempt_id="attempt-1", current_attempt_id="attempt-1",
+            scope="artifact:download", authorized=True, revoked=False,
+            observed_at_ms=101, expires_at_ms=200,
         )
         args.update(overrides)
         return ReleaseAuthorization(**args)
@@ -165,7 +170,7 @@ class ResultReceiptTests(unittest.TestCase):
             self.create(predecessor_receipt_id="missing")
 
     def test_release_requires_current_attempt_authorization(self):
-        result = self.store.release_artifact("artifact-1", self.auth())
+        result = self.store.release_artifact("artifact-1", self.auth(), receipt_id=self.receipt.receipt_id, now_ms=102)
         self.assertEqual(result.disposition, "released")
         self.assertEqual(result.content, self.content)
 
@@ -173,23 +178,35 @@ class ResultReceiptTests(unittest.TestCase):
         self.assertEqual(self.store.release_artifact("artifact-1", self.auth()).disposition,
                          "released")
         revoked = self.auth(authorized=False, authorization_id="auth-revoked")
-        self.assertEqual(self.store.release_artifact("artifact-1", revoked).disposition,
+        self.assertEqual(self.store.release_artifact("artifact-1", revoked, receipt_id=self.receipt.receipt_id, now_ms=102).disposition,
                          "denied_by_current_authorization")
 
     def test_stale_attempt_cannot_release_artifact(self):
         result = self.store.release_artifact(
             "artifact-1", self.auth(current_attempt_id="attempt-2"),
+            receipt_id=self.receipt.receipt_id, now_ms=102,
         )
         self.assertEqual(result.disposition, "denied_stale_or_mismatched_attempt")
         self.assertIsNone(result.content)
 
     def test_quarantined_artifact_cannot_be_released(self):
-        self.store.stage_artifact(ArtifactInput(
+        partial = self.store.stage_artifact(ArtifactInput(
             "artifact-partial", "partial.json", "application/json", "attempt-1",
             b"partial", False,
         ))
+        partial_receipt = self.store.create_receipt(
+            revision_key="receipt-with-partial", effect_id="effect-1", attempt_id="attempt-1",
+            contract_version="pc-v1", execution_outcome="INCOMPLETE",
+            collection_state="complete", lifecycle_disposition="succeeded",
+            cleanup_state="unknown", evidence_refs=("event-partial",),
+            evidence_sha256=(self.digest,), artifact_ids=("artifact-partial",),
+            created_at_ms=110, predecessor_receipt_id=self.receipt.receipt_id,
+            revision_reason="late partial artifact observation",
+        )
         result = self.store.release_artifact(
-            "artifact-partial", self.auth(artifact_id="artifact-partial"),
+            "artifact-partial", self.auth(artifact_id="artifact-partial",
+                object_version=partial.object_version, receipt_id=partial_receipt.receipt_id),
+            receipt_id=partial_receipt.receipt_id, now_ms=111,
         )
         self.assertEqual(result.disposition, "denied_quarantined_artifact")
         self.assertIsNone(result.content)
@@ -233,12 +250,16 @@ class ResultReceiptTests(unittest.TestCase):
 
     def test_malformed_authorization_types_fail_closed_without_exception(self):
         malformed = self.auth(policy_revision=None)
-        result = self.store.release_artifact("artifact-1", malformed)
+        result = self.store.release_artifact(
+            "artifact-1", malformed, receipt_id=self.receipt.receipt_id, now_ms=102,
+        )
         self.assertEqual(result.disposition, "denied_invalid_authorization")
         self.assertIsNone(result.content)
 
     def test_release_rejects_malformed_artifact_id_without_exception(self):
-        result = self.store.release_artifact([], self.auth())
+        result = self.store.release_artifact(
+            [], self.auth(), receipt_id=self.receipt.receipt_id, now_ms=102,
+        )
         self.assertEqual(result.disposition, "denied_invalid_artifact_id")
         self.assertIsNone(result.content)
 
@@ -251,10 +272,49 @@ class ResultReceiptTests(unittest.TestCase):
         # fetch the authority. The caller must resolve a fresh decision per call.
         allowed = self.auth(authorization_id="snapshot-1", authorized=True)
         denied = self.auth(authorization_id="snapshot-2", authorized=False)
-        self.assertEqual(self.store.release_artifact("artifact-1", allowed).disposition,
-                         "released")
-        self.assertEqual(self.store.release_artifact("artifact-1", denied).disposition,
-                         "denied_by_current_authorization")
+        self.assertEqual(self.store.release_artifact(
+            "artifact-1", allowed, receipt_id=self.receipt.receipt_id, now_ms=102,
+        ).disposition, "released")
+        self.assertEqual(self.store.release_artifact(
+            "artifact-1", denied, receipt_id=self.receipt.receipt_id, now_ms=102,
+        ).disposition, "denied_by_current_authorization")
+
+    def test_release_requires_artifact_membership_in_named_receipt(self):
+        other = self.store.create_receipt(
+            revision_key="receipt-no-artifact", effect_id="effect-1", attempt_id="attempt-1",
+            contract_version="pc-v1", execution_outcome="PASS", collection_state="complete",
+            lifecycle_disposition="succeeded", cleanup_state="complete",
+            evidence_refs=("event-2",), evidence_sha256=(self.digest,),
+            artifact_ids=(), created_at_ms=110,
+            predecessor_receipt_id=self.receipt.receipt_id,
+            revision_reason="new report version without this artifact",
+        )
+        auth = self.auth(receipt_id=other.receipt_id)
+        result = self.store.release_artifact(
+            "artifact-1", auth, receipt_id=other.receipt_id, now_ms=111,
+        )
+        self.assertEqual(result.disposition, "denied_artifact_not_in_receipt")
+
+    def test_release_binds_exact_object_version_and_operation_scope(self):
+        wrong_version = self.auth(object_version="artifact-1:v2")
+        self.assertEqual(self.store.release_artifact(
+            "artifact-1", wrong_version, receipt_id=self.receipt.receipt_id, now_ms=102,
+        ).disposition, "denied_stale_or_mismatched_attempt")
+        wrong_scope = self.auth(scope="artifact:share")
+        self.assertEqual(self.store.release_artifact(
+            "artifact-1", wrong_scope, receipt_id=self.receipt.receipt_id,
+            now_ms=102, operation="download",
+        ).disposition, "denied_scope_mismatch")
+
+    def test_expired_or_revoked_authorization_is_denied(self):
+        expired = self.auth(expires_at_ms=102)
+        self.assertEqual(self.store.release_artifact(
+            "artifact-1", expired, receipt_id=self.receipt.receipt_id, now_ms=102,
+        ).disposition, "denied_expired_authorization")
+        revoked = self.auth(revoked=True)
+        self.assertEqual(self.store.release_artifact(
+            "artifact-1", revoked, receipt_id=self.receipt.receipt_id, now_ms=102,
+        ).disposition, "denied_revoked_authorization")
 
     def test_unknown_receipt_cannot_be_published(self):
         with self.assertRaises(ReceiptConflict):
