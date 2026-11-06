@@ -2,7 +2,7 @@
 
 **Repository:** marcelosofficial-ctrl/PocketCode-  
 **Branch:** pocketcode-ai-workflow-director-research-2026-10-28  
-**Last verified before this checkpoint:** 4446135bf1345f37aa5d221d27c0eabbdbcef5c7  
+**Last verified before this checkpoint:** f545974e5d76c8282968c3a86ae69d22cad81343  
 **Compare before this checkpoint:** 820 ahead / 0 behind main; merge base 555840d8d83342513d9cd353d4d1522d46a5c82d. Ahead count is branch-history divergence, not product progress. Fetch live refs before consequential work.
 
 ## Goal
@@ -115,3 +115,15 @@ Next task: owner runs only the read-only Pyodios sys.last_exc / sys.last_value C
 - Reviewed Cline task history and shadow Git checkpoint docs. Adopt source/input snapshot, compare/restore and interrupted-task UX ideas; explicitly keep checkpoints separate from execution receipts.
 - Updated provenance references: in-toto Attestation v1.2 has predicate/statement/envelope/bundle separation; SLSA v1.2 is current and approved while v1.1 page is retired. Do not label unsigned receipts attestations or apply build provenance to arbitrary script execution.
 - Research-only. No product runtime, provider, budget, canonical acceptance ID or schema changed.
+
+
+## 2026-11-06 — Typed execution evidence and recovery contract
+
+- Added AI_COLLAB/EXECUTION_EVIDENCE_AND_RECOVERY_CONTRACT_20261106.md, a design-stage contract for typed lifecycle/child/wrapper/embedded observations, verdict reconciliation, ambiguous dispatch, source-scoped event identity, receipt/artifact integrity and mobile lifecycle boundaries.
+- Added isolated scripts/execution_projection.py and scripts/test_execution_projection.py. The helper is not integrated with report_contract.py or a trusted coordinator. Producer class strings are shape checks, not authentication.
+- Local verification: 31 projection tests passed under CPython 3.13.5; both files compiled. GitHub exact read-back: source blob f32237c8c5ee5d62b0416b3dd867515ce567c21b; test blob cbd756cce1bc42a6aab0d5c48d8fac6f56cce7c1.
+- Added research sections 13–17: official Python 3.14 mobile/WASM subprocess constraints; wrapper/signal/SystemExit distinctions; current OpenHands/Cline/Temporal release and licence metadata; provider-scoped idempotency versus transactional outbox; CloudEvents source-scoped IDs and OpenTelemetry dual timestamps; bounded code adoption and attestation limits.
+- New source/design checkpoint commit: 3c6db063fe209396cab2d23b3f61c9daedd373ce. The following continuity checkpoint records the source commit and exact read-back. Fetch the live ref before further work.
+- CASE-04 remains INCOMPLETE/timed_out on trusted timeout. scripts/report_contract.py remains unchanged. LOOP/CASE/D IDs, runtime/provider, storage, budget, canonical schema, PRs and deployment unchanged.
+- PR #2/#3 remain untouched. No Actions, mobile, fake-adapter, persistence, provider, artifact-release, egress, crash or canonical acceptance tests were run by this source/design checkpoint.
+- Pyodios artifact status remains owner-inspected exact oracle match; bridge root cause and native exit unknown. Next owner action is the previously supplied read-only sys.last_exc / sys.last_value Console probe. Preserve the project and do not rerun/overwrite it.

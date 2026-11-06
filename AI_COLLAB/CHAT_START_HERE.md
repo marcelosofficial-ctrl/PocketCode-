@@ -20,16 +20,20 @@ GitHub is the durable project state. Do not rely on a last-minute full-chat hand
 **Important limitation:** this protocol reduces avoidable context pressure and tool stalls; it cannot prevent platform context limits, service outages or execution failures. The goal is graceful interruption with no lost project state.
 
 
-**Last refreshed:** 2026-11-06 (mobile execution, recovery, protocol and prototype-integrity review incorporated)  
+**Last refreshed:** 2026-11-06 (typed execution projection, recovery contract and deeper primary-source verification incorporated)  
 **Authority:** live PocketCode branch state plus canonical source/spec/test records. This file is the compact first-read entrypoint for every new PocketCode chat.
 
 ## Current cross-project note
 
-Read [RevDev progress and multi-chat continuity update](CROSS_PROJECT_UPDATE_REVDEV_2026-11-06.md) for transferable engineering lessons and the current RevDev status. This does not transfer RevDev implementation or acceptance evidence into PocketCode. PocketCode's immediate active work is resolving the first owner-reported Pyodios Editor attempt, followed by the typed CASE-04 exit-provenance contract. Do not make a precedence-only formatter patch.
+Read [RevDev progress and multi-chat continuity update](CROSS_PROJECT_UPDATE_REVDEV_2026-11-06.md) for transferable engineering lessons and the current RevDev status. This does not transfer RevDev implementation or acceptance evidence into PocketCode. PocketCode's immediate owner action remains the read-only Pyodios saved-exception probe. The typed CASE-04 projection boundary and recovery contract are now documented with an isolated helper and 31 local tests; the helper is not integrated or trusted as an execution boundary. Do not make a precedence-only formatter patch.
 
 ## Latest research decision (2026-11-06)
 
 Read [PocketCode task, evidence and recovery research](POCKETCODE_TASK_EVIDENCE_RECOVERY_RESEARCH_20261106.md). Key corrections: iOS embedded Python has no child process; CASE-04 is not a precedence patch; matching EffectId/fingerprint authorizes lookup/reconciliation, not blind replay. The simulation prototype pins the canonical fixture bytes; its static checks are not browser or product acceptance. PocketCode's differentiator is portable task/evidence/recovery/AI-correction orchestration, not another phone Python IDE. The static prototype now uses the frozen CSV-to-JSON fixture and pins the canonical main.py hash; its 11-case local reconstructed regression harness passed, but exact repository CI and real browser/mobile interaction remain NOT RUN. No runtime/provider selected. SQLite WAL must pin a build with the WAL-reset fix (3.51.3 or supported backport); MCP Tasks are experimental; A2A stream/history is not an authoritative receipt.
+
+## Latest execution evidence checkpoint (2026-11-06)
+
+Read AI_COLLAB/EXECUTION_EVIDENCE_AND_RECOVERY_CONTRACT_20261106.md before changing report classification, dispatch retries, or receipts. New isolated helper: scripts/execution_projection.py; tests: scripts/test_execution_projection.py (31 tests passed locally under CPython 3.13.5). It is not integrated into the report formatter or a trusted runner. Research additions 13–17 extend the task/evidence/recovery research with Python 3.14 mobile constraints, signal/wrapper semantics, provider-scoped idempotency, CloudEvents/OpenTelemetry identity/time, and current release/licence checks. Legacy scripts/report_contract.py, LOOP/CASE/D IDs and CASE-04 wording are unchanged.
 
 ## First action
 

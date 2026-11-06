@@ -347,3 +347,31 @@ Next: await owner-provided read-only Pyodios saved-exception probe output; prese
 - Read Cline task history and shadow Git checkpoint documentation. Reuse task-scoped history, snapshot, compare/restore and resume UX; keep workspace snapshots distinct from execution receipts.
 - Deepened artifact trust model using in-toto Attestation v1.2 and current SLSA v1.2. Corrected version status: SLSA v1.1 provenance page is marked retired; v1.2 is current/approved. Unsigned local receipts remain integrity records, not authenticated attestations.
 - No product code/runtime/provider/schema/acceptance/budget/PR/merge/deployment change.
+
+
+## 2026-11-06 — PC-2026-11-06-P23 — Typed execution evidence and recovery boundary
+
+**Objective:** resolve the highest-risk semantic gap before changing CASE-04 classification. Preserve the existing report formatter and canonical acceptance IDs.
+
+**Completed:**
+- Re-read live entrypoint, state ledger, current research, exit provenance matrix, canonical execution acceptance, report formatter/tests, adapter envelope and Pyodios triage at branch start SHA f545974e5d76c8282968c3a86ae69d22cad81343.
+- Researched Python 3.14 mobile and WebAssembly subprocess constraints, Python/Bash/Linux signal and exit semantics, Google AIP-155, AWS idempotency tokens and transactional outbox, Temporal at-least-once Activities, CloudEvents producer-scoped event IDs, OpenTelemetry source/observed timestamps, and current OpenHands/Cline/Temporal release/license metadata.
+- Added a pure typed exit projection helper and 31 regression tests for child natural exit, wrapper code, signal termination, embedded SystemExit/exception, stale attempt, malformed fields and contradictory terminal evidence.
+- Added AI_COLLAB/EXECUTION_EVIDENCE_AND_RECOVERY_CONTRACT_20261106.md and expanded task/evidence/recovery research with source-level corrections and implementation gates.
+
+**Red-team corrections:**
+1. A shell status such as 137 does not identify a natural child exit; preserve wrapper and signal evidence independently.
+2. The report tests lacked program_failed plus child exit zero and timeout plus nonzero wrapper scenarios; both are now covered by the isolated projection suite.
+3. Producer strings do not authenticate evidence; this helper's caller must authenticate and authorize before projection.
+4. CloudEvents event IDs are unique only within source/producer scope; retain source plus ID and reject payload conflicts.
+5. Event source time and collector observation time are distinct; durable coordinator sequence, not wall clock, orders accepted events.
+6. Idempotency-token scope/retention varies by provider and operation; same token does not promise universal exactly-once side effects.
+7. A worker protects UI responsiveness, not hostile-code isolation or mobile process durability.
+
+**Verification:** isolated projection suite passed 31/31 under CPython 3.13.5; both files compiled. Exact GitHub read-back returned helper SHA f32237c8c5ee5d62b0416b3dd867515ce567c21b, test SHA cbd756cce1bc42a6aab0d5c48d8fac6f56cce7c1, contract SHA 7530c628dfbc868c79e90185bb096b8f92ef3c32, research SHA 1496b427d1ccf6ebfe2d02e30bd33774972505cb. Source/design commit 3c6db063fe209396cab2d23b3f61c9daedd373ce.
+
+**Not run:** exact repository-wide test suite, GitHub Actions, browser/iOS/Android tests, authenticated coordinator, fake adapter, chosen persistence, provider workloads, termination/cleanup, egress, artifact release, crash/power-loss, canonical LOOP/CASE acceptance.
+
+**No change:** existing report formatter, canonical LOOP/CASE/D IDs, runtime/provider/storage choice, $0 budget, owner Pyodios project, PR #2/#3, merge or deployment. The helper is unintegrated design-stage code.
+
+**Next:** verify post-checkpoint branch and PR/CI states; keep owner Pyodios saved-exception probe outstanding; then implement authenticated boundary and fake-adapter reservation/reconciliation tests before any production formatter wiring.
