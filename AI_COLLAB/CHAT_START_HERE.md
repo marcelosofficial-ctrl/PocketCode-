@@ -212,3 +212,5 @@ PocketCode must continue its own CASE-04 timeout/report-contract work. No RevDev
 
 
 **Latest Pyodios result (2026-11-06):** the owner confirmed the existing `summary.json` exactly matches the fixed success oracle despite the Editor showing `[Bridge/executePython] PythonError`. Classify as artifact-level functional success, bridge error unresolved, full run inconclusive. Preserve the success project and do not rerun/overwrite. Next obtain the timestamped Error Log, then the read-only saved-exception probe if needed. See `PYODIOS_PYTHONERROR_BRIDGE_TRIAGE_20261106.md` and `NEW_CHAT_HANDOFF_20261106.md`.
+
+**Latest Pyodios diagnostic:** Error Log inspection yielded only `Editor: PythonError`, no traceback. Root cause remains unknown. Next use the read-only `sys.last_exc` / `sys.last_value` Console probe. Preserve the exact-match success artifact and do not rerun the canonical task. See the triage note and 2026-11-06 handoff.
