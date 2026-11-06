@@ -301,3 +301,16 @@ Next: await owner-provided read-only Pyodios saved-exception probe output; prese
 **Verification:** source research opened; live branch/PR/CI state checked. Documentation writes are grouped in one atomic Git commit and read back. No product source, tests, runtime, provider, schema, canonical acceptance IDs, account, workload, budget, PR, merge or deployment changed. Starting HEAD had zero checks/runs; this research commit's CI must be queried once after checkpoint.
 
 **Next:** owner runs the read-only Pyodios `sys.last_exc` / `sys.last_value` probe in the existing session; source work defines typed boundary-specific observations before any CASE-04 formatter patch.
+
+
+## 2026-11-06 — PC-2026-11-06-P19 — Prototype integrity and static regression recovery
+
+**Reviewed:** live branch commits after the task/evidence research checkpoint, including the simulation prototype redesign, canonical fixture pinning, EffectId correction and tab navigation changes.
+
+**Defects found and corrected:** initial canonical-fixture checker update contained invalid regex string syntax; two new test methods were inserted inside the HTML fixture literal instead of the test class; the test fixture did not include the same tab-stop state as the prototype. Corrected checker parsing, restored the canonical source block/guard, moved tests into the test class, aligned fixture tabindex and `setTab` behavior, and added two roving-tabindex regression cases. The test file now contains 11 test methods.
+
+**Focused verification:** canonical source fixture measured 1,939 UTF-8 bytes and SHA-256 `70c66ad3a0132923cbf3190eb3546093fcc2c61c1bdcbf3b171696e1ae7521e7`; regex extraction and initial CSV byte comparison passed in a local Python check. Full unittest suite and browser interaction were NOT RUN. Exact branch head `c22d8108c9ceab3d003cfc92debbb99cd87e8a82` reported zero CI checks and zero workflow runs.
+
+**Architecture correction:** matching EffectId/fingerprint means same-effect lookup/reconciliation only. No blind redispatch after ambiguous acknowledgement. Require authoritative no-acceptance evidence or provider-documented idempotent start for the exact same key/fingerprint.
+
+**No product runtime, provider, schema, canonical acceptance, budget, PR, merge or deployment changed.** Prototype is simulation only. Pyodios saved-exception probe remains NOT RUN.

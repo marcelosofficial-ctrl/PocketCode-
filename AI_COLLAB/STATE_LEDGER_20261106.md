@@ -39,7 +39,7 @@ Build a phone-first, provider-neutral Agentic Orchestration Control Plane that m
 - Owner forwards reports manually. No direct AI-to-AI communication assumed. One lead writer per branch/work item; other AIs review read-only or take disjoint scopes.
 
 ## Research references and current open work
-- OpenHands and Cline are pattern references, not frameworks to adopt wholesale. MCP Tasks may inform async tool-task status; the legacy Agent Communication Protocol (ACP) was archived 2025-08-27 and merged into A2A. Evaluate current A2A for agent-to-agent interoperability, not archived ACP. MCP/A2A task IDs do not replace PocketCode command/attempt identity or trusted receipts. Neither replaces PocketCode command/attempt identity or trusted receipts. Reject wildcard auto-approval.
+- OpenHands and Cline are pattern references, not frameworks to adopt wholesale. MCP Tasks may inform async tool-task status; the legacy Agent Communication Protocol (ACP) was archived 2025-08-27 and merged into A2A. Evaluate current A2A for agent-to-agent interoperability, not archived ACP. MCP/A2A task IDs do not replace PocketCode command/attempt identity or trusted receipts. Reject wildcard auto-approval.
 - After Pyodios probe: malformed-header fixture in separate fresh project; then export/read-back and natural relaunch persistence as separate tests. Do not overwrite success project.
 - Source work next: typed CASE-04 exit provenance; degraded collector/teardown/artifact release; synchronous pre-execution network-isolation barrier. Use fake adapters/processes and exact-SHA tests; no live services or spend.
 
@@ -79,3 +79,13 @@ Next task: owner runs only the read-only Pyodios sys.last_exc / sys.last_value C
 - Protocol correction: legacy ACP is archived; A2A v1.0.1 is current successor for agent-to-agent interoperability. MCP Tasks is a task-handle/status pattern. Neither replaces PocketCode identities or receipt ledger.
 - SQLite is a candidate local journal, with explicit WAL/synchronous durability and target-device crash tests. It cannot make a remote side effect exactly-once; use outbox/idempotency/reconciliation.
 - No runtime/provider, budget, canonical ID, product source, test, acceptance, PR or deployment decision changed. Owner Pyodios saved-exception probe remains NOT RUN; artifact preserved.
+
+
+## 2026-11-06 — Prototype integrity and static regression recovery
+
+- Reviewed the live prototype/checker changes through HEAD `c22d8108c9ceab3d003cfc92debbb99cd87e8a82`.
+- The prototype remains simulation-only. Its displayed `main.py` is pinned to the canonical SHA-256 `70c66ad3a0132923cbf3190eb3546093fcc2c61c1bdcbf3b171696e1ae7521e7` (1,939 bytes); initial CSV bytes are checked against the fixed success fixture.
+- Red-team found malformed Python regex syntax in the first checker update and two test methods misplaced inside the `VALID_HTML` fixture. Corrected checker regexes, restored the canonical source guard in the fixture, moved tests into the class, and added roving-tabindex checks. Current checker/test blobs: `ec56e6084c4e0e6e8274734e259b12a17110ffb4` / `d22829c64235c2334561d7deb5b3110c7243ab4e`; 11 test methods.
+- Focused Python assertions for canonical source length/hash and CSV extraction/equality passed. Full unittest suite, browser JS, clipboard, VoiceOver/TalkBack and mobile tests remain NOT RUN. Current exact-head CI status has zero checks and zero workflow runs, not PASS.
+- EffectId wording corrected: same key/fingerprint permits lookup/reconciliation, not automatic replay. UNKNOWN forbids redispatch unless authoritative evidence or a documented provider idempotency contract permits it.
+- No product runtime/provider, canonical acceptance ID, budget, PR, merge or deployment changed. Pyodios owner probe remains outstanding.
