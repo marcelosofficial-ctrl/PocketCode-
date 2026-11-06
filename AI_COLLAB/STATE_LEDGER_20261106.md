@@ -107,3 +107,11 @@ Next task: owner runs only the read-only Pyodios sys.last_exc / sys.last_value C
 - SQLite WAL selection is blocked until the bundled version is pinned at 3.51.3+ or supported backport (3.44.6 / 3.50.7), with the documented multi-connection write/checkpoint race tested. `synchronous=FULL` is required where power-loss durability is a requirement. WAL is not for network filesystems.
 - MCP Tasks remain experimental (2025-11-25 spec); A2A v1.0.1 task streaming/history can omit updates/messages after disconnect. PocketCode's own receipt/event journal remains authoritative.
 - Checker now accepts tab attributes regardless of class/id attribute ordering. Added a regression case for this. Test method count is 12; exact suite/CI not run.
+
+
+## 2026-11-06 — Event history and provenance deepening
+
+- Reviewed current OpenHands SDK EventLog/ConversationState implementation: one append chokepoint, parent-linked events, sequence assignment, cold-load projection rebuild, and explicit in-memory fallback when persistence is unconfigured. Reuse architecture pattern only; no durability/security guarantee inferred.
+- Reviewed Cline task history and shadow Git checkpoint docs. Adopt source/input snapshot, compare/restore and interrupted-task UX ideas; explicitly keep checkpoints separate from execution receipts.
+- Updated provenance references: in-toto Attestation v1.2 has predicate/statement/envelope/bundle separation; SLSA v1.2 is current and approved while v1.1 page is retired. Do not label unsigned receipts attestations or apply build provenance to arbitrary script execution.
+- Research-only. No product runtime, provider, budget, canonical acceptance ID or schema changed.

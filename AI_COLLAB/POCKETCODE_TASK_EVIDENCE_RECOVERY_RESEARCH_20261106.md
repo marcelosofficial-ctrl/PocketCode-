@@ -279,3 +279,27 @@ In WAL mode, NORMAL may lose a recently committed transaction after power loss; 
 ### Protocol limitations
 
 MCP Tasks are experimental in the 2025-11-25 specification. Task IDs are receiver-generated, task state is requestor-polled, and access control must bind tasks to authorization context when available. A2A v1.0.1 supports task states, artifact updates and polling/streaming/push, but streaming clients may miss status updates after disconnect and task history may omit transient messages. PocketCode's own durable receipt remains authoritative.
+
+
+## 12. Event history and artifact provenance: deeper implementation review — 2026-11-06
+
+### OpenHands
+
+The current OpenHands SDK source exposes a FileStore-backed EventLog, appends events through a single ConversationState.append_event chokepoint, stamps parent IDs, assigns sequence numbers, and rebuilds a cached active-branch view from persisted events on cold load. Its state model explicitly falls back to an InMemoryFileStore when no persistence directory is supplied, and warns that events then do not persist across requests. Reuse the append-path centralization, parent/branch relationships, cold-load projection rebuild and explicit persistence configuration. Do not infer fsync durability, immutable tamper evidence, provider exactly-once execution or security-grade attestation from this implementation.
+
+### Cline
+
+Cline documents task-scoped local history and interrupted-task resumption. Its checkpoint mechanism uses a separate shadow Git repository and records full file snapshots after tool actions, including untracked files. Reuse source/input revision, diff and restore UX. A checkpoint proves a workspace snapshot, not that code executed, an artifact came from a selected runtime, or a remote side effect did not occur. Keep execution receipts separate.
+
+### in-toto and SLSA
+
+The in-toto Attestation Framework v1.2 separates predicate (claims), statement (subject digest and predicate type), envelope (authentication/serialization) and bundle (grouping). Each statement subject requires a digest. Digest-bound artifact identity can be represented before PocketCode has a signing trust model, but unsigned JSON must not be called an authenticated attestation. SLSA v1.2 is current and approved; the older v1.1 provenance page is marked retired. SLSA provenance describes verifiable information about how software artifacts were produced, and build provenance traces build outputs to source. It is not a drop-in schema for arbitrary user-script execution. If PocketCode later exports signed attestations, define a PocketCode predicate for execution boundary and trusted producer, then adopt the in-toto envelope model only after signer identity, key custody, rotation, revocation and verifier policy are designed.
+
+### Reuse decisions
+
+| Reference | Adopt | Do not inherit |
+|---|---|---|
+| OpenHands SDK EventLog | Single append chokepoint, parent-linked event structure, durable file-store abstraction, cold-load projection rebuild. | No inferred immutable storage, power-loss durability or provider exactly-once semantics. |
+| Cline shadow Git checkpoints | Source/input snapshots, compare/restore, task resumption UX. | Checkpoints are not execution receipts or artifact provenance. |
+| in-toto v1.2 | Subject digest + typed predicate separation; explicit envelope trust boundary. | No signature claim before producer identity and key lifecycle exist. |
+| SLSA v1.2 | Trusted builder identity and provenance verification concepts for PocketCode's own binary builds. | Do not apply build provenance to arbitrary end-user script runs or claim a SLSA level without meeting builder requirements. |

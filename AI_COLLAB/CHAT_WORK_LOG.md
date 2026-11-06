@@ -339,3 +339,11 @@ Next: await owner-provided read-only Pyodios saved-exception probe output; prese
 - Added primary-source maintenance constraints to research: SQLite WAL-reset fix floor (3.51.3 or supported backports 3.44.6/3.50.7), FULL sync for power-loss durability, same-host WAL limitation, MCP Tasks experimental status, and A2A v1.0.1 streaming/history gaps.
 - Confirmed static checker now handles class/id attribute order for tab buttons; added a regression case. Test methods: 12. Exact repository test suite and CI remain NOT RUN.
 - No runtime/provider or canonical acceptance decision changed.
+
+
+## 2026-11-06 — PC-2026-11-06-P22 — OpenHands/Cline and provenance model review
+
+- Read current OpenHands SDK source for EventLog append path, parent-linked events, sequence assignment, cold-load view rebuild and in-memory fallback. Adopt only the append/projection architecture pattern, not claims of immutable/tamper-proof or remote exactly-once behavior.
+- Read Cline task history and shadow Git checkpoint documentation. Reuse task-scoped history, snapshot, compare/restore and resume UX; keep workspace snapshots distinct from execution receipts.
+- Deepened artifact trust model using in-toto Attestation v1.2 and current SLSA v1.2. Corrected version status: SLSA v1.1 provenance page is marked retired; v1.2 is current/approved. Unsigned local receipts remain integrity records, not authenticated attestations.
+- No product code/runtime/provider/schema/acceptance/budget/PR/merge/deployment change.
