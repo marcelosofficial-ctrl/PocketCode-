@@ -582,6 +582,66 @@ class FakeCoordinatorTests(unittest.TestCase):
                 cleanup_state="complete", artifact_ids=(), created_at_ms=22,
             )
 
+    def test_end_to_end_attempt_receipt_artifact_release_and_copy_retry(self):
+        from hashlib import sha256
+        from result_receipts import ArtifactInput, ReleaseAuthorization, ResultReceiptStore
+        receipts = ResultReceiptStore()
+        artifact_bytes = b'{"result":"verified"}\n'
+        artifact = receipts.stage_artifact(ArtifactInput(
+            "artifact-e2e", "result.json", "application/json",
+            "effect-1", "attempt-1", artifact_bytes, True,
+            sha256(artifact_bytes).hexdigest(),
+        ))
+        lease = self.coordinator.claim("effect-1", "worker-A", now=20, lease_seconds=20)
+        self.coordinator.mark_dispatching(lease, now=20)
+        self.coordinator.record_lifecycle_observation(
+            "effect-1", "attempt-1", event_id="e2e-lifecycle",
+            status="succeeded", fence=lease.fence, now=21,
+        )
+        self.coordinator.record_exit_observation(
+            "effect-1", "attempt-1", event_id="e2e-child-exit",
+            producer="direct_child_wait", kind="natural_exit",
+            exit_code=0, fence=lease.fence, now=22,
+        )
+        self.coordinator.record_collection_observation(
+            "effect-1", "attempt-1", event_id="e2e-collection",
+            state="complete", fence=lease.fence, now=23,
+        )
+        self.coordinator.record_cleanup_observation(
+            "effect-1", "attempt-1", event_id="e2e-cleanup",
+            state="complete", fence=lease.fence, now=24,
+        )
+        receipt = self.coordinator.create_result_receipt(
+            receipts, effect_id="effect-1", attempt_id="attempt-1",
+            revision_key="e2e-receipt", contract_version="pc-v1",
+            collection_state="complete", lifecycle_disposition="succeeded",
+            cleanup_state="complete", artifact_ids=("artifact-e2e",), created_at_ms=25,
+        )
+        authorization = ReleaseAuthorization(
+            authorization_id="e2e-auth", policy_revision="policy-v1",
+            principal_id="principal-1", tenant_id="tenant-1",
+            receipt_id=receipt.receipt_id, artifact_id=artifact.artifact_id,
+            object_version=artifact.object_version, attempt_id="attempt-1",
+            current_attempt_id="attempt-1", scope="artifact:download",
+            authorized=True, revoked=False, observed_at_ms=26, expires_at_ms=40,
+        )
+        released = receipts.release_artifact(
+            "artifact-e2e", authorization, receipt_id=receipt.receipt_id, now_ms=27,
+        )
+        self.assertEqual(receipt.execution_outcome, "PASS")
+        self.assertEqual(released.disposition, "released")
+        self.assertEqual(released.content, artifact_bytes)
+        failed_copy = receipts.publish_report(
+            receipt.receipt_id, "clipboard", success=False, observed_at_ms=28,
+        )
+        retried_copy = receipts.publish_report(
+            receipt.receipt_id, "clipboard", success=True, observed_at_ms=29,
+        )
+        self.assertEqual(failed_copy.receipt_id, retried_copy.receipt_id)
+        self.assertEqual(retried_copy.attempt_number, 2)
+        self.assertEqual(sum(b'"kind":"dispatch_intent"' in e.payload
+                             for e in self.journal.events), 1)
+
     def test_dispatch_only_journal_cannot_create_pass_or_fail_receipt(self):
         from result_receipts import ResultReceiptStore
         store = ResultReceiptStore()
