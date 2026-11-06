@@ -262,3 +262,18 @@ Required semantics demonstrated by the model:
 
 **Verification:** 19/19 deterministic in-memory tests passed under CPython 3.13.5; both files compiled. This does not prove database transaction atomicity, concurrent races, process-crash/power-loss durability, provider idempotency, authentication or production execution. The model's reconciliation flags are caller assertions, not proof. Do not wire it to a real provider or UI verdict.
 
+
+## 18. Append-only event provenance model
+
+The in-memory model is implemented in scripts/event_journal.py with 19 regression cases in scripts/test_event_journal.py. See AI_COLLAB/EVENT_JOURNAL_MODEL_20261106.md for scope and limitations.
+
+Required semantics demonstrated:
+- Authenticate producer identity and authorize the exact source before append. The current model accepts an AuthenticatedProducer value supplied by a trusted adapter; it does not verify cryptographic credentials itself.
+- Deduplicate by (source, producer_event_id), not event ID alone.
+- Identical bytes from the same producer identity return the original accepted sequence.
+- Changed payload bytes or a different producer identity reusing the same source/event ID is quarantined without overwriting the accepted event.
+- Retain exact immutable payload bytes and calculate SHA-256 over those bytes.
+- Preserve occurrence and observation timestamps independently. Coordinator-assigned sequence is the ordering authority.
+- Require the current attempt-scoped fence for effect-linked observations.
+
+**Verification:** 19/19 local deterministic unit tests passed. This does not prove cryptographic authentication, durable atomic append, concurrent fencing, process/power-loss recovery or mobile integration. Production must atomically validate fence and append in its durable transaction.

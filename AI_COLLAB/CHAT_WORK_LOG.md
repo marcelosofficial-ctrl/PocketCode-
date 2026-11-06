@@ -466,3 +466,12 @@ Next: await owner-provided read-only Pyodios saved-exception probe output; prese
 - Committed runbook, fake model and test artifacts in follow-on commits; latest pre-doc checkpoint 56bcc7167b33554a29b68c8fdccc448b9383b6b6.
 - Exact-head Actions and combined status must be checked after the documentation checkpoint. PR #2/#3 remain OPEN/DRAFT and untouched.
 - Next: append-only event journal/provenance model and durable-store test boundary. Pyodios read-only saved-exception probe remains the owner action; preserve existing success project and do not rerun/overwrite.
+
+## 2026-11-06 — PC-2026-11-06-P27 — Event provenance journal
+
+- Added scripts/event_journal.py and scripts/test_event_journal.py; documentation: AI_COLLAB/EVENT_JOURNAL_MODEL_20261106.md.
+- Implemented in-memory append-only journal with source-scoped event IDs, immutable payload bytes and digest, separate occurred/observed timestamps, coordinator sequence, producer/audience/source checks, payload and producer-identity conflict quarantine, and attempt-scoped fencing.
+- Local tests: 19/19 passed. Tests do not cover cryptographic verification, durable atomicity, concurrent writers, process/power-loss or production integration.
+- Red-team boundary: AuthenticatedProducer is a caller-constructible evidence value, not cryptographic proof. Production must verify credentials, source authorization, key state, revocation and replay policy outside the journal. Durable fence compare-and-advance and append must be atomic.
+- Existing outbox model remains isolated. Its 19/19 result is separate from this journal's 19/19. Dispatch helper's 34-case suite remains NOT RUN for final revision.
+- No canonical IDs, CASE-04, provider/runtime/storage selection, budget, PR, merge or deployment changed. Next: fake coordinator joining outbox + journal + projection rebuild.

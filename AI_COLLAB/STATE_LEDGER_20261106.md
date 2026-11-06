@@ -194,3 +194,12 @@ Next task: owner runs only the read-only Pyodios sys.last_exc / sys.last_value C
 - Red-team limitation: adapter evidence fields are caller-supplied assertions; no provider authentication/finality is proven. No storage/runtime/provider selected. A durable implementation must re-test transaction and fencing behavior against the selected store.
 - Next: append-only event journal with source-scoped producer IDs, payload conflict quarantine, authenticated producer boundary, monotonic coordinator sequence, then artifact publication/release lifecycle. Keep all canonical IDs and CASE-04 semantics unchanged.
 - Latest branch before this ledger update: 56bcc7167b33554a29b68c8fdccc448b9383b6b6. Earlier d62429c handoff checkpoint verified. PR #2/#3 remain OPEN/DRAFT and untouched. Exact current-head Actions/check status must be rechecked after this commit; no merge, deployment, paid provider, account or workload.
+
+## PC-2026-11-06-P27 — Append-only event provenance model
+
+- Added scripts/event_journal.py, scripts/test_event_journal.py and AI_COLLAB/EVENT_JOURNAL_MODEL_20261106.md.
+- Local Python unit tests: 19/19 passed. This is an in-memory deterministic model only, not durable journal, cryptographic authentication, concurrent append, process/power-loss, or product integration.
+- Event identity is (source, producer_event_id). Exact replay from same producer with identical bytes returns original sequence. Changed bytes or a different authenticated producer identity reusing that source/event ID is quarantined; original event is not replaced.
+- Exact payload bytes and SHA-256 are retained. Occurrence and observation timestamps are separate; coordinator sequence alone orders events. Effect-linked events require the current attempt-scoped fence.
+- Red-team boundary: AuthenticatedProducer is forgeable by arbitrary Python callers. Only a trusted authentication adapter may construct/pass it after cryptographic credential verification, authorization, revocation and replay checks. Durable fence validation and append must be one atomic transaction.
+- No canonical IDs, CASE-04, runtime/provider/storage, budget, PR, merge or deployment changed. Next: fake coordinator spanning outbox + journal + projection rebuild, then durable-store selection only after semantics stabilize.

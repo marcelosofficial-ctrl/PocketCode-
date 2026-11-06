@@ -286,3 +286,12 @@ A third safety issue was found: even an authenticated provider lookup can be eve
 - Current active next engineering boundary: append-only event provenance and fake-store integration, then durable-store crash/reopen tests only after a store is selected. Keep SQLite unselected and respect the documented WAL version/durability gates.
 - Owner Pyodios action remains the read-only sys.last_exc / sys.last_value Console probe in the existing successful project. Preserve the exact-match summary.json; do not rerun or overwrite it.
 - No runtime/provider/storage selected; no budget change; no canonical LOOP/CASE/D IDs or CASE-04 semantics changed; PR #2/#3 untouched; no merge/deployment/provider execution.
+
+## 2026-11-06 latest continuation: append-only event provenance model
+
+- Added scripts/event_journal.py, scripts/test_event_journal.py and AI_COLLAB/EVENT_JOURNAL_MODEL_20261106.md.
+- Local deterministic test run: 19/19 passed. The test suite verifies source-scoped producer event identity, exact-byte duplicate handling, changed-payload quarantine, producer identity collision quarantine, audience/source authorization checks, immutable payload bytes, separate occurrence/observation timestamps, coordinator sequence, and attempt-scoped fencing.
+- Important trust boundary: AuthenticatedProducer is a value object from a trusted adapter, not cryptographic proof. Python callers can construct it. A production adapter must verify credential/signature, issuer, subject, key status, audience, source authorization, revocation and replay policy before constructing it.
+- Fence check and append are synchronous in-memory operations only. A durable store must atomically compare-and-advance the fence with append to close race windows.
+- New event journal tests are separate from the fake outbox 19/19 and dispatch reconciliation 34-case suite. No test counts are combined.
+- Next: build a fake coordinator joining outbox and journal; test interruption across reservation, dispatch intent, event append, acknowledgement and projection rebuild. Only then evaluate durable storage. No runtime/provider/database/budget selection.
