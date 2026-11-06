@@ -164,3 +164,8 @@ This exactly matches the frozen success oracle. Classification is **ARTIFACT-LEV
 **Preserve this evidence. Do not rerun or overwrite the success project.** Next inspect Pyodios **More → Settings → Error Log → View Error Log** around the attempt timestamp. Redact source, private paths, tokens and personal data before sharing the relevant exception/traceback. If unhelpful, run the documented read-only Console probe for `sys.last_exc` then `sys.last_value`. Do not restart the Python session, clear variables/logs, or run GC merely to investigate.
 
 `SystemExit` or bridge completion handling remains a hypothesis, not a root-cause finding. Do not modify the canonical fixture based on the artifact alone. After preserving diagnostic evidence, run the malformed-input scenario only in a separate fresh project and record its diagnostic/artifact result; do not infer an exit status Pyodios does not expose.
+
+
+## Error Log inspection result (2026-11-06)
+
+Owner inspected Pyodios Settings → Error Log for the attempt. The only entry/detail available was **`Editor: PythonError`**, with no underlying Python exception, message or traceback. This does not identify the root cause. The existing exact-match `summary.json` remains the artifact-level success evidence. Next diagnostic is the read-only Console probe for `sys.last_exc` (Python 3.14) / `sys.last_value` (Pyodide bridge fallback), already specified above. Do not rerun or overwrite the canonical success project. If the probe reports no saved exception, record that as unavailable evidence, not proof that no Python exception occurred.
