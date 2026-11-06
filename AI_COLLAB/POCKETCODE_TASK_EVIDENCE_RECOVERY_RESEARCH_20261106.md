@@ -368,3 +368,19 @@ A content digest binds receipt/artifact identity to exact bytes but does not aut
 - OpenTelemetry Logs Data Model: https://opentelemetry.io/docs/specs/otel/logs/data-model/
 
 Status: research/design only; runtime, provider, storage, schema, budget, canonical acceptance IDs, PRs and deployment remain unchanged.
+
+
+## 18. Dispatch decision kernel: adversarial scope binding — 2026-11-06
+
+A second pure helper prototype, scripts/dispatch_reconciliation.py, was added to test the ambiguous-acknowledgement branch. It separates:
+- a locally reserved first dispatch;
+- an acknowledged/running execution that should be polled;
+- an ambiguous send with an authoritative exact lookup;
+- an unknown lookup that may only be replayed under a documented exact-scope idempotency contract;
+- a terminal attempt that must not be replayed.
+
+The model binds lookup/capability to effect ID, attempt ID, exact request fingerprint, endpoint, authenticated account scope, provider, API version, region/zone scope, token (when present) and active retention. An authoritative not-found must echo/match the exact query context. An unauthenticated or non-authoritative result remains unknown. A provider idempotency token is optional when the provider can authoritatively query the exact attempt, but it is mandatory for token-based replay.
+
+Red-team found and fixed two defects before commit: non-authoritative "found" responses could initially be adopted; an authoritative "not found" could initially authorize retry without matching request and provider scope. The helper now holds the first case as UNKNOWN and conflicts on mismatched authoritative scope. The test suite additionally checks absent provider token cannot authorize token-based replay.
+
+Verification: 28 local tests passed under CPython 3.13.5 and both files compiled. This is not a provider adapter, persistent outbox, network test or exactly-once guarantee. The adapter must authenticate responses and read the original immutable payload from durable state before using this decision kernel.

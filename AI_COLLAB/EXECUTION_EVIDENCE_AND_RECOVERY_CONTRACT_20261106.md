@@ -207,3 +207,27 @@ UNKNOWN: authenticated producer channels, durable store, runtime/provider, actua
 NOT RUN: exact repository unittest suite, GitHub Actions for this branch, iOS/Android UI or lifecycle acceptance, fake-provider orchestration integration, actual process/host isolation, network-egress, artifact-release boundary, device crash/power-loss tests.
 
 No canonical LOOP/CASE/D identifier, product runtime/provider selection, budget, PR, merge, deployment or release decision is changed by this document.
+
+
+## 13. Ambiguous dispatch decision helper prototype
+
+New research-only files:
+- scripts/dispatch_reconciliation.py
+- scripts/test_dispatch_reconciliation.py
+
+This pure helper does not send requests, create IDs, persist an outbox, or claim exactly-once execution. It selects a safe action for a caller that already has the original persisted dispatch context.
+
+| Situation | Decision |
+|---|---|
+| Reserved locally, no first send happened | dispatch_first |
+| Provider acknowledgement already recorded or attempt is running | poll_existing |
+| Attempt is terminal | do_not_replay |
+| Authoritative provider lookup returns exact matching effect, attempt, request fingerprint, endpoint, account, token, provider, API version and region | adopt_existing |
+| Authoritative lookup returns non-acceptance for that exact scope and attempt | retry_same_attempt |
+| Exact documented idempotency contract matches endpoint, account, provider, API version, region, token, fingerprint, active retention, same-request deduplication and parameter-mismatch rejection | retry_same_attempt |
+| Lookup is unknown/non-authoritative, token contract is absent or out of retention | hold_unknown |
+| Authoritative lookup conflicts with expected effect, attempt or scope | conflict |
+
+The provider token is optional for lookup-based reconciliation. It is required for token-based replay. A same-scope authoritative lookup is still required before an absent result may be used to retry. A non-authoritative "found" or "not found" response cannot cause adoption or redispatch.
+
+The 28-case local suite validates this decision kernel only. It does not validate provider response authentication, actual provider consistency, request-body storage, transactional atomicity, retry timing, race/fencing behavior or durable state transitions. Do not wire this helper to a live provider until those mechanisms exist and have separate tests.

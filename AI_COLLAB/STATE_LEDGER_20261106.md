@@ -3,7 +3,7 @@
 **Repository:** marcelosofficial-ctrl/PocketCode-  
 **Branch:** pocketcode-ai-workflow-director-research-2026-10-28  
 **Last verified before this checkpoint:** f545974e5d76c8282968c3a86ae69d22cad81343  
-**Compare before this checkpoint:** 820 ahead / 0 behind main; merge base 555840d8d83342513d9cd353d4d1522d46a5c82d. Ahead count is branch-history divergence, not product progress. Fetch live refs before consequential work.
+**Compare before this checkpoint:** 840 ahead / 0 behind main; merge base 555840d8d83342513d9cd353d4d1522d46a5c82d. Ahead count is branch-history divergence, not product progress. Fetch live refs before consequential work.
 
 ## Goal
 Build a phone-first, provider-neutral Agentic Orchestration Control Plane that makes AI-generated technical tasks executable from iOS/Android and returns truthful, portable evidence for AI correction. It is not a generic Python IDE. RevDev and PocketCode are intended to converge into one PC-and-phone product/program while retaining separate repos, roadmaps, clients, adapters, runtimes, security boundaries, acceptance suites and release gates.
@@ -127,3 +127,14 @@ Next task: owner runs only the read-only Pyodios sys.last_exc / sys.last_value C
 - CASE-04 remains INCOMPLETE/timed_out on trusted timeout. scripts/report_contract.py remains unchanged. LOOP/CASE/D IDs, runtime/provider, storage, budget, canonical schema, PRs and deployment unchanged.
 - PR #2/#3 remain untouched. No Actions, mobile, fake-adapter, persistence, provider, artifact-release, egress, crash or canonical acceptance tests were run by this source/design checkpoint.
 - Pyodios artifact status remains owner-inspected exact oracle match; bridge root cause and native exit unknown. Next owner action is the previously supplied read-only sys.last_exc / sys.last_value Console probe. Preserve the project and do not rerun/overwrite it.
+
+
+## 2026-11-06 — PC-2026-11-06-P24 — Dispatch reconciliation kernel started
+
+- Began the next ranked gap after the typed exit projection: ambiguous provider acknowledgement and safe retry.
+- Added local pure helper/test working copies for scripts/dispatch_reconciliation.py and scripts/test_dispatch_reconciliation.py. Actions are dispatch_first, adopt_existing, retry_same_attempt, poll_existing, hold_unknown, conflict and do_not_replay. The helper never generates new IDs, mutates durable state or sends requests.
+- Bound lookups/idempotency capability to EffectId, DispatchAttemptId, request fingerprint, endpoint, account, provider, API version, region/zone scope, token (when present), retention and documented deduplication/mismatch behavior.
+- Red-team found and fixed non-authoritative-found adoption and an unscoped authoritative-not-found retry. A provider token is optional for authoritative exact-lookup reconciliation but required for token-based replay.
+- Local tests: 28/28 pass under CPython 3.13.5; both files compile. This second helper is still local-only until its GitHub checkpoint is created and read back. It is not a live adapter, outbox or exactly-once guarantee.
+- Current project branch at the beginning of this slice was continuity commit 950387f766355825782072fdade057fe8caf5b8d. Earlier closeout compare was 842 ahead / 0 behind main, merge base 555840d83342513d9cd353d4d1522d46a5c82d. Exact-head Actions/check-runs were zero; aggregate status pending. PR #2/#3 remain open draft at original heads.
+- Next: commit/read back the two helper files and contract/research updates, then build deterministic fake-store/outbox tests for crash points and fencing. Do not integrate with a provider or select storage yet.

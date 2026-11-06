@@ -33,7 +33,7 @@ Read [PocketCode task, evidence and recovery research](POCKETCODE_TASK_EVIDENCE_
 
 ## Latest execution evidence checkpoint (2026-11-06)
 
-Read AI_COLLAB/EXECUTION_EVIDENCE_AND_RECOVERY_CONTRACT_20261106.md before changing report classification, dispatch retries, or receipts. New isolated helper: scripts/execution_projection.py; tests: scripts/test_execution_projection.py (31 tests passed locally under CPython 3.13.5). It is not integrated into the report formatter or a trusted runner. Research additions 13–17 extend the task/evidence/recovery research with Python 3.14 mobile constraints, signal/wrapper semantics, provider-scoped idempotency, CloudEvents/OpenTelemetry identity/time, and current release/licence checks. Legacy scripts/report_contract.py, LOOP/CASE/D IDs and CASE-04 wording are unchanged.
+Read AI_COLLAB/EXECUTION_EVIDENCE_AND_RECOVERY_CONTRACT_20261106.md before changing report classification, dispatch retries, or receipts. New isolated helpers: scripts/execution_projection.py (31 local tests) and scripts/dispatch_reconciliation.py (28 local tests), both under CPython 3.13.5. Neither is integrated into a trusted runner, provider adapter or production report formatter. Research additions 13–17 extend the task/evidence/recovery research with Python 3.14 mobile constraints, signal/wrapper semantics, provider-scoped idempotency, CloudEvents/OpenTelemetry identity/time, and current release/licence checks. Legacy scripts/report_contract.py, LOOP/CASE/D IDs and CASE-04 wording are unchanged. Latest verified continuity checkpoint: 950387f766355825782072fdade057fe8caf5b8d; current branch compare was 842 ahead / 0 behind (history divergence only), with zero exact-head Actions runs/check-runs and aggregate status pending.
 
 ## First action
 

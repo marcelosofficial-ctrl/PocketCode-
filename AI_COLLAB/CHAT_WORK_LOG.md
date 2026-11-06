@@ -375,3 +375,26 @@ Next: await owner-provided read-only Pyodios saved-exception probe output; prese
 **No change:** existing report formatter, canonical LOOP/CASE/D IDs, runtime/provider/storage choice, $0 budget, owner Pyodios project, PR #2/#3, merge or deployment. The helper is unintegrated design-stage code.
 
 **Next:** verify post-checkpoint branch and PR/CI states; keep owner Pyodios saved-exception probe outstanding; then implement authenticated boundary and fake-adapter reservation/reconciliation tests before any production formatter wiring.
+
+
+## 2026-11-06 — PC-2026-11-06-P24 — Ambiguous dispatch reconciliation kernel
+
+**Started after P23's closeout:** convert the highest-ranked dispatch-recovery rules into a pure testable decision helper.
+
+**Completed locally:**
+- Added dispatch context, provider lookup, exact idempotency contract and pure action decision types.
+- Decision actions: dispatch_first, adopt_existing, retry_same_attempt, poll_existing, hold_unknown, conflict, do_not_replay.
+- Bound found/not-found responses to effect, attempt, fingerprint, endpoint, account, provider, API version, region scope and token where used.
+- Token-based retry requires exact documented capability, active retention, exact endpoint/account/provider/API/region/token/fingerprint scope, same-request deduplication and parameter mismatch rejection.
+- Lookup-based reconciliation can work without a provider idempotency token only when an authoritative exact-scope lookup binds the exact request and attempt.
+
+**Red-team corrections:**
+1. Non-authoritative "found" must not be adopted.
+2. Authoritative "not found" is not sufficient unless it binds the exact effect, attempt, fingerprint and provider scope.
+3. Idempotency retention expiration must stop replay authorization.
+4. A changed provider, API version or region scope invalidates capability reuse.
+5. An absent provider token cannot be treated as an idempotency promise; it can only use a separate authoritative exact lookup path.
+
+**Verification:** 28/28 local tests passed under CPython 3.13.5; both files compile. The helper is pure and local at this point, with no product integration, live provider, durable outbox or storage selection.
+
+**Next:** commit and verify helper plus tests and update contract; then create fake-store/outbox tests for reservation, crash-before-send, lost-ack, duplicate delivery, stale lease/fencing and artifact publication. Preserve $0 default and all canonical IDs.
