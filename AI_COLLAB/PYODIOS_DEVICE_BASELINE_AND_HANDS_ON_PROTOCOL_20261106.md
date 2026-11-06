@@ -1,6 +1,6 @@
 # Pyodios device baseline and hands-on protocol — 2026-11-06
 
-**Status:** Public documentation reconciled; installed build/runtime owner-reported; success artifact owner-inspected and exactly matches the oracle; Editor bridge error unresolved; full run inconclusive; product acceptance not established.
+**Status:** Public documentation reconciled; installed build/runtime owner-reported; success artifact owner-inspected and exactly matches the oracle; Error Log checked (only `Editor: PythonError`, no traceback); saved-exception probe NOT RUN; Editor bridge error unresolved; full run inconclusive; product acceptance not established.
 **Target:** Pyodios on the owner's iPhone, using the existing frozen CSV-to-JSON fixture without edits.
 **Budget/privacy:** $0; synthetic inputs only; no account, provider, remote kernel, package install, private file, or network workload required.
 
@@ -187,7 +187,7 @@ It cannot establish:
 
 Pyodios is now the first hands-on iPhone local comparator because the owner reports it is installed. This does not make it the selected PocketCode runtime or a product dependency. Its documented no-interrupt behavior and session reset are especially important limitations for future recovery design.
 
-**Status:** DOCUMENTATION REVIEW COMPLETE / INSTALLED BUILD AND RUNTIME OWNER-OBSERVED / FIRST EDITOR ATTEMPT OBSERVED / UNDERLYING RESULT UNKNOWN / PRODUCT ACCEPTANCE NOT RUN. No product source, test, canonical fixture, LOOP/CASE ID, schema, provider, runner selection, PR, merge or deployment changed.
+**Status:** DOCUMENTATION REVIEW COMPLETE / INSTALLED BUILD AND RUNTIME OWNER-OBSERVED / ARTIFACT-LEVEL SUCCESS OWNER-INSPECTED / ERROR LOG CHECKED WITHOUT TRACEBACK / SAVED-EXCEPTION PROBE NOT RUN / BRIDGE CAUSE UNKNOWN / PRODUCT ACCEPTANCE NOT RUN. No product source, test, canonical fixture, LOOP/CASE ID, schema, provider, runner selection, PR, merge or deployment changed.
 
 
 ## 8. Owner-ready fixture archive
@@ -197,9 +197,9 @@ A phone-importable ZIP was prepared from the canonical fixture without changing 
 
 ## 9. First owner-reported Editor attempt (2026-11-06)
 
-The owner put canonical `main.py` and renamed `items.csv` into the same Pyodios project, tapped the green Editor play control, and reports that the complete visible output was exactly `[Bridge/executePython] PythonError`. No traceback or other output was visible. Record **ATTEMPT OBSERVED / ROOT CAUSE UNKNOWN / ARTIFACT OUTCOME UNKNOWN**, not NOT RUN and not PASS/FAIL.
+The owner put canonical `main.py` and renamed `items.csv` into the same Pyodios project, tapped the green Editor play control, and reports that the complete visible output was exactly `[Bridge/executePython] PythonError`. The owner later inspected the existing `summary.json` and confirmed an exact oracle match. The Error Log then showed only `Editor: PythonError`, without traceback. Record **ARTIFACT-LEVEL FUNCTIONAL SUCCESS / BRIDGE ROOT CAUSE UNKNOWN / FULL RUN INCONCLUSIVE**.
 
-Before rerunning, inspect the same project's Files tab for `summary.json`. If present, open and compare its contents against the fixed oracle without overwriting it. Then inspect **Settings → Diagnostics → Error Logs → View Error Log** for the attempt timestamp. The vendor documents timestamped details and warns source code can appear in logs, so inspect and redact before sharing. Do not clear the log.
+The owner has already inspected the same project's `summary.json`; it exactly matches the fixed oracle. The owner also checked **More → Settings → Error Log → View Error Log**; only `Editor: PythonError` was available, with no traceback. Do not rerun or overwrite the success project. Next run only the read-only saved-exception Console probe in the existing session, as specified in the triage note. Redact private paths/source before sharing any output.
 
 A CLI-style `raise SystemExit(main())` crossing the embedded Python/JavaScript bridge is plausible but not confirmed. Pyodide 314.0.5 documents Python exceptions crossing that boundary as `PythonError`; Python documents `sys.exit()` as raising `SystemExit`. Missing input visibility or another exception remains possible. The label alone is insufficient.
 
@@ -232,4 +232,4 @@ Owner inspected the existing project Files tab. `summary.json` exists and exactl
 
 Classification: **ARTIFACT-LEVEL FUNCTIONAL SUCCESS (owner-inspected) / EDITOR BRIDGE ERROR UNRESOLVED / FULL RUN INCONCLUSIVE**. The visible Editor output remains `[Bridge/executePython] PythonError`. The artifact proves the correct output was written, but does not explain the bridge error or establish exit status, stderr, export/read-back, relaunch persistence, or PocketCode acceptance.
 
-Preserve this project. Do not rerun or overwrite it. Next inspect the timestamped Pyodios Error Log, redact private/source details, then use the already documented read-only `sys.last_exc` / `sys.last_value` probe only if needed. `SystemExit` remains an unconfirmed hypothesis. Test malformed input later in a separate fresh project.
+Preserve this project. Do not rerun or overwrite it. The Error Log has already been checked and yielded no underlying traceback. Next run only the read-only `sys.last_exc` / `sys.last_value` Console probe in the existing session. `SystemExit` remains an unconfirmed hypothesis. Test malformed input later in a separate fresh project.
