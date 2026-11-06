@@ -222,6 +222,6 @@ else:
     print("".join(traceback.format_exception(type(exc), exc, exc.__traceback__)))
 ```
 
-Only if no useful Error Log or saved exception is available and no `summary.json` exists, use the separate downloadable attachment `pocketcode_pyodios_runpy_diagnostic.py`. It refuses to execute if an input is missing or an earlier output exists. Its caught value is a script-requested exit, not an OS process status. Local CPython 3.13.5 harness passed 2/2; device execution of this wrapper is NOT RUN. See `PYODIOS_PYTHONERROR_BRIDGE_TRIAGE_20261106.md`.
+Only if no useful Error Log or saved exception is available and no `summary.json` exists, use the separate downloadable attachment `pocketcode_pyodios_runpy_diagnostic.py`. It refuses to execute if an input is missing or an earlier output exists. Its caught value is a script-requested exit, not an OS process status. Local CPython 3.13.5 harness passed 4/4 guards/oracle checks; the saved-exception probe smoke test also passed locally. Device execution of the wrapper and probe is NOT RUN. See `PYODIOS_PYTHONERROR_BRIDGE_TRIAGE_20261106.md`.
 
 After external file additions, reopen the project. Pyodios documents project and Python working-folder synchronization at defined moments, not continuously.
