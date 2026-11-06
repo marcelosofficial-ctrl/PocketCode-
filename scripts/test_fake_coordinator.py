@@ -387,18 +387,50 @@ class FakeCoordinatorTests(unittest.TestCase):
         self.assertEqual(projection.verdict, "INCOMPLETE")
         self.assertEqual(projection.reason, "success_without_natural_child_exit")
 
-    def test_multiple_lifecycle_observations_require_reconciliation(self):
+    def test_valid_lifecycle_progression_projects_latest_terminal(self):
+        lease = self.coordinator.claim("effect-1", "worker-A", now=20, lease_seconds=20)
+        self.coordinator.mark_dispatching(lease, now=20)
+        for event_id, status, now in (("life-queued", "queued", 21),
+                                      ("life-running", "running", 22),
+                                      ("life-succeeded", "succeeded", 23)):
+            self.coordinator.record_lifecycle_observation(
+                "effect-1", "attempt-1", event_id=event_id,
+                status=status, fence=lease.fence, now=now,
+            )
+        self.coordinator.record_exit_observation(
+            "effect-1", "attempt-1", event_id="child-exit-zero",
+            producer="direct_child_wait", kind="natural_exit",
+            exit_code=0, fence=lease.fence, now=24,
+        )
+        projection = self.coordinator.project_attempt_verdict("effect-1", "attempt-1")
+        self.assertEqual(projection.verdict, "PASS")
+        self.assertEqual(projection.reason, "trusted_success_and_child_exit_zero")
+
+    def test_regressive_lifecycle_progression_is_incomplete(self):
         lease = self.coordinator.claim("effect-1", "worker-A", now=20, lease_seconds=20)
         self.coordinator.mark_dispatching(lease, now=20)
         for event_id, status, now in (("life-running", "running", 21),
-                                      ("life-succeeded", "succeeded", 22)):
+                                      ("life-queued", "queued", 22)):
             self.coordinator.record_lifecycle_observation(
                 "effect-1", "attempt-1", event_id=event_id,
                 status=status, fence=lease.fence, now=now,
             )
         projection = self.coordinator.project_attempt_verdict("effect-1", "attempt-1")
         self.assertEqual(projection.verdict, "INCOMPLETE")
-        self.assertEqual(projection.reason, "multiple_terminal_observations_require_reconciliation")
+        self.assertEqual(projection.reason, "lifecycle_transition_conflict")
+
+    def test_multiple_terminal_lifecycle_observations_require_reconciliation(self):
+        lease = self.coordinator.claim("effect-1", "worker-A", now=20, lease_seconds=20)
+        self.coordinator.mark_dispatching(lease, now=20)
+        for event_id, status, now in (("life-succeeded", "succeeded", 21),
+                                      ("life-failed", "program_failed", 22)):
+            self.coordinator.record_lifecycle_observation(
+                "effect-1", "attempt-1", event_id=event_id,
+                status=status, fence=lease.fence, now=now,
+            )
+        projection = self.coordinator.project_attempt_verdict("effect-1", "attempt-1")
+        self.assertEqual(projection.verdict, "INCOMPLETE")
+        self.assertEqual(projection.reason, "multiple_terminal_lifecycle_observations")
 
     def test_old_fence_terminal_observations_force_incomplete_after_authorized_retry(self):
         from result_receipts import ResultReceiptStore

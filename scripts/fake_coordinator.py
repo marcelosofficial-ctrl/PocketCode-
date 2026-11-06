@@ -305,11 +305,33 @@ class FakeCoordinator:
                 failure_items.append(ProgramFailureObservation(
                     attempt_id, payload.get("producer"), payload.get("confirmed"), event.sequence,
                 ))
-        if len(lifecycle_items) > 1 or len(exit_items) > 1 or len(failure_items) > 1:
-            return VerdictProjection("INCOMPLETE", "multiple_terminal_observations_require_reconciliation", "unknown")
+        lifecycle = None
+        if lifecycle_items:
+            nonterminal_rank = {"accepted": 0, "queued": 1, "running": 2}
+            terminal = {"succeeded", "program_failed", "timed_out", "cancelled",
+                        "rejected", "infrastructure_failed"}
+            previous_rank = -1
+            terminal_seen = False
+            for observation in lifecycle_items:
+                status = observation.status
+                if status in nonterminal_rank:
+                    if terminal_seen or nonterminal_rank[status] < previous_rank:
+                        return VerdictProjection(
+                            "INCOMPLETE", "lifecycle_transition_conflict", status,
+                        )
+                    previous_rank = nonterminal_rank[status]
+                elif status in terminal:
+                    if terminal_seen:
+                        return VerdictProjection(
+                            "INCOMPLETE", "multiple_terminal_lifecycle_observations", status,
+                        )
+                    terminal_seen = True
+            lifecycle = lifecycle_items[-1]
+        if len(exit_items) > 1 or len(failure_items) > 1:
+            return VerdictProjection("INCOMPLETE", "multiple_execution_observations_require_reconciliation", "unknown")
         return project_verdict(
             attempt_id,
-            lifecycle_items[0] if lifecycle_items else None,
+            lifecycle,
             exit_items[0] if exit_items else None,
             failure_items[0] if failure_items else None,
         )
