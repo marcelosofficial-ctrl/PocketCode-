@@ -53,10 +53,28 @@ class EventJournalTests(unittest.TestCase):
         self.assertEqual(self.journal.events[0].effect_id, "effect-A")
         self.assertEqual(self.journal.events[0].attempt_id, "attempt-A")
 
+    def test_unfenced_reservation_event_remains_unfenced_after_lease_advance(self):
+        first = self.journal.append(
+            producer=P, source="worker-events", event_id="reservation-1",
+            payload=b'{"kind":"effect_reserved"}', occurred_at_ms=100,
+            observed_at_ms=110, effect_id="effect-1", attempt_id="attempt-1",
+            require_fence=False,
+        )
+        self.journal.advance_fence("effect-1", "attempt-1", 1)
+        replay = self.journal.append(
+            producer=P, source="worker-events", event_id="reservation-1",
+            payload=b'{"kind":"effect_reserved"}', occurred_at_ms=100,
+            observed_at_ms=120, effect_id="effect-1", attempt_id="attempt-1",
+            require_fence=False,
+        )
+        self.assertEqual(first.disposition, "accepted")
+        self.assertEqual(replay.disposition, "duplicate")
+        self.assertIsNone(first.event.fence)
+
     def test_same_event_replay_under_new_fence_is_quarantined(self):
-        first = self.append(fence=1)
+        first = self.append(effect_id="effect-1", attempt_id="attempt-1", fence=1)
         self.journal.advance_fence("effect-1", "attempt-1", 2)
-        replay = self.append(fence=2)
+        replay = self.append(effect_id="effect-1", attempt_id="attempt-1", fence=2)
         self.assertEqual(first.disposition, "accepted")
         self.assertEqual(replay.disposition, "quarantined")
         self.assertEqual(self.journal.events[0].fence, 1)

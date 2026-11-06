@@ -97,7 +97,7 @@ class EventJournal:
         self, *, producer: AuthenticatedProducer, source: str, event_id: str,
         payload: bytes, occurred_at_ms: int, observed_at_ms: int,
         effect_id: Optional[str] = None, attempt_id: Optional[str] = None,
-        fence: Optional[int] = None,
+        fence: Optional[int] = None, require_fence: bool = True,
     ) -> AppendResult:
         _validate_producer(producer, self.expected_audience, source)
         if not _nonempty(event_id) or not isinstance(payload, bytes) or not payload:
@@ -109,12 +109,17 @@ class EventJournal:
         if effect_id is not None:
             if not _nonempty(effect_id, attempt_id):
                 raise ValueError("effect/attempt identity must be non-empty")
+            if type(require_fence) is not bool:
+                raise ValueError("require_fence must be a literal boolean")
             current_fence = self._fences.get((effect_id, attempt_id))
-            if current_fence is None:
-                if fence is not None:
-                    raise JournalConflict("fence supplied before a lease generation exists")
-            elif not _positive_int(fence) or fence != current_fence:
-                raise JournalConflict("event rejected by current fencing token")
+            if require_fence:
+                if current_fence is None:
+                    if fence is not None:
+                        raise JournalConflict("fence supplied before a lease generation exists")
+                elif not _positive_int(fence) or fence != current_fence:
+                    raise JournalConflict("event rejected by current fencing token")
+            elif fence is not None:
+                raise JournalConflict("unfenced event cannot carry a fencing token")
         elif fence is not None:
             raise ValueError("fence cannot be supplied without effect and attempt identity")
         digest = sha256(payload).hexdigest()

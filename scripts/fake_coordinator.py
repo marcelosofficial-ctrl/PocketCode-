@@ -59,7 +59,7 @@ class FakeCoordinator:
 
     def _append(self, *, kind: str, effect_id: str, attempt_id: str,
                 event_id: str, at_ms: int, fence: Optional[int] = None,
-                **extra: object) -> AppendResult:
+                require_fence: bool = True, **extra: object) -> AppendResult:
         bound = {"effect_id": effect_id, "attempt_id": attempt_id}
         if fence is not None:
             bound["fence"] = fence
@@ -67,7 +67,8 @@ class FakeCoordinator:
             producer=self.producer, source="pocketcode.coordinator",
             event_id=event_id,
             payload=self._payload(kind, effect_id, attempt_id, **extra),
-            occurred_at_ms=at_ms, observed_at_ms=at_ms, **bound,
+            occurred_at_ms=at_ms, observed_at_ms=at_ms,
+            require_fence=require_fence, **bound,
         )
 
     def reserve(self, effect_id: str, attempt_id: str, fingerprint: str,
@@ -81,7 +82,7 @@ class FakeCoordinator:
             kind="effect_reserved", effect_id=effect_id, attempt_id=attempt_id,
             event_id=f"reserved:{effect_id}:{attempt_id}", at_ms=at_ms,
             request_fingerprint=fingerprint,
-            fence=(self.store.get(effect_id).fence or None),
+            require_fence=False,
         ).disposition
 
     def repair_missing_reservation_event(self, effect_id: str) -> str:
@@ -93,7 +94,7 @@ class FakeCoordinator:
             attempt_id=reservation.attempt_id,
             event_id=f"reserved:{effect_id}:{reservation.attempt_id}",
             at_ms=reservation.created_at_ms,
-            fence=(self.store.get(effect_id).fence or None),
+            require_fence=False,
             request_fingerprint=reservation.request_fingerprint,
         ).disposition
 

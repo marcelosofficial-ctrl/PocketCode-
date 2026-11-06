@@ -323,3 +323,8 @@ CI on exact SHA `f82e853323d9c0c526eeaa8ad31cb47da199e249`: 199/199 passed. Thes
 The fake coordinator now reduces accepted lifecycle observations in ObservationSequence order. Nonterminal states may progress monotonically through `accepted → queued → running` (including skipped intermediate states and repeated same-state observations), followed by at most one terminal state. A regression, unknown/malformed status, or multiple terminal observations returns INCOMPLETE and requires reconciliation. The latest valid lifecycle observation is passed to the unchanged `execution_projection.project_verdict()` semantics. PASS still requires trusted `succeeded` plus natural direct-child exit 0; terminal lifecycle alone is insufficient for success.
 
 Exact-SHA CI: `b6eef9a8cc1df704ff2519a69fb9e347a2bcedf9`, 205/205 passed. This is a test model only; source authenticity, durable ordering and concurrency remain open.
+
+
+## Reservation event fencing exception
+
+The initial `effect_reserved` event is attempt-bound but intentionally unfenced because reservation precedes worker lease acquisition. Its identity and payload remain immutable across later claims, so replay/repair after a claim must use the same unfenced identity. All lease-, dispatch-, reconciliation- and execution-observation events remain fence-required once a lease generation exists. The generic EventJournal exposes this as an explicit `require_fence=False` option; only the trusted coordinator may select it for the reservation event. The option rejects any supplied fence when disabled. This does not make worker observations unfenced.
