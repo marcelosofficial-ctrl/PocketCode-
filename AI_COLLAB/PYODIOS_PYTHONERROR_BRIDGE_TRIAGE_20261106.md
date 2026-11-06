@@ -32,7 +32,7 @@ Pyodide 314.0.5 says Python exceptions crossing Python/JavaScript entry or exit 
 
 ### `SystemExit` hypothesis
 
-Python documents `sys.exit()` as raising `SystemExit`, which an outer caller can intercept. The fixture deliberately raises it with `main()`'s return value. This makes an unhandled `SystemExit` crossing the editor bridge a credible hypothesis, not a confirmed cause. Missing `items.csv` could cause the fixture to request exit 2, and other Python exceptions can also cross the bridge. Sources: https://docs.python.org/3.14/library/sys.html and https://pyodide.org/en/314.0.5/usage/type-conversions.html
+Python documents `sys.exit()` as raising `SystemExit`, which an outer caller can intercept. The fixture deliberately raises it with `main()`'s return value. This makes `SystemExit` a credible lead, not a confirmed diagnosis. I also checked the exact Pyodide 314.0.5 source tag (`src/core/error_handling.c`): its `wrap_exception_inner()` comments that `PyErr_Print()` calls `exit()` for `SystemExit` when `PyConfig.inspect` is not set, and that Pyodide generally sets `inspect` except in the CLI runner. Pyodios does not document its value, so we cannot conclude how its Editor handles this case. Missing `items.csv` could cause the fixture to request exit 2; ordinary Python exceptions can also cross the bridge. Exact source: https://github.com/pyodide/pyodide/blob/314.0.5/src/core/error_handling.c. Other sources: https://docs.python.org/3.14/library/sys.html and https://pyodide.org/en/314.0.5/usage/type-conversions.html
 
 ### Files and diagnostic log
 
@@ -54,7 +54,23 @@ Python's `runpy` documentation explicitly says it executes in the current proces
 2. Look for `summary.json`. If it exists, open it and compare: `grand_total` = `"10.75"`; `line_items` = `2`; `totals_by_item.notebook` = `"7.00"`; `totals_by_item.pen` = `"3.75"`. Do not overwrite or rerun.
 3. Open **Settings → Diagnostics → Error Logs → View Error Log**. Find the entry timestamped around the green-play attempt.
 4. Inspect it before sharing. Copy only the relevant entry/traceback; redact personal paths and unrelated source. Do not clear the log.
-5. Only if the artifact is absent and the log is unhelpful, import the separate wrapper `AI_COLLAB/fixtures/pyodios_runpy_diagnostic.py` and run it once. It refuses to execute if an input is absent or an earlier `summary.json` exists.
+5. If the log is unhelpful, open the Pyodios Console and run this read-only probe for Pyodide's saved `sys.last_value` from the previous exception. It does not rerun `main.py`:
+
+```python
+import sys
+import traceback
+
+exc = getattr(sys, "last_value", None)
+if exc is None:
+    print("No previous Python exception is available as sys.last_value.")
+else:
+    print("EXCEPTION TYPE:", type(exc).__name__)
+    print("EXCEPTION VALUE:", repr(exc))
+    print("TRACEBACK:")
+    print("".join(traceback.format_exception(type(exc), exc, exc.__traceback__)))
+```
+
+6. Only if no useful Error Log or saved exception is available, and the artifact does not exist, import the separate downloadable wrapper attachment `pocketcode_pyodios_runpy_diagnostic.py` and run it once. It refuses to execute if an input is absent or an earlier `summary.json` exists.
 
 | Observation | Interpretation |
 |---|---|
