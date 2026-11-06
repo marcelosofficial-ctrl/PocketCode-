@@ -16,8 +16,8 @@ VALID_HTML = """
 <div>main.py items.csv summary.json Copy example report</div>
 <textarea id="copyFallback" aria-label="Fallback" readonly></textarea>
 <section aria-live="polite"></section>
-<button id="codeTab" role="tab" aria-selected="true" aria-controls="codePanel">Code</button>
-<button id="inputTab" role="tab" aria-selected="false" aria-controls="inputPanel">Input</button>
+<button id="codeTab" role="tab" aria-selected="true" aria-controls="codePanel" tabindex="0">Code</button>
+<button id="inputTab" role="tab" aria-selected="false" aria-controls="inputPanel" tabindex="-1">Input</button>
 <section id="codePanel" role="tabpanel" aria-labelledby="codeTab"></section>
 <section id="inputPanel" role="tabpanel" aria-labelledby="inputTab"></section>
 <pre class="csv" id="inputData">item,quantity,unit_price
@@ -90,8 +90,12 @@ if __name__ == "__main__":
 const sourceCode = {textContent: "source"};
 const inputData = {textContent: "input"};
 function report(){return "report";}
-document.getElementById('codeTab').addEventListener('click',()=>{});
-document.getElementById('inputTab').addEventListener('click',()=>{});
+function setTab(isCode){
+  codeTab.setAttribute('tabindex',isCode?'0':'-1');
+  inputTab.setAttribute('tabindex',isCode?'-1':'0');
+}
+document.getElementById('codeTab').addEventListener('click',()=>setTab(true));
+document.getElementById('inputTab').addEventListener('click',()=>setTab(false));
 document.getElementById('successExample').addEventListener('click',()=>{});
 document.getElementById('failureExample').addEventListener('click',()=>{});
 document.getElementById('copyReport').addEventListener('click',()=>{});
