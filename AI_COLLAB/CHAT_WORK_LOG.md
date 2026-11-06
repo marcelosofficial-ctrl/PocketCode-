@@ -70,3 +70,10 @@ Owner reports recurring iOS “Streaming interrupted. Waiting for complete messa
 RevDev's current typed HTTP parser/publisher preflight source passed GitHub Actions run #17: 24 tests discovered, **24 passed, 0 failed**, Windows PowerShell 5.1 / Pester 5.7.1, head `c559aa7db595cb890981544184807381991e7490`. URL: https://github.com/marcelosofficial-ctrl/DevRelay-Missions/actions/runs/42132258538. This supersedes the earlier pending #17 observation and prior #13 15/15 result. The result is RevDev-only test evidence. PocketCode reuses only the process lesson to query workflow runs/jobs/logs at exact head SHA when connector status is partial.
 
 PocketCode implementation was not changed by this cross-project status update. Its next exact task remains CASE-04 in `scripts/report_contract.py`; inspect existing tests and evidence first, correct the timeout verdict ordering, add tests for timed-out + nonzero exit and degraded collector/teardown outcomes, then run the repo's actual CI. Preserve all canonical LOOP/CASE/D strings and separate project boundaries.
+
+
+## 2026-11-06 — PC-2026-11-06-P06 — Cross-project fake-process testing lesson
+
+RevDev's transport harness now invokes a real child-process boundary through a controlled fake `.cmd` executable, testing HTTP status/body, native exit code, stdout/stderr and rate-limit headers. The first CI run found a Pester module import-scope issue, now corrected. RevDev run #21 (`42133707971`) was pending at checkpoint; this is not a passed result yet.
+
+PocketCode can reuse the test technique, not the code: place its own provider/execution boundary behind injectable adapters and deterministically test timeout, cancellation, partial output, collector degradation, teardown failure and cleanup. Do not select a runtime/provider or claim product acceptance from these RevDev tests. PocketCode's CASE-04 remains its own next implementation task; device comparison remains awaiting owner observations.
