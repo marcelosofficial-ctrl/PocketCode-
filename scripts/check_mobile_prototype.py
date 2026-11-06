@@ -60,7 +60,7 @@ def main() -> int:
         if phrase not in html:
             errors.append(f"Missing task/evidence content: {phrase!r}")
 
-    source_match = re.search(r'<code id=["\\']sourceCode["\\']>([\\s\\S]*?)</code>', html)
+    source_match = re.search(r'<code id="sourceCode">(.*?)</code>', html, re.DOTALL)
     if not source_match:
         errors.append("Canonical main.py source block is missing")
     else:
@@ -69,8 +69,8 @@ def main() -> int:
         if len(source_bytes) != 1939 or hashlib.sha256(source_bytes).hexdigest() != "70c66ad3a0132923cbf3190eb3546093fcc2c61c1bdcbf3b171696e1ae7521e7":
             errors.append("Embedded main.py does not match the frozen canonical SHA-256")
 
-    input_match = re.search(r'<pre class=["\\']csv["\\'] id=["\\']inputData["\\']>([\\s\\S]*?)</pre>', html)
-    expected_input = "item,quantity,unit_price\\nnotebook,2,3.50\\npen,3,1.25\\n"
+    input_match = re.search(r'<pre class="csv" id="inputData">(.*?)</pre>', html, re.DOTALL)
+    expected_input = "item,quantity,unit_price\nnotebook,2,3.50\npen,3,1.25\n"
     if not input_match or html_lib.unescape(input_match.group(1)) != expected_input:
         errors.append("Initial items.csv does not match the canonical success fixture")
 
