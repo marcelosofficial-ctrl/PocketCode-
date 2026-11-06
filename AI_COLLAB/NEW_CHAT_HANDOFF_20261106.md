@@ -44,7 +44,7 @@ Read AI_COLLAB/PYODIOS_DEVICE_BASELINE_AND_HANDS_ON_PROTOCOL_20261106.md.
 
 **SUPERSEDING CURRENT INSTRUCTION (2026-11-06):** the owner imported canonical main.py and items.csv into one Pyodios project and ran the whole file. The Editor displayed only [Bridge/executePython] PythonError. The existing summary.json was owner-inspected and exactly matches the canonical success oracle. The Error Log was subsequently checked and contained only Editor: PythonError, with no traceback.
 
-**Current exact next action:** in the existing project/session, open the Pyodios Console and run the read-only probe in PYODIOS_PYTHONERROR_BRIDGE_TRIAGE_20261106.md. It reads the saved exception only; it does not rerun main.py, mutate the fixture, or overwrite summary.json.
+**Current exact next action:** in the existing project/session, tap **Console** in Pyodios' bottom tab bar to open the interactive Python REPL, then run the read-only probe in PYODIOS_PYTHONERROR_BRIDGE_TRIAGE_20261106.md. On iPhone, the app's sections are accessed from the tab bar. It reads the saved exception only; it does not rerun main.py, mutate the fixture, or overwrite summary.json.
 
 If the probe returns a type/value/traceback, share that output after redacting private paths or source. If it says no previous exception is available, report that exact result; it is unavailable evidence, not proof no exception occurred. Do not run the wrapper or canonical task yet. If the Console is not accessible, tell the new chat what menus/options are visible and stop rather than guessing.
 
