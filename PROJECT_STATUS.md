@@ -1,5 +1,7 @@
 # PocketCode Project Status
 
+**Current continuation checkpoint (2026-11-06):** Pyodios 1.1.0 / Build 7, Pyodide 314.0.5, Python 3.14.2 are owner-reported. The first Editor attempt produced the exact expected summary.json (owner-inspected) but showed [Bridge/executePython] PythonError. The Error Log was checked and showed only Editor: PythonError, without traceback. Next action is the read-only sys.last_exc / sys.last_value Console probe in the existing session. Do not rerun or overwrite the success project. See AI_COLLAB/CHAT_START_HERE.md, AI_COLLAB/STATE_LEDGER_20261106.md and AI_COLLAB/PYODIOS_PYTHONERROR_BRIDGE_TRIAGE_20261106.md.
+
 **Status:** Discovery and product definition  
 **Project name:** PocketCode is provisional; brand and repository naming are not validated.  
 **Repository:** https://github.com/marcelosofficial-ctrl/PocketCode-
