@@ -135,6 +135,15 @@ Next task: owner runs only the read-only Pyodios sys.last_exc / sys.last_value C
 - Added local pure helper/test working copies for scripts/dispatch_reconciliation.py and scripts/test_dispatch_reconciliation.py. Actions are dispatch_first, adopt_existing, retry_same_attempt, poll_existing, hold_unknown, conflict and do_not_replay. The helper never generates new IDs, mutates durable state or sends requests.
 - Bound lookups/idempotency capability to EffectId, DispatchAttemptId, request fingerprint, endpoint, account, provider, API version, region/zone scope, token (when present), retention and documented deduplication/mismatch behavior.
 - Red-team found and fixed non-authoritative-found adoption and an unscoped authoritative-not-found retry. A provider token is optional for authoritative exact-lookup reconciliation but required for token-based replay.
-- Local tests: 28/28 pass under CPython 3.13.5; both files compile. This second helper is still local-only until its GitHub checkpoint is created and read back. It is not a live adapter, outbox or exactly-once guarantee.
+- Local tests: 28/28 pass under CPython 3.13.5; both files compile. GitHub checkpoint commit 203628276e65909140bf4ed563071442c538548d created and read back: helper blob 2b0928002fdf690005711ea71f1a115a665490ef; tests blob f45eb831edb3cfdbcbf4284e3f81180eaee35f12. It is not a live adapter, outbox or exactly-once guarantee.
 - Current project branch at the beginning of this slice was continuity commit 950387f766355825782072fdade057fe8caf5b8d. Earlier closeout compare was 842 ahead / 0 behind main, merge base 555840d83342513d9cd353d4d1522d46a5c82d. Exact-head Actions/check-runs were zero; aggregate status pending. PR #2/#3 remain open draft at original heads.
 - Next: commit/read back the two helper files and contract/research updates, then build deterministic fake-store/outbox tests for crash points and fencing. Do not integrate with a provider or select storage yet.
+
+
+## 2026-11-06 — P24 GitHub verification closeout
+
+- Dispatch helper and 28-case test file are committed at 203628276e65909140bf4ed563071442c538548d and both were read back by exact Git blob SHA.
+- Contract, research, start page, ledger and work log were also read back at the corresponding P24 checkpoint SHAs. P24 is no longer local-only.
+- Exact-head verification: zero Actions runs, zero check-runs, combined commit status pending (no individual statuses). PR #2/#3 remain OPEN/DRAFT at original head SHAs eb8b7ea83cb0e8fe1880351276c485b761431791 and 0ddcc0bc97bac5d446aefedf3d71f99411bd841d.
+- Branch compare at dispatch source commit: 843 ahead / 0 behind main, merge base 555840d8d83342513d9cd353d4d1522d46a5c82d. Ahead count is history divergence, not product progress.
+- Next read first: this entrypoint, then EXECUTION_EVIDENCE_AND_RECOVERY_CONTRACT_20261106.md; inspect dispatch_reconciliation.py and its tests, then plan fake-store/outbox crash/fencing cases. Fetch live branch/PR/CI state before further edits.

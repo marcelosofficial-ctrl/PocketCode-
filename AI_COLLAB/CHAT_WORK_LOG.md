@@ -398,3 +398,13 @@ Next: await owner-provided read-only Pyodios saved-exception probe output; prese
 **Verification:** 28/28 local tests passed under CPython 3.13.5; both files compile. The helper is pure and local at this point, with no product integration, live provider, durable outbox or storage selection.
 
 **Next:** commit and verify helper plus tests and update contract; then create fake-store/outbox tests for reservation, crash-before-send, lost-ack, duplicate delivery, stale lease/fencing and artifact publication. Preserve $0 default and all canonical IDs.
+
+
+## 2026-11-06 — PC-2026-11-06-P24 — GitHub checkpoint verified
+
+- Committed dispatch helper, 28-case tests, contract/research additions and updated continuity docs at source commit 203628276e65909140bf4ed563071442c538548d.
+- Read-back verified dispatch helper blob 2b0928002fdf690005711ea71f1a115a665490ef and test blob f45eb831edb3cfdbcbf4284e3f81180eaee35f12; contract/research/start/ledger/worklog blobs also read back.
+- Final CI snapshot at source commit: 0 workflow runs, 0 check-runs, aggregate status pending with no individual statuses. Do not claim green CI.
+- PR #2 and #3 remain OPEN/DRAFT at their original head SHAs. No merge, PR mutation, deployment, provider workload or account was created.
+- Branch compare at source commit: 843 ahead / 0 behind main; merge base unchanged. Ahead count reflects branch-history divergence.
+- Next work: fake durable store/outbox model for crash/recovery/fencing; then authenticate observation producers and integrate only after exact test + source review.
