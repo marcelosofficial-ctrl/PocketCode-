@@ -166,3 +166,14 @@ Updated `AI_COLLAB/CROSS_PROJECT_UPDATE_REVDEV_2026-11-06.md` with RevDev's disc
 ## 2026-11-06 — RevDev installer-aware CI closeout
 
 RevDev run #48 `42181302862` passed 91/91 at exact source/test head `935108a6937f15b76f75850ebdbe70c69000be32` under Windows PowerShell 5.1 / Pester 5.7.1. The suite includes publisher/transport, local-result/recovery/quarantine and installer dependency/source-pin tests. This is RevDev-only maintenance-source evidence, not live install or product acceptance. Updated `AI_COLLAB/CROSS_PROJECT_UPDATE_REVDEV_2026-11-06.md`. PocketCode CASE-04 remains immediate priority.
+
+
+## 2026-11-06 — PC-2026-11-06-P12 continuation — saved-exception probe and handoff repair
+
+Rechecked live project records after the previous response stalled. Confirmed the triage note and device protocol now use a read-only Console probe checking `sys.last_exc` first, then legacy `sys.last_value`. Verified Pyodide 314.0.5 documentation says the original Python exception is retained as `sys.last_value`, while Python 3.14 prefers `sys.last_exc`. Checked exact Pyodide 314.0.5 `src/core/error_handling.c`: `SystemExit` handling depends on `PyConfig.inspect`; Pyodios does not publish this runtime flag. Therefore the `SystemExit` hypothesis remains unconfirmed.
+
+Red-team correction: the 2026-11-06 handoff still contained an older generic instruction to run the success fixture, conflicting with the newer no-rerun instruction. Replaced it with the current artifact → Error Log → saved-exception probe → guarded wrapper sequence. Updated `CHAT_START_HERE.md` to point to the 2026-11-06 handoff. Added the probe/handoff clarification to `PROJECT_STATUS.md`.
+
+Latest verified branch snapshot before this log entry: `37d381fbacd14c6ab9b5204d07a7dfc1889f9cc2`, 777 ahead / 0 behind `main`. PR #2 and PR #3 remain OPEN/DRAFT and untouched. Ahead count is branch divergence, not completed product work.
+
+No fixture, product source, acceptance suite, runtime/provider, security boundary, PR, deployment or budget changed. Device exception and artifact remain UNKNOWN; no device rerun occurred.
