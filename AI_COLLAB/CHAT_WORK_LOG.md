@@ -244,3 +244,10 @@ Transferable lesson: package/install/update/rollback are part of the execution b
 RevDev Actions run #49 `42182731390` completed SUCCESS at exact source/test SHA `a6defbb0e8b0902e8ecc20777d0a10dc25ae344b`: **93 passed, 0 failed, 0 skipped, 0 inconclusive, 0 not run** in 5.45 seconds under Windows PowerShell 5.1 / Pester 5.7.1. It validates the installation-marker rollback tests added after the 91-case run #48. No installer was executed and no PC/live runtime was touched. This is RevDev-only evidence.
 
 Transferable method: include mutable provenance markers in rollback; test install dependency closure and immutable source pins; verify CI at the exact SHA; preserve explicit limits between source CI and installed runtime. PocketCode remains independent. CASE-04 remains immediate priority; preserve the Pyodios success artifact and do not rerun it.
+
+
+## 2026-11-06 — PC-2026-11-06-P15 — Cross-project continuity method and forwardable chat brief
+
+Owner requested that the PocketCode chat receive the latest RevDev progression and adopt the improved multi-chat workflow. Created `AI_COLLAB/REVDEV_CONTINUITY_UPDATE_20261106.md` with: GitHub-as-durable-memory principle; 2–3-pass checkpoint cadence; start page + append-only work log + canonical docs; early chat rotation; readback/recovery after tool failures; one lead writer; focused exact-SHA three-AI reviews; RevDev's 93/93 CI result as method-only evidence; explicit no-transfer rules; PocketCode's unchanged constraints and immediate priorities; and a copy/paste message for the PocketCode chat.
+
+RevDev CI run #49 passed 93/93 at exact SHA `a6defbb0e8b0902e8ecc20777d0a10dc25ae344b`. This is not PocketCode code/device/acceptance evidence. PocketCode remains independent. CASE-04 timeout/report-contract provenance remains immediate priority. Pyodios status remains artifact-level functional success / bridge error unresolved / full run inconclusive; preserve exact-match summary.json and use only the read-only saved-exception probe next. No rerun, overwrite, restart or reset. PR #2/#3 remain untouched.
