@@ -54,22 +54,45 @@ class EventJournalTests(unittest.TestCase):
         self.assertEqual(self.journal.events[0].attempt_id, "attempt-A")
 
     def test_unfenced_reservation_event_remains_unfenced_after_lease_advance(self):
+        reservation_producer = AuthenticatedProducer(
+            "issuer-A", "coordinator", "key-2", "sha256:credential",
+            "pocketcode-journal", ("pocketcode.coordinator",),
+        )
+        payload = b'{"attempt_id":"attempt-1","effect_id":"effect-1","kind":"effect_reserved"}'
         first = self.journal.append(
-            producer=P, source="worker-events", event_id="reservation-1",
-            payload=b'{"kind":"effect_reserved"}', occurred_at_ms=100,
+            producer=reservation_producer, source="pocketcode.coordinator",
+            event_id="reservation-1", payload=payload, occurred_at_ms=100,
             observed_at_ms=110, effect_id="effect-1", attempt_id="attempt-1",
             require_fence=False,
         )
         self.journal.advance_fence("effect-1", "attempt-1", 1)
         replay = self.journal.append(
-            producer=P, source="worker-events", event_id="reservation-1",
-            payload=b'{"kind":"effect_reserved"}', occurred_at_ms=100,
+            producer=reservation_producer, source="pocketcode.coordinator",
+            event_id="reservation-1", payload=payload, occurred_at_ms=100,
             observed_at_ms=120, effect_id="effect-1", attempt_id="attempt-1",
             require_fence=False,
         )
         self.assertEqual(first.disposition, "accepted")
         self.assertEqual(replay.disposition, "duplicate")
         self.assertIsNone(first.event.fence)
+
+    def test_unfenced_worker_event_is_rejected_even_with_flag(self):
+        with self.assertRaises(JournalConflict):
+            self.append(require_fence=False)
+
+    def test_unfenced_wrong_kind_or_scope_is_rejected(self):
+        reservation_producer = AuthenticatedProducer(
+            "issuer-A", "coordinator", "key-2", "sha256:credential",
+            "pocketcode-journal", ("pocketcode.coordinator",),
+        )
+        with self.assertRaises(JournalConflict):
+            self.journal.append(
+                producer=reservation_producer, source="pocketcode.coordinator",
+                event_id="not-reservation",
+                payload=b'{"attempt_id":"attempt-1","effect_id":"effect-1","kind":"dispatch_intent"}',
+                occurred_at_ms=100, observed_at_ms=110,
+                effect_id="effect-1", attempt_id="attempt-1", require_fence=False,
+            )
 
     def test_same_event_replay_under_new_fence_is_quarantined(self):
         self.journal.advance_fence("effect-1", "attempt-1", 1)

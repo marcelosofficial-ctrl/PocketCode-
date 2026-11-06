@@ -118,8 +118,21 @@ class EventJournal:
                         raise JournalConflict("fence supplied before a lease generation exists")
                 elif not _positive_int(fence) or fence != current_fence:
                     raise JournalConflict("event rejected by current fencing token")
-            elif fence is not None:
-                raise JournalConflict("unfenced event cannot carry a fencing token")
+            else:
+                if fence is not None:
+                    raise JournalConflict("unfenced event cannot carry a fencing token")
+                try:
+                    reservation_payload = json.loads(payload.decode("utf-8"))
+                except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+                    raise JournalConflict("unfenced events must be valid reservation payloads") from exc
+                if (source != "pocketcode.coordinator"
+                        or not isinstance(reservation_payload, dict)
+                        or reservation_payload.get("kind") != "effect_reserved"
+                        or reservation_payload.get("effect_id") != effect_id
+                        or reservation_payload.get("attempt_id") != attempt_id):
+                    raise JournalConflict(
+                        "only a matching coordinator effect_reserved event may be unfenced"
+                    )
         elif fence is not None:
             raise ValueError("fence cannot be supplied without effect and attempt identity")
         digest = sha256(payload).hexdigest()
