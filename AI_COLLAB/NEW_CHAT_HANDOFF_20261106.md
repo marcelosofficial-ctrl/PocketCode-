@@ -42,11 +42,13 @@ Official sources:
 ## Immediate device plan
 Read AI_COLLAB/PYODIOS_DEVICE_BASELINE_AND_HANDS_ON_PROTOCOL_20261106.md.
 
-1. Capture app/build, Python and Pyodide versions from About / Settings > Python Session; capture iOS version and device model.
-2. Extract the ZIP in iOS Files.
-3. Create fresh project PC-FIXED-SUCCESS-01; import main.py and items-success.csv, rename the CSV to items.csv, run the whole script once, inspect the actual summary.json, and export it.
-4. Create separate fresh project PC-FIXED-FAILURE-01; import main.py and items-missing-unit-price.csv, rename the CSV to items.csv, run once, confirm the diagnostic and absence of summary.json.
-5. Only after both results are captured, close/relaunch normally and inspect project/artifact persistence before any rerun.
+**SUPERSEDING CURRENT INSTRUCTION (2026-11-06):** the owner has already imported `main.py` and `items.csv` into one project and attempted the green Editor run. It displayed only `[Bridge/executePython] PythonError`. Do not follow the older generic run sequence below yet. Preserve the attempt and follow `PYODIOS_PYTHONERROR_BRIDGE_TRIAGE_20261106.md`.
+
+1. Inspect the current project's Files tab for `summary.json`. If present, open it and compare it with the exact success oracle. Do not rerun or overwrite it.
+2. Inspect Settings → Diagnostics → Error Logs → View Error Log at the attempt timestamp. Redact local paths and source before sharing.
+3. If the Error Log is unhelpful, use the documented read-only Console probe in the triage note to print `sys.last_exc` (with legacy fallback) from the prior exception. It does not rerun `main.py`.
+4. Only if the log and saved exception are unavailable and no `summary.json` exists, use the separately attached guarded diagnostic wrapper. It has only passed local CPython checks, not Pyodios device execution.
+5. Once the cause and current artifact state are understood, resume the remaining fresh success/malformed fixture, export/read-back and normal-relaunch checks.
 
 Do not intentionally force-quit during active execution or run an infinite loop. First pass is low-risk ordinary success/failure and file-persistence observation.
 
