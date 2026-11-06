@@ -35,7 +35,7 @@ Read this file, verify the live branch/PR/CI state, and fetch only the linked ta
 
 - Repo: https://github.com/marcelosofficial-ctrl/PocketCode-
 - Branch: `pocketcode-ai-workflow-director-research-2026-10-28`
-- Live branch snapshot at start of the 2026-11-06 Pyodios triage pass: `fe4cf31b7a3c185689422d186ad11e48bcfbe747`, **757 ahead / 0 behind** `main`; merge base `555840d8d83342513d9cd353d4d1522d46a5c82d`. This is a pre-checkpoint snapshot; fetch live refs before consequential writes. Ahead count is accumulated branch-history divergence, not product progress.
+- Live branch snapshot immediately before the 2026-11-06 Pyodios diagnostic checkpoint: `aa7580ff6e482ff1f4d5920d70de75fddf3e274e`, **784 ahead / 0 behind** `main`; merge base `555840d8d83342513d9cd353d4d1522d46a5c82d`. This is a pre-checkpoint snapshot; fetch live refs before consequential writes. Ahead count is accumulated branch-history divergence, not product progress.
 - Open PR #2: [Add chat checkpoints and harden report-contract regressions](https://github.com/marcelosofficial-ctrl/PocketCode-/pull/2), OPEN/DRAFT from branch `chat-continuity-report-regressions-2026-10-26`.
 - Open PR #3: [Draft: Add evidence-led PocketCode research baseline](https://github.com/marcelosofficial-ctrl/PocketCode-/pull/3), OPEN/DRAFT from branch `pocketcode-pass0-audit-2026-10-26`.
 - PR #2/#3 are not this active research branch and were not modified. Do not infer the active branch's commits are included in either PR.
@@ -74,7 +74,7 @@ Current device comparison:
 
 ## Current priority order
 
-1. Resolve the current Pyodios attempt: inspect the same project's `summary.json`, then the timestamped Settings → Diagnostics → Error Logs entry; do not rerun `main.py` yet. See `PYODIOS_PYTHONERROR_BRIDGE_TRIAGE_20261106.md`.
+1. Resolve the current Pyodios attempt: inspect the same project's `summary.json`, then the timestamped **More → Settings → Error Log → View Error Log** entry; do not rerun `main.py` yet. See `PYODIOS_PYTHONERROR_BRIDGE_TRIAGE_20261106.md`.
 2. Resolve typed child-exit / wrapper-exit / termination / lifecycle projection before changing `scripts/report_contract.py`; preserve CASE-04 INCOMPLETE/timed_out and all existing IDs.
 3. Audit degraded observation collection, teardown, artifact integrity/release and cleanup semantics separately from execution outcome.
 4. Source-audit the synchronous pre-execution network-isolation barrier for exact ordering and fail-closed behavior.
