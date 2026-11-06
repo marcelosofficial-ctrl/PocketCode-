@@ -484,3 +484,17 @@ PocketCode remains independent. Do not copy RevDev PowerShell scripts, runtime a
 RevDev run #42 `42180012296` completed **81 passed, 0 failed, 0 skipped** on Windows PowerShell 5.1 / Pester 5.7.1 at exact source/test commit `40a8698060b50b3a94f946fe443caf201fd0f168`. Run: https://github.com/marcelosofficial-ctrl/DevRelay-Missions/actions/runs/42180012296. It covers 59 publisher identity/transport cases plus 22 local-result/recovery/quarantine cases. This is maintenance-source CI evidence only, not live network/queue/watcher/mission execution, installed-PC parity, or P0/P8U acceptance. The RevDev branch has docs-only commits after the tested source SHA.
 
 PocketCode must continue its own CASE-04 timeout/report-contract work. No RevDev implementation, test count, or acceptance transfers. Reusable method: exact-SHA CI, fake process boundaries, semantic contract assertions, explicit UNKNOWN/INCOMPLETE outcomes, review partial-failure paths, and update GitHub before rotating chats.
+
+
+## Collaboration and continuity objective
+
+PocketCode is expected to span many short-lived ChatGPT conversations. The project workflow must not depend on one chat retaining its full history. GitHub is the durable source of truth; each chat is a replaceable worker. Optimize for resumability, not maximum conversation length.
+
+Operational acceptance criteria:
+- The chat entrypoint identifies live branch state, current source/test pins, verified outcomes, blockers and next action.
+- Every work pass ends with a durable checkpoint and a user-visible result, including when tools or CI fail.
+- Related documentation is checkpointed in batches rather than fragmented into repeated per-file commits.
+- CI polling, file reads and tool output are bounded. Pending work is checkpointed and resumed later.
+- Chat rotation starts before context exhaustion, without waiting for a user-requested handoff.
+
+This reduces avoidable interruptions but cannot eliminate platform context limits or external service failures. The target is graceful interruption without lost project state. PocketCode remains separate from RevDev in implementation, roadmap, runtime, acceptance suites and release gates.
