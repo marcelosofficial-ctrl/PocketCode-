@@ -39,17 +39,17 @@ Next:
 4. Preserve CASE-04 as INCOMPLETE / timed_out. Resolve child/wrapper/termination provenance before changing `classify_verdict()`.
 
 ## Read next
-- [Latest 2026-11-06 handoff](NEW_CHAT_HANDOFF_20261106.md)
-- [Pyodios bridge triage](PYODIOS_PYTHONERROR_BRIDGE_TRIAGE_20261106.md)
-- [Pyodios device protocol](PYODIOS_DEVICE_BASELINE_AND_HANDS_ON_PROTOCOL_20261106.md)
-- [Verdict/exit provenance matrix](VERDICT_EVIDENCE_EXIT_PROVENANCE_MATRIX_20261105.md)
-- [Execution-loop acceptance, canonical](../PRODUCT/EXECUTION_LOOP_ACCEPTANCE.md)
-- [Owner decision register](OWNER_DECISION_REGISTER_20261029.md)
-- [Current project status](../PROJECT_STATUS.md)
+- [Latest 2026-11-06 handoff](https://github.com/marcelosofficial-ctrl/PocketCode-/blob/pocketcode-ai-workflow-director-research-2026-10-28/NEW_CHAT_HANDOFF_20261106.md)
+- [Pyodios bridge triage](https://github.com/marcelosofficial-ctrl/PocketCode-/blob/pocketcode-ai-workflow-director-research-2026-10-28/PYODIOS_PYTHONERROR_BRIDGE_TRIAGE_20261106.md)
+- [Pyodios device protocol](https://github.com/marcelosofficial-ctrl/PocketCode-/blob/pocketcode-ai-workflow-director-research-2026-10-28/PYODIOS_DEVICE_BASELINE_AND_HANDS_ON_PROTOCOL_20261106.md)
+- [Verdict/exit provenance matrix](https://github.com/marcelosofficial-ctrl/PocketCode-/blob/pocketcode-ai-workflow-director-research-2026-10-28/VERDICT_EVIDENCE_EXIT_PROVENANCE_MATRIX_20261105.md)
+- [Execution-loop acceptance, canonical](https://github.com/marcelosofficial-ctrl/PocketCode-/blob/pocketcode-ai-workflow-director-research-2026-10-28/../PRODUCT/EXECUTION_LOOP_ACCEPTANCE.md)
+- [Owner decision register](https://github.com/marcelosofficial-ctrl/PocketCode-/blob/pocketcode-ai-workflow-director-research-2026-10-28/OWNER_DECISION_REGISTER_20261029.md)
+- [Current project status](https://github.com/marcelosofficial-ctrl/PocketCode-/blob/pocketcode-ai-workflow-director-research-2026-10-28/../PROJECT_STATUS.md)
 - [Continuity protocol](CHAT_CONTINUITY_AND_MULTI_CHAT_OPERATING_PROTOCOL_20261106.md)
 - [Work packet template](WORK_PACKET_TEMPLATE_20261106.md)
 - [Copy/paste continuation prompt](POCKETCODE_CHAT_CONTINUATION_PROMPT_20261106.md)
-- [Cross-project RevDev update](CROSS_PROJECT_UPDATE_REVDEV_2026-11-06.md)
+- [Cross-project RevDev update](https://github.com/marcelosofficial-ctrl/PocketCode-/blob/pocketcode-ai-workflow-director-research-2026-10-28/CROSS_PROJECT_UPDATE_REVDEV_2026-11-06.md)
 
 ## Multi-chat working rules
 - Checkpoint after 2–3 substantial passes, and after every important source/test/CI/review/decision event. Rotate before context strain; never wait for a full-chat warning.
