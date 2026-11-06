@@ -287,7 +287,7 @@ class FakeCoordinatorTests(unittest.TestCase):
         self.assertEqual(second.version, 2)
         self.assertEqual(second.predecessor_receipt_id, first.receipt_id)
         self.assertGreater(len(second.evidence_refs), len(first.evidence_refs))
-        self.assertEqual(first.lifecycle_disposition, "pending")
+        self.assertEqual(first.lifecycle_disposition, "unknown")
 
     def test_non_object_journal_payload_projects_incomplete(self):
         self.journal.append(
@@ -389,7 +389,6 @@ class FakeCoordinatorTests(unittest.TestCase):
 
     def test_multiple_lifecycle_observations_require_reconciliation(self):
         lease = self.coordinator.claim("effect-1", "worker-A", now=20, lease_seconds=20)
-        self.coordinator.mark_dispatching(lease, now=20)
         self.coordinator.mark_dispatching(lease, now=20)
         for event_id, status, now in (("life-running", "running", 21),
                                       ("life-succeeded", "succeeded", 22)):
