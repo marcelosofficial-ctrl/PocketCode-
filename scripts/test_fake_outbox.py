@@ -100,7 +100,7 @@ class FakeOutboxTests(unittest.TestCase):
             authoritative=True, absence_final=True,
         )
         self.assertEqual(result, "safe_to_retry_same_attempt")
-        self.assertEqual(self.store.get("effect-1").state, "pending")
+        self.assertEqual(self.store.get("effect-1").state, "retry_authorized")
         self.assertEqual(self.store.get("effect-1").reservation.attempt_id, "attempt-1")
 
     def test_non_authoritative_or_wrong_identity_cannot_release_hold(self):

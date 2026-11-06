@@ -124,10 +124,15 @@ class FakeCoordinator:
                 or not record.provider_reference or record.acknowledged_at is None):
             raise OutboxConflict("no accepted acknowledgement is available to repair")
         attempt_id = record.reservation.attempt_id
+        if record.acknowledgement_source == "reconciliation":
+            kind = "provider_acceptance_reconciled"
+            event_id = f"reconciled-found:{effect_id}:{attempt_id}:{record.fence}"
+        else:
+            kind = "dispatch_acknowledged"
+            event_id = f"ack:{effect_id}:{attempt_id}:{record.fence}"
         return self._append(
-            kind="dispatch_acknowledged", effect_id=effect_id,
-            attempt_id=attempt_id, event_id=f"ack:{effect_id}:{attempt_id}:{record.fence}",
-            at_ms=record.acknowledged_at, fence=record.fence,
+            kind=kind, effect_id=effect_id, attempt_id=attempt_id,
+            event_id=event_id, at_ms=record.acknowledged_at, fence=record.fence,
             provider_reference=record.provider_reference,
         ).disposition
 
@@ -162,6 +167,17 @@ class FakeCoordinator:
                 at_ms=now, fence=record.fence,
             )
         return disposition
+
+    def repair_missing_reconciliation_event(self, effect_id: str) -> str:
+        record = self.store.get(effect_id)
+        if record.state != "retry_authorized" or record.reconciliation_observed_at is None:
+            raise OutboxConflict("no final-absence retry authorization is available to repair")
+        return self._append(
+            kind="final_absence_reconciled", effect_id=effect_id,
+            attempt_id=record.reservation.attempt_id,
+            event_id=f"reconciled-absent:{effect_id}:{record.reservation.attempt_id}:{record.fence}",
+            at_ms=record.reconciliation_observed_at, fence=record.fence,
+        ).disposition
 
     def recover_expired(self, effect_id: str, *, now: int) -> str:
         return self.store.recover_expired(effect_id, now=now)
@@ -206,6 +222,12 @@ class FakeCoordinator:
             state = "reconciliation_required"
         elif record.state == "acknowledged" and not seen_acknowledgement:
             state = "acknowledgement_unjournaled"
+        elif record.state == "retry_authorized" and not any(
+                payload.get("kind") == "final_absence_reconciled"
+                for _, payload in matching):
+            state = "retry_authorization_unjournaled"
+        elif record.state == "retry_authorized":
+            state = "retry_authorized"
         elif record.state == "terminal":
             state = "terminal"
         return RebuiltEffect(

@@ -226,3 +226,11 @@ Next task: owner runs only the read-only Pyodios sys.last_exc / sys.last_value C
 - Added a coordinator-level exact-scope reconciliation operation. Authoritative provider-found outcomes now persist their coordinator observation timestamp and append a distinct `provider_acceptance_reconciled` event; authoritative final absence appends `final_absence_reconciled` and projects `retry_authorized`.
 - Non-final or non-authoritative absence remains held in `reconciliation_required` and emits no retry authorization event.
 - The fake model still trusts the caller's reconciliation authority booleans. Real adapter authentication, durable atomicity, concurrent safety and production behavior remain NOT ESTABLISHED.
+
+
+## 2026-11-06 recovery repair hardening
+
+- Reconciliation outcomes now persist enough typed recovery metadata to repair a crash between the outbox state transition and journal append.
+- Provider-found reconciliation records `acknowledgement_source=reconciliation`; the acknowledgement repair path re-emits the same reconciliation event identity and timestamp.
+- Final exact absence now enters explicit `retry_authorized` state rather than generic pending. Projection exposes `retry_authorization_unjournaled` until the final-absence event is appended; a dedicated repair operation is idempotent.
+- This remains an in-memory model; atomic commit across outbox and journal is still not implemented.

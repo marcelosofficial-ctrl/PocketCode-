@@ -173,6 +173,37 @@ class FakeCoordinatorTests(unittest.TestCase):
         self.assertEqual(self.coordinator.rebuild_effect("effect-1").state,
                          "reconciliation_required")
 
+    def test_crash_after_final_absence_store_commit_is_visible_and_repairable(self):
+        lease = self.coordinator.claim("effect-1", "worker-A", now=20, lease_seconds=2)
+        self.coordinator.mark_dispatching(lease, now=21)
+        self.coordinator.recover_expired("effect-1", now=22)
+        # Exercise the store commit separately to model a crash before journal append.
+        self.store.resolve_reconciliation(
+            "effect-1", outcome="not_found", exact_identity_match=True,
+            authoritative=True, absence_final=True, now=23,
+        )
+        self.assertEqual(self.coordinator.rebuild_effect("effect-1").state,
+                         "retry_authorization_unjournaled")
+        self.assertEqual(self.coordinator.repair_missing_reconciliation_event("effect-1"),
+                         "accepted")
+        self.assertEqual(self.coordinator.repair_missing_reconciliation_event("effect-1"),
+                         "duplicate")
+        self.assertEqual(self.coordinator.rebuild_effect("effect-1").state,
+                         "retry_authorized")
+
+    def test_crash_after_found_reconciliation_store_commit_is_repairable(self):
+        lease = self.coordinator.claim("effect-1", "worker-A", now=20, lease_seconds=2)
+        self.coordinator.mark_dispatching(lease, now=21)
+        self.coordinator.recover_expired("effect-1", now=22)
+        self.store.resolve_reconciliation(
+            "effect-1", outcome="found", exact_identity_match=True,
+            authoritative=True, provider_reference="provider-crash", now=23,
+        )
+        self.assertEqual(self.coordinator.rebuild_effect("effect-1").state,
+                         "acknowledgement_unjournaled")
+        self.assertEqual(self.coordinator.repair_missing_ack_event("effect-1"), "accepted")
+        self.assertEqual(self.coordinator.repair_missing_ack_event("effect-1"), "duplicate")
+
     def test_wrong_audience_fails_closed(self):
         wrong = AuthenticatedProducer(
             issuer="other", subject="x", key_id="k", credential_fingerprint="f",

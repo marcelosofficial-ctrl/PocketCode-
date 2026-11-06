@@ -46,6 +46,9 @@ class OutboxRecord:
     fence: int = 0
     provider_reference: Optional[str] = None
     acknowledged_at: Optional[int] = None
+    acknowledgement_source: Optional[str] = None
+    reconciliation_observed_at: Optional[int] = None
+    reconciliation_outcome: Optional[str] = None
 
 
 @dataclass(frozen=True)
@@ -179,7 +182,7 @@ class FakeOutboxStore:
             raise ValueError("provider reference must be non-empty")
         self._records[(lease.effect_id, lease.attempt_id)] = replace(
             record, state="acknowledged", provider_reference=provider_reference,
-            acknowledged_at=now,
+            acknowledged_at=now, acknowledgement_source="dispatch",
         )
 
     def resolve_reconciliation(
@@ -199,13 +202,17 @@ class FakeOutboxStore:
                 raise ValueError("reconciliation observation time must be a non-negative integer")
             self._records[key] = replace(
                 record, state="acknowledged", provider_reference=provider_reference,
-                acknowledged_at=now,
+                acknowledged_at=now, acknowledgement_source="reconciliation",
+                reconciliation_observed_at=now, reconciliation_outcome="found",
             )
             return "adopt_existing"
         if outcome == "not_found" and absence_final is True:
             # This model returns to pending only after explicitly final exact-scope non-acceptance.
+            if now is not None and (isinstance(now, bool) or not isinstance(now, int) or now < 0):
+                raise ValueError("reconciliation observation time is required for final absence")
             self._records[key] = replace(
-                record, state="pending", lease_owner=None, lease_expires_at=None,
+                record, state="retry_authorized", lease_owner=None, lease_expires_at=None,
+                reconciliation_observed_at=now, reconciliation_outcome="final_absence",
             )
             return "safe_to_retry_same_attempt"
         return "hold_unknown"
@@ -213,7 +220,7 @@ class FakeOutboxStore:
     def mark_terminal(self, effect_id: str, *, attempt_id: Optional[str] = None) -> None:
         """Close an attempt; a later attempt still requires explicit authorization."""
         record = self.get(effect_id, attempt_id)
-        if record.state not in {"acknowledged", "pending"}:
+        if record.state not in {"acknowledged", "pending", "retry_authorized"}:
             raise OutboxConflict("only acknowledged or reconciled-pending attempts can close")
         key = (effect_id, record.reservation.attempt_id)
         self._records[key] = replace(

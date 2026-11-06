@@ -499,3 +499,9 @@ Next: await owner-provided read-only Pyodios saved-exception probe output; prese
 - Red-team review found that provider-found reconciliation updated the fake outbox but did not create a corresponding journal event, leaving the rebuilt projection incomplete. Final-absence retry authorization also lacked an explicit lifecycle event.
 - Added coordinator reconciliation composition for accepted provider-found and authoritative final-absence outcomes. The journal uses explicit event kinds and the coordinator observation timestamp; it does not claim to know the provider's original occurrence time.
 - Added focused tests for found, final absence and non-final absence. Test source added; canonical repository test execution remains pending.
+
+
+## 2026-11-06 — reconciliation crash-window repair
+
+- Follow-up review found a second crash window: the outbox could commit a provider-found or final-absence reconciliation while the corresponding journal append failed. Added persisted reconciliation source/time/outcome metadata, same-event repair for provider-found, and explicit retry_authorized state plus final-absence event repair.
+- Projection now reports retry_authorization_unjournaled until repaired. Added two crash-window tests. Canonical repository test execution remains pending.
