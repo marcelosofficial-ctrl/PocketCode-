@@ -251,3 +251,18 @@ Transferable method: include mutable provenance markers in rollback; test instal
 Owner requested that the PocketCode chat receive the latest RevDev progression and adopt the improved multi-chat workflow. Created `AI_COLLAB/REVDEV_CONTINUITY_UPDATE_20261106.md` with: GitHub-as-durable-memory principle; 2–3-pass checkpoint cadence; start page + append-only work log + canonical docs; early chat rotation; readback/recovery after tool failures; one lead writer; focused exact-SHA three-AI reviews; RevDev's 93/93 CI result as method-only evidence; explicit no-transfer rules; PocketCode's unchanged constraints and immediate priorities; and a copy/paste message for the PocketCode chat.
 
 RevDev CI run #49 passed 93/93 at exact SHA `a6defbb0e8b0902e8ecc20777d0a10dc25ae344b`. This is not PocketCode code/device/acceptance evidence. PocketCode remains independent. CASE-04 timeout/report-contract provenance remains immediate priority. Pyodios status remains artifact-level functional success / bridge error unresolved / full run inconclusive; preserve exact-match summary.json and use only the read-only saved-exception probe next. No rerun, overwrite, restart or reset. PR #2/#3 remain untouched.
+
+
+## 2026-11-06 — PC-2026-11-06-P16 — Pyodios diagnostic checkpoint and full chat handoff
+
+**Objective:** close the current Pyodios diagnostic stage as far as available phone evidence permits, reconcile stale instructions, and make the next chat independently resumable.
+
+**New owner evidence:** Error Log was checked at More → Settings → Error Log → View Error Log. Its only available detail was Editor: PythonError; no traceback or underlying exception was exposed. Existing summary.json remains owner-inspected and exactly matches the frozen oracle. Classification stays ARTIFACT-LEVEL FUNCTIONAL SUCCESS / BRIDGE ERROR UNRESOLVED / FULL RUN INCONCLUSIVE.
+
+**Exact next action:** run only the read-only Console probe for sys.last_exc with sys.last_value fallback in the existing Pyodios session. Do not rerun/overwrite main.py, restart/reset the session, clear variables/logs, run GC, or run the diagnostic wrapper in the success project. If no saved exception is exposed, classify that as unavailable evidence. Malformed-input test must be a separate fresh project after the diagnostic.
+
+**Handoff and continuity:** reconciled stale handoff instructions and device status; updated live entrypoint, triage, device protocol and project status; added AI_COLLAB/STATE_LEDGER_20261106.md as a compact source-of-truth ledger; added a complete copy/paste bootstrap prompt to the handoff. Product direction, fixed decisions, three-AI roles, architecture identity chain, acceptance IDs and guardrails are preserved.
+
+**Verification:** source documents read from live branch. PR #2 and #3 checked OPEN/DRAFT, unmerged, unchanged. Actions run query for this branch returned an empty list; this does not prove no other workflow source or CI activity exists. No PocketCode code/test/device operation was executed in this pass. No product source, fixture, schema, acceptance suite, runtime/provider, budget, PR, merge or deployment changed.
+
+**Next:** owner runs the saved-exception probe once and shares its output (redacted). Then continue the typed CASE-04 exit-provenance contract and degraded collection/teardown/network-isolation audit. Keep CASE-04 INCOMPLETE/timed_out and all canonical IDs.
