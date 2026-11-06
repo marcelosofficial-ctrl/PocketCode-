@@ -70,11 +70,11 @@ Current device comparison:
 - A fixed-task device baseline/protocol and exact fixture archive have been prepared.
 - Fixture archive SHA-256: `706c6a87d07c496d5a461c9395fb0b967b961fa9c430c719d9799998df5b4099`.
 - The embedded `main.py` matches canonical source SHA-256 `70c66ad3a0132923cbf3190eb3546093fcc2c61c1bdcbf3b171696e1ae7521e7`.
-- One owner-reported Editor attempt has occurred: exact visible output `[Bridge/executePython] PythonError`, no traceback. Underlying Python exception and `summary.json` presence remain UNKNOWN. This is not a PASS/FAIL and does not establish process exit. Do not rerun until the artifact and Error Log have been inspected.
+- One owner-reported Editor attempt displayed only `[Bridge/executePython] PythonError`. The owner later inspected the existing `summary.json` and confirmed it exactly matches the canonical success oracle. Current classification: ARTIFACT-LEVEL FUNCTIONAL SUCCESS / BRIDGE ERROR UNRESOLVED / FULL RUN INCONCLUSIVE. Native process exit status and root cause remain UNKNOWN. Preserve the artifact; do not rerun or overwrite the success project.
 
 ## Current priority order
 
-1. Resolve the current Pyodios attempt: inspect the same project's `summary.json`, then the timestamped **More → Settings → Error Log → View Error Log** entry; do not rerun `main.py` yet. See `PYODIOS_PYTHONERROR_BRIDGE_TRIAGE_20261106.md`.
+1. Preserve the already matching `summary.json`; inspect the timestamped **More → Settings → Error Log → View Error Log** entry, then use the read-only `sys.last_exc` / `sys.last_value` Console probe if the log is unhelpful. Do not rerun the success project. See `PYODIOS_PYTHONERROR_BRIDGE_TRIAGE_20261106.md`.
 2. Resolve typed child-exit / wrapper-exit / termination / lifecycle projection before changing `scripts/report_contract.py`; preserve CASE-04 INCOMPLETE/timed_out and all existing IDs.
 3. Audit degraded observation collection, teardown, artifact integrity/release and cleanup semantics separately from execution outcome.
 4. Source-audit the synchronous pre-execution network-isolation barrier for exact ordering and fail-closed behavior.
