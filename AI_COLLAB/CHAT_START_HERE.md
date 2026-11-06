@@ -26,13 +26,17 @@
 - Preserve canonical LOOP-01..14, CASE-01..16 and D-01..D-08 meanings and frozen fixtures. Do not silently remap IDs or alter acceptance semantics.
 - Owner permits implementation and changing operational boundaries when evidence shows project benefit. Record authority changes, risks and verification. Do not ask permission for routine bounded engineering.
 
-## Active task
-**Pyodios first Editor attempt:** owner observed exactly `[Bridge/executePython] PythonError` after running the unchanged canonical `main.py` with `items.csv` in the project. Root cause UNKNOWN; whether `summary.json` exists UNKNOWN; no PASS/FAIL assigned.
-1. Inspect existing `summary.json` in the same project.
-2. Inspect Settings → Diagnostics → Error Logs at the attempt time, redact private paths/source before sharing.
-3. If needed, use the read-only Console probe checking `sys.last_exc` first, then `sys.last_value`, as documented in the triage note.
-4. Only if the artifact/log/probe are inconclusive, consider the separate guarded diagnostic wrapper. Do not rerun/overwrite the canonical fixture yet.
-5. Preserve CASE-04 as INCOMPLETE / timed_out. Resolve typed child/wrapper/termination provenance before changing `classify_verdict()`.
+## Active task: Pyodios evidence and CASE-04 provenance
+
+**Observed:** Editor displayed exactly `[Bridge/executePython] PythonError`.
+**Owner-confirmed artifact:** existing `summary.json` exactly matches the frozen success oracle: grand_total string `10.75`, line_items integer `2`, notebook `7.00`, pen `3.75`.
+**Classification:** ARTIFACT-LEVEL FUNCTIONAL SUCCESS (owner-inspected) / EDITOR BRIDGE ERROR UNRESOLVED / FULL RUN INCONCLUSIVE. No trusted process exit status, stderr, export/read-back, relaunch persistence or PocketCode acceptance is established.
+**Do not rerun or overwrite the successful project.**
+Next:
+1. Owner inspects More → Settings → Error Log → View Error Log at the attempt timestamp and shares only a redacted relevant traceback.
+2. If unhelpful, use the read-only Console probe checking `sys.last_exc` then `sys.last_value`.
+3. After diagnostics are preserved, test malformed input only in a separate fresh project.
+4. Preserve CASE-04 as INCOMPLETE / timed_out. Resolve child/wrapper/termination provenance before changing `classify_verdict()`.
 
 ## Read next
 - [Latest 2026-11-06 handoff](NEW_CHAT_HANDOFF_20261106.md)
