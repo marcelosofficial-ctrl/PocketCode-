@@ -477,3 +477,10 @@ At source checkpoint `40a8698060b50b3a94f946fe443caf201fd0f168`, the test target
 RevDev's latest source work provides transferable reliability methods, not PocketCode implementation or acceptance: hermetic fake-process testing at the actual boundary, exact-SHA CI evidence, strict UNKNOWN/INCOMPLETE classification, identity/digest binding before external effects, create-only immutable result writes, and recovery-safe quarantine. See `AI_COLLAB/CROSS_PROJECT_UPDATE_REVDEV_2026-11-06.md`.
 
 PocketCode remains independent. Do not copy RevDev PowerShell scripts, runtime assumptions, test counts or verdicts. PocketCode's immediate task remains CASE-04 timeout/report-contract correction, with its own tests and evidence. The GitHub-backed multi-chat protocol is now the standard: update start page/work log/canonical docs during work and rotate chats before context exhaustion rather than waiting for a full chat to request a large handoff.
+
+
+## 2026-11-06 — Cross-project CI closeout: RevDev recovery suite
+
+RevDev run #42 `42180012296` completed **81 passed, 0 failed, 0 skipped** on Windows PowerShell 5.1 / Pester 5.7.1 at exact source/test commit `40a8698060b50b3a94f946fe443caf201fd0f168`. Run: https://github.com/marcelosofficial-ctrl/DevRelay-Missions/actions/runs/42180012296. It covers 59 publisher identity/transport cases plus 22 local-result/recovery/quarantine cases. This is maintenance-source CI evidence only, not live network/queue/watcher/mission execution, installed-PC parity, or P0/P8U acceptance. The RevDev branch has docs-only commits after the tested source SHA.
+
+PocketCode must continue its own CASE-04 timeout/report-contract work. No RevDev implementation, test count, or acceptance transfers. Reusable method: exact-SHA CI, fake process boundaries, semantic contract assertions, explicit UNKNOWN/INCOMPLETE outcomes, review partial-failure paths, and update GitHub before rotating chats.
