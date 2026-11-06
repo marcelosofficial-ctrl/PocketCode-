@@ -626,3 +626,12 @@ Next: await owner-provided read-only Pyodios saved-exception probe output; prese
 - Terminal lifecycle/exit/failure observations require the current unexpired dispatch lease; after expiry or transition to reconciliation, the worker cannot append terminal facts. The malformed non-object JSON case fails closed to INCOMPLETE.
 - Receipt composition derives PASS/FAIL/INCOMPLETE through the typed execution projection. Caller labels must match. Projection reason is immutable receipt data.
 - Earlier intermediate failures (receipt constructor argument order and two test fixture assumptions) were corrected; this exact SHA is green. No mobile/durable/concurrent/provider/sandbox acceptance is implied.
+
+
+## 2026-11-06 — PC-2026-11-06-P28 — terminal verdict and release checks
+
+**CI evidence:** [Run 42310308543](https://github.com/marcelosofficial-ctrl/PocketCode-/actions/runs/42310308543), exact commit `fd41883364e98e9c2ee306e89a8140f5566083a9`, Ubuntu 24.04 / Python 3.12, `python -m unittest discover -s scripts -p "test_*.py" -v`, **201 passed, 0 failed**.
+
+**Implemented:** verdict derived from typed accepted terminal evidence via `execution_projection.py`; caller-supplied verdict/lifecycle labels must match; terminal observations require live current lease; stale-fence terminal evidence yields INCOMPLETE; receipt binds accepted event evidence; artifact release binds receipt/object/attempt/scope and checks expiry/revocation on every request.
+
+**Limits:** all in-memory. Producer identity, authorization and revocation are not cryptographically verified; no durable atomicity/concurrency, real mobile artifact release, malware scanning or provider integration.

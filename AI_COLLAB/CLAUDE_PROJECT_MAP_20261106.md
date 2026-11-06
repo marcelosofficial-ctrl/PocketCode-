@@ -125,3 +125,18 @@ FakeCoordinator now appends typed lifecycle, child-exit and program-failure obse
 - Python 3.12 / Ubuntu 24.04; 199 passed, 0 failed.
 - Terminal observations require a current unexpired dispatch lease. Event identity is attempt-scoped. Receipt verdicts derive from accepted typed observations. Expired workers reconcile instead of appending terminal facts.
 - Always fetch the live branch head before relying on this checkpoint.
+
+
+## Typed terminal evidence and current release gate checkpoint
+
+- Exact tested commit: `fd41883364e98e9c2ee306e89a8140f5566083a9`
+- CI: https://github.com/marcelosofficial-ctrl/PocketCode-/actions/runs/42310308543, Ubuntu 24.04 / Python 3.12, **201 passed, 0 failed**.
+- FakeCoordinator now derives PASS/FAIL/INCOMPLETE via `execution_projection.py` from accepted attempt-bound lifecycle, direct-child exit and trusted program-failure observations. Caller-supplied verdict and lifecycle disposition must match the projection. Multiple same-kind observations and stale-fence terminal evidence fail closed to INCOMPLETE.
+- Terminal observations require a current unexpired dispatch lease; expired/reconciling attempts must use authoritative reconciliation. This remains a caller-constructible in-memory model, not cryptographic producer authentication.
+- Artifact release now binds to a receipt manifest, exact object version, attempt, principal/tenant, operation scope, authorization snapshot, expiry and revocation flag, and rechecks on every request. The authorization snapshot is still caller supplied, not an external policy decision.
+- Current receipt publication and artifact storage are in-memory; no durable transactions, actual mobile release, malware scanning or provider integration are established. Fetch live head and exact-SHA CI before relying on this checkpoint.
+
+
+### Next verification gate
+
+Stress the composed receipt projection with contradictory collector/teardown evidence, stale/revoked release authorization, cross-effect artifact IDs, artifact digest tampering and process interruption. Then specify atomic durable receipt/artifact publication without choosing a storage engine prematurely.

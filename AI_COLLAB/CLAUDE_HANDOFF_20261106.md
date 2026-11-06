@@ -192,3 +192,13 @@ Continue receipt integration with artifact manifest and authorization evidence, 
 - Event identity now includes the bound EffectId/DispatchAttemptId scope, preventing same source/event ID and payload from being replayed into a different attempt. The verdict reader fails closed on valid JSON that is not an object. Terminal observations require the current unexpired dispatch lease; expired/reconciling workers must use authoritative reconciliation.
 - Receipt verdicts are derived from accepted typed observations through `execution_projection.py`; a caller-supplied label must match the projection. Projection reason is included in the immutable receipt fingerprint.
 - This is standard-library Python CI only. It does not establish mobile/device behavior, durable atomicity, concurrent safety, cryptographic producer authentication, provider behavior, hostile-code sandboxing or production artifact authorization. Later source commits need a fresh exact-SHA run.
+
+
+## Typed terminal evidence and current release gate checkpoint
+
+- Exact tested commit: `fd41883364e98e9c2ee306e89a8140f5566083a9`
+- CI: https://github.com/marcelosofficial-ctrl/PocketCode-/actions/runs/42310308543, Ubuntu 24.04 / Python 3.12, **201 passed, 0 failed**.
+- FakeCoordinator now derives PASS/FAIL/INCOMPLETE via `execution_projection.py` from accepted attempt-bound lifecycle, direct-child exit and trusted program-failure observations. Caller-supplied verdict and lifecycle disposition must match the projection. Multiple same-kind observations and stale-fence terminal evidence fail closed to INCOMPLETE.
+- Terminal observations require a current unexpired dispatch lease; expired/reconciling attempts must use authoritative reconciliation. This remains a caller-constructible in-memory model, not cryptographic producer authentication.
+- Artifact release now binds to a receipt manifest, exact object version, attempt, principal/tenant, operation scope, authorization snapshot, expiry and revocation flag, and rechecks on every request. The authorization snapshot is still caller supplied, not an external policy decision.
+- Current receipt publication and artifact storage are in-memory; no durable transactions, actual mobile release, malware scanning or provider integration are established. Fetch live head and exact-SHA CI before relying on this checkpoint.

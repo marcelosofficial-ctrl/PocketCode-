@@ -354,3 +354,13 @@ Next task: owner runs only the read-only Pyodios sys.last_exc / sys.last_value C
 - FakeCoordinator requires terminal observations to come from the current unexpired dispatch lease. Expired/reconciling workers cannot append terminal facts; they must use authoritative reconciliation. Valid non-object JSON payloads project to INCOMPLETE instead of raising.
 - Receipt outcomes are reconstructed from accepted typed observations via `execution_projection.py`; caller-supplied outcome mismatches are rejected and projection reason is fingerprinted into the immutable receipt.
 - Model limitations remain: in-memory, synchronous, no durable atomicity/concurrent safety, producer cryptographic authentication, device, provider or sandbox acceptance.
+
+
+## Typed terminal evidence and current release gate checkpoint
+
+- Exact tested commit: `fd41883364e98e9c2ee306e89a8140f5566083a9`
+- CI: https://github.com/marcelosofficial-ctrl/PocketCode-/actions/runs/42310308543, Ubuntu 24.04 / Python 3.12, **201 passed, 0 failed**.
+- FakeCoordinator now derives PASS/FAIL/INCOMPLETE via `execution_projection.py` from accepted attempt-bound lifecycle, direct-child exit and trusted program-failure observations. Caller-supplied verdict and lifecycle disposition must match the projection. Multiple same-kind observations and stale-fence terminal evidence fail closed to INCOMPLETE.
+- Terminal observations require a current unexpired dispatch lease; expired/reconciling attempts must use authoritative reconciliation. This remains a caller-constructible in-memory model, not cryptographic producer authentication.
+- Artifact release now binds to a receipt manifest, exact object version, attempt, principal/tenant, operation scope, authorization snapshot, expiry and revocation flag, and rechecks on every request. The authorization snapshot is still caller supplied, not an external policy decision.
+- Current receipt publication and artifact storage are in-memory; no durable transactions, actual mobile release, malware scanning or provider integration are established. Fetch live head and exact-SHA CI before relying on this checkpoint.
