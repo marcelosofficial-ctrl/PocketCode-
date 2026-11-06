@@ -94,7 +94,7 @@ Do not restart the Python session merely to inspect it.
 
 1. In More > Projects, create a new project named `PC-FIXED-SUCCESS-01`.
 2. Import the exact `main.py` and success `items-success.csv` into that project, then rename the imported CSV to `items.csv` using Files > … > Import File (or the iOS Files share-to-Pyodios flow).
-3. If files were imported through Files/iOS while the project was already open, follow the app's documented project-refresh behavior and reopen the project before execution if needed.
+3. If files were imported or copied while the project was already open, pull down in the Files list if the browser view is stale. Then reopen the project so the app copies those external additions into the Python session's working folder before the next execution.
 4. Confirm both filenames appear in the active project. Open `items.csv` and verify its header and two rows.
 5. Open `main.py` in Editor. Ensure no text is selected. Run the entire script once.
 6. Record the visible output and any status/diagnostic the app exposes.
