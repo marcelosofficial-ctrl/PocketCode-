@@ -520,3 +520,12 @@ RevDev's latest integration review found that newly imported runtime modules wer
 ## 2026-11-06 — RevDev CI closeout (process evidence only)
 
 RevDev Actions run #48 passed 91/91 at exact source/test head `935108a6937f15b76f75850ebdbe70c69000be32`. It includes tests for clean-installer module dependency closure and single-commit source pinning. No installer or PC/live runtime operation occurred. PocketCode should reuse the method of testing dependency closure and immutable multi-file source snapshots, not the RevDev code or acceptance. CASE-04 remains next.
+
+
+## 2026-11-06 — Pyodios saved-exception probe and handoff correction
+
+Deepened the bridge triage using exact Pyodide 314.0.5 source and Python 3.14 exception state. The triage note and device protocol now provide a read-only Console probe that checks `sys.last_exc` first (Python 3.14 preferred name), then legacy `sys.last_value`, and prints the traceback without rerunning the canonical script. Pyodide's versioned docs explicitly describe the original Python exception being retained in `sys.last_value`; Python 3.14 documents `sys.last_exc` as the preferred name. The probe may return no value if the editor exception did not reach the interactive interpreter's unhandled-exception hook; absence is not proof that no exception occurred.
+
+Corrected the 2026-11-06 handoff so its older generic instruction to run the canonical success fixture is explicitly superseded by the observed PythonError triage. Updated the chat entrypoint to point to the 2026-11-06 handoff. Immediate sequence remains: inspect existing `summary.json`; inspect timestamped Error Log; use saved-exception probe if needed; only then consider the guarded wrapper. No rerun, reset, GC, session restart or source mutation.
+
+Primary sources: https://pyodide.org/en/314.0.5/usage/type-conversions.html ; https://docs.python.org/3.14/library/sys.html ; https://pyodios.caffeinatedmath.com/guide/projects ; https://pyodios.caffeinatedmath.com/guide/settings .
