@@ -41,6 +41,7 @@ class FakeCoordinatorTests(unittest.TestCase):
             self.coordinator.reserve("effect-2", "attempt-2", "sha256:req2",
                                      b'{"op":2}', at_ms=11,
                                      crash_after_store_commit=True)
+        self.coordinator.claim("effect-2", "worker-A", now=12, lease_seconds=10)
         self.assertEqual(self.coordinator.repair_missing_reservation_event("effect-2"),
                          "accepted")
         self.assertEqual(self.coordinator.repair_missing_reservation_event("effect-2"),
