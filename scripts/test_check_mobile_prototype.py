@@ -78,18 +78,6 @@ def main():
         return 2
 
 
-    def test_rejects_changed_canonical_source(self):
-        html = VALID_HTML.replace("raise SystemExit(main())", "raise SystemExit(mainx())")
-        result = self.run_checker(html)
-        self.assertEqual(result.returncode, 1)
-        self.assertIn("frozen canonical SHA-256", result.stdout)
-
-    def test_rejects_changed_success_input(self):
-        html = VALID_HTML.replace("pen,3,1.25", "pen,4,1.25")
-        result = self.run_checker(html)
-        self.assertEqual(result.returncode, 1)
-        self.assertIn("canonical success fixture", result.stdout)
-
 if __name__ == "__main__":
     raise SystemExit(main())
 </code>
@@ -157,6 +145,18 @@ class PrototypeCheckerTests(unittest.TestCase):
         result = self.run_checker(html)
         self.assertEqual(result.returncode, 1)
         self.assertIn("Debugging prompt omits inputData.textContent", result.stdout)
+    def test_rejects_changed_canonical_source(self):
+        html = VALID_HTML.replace("raise SystemExit(main())", "raise SystemExit(mainx())")
+        result = self.run_checker(html)
+        self.assertEqual(result.returncode, 1)
+        self.assertIn("frozen canonical SHA-256", result.stdout)
+
+    def test_rejects_changed_success_input(self):
+        html = VALID_HTML.replace("pen,3,1.25", "pen,4,1.25")
+        result = self.run_checker(html)
+        self.assertEqual(result.returncode, 1)
+        self.assertIn("canonical success fixture", result.stdout)
+
 
 if __name__ == "__main__":
     unittest.main()
