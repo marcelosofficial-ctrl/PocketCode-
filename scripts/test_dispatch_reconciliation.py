@@ -192,10 +192,6 @@ class DispatchReconciliationTests(unittest.TestCase):
         self.assertEqual(got.action, "adopt_existing")
         self.assertFalse(got.reuse_idempotency_token)
 
-    def test_invalid_context_type_fails_closed(self):
-        got = decide_ambiguous_dispatch(None, None)
-        self.assertEqual(got.action, "conflict")
-
     def test_non_string_lookup_outcome_fails_closed(self):
         lookup = ProviderLookup(outcome=[])
         self.assertEqual(decide_ambiguous_dispatch(CTX, lookup).action, "hold_unknown")

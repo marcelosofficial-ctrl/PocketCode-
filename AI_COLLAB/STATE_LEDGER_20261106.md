@@ -161,5 +161,12 @@ Next task: owner runs only the read-only Pyodios sys.last_exc / sys.last_value C
 ## 2026-11-06 — P25 malformed-input guard
 
 - Added a string-type guard for ProviderLookup.outcome before set membership; malformed unhashable values now hold_unknown rather than raising TypeError.
-- Added regression cases for non-string lookup outcome and non-string dispatch state. Latest test file contains 35 test methods. Execution NOT RUN for this latest revision.
+- Added regression cases for non-string lookup outcome and non-string dispatch state. Latest test file contains 34 unique test methods. Execution NOT RUN for this latest revision.
 - Latest helper/test blobs: 165d141bc6ab47ad9d19d1ba537ab0e3e39aa16d and e65968cc2162dca8eb75d446e10eec06c0ab9220. Branch checkpoint pending.
+
+
+## P25 test-file deduplication correction
+
+- Final source review found the same test method name was defined twice in the expanded dispatch suite. Python unittest would silently replace the earlier method in the class namespace, so a regex-based method count overstated unique coverage.
+- Removed the duplicate definition. The final test file now has 34 test methods and 34 unique method names. The 34-case suite remains NOT RUN after this correction.
+- Final test blob: 7bcfa95c5a077b3a5d31825f0db73f593ac4d6a9. This supersedes the earlier P25 test blob SHA.

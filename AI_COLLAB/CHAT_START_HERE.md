@@ -257,4 +257,7 @@ Each pass has one objective, bounded scope, expected result, evidence requiremen
 A third safety issue was found: even an authenticated provider lookup can be eventually consistent, so not_found is not automatically proof of non-acceptance. The helper now requires a separate absence_final assertion from a trusted, provider-specific adapter before a same-attempt retry. Stripe API v1/v2 retry semantics differ, and AWS EC2 idempotency is operation- and region/zone-scoped. See section 19 of the research packet and section 15 of the contract. Latest source/test Git objects are not yet committed; fetch live branch and verify before use.
 
 
-**P25 latest source revision:** helper and tests now also fail closed on non-string lookup outcomes and non-string state values. Exact source/test blobs: 165d141bc6ab47ad9d19d1ba537ab0e3e39aa16d and e65968cc2162dca8eb75d446e10eec06c0ab9220. The 35-case revision has not been executed; do not treat it as tested.
+**P25 latest source revision:** helper and tests now also fail closed on non-string lookup outcomes and non-string state values. Exact source/test blobs: 165d141bc6ab47ad9d19d1ba537ab0e3e39aa16d and e65968cc2162dca8eb75d446e10eec06c0ab9220. The 34-case revision has not been executed; do not treat it as tested.
+
+
+**P25 test correction:** duplicate method-name review reduced the dispatch suite to 34 unique tests. Latest test blob 7bcfa95c5a077b3a5d31825f0db73f593ac4d6a9; 34-case suite NOT RUN.

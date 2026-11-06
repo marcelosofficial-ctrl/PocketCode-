@@ -230,7 +230,7 @@ This pure helper does not send requests, create IDs, persist an outbox, or claim
 
 The provider token is optional for lookup-based reconciliation. It is required for token-based replay. A same-scope authoritative lookup is still required before an absent result may be used to retry. A non-authoritative "found" or "not found" response cannot cause adoption or redispatch.
 
-The original 28-case suite validated the first decision-kernel version only. The red-team-expanded 33-case suite additionally covers tokenless result metadata, malformed context, and eventually consistent absence. It does not validate provider response authentication, actual provider consistency, request-body storage, transactional atomicity, retry timing, race/fencing behavior or durable state transitions. Do not wire this helper to a live provider until those mechanisms exist and have separate tests.
+The original 28-case suite validated the first decision-kernel version only. The red-team-expanded 34-case suite additionally covers tokenless result metadata, malformed context, and eventually consistent absence. It does not validate provider response authentication, actual provider consistency, request-body storage, transactional atomicity, retry timing, race/fencing behavior or durable state transitions. Do not wire this helper to a live provider until those mechanisms exist and have separate tests.
 
 
 ## 15. Provider absence and idempotency are distinct proofs

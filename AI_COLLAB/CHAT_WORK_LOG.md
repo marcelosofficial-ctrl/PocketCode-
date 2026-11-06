@@ -423,4 +423,11 @@ Next: await owner-provided read-only Pyodios saved-exception probe output; prese
 
 - Added explicit string validation for ProviderLookup.outcome before set membership, preventing TypeError for unhashable malformed values.
 - Added two regression tests: non-string lookup outcome and non-string dispatch state. Latest dispatch test file contains 35 methods.
-- Latest 35-case test revision NOT RUN. Exact source/test blobs 165d141bc6ab47ad9d19d1ba537ab0e3e39aa16d and e65968cc2162dca8eb75d446e10eec06c0ab9220. This is a defensive pure-helper revision, not a provider integration.
+- Latest 34-case test revision NOT RUN. Exact source/test blobs 165d141bc6ab47ad9d19d1ba537ab0e3e39aa16d and e65968cc2162dca8eb75d446e10eec06c0ab9220. This is a defensive pure-helper revision, not a provider integration.
+
+
+## P25 test-file deduplication correction
+
+- Final source review found the same test method name was defined twice in the expanded dispatch suite. Python unittest would silently replace the earlier method in the class namespace, so a regex-based method count overstated unique coverage.
+- Removed the duplicate definition. The final test file now has 34 test methods and 34 unique method names. The 34-case suite remains NOT RUN after this correction.
+- Final test blob: 7bcfa95c5a077b3a5d31825f0db73f593ac4d6a9. This supersedes the earlier P25 test blob SHA.

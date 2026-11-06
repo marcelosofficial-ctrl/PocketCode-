@@ -429,4 +429,4 @@ The first gate protects PocketCode's own intent and recovery. The second constra
 
 ### Additional malformed-input correction
 
-The dispatch helper now type-checks provider lookup outcome before comparing it to the known string set. Without this guard, an unhashable malformed outcome (for example a list) could raise TypeError rather than fail closed. The expanded test file has 35 test methods, including malformed lookup outcome and non-string state. The 35-case revision has NOT RUN; prior pass counts do not apply to it.
+The dispatch helper now type-checks provider lookup outcome before comparing it to the known string set. Without this guard, an unhashable malformed outcome (for example a list) could raise TypeError rather than fail closed. The expanded test file has 34 unique test methods, including malformed lookup outcome and non-string state. The 34-case revision has NOT RUN; prior pass counts do not apply to it.
