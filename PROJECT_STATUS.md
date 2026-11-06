@@ -548,3 +548,12 @@ RevDev's 91-case installer-aware CI pass revealed that runtime dependency closur
 ## 2026-11-06 — RevDev installer rollback CI closeout (method only)
 
 RevDev run #49 passed 93/93 at exact source/test SHA a6defbb0e8b0902e8ecc20777d0a10dc25ae344b. This covers the installation-marker rollback fix, but not a real installer execution or live product runtime. PocketCode may reuse the test-design principle only. No code or acceptance transfers. Continue PocketCode CASE-04 independently.
+
+
+## 2026-11-06 — Continuity operating method update
+
+PocketCode adopts the multi-month/multi-chat workflow as a first-class process goal. The owner should not need to request a handoff from an exhausted chat. Maintain the live `AI_COLLAB/CHAT_START_HERE.md`, append `AI_COLLAB/CHAT_WORK_LOG.md`, and use dated detailed handoffs only for substantive transitions. Checkpoint every 2–3 meaningful passes and after source/test/review/decision events. Rotate early. New chats verify live branch/PR/CI state and read only task-specific canonical docs. Tool failures require re-fetch and recovery; every substantial user turn receives a visible result and exact next step.
+
+See `AI_COLLAB/REVDEV_CONTINUITY_UPDATE_20261106.md` for the forwardable message, three-AI collaboration roles, operational practices and method-only RevDev CI lessons. No RevDev implementation, architecture, runtime, acceptance, or security boundary transfers to PocketCode.
+
+PocketCode constraints and immediate priorities are unchanged: phone-first iOS/Android, $0 default, no PC requirement, no runtime/provider selected, explicit paste-to-context, no clipboard polling/overlays, preserve LOOP/CASE/D semantics and PR #2/#3. CASE-04 provenance remains priority. Pyodios artifact-level functional success is preserved; bridge error unresolved; full run inconclusive. Next diagnostic is read-only sys.last_exc/sys.last_value. Do not rerun or overwrite the successful project.
