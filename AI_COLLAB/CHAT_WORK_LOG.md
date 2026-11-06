@@ -81,3 +81,10 @@ PocketCode can reuse the test technique, not the code: place its own provider/ex
 ## 2026-11-06 — RevDev fake-process test result (process lesson only)
 
 RevDev run #21 `42133707971` is now verified **34/34 passed, 0 failed, 0 skipped** on Windows PowerShell 5.1 / Pester 5.7.1 at `65d9b95ed346c42ed22bd920d70cb4e5c4429a26`: https://github.com/marcelosofficial-ctrl/DevRelay-Missions/actions/runs/42133707971. This supersedes the earlier pending status. PocketCode impact is methodology only: use controlled fake adapters for deterministic failure-path tests, but no RevDev code or acceptance transfer. CASE-04 remains next.
+
+
+## 2026-11-06 — PC-2026-11-06-P07 — Exact-SHA CI evidence and regression recovery
+
+RevDev process integration initially passed 34/34 at run #21. A subsequent hardening pass surfaced a genuine PowerShell automatic-variable scoping defect when a function-local sentinel shadowed the global `$LASTEXITCODE` written by a native process. The source fix now uses a global sentinel/read and restores the previous global value; Pester also asserts restoration. Commits: transport `94b552a56653a18504ee0291152634a7dabdda02`; tests `264692600e589c4a8fd3198e1ab930da80e5b4f0`. Run #26/#27 were pending/in progress at last observation. This is RevDev-only and must not be reported as PocketCode test evidence.
+
+**Process improvement:** every chat handoff must pin current branch head and exact test-run SHA, query Actions runs/jobs/logs directly when connector summaries are incomplete, preserve failures as useful evidence, and never let a previous green run stand in for a later revision. End every meaningful pass with a GitHub checkpoint and a user-facing result/status. Chat rotation is triggered by meaningful milestones or early context pressure, not by waiting until a conversation is full.

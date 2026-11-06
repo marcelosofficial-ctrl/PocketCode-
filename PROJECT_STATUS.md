@@ -425,3 +425,10 @@ PocketCode remains independent. Its next implementation priority is CASE-04 time
 ## 2026-11-06 — RevDev fake-process test result (process lesson only)
 
 RevDev's fake native-process transport harness passed run #21, **34/34** on Windows PowerShell 5.1 / Pester 5.7.1 at commit `65d9b95ed346c42ed22bd920d70cb4e5c4429a26`: https://github.com/marcelosofficial-ctrl/DevRelay-Missions/actions/runs/42133707971. The transferable process lesson is to exercise real process boundaries with controlled fakes, without live network or external writes. This is not PocketCode implementation or acceptance. PocketCode's CASE-04 timeout/report-contract correction remains its immediate next task.
+
+
+## 2026-11-06 — Cross-project process update: exact-SHA CI and no-silent-stop
+
+RevDev's current process-harness hardening caught a PowerShell module/global automatic-variable issue after the earlier 34/34 success. The fix is committed, but run #26/#27 were pending/in progress at last observation. This is an example of the desired workflow: use exact-SHA CI evidence, inspect logs, fix regressions, and preserve the distinction between earlier green and current unverified code. PocketCode may adopt this work discipline, not RevDev implementation. For PocketCode, inspect CASE-04 and its own CI independently.
+
+Each project chat should checkpoint GitHub after every meaningful pass, refresh its start page/work log, state exact head SHA and verification status, and rotate before context exhaustion. If a tool call fails, recover from last confirmed GitHub state and provide a concise result rather than silently stopping.

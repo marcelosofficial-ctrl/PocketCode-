@@ -125,3 +125,12 @@ PocketCode process lesson: apply deterministic fake adapters at PocketCode's own
 ## 2026-11-06 — RevDev fake-process test result (process lesson only)
 
 RevDev run #21 (`42133707971`) has now completed successfully: **34/34 passed, 0 failed, 0 skipped**, Windows PowerShell 5.1 / Pester 5.7.1, exact test commit `65d9b95ed346c42ed22bd920d70cb4e5c4429a26`. Exact run: https://github.com/marcelosofficial-ctrl/DevRelay-Missions/actions/runs/42133707971. This is RevDev-only test evidence. PocketCode may reuse the method of deterministic fake adapters/processes for timeout, cancellation, partial output, collector and teardown degradation, but must preserve its own CASE/LOOP/D acceptance and no-runtime-selection decision. CASE-04 remains PocketCode's next implementation task.
+
+
+## 2026-11-06 — RevDev CI scoping regression and continuity lesson
+
+After the successful RevDev process-harness run #21 (34/34 at `65d9b95ed346c42ed22bd920d70cb4e5c4429a26`), the next hardening pass added a fail-closed missing-executable check and unknown-exit handling. Windows CI then exposed a PowerShell module-scope issue: native child-process completion updates the global automatic variable `$LASTEXITCODE`, while a function-local sentinel can shadow it. The correction now sets/reads/restores `$global:LASTEXITCODE`, and a test asserts that the caller's prior global value is restored. Exact correction commits: transport `94b552a56653a18504ee0291152634a7dabdda02`, test `264692600e589c4a8fd3198e1ab930da80e5b4f0`. Runs #26/#27 were pending/in progress at last observation. Re-fetch before quoting a result; do not treat run #21's 34/34 as validation of these later changes.
+
+**Transferable workflow lesson:** keep test evidence pinned to exact commit SHA, read the job logs for failures, and distinguish old-green from current-head-green. A new test that catches a real boundary defect is useful progress, even when the first CI run fails. Record the regression, exact fix, and current verification status in GitHub before rotating chats. Avoid silent stops: finish each pass with a durable checkpoint, explicit NOT RUN/BLOCKED/IN_PROGRESS status, and a concise user-facing summary.
+
+PocketCode remains independent. Reuse only this testing/continuity method, not RevDev's PowerShell implementation or acceptance evidence. CASE-04 remains the immediate PocketCode task.
