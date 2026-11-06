@@ -28,6 +28,7 @@ class DispatchContext:
 class ProviderLookup:
     outcome: str  # found, not_found, unknown
     authoritative: bool = False
+    absence_final: bool = False
     effect_id: Optional[str] = None
     attempt_id: Optional[str] = None
     request_fingerprint: Optional[str] = None
@@ -72,15 +73,15 @@ def _valid_context(context: DispatchContext) -> bool:
     )
     token_valid = (context.idempotency_token is None or
                    (isinstance(context.idempotency_token, str) and bool(context.idempotency_token.strip())))
-    return all(isinstance(v, str) and bool(v.strip()) for v in required) and token_valid and context.state in {
+    return all(isinstance(v, str) and bool(v.strip()) for v in required) and token_valid and isinstance(context.state, str) and context.state in {
         "reserved", "sent_unacknowledged", "acknowledged", "running", "terminal"
     }
 
 
-def _decision(action: str, reason: str) -> DispatchDecision:
-    # Every branch preserves the reserved semantic operation identity and exact
-    # request. A human-authorized new execution is a different operation.
-    return DispatchDecision(action, reason, True, True, True, True)
+def _decision(action: str, reason: str, context: Optional[DispatchContext] = None) -> DispatchDecision:
+    # Preserve operation identity. Only claim token reuse when one exists.
+    token_present = isinstance(context, DispatchContext) and isinstance(context.idempotency_token, str) and bool(context.idempotency_token.strip())
+    return DispatchDecision(action, reason, True, True, True, token_present)
 
 
 def _contract_matches(context: DispatchContext, contract: Optional[IdempotencyContract]) -> bool:
@@ -113,26 +114,26 @@ def decide_ambiguous_dispatch(
     poll_existing, hold_unknown, conflict, do_not_replay.
     """
     if not isinstance(context, DispatchContext) or not _valid_context(context):
-        return _decision("conflict", "dispatch_context_invalid")
+        return _decision("conflict", "dispatch_context_invalid", context)
 
     if context.state == "reserved":
         if lookup is not None:
-            return _decision("conflict", "lookup_supplied_before_any_dispatch")
-        return _decision("dispatch_first", "reserved_before_first_send")
+            return _decision("conflict", "lookup_supplied_before_any_dispatch", context)
+        return _decision("dispatch_first", "reserved_before_first_send", context)
 
     if context.state in {"acknowledged", "running"}:
-        return _decision("poll_existing", "provider_acknowledgement_already_recorded")
+        return _decision("poll_existing", "provider_acknowledgement_already_recorded", context)
 
     if context.state == "terminal":
-        return _decision("do_not_replay", "attempt_already_terminal_new_attempt_requires_new_authorization")
+        return _decision("do_not_replay", "attempt_already_terminal_new_attempt_requires_new_authorization", context)
 
     if lookup is not None:
         if not isinstance(lookup, ProviderLookup) or lookup.outcome not in {"found", "not_found", "unknown"}:
-            return _decision("hold_unknown", "provider_lookup_invalid")
+            return _decision("hold_unknown", "provider_lookup_invalid", context)
 
         if lookup.outcome in {"found", "not_found"}:
             if lookup.authoritative is not True:
-                return _decision("hold_unknown", "provider_lookup_not_authoritative")
+                return _decision("hold_unknown", "provider_lookup_not_authoritative", context)
             expected = (
                 lookup.effect_id == context.effect_id,
                 lookup.attempt_id == context.attempt_id,
@@ -145,16 +146,18 @@ def decide_ambiguous_dispatch(
                 lookup.region_scope == context.region_scope,
             )
             if not all(expected):
-                return _decision("conflict", "provider_lookup_identity_or_request_mismatch")
+                return _decision("conflict", "provider_lookup_identity_or_request_mismatch", context)
             if lookup.outcome == "found":
-                return _decision("adopt_existing", "authoritative_lookup_matches_exact_effect_attempt_and_request")
-            return _decision("retry_same_attempt", "authoritative_non_acceptance_allows_same_attempt_retry")
+                return _decision("adopt_existing", "authoritative_lookup_matches_exact_effect_attempt_and_request", context)
+            if lookup.absence_final is not True:
+                return _decision("hold_unknown", "provider_absence_not_proven_final_under_consistency_contract", context)
+            return _decision("retry_same_attempt", "authoritative_final_non_acceptance_allows_same_attempt_retry", context)
 
     if _contract_matches(context, contract):
-        return _decision("retry_same_attempt", "documented_exact_scope_idempotency_allows_same_request_replay")
+        return _decision("retry_same_attempt", "documented_exact_scope_idempotency_allows_same_request_replay", context)
 
     if lookup is None:
-        return _decision("hold_unknown", "ambiguous_acknowledgement_without_lookup_or_exact_idempotency_contract")
+        return _decision("hold_unknown", "ambiguous_acknowledgement_without_lookup_or_exact_idempotency_contract", context)
     if lookup.outcome == "not_found":
-        return _decision("hold_unknown", "non_authoritative_not_found_does_not_prove_non_acceptance")
-    return _decision("hold_unknown", "lookup_unknown_and_no_exact_idempotency_contract")
+        return _decision("hold_unknown", "non_authoritative_not_found_does_not_prove_non_acceptance", context)
+    return _decision("hold_unknown", "lookup_unknown_and_no_exact_idempotency_contract", context)

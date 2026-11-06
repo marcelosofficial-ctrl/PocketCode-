@@ -230,4 +230,13 @@ This pure helper does not send requests, create IDs, persist an outbox, or claim
 
 The provider token is optional for lookup-based reconciliation. It is required for token-based replay. A same-scope authoritative lookup is still required before an absent result may be used to retry. A non-authoritative "found" or "not found" response cannot cause adoption or redispatch.
 
-The 28-case local suite validates this decision kernel only. It does not validate provider response authentication, actual provider consistency, request-body storage, transactional atomicity, retry timing, race/fencing behavior or durable state transitions. Do not wire this helper to a live provider until those mechanisms exist and have separate tests.
+The original 28-case suite validated the first decision-kernel version only. The red-team-expanded 33-case suite additionally covers tokenless result metadata, malformed context, and eventually consistent absence. It does not validate provider response authentication, actual provider consistency, request-body storage, transactional atomicity, retry timing, race/fencing behavior or durable state transitions. Do not wire this helper to a live provider until those mechanisms exist and have separate tests.
+
+
+## 15. Provider absence and idempotency are distinct proofs
+
+A provider lookup returning "not found" is not, by itself, proof that a prior request was never accepted. The lookup may be eventually consistent, scoped differently from the mutation, or omit in-flight/partially accepted work. The dispatch helper now models absence_final separately from authoritative: only an adapter that has verified the provider's documented final-absence semantics for the exact operation, endpoint, account, region/zone, attempt and request may set it true. Otherwise the safe decision is hold_unknown.
+
+Likewise, an idempotency contract is not one generic boolean. It must be pinned per provider API operation and version, including the exact key scope, request-parameter comparison, concurrency behavior, when the provider begins retaining a result, and retention/pruning behavior. Provider API versions can have materially different semantics. For example, Stripe's current documentation distinguishes API v1 (replay of the first saved status/body, including 500, with keys eligible for pruning after at least 24 hours) from API v2 (different retry behavior for successful versus failed/partially failed operations). This is why the model includes provider and API version and why adapter-specific contract tests are mandatory.
+
+The authoritative, absence_final, and idempotency-contract fields are not cryptographic proofs. They are claims made by the trusted adapter after authentication and source verification. The current pure helper cannot authenticate them and must not be exposed as an authorization boundary.

@@ -384,3 +384,44 @@ The model binds lookup/capability to effect ID, attempt ID, exact request finger
 Red-team found and fixed two defects before commit: non-authoritative "found" responses could initially be adopted; an authoritative "not found" could initially authorize retry without matching request and provider scope. The helper now holds the first case as UNKNOWN and conflicts on mismatched authoritative scope. The test suite additionally checks absent provider token cannot authorize token-based replay.
 
 Verification: 28 local tests passed under CPython 3.13.5 and both files compiled. This is not a provider adapter, persistent outbox, network test or exactly-once guarantee. The adapter must authenticate responses and read the original immutable payload from durable state before using this decision kernel.
+
+
+## 19. Provider-specific retry semantics and final-absence proof — 2026-11-06
+
+### Primary-source findings
+
+**VERIFIED — Stripe API idempotency docs opened 2026-11-06.** API v1 stores the first status/body after endpoint execution begins, including 500 responses; keys may be pruned after at least 24 hours; parameter mismatch is rejected. Validation failures and concurrent conflicts before endpoint execution begins are not stored. API v2 has materially different semantics: successful operations are not repeated, failed/partially failed work may be retried to completion when possible, and response behavior differs. Therefore "same key = same response forever" and a provider-neutral generic retry boolean are both wrong. Source: https://docs.stripe.com/api/idempotent_requests
+
+**VERIFIED — AWS EC2 idempotency docs opened 2026-11-06.** Client-token semantics are operation-specific; token reuse with changed parameters can raise IdempotentParameterMismatch; idempotency may be regional or zonal, and the same token can have a different effect in a different Region or Availability Zone. A single provider-wide key namespace is not safe. Source: https://docs.aws.amazon.com/ec2/latest/devguide/ec2-api-idempotency.html
+
+**VERIFIED — Google AIP-155 opened 2026-11-06.** The API contract must state that request IDs guarantee idempotency and may define a reasonable honoring timeframe. Duplicate calls can return a stale or current resource representation rather than byte-identical historical output. This reinforces that reconciliation should compare stable resource/effect identity, not assume the response body is immutable. Source: https://google.aip.dev/155
+
+**VERIFIED — AWS transactional outbox guidance opened 2026-11-06.** Outbox intent and domain state must be committed in one local transaction; duplicate downstream delivery remains possible and consumers must be idempotent; ordering matters; a rollback must not publish an event. The outbox closes a local dual-write gap, not the provider-side exactly-once gap. Source: https://docs.aws.amazon.com/prescriptive-guidance/latest/cloud-design-patterns/transactional-outbox.html
+
+**VERIFIED — Temporal retry policy opened 2026-11-06.** Activity work is retry-oriented and non-deterministic side effects belong in Activities, while Workflow replay must remain deterministic. Temporal is a useful model for separating deterministic orchestration from retried side effects, but it does not remove the need for idempotent Activities or provider-specific reconciliation. Source: https://docs.temporal.io/encyclopedia/retry-policies
+
+**VERIFIED — Python 3.14 subprocess docs opened 2026-11-06.** The official page explicitly lists subprocess as unsupported on Android, iOS and WASI; it also documents negative POSIX return codes for signal termination and shell-mode return codes representing the shell rather than necessarily the underlying child. This independently confirms that a mobile embedded Python interpreter must not be represented as a native child-process runner. Source: https://docs.python.org/3.14/library/subprocess.html
+
+**VERIFIED — Apple UIKit background docs surfaced and search result opened.** Apple describes short background transition time, suspension and optional extension through a background task assertion. Background assertions are bounded and may terminate on expiration; they are not a durable execution guarantee. The opened web view required JavaScript, so the exact page body was not fully readable here. Sources: https://developer.apple.com/documentation/uikit/extending-your-app-s-background-execution-time and https://developer.apple.com/documentation/uikit/preparing-your-ui-to-run-in-the-background
+
+**VERIFIED — CloudEvents current repository spec opened 2026-11-06.** The current main-branch document labels itself Version 1.0.3-wip, not a final released 1.0.3. It defines producer/source context and requires source + id uniqueness for distinct events. Keep this version-status distinction in research notes; do not call the work-in-progress draft a released standard. Source: https://github.com/cloudevents/spec/blob/main/cloudevents/spec.md
+
+### New red-team corrections to the dispatch helper
+
+1. Token reuse metadata was overstated. Earlier decision objects claimed token reuse even when the context had no token. The helper now reports the flag from the actual immutable context.
+2. Malformed context/state could throw. Non-string state values are rejected before set membership; malformed context types return conflict rather than raising.
+3. An authoritative not_found was too permissive. Eventual consistency can make absence inconclusive. The helper now requires a separate absence_final=True assertion in addition to authoritative=True and exact matching of effect, attempt, request fingerprint, endpoint, account, token, provider, API version and region. This is still an adapter claim, not proof produced by the pure helper.
+4. Provider idempotency was at risk of over-generalization. Stripe v1 and v2 differ; AWS EC2 has operation-specific regional/zonal scope. A provider adapter must pin exact endpoint + API version + key scope + retention + mismatch behavior and test it. Do not reuse one provider capability across operations.
+5. The outbox could be misread as exactly-once delivery. AWS explicitly warns duplicate messages can occur. PocketCode needs an atomic local intent/outbox transaction plus idempotent delivery and consumer-side event deduplication, while still reconciling remote side effects.
+
+### Revised dispatch helper status
+
+The working-tree patch adds ProviderLookup.absence_final, token-accurate decision metadata and fail-closed context validation. The expanded tests cover eventual-consistency not-found, tokenless lookup and malformed context. GitHub blob SHAs were created for source 6760b3301e818956f71fdf02e369407e3b5cdaf7 and tests f1949ebcfd525c5715af7fd9e022d5d35f8f1063; these are Git objects only until included in a branch commit and read back. Test count in the expanded file is 33. Do not claim this new version passed execution unless rerun in the exact runtime.
+
+### Architecture decision update
+
+Keep a two-layer retry gate:
+- Local outbox gate: atomic persistence of immutable command/effect identity, exact request bytes/fingerprint, DispatchAttemptId, dispatch state, fencing token and durable event sequence.
+- Provider capability gate: exact operation-specific idempotency or authoritative-final-absence proof. If neither is available, stop at hold_unknown and require reconciliation or owner decision.
+
+The first gate protects PocketCode's own intent and recovery. The second constrains external side effects. Neither gate substitutes for the other.

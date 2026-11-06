@@ -36,7 +36,7 @@ def found(**changes):
 
 
 def authoritative_not_found(**changes):
-    values = dict(outcome="not_found", authoritative=True, effect_id=CTX.effect_id,
+    values = dict(outcome="not_found", authoritative=True, absence_final=True, effect_id=CTX.effect_id,
                   attempt_id=CTX.attempt_id, request_fingerprint=CTX.request_fingerprint,
                   endpoint=CTX.endpoint, account_scope=CTX.account_scope,
                   idempotency_token=CTX.idempotency_token, provider_id=CTX.provider_id,
@@ -150,7 +150,9 @@ class DispatchReconciliationTests(unittest.TestCase):
                               CTX.account_scope, None, CTX.provider_id, CTX.api_version,
                               CTX.region_scope, "sent_unacknowledged")
         exact = found(idempotency_token=None)
-        self.assertEqual(decide_ambiguous_dispatch(ctx, exact).action, "adopt_existing")
+        got = decide_ambiguous_dispatch(ctx, exact)
+        self.assertEqual(got.action, "adopt_existing")
+        self.assertFalse(got.reuse_idempotency_token)
 
     def test_missing_provider_token_cannot_use_token_based_replay_contract(self):
         ctx = DispatchContext(CTX.effect_id, CTX.attempt_id, CTX.request_fingerprint, CTX.endpoint,
@@ -162,6 +164,37 @@ class DispatchReconciliationTests(unittest.TestCase):
         class BadLookup:
             outcome = "found"
         self.assertEqual(decide_ambiguous_dispatch(CTX, BadLookup()).action, "hold_unknown")
+
+
+    def test_invalid_context_type_fails_closed(self):
+        got = decide_ambiguous_dispatch(None, None)
+        self.assertEqual(got.action, "conflict")
+        self.assertFalse(got.reuse_idempotency_token)
+
+    def test_missing_token_does_not_claim_token_reuse(self):
+        ctx = DispatchContext(CTX.effect_id, CTX.attempt_id, CTX.request_fingerprint, CTX.endpoint,
+                              CTX.account_scope, None, CTX.provider_id, CTX.api_version,
+                              CTX.region_scope, "sent_unacknowledged")
+        got = decide_ambiguous_dispatch(ctx, ProviderLookup("unknown"))
+        self.assertEqual(got.action, "hold_unknown")
+        self.assertFalse(got.reuse_idempotency_token)
+
+    def test_eventually_consistent_not_found_does_not_authorize_retry(self):
+        lookup = authoritative_not_found(absence_final=False)
+        self.assertEqual(decide_ambiguous_dispatch(CTX, lookup).action, "hold_unknown")
+
+    def test_tokenless_lookup_does_not_claim_token_reuse(self):
+        ctx = DispatchContext(CTX.effect_id, CTX.attempt_id, CTX.request_fingerprint, CTX.endpoint,
+                              CTX.account_scope, None, CTX.provider_id, CTX.api_version,
+                              CTX.region_scope, "sent_unacknowledged")
+        lookup = found(idempotency_token=None)
+        got = decide_ambiguous_dispatch(ctx, lookup)
+        self.assertEqual(got.action, "adopt_existing")
+        self.assertFalse(got.reuse_idempotency_token)
+
+    def test_invalid_context_type_fails_closed(self):
+        got = decide_ambiguous_dispatch(None, None)
+        self.assertEqual(got.action, "conflict")
 
 
 if __name__ == "__main__":

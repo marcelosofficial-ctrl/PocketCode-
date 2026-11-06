@@ -408,3 +408,12 @@ Next: await owner-provided read-only Pyodios saved-exception probe output; prese
 - PR #2 and #3 remain OPEN/DRAFT at their original head SHAs. No merge, PR mutation, deployment, provider workload or account was created.
 - Branch compare at source commit: 843 ahead / 0 behind main; merge base unchanged. Ahead count reflects branch-history divergence.
 - Next work: fake durable store/outbox model for crash/recovery/fencing; then authenticate observation producers and integrate only after exact test + source review.
+
+
+## 2026-11-06 — PC-2026-11-06-P25 — Provider-finality and API-specific idempotency correction
+
+- Additional red-team correction: authoritative=True alone is not enough to treat provider not-found as proof of non-acceptance. Added separate absence_final condition; only a trusted adapter may assert it from documented provider consistency/coverage semantics.
+- Research section 19 records primary-source differences: Stripe API v1/v2 idempotency semantics, AWS EC2 operation/regional/zonal token scope, Google AIP-155 response/timeframe guidance, AWS transactional outbox duplicate delivery, Temporal retry boundaries, Python 3.14 mobile/WASI subprocess unsupported, Apple background suspension limits and CloudEvents main-branch 1.0.3-wip status.
+- Latest helper/test Git objects are source 6760b3301e818956f71fdf02e369407e3b5cdaf7 and tests f1949ebcfd525c5715af7fd9e022d5d35f8f1063 (33 test methods). Branch commit and read-back pending.
+- The 33-case expanded suite was NOT RUN. Previous 61/61 applies only to earlier code; do not claim it for this revision.
+- Architecture: local atomic outbox and provider idempotency/final-absence are independent gates. If neither provider proof exists, remain hold_unknown.

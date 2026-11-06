@@ -147,3 +147,12 @@ Next task: owner runs only the read-only Pyodios sys.last_exc / sys.last_value C
 - Exact-head verification: zero Actions runs, zero check-runs, combined commit status pending (no individual statuses). PR #2/#3 remain OPEN/DRAFT at original head SHAs eb8b7ea83cb0e8fe1880351276c485b761431791 and 0ddcc0bc97bac5d446aefedf3d71f99411bd841d.
 - Branch compare at dispatch source commit: 843 ahead / 0 behind main, merge base 555840d8d83342513d9cd353d4d1522d46a5c82d. Ahead count is history divergence, not product progress.
 - Next read first: this entrypoint, then EXECUTION_EVIDENCE_AND_RECOVERY_CONTRACT_20261106.md; inspect dispatch_reconciliation.py and its tests, then plan fake-store/outbox crash/fencing cases. Fetch live branch/PR/CI state before further edits.
+
+
+## 2026-11-06 — P25 extended dispatch red-team
+
+- Further correction: authoritative=True alone does not make not-found final. Eventual consistency or incomplete lookup coverage may hide an accepted/in-flight effect. The helper now requires separate absence_final=True before it may choose retry_same_attempt from a not-found response.
+- Provider idempotency must be exact-operation/API-version scoped. Stripe API v1 and v2 semantics differ; AWS EC2 supports operation-specific token behavior with regional/zonal scopes. See research section 19.
+- Latest helper/test Git objects: source 6760b3301e818956f71fdf02e369407e3b5cdaf7; tests f1949ebcfd525c5715af7fd9e022d5d35f8f1063 (33 test methods). They are not branch-durable until committed and read back.
+- Local test execution of this expanded 33-case revision is NOT RUN in this pass. Previous 61/61 claim applies only to the earlier 30-case dispatch revision and must not be carried forward to this changed code.
+- No runtime/provider/database selection, PR mutation, merge, deployment, budget or canonical ID change.
