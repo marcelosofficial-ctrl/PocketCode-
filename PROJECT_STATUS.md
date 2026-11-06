@@ -511,3 +511,7 @@ Pyodide 314.0.5 documents Python exceptions crossing the JavaScript boundary as 
 The current start-page instruction to reorder `classify_verdict()` is superseded by `AI_COLLAB/VERDICT_EVIDENCE_EXIT_PROVENANCE_MATRIX_20261105.md`: generic exit code may be child exit, wrapper exit, forced termination, stale or contradictory. Resolve typed provenance and termination evidence at the coordinator boundary first. Preserve canonical CASE-04 as INCOMPLETE / timed_out; no formatter patch is made in this pass.
 
 No product source, canonical fixture, LOOP/CASE/D suite, provider/runtime selection, PR #2/#3, Actions, merge, deployment, account or budget changed. $0 default remains.
+
+## 2026-11-06 — Cross-project installer lesson
+
+RevDev's latest integration review found that newly imported runtime modules were absent from its clean installer. Its review branch is adding dependency staging, fail-closed pre-existing-file checks, backup/rollback, self-test verification and one pinned source commit. The exact 91-case CI run was pending. PocketCode may reuse the process lesson: every runtime dependency must be traced through packaging/install/update/rollback, and a multi-file installation should fetch from one immutable source revision. Do not copy RevDev scripts or treat its CI as PocketCode proof. CASE-04 remains next.
