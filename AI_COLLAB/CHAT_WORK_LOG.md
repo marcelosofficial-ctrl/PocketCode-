@@ -193,3 +193,13 @@ Navigation verified against current Pyodios iPhone docs: More → Settings → E
 Correction to the preceding red-team note: it was wrong to say pull-to-refresh was unsupported. The Pyodios Files guide explicitly documents pull-down to refresh the Files browser list after external changes. The Projects guide separately says external file additions are not visible to Python until the project is reopened. These are distinct layers: refresh the Files list if that view is stale, then reopen the project to refresh the Python session's working-folder copy. The device protocol and triage note now state this distinction. Sources: https://pyodios.caffeinatedmath.com/guide/files and https://pyodios.caffeinatedmath.com/guide/projects.
 
 The canonical task attempt remains preserved. Inspect `summary.json`, then the Error Log and saved exception before another run. On iPhone the documented navigation is More → Settings → Error Log → View Error Log; the main triage note has the corrected path and privacy warning.
+
+## 2026-11-06 — PC-2026-11-06-P13 — Pyodios artifact-level success confirmed
+
+Owner inspected the existing Pyodios project Files tab after the Editor displayed `[Bridge/executePython] PythonError`. `summary.json` exists and exactly matches the canonical oracle: grand total `10.75`, 2 line items, notebook total `7.00`, pen total `3.75`.
+
+**Finding:** execution produced the correct artifact. The bridge error remains unexplained. Revised classification: artifact-level functional success (owner-inspected) / bridge error unresolved / full run inconclusive. This supersedes the earlier UNKNOWN artifact outcome. No claim of trusted child exit status, stderr capture, export/read-back, relaunch persistence or PocketCode acceptance.
+
+**Actions:** updated the Pyodios triage note, device protocol, new-chat handoff, project status and chat start page. Preserved canonical fixture and existing artifact. No rerun, overwrite, product source/test/schema/acceptance change, runtime/provider selection, PR change, merge or deployment.
+
+**Next:** owner inspects the timestamped Pyodios Error Log and shares only the redacted exception/traceback. If unhelpful, use the read-only `sys.last_exc` / `sys.last_value` probe. Do not rerun or overwrite the success project. Once diagnostic evidence is captured, test malformed input in a separate fresh project. `SystemExit` remains a hypothesis, not a confirmed root cause.
