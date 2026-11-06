@@ -102,3 +102,12 @@ Finish the fake end-to-end recovery-to-receipt-to-artifact publication conforman
 ### Terminal verdict gate
 
 The current FakeCoordinator receipt builder only permits INCOMPLETE because its journal has not yet integrated trusted terminal lifecycle and child-exit observations. PASS/FAIL must be derived via `execution_projection.py`, not supplied as a caller assertion. See the execution/recovery contract.
+
+
+## Latest verified test checkpoint
+
+- Exact SHA: `78286ad6b802a7925a2d7bba6dfb472dfde5c2a3`
+- CI: https://github.com/marcelosofficial-ctrl/PocketCode-/actions/runs/42309370781
+- Python 3.12 / Ubuntu 24.04; 187 passed, 0 failed.
+- FakeCoordinator receipt builder only permits INCOMPLETE until trusted terminal execution evidence is integrated. PASS/FAIL must come from `execution_projection.py`, not caller-supplied labels.
+- Always re-check the live branch head before relying on this checkpoint.

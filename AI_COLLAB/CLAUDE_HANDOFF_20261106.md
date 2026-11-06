@@ -169,3 +169,14 @@ Continue receipt integration with artifact manifest and authorization evidence, 
 - This includes the coordinator-to-receipt evidence binding: receipts now reference accepted attempt-bound journal events by sequence/source/event ID and bind their payload digests. Quarantined conflicts are excluded; later accepted evidence can create a linked receipt revision without changing the predecessor.
 - Initial reservation events are now explicitly attempt-bound before a lease fence exists; lease-scoped events still require the current fence. This allows reservation evidence to be journaled before worker claim without weakening stale-fence checks after lease generation begins.
 - This is standard-library Python CI only. It does not establish mobile/device behavior, durable atomicity, concurrency, authenticated producers, provider behavior, hostile-code sandboxing or production artifact authorization. Later source commits need their own exact-SHA run.
+
+
+## Latest exact-SHA CI result (2026-11-06)
+
+- Run: https://github.com/marcelosofficial-ctrl/PocketCode-/actions/runs/42309370781
+- Exact tested commit: `78286ad6b802a7925a2d7bba6dfb472dfde5c2a3`
+- Environment: GitHub-hosted Ubuntu 24.04, Python 3.12.
+- Command: `python -m unittest discover -s scripts -p "test_*.py" -v`
+- Result: **187 tests passed, 0 failed**.
+- FakeCoordinator receipt composition is now fail-closed: its current journal contains dispatch/recovery evidence only, so it may emit INCOMPLETE but rejects caller-supplied PASS/FAIL. Terminal verdicts must be derived from accepted trusted lifecycle + child-exit or program-failure evidence through `execution_projection.py` before they can be placed in a receipt.
+- This is standard-library Python CI only. It does not establish mobile/device behavior, durable atomicity, concurrency, authenticated producers, provider behavior, hostile-code sandboxing or production artifact authorization. Later source commits need their own exact-SHA run.

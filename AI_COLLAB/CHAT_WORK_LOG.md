@@ -603,3 +603,10 @@ Next: await owner-provided read-only Pyodios saved-exception probe output; prese
 
 - Added a fail-closed gate to `FakeCoordinator.create_result_receipt()`: current journal evidence proves reservation/lease/dispatch/ack/reconciliation, not successful/failed child execution. Until trusted terminal evidence is integrated and projected, the coordinator builder only emits INCOMPLETE and rejects caller-supplied PASS or FAIL.
 - Added test asserting both terminal claims are rejected and no receipt is appended. This prevents the receipt composition path from turning dispatch acceptance into execution success. CI pending.
+
+
+## 2026-11-06 — PC-2026-11-06-P29 — terminal verdict gate green
+
+- CI: [run 42309370781](https://github.com/marcelosofficial-ctrl/PocketCode-/actions/runs/42309370781), exact SHA `78286ad6b802a7925a2d7bba6dfb472dfde5c2a3`, Ubuntu 24.04 / Python 3.12, full suite **187 passed, 0 failed**.
+- Dispatch/recovery evidence alone cannot produce PASS or FAIL. FakeCoordinator receipt composition now permits only INCOMPLETE until trusted terminal lifecycle plus natural child-exit evidence or trusted program-failure evidence is integrated and projected through `execution_projection.py`. Caller-supplied terminal labels are rejected.
+- This preserves canonical PASS/FAIL/INCOMPLETE semantics and is not a new product verdict definition.

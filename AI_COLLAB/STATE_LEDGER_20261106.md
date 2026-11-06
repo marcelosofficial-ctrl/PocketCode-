@@ -332,3 +332,9 @@ Next task: owner runs only the read-only Pyodios sys.last_exc / sys.last_value C
 - Red-team review of the new coordinator-to-receipt composition found that the builder accepted caller-supplied PASS/FAIL even though its journal currently contains only dispatch/recovery lifecycle evidence. That would allow dispatch evidence to be packaged with a false terminal claim.
 - FakeCoordinator receipt composition now accepts only INCOMPLETE until trusted terminal lifecycle + natural child-exit evidence or trusted program-failure evidence is integrated and projected through `execution_projection.py`. PASS/FAIL are rejected with no receipt append. Added regression test.
 - This is a temporary fail-closed model boundary, not a change to canonical verdict semantics. Next integration must derive terminal verdicts from typed evidence, never accept a caller-supplied label as proof.
+
+
+## 2026-11-06 — dispatch-only terminal verdict gate CI green
+
+- Exact-SHA run: https://github.com/marcelosofficial-ctrl/PocketCode-/actions/runs/42309370781 at `78286ad6b802a7925a2d7bba6dfb472dfde5c2a3`; Ubuntu 24.04 / Python 3.12; `python -m unittest discover -s scripts -p "test_*.py" -v`; **187 passed, 0 failed**.
+- FakeCoordinator receipt composition currently permits only INCOMPLETE because its accepted journal events prove dispatch/recovery, not terminal program success/failure. Caller-supplied PASS/FAIL are rejected; future terminal outcomes must be derived through typed execution evidence and `execution_projection.py`.
