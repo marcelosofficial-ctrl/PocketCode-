@@ -325,13 +325,21 @@ class FakeCoordinatorTests(unittest.TestCase):
             producer="direct_child_wait", kind="natural_exit",
             exit_code=0, fence=lease.fence, now=22,
         )
+        self.coordinator.record_collection_observation(
+            "effect-1", "attempt-1", event_id="collector-complete",
+            state="complete", fence=lease.fence, now=23,
+        )
+        self.coordinator.record_cleanup_observation(
+            "effect-1", "attempt-1", event_id="cleanup-complete",
+            state="complete", fence=lease.fence, now=24,
+        )
         store = ResultReceiptStore()
         receipt = self.coordinator.create_result_receipt(
             store, effect_id="effect-1", attempt_id="attempt-1",
             revision_key="pass-receipt", contract_version="pc-v1",
-            execution_outcome="PASS", collection_state="unknown",
-            lifecycle_disposition="succeeded", cleanup_state="unknown",
-            artifact_ids=(), created_at_ms=23,
+            execution_outcome="PASS", collection_state="complete",
+            lifecycle_disposition="succeeded", cleanup_state="complete",
+            artifact_ids=(), created_at_ms=25,
         )
         self.assertEqual(receipt.execution_outcome, "PASS")
         self.assertEqual(receipt.projection_reason, "trusted_success_and_child_exit_zero")
@@ -365,13 +373,21 @@ class FakeCoordinatorTests(unittest.TestCase):
             "effect-1", "attempt-1", event_id="lifecycle-failed",
             status="program_failed", fence=lease.fence, now=21,
         )
+        self.coordinator.record_collection_observation(
+            "effect-1", "attempt-1", event_id="collector-complete-fail",
+            state="complete", fence=lease.fence, now=22,
+        )
+        self.coordinator.record_cleanup_observation(
+            "effect-1", "attempt-1", event_id="cleanup-complete-fail",
+            state="complete", fence=lease.fence, now=23,
+        )
         store = ResultReceiptStore()
         receipt = self.coordinator.create_result_receipt(
             store, effect_id="effect-1", attempt_id="attempt-1",
             revision_key="fail-receipt", contract_version="pc-v1",
-            execution_outcome="FAIL", collection_state="unknown",
-            lifecycle_disposition="program_failed", cleanup_state="unknown",
-            artifact_ids=(), created_at_ms=22,
+            execution_outcome="FAIL", collection_state="complete",
+            lifecycle_disposition="program_failed", cleanup_state="complete",
+            artifact_ids=(), created_at_ms=24,
         )
         self.assertEqual(receipt.execution_outcome, "FAIL")
         self.assertEqual(receipt.projection_reason, "coordinator_confirmed_program_failure")
@@ -503,6 +519,48 @@ class FakeCoordinatorTests(unittest.TestCase):
                 lifecycle_disposition="succeeded", collection_state="unknown",
                 cleanup_state="unknown", artifact_ids=(), created_at_ms=22,
             )
+
+    def test_degraded_collection_is_separate_from_execution_pass(self):
+        from result_receipts import ResultReceiptStore
+        lease = self.coordinator.claim("effect-1", "worker-A", now=20, lease_seconds=20)
+        self.coordinator.mark_dispatching(lease, now=20)
+        self.coordinator.record_lifecycle_observation(
+            "effect-1", "attempt-1", event_id="life-success-degraded",
+            status="succeeded", fence=lease.fence, now=21,
+        )
+        self.coordinator.record_exit_observation(
+            "effect-1", "attempt-1", event_id="exit-zero-degraded",
+            producer="direct_child_wait", kind="natural_exit",
+            exit_code=0, fence=lease.fence, now=22,
+        )
+        self.coordinator.record_collection_observation(
+            "effect-1", "attempt-1", event_id="collector-degraded",
+            state="degraded", fence=lease.fence, now=23,
+        )
+        receipt = self.coordinator.create_result_receipt(
+            ResultReceiptStore(), effect_id="effect-1", attempt_id="attempt-1",
+            revision_key="pass-with-degraded-collection", contract_version="pc-v1",
+            collection_state="degraded", lifecycle_disposition="succeeded",
+            cleanup_state="unknown", artifact_ids=(), created_at_ms=24,
+        )
+        self.assertEqual(receipt.execution_outcome, "PASS")
+        self.assertEqual(receipt.collection_state, "degraded")
+        self.assertEqual(receipt.cleanup_state, "unknown")
+
+    def test_multiple_collection_observations_project_unknown(self):
+        lease = self.coordinator.claim("effect-1", "worker-A", now=20, lease_seconds=20)
+        self.coordinator.mark_dispatching(lease, now=20)
+        self.coordinator.record_collection_observation(
+            "effect-1", "attempt-1", event_id="collector-one",
+            state="complete", fence=lease.fence, now=21,
+        )
+        self.coordinator.record_collection_observation(
+            "effect-1", "attempt-1", event_id="collector-two",
+            state="degraded", fence=lease.fence, now=22,
+        )
+        projected = self.coordinator.project_attempt_report_state("effect-1", "attempt-1")
+        self.assertEqual(projected.collection_state, "unknown")
+        self.assertIn("multiple_collection_observations_require_reconciliation", projected.reasons)
 
     def test_receipt_rejects_unobserved_collection_or_cleanup_claims(self):
         from result_receipts import ResultReceiptStore

@@ -26,6 +26,13 @@ except ModuleNotFoundError:
 
 
 @dataclass(frozen=True)
+class AttemptReportState:
+    collection_state: str
+    cleanup_state: str
+    reasons: tuple[str, ...]
+
+
+@dataclass(frozen=True)
 class RebuiltEffect:
     effect_id: str
     attempt_id: str
@@ -268,6 +275,65 @@ class FakeCoordinator:
             producer=producer, confirmed=confirmed,
         )
 
+    def record_collection_observation(self, effect_id: str, attempt_id: str, *,
+                                      event_id: str, state: str, fence: int,
+                                      now: int) -> AppendResult:
+        self._require_live_observation_lease(effect_id, attempt_id, fence, now)
+        if state not in {"complete", "degraded", "unknown"}:
+            raise OutboxConflict("unknown collection state")
+        return self._append(
+            kind="collection_observation", effect_id=effect_id, attempt_id=attempt_id,
+            event_id=event_id, at_ms=now, fence=fence,
+            producer="trusted_collector", state=state,
+        )
+
+    def record_cleanup_observation(self, effect_id: str, attempt_id: str, *,
+                                   event_id: str, state: str, fence: int,
+                                   now: int) -> AppendResult:
+        self._require_live_observation_lease(effect_id, attempt_id, fence, now)
+        if state not in {"complete", "failed", "not_applicable", "unknown"}:
+            raise OutboxConflict("unknown cleanup state")
+        return self._append(
+            kind="cleanup_observation", effect_id=effect_id, attempt_id=attempt_id,
+            event_id=event_id, at_ms=now, fence=fence,
+            producer="trusted_cleanup", state=state,
+        )
+
+    def project_attempt_report_state(self, effect_id: str, attempt_id: str) -> AttemptReportState:
+        record = self.store.get(effect_id, attempt_id)
+        matching = [event for event in self.journal.events
+                    if event.effect_id == effect_id and event.attempt_id == attempt_id]
+        matching.sort(key=lambda event: event.sequence)
+        collection = []
+        cleanup = []
+        reasons = []
+        for event in matching:
+            try:
+                payload = json.loads(event.payload.decode("utf-8"))
+            except (UnicodeDecodeError, json.JSONDecodeError):
+                return AttemptReportState("unknown", "unknown", ("accepted_event_payload_invalid",))
+            if not isinstance(payload, dict):
+                return AttemptReportState("unknown", "unknown", ("accepted_event_payload_not_object",))
+            kind = payload.get("kind")
+            if kind not in {"collection_observation", "cleanup_observation"}:
+                continue
+            if event.fence != record.fence:
+                reasons.append("stale_fence_report_observation")
+                continue
+            expected_producer = "trusted_collector" if kind == "collection_observation" else "trusted_cleanup"
+            if payload.get("producer") != expected_producer:
+                reasons.append("report_observation_producer_mismatch")
+                continue
+            target = collection if kind == "collection_observation" else cleanup
+            target.append(payload.get("state"))
+        if len(collection) > 1:
+            reasons.append("multiple_collection_observations_require_reconciliation")
+        if len(cleanup) > 1:
+            reasons.append("multiple_cleanup_observations_require_reconciliation")
+        collection_state = collection[0] if len(collection) == 1 and collection[0] in {"complete", "degraded", "unknown"} else "unknown"
+        cleanup_state = cleanup[0] if len(cleanup) == 1 and cleanup[0] in {"complete", "failed", "not_applicable", "unknown"} else "unknown"
+        return AttemptReportState(collection_state, cleanup_state, tuple(reasons))
+
     def project_attempt_verdict(self, effect_id: str, attempt_id: str) -> VerdictProjection:
         record = self.store.get(effect_id, attempt_id)
         matching = [event for event in self.journal.events
@@ -339,8 +405,8 @@ class FakeCoordinator:
 
     def create_result_receipt(self, receipt_store, *, effect_id: str, attempt_id: str,
                               revision_key: str, contract_version: str,
-                              execution_outcome: Optional[str] = None, collection_state: str,
-                              lifecycle_disposition: str, cleanup_state: str,
+                              execution_outcome: Optional[str] = None, collection_state: Optional[str] = None,
+                              lifecycle_disposition: str, cleanup_state: Optional[str] = None,
                               artifact_ids: tuple[str, ...], created_at_ms: int,
                               uncertainties: tuple[str, ...] = (),
                               predecessor_receipt_id: Optional[str] = None,
@@ -351,10 +417,13 @@ class FakeCoordinator:
             raise OutboxConflict("caller-supplied verdict conflicts with accepted evidence projection")
         if lifecycle_disposition != projection.execution_status:
             raise OutboxConflict("caller-supplied lifecycle disposition conflicts with accepted evidence projection")
-        if collection_state != "unknown" or cleanup_state != "unknown":
-            raise OutboxConflict(
-                "collection and cleanup require typed observations; caller assertions are not evidence"
-            )
+        report_state = self.project_attempt_report_state(effect_id, attempt_id)
+        if collection_state is not None and collection_state != report_state.collection_state:
+            raise OutboxConflict("caller-supplied collection state conflicts with accepted evidence")
+        if cleanup_state is not None and cleanup_state != report_state.cleanup_state:
+            raise OutboxConflict("caller-supplied cleanup state conflicts with accepted evidence")
+        collection_state = report_state.collection_state
+        cleanup_state = report_state.cleanup_state
         execution_outcome = projection.verdict
         lifecycle_disposition = projection.execution_status
         events = [event for event in self.journal.events
