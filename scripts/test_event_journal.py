@@ -53,6 +53,16 @@ class EventJournalTests(unittest.TestCase):
         self.assertEqual(self.journal.events[0].effect_id, "effect-A")
         self.assertEqual(self.journal.events[0].attempt_id, "attempt-A")
 
+    def test_same_event_replay_under_new_fence_is_quarantined(self):
+        first = self.append(fence=1)
+        self.journal.advance_fence("effect-1", "attempt-1", 2)
+        replay = self.append(fence=2)
+        self.assertEqual(first.disposition, "accepted")
+        self.assertEqual(replay.disposition, "quarantined")
+        self.assertEqual(self.journal.events[0].fence, 1)
+        self.assertEqual(len(self.journal.events), 1)
+        self.assertEqual(len(self.journal.conflicts), 1)
+
     def test_same_payload_with_changed_occurrence_time_is_quarantined(self):
         self.append()
         result = self.append(occurred_at_ms=101)

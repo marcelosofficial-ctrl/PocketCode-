@@ -126,6 +126,7 @@ class EventJournal:
                 and prior.producer_subject == producer.subject
                 and prior.effect_id == effect_id
                 and prior.attempt_id == attempt_id
+                and prior.fence == fence
             )
             if (same_producer and prior.payload_sha256 == digest
                     and prior.payload == payload
