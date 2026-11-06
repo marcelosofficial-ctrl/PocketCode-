@@ -183,6 +183,18 @@ class ResultReceiptStore:
             raise ReceiptConflict("evidence digests must be lowercase SHA-256 hex")
         if not isinstance(artifact_ids, tuple) or not isinstance(uncertainties, tuple):
             raise ReceiptConflict("artifact IDs and uncertainties must be immutable tuples")
+        if any(not isinstance(value, str) or not value.strip() for value in artifact_ids):
+            raise ReceiptConflict("artifact IDs must be non-empty strings")
+        if len(set(artifact_ids)) != len(artifact_ids):
+            raise ReceiptConflict("receipt artifact manifest cannot repeat artifact IDs")
+        if len(set(evidence_refs)) != len(evidence_refs):
+            raise ReceiptConflict("receipt evidence references cannot be repeated")
+        if predecessor_receipt_id is not None and (
+            not isinstance(predecessor_receipt_id, str) or not predecessor_receipt_id.strip()
+        ):
+            raise ReceiptConflict("predecessor receipt ID must be a non-empty string")
+        if predecessor_receipt_id is not None and revision_reason is None:
+            raise ReceiptConflict("a receipt revision must state why it supersedes its predecessor")
         if any(not isinstance(value, str) or not value.strip() for value in uncertainties):
             raise ReceiptConflict("uncertainties must be non-empty strings")
         if revision_reason is not None and (
@@ -242,6 +254,13 @@ class ResultReceiptStore:
         entry, content = stored
         if not isinstance(authorization, ReleaseAuthorization):
             return ReleaseResult("denied_missing_authorization", artifact_id, None, None, None)
+        if not all(isinstance(value, str) and value.strip() for value in (
+            authorization.authorization_id, authorization.policy_revision,
+            authorization.artifact_id, authorization.attempt_id,
+            authorization.current_attempt_id,
+        )):
+            return ReleaseResult("denied_invalid_authorization", artifact_id, None, None,
+                                 authorization.authorization_id if isinstance(authorization.authorization_id, str) else None)
         if (authorization.artifact_id != artifact_id
                 or authorization.attempt_id != entry.attempt_id
                 or authorization.current_attempt_id != entry.attempt_id):
@@ -250,9 +269,7 @@ class ResultReceiptStore:
         if type(authorization.authorized) is not bool or not authorization.authorized:
             return ReleaseResult("denied_by_current_authorization", artifact_id, None, None,
                                  authorization.authorization_id)
-        if (not authorization.authorization_id.strip()
-                or not authorization.policy_revision.strip()
-                or isinstance(authorization.observed_at_ms, bool)
+        if (isinstance(authorization.observed_at_ms, bool)
                 or not isinstance(authorization.observed_at_ms, int)
                 or authorization.observed_at_ms < 0):
             return ReleaseResult("denied_invalid_authorization", artifact_id, None, None,

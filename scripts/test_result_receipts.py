@@ -188,6 +188,25 @@ class ResultReceiptTests(unittest.TestCase):
         with self.assertRaises(ReceiptConflict):
             self.store.publish_report("receipt-1", "clipboard", success=True, observed_at_ms=True)
 
+    def test_receipt_rejects_duplicate_evidence_and_artifact_refs(self):
+        with self.assertRaises(ReceiptConflict):
+            self.create(evidence_refs=("event-1", "event-1"),
+                        evidence_sha256=(self.digest, self.digest))
+        with self.assertRaises(ReceiptConflict):
+            self.create(artifact_ids=("artifact-1", "artifact-1"))
+
+    def test_revision_requires_reason_when_linking_predecessor(self):
+        first = self.create()
+        with self.assertRaises(ReceiptConflict):
+            self.create(revision_key="receipt-rev-2", predecessor_receipt_id=first.receipt_id,
+                        created_at_ms=101)
+
+    def test_malformed_authorization_types_fail_closed_without_exception(self):
+        malformed = self.auth(policy_revision=None)
+        result = self.store.release_artifact("artifact-1", malformed)
+        self.assertEqual(result.disposition, "denied_invalid_authorization")
+        self.assertIsNone(result.content)
+
     def test_unknown_receipt_cannot_be_published(self):
         with self.assertRaises(ReceiptConflict):
             self.store.publish_report("missing", "clipboard", success=True, observed_at_ms=1)
