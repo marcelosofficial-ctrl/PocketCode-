@@ -100,3 +100,31 @@ PocketCode implementation was not changed by this cross-project update. The reus
 ## 2026-11-06 — PC-2026-11-06-P09 — Static guard must follow abstraction changes
 
 RevDev run #30 had 41/42 tests pass; the single failure was a stale static assertion that searched for the old inline 404 condition after it had been extracted into Test-GhApiConfirmedNotFound. The guard now locates the helper call, and two additional malformed-body cases were added. Latest RevDev test commit 5a18ba76860be7ab466fc0fe6b43ebd3aa0349c6 contains 44 tests; run #31 42136717748 was in progress. PocketCode lesson: prefer behavioral/semantic assertions and update source guards when an implementation is intentionally refactored. Do not import RevDev implementation or acceptance.
+
+
+## 2026-11-06 — PC-2026-11-06-P10 — RevDev recovery work and chat-rotation protocol
+
+This is a cross-project progress/process update only. PocketCode remains a separate product, codebase, runtime, security boundary, roadmap and acceptance suite. Do not import RevDev PowerShell code, test counts or acceptance conclusions.
+
+RevDev's current branch has advanced beyond the previous transport-only work. Latest observed branch head: `e00e20d44f240b24faa769f558c9d61b99bdffb1`. The immediately preceding source checkpoint `40a8698060b50b3a94f946fe443caf201fd0f168` adds:
+- Atomic create-only local result persistence and strict discovery. Only one validated matching result is accepted; multiple candidates are AMBIGUOUS; malformed, partial or unreadable discovery is DISCOVERY_INCOMPLETE. No newest-timestamp heuristic.
+- Runner writes `queue-result.json` atomically and exposes SHA-256; watcher forwards the expected digest.
+- Publisher verifies the local bytes/digest and binds the requested Project/Mission to the identity inside the result before any GitHub request.
+- Typed process + HTTP response handling, exact remote prepared-envelope byte readback, and stricter 404 absence proof.
+- Recovery quarantine uses GUID destinations, avoids `Move-Item -Force`, and writes metadata atomically. Partial failure reports the destination because the source may already have moved.
+- Fake native process harness tests stdout/stderr, HTTP 200/404/429, process exit/status conflicts, missing executable, and PowerShell 5.1 LASTEXITCODE lifecycle.
+
+At source checkpoint `40a8698060b50b3a94f946fe443caf201fd0f168`, the test target is 59 publisher tests + 22 local-result/quarantine tests = 81. Run #42 `42180012296` targets that exact source commit and was still in progress during Pester installation at last observation. Current branch head has a docs-only follow-up commit; re-fetch exact run state before quoting a result. Prior run #37 passed 73/73 at an earlier revision only. Do not call the current 81 tests green until run #42 finishes.
+
+**Transferable PocketCode lessons:**
+1. Keep CI evidence exact-SHA scoped. An older green run never validates a later commit.
+2. Query repository Actions runs, match workflow path, branch, event and SHA, inspect jobs and retrieve logs for actual test counts. Do not rely on incomplete PR-only summaries.
+3. Test real process boundaries with controlled fake executables/adapters where applicable, without live network or writes.
+4. Prefer semantic contract assertions over brittle static string checks; when an abstraction moves, update the guard to test the new boundary.
+5. Treat ambiguity as UNKNOWN/INCOMPLETE, never as absence or success. This principle is portable; implementation details are not.
+6. A failing test is evidence. Trace it to source/fixture/contract, preserve the finding, fix only after confirming the intended behavior.
+7. If a tool call fails or a chat appears to stop, recover from the last confirmed GitHub state and close the pass with a user-visible status. Never silently stop.
+
+**Chat lifecycle:** GitHub is durable memory and each chat is a replaceable worker. Do not wait for a maximum-context warning or a huge final handoff. Every 2–3 meaningful passes, or after any meaningful source/test/review/decision event, append the project work log and refresh the start page with branch head, exact pins, CI status, next action and unresolved risks. Rotate chats while context remains. New chats should read the start page, fetch live branch/PR/CI state, then read only task-specific canonical docs. Keep one lead writer per repo/branch/work item; parallelize independent read/review tasks, serialize writes to shared paths, re-fetch before writing and read back after. A multi-file Git tree commit with expected-head protection is preferred where available.
+
+**PocketCode priority unchanged:** continue CASE-04 timeout/report-contract integrity in `scripts/report_contract.py`; preserve LOOP/CASE/D IDs and meanings; device comparison awaits owner observations; $0 budget, phone-first, no PC requirement, explicit paste-to-context and no clipboard polling/overlays remain. Do not change architecture or select a runtime based on RevDev work. PR #2/#3 remain untouched.
