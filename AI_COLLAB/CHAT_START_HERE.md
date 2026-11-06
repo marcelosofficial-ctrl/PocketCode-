@@ -1,5 +1,25 @@
 # PocketCode Chat Start Here
 
+## Mandatory interruption-resistant working protocol (2026-11-06)
+
+GitHub is the durable project state. Do not rely on a last-minute full-chat handoff. Every work pass must end with a user-visible result, even when a tool fails or CI remains pending.
+
+- Fetch the live branch head once at the start. This entrypoint already directs new chats to fetch live state, so do not refresh its own head line after every docs commit.
+- Load only task-specific source, tests and review packets. Avoid full goals-ledger downloads and repository-tree dumps unless a specific task requires them.
+- Use bounded passes: one objective, one implementation/research increment, relevant tests and one checkpoint. Prefer a few meaningful operations over many tiny commits.
+- Batch related documentation updates into one atomic multi-file commit when practical. Do not make separate entrypoint, status and worklog commits for one checkpoint.
+- Check CI once after a reasonable interval. If pending, record run ID + exact SHA and return. Never poll indefinitely.
+- Keep tool output compact: paths, blob/commit SHAs, relevant excerpts, test totals and failures. Avoid dumping entire large files.
+- On write/tool failure, stop and re-fetch branch head and target blobs before deciding whether a write applied. Never blindly retry.
+- At each checkpoint record implemented/tested/verified/not-run/blocked separately, the next action and exact source/test pins.
+- If context appears near exhaustion, stop starting new engineering work, checkpoint immediately and tell the user to rotate chats using this entrypoint. Do not wait for a handoff request.
+- Keep detailed evidence in topic-specific packets. The entrypoint should remain a short route map, not a duplicate of the whole project history.
+
+**Response closure is mandatory:** never leave the user with tool narration only. Explain what changed, what did not change, verification scope, remaining unknowns and the next step.
+
+**Important limitation:** this protocol reduces avoidable context pressure and tool stalls; it cannot prevent platform context limits, service outages or execution failures. The goal is graceful interruption with no lost project state.
+
+
 **Last refreshed:** 2026-11-06 (RevDev CI closeout and cross-project handoff)  
 **Authority:** live PocketCode branch state plus canonical source/spec/test records. This file is the compact first-read entrypoint for every new PocketCode chat.
 
