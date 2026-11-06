@@ -361,3 +361,8 @@ Latest source checkpoint passed **214/214** repository Python tests on exact SHA
 ## Durable adapter contract draft
 
 Read [DURABLE_ADAPTER_CONTRACT_20261106.md](DURABLE_ADAPTER_CONTRACT_20261106.md) after the execution/recovery contract. It defines T1–T10 adapter-neutral atomic boundaries, uniqueness/fencing invariants, a crash/recovery matrix, adapter conformance tests and storage selection criteria. It intentionally selects no persistence engine, provider, runtime, backend or cloud host. Treat it as a proposal for independent Claude/Gemini review.
+
+
+## 2026-11-07 latest verified source checkpoint
+
+Publication retry requests now support optional idempotency keys. Exact replay returns the original attempt, changed request details under the same key conflict, and a distinct key records a new retry. The coordinator E2E test verifies this on one immutable receipt without redispatch. Exact source SHA `d99f1ca350422b05610c7b62052f25de247d2d9b` passed **219/219** in [GitHub Actions](https://github.com/marcelosofficial-ctrl/PocketCode-/actions/runs/42312110283). Durable atomicity and real destination delivery remain unimplemented.

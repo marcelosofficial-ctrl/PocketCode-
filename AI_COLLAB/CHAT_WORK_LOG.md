@@ -668,3 +668,12 @@ Next: await owner-provided read-only Pyodios saved-exception probe output; prese
 - Created `AI_COLLAB/DURABLE_ADAPTER_CONTRACT_20261106.md`, a proposed adapter-neutral T1–T10 contract for reservation, lease/fencing, dispatch, acknowledgement/reconciliation, event journal, typed observations, receipt revision, artifact staging/release and publication.
 - Added concurrency/uniqueness invariants, crash/recovery matrix, required adapter conformance tests, storage evaluation criteria and security-boundary reminders.
 - No storage/provider/runtime/backend/cloud choice made. The document is a proposal for Claude and Gemini review, not implementation evidence.
+
+
+## 2026-11-07 — PC-2026-11-07-P34 — publication request idempotency
+
+- Source commit: `d99f1ca350422b05610c7b62052f25de247d2d9b`; exact-SHA GitHub Actions run: https://github.com/marcelosofficial-ctrl/PocketCode-/actions/runs/42312110283; Ubuntu 24.04 / Python 3.12; **219 tests passed, 0 failed**.
+- `ResultReceiptStore.publish_report` accepts an optional caller-generated `idempotency_key`, scoped to receipt + destination. Exact replay (same key, success/failure result and observation timestamp) returns the original PublicationAttempt without appending another attempt. Reuse of that key with changed result/time is rejected. A new key records a new intentional attempt number. Omission preserves legacy behavior for existing callers.
+- The coordinator end-to-end test now proves failed-copy request replay is idempotent, then a distinct-key successful retry creates attempt 2 on the same immutable receipt; exactly two publication attempts are recorded and the execution dispatch count remains one.
+- The key is an in-memory model feature only. Durable storage must atomically persist the idempotency-key claim and attempt append, scope keys to authenticated caller/tenant where appropriate, and define retention/expiry. This does not establish clipboard/share-sheet integration or external destination delivery.
+- Latest source CI exact-SHA result: 219/219. Subsequent documentation-only commits are not part of that tested SHA.

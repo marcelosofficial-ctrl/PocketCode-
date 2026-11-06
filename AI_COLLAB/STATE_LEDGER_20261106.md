@@ -395,3 +395,11 @@ Next task: owner runs only the read-only Pyodios sys.last_exc / sys.last_value C
 ## Proposed durable adapter contract
 
 New normative design draft: [AI_COLLAB/DURABLE_ADAPTER_CONTRACT_20261106.md](AI_COLLAB/DURABLE_ADAPTER_CONTRACT_20261106.md). It defines adapter-neutral T1–T10 transaction boundaries for reservation, lease/fence, dispatch, acknowledgement/reconciliation, event append, typed observations, immutable receipt revision, artifact staging/release and report publication; concurrency/uniqueness invariants; crash matrix; adapter conformance tests; storage evaluation gate; and security limitations. It deliberately selects no database, provider, runtime, backend or cloud host. Treat this as proposed contract until independently reviewed by Claude and Gemini.
+
+
+## 2026-11-07 — publication request idempotency
+
+- Exact tested source SHA `d99f1ca350422b05610c7b62052f25de247d2d9b`; CI https://github.com/marcelosofficial-ctrl/PocketCode-/actions/runs/42312110283; **219 passed, 0 failed**.
+- Added optional publication idempotency key to the receipt store. Exact request replay returns the original attempt; same key with changed success/time conflicts; distinct key records a new attempt. Key scope is receipt + destination. Omitting the key preserves legacy append-every-call behavior.
+- E2E coordinator test proves a lost-response-style replay does not add a second attempt, and a distinct-key successful retry creates attempt 2 against the same receipt without redispatching execution.
+- This is in-memory only; production requires atomic key claim + append and authenticated namespace/tenant scoping plus retention policy.

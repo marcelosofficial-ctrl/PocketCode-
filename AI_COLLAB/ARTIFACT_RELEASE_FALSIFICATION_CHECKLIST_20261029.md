@@ -121,3 +121,8 @@ Lower evidence levels do not substitute for the actual storage or HTTP boundary.
 
 ## Cross-decision audit pointer — 2026-10-29
 See [CROSS_DECISION_CONTRADICTION_AUDIT_AND_IMPLEMENTATION_GATES_20261029.md](CROSS_DECISION_CONTRADICTION_AUDIT_AND_IMPLEMENTATION_GATES_20261029.md) for cross-boundary invariants, unresolved interface questions, and the proposed G0-G7 evidence gate sequence. This pointer does not close owner decisions or promote specification/fake-test evidence to provider, persistence, HTTP, or device integration evidence.
+
+
+## 2026-11-07 additional falsification target: publication request replay
+
+Test that repeating the same report-publication request after a lost response, with the same idempotency key and same request fingerprint, returns the original attempt and does not append another attempt. Reusing that key with changed result or timestamp must conflict. A distinct key must create a new intentional attempt on the same receipt and must not redispatch the underlying execution. The in-memory model now has these tests; production still needs atomic durable key-claim/append, caller namespace scoping, retention, and destination delivery verification.

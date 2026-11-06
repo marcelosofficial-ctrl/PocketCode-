@@ -344,3 +344,12 @@ Exact-SHA CI: `e631e9ccda29e5632832a64ad6b5e8c4c0ae5765`, 211/211 passed: https:
 The EventJournal's `require_fence=False` mode is not a general escape hatch. It is accepted only for source `pocketcode.coordinator`, a valid JSON object with kind `effect_reserved`, and embedded EffectId/DispatchAttemptId values exactly matching the bound event scope. A non-null fence, malformed payload, wrong source/kind/scope or missing attempt binding is rejected. The trusted coordinator selects this mode only for initial reservation and reservation repair. All worker, dispatch, acknowledgement, reconciliation and terminal observation events remain fenced.
 
 Exact-SHA CI: `3a3ee64e50c78134ef4a45f759533003dd533538`, 214/214 passed: https://github.com/marcelosofficial-ctrl/PocketCode-/actions/runs/42311540457. The end-to-end fake model also composes collection/cleanup evidence, receipt creation, artifact release and same-receipt copy retry. This remains an in-memory conformance model, not a durable or authenticated production system.
+
+
+## 2026-11-07 publication retry request identity
+
+Report/clipboard/share publication is a separate effect from the original execution. A caller may supply an idempotency key scoped in the model to `(receipt_id, destination, key)`. The exact same request (same success disposition and observation timestamp) returns the original PublicationAttempt. Reusing the key with changed request details is a conflict. A new key records a new attempt against the same immutable receipt. If omitted, legacy behavior continues to append one attempt per call.
+
+This model prevents duplicate records after a lost response only when the caller reuses its original key. It does not itself deliver bytes to a destination. A durable implementation must atomically claim the key and append the attempt, scope keys to authenticated principal/tenant, define retention and conflict behavior, and keep publication retries separate from execution retries.
+
+Exact tested source SHA `d99f1ca350422b05610c7b62052f25de247d2d9b`: https://github.com/marcelosofficial-ctrl/PocketCode-/actions/runs/42312110283; 219/219 Python tests passed.

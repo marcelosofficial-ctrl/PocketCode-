@@ -174,3 +174,11 @@ Stress the composed receipt projection with contradictory collector/teardown evi
 ## Durable adapter contract draft
 
 Read [DURABLE_ADAPTER_CONTRACT_20261106.md](DURABLE_ADAPTER_CONTRACT_20261106.md) after the execution/recovery contract. It defines T1–T10 adapter-neutral atomic boundaries, uniqueness/fencing invariants, a crash/recovery matrix, adapter conformance tests and storage selection criteria. It intentionally selects no persistence engine, provider, runtime, backend or cloud host. Treat it as a proposal for independent Claude/Gemini review.
+
+
+## 2026-11-07 publication retry idempotency
+
+- Source SHA `d99f1ca350422b05610c7b62052f25de247d2d9b`; CI https://github.com/marcelosofficial-ctrl/PocketCode-/actions/runs/42312110283; **219 passed, 0 failed**.
+- `scripts/result_receipts.py`: optional idempotency key for report publication, scoped to receipt and destination. Exact replay returns the original attempt; changed success/time under same key conflicts; new key creates a new attempt. Existing no-key behavior remains compatible.
+- `scripts/test_result_receipts.py`: five focused tests cover replay, conflicting reuse, new attempt, destination scoping and empty keys.
+- `scripts/test_fake_coordinator.py`: E2E replay then successful retry on same receipt; no second dispatch.
