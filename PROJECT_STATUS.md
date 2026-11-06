@@ -529,3 +529,19 @@ Deepened the bridge triage using exact Pyodide 314.0.5 source and Python 3.14 ex
 Corrected the 2026-11-06 handoff so its older generic instruction to run the canonical success fixture is explicitly superseded by the observed PythonError triage. Updated the chat entrypoint to point to the 2026-11-06 handoff. Immediate sequence remains: inspect existing `summary.json`; inspect timestamped Error Log; use saved-exception probe if needed; only then consider the guarded wrapper. No rerun, reset, GC, session restart or source mutation.
 
 Primary sources: https://pyodide.org/en/314.0.5/usage/type-conversions.html ; https://docs.python.org/3.14/library/sys.html ; https://pyodios.caffeinatedmath.com/guide/projects ; https://pyodios.caffeinatedmath.com/guide/settings .
+
+## 2026-11-06 — Multi-chat operating model refinement (proposed branch)
+
+The initial continuity protocol is being strengthened after a red-team review. The previous live start page grew to 212 lines through repeated append-only updates, so the proposed replacement is a compact route map. Detailed history remains in canonical reports and the work log.
+
+The proposed process adds:
+- a reusable bounded task packet that links, rather than duplicates, canonical requirements and accepted decisions;
+- explicit source-of-truth precedence and proposal-versus-accepted decision handling, so chats do not lose or silently rewrite product ideas;
+- rotation triggers after 2–3 meaningful passes or important source/test/review/decision events, before context exhaustion;
+- safe parallel work with one lead writer per shared branch/work item, isolated branches when concurrent writers touch the same paths, and reconciliation rather than force-push;
+- exact-SHA CI evidence retention, including treating cancellation as CANCELLED rather than FAIL and avoiding indiscriminate cancellation;
+- harness-specific treatment of AI instruction files and research/licence/security checks before reuse.
+
+OpenAI's current help guidance says conversation context is content-based, not a fixed message count; generated new-chat summaries may omit exact earlier wording. Free ChatGPT Projects allow five files. GitHub remains authoritative.
+
+PR #4 contains the process changes and is based on an earlier working-branch snapshot. It must be reconciled with the latest Pyodios handoff/triage updates before merging. This is process-only. PocketCode product scope, budget, runtime/provider status, canonical fixtures and LOOP/CASE/D acceptance remain unchanged.

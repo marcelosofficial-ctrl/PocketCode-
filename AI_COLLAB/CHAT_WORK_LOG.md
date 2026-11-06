@@ -177,3 +177,15 @@ Red-team correction: the 2026-11-06 handoff still contained an older generic ins
 Latest verified branch snapshot before this log entry: `37d381fbacd14c6ab9b5204d07a7dfc1889f9cc2`, 777 ahead / 0 behind `main`. PR #2 and PR #3 remain OPEN/DRAFT and untouched. Ahead count is branch divergence, not completed product work.
 
 No fixture, product source, acceptance suite, runtime/provider, security boundary, PR, deployment or budget changed. Device exception and artifact remain UNKNOWN; no device rerun occurred.
+
+## 2026-11-06 — PC-2026-11-06-P13 — Multi-chat operating model red-team and refinement
+
+**Research:** OpenAI's current Free Tier FAQ says context-full depends on combined user+assistant content, not a fixed message count; a new chat can start immediately and a generated summary may omit exact earlier wording. ChatGPT Projects retain files/chats/instructions but Free projects allow five files, so GitHub remains the durable record. GitHub documentation confirms agent-instruction file support varies by harness; do not assume AGENTS.md is automatically loaded by every ChatGPT chat. GitHub PR templates and contribution guidelines standardize review context; code owners/rulesets require repository settings and permissions.
+
+**Red-team corrections:** (1) The previous start page had grown to 212 lines with duplicated historical updates, undermining its "compact entrypoint" purpose. The proposed replacement is a 63-line current-state route map; dated history stays in the work log and canonical evidence. (2) Do not cancel every older CI run by default: exact-SHA completed evidence is valuable; cancellation is not failure. (3) A task packet links canonical specs and decisions rather than copying/redefining them. (4) Agent instruction files are harness-specific, not universal. (5) New-chat summaries are convenience, not authority. (6) Concurrent writers are real: the shared branch moved repeatedly during this pass and a contents update was rejected on SHA mismatch. The safe response is an isolated branch and explicit reconciliation, not force-push.
+
+**Implemented on isolated branch `process/multichat-continuity-refinement-2026-11-06`:** compact replacement for start page; protocol sections 15–20; reusable task packet; copy/paste continuation prompt. PR #4 is OPEN/DRAFT, targeting the research branch. It is currently being rebased onto the latest target head to preserve the active chat's intervening Pyodios updates. Do not merge until PR #4 is mergeable and the diff is reviewed.
+
+**Current PocketCode owner task:** preserve the original Pyodios Editor attempt. Inspect existing summary artifact, timestamped Error Log, then read-only `sys.last_exc` / `sys.last_value` probe; only then consider diagnostic wrapper. Do not rerun canonical fixture. CASE-04 remains INCOMPLETE/timed_out pending trusted exit provenance.
+
+No product source, canonical fixture, runtime/provider choice, LOOP/CASE/D suite, PR #2/#3 or release gate changed.

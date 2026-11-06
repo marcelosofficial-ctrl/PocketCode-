@@ -136,3 +136,54 @@ A client message such as “Streaming interrupted” is not proof that model rea
 **Client diagnosis:** the assistant cannot inspect the ChatGPT iOS app's internal streaming logs or guarantee that a higher-thinking request will stream reliably. Do not claim Think mode is the cause without diagnostics. For repeated failures, record timestamp/time zone, exact error text, model/thinking selection, whether Wi-Fi or cellular was used, whether the same prompt works in a new chat or on chatgpt.com, and any request ID shown. Check status.openai.com. Follow current OpenAI Help Center guidance and contact Support if it persists across networks/devices. Never ask the owner to share passwords or unrelated private data.
 
 **Product boundary:** this protocol is process-only. It does not import RevDev code, runtime assumptions, schemas, or acceptance suites into PocketCode.
+
+## 15. Authoritative state, idea preservation and conflict resolution
+
+When sources disagree, apply this order and record the conflict rather than silently choosing:
+1. The owner's latest explicit instruction or decision in the current project context.
+2. Canonical acceptance specifications and frozen fixtures for semantics and IDs.
+3. Explicitly accepted decision-register entries and superseding decision records.
+4. Current source, tests and CI evidence at exact pinned commits.
+5. Current task packet and live start page.
+6. Append-only work logs, older handoffs and chat transcripts as historical context only.
+
+A proposal, brainstorm, competitor feature, or reviewer suggestion is not accepted product scope until the owner or an explicitly delegated decision authority accepts it. Never delete an idea because it is not in the current MVP. Preserve it in the appropriate product backlog or decision register with status PROPOSED, DEFERRED, REJECTED, or ACCEPTED. A change to an accepted decision must cite the superseded decision and explain benefit, risks, migration and verification.
+
+If two chats or AIs edit the same branch concurrently, the first writer is not automatically authoritative. Re-fetch the branch head and changed paths, compare intent and evidence, then reconcile. Never use force to erase a legitimate contribution. Prefer disjoint files or independent branches for parallel implementation.
+
+## 16. Reusable task packet
+
+For every substantial task, create or update one compact packet using `WORK_PACKET_TEMPLATE_20261106.md`. The packet must identify task ID, owner/lead, status, objective, value, scope, explicit exclusions, canonical requirements, accepted decisions, owner constraints, exact source/test paths and blob/commit pins, acceptance and adversarial cases, proposed changes, test environment and exact result, review findings, risks and one next exact action.
+
+Do not copy whole requirements into the packet. Link to canonical source. A new chat should continue from the start page plus one task-specific packet, not an entire historical handoff.
+
+## 17. Context-budget and chat-rotation policy
+
+Do not use message count as a context estimate. Rotate at any of these triggers:
+- after 2–3 substantial work passes;
+- after a meaningful source/test/CI/review/decision event;
+- immediately when context strain, repeated summarization, tool-call failures or loss of earlier requirements appears;
+- before starting a large multi-stage task if remaining context is uncertain.
+
+At a trigger, finish the current bounded operation, verify writes, checkpoint the task packet and work log, refresh the start page, and give the owner a short new-chat prompt. Do not start another large task. Do not wait for a full-context error. A full handoff is only a fallback if live records are incomplete.
+
+Keep user-facing output proportional. Avoid pasting huge source files, repeating old research, or restating every project goal. Put necessary detail in GitHub and link it. OpenAI documents that a generated new-chat summary may omit exact earlier wording, so preserve important constraints and decisions in GitHub rather than trusting the summary.
+
+## 18. CI evidence retention
+
+Every CI claim must bind to workflow path, run ID, event, branch, exact head SHA, job conclusion, environment and test totals. A green run validates only its tested commit and test scope. A newer documentation-only commit does not invalidate source tests, but does not expand their scope either.
+
+Do not cancel a run solely because a newer commit exists. Retain useful exact-SHA evidence. Cancel only when demonstrably obsolete, expensive, and fully superseded by a newer run containing the same relevant source/tests. Record cancellations as CANCELLED, never FAIL. If Actions is pending, checkpoint run ID and SHA and resume later without indefinite polling.
+
+## 19. Research and reuse discipline
+
+Research should answer a named product or engineering decision. Prefer primary documentation, exact tagged source, licences, release activity and tests. Record what was opened and what was not. Reuse is permitted only after licence, security boundary, platform fit, maintenance and dependency cost are checked. A competitor feature is an idea to evaluate, not proof it fits PocketCode. Avoid broad repeated competitor catalogues when the open question is a narrow implementation seam.
+
+## 20. Concurrent chat and branch-write coordination
+
+The live branch can have more than one active chat or AI contributor. At the start of a write pass, inspect recent branch commits and changed paths. If another writer is actively changing the same files, do not race them. Choose one of:
+- coordinate by assigning disjoint files and exact responsibilities;
+- create a short-lived isolated branch from the latest verified head, then reconcile it back after review;
+- wait for the active writer to checkpoint before editing the shared paths.
+
+A rejected SHA/ref update is a concurrency signal. Re-fetch the head and affected blobs, inspect the intervening commit, and rebase/rebuild the intended change. Never force-push to erase the other writer. Record which branch contains the proposed change and whether it has been integrated. Avoid creating parallel branches for trivial changes that can safely wait.
