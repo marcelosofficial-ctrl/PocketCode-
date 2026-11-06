@@ -529,3 +529,9 @@ Deepened the bridge triage using exact Pyodide 314.0.5 source and Python 3.14 ex
 Corrected the 2026-11-06 handoff so its older generic instruction to run the canonical success fixture is explicitly superseded by the observed PythonError triage. Updated the chat entrypoint to point to the 2026-11-06 handoff. Immediate sequence remains: inspect existing `summary.json`; inspect timestamped Error Log; use saved-exception probe if needed; only then consider the guarded wrapper. No rerun, reset, GC, session restart or source mutation.
 
 Primary sources: https://pyodide.org/en/314.0.5/usage/type-conversions.html ; https://docs.python.org/3.14/library/sys.html ; https://pyodios.caffeinatedmath.com/guide/projects ; https://pyodios.caffeinatedmath.com/guide/settings .
+
+## 2026-11-06 — Pyodios artifact-level success with unresolved bridge error
+
+Owner inspected the existing project Files tab after the first whole-file Editor attempt. `summary.json` exists and exactly matches the frozen success oracle (`grand_total` string `10.75`, `line_items` integer `2`, item totals `notebook: 7.00`, `pen: 3.75`). The visible Editor output remains `[Bridge/executePython] PythonError`.
+
+Status is now **ARTIFACT-LEVEL FUNCTIONAL SUCCESS (owner-inspected) / EDITOR BRIDGE ERROR UNRESOLVED / FULL RUN INCONCLUSIVE**. This supersedes the previous UNKNOWN artifact outcome. Correct output generation is established for this attempt; bridge root cause, trusted exit status, stderr, export/read-back, relaunch persistence and PocketCode acceptance remain unverified. Do not rerun or overwrite the success project. Next inspect the timestamped Pyodios Error Log, redact sensitive details, and use the existing read-only saved-exception probe only if needed. `SystemExit` is not confirmed. Malformed-input testing must use a separate fresh project after diagnostics are captured.
