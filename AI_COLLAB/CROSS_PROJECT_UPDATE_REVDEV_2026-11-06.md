@@ -71,3 +71,12 @@ This is RevDev-only. Its redirector/installer still fetch production files from 
 ## Installer-aware CI closeout
 
 RevDev run #48 passed all 91 tests at exact source/test head 935108a6937f15b76f75850ebdbe70c69000be32. This includes installer dependency closure/source pin tests. The clean installer was not executed and no PC/live API/queue/mission operation occurred. P0 remains open and P8U/P0-D remain NOT RUN. PocketCode should continue CASE-04 independently.
+
+
+## 2026-11-06 — RevDev installer-aware 91-case CI closeout
+
+RevDev Actions run #48 `42181302862` completed SUCCESS at exact source/test SHA `935108a6937f15b76f75850ebdbe70c69000be32`: **91 passed, 0 failed, 0 skipped, 0 inconclusive, 0 not run** under Windows PowerShell 5.1 / Pester 5.7.1. Run: https://github.com/marcelosofficial-ctrl/DevRelay-Missions/actions/runs/42181302862.
+
+Scope: 59 publisher/transport tests, 22 local-result/recovery/quarantine tests, and 10 installer dependency/source-pin tests. This validates tracked maintenance source and static/dependency tests only. The installer was NOT executed; no live GitHub API, queue, watcher or mission operation occurred; installed PC/runtime parity remains UNKNOWN. P0 remains OPEN; canonical P8U-01..12 and P0-D-01..10 remain NOT RUN.
+
+PocketCode may reuse the engineering method only: exact-SHA CI, controlled fake process boundaries, create-only local result persistence, digest-bound publication, strict ambiguity handling, installer dependency closure and partial-failure red-team review. Do not transfer RevDev PowerShell implementation, test totals, runtime assumptions, acceptance results or release verdicts into PocketCode.
