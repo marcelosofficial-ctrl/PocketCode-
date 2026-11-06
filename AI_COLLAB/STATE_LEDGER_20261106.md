@@ -259,3 +259,11 @@ Next task: owner runs only the read-only Pyodios sys.last_exc / sys.last_value C
 
 - The two mobile-prototype checker failures were traced to the test fixture's Python triple-quoted HTML string: embedded main.py used `"\n"` instead of `"\\n"` in the fixture source. Python interpreted the escape while constructing the fixture, removing the backslash and producing a 1-byte-short, different source hash. Corrected the fixture escaping; the frozen canonical SHA-256 in the checker remains unchanged.
 - The current-fence projection tests passed in the subsequent CI run; no remaining recovery-model failures were reported there.
+
+
+## 2026-11-06 — canonical repository CI green
+
+- Added test-only workflow `.github/workflows/pocketcode-python-tests.yml`, triggered by script/workflow changes on the research branch. It uses Python 3.12 and `python -m unittest discover -s scripts -p "test_*.py" -v`, with contents:read only and no deploy step.
+- Successful exact-SHA run: https://github.com/marcelosofficial-ctrl/PocketCode-/actions/runs/42308082939 at `09290eaf1ac8af1461211ac90564440a70708f32`, Ubuntu 24.04 / Python 3.12, **154 passed, 0 failed**.
+- Initial prototype checker fixture failure was fixed by double-escaping the embedded source's `\\n` in the Python triple-quoted test fixture. Frozen canonical source length/hash was not changed. Intermediate projection precedence regression was corrected and included in the green run.
+- The green run validates repository Python unit tests at that exact SHA only. It does not validate later commits, iOS/Android behavior, actual Pyodios, durable transactions, concurrent workers, provider behavior, sandboxing or artifact release.

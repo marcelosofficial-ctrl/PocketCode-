@@ -97,3 +97,15 @@ Inspect current branch/source, define narrow acceptance criteria, implement one 
 - Branch-scoped test workflow: `.github/workflows/pocketcode-python-tests.yml`; run command `python -m unittest discover -s scripts -p "test_*.py" -v` under Python 3.12. It is test-only with `contents: read` permission and does not deploy.
 - Fake outbox now persists reservation, lease-claim, dispatch-intent, acknowledgement and reconciliation observation timestamps. Fake coordinator has idempotent repair operations for each corresponding event append. Projection surfaces unjournaled transitions rather than silently masking them.
 - Fetch the latest branch head and inspect CI before making claims. Existing in-progress test run at the time this note was authored: https://github.com/marcelosofficial-ctrl/PocketCode-/actions/runs/42307571937
+
+
+## Canonical CI result (2026-11-06)
+
+- Successful run: https://github.com/marcelosofficial-ctrl/PocketCode-/actions/runs/42308082939
+- Exact tested commit: `09290eaf1ac8af1461211ac90564440a70708f32`
+- Environment: GitHub-hosted Ubuntu 24.04, Python 3.12.
+- Command: `python -m unittest discover -s scripts -p "test_*.py" -v`
+- Result: **154 tests passed, 0 failed**.
+- The initial two prototype checker failures were caused by Python triple-quoted test fixture escaping. The embedded source line needed a double-escaped backslash-n in the test file. The frozen canonical source hash in the checker was preserved. The projection regression from the intermediate run was also fixed; latest full suite is green.
+- Workflow: [`.github/workflows/pocketcode-python-tests.yml`](../.github/workflows/pocketcode-python-tests.yml), branch-scoped, contents:read only, no deployment.
+- Important: this is canonical repository CI evidence for standard-library Python tests only. It does not establish real mobile, device, persistence, concurrency, provider, sandbox or release acceptance.

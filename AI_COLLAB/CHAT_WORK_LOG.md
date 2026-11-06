@@ -530,3 +530,12 @@ Next: await owner-provided read-only Pyodios saved-exception probe output; prese
 
 - Diagnostic CI reported embedded source bytes=1938 and SHA-256 `b5dc4750...`, versus the frozen canonical 1939-byte digest. Root cause was Python triple-quoted test fixture escaping: its embedded Python `"\n"` was interpreted during fixture construction. Changed the fixture to `"\\n"`, preserving the literal source bytes. The checker expected hash was not changed.
 - The latest CI run before this fix passed all recovery/coordinator tests; only the two fixture-escape failures remained.
+
+
+## 2026-11-06 — PC-2026-11-06-P25 — canonical Python suite green
+
+**CI evidence:** [Run 42308082939](https://github.com/marcelosofficial-ctrl/PocketCode-/actions/runs/42308082939), exact commit `09290eaf1ac8af1461211ac90564440a70708f32`, GitHub-hosted Ubuntu 24.04, Python 3.12, command `python -m unittest discover -s scripts -p "test_*.py" -v`, **154 passed, 0 failed**.
+
+**Fixes:** corrected prototype test fixture escaping so its embedded canonical main.py retains literal `\\n` bytes; frozen 1939-byte expected SHA-256 remains unchanged. Corrected coordinator projection precedence and made event-presence checks current-fence-specific. Recovery tests for reservation, claim, intent, acknowledgement, reconciliation, retry authorization and projection rebuild all passed in the full suite.
+
+**Limitations:** standard-library repository unit tests only. No iOS/Android/Pyodios run, durable storage, concurrent stress, real provider, sandbox, artifact publication or release acceptance. Later commits require their own exact-SHA test run.

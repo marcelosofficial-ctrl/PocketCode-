@@ -52,3 +52,13 @@ These are research models, not durable/concurrent services, authenticated provid
 Owner-reported Pyodios 1.1.0 / Build 7, Pyodide 314.0.5, Python 3.14.2 produced the expected inspected summary artifact but surfaced an editor bridge PythonError without traceback. The next owner action is the read-only sys.last_exc / sys.last_value probe in \`AI_COLLAB/PYODIOS_PYTHONERROR_BRIDGE_TRIAGE_20261106.md\`. Preserve the successful project. Do not rerun/overwrite, restart/reset, clear logs/variables or run GC before collecting evidence.
 
 When assigned work: inspect current code, define narrow acceptance criteria, implement one coherent increment, run focused tests, inspect the diff, update status/work log, and report exact evidence and unknowns.
+
+
+## Current canonical Python CI checkpoint
+
+- Branch: `pocketcode-ai-workflow-director-research-2026-10-28`
+- Latest successful test commit at this checkpoint: `09290eaf1ac8af1461211ac90564440a70708f32`
+- GitHub Actions: [PocketCode Python conformance tests](https://github.com/marcelosofficial-ctrl/PocketCode-/actions/runs/42308082939), Python 3.12 on Ubuntu 24.04, command `python -m unittest discover -s scripts -p "test_*.py" -v`, **154 passed, 0 failed**.
+- The initial failure was fixed in the test fixture, not by weakening the frozen canonical digest: the Python triple-quoted HTML fixture needed `\\n` to preserve the embedded main.py source's literal backslash-n. The expected 1939-byte SHA-256 remains unchanged.
+- The test workflow is `.github/workflows/pocketcode-python-tests.yml`, contents:read only, test-only. This does not establish mobile/device acceptance, durable/concurrent safety, provider integration or sandboxing.
+- Always fetch live branch head and CI status again before relying on this checkpoint; subsequent commits may not have been tested.

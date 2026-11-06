@@ -307,3 +307,7 @@ A third safety issue was found: even an authenticated provider lookup can be eve
 ## Latest recovery composition checkpoint (2026-11-06)
 
 The next increment composes the fake outbox and event journal in `scripts/fake_coordinator.py`, with tests in `scripts/test_fake_coordinator.py`. This remains an in-memory conformance model. It covers reservation repair, lease/fence-bound dispatch intent, post-send reconciliation, acknowledgement repair and deterministic read-model rebuild. The fake outbox now persists reservation creation and acknowledgement observation timestamps so event repair reuses stable occurrence times. The two stores are not transactionally atomic; concurrency, process/power-loss durability and product integration are NOT ESTABLISHED. See `AI_COLLAB/CLAUDE_HANDOFF_20261106.md` for Claude's full navigation brief.
+
+## Latest verified Python CI checkpoint
+
+The branch-scoped, test-only workflow `PocketCode Python conformance tests` passed **154/154** on exact commit `09290eaf1ac8af1461211ac90564440a70708f32`, Python 3.12 / Ubuntu 24.04: https://github.com/marcelosofficial-ctrl/PocketCode-/actions/runs/42308082939. The frozen canonical main.py hash was preserved; a Python triple-quoted test fixture escaping bug was corrected. This does not establish device, durable-storage, concurrency, provider or artifact-release acceptance. Always re-check the live branch head before relying on this result.
