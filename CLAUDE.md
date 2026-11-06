@@ -92,3 +92,15 @@ When assigned work: inspect current code, define narrow acceptance criteria, imp
 - EventJournal now binds reservation events to EffectId + DispatchAttemptId before a lease exists (no fence yet), then requires the current fence for all attempt-bound events after the first lease. FakeCoordinator derives receipt evidence refs and payload digests only from accepted events for the exact effect/attempt; quarantined conflicts are excluded.
 - New integration tests cover accepted evidence binding, conflict exclusion, receipt version creation from later observations, and safe reservation replay after a lease exists.
 - This remains an in-memory research model. No durable storage, concurrent transaction guarantee, real producer authentication, real policy check, mobile/device integration or artifact release is established. Fetch live branch head before relying on this CI result.
+
+
+## Latest exact-SHA CI result (2026-11-06)
+
+- Run: https://github.com/marcelosofficial-ctrl/PocketCode-/actions/runs/42309075221
+- Exact tested commit: `6003375dddd51e5e11155a9144817a298d0f4cf0`
+- Environment: GitHub-hosted Ubuntu 24.04, Python 3.12.
+- Command: `python -m unittest discover -s scripts -p "test_*.py" -v`
+- Result: **186 tests passed, 0 failed**.
+- This includes the coordinator-to-receipt evidence binding: receipts now reference accepted attempt-bound journal events by sequence/source/event ID and bind their payload digests. Quarantined conflicts are excluded; later accepted evidence can create a linked receipt revision without changing the predecessor.
+- Initial reservation events are now explicitly attempt-bound before a lease fence exists; lease-scoped events still require the current fence. This allows reservation evidence to be journaled before worker claim without weakening stale-fence checks after lease generation begins.
+- This is standard-library Python CI only. It does not establish mobile/device behavior, durable atomicity, concurrency, authenticated producers, provider behavior, hostile-code sandboxing or production artifact authorization. Later source commits need their own exact-SHA run.

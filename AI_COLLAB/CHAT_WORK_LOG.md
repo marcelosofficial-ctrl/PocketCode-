@@ -589,3 +589,11 @@ Next: await owner-provided read-only Pyodios saved-exception probe output; prese
 **Implemented:** attempt-bound reservation events before first fence; current-fence validation after lease generation; coordinator receipt builder derives evidence refs/digests from accepted exact-attempt events only; quarantined conflicts excluded; linked receipt revisions tested with new evidence; reservation event replay after claim remains safe.
 
 **Limits:** in-memory only; no durable atomicity/concurrency, cryptographic producer authentication, real policy authority, mobile integration, signed attestation or actual artifact-release service.
+
+
+## 2026-11-06 — PC-2026-11-06-P28 — coordinator receipt evidence binding green
+
+- CI: [run 42309075221](https://github.com/marcelosofficial-ctrl/PocketCode-/actions/runs/42309075221), exact SHA `6003375dddd51e5e11155a9144817a298d0f4cf0`, Ubuntu 24.04 / Python 3.12, full suite **186 passed, 0 failed**.
+- FakeCoordinator now binds ResultReceipt evidence references and payload digests to accepted journal events scoped to the exact effect and attempt. Quarantined conflicts do not enter receipts. New observations produce a linked new receipt version and preserve the predecessor.
+- Event journal permits the initial attempt-bound reservation event before the first lease fence; lease-scoped events still require the current fence. Added regression tests for initial reservation binding and safe reservation replay after claim.
+- Authorization remains a caller-supplied snapshot in the receipt model. This is not production authentication, durable/concurrent storage, device, provider or sandbox acceptance.

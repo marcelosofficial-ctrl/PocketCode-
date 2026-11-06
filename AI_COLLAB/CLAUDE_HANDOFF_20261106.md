@@ -157,3 +157,15 @@ Inspect current branch/source, define narrow acceptance criteria, implement one 
 ## Next gate
 
 Continue receipt integration with artifact manifest and authorization evidence, then add adversarial tests for receipt creation under partial collector/teardown states, stale publication authorization, artifact digest changes, and result-receipt retry after app interruption. Keep receipt publication independent from execution and preserve earlier versions. After semantics stabilize, write the durable transaction contract and test it against a selected store only after a separate decision.
+
+
+## Latest exact-SHA CI result (2026-11-06)
+
+- Run: https://github.com/marcelosofficial-ctrl/PocketCode-/actions/runs/42309075221
+- Exact tested commit: `6003375dddd51e5e11155a9144817a298d0f4cf0`
+- Environment: GitHub-hosted Ubuntu 24.04, Python 3.12.
+- Command: `python -m unittest discover -s scripts -p "test_*.py" -v`
+- Result: **186 tests passed, 0 failed**.
+- This includes the coordinator-to-receipt evidence binding: receipts now reference accepted attempt-bound journal events by sequence/source/event ID and bind their payload digests. Quarantined conflicts are excluded; later accepted evidence can create a linked receipt revision without changing the predecessor.
+- Initial reservation events are now explicitly attempt-bound before a lease fence exists; lease-scoped events still require the current fence. This allows reservation evidence to be journaled before worker claim without weakening stale-fence checks after lease generation begins.
+- This is standard-library Python CI only. It does not establish mobile/device behavior, durable atomicity, concurrency, authenticated producers, provider behavior, hostile-code sandboxing or production artifact authorization. Later source commits need their own exact-SHA run.

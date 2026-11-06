@@ -317,3 +317,11 @@ Next task: owner runs only the read-only Pyodios sys.last_exc / sys.last_value C
 - EventJournal now binds reservation events to EffectId + DispatchAttemptId before a lease exists (no fence yet), then requires the current fence for all attempt-bound events after the first lease. FakeCoordinator derives receipt evidence refs and payload digests only from accepted events for the exact effect/attempt; quarantined conflicts are excluded.
 - New integration tests cover accepted evidence binding, conflict exclusion, receipt version creation from later observations, and safe reservation replay after a lease exists.
 - This remains an in-memory research model. No durable storage, concurrent transaction guarantee, real producer authentication, real policy check, mobile/device integration or artifact release is established. Fetch live branch head before relying on this CI result.
+
+
+## 2026-11-06 — coordinator-to-receipt evidence binding CI green
+
+- Exact-SHA run: https://github.com/marcelosofficial-ctrl/PocketCode-/actions/runs/42309075221 at `6003375dddd51e5e11155a9144817a298d0f4cf0`; Ubuntu 24.04 / Python 3.12; `python -m unittest discover -s scripts -p "test_*.py" -v`; **186 passed, 0 failed**.
+- FakeCoordinator now creates receipt evidence references/digests from accepted journal events for the exact EffectId/DispatchAttemptId. Quarantined conflicts are excluded. A later accepted event can be captured in a new linked receipt version without mutating the predecessor.
+- Reservation events are attempt-bound before a lease fence exists; lease-scoped events still require the current fence. This fixes the earlier inability to record reservation evidence before first claim.
+- Limits: all are in-memory research models; no durable transaction, concurrent writer guarantee, cryptographic producer authentication, real provider, device, sandbox or production artifact authority.

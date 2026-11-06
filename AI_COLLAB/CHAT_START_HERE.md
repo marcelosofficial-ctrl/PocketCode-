@@ -326,3 +326,8 @@ Receipt version history is now linear per effect/attempt, preventing cross-effec
 ## 2026-11-06 — latest exact-SHA conformance result
 
 The latest branch source checkpoint passed **179/179** repository Python tests on exact commit `4d4d66561b176b560b49fb00c6b600617bbeef97`, Ubuntu 24.04 / Python 3.12: [GitHub Actions run 42308764330](https://github.com/marcelosofficial-ctrl/PocketCode-/actions/runs/42308764330). This includes linear receipt version-chain tests. This is not device, durable-storage, concurrency, provider, sandbox or release acceptance.
+
+
+## 2026-11-06 — latest exact-SHA CI checkpoint
+
+Latest branch checkpoint passed **186/186** repository Python tests on exact commit `6003375dddd51e5e11155a9144817a298d0f4cf0`, Ubuntu 24.04 / Python 3.12: [GitHub Actions run 42309075221](https://github.com/marcelosofficial-ctrl/PocketCode-/actions/runs/42309075221). Coordinator receipt creation now binds accepted attempt-scoped journal event references and payload digests; quarantined conflicts are excluded. Initial reservation evidence is recorded before the first fence, while lease-scoped events remain fenced.

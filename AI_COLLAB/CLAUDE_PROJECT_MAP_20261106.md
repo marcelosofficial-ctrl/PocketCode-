@@ -88,3 +88,12 @@ Finish the fake end-to-end recovery-to-receipt-to-artifact publication conforman
 ### Release authorization caveat
 
 `ResultReceiptStore.release_artifact()` validates a caller-supplied authorization snapshot. It does not fetch/authenticate an authority or prove freshness/revocation. The caller must obtain a fresh trusted decision per request. See the execution/recovery contract's artifact authorization caveat.
+
+
+## Latest verified test checkpoint
+
+- Exact SHA: `6003375dddd51e5e11155a9144817a298d0f4cf0`
+- CI: https://github.com/marcelosofficial-ctrl/PocketCode-/actions/runs/42309075221
+- Python 3.12 / Ubuntu 24.04; 186 passed, 0 failed.
+- FakeCoordinator now binds accepted attempt-scoped journal evidence to immutable receipt revisions. Quarantined conflicts are excluded. Initial reservation event is attempt-bound before the first lease fence; later lease events remain fenced.
+- Always re-check the live branch head before relying on this checkpoint.

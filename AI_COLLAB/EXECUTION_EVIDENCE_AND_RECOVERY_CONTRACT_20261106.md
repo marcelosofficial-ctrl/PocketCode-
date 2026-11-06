@@ -288,3 +288,10 @@ The refined suite contains 21 local deterministic unit tests passed. This remain
 ## 2026-11-06 artifact authorization model caveat
 
 The current `ResultReceiptStore.release_artifact()` accepts a caller-supplied `ReleaseAuthorization` snapshot and validates its shape, attempt binding, policy revision presence and allow/deny value on each invocation. It does **not** authenticate the authorization producer, query a policy authority, establish freshness/revocation by itself, or make the supplied `current_attempt_id` trustworthy. The caller must obtain a fresh decision from a trusted authority for every release request. Production must bind authorization to principal, tenant, artifact/object version, attempt, policy revision, scope, expiry and revocation state, then enforce it atomically at the storage boundary. The in-memory model must not be described as independently enforcing current authorization.
+
+
+## 2026-11-06 receipt composition update
+
+The in-memory FakeCoordinator can now create a ResultReceipt from accepted event-journal entries matching the exact EffectId and DispatchAttemptId. It sorts by coordinator ObservationSequence, stores stable sequence/source/producer-event references and binds each raw payload SHA-256. Quarantined conflicts are not part of the accepted event collection and are excluded. Later accepted evidence is represented by a new linked receipt version; prior receipt bytes/projection remain unchanged.
+
+Initial reservation evidence is attempt-bound before a lease fence exists. Once a lease generation exists, effect/attempt events require the current fence. This distinction is necessary because reservation precedes worker claim. The generic event journal remains a research model: production must constrain event classes and authenticate producers at the trusted adapter boundary.
