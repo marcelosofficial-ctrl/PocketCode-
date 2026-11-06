@@ -1,6 +1,6 @@
 # Pyodios PythonError bridge triage — 2026-11-06
 
-**Status:** One owner-reported Editor attempt; underlying cause and artifact outcome UNKNOWN. A separate diagnostic wrapper passed two isolated CPython checks but has NOT been run on the phone.
+**Status:** One owner-reported Editor attempt; underlying cause and artifact outcome UNKNOWN. A separate diagnostic wrapper passed four local CPython safety/oracle checks and a saved-exception probe smoke test; it has NOT been run on the phone.
 **Authority:** No change to canonical fixture, LOOP/CASE/D acceptance, runtime/provider selection, security boundary or $0 budget.
 
 ## Observed attempt
@@ -92,8 +92,14 @@ Companion attachment: `pocketcode_pyodios_runpy_diagnostic.py` (downloadable fro
 - Wrapper SHA-256: `f2abc0104d74e9910f1712dd582cfbccdebefe0eefc347aeb66c4f7786d73009`.
 - Environment: CPython 3.13.5 / Linux, not Pyodios.
 - Success fixture: caught script exit request 0; exact expected JSON matched.
-- Malformed fixture: caught script exit request 2; missing `unit_price` diagnostic present; no JSON created.
-- Result: **2/2 local wrapper checks passed**. Pyodios/Pyodide 314.0.5 device execution remains NOT RUN.
+- Malformed fixture: caught script exit request 2; missing `unit_price` diagnostic present on stderr; no JSON created.
+- Existing-artifact guard: refused to run and preserved a sentinel `summary.json` byte-for-byte.
+- Missing-input guard: refused to run when `items.csv` was absent.
+- Result: **4/4 local wrapper checks passed** under CPython 3.13.5 / Linux. A separate `sys.last_exc`-first / `sys.last_value` fallback probe smoke test passed under that same interpreter. Neither wrapper nor probe has been run on Pyodios / Pyodide 314.0.5.
+
+
+
+**Verification correction:** the first expanded harness assertion for the malformed case initially looked for the missing-column message in stdout only. The fixture correctly writes that diagnostic to stderr. The assertion was corrected to inspect stdout and stderr, then rerun; the malformed case passed. This was a test-harness assertion bug, not a fixture or wrapper failure.
 
 ## CASE-04/report-projection reconciliation
 
