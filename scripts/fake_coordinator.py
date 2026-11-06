@@ -222,18 +222,14 @@ class FakeCoordinator:
         matching.sort(key=lambda item: item[0])
         state = "reserved"
         provider_reference = None
-        seen_dispatch_intent = False
-        seen_acknowledgement = False
         for sequence, payload, event_fence in matching:
             kind = payload.get("kind")
             if kind == "lease_claimed":
                 state = "leased"
             elif kind == "dispatch_intent":
                 state = "dispatching"
-                seen_dispatch_intent = True
             elif kind in {"dispatch_acknowledged", "provider_acceptance_reconciled"}:
                 state = "acknowledged"
-                seen_acknowledgement = True
                 provider_reference = payload.get("provider_reference")
             elif kind == "final_absence_reconciled":
                 state = "retry_authorized"
@@ -259,8 +255,8 @@ class FakeCoordinator:
                 and event_fence == record.fence for _, payload, event_fence in matching):
             state = "acknowledgement_unjournaled"
         elif record.state == "retry_authorized" and not any(
-                payload.get("kind") == "final_absence_reconciled"
-                for _, payload, _ in matching):
+                payload.get("kind") == "final_absence_reconciled" and event_fence == record.fence
+                for _, payload, event_fence in matching):
             state = "retry_authorization_unjournaled"
         elif record.state == "retry_authorized":
             state = "retry_authorized"

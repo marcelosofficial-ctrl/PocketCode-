@@ -524,3 +524,9 @@ Next: await owner-provided read-only Pyodios saved-exception probe output; prese
 
 - Red-team review identified that a prior dispatch-intent event on the same attempt could mask a missing event after a safe retry. Projection now checks the journal event's fence against the current outbox fence for claim, intent and acknowledgement evidence.
 - Added a same-attempt retry regression test. This preserves the rule that a final exact absence can authorize a retry of the same attempt, while each new lease generation has its own fencing epoch.
+
+
+## 2026-11-06 — canonical fixture mismatch resolved at source
+
+- Diagnostic CI reported embedded source bytes=1938 and SHA-256 `b5dc4750...`, versus the frozen canonical 1939-byte digest. Root cause was Python triple-quoted test fixture escaping: its embedded Python `"\n"` was interpreted during fixture construction. Changed the fixture to `"\\n"`, preserving the literal source bytes. The checker expected hash was not changed.
+- The latest CI run before this fix passed all recovery/coordinator tests; only the two fixture-escape failures remained.

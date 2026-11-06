@@ -253,3 +253,9 @@ Next task: owner runs only the read-only Pyodios sys.last_exc / sys.last_value C
 
 - Read-model rebuild now evaluates lease, dispatch-intent and acknowledgement evidence against the current outbox fence, not merely whether any event of that kind exists for the attempt. This prevents an earlier safe retry's events from masking a missing event on a later dispatch under the same DispatchAttemptId.
 - Added same-attempt retry coverage: final exact absence, higher fence, second dispatch intent interrupted before journal append must project as `dispatch_intent_unjournaled`.
+
+
+## 2026-11-06 canonical fixture failure root cause
+
+- The two mobile-prototype checker failures were traced to the test fixture's Python triple-quoted HTML string: embedded main.py used `"\n"` instead of `"\\n"` in the fixture source. Python interpreted the escape while constructing the fixture, removing the backslash and producing a 1-byte-short, different source hash. Corrected the fixture escaping; the frozen canonical SHA-256 in the checker remains unchanged.
+- The current-fence projection tests passed in the subsequent CI run; no remaining recovery-model failures were reported there.
