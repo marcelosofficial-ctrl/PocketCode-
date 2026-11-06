@@ -5,6 +5,8 @@ adapter as an AuthenticatedProducer value; this module does not verify keys,
 signatures, certificates, sessions, or external credentials.
 """
 from __future__ import annotations
+
+import json
 from dataclasses import dataclass
 from hashlib import sha256
 from typing import Optional
