@@ -104,13 +104,15 @@ class EventJournal:
             raise ValueError("event_id and immutable non-empty payload bytes required")
         if not _nonnegative_int(occurred_at_ms) or not _nonnegative_int(observed_at_ms):
             raise ValueError("timestamps must be non-negative integer milliseconds")
+        if type(require_fence) is not bool:
+            raise ValueError("require_fence must be a literal boolean")
         if (effect_id is None) != (attempt_id is None):
             raise ValueError("effect_id and attempt_id must be supplied together")
+        if not require_fence and effect_id is None:
+            raise JournalConflict("unfenced events must be bound to an effect and attempt")
         if effect_id is not None:
             if not _nonempty(effect_id, attempt_id):
                 raise ValueError("effect/attempt identity must be non-empty")
-            if type(require_fence) is not bool:
-                raise ValueError("require_fence must be a literal boolean")
             current_fence = self._fences.get((effect_id, attempt_id))
             if require_fence:
                 if current_fence is None:

@@ -78,7 +78,8 @@ class EventJournalTests(unittest.TestCase):
 
     def test_unfenced_worker_event_is_rejected_even_with_flag(self):
         with self.assertRaises(JournalConflict):
-            self.append(require_fence=False)
+            self.append(effect_id="effect-1", attempt_id="attempt-1",
+                        require_fence=False)
 
     def test_unfenced_wrong_kind_or_scope_is_rejected(self):
         reservation_producer = AuthenticatedProducer(
