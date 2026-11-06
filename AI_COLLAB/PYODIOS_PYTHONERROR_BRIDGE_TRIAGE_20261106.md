@@ -53,7 +53,7 @@ Python's `runpy` documentation explicitly says it executes in the current proces
 1. Open the same active Pyodios project and its Files tab.
 2. The owner has already inspected the existing `summary.json`; it matches the oracle: `grand_total` = `"10.75"`; `line_items` = `2`; `totals_by_item.notebook` = `"7.00"`; `totals_by_item.pen` = `"3.75"`. Preserve this file. Do not overwrite or rerun the success project.
 3. Already completed by the owner: More → Settings → Error Log → View Error Log. The only available detail was `Editor: PythonError`; no traceback or underlying exception was exposed. Do not clear the log.
-4. Next, open the Pyodios Console in the existing session and run this read-only probe for Pyodide's saved exception (`sys.last_exc` preferred on Python 3.14, falling back to `sys.last_value`). It does not rerun `main.py`:
+4. Next, tap **Console** in Pyodios' bottom tab bar to open the interactive Python REPL in the existing session. Pyodios documents Console as a first-class section; on iPhone, sections are accessed from the tab bar. Run this read-only probe for Pyodide's saved exception (`sys.last_exc` preferred on Python 3.14, falling back to `sys.last_value`). It does not rerun `main.py`:
 
 ```python
 import sys
