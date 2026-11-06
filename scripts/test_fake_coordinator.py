@@ -70,6 +70,19 @@ class FakeCoordinatorTests(unittest.TestCase):
         with self.assertRaises(StaleLease):
             self.coordinator.mark_dispatching(lease, now=25)
 
+    def test_dispatch_intent_store_commit_without_event_is_visible_as_gap(self):
+        lease = self.coordinator.claim("effect-1", "worker-A", now=20, lease_seconds=5)
+        with self.assertRaises(RuntimeError):
+            self.coordinator.mark_dispatching(
+                lease, now=21, crash_after_store_transition=True,
+            )
+        self.assertEqual(self.coordinator.rebuild_effect("effect-1").state,
+                         "dispatch_intent_unjournaled")
+        self.assertEqual(self.coordinator.recover_expired("effect-1", now=25),
+                         "reconcile_before_any_retry")
+        self.assertEqual(self.coordinator.rebuild_effect("effect-1").state,
+                         "reconciliation_required")
+
     def test_expired_post_intent_requires_reconciliation(self):
         self.dispatch(now=20, lease_seconds=5)
         self.assertEqual(self.coordinator.recover_expired("effect-1", now=26),

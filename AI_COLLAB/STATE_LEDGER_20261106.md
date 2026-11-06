@@ -214,7 +214,8 @@ Next task: owner runs only the read-only Pyodios sys.last_exc / sys.last_value C
 
 ## 2026-11-06 coordinator composition increment
 
-- Added `scripts/fake_coordinator.py` and `scripts/test_fake_coordinator.py` to compose the in-memory outbox and append-only event journal.
+- Added `scripts/fake_coordinator.py` and `scripts/test_fake_coordinator.py` to compose the in-memory outbox and append-only event journal (14 focused cases).
 - Persisted reservation creation time and acknowledgement observation time in the fake outbox so interrupted event appends can be repaired using stable event occurrence timestamps.
-- Scope remains deterministic in-memory modeling. Durable atomicity, concurrent writers, process/power-loss recovery, real provider authentication, product integration and CI are NOT ESTABLISHED.
+- The projection now surfaces interrupted outbox/journal boundaries explicitly as `dispatch_intent_unjournaled`, `reconciliation_required` and `acknowledgement_unjournaled`, rather than silently projecting an earlier event state.
+- Scope remains deterministic in-memory modeling. Durable atomicity, concurrent writers, process/power-loss recovery, real provider authentication, product integration and CI are NOT ESTABLISHED. The 14 tests were exercised against API-compatible in-memory test doubles, not canonical repository modules in a checkout.
 - Claude navigation: read `CLAUDE.md` and `AI_COLLAB/CLAUDE_HANDOFF_20261106.md` before taking the next implementation/review task.

@@ -82,7 +82,8 @@ Continue fake coordinator composition:
 2. Verify event append/replay and outbox acknowledgement repair.
 3. Rebuild lifecycle projections after interruption.
 4. Add adversarial tests for stale workers, duplicate/conflicting events, stable timestamps, partial writes and mismatched attempt identity.
-5. Only after semantics stabilize, design a durable adapter with atomic reservation/intent, fence compare-and-advance, append and receipt publication. Test concurrency and process/power loss before selecting storage.
+5. The fake projection must surface outbox/journal gaps explicitly: dispatch_intent_unjournaled, reconciliation_required and acknowledgement_unjournaled.
+6. Only after semantics stabilize, design a durable adapter with atomic reservation/intent, fence compare-and-advance, append and receipt publication. Test concurrency and process/power loss before selecting storage.
 
 Do not select SQLite/Postgres/Redis/cloud/provider as a side effect. Any SQLite candidate must pin a version/build with the WAL-reset fix (3.51.3 or supported backport). MCP Tasks remain experimental; A2A stream/history is not an authoritative execution receipt.
 

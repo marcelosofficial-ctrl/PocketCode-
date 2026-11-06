@@ -149,15 +149,31 @@ class FakeCoordinator:
         matching.sort(key=lambda pair: pair[0])
         state = "reserved"
         provider_reference = None
+        seen_dispatch_intent = False
+        seen_acknowledgement = False
         for sequence, payload in matching:
             kind = payload.get("kind")
             if kind == "lease_claimed":
                 state = "leased"
             elif kind == "dispatch_intent":
                 state = "dispatching"
+                seen_dispatch_intent = True
             elif kind == "dispatch_acknowledged":
                 state = "acknowledged"
+                seen_acknowledgement = True
                 provider_reference = payload.get("provider_reference")
+
+        # The outbox is the recovery authority for state transitions whose
+        # corresponding journal append may have been interrupted. Surface the
+        # gap explicitly instead of silently projecting an earlier state.
+        if record.state == "dispatching" and not seen_dispatch_intent:
+            state = "dispatch_intent_unjournaled"
+        elif record.state == "reconciling":
+            state = "reconciliation_required"
+        elif record.state == "acknowledged" and not seen_acknowledgement:
+            state = "acknowledgement_unjournaled"
+        elif record.state == "terminal":
+            state = "terminal"
         return RebuiltEffect(
             effect_id, attempt_id, state,
             matching[-1][0] if matching else 0, len(matching), provider_reference,
