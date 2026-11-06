@@ -57,3 +57,12 @@ Continue PocketCode's own highest-value task: inspect and fix `scripts/report_co
 ## CI verification closeout
 
 RevDev's run #42 exact source/test revision passed 81/81. This supersedes the pending status earlier in this note. The next RevDev step is independent Claude/Gemini review of local-result discovery, digest/request identity binding, READ_ONLY RUN_ONCE policy, quarantine multi-step failure semantics, and PowerShell native process state. PocketCode should continue CASE-04 independently.
+
+
+## 2026-11-06 — RevDev installer integration finding (CI pending)
+
+A further RevDev integration review found that the R5 watcher/runner/publisher import four sibling modules that the previous clean installer did not stage. The RevDev review branch now updates the clean installer to stage, parse, hash, back up, install and roll back those modules, validate exports/import dependency, bind the publisher self-test to a local result digest, require exact remote-byte verification, and record module hashes in the installation marker. It also resolves main once and fetches all source files by that exact commit SHA to prevent mixed-revision installation.
+
+Exact RevDev installer blob `d28470e818f356c5379430f2f9b53c473559752d`; installer tests blob `0007bd4d50e0413c0d2cfbc89a1c2be396b0dcae` (10 cases). Full RevDev suite is 91 cases. Actions run #48 `42181302862` targets source/test head `935108a6937f15b76f75850ebdbe70c69000be32` and was still in progress at the Pester installation step. Do not claim 91/91 until exact CI completion.
+
+This is RevDev-only. Its redirector/installer still fetch production files from main; review-branch changes do not reach the PC without deliberate merge. No installer was executed and no PC/live API/queue operation occurred. PocketCode should not copy its PowerShell code or delay CASE-04. Transferable method: trace every new runtime dependency through the real installer/package path, test install/rollback behavior, and pin one immutable source revision for a multi-file install.
