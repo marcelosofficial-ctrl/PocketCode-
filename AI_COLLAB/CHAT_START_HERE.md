@@ -11,10 +11,10 @@ Read this file, verify the live branch/PR/CI state, and fetch only the linked ta
 
 - Repo: https://github.com/marcelosofficial-ctrl/PocketCode-
 - Branch: `pocketcode-ai-workflow-director-research-2026-10-28`
-- Live compare snapshot 2026-11-06: **731 ahead / 0 behind** main; branch head `954ee2505850ce47e6d14a644da52162d8cfc575`; merge base `555840d8d83342513d9cd353d4d1522d46a5c82d`. Re-fetch before consequential work. Ahead count is branch-history divergence, not product progress.
-- Open PR #2: [Add chat checkpoints and harden report-contract regressions](https://github.com/marcelosofficial-ctrl/PocketCode-/pull/2), OPEN.
-- Open PR #3: [Draft: Add evidence-led PocketCode research baseline](https://github.com/marcelosofficial-ctrl/PocketCode-/pull/3), OPEN.
-- These PRs were not modified in the 2026-11-06 continuity update.
+- Last observed pre-entrypoint-refresh snapshot 2026-11-06: **738 ahead / 0 behind** main; branch head `3cfa3b7f75facb34ab86e2286be2b36a15fff443`; merge base `555840d8d83342513d9cd353d4d1522d46a5c82d`. Re-fetch before consequential work. Ahead count is branch-history divergence, not product progress.
+- Open PR #2: [Add chat checkpoints and harden report-contract regressions](https://github.com/marcelosofficial-ctrl/PocketCode-/pull/2), OPEN/DRAFT from branch `chat-continuity-report-regressions-2026-10-26`.
+- Open PR #3: [Draft: Add evidence-led PocketCode research baseline](https://github.com/marcelosofficial-ctrl/PocketCode-/pull/3), OPEN/DRAFT from branch `pocketcode-pass0-audit-2026-10-26`.
+- PR #2/#3 are not this active research branch and were not modified. Do not infer the active branch's commits are included in either PR.
 
 ## Product direction and current phase
 
