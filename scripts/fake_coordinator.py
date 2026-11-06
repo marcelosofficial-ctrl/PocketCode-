@@ -270,6 +270,7 @@ class FakeCoordinator:
 
     def project_attempt_verdict(self, effect_id: str, attempt_id: str) -> VerdictProjection:
         self.store.get(effect_id, attempt_id)
+        record = self.store.get(effect_id, attempt_id)
         matching = [event for event in self.journal.events
                     if event.effect_id == effect_id and event.attempt_id == attempt_id]
         matching.sort(key=lambda event: event.sequence)
@@ -283,7 +284,14 @@ class FakeCoordinator:
                 return VerdictProjection("INCOMPLETE", "accepted_event_payload_invalid", "unknown")
             if not isinstance(payload, dict):
                 return VerdictProjection("INCOMPLETE", "accepted_event_payload_not_object", "unknown")
+            if not isinstance(payload, dict):
+                return VerdictProjection("INCOMPLETE", "accepted_event_payload_not_object", "unknown")
             kind = payload.get("kind")
+            if kind in {"lifecycle_observation", "exit_observation", "program_failure_observation"}:
+                if event.fence != record.fence:
+                    return VerdictProjection(
+                        "INCOMPLETE", "stale_fence_terminal_observation_requires_reconciliation", "unknown"
+                    )
             if kind == "lifecycle_observation":
                 lifecycle_items.append(LifecycleObservation(
                     attempt_id, payload.get("status"), payload.get("producer"), event.sequence,
@@ -318,7 +326,10 @@ class FakeCoordinator:
         projection = self.project_attempt_verdict(effect_id, attempt_id)
         if execution_outcome is not None and execution_outcome != projection.verdict:
             raise OutboxConflict("caller-supplied verdict conflicts with accepted evidence projection")
+        if lifecycle_disposition != projection.execution_status:
+            raise OutboxConflict("caller-supplied lifecycle disposition conflicts with accepted evidence projection")
         execution_outcome = projection.verdict
+        lifecycle_disposition = projection.execution_status
         events = [event for event in self.journal.events
                   if event.effect_id == effect_id and event.attempt_id == attempt_id]
         events.sort(key=lambda event: event.sequence)

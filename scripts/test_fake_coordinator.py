@@ -250,7 +250,7 @@ class FakeCoordinatorTests(unittest.TestCase):
             receipt_store, effect_id="effect-1", attempt_id="attempt-1",
             revision_key="rev-1", contract_version="pc-v1",
             execution_outcome="INCOMPLETE", collection_state="complete",
-            lifecycle_disposition="dispatching", cleanup_state="unknown",
+            lifecycle_disposition="unknown", cleanup_state="unknown",
             artifact_ids=(), created_at_ms=22,
         )
         self.assertEqual(len(receipt.evidence_refs), 3)
@@ -272,7 +272,7 @@ class FakeCoordinatorTests(unittest.TestCase):
             receipt_store, effect_id="effect-1", attempt_id="attempt-1",
             revision_key="rev-1", contract_version="pc-v1",
             execution_outcome="INCOMPLETE", collection_state="unknown",
-            lifecycle_disposition="pending", cleanup_state="unknown",
+            lifecycle_disposition="unknown", cleanup_state="unknown",
             artifact_ids=(), created_at_ms=11,
         )
         self.coordinator.claim("effect-1", "worker-A", now=20, lease_seconds=10)
@@ -280,7 +280,7 @@ class FakeCoordinatorTests(unittest.TestCase):
             receipt_store, effect_id="effect-1", attempt_id="attempt-1",
             revision_key="rev-2", contract_version="pc-v1",
             execution_outcome="INCOMPLETE", collection_state="complete",
-            lifecycle_disposition="leased", cleanup_state="unknown",
+            lifecycle_disposition="unknown", cleanup_state="unknown",
             artifact_ids=(), created_at_ms=21,
             predecessor_receipt_id=first.receipt_id, revision_reason="new lease evidence",
         )
@@ -390,6 +390,7 @@ class FakeCoordinatorTests(unittest.TestCase):
     def test_multiple_lifecycle_observations_require_reconciliation(self):
         lease = self.coordinator.claim("effect-1", "worker-A", now=20, lease_seconds=20)
         self.coordinator.mark_dispatching(lease, now=20)
+        self.coordinator.mark_dispatching(lease, now=20)
         for event_id, status, now in (("life-running", "running", 21),
                                       ("life-succeeded", "succeeded", 22)):
             self.coordinator.record_lifecycle_observation(
@@ -399,6 +400,47 @@ class FakeCoordinatorTests(unittest.TestCase):
         projection = self.coordinator.project_attempt_verdict("effect-1", "attempt-1")
         self.assertEqual(projection.verdict, "INCOMPLETE")
         self.assertEqual(projection.reason, "multiple_terminal_observations_require_reconciliation")
+
+    def test_old_fence_terminal_observations_force_incomplete_after_authorized_retry(self):
+        from result_receipts import ResultReceiptStore
+        first = self.coordinator.claim("effect-1", "worker-A", now=20, lease_seconds=2)
+        self.coordinator.mark_dispatching(first, now=20)
+        self.coordinator.record_lifecycle_observation(
+            "effect-1", "attempt-1", event_id="old-lifecycle-success",
+            status="succeeded", fence=first.fence, now=20,
+        )
+        self.coordinator.record_exit_observation(
+            "effect-1", "attempt-1", event_id="old-child-zero",
+            producer="direct_child_wait", kind="natural_exit",
+            exit_code=0, fence=first.fence, now=21,
+        )
+        self.coordinator.recover_expired("effect-1", now=22)
+        self.coordinator.reconcile(
+            "effect-1", outcome="not_found", exact_identity_match=True,
+            authoritative=True, absence_final=True, now=23,
+        )
+        second = self.coordinator.claim("effect-1", "worker-B", now=24, lease_seconds=10)
+        self.assertGreater(second.fence, first.fence)
+        projection = self.coordinator.project_attempt_verdict("effect-1", "attempt-1")
+        self.assertEqual(projection.verdict, "INCOMPLETE")
+        self.assertEqual(projection.reason,
+                         "stale_fence_terminal_observation_requires_reconciliation")
+
+    def test_receipt_lifecycle_disposition_must_match_projected_status(self):
+        from result_receipts import ResultReceiptStore
+        lease = self.coordinator.claim("effect-1", "worker-A", now=20, lease_seconds=10)
+        self.coordinator.mark_dispatching(lease, now=20)
+        self.coordinator.record_lifecycle_observation(
+            "effect-1", "attempt-1", event_id="lifecycle-running",
+            status="running", fence=lease.fence, now=21,
+        )
+        with self.assertRaises(OutboxConflict):
+            self.coordinator.create_result_receipt(
+                ResultReceiptStore(), effect_id="effect-1", attempt_id="attempt-1",
+                revision_key="wrong-lifecycle", contract_version="pc-v1",
+                lifecycle_disposition="succeeded", collection_state="unknown",
+                cleanup_state="unknown", artifact_ids=(), created_at_ms=22,
+            )
 
     def test_dispatch_only_journal_cannot_create_pass_or_fail_receipt(self):
         from result_receipts import ResultReceiptStore
