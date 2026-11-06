@@ -1,6 +1,6 @@
 # Pyodios PythonError bridge triage — 2026-11-06
 
-**Status:** One owner-reported Editor attempt; underlying cause and artifact outcome UNKNOWN. A separate diagnostic wrapper passed four local CPython safety/oracle checks and a saved-exception probe smoke test; it has NOT been run on the phone.
+**Current status:** The owner-reported Editor attempt produced a `summary.json` artifact that the owner inspected and confirmed matches the canonical oracle exactly. The Editor still displayed `[Bridge/executePython] PythonError`. Classification: **ARTIFACT-LEVEL FUNCTIONAL SUCCESS / BRIDGE ERROR UNRESOLVED / FULL RUN INCONCLUSIVE**. The underlying Python exception and native process exit status remain UNKNOWN. The separate wrapper passed four local CPython checks; neither wrapper nor saved-exception probe has run on the phone.
 **Authority:** No change to canonical fixture, LOOP/CASE/D acceptance, runtime/provider selection, security boundary or $0 budget.
 
 ## Observed attempt
@@ -8,7 +8,7 @@
 The owner reports that `main.py` and renamed `items.csv` are in the same Pyodios project, the green whole-file Editor play control was tapped, and the complete visible output was exactly `[Bridge/executePython] PythonError`. No traceback or other output was visible.
 
 - **DIRECTLY OBSERVED (owner-reported):** files added to project; green Editor run invoked; exact visible result above.
-- **UNKNOWN:** whether `summary.json` was created in the Python session/project; whether `items.csv` was visible to the active Python working folder; the underlying Python exception; whether stderr was surfaced separately; the script-requested exit value.
+- **UNKNOWN at the time of the initial report:** whether `summary.json` existed; whether `items.csv` was visible to the active Python working folder; the underlying Python exception; separate stderr; the script-requested exit value. A later owner inspection, recorded in the project work log, confirmed the existing `summary.json` is present and matches the oracle exactly. The bridge cause and native process exit status remain UNKNOWN.
 - **NOT RUN:** malformed-input case, artifact export/read-back, normal relaunch persistence, interruption/recovery and PocketCode acceptance.
 - No PASS or FAIL is assigned from the bridge label alone.
 
@@ -51,10 +51,10 @@ Python's `runpy` documentation explicitly says it executes in the current proces
 **Do not run `main.py` again yet. Preserve the current attempt.**
 
 1. Open the same active Pyodios project and its Files tab.
-2. Look for `summary.json`. If it exists, open it and compare: `grand_total` = `"10.75"`; `line_items` = `2`; `totals_by_item.notebook` = `"7.00"`; `totals_by_item.pen` = `"3.75"`. Do not overwrite or rerun.
-3. Open **on iPhone, **More → Settings**, then scroll to **Error Log → View Error Log****. Find the entry timestamped around the green-play attempt.
+2. The owner has already inspected the existing `summary.json`; it matches the oracle: `grand_total` = `"10.75"`; `line_items` = `2`; `totals_by_item.notebook` = `"7.00"`; `totals_by_item.pen` = `"3.75"`. Preserve this file. Do not overwrite or rerun the success project.
+3. On iPhone, open **More → Settings**, scroll to **Error Log**, and tap **View Error Log**. Find the entry timestamped around the green-play attempt.
 4. Inspect it before sharing. Copy only the relevant entry/traceback; redact personal paths and unrelated source. Do not clear the log.
-5. If the log is unhelpful, open the Pyodios Console and run this read-only probe for Pyodide's saved `sys.last_value` from the previous exception. It does not rerun `main.py`:
+5. If the log is unhelpful, open the Pyodios Console and run this read-only probe for Pyodide's saved exception (`sys.last_exc` preferred on Python 3.14, falling back to `sys.last_value`). It does not rerun `main.py`:
 
 ```python
 import sys
@@ -115,11 +115,11 @@ The 2026-11-05 `VERDICT_EVIDENCE_EXIT_PROVENANCE_MATRIX_20261105.md` explicitly 
 2. Earlier steps ran a CLI-style fixture with uncaught `SystemExit` through an embedded interpreter without an adapter. The source fixture stays frozen; a separate wrapper now catches and reports the exit request.
 3. The earlier red-team statement that pull-to-refresh was unsupported was itself incorrect. The Files guide documents pull-to-refresh for the Files browser list; the Projects guide separately requires reopening the project to synchronize external additions into the Python session.
 4. The start page suggested a direct CASE-04 precedence reorder. That conflicts with the more precise exit-provenance matrix; typed evidence resolution comes first.
-5. Earlier status said the device test awaited any owner observation. An Editor attempt has occurred, but the outcome is UNKNOWN, not NOT RUN and not PASS/FAIL.
+5. The initial artifact state was UNKNOWN. The owner's later inspection confirmed the exact success oracle in `summary.json`. The Editor bridge error and native exit status remain unresolved, so the full run remains INCONCLUSIVE.
 
 ## Next actions
 
-1. Resolve the present device attempt from its existing `summary.json` and timestamped Error Log before rerun.
+1. Preserve the already matching `summary.json`; inspect the timestamped Error Log and, if needed, run the read-only saved-exception probe. Do not rerun or overwrite the success project.
 2. Reconcile the start page and define/test the typed child/wrapper/termination projection without freezing speculative schema.
 3. Test wrapper behavior with the exact Pyodide 314.0.5 runtime only if a safe $0 harness is available; then verify on device.
 4. After the success path is understood, run malformed input in a fresh project, then export/read-back and normal relaunch checks.
