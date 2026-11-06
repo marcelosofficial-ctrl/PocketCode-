@@ -539,3 +539,9 @@ Next: await owner-provided read-only Pyodios saved-exception probe output; prese
 **Fixes:** corrected prototype test fixture escaping so its embedded canonical main.py retains literal `\\n` bytes; frozen 1939-byte expected SHA-256 remains unchanged. Corrected coordinator projection precedence and made event-presence checks current-fence-specific. Recovery tests for reservation, claim, intent, acknowledgement, reconciliation, retry authorization and projection rebuild all passed in the full suite.
 
 **Limitations:** standard-library repository unit tests only. No iOS/Android/Pyodios run, durable storage, concurrent stress, real provider, sandbox, artifact publication or release acceptance. Later commits require their own exact-SHA test run.
+
+
+## 2026-11-06 — result receipt and artifact-release conformance model
+
+- Started the next boundary from the execution/recovery contract: immutable receipt versions, attempt-bound artifact manifest, exact byte digest/size, partial-write and digest-mismatch quarantine, current authorization on every release, and copy/share retry against the same receipt without rerunning work.
+- Added `scripts/result_receipts.py` and `scripts/test_result_receipts.py`. This remains a pure in-memory model; CI result pending.

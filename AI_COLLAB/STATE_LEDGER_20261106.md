@@ -267,3 +267,10 @@ Next task: owner runs only the read-only Pyodios sys.last_exc / sys.last_value C
 - Successful exact-SHA run: https://github.com/marcelosofficial-ctrl/PocketCode-/actions/runs/42308082939 at `09290eaf1ac8af1461211ac90564440a70708f32`, Ubuntu 24.04 / Python 3.12, **154 passed, 0 failed**.
 - Initial prototype checker fixture failure was fixed by double-escaping the embedded source's `\\n` in the Python triple-quoted test fixture. Frozen canonical source length/hash was not changed. Intermediate projection precedence regression was corrected and included in the green run.
 - The green run validates repository Python unit tests at that exact SHA only. It does not validate later commits, iOS/Android behavior, actual Pyodios, durable transactions, concurrent workers, provider behavior, sandboxing or artifact release.
+
+
+## 2026-11-06 result receipt and artifact release model started
+
+- Added an isolated in-memory model for immutable versioned result receipts, exact-byte artifact manifests, quarantine, per-request current authorization checks and same-receipt publication retries. See `scripts/result_receipts.py` and `scripts/test_result_receipts.py`.
+- The model is not durable, signed, malware-scanned, provider-authenticated or production-integrated. Digests establish byte integrity relative to stored values, not producer authenticity or safety. A later observation creates a linked receipt version; it never mutates an earlier receipt. Report-copy retry uses the same receipt and does not trigger task execution.
+- Test result is pending the branch-scoped Python CI run at the next source commit.

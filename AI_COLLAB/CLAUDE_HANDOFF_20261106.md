@@ -109,3 +109,9 @@ Inspect current branch/source, define narrow acceptance criteria, implement one 
 - The initial two prototype checker failures were caused by Python triple-quoted test fixture escaping. The embedded source line needed a double-escaped backslash-n in the test file. The frozen canonical source hash in the checker was preserved. The projection regression from the intermediate run was also fixed; latest full suite is green.
 - Workflow: [`.github/workflows/pocketcode-python-tests.yml`](../.github/workflows/pocketcode-python-tests.yml), branch-scoped, contents:read only, no deployment.
 - Important: this is canonical repository CI evidence for standard-library Python tests only. It does not establish real mobile, device, persistence, concurrency, provider, sandbox or release acceptance.
+
+
+## Current receipt/artifact work (in progress)
+
+- New files `scripts/result_receipts.py` and `scripts/test_result_receipts.py` model immutable versioned receipts, attempt-bound artifact manifests, exact-byte digests, partial-write/digest quarantine, revalidated current authorization on every release request, and report publication retry against the same receipt.
+- This is an in-memory conformance model only. No signature, producer authentication, malware scanning, durable storage, real artifact store, mobile integration or release authority is implemented. Fetch the latest head and check CI before treating tests as passed.
