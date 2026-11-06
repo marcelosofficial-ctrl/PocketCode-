@@ -20,12 +20,12 @@ GitHub is the durable project state. Do not rely on a last-minute full-chat hand
 **Important limitation:** this protocol reduces avoidable context pressure and tool stalls; it cannot prevent platform context limits, service outages or execution failures. The goal is graceful interruption with no lost project state.
 
 
-**Last refreshed:** 2026-11-06 (RevDev CI closeout and cross-project handoff)  
+**Last refreshed:** 2026-11-06 (Pyodios first-run triage and CASE-04 provenance correction)  
 **Authority:** live PocketCode branch state plus canonical source/spec/test records. This file is the compact first-read entrypoint for every new PocketCode chat.
 
 ## Current cross-project note
 
-Read [RevDev progress and multi-chat continuity update](CROSS_PROJECT_UPDATE_REVDEV_2026-11-06.md) for transferable engineering lessons and the current RevDev status. This does not transfer RevDev implementation or acceptance evidence into PocketCode. PocketCode's own CASE-04/report-contract work remains the immediate priority.
+Read [RevDev progress and multi-chat continuity update](CROSS_PROJECT_UPDATE_REVDEV_2026-11-06.md) for transferable engineering lessons and the current RevDev status. This does not transfer RevDev implementation or acceptance evidence into PocketCode. PocketCode's immediate active work is resolving the first owner-reported Pyodios Editor attempt, followed by the typed CASE-04 exit-provenance contract. Do not make a precedence-only formatter patch.
 
 ## First action
 
@@ -35,7 +35,7 @@ Read this file, verify the live branch/PR/CI state, and fetch only the linked ta
 
 - Repo: https://github.com/marcelosofficial-ctrl/PocketCode-
 - Branch: `pocketcode-ai-workflow-director-research-2026-10-28`
-- Last verified PocketCode branch head at this checkpoint: `a68e9237c606c6812ec8b6169423319563dc6842`. Ahead/behind comparison not refreshed; fetch live compare before consequential work. Historical merge base: `555840d8d83342513d9cd353d4d1522d46a5c82d`. Ahead count is branch-history divergence, not product progress.
+- Live branch snapshot at start of the 2026-11-06 Pyodios triage pass: `fe4cf31b7a3c185689422d186ad11e48bcfbe747`, **757 ahead / 0 behind** `main`; merge base `555840d8d83342513d9cd353d4d1522d46a5c82d`. This is a pre-checkpoint snapshot; fetch live refs before consequential writes. Ahead count is accumulated branch-history divergence, not product progress.
 - Open PR #2: [Add chat checkpoints and harden report-contract regressions](https://github.com/marcelosofficial-ctrl/PocketCode-/pull/2), OPEN/DRAFT from branch `chat-continuity-report-regressions-2026-10-26`.
 - Open PR #3: [Draft: Add evidence-led PocketCode research baseline](https://github.com/marcelosofficial-ctrl/PocketCode-/pull/3), OPEN/DRAFT from branch `pocketcode-pass0-audit-2026-10-26`.
 - PR #2/#3 are not this active research branch and were not modified. Do not infer the active branch's commits are included in either PR.
@@ -63,22 +63,22 @@ Boundary policy: project boundaries are revisable when evidence shows a benefit.
 
 ## Canonical suites and evidence status
 
-PocketCode canonical LOOP/CASE/D suites remain unchanged. Preserve their IDs, expected text and semantics exactly. The current PocketCode-specific report-contract issue remains important: `classify_verdict()` currently checks nonzero exit before trusted lifecycle `timed_out`, while canonical CASE-04 requires timeout to be represented as INCOMPLETE/timed_out. The timeout test also needs the required evidence. Other known audit concerns include degraded collectors/teardown being conflated with execution verdicts and the need for a synchronous pre-execution network-isolation barrier.
+PocketCode canonical LOOP/CASE/D suites remain unchanged. Preserve their IDs, expected text and semantics exactly. The current report-contract issue is a typed-provenance problem, not a safe precedence-only fix. The 2026-11-05 `VERDICT_EVIDENCE_EXIT_PROVENANCE_MATRIX_20261105.md` explicitly says not to patch `classify_verdict()` until generic `exit_code` is distinguished as child exit versus wrapper, forced-termination, stale or contradictory evidence. Preserve canonical CASE-04 as INCOMPLETE/timed_out. Also retain degraded collector/teardown semantics and synchronous pre-execution network-isolation barrier as open concerns.
 
 Current device comparison:
 - Pyodios is reported by the owner as installed on the iPhone.
 - A fixed-task device baseline/protocol and exact fixture archive have been prepared.
 - Fixture archive SHA-256: `706c6a87d07c496d5a461c9395fb0b967b961fa9c430c719d9799998df5b4099`.
 - The embedded `main.py` matches canonical source SHA-256 `70c66ad3a0132923cbf3190eb3546093fcc2c61c1bdcbf3b171696e1ae7521e7`.
-- The owner/device comparison is AWAITING OWNER OBSERVATIONS; ChatGPT did not perform device execution. Do not claim a device test or runtime verdict.
+- One owner-reported Editor attempt has occurred: exact visible output `[Bridge/executePython] PythonError`, no traceback. Underlying Python exception and `summary.json` presence remain UNKNOWN. This is not a PASS/FAIL and does not establish process exit. Do not rerun until the artifact and Error Log have been inspected.
 
 ## Current priority order
 
-1. Re-fetch and inspect `scripts/report_contract.py` and its tests. Correct the trusted lifecycle/timeout classification ordering and add an exact CASE-04 regression without changing canonical wording.
-2. Audit degraded collection, teardown, artifact and cleanup semantics so process execution facts remain distinct from report verdict.
-3. Preserve the synchronous pre-execution network-isolation barrier; source-audit exact ordering and failure behavior.
-4. Continue the Pyodios hands-on comparison only from owner-supplied observations, and keep documented product claims distinct from device-verified facts.
-5. Narrow future work to one real vertical slice after the fixed-task comparison. Avoid broad competitor research unless it changes a concrete decision.
+1. Resolve the current Pyodios attempt: inspect the same project's `summary.json`, then the timestamped Settings → Diagnostics → Error Logs entry; do not rerun `main.py` yet. See `PYODIOS_PYTHONERROR_BRIDGE_TRIAGE_20261106.md`.
+2. Resolve typed child-exit / wrapper-exit / termination / lifecycle projection before changing `scripts/report_contract.py`; preserve CASE-04 INCOMPLETE/timed_out and all existing IDs.
+3. Audit degraded observation collection, teardown, artifact integrity/release and cleanup semantics separately from execution outcome.
+4. Source-audit the synchronous pre-execution network-isolation barrier for exact ordering and fail-closed behavior.
+5. After the first device path is understood, complete malformed-input, export/read-back and normal-relaunch checks; compare only one free alternative if it adds decision value.
 
 ## Roles
 
