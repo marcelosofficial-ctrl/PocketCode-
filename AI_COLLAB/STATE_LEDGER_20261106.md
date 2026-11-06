@@ -247,3 +247,9 @@ Next task: owner runs only the read-only Pyodios sys.last_exc / sys.last_value C
 
 - Added branch-scoped Python unittest workflow and ran it on the repository checkout (Python 3.12). The run on `01ba09e` found 2 failures in the existing mobile prototype checker: both valid-fixture tests rejected the embedded `main.py` frozen hash. The run on `333212a` found those same 2 failures plus a projection-order regression: after expired dispatch intent, state must remain `reconciliation_required` even if the dispatch-intent event is also missing. The latter was corrected by prioritizing reconciliation-required state.
 - Checker diagnostics now include the observed embedded source byte count and SHA-256 without changing the frozen expected hash. The next CI run will identify whether the fixture mismatch is in byte length, source content, or expected digest.
+
+
+## 2026-11-06 fence-scoped projection refinement
+
+- Read-model rebuild now evaluates lease, dispatch-intent and acknowledgement evidence against the current outbox fence, not merely whether any event of that kind exists for the attempt. This prevents an earlier safe retry's events from masking a missing event on a later dispatch under the same DispatchAttemptId.
+- Added same-attempt retry coverage: final exact absence, higher fence, second dispatch intent interrupted before journal append must project as `dispatch_intent_unjournaled`.

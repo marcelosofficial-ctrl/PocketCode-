@@ -518,3 +518,9 @@ Next: await owner-provided read-only Pyodios saved-exception probe output; prese
 - First repository-wide CI run: 151 tests, 2 failures. Both failures are pre-existing mobile-prototype checker fixture failures caused by the embedded canonical main.py byte/hash guard. All other 149 tests passed, including the new recovery models.
 - Second run after reconciliation repair: 153 tests, 3 failures. The two prototype failures persisted; one additional regression showed the projection incorrectly preferred missing dispatch-intent event over the stronger `reconciliation_required` outbox state. Fixed projection precedence.
 - Added observed source byte length and SHA-256 to the checker failure diagnostic while preserving the frozen expected digest. Await next run before deciding whether the fixture or frozen hash is stale.
+
+
+## 2026-11-06 — current-fence projection correctness
+
+- Red-team review identified that a prior dispatch-intent event on the same attempt could mask a missing event after a safe retry. Projection now checks the journal event's fence against the current outbox fence for claim, intent and acknowledgement evidence.
+- Added a same-attempt retry regression test. This preserves the rule that a final exact absence can authorize a retry of the same attempt, while each new lease generation has its own fencing epoch.

@@ -218,13 +218,13 @@ class FakeCoordinator:
                     payload = json.loads(event.payload.decode("utf-8"))
                 except (UnicodeDecodeError, json.JSONDecodeError):
                     continue
-                matching.append((event.sequence, payload))
-        matching.sort(key=lambda pair: pair[0])
+                matching.append((event.sequence, payload, event.fence))
+        matching.sort(key=lambda item: item[0])
         state = "reserved"
         provider_reference = None
         seen_dispatch_intent = False
         seen_acknowledgement = False
-        for sequence, payload in matching:
+        for sequence, payload, event_fence in matching:
             kind = payload.get("kind")
             if kind == "lease_claimed":
                 state = "leased"
@@ -241,20 +241,26 @@ class FakeCoordinator:
         # The outbox is the recovery authority for state transitions whose
         # corresponding journal append may have been interrupted. Surface the
         # gap explicitly instead of silently projecting an earlier state.
-        has_claim = any(payload.get("kind") == "lease_claimed" for _, payload in matching)
+        has_claim = any(payload.get("kind") == "lease_claimed" and event_fence == record.fence
+                        for _, payload, event_fence in matching)
         if record.state in {"leased", "dispatching", "reconciling", "acknowledged", "retry_authorized", "terminal"} and not has_claim:
             state = "lease_claim_unjournaled"
         elif record.state == "reconciling":
             state = "reconciliation_required"
-        elif record.state in {"dispatching", "acknowledged", "retry_authorized", "terminal"} and not seen_dispatch_intent and record.dispatch_intent_at is not None:
+        elif record.state in {"dispatching", "acknowledged", "retry_authorized", "terminal"} and not any(payload.get("kind") == "dispatch_intent" and event_fence == record.fence
+                        for _, payload, event_fence in matching) and record.dispatch_intent_at is not None:
             state = "dispatch_intent_unjournaled"
-        elif record.state == "dispatching" and not seen_dispatch_intent:
+        elif record.state == "dispatching" and not any(
+                payload.get("kind") == "dispatch_intent" and event_fence == record.fence
+                for _, payload, event_fence in matching):
             state = "dispatch_intent_unjournaled"
-        elif record.state == "acknowledged" and not seen_acknowledgement:
+        elif record.state == "acknowledged" and not any(
+                payload.get("kind") in {"dispatch_acknowledged", "provider_acceptance_reconciled"}
+                and event_fence == record.fence for _, payload, event_fence in matching):
             state = "acknowledgement_unjournaled"
         elif record.state == "retry_authorized" and not any(
                 payload.get("kind") == "final_absence_reconciled"
-                for _, payload in matching):
+                for _, payload, _ in matching):
             state = "retry_authorization_unjournaled"
         elif record.state == "retry_authorized":
             state = "retry_authorized"

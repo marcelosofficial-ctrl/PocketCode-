@@ -226,6 +226,21 @@ class FakeCoordinatorTests(unittest.TestCase):
         self.assertEqual(self.coordinator.rebuild_effect("effect-1").state,
                          "dispatching")
 
+    def test_same_attempt_retry_uses_current_fence_for_projection(self):
+        first = self.coordinator.claim("effect-1", "worker-A", now=20, lease_seconds=2)
+        self.coordinator.mark_dispatching(first, now=21)
+        self.coordinator.recover_expired("effect-1", now=22)
+        self.coordinator.reconcile(
+            "effect-1", outcome="not_found", exact_identity_match=True,
+            authoritative=True, absence_final=True, now=23,
+        )
+        second = self.coordinator.claim("effect-1", "worker-B", now=24, lease_seconds=5)
+        self.assertEqual(second.attempt_id, first.attempt_id)
+        self.assertGreater(second.fence, first.fence)
+        self.store.mark_dispatching(second, now=25)
+        self.assertEqual(self.coordinator.rebuild_effect("effect-1").state,
+                         "dispatch_intent_unjournaled")
+
     def test_wrong_audience_fails_closed(self):
         wrong = AuthenticatedProducer(
             issuer="other", subject="x", key_id="k", credential_fingerprint="f",
