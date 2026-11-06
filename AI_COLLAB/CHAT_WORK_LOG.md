@@ -157,3 +157,7 @@ PocketCode must continue its own CASE-04 timeout/report-contract work. No RevDev
 **Decision:** no edit to frozen `main.py`, `report_contract.py`, tests, LOOP/CASE/D suites, provider/runtime, PR #2/#3 or Actions. The provenance matrix says child exit, wrapper exit, forced termination, stale and contradictory facts must be reconciled before changing the pure classifier. Preserve CASE-04 as INCOMPLETE/timed_out. $0 remains.
 
 **Immediate next action:** owner inspects current project `summary.json`, then the Pyodios Settings → Diagnostics → Error Logs entry around the attempt; redact source/private paths before sharing. Do not rerun canonical script yet.
+
+## 2026-11-06 — RevDev installer dependency-closure lesson
+
+Updated `AI_COLLAB/CROSS_PROJECT_UPDATE_REVDEV_2026-11-06.md` with RevDev's discovery that runtime module dependencies must be traced through the clean installer/package path, not only unit-tested in their source folder. RevDev's 91-case suite is pending exact CI run #48 at this note. Transferable lesson only: test dependency closure, backup/rollback and one immutable source commit for multi-file installs. No RevDev code or acceptance transfers. PocketCode CASE-04 remains immediate priority.
