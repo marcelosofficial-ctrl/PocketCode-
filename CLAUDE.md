@@ -62,3 +62,11 @@ When assigned work: inspect current code, define narrow acceptance criteria, imp
 - The initial failure was fixed in the test fixture, not by weakening the frozen canonical digest: the Python triple-quoted HTML fixture needed `\\n` to preserve the embedded main.py source's literal backslash-n. The expected 1939-byte SHA-256 remains unchanged.
 - The test workflow is `.github/workflows/pocketcode-python-tests.yml`, contents:read only, test-only. This does not establish mobile/device acceptance, durable/concurrent safety, provider integration or sandboxing.
 - Always fetch live branch head and CI status again before relying on this checkpoint; subsequent commits may not have been tested.
+
+
+## Latest exact-SHA CI result
+
+- GitHub Actions run: https://github.com/marcelosofficial-ctrl/PocketCode-/actions/runs/42308449590
+- Exact tested commit: `ce7409ac9077154f5f058799b0d6028fb3e98ee0`
+- Python 3.12 / Ubuntu 24.04; `python -m unittest discover -s scripts -p "test_*.py" -v`; **177 passed, 0 failed**.
+- This includes the result-receipt/artifact model. See `AI_COLLAB/STATE_LEDGER_20261106.md` for scope and limitations. Later commits need fresh exact-SHA CI evidence.

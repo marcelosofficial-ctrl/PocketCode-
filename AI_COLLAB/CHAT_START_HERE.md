@@ -311,3 +311,8 @@ The next increment composes the fake outbox and event journal in `scripts/fake_c
 ## Latest verified Python CI checkpoint
 
 The branch-scoped, test-only workflow `PocketCode Python conformance tests` passed **154/154** on exact commit `09290eaf1ac8af1461211ac90564440a70708f32`, Python 3.12 / Ubuntu 24.04: https://github.com/marcelosofficial-ctrl/PocketCode-/actions/runs/42308082939. The frozen canonical main.py hash was preserved; a Python triple-quoted test fixture escaping bug was corrected. This does not establish device, durable-storage, concurrency, provider or artifact-release acceptance. Always re-check the live branch head before relying on this result.
+
+
+## Latest verified CI and new receipt model
+
+The branch-scoped Python suite now passes **177/177** at exact commit `ce7409ac9077154f5f058799b0d6028fb3e98ee0`, Python 3.12 / Ubuntu 24.04: https://github.com/marcelosofficial-ctrl/PocketCode-/actions/runs/42308449590. New files: `scripts/result_receipts.py` and `scripts/test_result_receipts.py`. They model immutable receipt revisions, attempt-bound artifact digests/quarantine, current authorization checks for each release, and report-copy retries using the same receipt. This remains an in-memory model, not durable storage or real release/security enforcement. Recheck live branch head before relying on this CI result.

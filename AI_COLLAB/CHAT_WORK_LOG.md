@@ -550,3 +550,12 @@ Next: await owner-provided read-only Pyodios saved-exception probe output; prese
 ## 2026-11-06 — receipt model first CI defect
 
 - CI run `42308334955` discovered `_publication_attempts` was initialized as `{}` while the append-only publication API uses `.append()`. Corrected it to `[]`. The run had 174 tests and one error; the next exact-SHA run will verify the fix and the additional receipt validation tests.
+
+
+## 2026-11-06 — PC-2026-11-06-P26 — result receipt and artifact gates
+
+**CI evidence:** [Run 42308449590](https://github.com/marcelosofficial-ctrl/PocketCode-/actions/runs/42308449590), exact tested commit `ce7409ac9077154f5f058799b0d6028fb3e98ee0`, Ubuntu 24.04 / Python 3.12, `python -m unittest discover -s scripts -p "test_*.py" -v`, **177 passed, 0 failed**.
+
+**Implemented model:** `scripts/result_receipts.py` plus 23 tests. Receipt revisions are immutable and idempotent by revision key; evidence refs pair with SHA-256; artifact manifests bind exact byte size/digest to an attempt; partial writes and digest mismatches quarantine; safe logical basenames prevent path traversal; release checks current authorization and current attempt on each call; failed report publication retries the same receipt ID and never calls execution.
+
+**Limits:** pure in-memory conformance model, not durable, signed, authenticated, malware-scanned, mobile-integrated or a production artifact-release service. Current authorization is a supplied typed value, not an external policy verification.

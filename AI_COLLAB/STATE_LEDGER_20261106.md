@@ -279,3 +279,11 @@ Next task: owner runs only the read-only Pyodios sys.last_exc / sys.last_value C
 ## 2026-11-06 receipt-model CI defect
 
 - First CI run including the receipt model discovered one implementation typo: the publication-attempt collection was initialized as a dictionary but consumed as an append-only list. Corrected initialization to an empty list. The failure was in receipt publication bookkeeping, not the recovery/outbox suite.
+
+
+## 2026-11-06 — result receipt/artifact model CI green
+
+- Added `scripts/result_receipts.py` and `scripts/test_result_receipts.py`. The model captures immutable receipt revisions, evidence ref/digest pairing, attempt-bound artifact manifest, exact-byte digest/size, partial-write and digest-mismatch quarantine, safe logical artifact names, per-request authorization revalidation, stale-attempt release denial and same-receipt report-publication retries.
+- Successful exact-SHA CI: https://github.com/marcelosofficial-ctrl/PocketCode-/actions/runs/42308449590 at `ce7409ac9077154f5f058799b0d6028fb3e98ee0`, Ubuntu 24.04 / Python 3.12, **177 passed, 0 failed**.
+- This is an in-memory conformance model. It does not authenticate evidence producers, sign receipts, scan artifacts, persist across restarts, provide actual download/share, or prove current authorization outside the passed test object.
+- Next: compose receipts with accepted coordinator events, verify immutable later versions and publication retry semantics, then design durable atomicity requirements without selecting a store prematurely.

@@ -115,3 +115,15 @@ Inspect current branch/source, define narrow acceptance criteria, implement one 
 
 - New files `scripts/result_receipts.py` and `scripts/test_result_receipts.py` model immutable versioned receipts, attempt-bound artifact manifests, exact-byte digests, partial-write/digest quarantine, revalidated current authorization on every release request, and report publication retry against the same receipt.
 - This is an in-memory conformance model only. No signature, producer authentication, malware scanning, durable storage, real artifact store, mobile integration or release authority is implemented. Fetch the latest head and check CI before treating tests as passed.
+
+
+## Receipt/artifact model CI result
+
+- Exact tested commit: `ce7409ac9077154f5f058799b0d6028fb3e98ee0`
+- Run: https://github.com/marcelosofficial-ctrl/PocketCode-/actions/runs/42308449590
+- Environment: Ubuntu 24.04, Python 3.12.
+- Command: `python -m unittest discover -s scripts -p "test_*.py" -v`
+- Result: **177 passed, 0 failed**.
+- Includes 23 result receipt tests for immutable revision replay, evidence digest binding, attempt-bound artifacts, partial-write/digest quarantine, current authorization revalidation, stale-attempt release denial and retrying report publication against the same receipt.
+- Model limitations remain: in-memory only, no signature/producer authenticity, no malware scanning, no durable object store, no real authorization provider, no mobile integration, and no concurrent/power-loss guarantees.
+- Next gate: adversarially compose receipts with coordinator evidence and prove that later observation/reconciliation creates a new immutable receipt version while report publication retries do not trigger execution or mutate prior receipt bytes.
