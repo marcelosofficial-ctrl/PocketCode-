@@ -23,6 +23,12 @@ You are continuing the existing PocketCode project. Do not restart discovery or 
 9. After 2–3 substantial passes or any important source/test/review/decision event, update the task packet if needed, append `AI_COLLAB/CHAT_WORK_LOG.md`, refresh the compact start page, and tell the owner if it is time to rotate. Never wait until context is 100% full. Do not create a giant end-of-chat handoff when the live records are current.
 10. If a tool call or stream fails, re-fetch the branch and affected files before retrying. Determine whether the write occurred. Recover from the last confirmed state and still provide a complete user-visible result. Never silently stop.
 
+## Cross-project process-only update from RevDev (2026-11-06)
+
+RevDev's latest installer-aware maintenance-source CI run #48 passed **91/91** at exact source/test SHA `935108a6937f15b76f75850ebdbe70c69000be32`, Windows PowerShell 5.1 / Pester 5.7.1: https://github.com/marcelosofficial-ctrl/DevRelay-Missions/actions/runs/42181302862. It covers 59 publisher/transport, 22 local-result/recovery/quarantine, and 10 installer dependency tests. The installer itself was NOT run; no live API/queue/watcher/mission operation or installed-PC parity was established. P0 remains OPEN; P8U/P0-D NOT RUN.
+
+Transfer only the method: exact-SHA CI evidence, controlled fake process tests, create-only local result persistence, digest-bound publication, strict ambiguity handling, installer dependency closure and partial-failure red-team review. Do not transfer RevDev implementation, PowerShell code, test totals, runtime assumptions, acceptance evidence or release verdicts into PocketCode.
+
 ## Collaboration roles
 - Claude: lead developer and architecture/implementation reviewer when assigned.
 - Gemini: co-developer and independent security/spec auditor when assigned.
