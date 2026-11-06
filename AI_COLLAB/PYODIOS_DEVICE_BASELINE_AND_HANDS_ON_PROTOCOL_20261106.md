@@ -203,6 +203,22 @@ Before rerunning, inspect the same project's Files tab for `summary.json`. If pr
 
 A CLI-style `raise SystemExit(main())` crossing the embedded Python/JavaScript bridge is plausible but not confirmed. Pyodide 314.0.5 documents Python exceptions crossing that boundary as `PythonError`; Python documents `sys.exit()` as raising `SystemExit`. Missing input visibility or another exception remains possible. The label alone is insufficient.
 
-Only if no `summary.json` exists and the Error Log is unhelpful, use the separate downloadable attachment `pocketcode_pyodios_runpy_diagnostic.py`. It refuses to execute if an input is missing or an earlier output exists. Its caught value is a script-requested exit, not an OS process status. Local CPython 3.13.5 harness passed 2/2; device execution of this wrapper is NOT RUN. See `PYODIOS_PYTHONERROR_BRIDGE_TRIAGE_20261106.md`.
+If the Error Log is unhelpful, open the Pyodios Console and run this read-only probe to print Pyodide's saved `sys.last_value` from the previous exception; this does not rerun the task:
+
+```python
+import sys
+import traceback
+
+exc = getattr(sys, "last_value", None)
+if exc is None:
+    print("No previous Python exception is available as sys.last_value.")
+else:
+    print("EXCEPTION TYPE:", type(exc).__name__)
+    print("EXCEPTION VALUE:", repr(exc))
+    print("TRACEBACK:")
+    print("".join(traceback.format_exception(type(exc), exc, exc.__traceback__)))
+```
+
+Only if no useful Error Log or saved exception is available and no `summary.json` exists, use the separate downloadable attachment `pocketcode_pyodios_runpy_diagnostic.py`. It refuses to execute if an input is missing or an earlier output exists. Its caught value is a script-requested exit, not an OS process status. Local CPython 3.13.5 harness passed 2/2; device execution of this wrapper is NOT RUN. See `PYODIOS_PYTHONERROR_BRIDGE_TRIAGE_20261106.md`.
 
 After external file additions, reopen the project. Pyodios documents project and Python working-folder synchronization at defined moments, not continuously.
