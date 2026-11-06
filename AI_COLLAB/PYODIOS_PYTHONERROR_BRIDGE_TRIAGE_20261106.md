@@ -36,9 +36,9 @@ Python documents `sys.exit()` as raising `SystemExit`, which an outer caller can
 
 ### Files and diagnostic log
 
-Pyodios says the open project is the Python working directory. The project folder and Python session folder are copied at defined moments, not continuously; files added externally while a project is open are not visible until the project is reopened. Outputs created by Python should appear in the project Files tab after the cell finishes. Source: https://pyodios.caffeinatedmath.com/guide/projects
+Pyodios says the open project is the Python working directory, but the project folder and Python session folder are copied at defined moments, not continuously. Its Files guide says pull down on the Files list to refresh that browser after external changes. Separately, its Projects guide says files added externally while a project is open are not visible to Python until the project is reopened. These are two layers: pull-to-refresh refreshes the Files browser list; reopening the project synchronizes the project folder into the Python session. Outputs created by Python should appear in the project Files tab after the cell finishes. Source: https://pyodios.caffeinatedmath.com/guide/projects
 
-Pyodios documents **on iPhone, **More → Settings**, then scroll to **Error Log → View Error Log****, with timestamps and error details. The app warns that Python code can appear in error messages; inspect and redact before sharing. Source: https://pyodios.caffeinatedmath.com/guide/settings
+On iPhone, open **More → Settings**, scroll to **Error Log**, then tap **View Error Log**. The log contains timestamps and error details. The app warns that Python code can appear in error messages, so inspect and redact before sharing. Source: https://pyodios.caffeinatedmath.com/guide/settings
 
 Pyodios v1.1.0 says Python code cannot be interrupted once it starts. A 120-second UI timeout returns control while code continues in the background. Do not use an infinite loop or timeout as a termination test. Source: https://pyodios.caffeinatedmath.com/faq
 
@@ -113,7 +113,7 @@ The 2026-11-05 `VERDICT_EVIDENCE_EXIT_PROVENANCE_MATRIX_20261105.md` explicitly 
 
 1. Earlier wording called `PythonError` a generic app error. Exact-version Pyodide docs define it as the JS-side exception type for a Python exception crossing the language boundary.
 2. Earlier steps ran a CLI-style fixture with uncaught `SystemExit` through an embedded interpreter without an adapter. The source fixture stays frozen; a separate wrapper now catches and reports the exit request.
-3. Earlier pull-to-refresh advice was unsupported by the vendor docs. Reopen the project after external file additions.
+3. The earlier red-team statement that pull-to-refresh was unsupported was itself incorrect. The Files guide documents pull-to-refresh for the Files browser list; the Projects guide separately requires reopening the project to synchronize external additions into the Python session.
 4. The start page suggested a direct CASE-04 precedence reorder. That conflicts with the more precise exit-provenance matrix; typed evidence resolution comes first.
 5. Earlier status said the device test awaited any owner observation. An Editor attempt has occurred, but the outcome is UNKNOWN, not NOT RUN and not PASS/FAIL.
 
