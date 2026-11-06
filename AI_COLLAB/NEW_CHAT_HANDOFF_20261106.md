@@ -76,8 +76,17 @@ Evidence rules:
 4. Run raw-evidence vs portable-report correction only after a real path supplies the same underlying evidence for both conditions.
 5. Continue source-level implementation/test work on provider-neutral task/receipt logic only where the existing product/acceptance contract supports it. Keep proposals separate from verified product behavior.
 
-**Current evidence state:** public Pyodios review COMPLETE; fixture archive hash VERIFIED; device attempt AWAITING OWNER; PocketCode product acceptance and recovery suites NOT RUN.
+**Current evidence state:** public Pyodios review COMPLETE; fixture archive hash VERIFIED; first Editor attempt OBSERVED; underlying exception and artifact outcome UNKNOWN; PocketCode product acceptance and recovery suites NOT RUN.
 
 
 ## Owner-reported build confirmation (2026-11-06)
 The owner reports the Settings screen showed 13 cached packages / 0 KB cache, 85,557 objects / 0 referrers, and GC stats 1,650 collected / 0 uncollectable. These counters are transient diagnostics, not performance/capacity measurements. Do not clear variables, run GC, or restart merely to reset them. The installed app/runtime baseline is now known; the actual fixed-task execution, artifact export, and relaunch-persistence checks remain NOT RUN. See the updated device protocol for the next low-risk steps.
+
+
+## 2026-11-06 — First Editor attempt
+
+The owner reports that the green whole-file Editor run of the unchanged `main.py`, with `items.csv` in the same Pyodios project, displayed only `[Bridge/executePython] PythonError`. No traceback was visible. This is an observed attempt, but the cause and presence/content of `summary.json` remain UNKNOWN. Do not rerun the canonical script yet.
+
+Read `PYODIOS_PYTHONERROR_BRIDGE_TRIAGE_20261106.md`. First inspect the same project's Files tab for `summary.json`; preserve and read it if present. Then inspect Settings → Diagnostics → Error Logs → View Error Log around the attempt timestamp. Redact unrelated source and local paths before sharing. The separate wrapper is available as a current-conversation attachment and has only passed CPython 3.13.5 local checks (2/2); it has not been tested on the iPhone.
+
+Do not follow the older start-page instruction to change classifier precedence directly. The exit-provenance matrix requires resolving child exit, wrapper exit, termination confirmation and contradictory observations before any classifier change. Preserve CASE-04 as INCOMPLETE / timed_out.
