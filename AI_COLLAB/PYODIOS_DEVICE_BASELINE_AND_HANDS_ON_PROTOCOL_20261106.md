@@ -187,9 +187,22 @@ It cannot establish:
 
 Pyodios is now the first hands-on iPhone local comparator because the owner reports it is installed. This does not make it the selected PocketCode runtime or a product dependency. Its documented no-interrupt behavior and session reset are especially important limitations for future recovery design.
 
-**Status:** DOCUMENTATION REVIEW COMPLETE / INSTALLED BUILD AND RUNTIME OWNER-OBSERVED / DEVICE EXECUTION AWAITING / PRODUCT ACCEPTANCE NOT RUN. No product source, test, canonical fixture, LOOP/CASE ID, schema, provider, runner selection, PR, merge or deployment changed.
+**Status:** DOCUMENTATION REVIEW COMPLETE / INSTALLED BUILD AND RUNTIME OWNER-OBSERVED / FIRST EDITOR ATTEMPT OBSERVED / UNDERLYING RESULT UNKNOWN / PRODUCT ACCEPTANCE NOT RUN. No product source, test, canonical fixture, LOOP/CASE ID, schema, provider, runner selection, PR, merge or deployment changed.
 
 
 ## 8. Owner-ready fixture archive
 
 A phone-importable ZIP was prepared from the canonical fixture without changing the Python source. Archive: `pocketcode_pyodios_fixed_task.zip`. Contents: `README.txt`, `main.py`, `items-success.csv`, and `items-missing-unit-price.csv`. Archive SHA-256: `706c6a87d07c496d5a461c9395fb0b967b961fa9c430c719d9799998df5b4099`. The embedded `main.py` is 1,939 bytes and its SHA-256 exactly matches the frozen worksheet sanity-check value `70c66ad3a0132923cbf3190eb3546093fcc2c61c1bdcbf3b171696e1ae7521e7`. The archive is a convenience copy only; it does not replace the canonical worksheet fixture.
+
+
+## 9. First owner-reported Editor attempt (2026-11-06)
+
+The owner put canonical `main.py` and renamed `items.csv` into the same Pyodios project, tapped the green Editor play control, and reports that the complete visible output was exactly `[Bridge/executePython] PythonError`. No traceback or other output was visible. Record **ATTEMPT OBSERVED / ROOT CAUSE UNKNOWN / ARTIFACT OUTCOME UNKNOWN**, not NOT RUN and not PASS/FAIL.
+
+Before rerunning, inspect the same project's Files tab for `summary.json`. If present, open and compare its contents against the fixed oracle without overwriting it. Then inspect **Settings → Diagnostics → Error Logs → View Error Log** for the attempt timestamp. The vendor documents timestamped details and warns source code can appear in logs, so inspect and redact before sharing. Do not clear the log.
+
+A CLI-style `raise SystemExit(main())` crossing the embedded Python/JavaScript bridge is plausible but not confirmed. Pyodide 314.0.5 documents Python exceptions crossing that boundary as `PythonError`; Python documents `sys.exit()` as raising `SystemExit`. Missing input visibility or another exception remains possible. The label alone is insufficient.
+
+Only if no `summary.json` exists and the Error Log is unhelpful, use the separate downloadable attachment `pocketcode_pyodios_runpy_diagnostic.py`. It refuses to execute if an input is missing or an earlier output exists. Its caught value is a script-requested exit, not an OS process status. Local CPython 3.13.5 harness passed 2/2; device execution of this wrapper is NOT RUN. See `PYODIOS_PYTHONERROR_BRIDGE_TRIAGE_20261106.md`.
+
+After external file additions, reopen the project. Pyodios documents project and Python working-folder synchronization at defined moments, not continuously.
