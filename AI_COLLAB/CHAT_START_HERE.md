@@ -118,6 +118,10 @@ PocketCode's next product work remains CASE-04 timeout classification and report
 
 ## 2026-11-06 — RevDev fake-process test method (process lesson only, CI pending)
 
-RevDev has moved beyond parser-only tests by extracting its `gh` transport into a module and invoking it with a temporary fake Windows `.cmd` child process. The harness covers 200 JSON, 404 with nonzero exit, 429 with Retry-After headers, stderr-only failure and HTTP 200 with nonzero process exit. Its first CI run exposed module import-scope issues; the import order and static guard were corrected. RevDev run #21 (`42133707971`, head `65d9b95ed346c42ed22bd920d70cb4e5c4429a26`) was still running at checkpoint. Do not claim it passed until exact job logs and counts are checked.
-
+RevDev has moved beyond parser-only tests by extracting its `gh` transport into a module and invoking it with a temporary fake Windows `.cmd` child process. The harness covers 200 JSON, 404 with nonzero exit, 429 with Retry-After headers, stderr-only failure and HTTP 200 with nonzero process exit. 
 PocketCode process lesson: apply deterministic fake adapters at PocketCode's own execution/provider boundary. Exercise timeout, cancellation, collector failure, partial output, teardown failure and cleanup without network or real execution side effects. This must preserve PocketCode's separate CASE/LOOP/D contracts. CASE-04 timeout/report-contract remains the immediate PocketCode-specific correction. No RevDev implementation or acceptance is imported.
+
+
+## 2026-11-06 — RevDev fake-process test result (process lesson only)
+
+RevDev run #21 (`42133707971`) has now completed successfully: **34/34 passed, 0 failed, 0 skipped**, Windows PowerShell 5.1 / Pester 5.7.1, exact test commit `65d9b95ed346c42ed22bd920d70cb4e5c4429a26`. Exact run: https://github.com/marcelosofficial-ctrl/DevRelay-Missions/actions/runs/42133707971. This is RevDev-only test evidence. PocketCode may reuse the method of deterministic fake adapters/processes for timeout, cancellation, partial output, collector and teardown degradation, but must preserve its own CASE/LOOP/D acceptance and no-runtime-selection decision. CASE-04 remains PocketCode's next implementation task.
