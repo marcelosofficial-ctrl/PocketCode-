@@ -49,7 +49,7 @@ class ResultReceipt:
     attempt_id: str
     contract_version: str
     execution_outcome: str
-    projection_reason: str
+    projection_reason: Optional[str]
     collection_state: str
     lifecycle_disposition: str
     cleanup_state: str
@@ -263,8 +263,8 @@ class ResultReceiptStore:
         receipt_id = f"receipt-{len(self._receipts) + 1}"
         receipt = ResultReceipt(
             receipt_id, revision_key, version, effect_id, attempt_id, contract_version,
-            execution_outcome, collection_state, lifecycle_disposition, cleanup_state,
-            evidence_refs, evidence_sha256, tuple(manifest), uncertainties,
+            execution_outcome, projection_reason, collection_state, lifecycle_disposition,
+            cleanup_state, evidence_refs, evidence_sha256, tuple(manifest), uncertainties,
             predecessor_receipt_id, revision_reason, created_at_ms, projection_reason, fingerprint,
         )
         self._receipts.append(receipt)
