@@ -389,6 +389,7 @@ class FakeCoordinatorTests(unittest.TestCase):
 
     def test_multiple_lifecycle_observations_require_reconciliation(self):
         lease = self.coordinator.claim("effect-1", "worker-A", now=20, lease_seconds=20)
+        self.coordinator.mark_dispatching(lease, now=20)
         for event_id, status, now in (("life-running", "running", 21),
                                       ("life-succeeded", "succeeded", 22)):
             self.coordinator.record_lifecycle_observation(
