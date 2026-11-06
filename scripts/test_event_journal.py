@@ -112,9 +112,14 @@ class EventJournalTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.append(effect_id="effect-1")
 
-    def test_effect_event_requires_current_fence(self):
+    def test_initial_attempt_event_can_be_bound_before_first_fence(self):
+        result = self.append(event_id="reserved", effect_id="effect-1", attempt_id="attempt-1")
+        self.assertEqual(result.disposition, "accepted")
+        self.assertIsNone(result.event.fence)
+
+    def test_effect_event_rejects_fence_before_first_lease(self):
         with self.assertRaises(JournalConflict):
-            self.append(effect_id="effect-1", attempt_id="attempt-1", fence=1)
+            self.append(event_id="premature", effect_id="effect-1", attempt_id="attempt-1", fence=1)
 
     def test_current_fence_accepts_and_stale_fence_rejects(self):
         self.journal.advance_fence("effect-1", "attempt-1", 2)

@@ -241,6 +241,63 @@ class FakeCoordinatorTests(unittest.TestCase):
         self.assertEqual(self.coordinator.rebuild_effect("effect-1").state,
                          "dispatch_intent_unjournaled")
 
+    def test_receipt_binds_only_accepted_attempt_events_and_excludes_quarantine(self):
+        from result_receipts import ResultReceiptStore
+        lease = self.coordinator.claim("effect-1", "worker-A", now=20, lease_seconds=10)
+        self.coordinator.mark_dispatching(lease, now=21)
+        receipt_store = ResultReceiptStore()
+        receipt = self.coordinator.create_result_receipt(
+            receipt_store, effect_id="effect-1", attempt_id="attempt-1",
+            revision_key="rev-1", contract_version="pc-v1",
+            execution_outcome="INCOMPLETE", collection_state="complete",
+            lifecycle_disposition="dispatching", cleanup_state="unknown",
+            artifact_ids=(), created_at_ms=22,
+        )
+        self.assertEqual(len(receipt.evidence_refs), 3)
+        self.assertEqual(len(receipt.evidence_sha256), 3)
+        event = next(e for e in self.journal.events if e.producer_event_id.startswith("dispatch:"))
+        self.journal.append(
+            producer=self.producer, source=event.source,
+            event_id=event.producer_event_id, payload=b'{"kind":"tampered"}',
+            occurred_at_ms=21, observed_at_ms=23,
+            effect_id="effect-1", attempt_id="attempt-1", fence=lease.fence,
+        )
+        self.assertEqual(len(self.journal.conflicts), 1)
+        self.assertEqual(len(receipt.evidence_refs), 3)
+
+    def test_later_receipt_revision_uses_new_evidence_and_preserves_predecessor(self):
+        from result_receipts import ResultReceiptStore
+        receipt_store = ResultReceiptStore()
+        first = self.coordinator.create_result_receipt(
+            receipt_store, effect_id="effect-1", attempt_id="attempt-1",
+            revision_key="rev-1", contract_version="pc-v1",
+            execution_outcome="INCOMPLETE", collection_state="unknown",
+            lifecycle_disposition="pending", cleanup_state="unknown",
+            artifact_ids=(), created_at_ms=11,
+        )
+        self.coordinator.claim("effect-1", "worker-A", now=20, lease_seconds=10)
+        second = self.coordinator.create_result_receipt(
+            receipt_store, effect_id="effect-1", attempt_id="attempt-1",
+            revision_key="rev-2", contract_version="pc-v1",
+            execution_outcome="INCOMPLETE", collection_state="complete",
+            lifecycle_disposition="leased", cleanup_state="unknown",
+            artifact_ids=(), created_at_ms=21,
+            predecessor_receipt_id=first.receipt_id, revision_reason="new lease evidence",
+        )
+        self.assertEqual(second.version, 2)
+        self.assertEqual(second.predecessor_receipt_id, first.receipt_id)
+        self.assertGreater(len(second.evidence_refs), len(first.evidence_refs))
+        self.assertEqual(first.lifecycle_disposition, "pending")
+
+    def test_reservation_event_is_attempt_bound_and_reservation_replay_after_claim_is_safe(self):
+        event = self.journal.events[0]
+        self.assertEqual(event.effect_id, "effect-1")
+        self.assertEqual(event.attempt_id, "attempt-1")
+        self.coordinator.claim("effect-1", "worker-A", now=20, lease_seconds=10)
+        self.assertEqual(self.coordinator.reserve(
+            "effect-1", "attempt-1", "sha256:req", b'{"op":"build"}', at_ms=10,
+        ), "duplicate")
+
     def test_wrong_audience_fails_closed(self):
         wrong = AuthenticatedProducer(
             issuer="other", subject="x", key_id="k", credential_fingerprint="f",

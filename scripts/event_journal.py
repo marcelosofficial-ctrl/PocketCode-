@@ -107,11 +107,16 @@ class EventJournal:
         if (effect_id is None) != (attempt_id is None):
             raise ValueError("effect_id and attempt_id must be supplied together")
         if effect_id is not None:
-            if not _nonempty(effect_id, attempt_id) or not _positive_int(fence):
-                raise ValueError("effect/attempt events require a positive fencing token")
+            if not _nonempty(effect_id, attempt_id):
+                raise ValueError("effect/attempt identity must be non-empty")
             current_fence = self._fences.get((effect_id, attempt_id))
-            if current_fence is None or fence != current_fence:
+            if current_fence is None:
+                if fence is not None:
+                    raise JournalConflict("fence supplied before a lease generation exists")
+            elif not _positive_int(fence) or fence != current_fence:
                 raise JournalConflict("event rejected by current fencing token")
+        elif fence is not None:
+            raise ValueError("fence cannot be supplied without effect and attempt identity")
         digest = sha256(payload).hexdigest()
         key = (source, event_id)
         prior = self._identity.get(key)

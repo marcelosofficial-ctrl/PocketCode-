@@ -45,9 +45,9 @@ class FakeCoordinator:
     def _append(self, *, kind: str, effect_id: str, attempt_id: str,
                 event_id: str, at_ms: int, fence: Optional[int] = None,
                 **extra: object) -> AppendResult:
-        bound = {}
+        bound = {"effect_id": effect_id, "attempt_id": attempt_id}
         if fence is not None:
-            bound = {"effect_id": effect_id, "attempt_id": attempt_id, "fence": fence}
+            bound["fence"] = fence
         return self.journal.append(
             producer=self.producer, source="pocketcode.coordinator",
             event_id=event_id,
@@ -66,6 +66,7 @@ class FakeCoordinator:
             kind="effect_reserved", effect_id=effect_id, attempt_id=attempt_id,
             event_id=f"reserved:{effect_id}:{attempt_id}", at_ms=at_ms,
             request_fingerprint=fingerprint,
+            fence=(self.store.get(effect_id).fence or None),
         ).disposition
 
     def repair_missing_reservation_event(self, effect_id: str) -> str:
@@ -77,6 +78,7 @@ class FakeCoordinator:
             attempt_id=reservation.attempt_id,
             event_id=f"reserved:{effect_id}:{reservation.attempt_id}",
             at_ms=reservation.created_at_ms,
+            fence=(self.store.get(effect_id).fence or None),
             request_fingerprint=reservation.request_fingerprint,
         ).disposition
 
@@ -206,6 +208,37 @@ class FakeCoordinator:
 
     def recover_expired(self, effect_id: str, *, now: int) -> str:
         return self.store.recover_expired(effect_id, now=now)
+
+    def create_result_receipt(self, receipt_store, *, effect_id: str, attempt_id: str,
+                              revision_key: str, contract_version: str,
+                              execution_outcome: str, collection_state: str,
+                              lifecycle_disposition: str, cleanup_state: str,
+                              artifact_ids: tuple[str, ...], created_at_ms: int,
+                              uncertainties: tuple[str, ...] = (),
+                              predecessor_receipt_id: Optional[str] = None,
+                              revision_reason: Optional[str] = None):
+        """Create a receipt from accepted attempt-bound journal events only."""
+        self.store.get(effect_id, attempt_id)
+        events = [event for event in self.journal.events
+                  if event.effect_id == effect_id and event.attempt_id == attempt_id]
+        events.sort(key=lambda event: event.sequence)
+        if not events:
+            raise OutboxConflict("cannot create a receipt without accepted attempt-bound evidence")
+        evidence_refs = tuple(
+            f"seq:{event.sequence}:{event.source}:{event.producer_event_id}"
+            for event in events
+        )
+        evidence_digests = tuple(event.payload_sha256 for event in events)
+        return receipt_store.create_receipt(
+            revision_key=revision_key, effect_id=effect_id, attempt_id=attempt_id,
+            contract_version=contract_version, execution_outcome=execution_outcome,
+            collection_state=collection_state, lifecycle_disposition=lifecycle_disposition,
+            cleanup_state=cleanup_state, evidence_refs=evidence_refs,
+            evidence_sha256=evidence_digests, artifact_ids=artifact_ids,
+            uncertainties=uncertainties, created_at_ms=created_at_ms,
+            predecessor_receipt_id=predecessor_receipt_id,
+            revision_reason=revision_reason,
+        )
 
     def rebuild_effect(self, effect_id: str) -> RebuiltEffect:
         """Rebuild a read model from accepted events; quarantine is excluded."""
