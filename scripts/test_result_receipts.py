@@ -237,6 +237,25 @@ class ResultReceiptTests(unittest.TestCase):
         self.assertEqual(result.disposition, "denied_invalid_authorization")
         self.assertIsNone(result.content)
 
+    def test_release_rejects_malformed_artifact_id_without_exception(self):
+        result = self.store.release_artifact([], self.auth())
+        self.assertEqual(result.disposition, "denied_invalid_artifact_id")
+        self.assertIsNone(result.content)
+
+    def test_publish_rejects_malformed_receipt_id_without_exception(self):
+        with self.assertRaises(ReceiptConflict):
+            self.store.publish_report([], "clipboard", success=True, observed_at_ms=1)
+
+    def test_release_authorization_is_a_caller_supplied_snapshot(self):
+        # The model checks each supplied snapshot but does not authenticate or
+        # fetch the authority. The caller must resolve a fresh decision per call.
+        allowed = self.auth(authorization_id="snapshot-1", authorized=True)
+        denied = self.auth(authorization_id="snapshot-2", authorized=False)
+        self.assertEqual(self.store.release_artifact("artifact-1", allowed).disposition,
+                         "released")
+        self.assertEqual(self.store.release_artifact("artifact-1", denied).disposition,
+                         "denied_by_current_authorization")
+
     def test_unknown_receipt_cannot_be_published(self):
         with self.assertRaises(ReceiptConflict):
             self.store.publish_report("missing", "clipboard", success=True, observed_at_ms=1)

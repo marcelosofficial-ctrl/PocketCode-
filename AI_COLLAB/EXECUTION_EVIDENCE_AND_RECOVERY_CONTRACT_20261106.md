@@ -283,3 +283,8 @@ Required semantics demonstrated:
 Exact replay requires the same source/event ID, authenticated issuer+subject, immutable payload bytes and occurrence timestamp. Observation timestamp may differ because it describes a later observation. A changed key ID for the same issuer+subject does not create a new event or conflict; key rotation is an authentication detail, not a new producer principal. A different principal, changed payload, or changed occurrence time is quarantined.
 
 The refined suite contains 21 local deterministic unit tests passed. This remains a model-level result.
+
+
+## 2026-11-06 artifact authorization model caveat
+
+The current `ResultReceiptStore.release_artifact()` accepts a caller-supplied `ReleaseAuthorization` snapshot and validates its shape, attempt binding, policy revision presence and allow/deny value on each invocation. It does **not** authenticate the authorization producer, query a policy authority, establish freshness/revocation by itself, or make the supplied `current_attempt_id` trustworthy. The caller must obtain a fresh decision from a trusted authority for every release request. Production must bind authorization to principal, tenant, artifact/object version, attempt, policy revision, scope, expiry and revocation state, then enforce it atomically at the storage boundary. The in-memory model must not be described as independently enforcing current authorization.

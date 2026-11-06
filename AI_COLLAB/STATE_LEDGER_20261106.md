@@ -301,3 +301,9 @@ Next task: owner runs only the read-only Pyodios sys.last_exc / sys.last_value C
 - Exact-SHA run: https://github.com/marcelosofficial-ctrl/PocketCode-/actions/runs/42308764330 at `4d4d66561b176b560b49fb00c6b600617bbeef97`; Ubuntu 24.04 / Python 3.12; command `python -m unittest discover -s scripts -p "test_*.py" -v`; **179 passed, 0 failed**.
 - The run includes the new receipt version-chain tests: per effect/attempt, the first receipt has no predecessor and every later version extends the latest, preventing cross-effect/cross-attempt predecessor links and stale-predecessor forks.
 - CI is test-only. No device, durable transaction, concurrency, provider, sandbox or artifact safety acceptance is implied.
+
+
+## 2026-11-06 artifact-release authorization boundary clarification
+
+- Red-team review found that the release method's earlier docstring overstated what it proves. It validates a caller-supplied authorization snapshot each time; it does not fetch/authenticate the authority or establish freshness/revocation independently. Updated the docstring and contract to state that the caller must resolve a fresh trusted decision for every release. Production needs storage-bound enforcement with principal/tenant/artifact-version/attempt/policy/scope/expiry/revocation binding.
+- Added malformed artifact/receipt identifier guards to avoid unhandled type errors at API boundaries, plus explicit snapshot semantics tests. New receipt test count: 28; CI pending.

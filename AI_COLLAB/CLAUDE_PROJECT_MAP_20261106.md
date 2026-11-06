@@ -83,3 +83,8 @@ Finish the fake end-to-end recovery-to-receipt-to-artifact publication conforman
 - CI run: https://github.com/marcelosofficial-ctrl/PocketCode-/actions/runs/42308764330
 - Python 3.12 / Ubuntu 24.04; 179 passed, 0 failed.
 - Latest receipt version-chain implementation is included. Always re-check branch head before relying on this checkpoint.
+
+
+### Release authorization caveat
+
+`ResultReceiptStore.release_artifact()` validates a caller-supplied authorization snapshot. It does not fetch/authenticate an authority or prove freshness/revocation. The caller must obtain a fresh trusted decision per request. See the execution/recovery contract's artifact authorization caveat.

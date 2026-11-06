@@ -259,7 +259,13 @@ class ResultReceiptStore:
         return receipt
 
     def release_artifact(self, artifact_id: str, authorization: ReleaseAuthorization) -> ReleaseResult:
-        """Revalidate authorization on every release request; never cache approval."""
+        """Check a caller-supplied authorization snapshot on every request.
+
+        This model does not authenticate or fetch the authority itself. The caller
+        must obtain a fresh, trusted authorization decision for each request.
+        """
+        if not isinstance(artifact_id, str) or not artifact_id.strip():
+            return ReleaseResult("denied_invalid_artifact_id", str(artifact_id), None, None, None)
         stored = self._artifacts.get(artifact_id)
         if stored is None:
             return ReleaseResult("not_found", artifact_id, None, None, None)
@@ -298,6 +304,8 @@ class ResultReceiptStore:
     def publish_report(self, receipt_id: str, destination: str, *,
                        success: bool, observed_at_ms: int) -> PublicationAttempt:
         """Record a copy/share attempt for the same immutable receipt, never rerun work."""
+        if not isinstance(receipt_id, str) or not receipt_id.strip():
+            raise ReceiptConflict("receipt ID must be a non-empty string")
         if receipt_id not in {receipt.receipt_id for receipt in self._receipts}:
             raise ReceiptConflict("cannot publish an unknown receipt")
         if not isinstance(destination, str) or not destination.strip():

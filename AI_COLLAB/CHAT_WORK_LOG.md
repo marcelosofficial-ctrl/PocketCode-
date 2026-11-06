@@ -574,3 +574,9 @@ Next: await owner-provided read-only Pyodios saved-exception probe output; prese
 - Receipt revision history now enforces a linear predecessor chain per `(EffectId, DispatchAttemptId)`; cross-effect/cross-attempt links and stale-predecessor forks fail closed. Exact revision-key replay remains idempotent.
 - Claude project map is available at `AI_COLLAB/CLAUDE_PROJECT_MAP_20261106.md` and linked from root `CLAUDE.md` and the continuation brief.
 - Limits remain: in-memory model only, no durable atomicity/concurrency, cryptographic authorization, provider, device, sandbox or production artifact store.
+
+
+## 2026-11-06 — artifact release trust boundary correction
+
+- Corrected the release method description: `ReleaseAuthorization` is a caller-supplied snapshot. The model validates the supplied decision but cannot authenticate the issuer, query live policy, or independently establish freshness/revocation. The caller must resolve a fresh trusted decision on each release. Production must enforce authorization at the storage boundary with complete scope binding.
+- Added malformed identifier guards and tests for the snapshot boundary. Receipt suite: 28 methods; CI pending.
