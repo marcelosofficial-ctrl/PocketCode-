@@ -20,7 +20,7 @@ GitHub is the durable project state. Do not rely on a last-minute full-chat hand
 **Important limitation:** this protocol reduces avoidable context pressure and tool stalls; it cannot prevent platform context limits, service outages or execution failures. The goal is graceful interruption with no lost project state.
 
 
-**Last refreshed:** 2026-11-06 (mobile execution, competitor, recovery and protocol research incorporated)  
+**Last refreshed:** 2026-11-06 (mobile execution, recovery, protocol and prototype-integrity review incorporated)  
 **Authority:** live PocketCode branch state plus canonical source/spec/test records. This file is the compact first-read entrypoint for every new PocketCode chat.
 
 ## Current cross-project note
@@ -29,7 +29,7 @@ Read [RevDev progress and multi-chat continuity update](CROSS_PROJECT_UPDATE_REV
 
 ## Latest research decision (2026-11-06)
 
-Read [PocketCode task, evidence and recovery research](POCKETCODE_TASK_EVIDENCE_RECOVERY_RESEARCH_20261106.md). Key correction: iOS embedded Python has no child process, so do not fabricate child exit codes. CASE-04 is not a precedence patch; resolve typed child/wrapper/termination provenance first. PocketCode's differentiator is portable task/evidence/recovery/AI-correction orchestration, not another phone Python IDE. No runtime/provider selected.
+Read [PocketCode task, evidence and recovery research](POCKETCODE_TASK_EVIDENCE_RECOVERY_RESEARCH_20261106.md). Key corrections: iOS embedded Python has no child process; CASE-04 is not a precedence patch; matching EffectId/fingerprint authorizes lookup/reconciliation, not blind replay. The simulation prototype pins the canonical fixture bytes; its static checks are not browser or product acceptance. PocketCode's differentiator is portable task/evidence/recovery/AI-correction orchestration, not another phone Python IDE. No runtime/provider selected.
 
 ## First action
 
