@@ -5,13 +5,13 @@ This handoff continues the 2026-11-05 handoff and canonical project docs. It cha
 ## Repository snapshot
 - Repository: marcelosofficial-ctrl/PocketCode-
 - Research branch: pocketcode-ai-workflow-director-research-2026-10-28
-- Last live comparison: 709 ahead / 0 behind main; merge base 555840d8d83342513d9cd353d4d1522d46a5c82d. Ahead count is accumulated branch history, not implementation progress.
+- Last pre-handoff live comparison: 807 ahead / 0 behind main; merge base 555840d8d83342513d9cd353d4d1522d46a5c82d. Ahead count is accumulated branch history, not implementation progress. Fetch live refs.
 - PR #2 and #3 remain open draft PRs and were not modified.
 - Latest commits in this continuation: 7c04a182febd82f7540b96af6310de8c44e5fd00 (Pyodios protocol), 920392c266ca55d77ff357a2b81eb4aafc25b35a (status), ec1fcc685c982575863a2508cd61c1f9af3373de (fixture integrity), e6570c79b21b181e4961020af54357514882b7c9 (status).
 - Re-fetch refs before consequential work.
 
 ## Owner/device update
-The owner reports Pyodios is installed on the iPhone. No device execution has yet been reported. Owner-transcribed About / Settings screens confirm Pyodios 1.1.0 / Build 7, Pyodide 314.0.5, Python 3.14.2, WebAssembly runtime. Device model and iOS version remain UNKNOWN. These are owner-reported observations, not independently inspected by ChatGPT.
+The owner reports Pyodios is installed on the iPhone. Owner-transcribed About / Settings screens confirm Pyodios 1.1.0 / Build 7, Pyodide 314.0.5, Python 3.14.2, WebAssembly runtime. Device model and iOS version remain UNKNOWN. These are owner-reported observations, not independently inspected by ChatGPT. One Editor attempt occurred; its existing summary.json was owner-inspected and exactly matches the canonical oracle. The Error Log was then checked and contained only Editor: PythonError, without a traceback.
 
 A fixture archive was created in the conversation:
 - pocketcode_pyodios_fixed_task.zip, 2,184 bytes
@@ -42,15 +42,13 @@ Official sources:
 ## Immediate device plan
 Read AI_COLLAB/PYODIOS_DEVICE_BASELINE_AND_HANDS_ON_PROTOCOL_20261106.md.
 
-**SUPERSEDING CURRENT INSTRUCTION (2026-11-06):** the owner has already imported `main.py` and `items.csv` into one project and attempted the green Editor run. It displayed only `[Bridge/executePython] PythonError`. Do not follow the older generic run sequence below yet. Preserve the attempt and follow `PYODIOS_PYTHONERROR_BRIDGE_TRIAGE_20261106.md`.
+**SUPERSEDING CURRENT INSTRUCTION (2026-11-06):** the owner imported canonical main.py and items.csv into one Pyodios project and ran the whole file. The Editor displayed only [Bridge/executePython] PythonError. The existing summary.json was owner-inspected and exactly matches the canonical success oracle. The Error Log was subsequently checked and contained only Editor: PythonError, with no traceback.
 
-1. Inspect the current project's Files tab for `summary.json`. If present, open it and compare it with the exact success oracle. Do not rerun or overwrite it.
-2. Inspect More → Settings → Error Log → View Error Log at the attempt timestamp. Redact local paths and source before sharing.
-3. If the Error Log is unhelpful, use the documented read-only Console probe in the triage note to print `sys.last_exc` (with legacy fallback) from the prior exception. It does not rerun `main.py`.
-4. Only if the log and saved exception are unavailable and no `summary.json` exists, use the separately attached guarded diagnostic wrapper. It has only passed local CPython checks, not Pyodios device execution.
-5. Once the bridge diagnostic is captured, run only the malformed-input case in a separate fresh project. Keep export/read-back and normal-relaunch persistence as separate later checks; do not rerun the success project.
+**Current exact next action:** in the existing project/session, open the Pyodios Console and run the read-only probe in PYODIOS_PYTHONERROR_BRIDGE_TRIAGE_20261106.md. It reads the saved exception only; it does not rerun main.py, mutate the fixture, or overwrite summary.json.
 
-Do not intentionally force-quit during active execution or run an infinite loop. First pass is low-risk ordinary success/failure and file-persistence observation.
+If the probe returns a type/value/traceback, share that output after redacting private paths or source. If it says no previous exception is available, report that exact result; it is unavailable evidence, not proof no exception occurred. Do not run the wrapper or canonical task yet. If the Console is not accessible, tell the new chat what menus/options are visible and stop rather than guessing.
+
+After the diagnostic is captured, the next device test is the malformed-header fixture in a separate fresh project. Export/read-back and natural relaunch persistence are separate later checks. Do not rerun, overwrite, restart, clear variables/logs, run garbage collection, or otherwise reset the success project/session. Never use an infinite loop or assume a UI timeout stopped Python.
 
 Evidence rules:
 - Actual file, not just console text.
@@ -58,6 +56,24 @@ Evidence rules:
 - Capture what the app exposes for stdout/stderr/status; child exit status may be UNAVAILABLE.
 - Do not treat timeout, app close or missing response as confirmed termination.
 - Separate DOCUMENTED CLAIM, DIRECTLY OBSERVED, UNKNOWN/UNAVAILABLE and NOT RUN.
+
+
+
+## Product vision, goals and system shape (carry forward)
+
+PocketCode is the phone-first counterpart in the intended unified PC-and-phone RevDev program. It remains a separate repo/product path with its own client, roadmap, adapters, runtime, security boundary, acceptance suites and release gate. The product is a provider-neutral Agentic Orchestration Control Plane, not a generic mobile Python IDE.
+
+**User problem:** an AI asks someone to run code, inspect files or transform data while they only have a phone. The first target workflow is: receive AI-generated code and inputs → paste/import explicitly → run in a suitable controlled environment → inspect real status/stdout/stderr/exit evidence/artifacts → copy a compact truthful report into any AI assistant → correct and rerun as a distinct attempt. Explicit paste-to-context is sufficient for MVP; do not assume clipboard polling, overlays, automatic AI capture or direct provider integration.
+
+**MVP priorities:** one bounded standard-library task; real multi-file inputs; honest queued/running/terminal states; truthful PASS/FAIL/INCOMPLETE; actual diagnostics and artifact listing; one bounded copyable report; preserve prior attempts; safe correction lineage; clear privacy and file-size limits. Later candidates include file conversion/batch processing, CSV/JSON validation, tests, generated documents, multiple files, remote SSH/Tailscale and optional cloud adapters. GUI automation, arbitrary package installation/open internet, unrestricted shell and direct AI integrations are not first-MVP commitments.
+
+**Architecture invariants:** keep CommandId, DispatchAttemptId, ExecutionId, ObservationSequence and ResultReceipt distinct. Session IDs/task handles do not replace command identity. Preserve idempotency, replay, fencing, immutable receipt/provenance, artifact integrity, cleanup state and AI correction lineage. Execution facts, wrapper/supervisor facts, lifecycle disposition, user verdict, cleanup and artifact release are separate. Unknown/degraded evidence cannot become PASS/FAIL by inference. Default-deny permissions; egress off by default; untrusted code requires disposable externally constrained execution. Stock Pyodide/WASM is convenience for suitable trusted/light tasks, not hostile-code isolation.
+
+**Fixed decision boundaries:** $0 default; no paid account/host/provider/workload or billing enablement without separate owner approval. No runtime/provider selected. Mobile-first iOS + Android, no PC requirement. Product naming, PWA/native strategy, hosting, provider, monetization, and RevDev integration topology remain open. D-001 unified product direction with separate development boundaries; D-002 GitHub source of truth; D-003 no secrets in public repo; D-004 validate before stack commitment; D-005 zero spend. Preserve LOOP-01..14 and CASE-01..16 exactly; preserve D IDs and meanings. EVAL-06 is a separate compact-checkpoint experiment, not the mobile runner test.
+
+**Three-AI collaboration:** Claude = lead developer and architecture/implementation reviewer; Gemini = co-developer and independent security/spec auditor; ChatGPT = continuity holder, evidence reconciler, acceptance architect and cross-project coordinator. Owner forwards reviewer reports manually; no direct AI-to-AI channel is assumed. Use one lead writer per branch/work item; others review read-only or take disjoint scoped work. ChatGPT may implement/test bounded tasks when source/tools/environment permit, but never claim device/product tests that were not run.
+
+**Competitor/protocol research retained:** OpenHands and Cline are reference patterns, not frameworks to adopt wholesale. Reuse only useful primitives with PocketCode-specific review. MCP Tasks may adapt async task status; ACP may adapt agent sessions. Neither replaces PocketCode command/attempt identity or trusted receipts. Reject unsafe wildcard auto-approval defaults.
 
 ## Project guardrails
 - PocketCode remains in Discovery/product definition; no runtime/provider selected.
@@ -78,7 +94,7 @@ Evidence rules:
 4. Run raw-evidence vs portable-report correction only after a real path supplies the same underlying evidence for both conditions.
 5. Continue source-level implementation/test work on provider-neutral task/receipt logic only where the existing product/acceptance contract supports it. Keep proposals separate from verified product behavior.
 
-**Current evidence state:** public Pyodios review COMPLETE; fixture archive hash VERIFIED; first Editor attempt OBSERVED; existing `summary.json` owner-inspected and MATCHES the canonical success oracle; Editor bridge error/root cause and native exit status UNKNOWN; export/read-back, relaunch persistence, malformed-input path and PocketCode product acceptance/recovery suites NOT RUN.
+**Current evidence state:** public Pyodios review COMPLETE; fixture archive hash VERIFIED; installed build owner-reported; first Editor attempt OBSERVED; existing summary.json owner-inspected and EXACT MATCH to success oracle; Error Log checked, only Editor: PythonError, no traceback; saved-exception Console probe NOT RUN; bridge root cause and trusted native exit status UNKNOWN; export/read-back, relaunch persistence, malformed-input path and PocketCode product acceptance/recovery suites NOT RUN.
 
 
 ## Owner-reported build confirmation (2026-11-06)
@@ -89,7 +105,7 @@ The owner reports the Settings screen showed 13 cached packages / 0 KB cache, 85
 
 The owner reports that the green whole-file Editor run of the unchanged `main.py`, with `items.csv` in the same Pyodios project, displayed only `[Bridge/executePython] PythonError`. No traceback was visible. This was initially an observed attempt with cause and artifact presence UNKNOWN. The later owner inspection recorded below confirmed the existing `summary.json` matches the success oracle exactly; the bridge cause and native exit status remain UNKNOWN. Do not rerun the canonical script yet.
 
-Read `PYODIOS_PYTHONERROR_BRIDGE_TRIAGE_20261106.md`. The existing `summary.json` has already been inspected and exactly matches the success oracle; preserve it and do not rerun or overwrite the success project. Then inspect Settings → Diagnostics → Error Logs → View Error Log around the attempt timestamp. Redact unrelated source and local paths before sharing. The separate wrapper is available as a current-conversation attachment and has passed 4/4 local CPython 3.13.5 oracle/safety checks; the read-only saved-exception probe also passed a local smoke test. Neither has been run on Pyodios.
+Read `PYODIOS_PYTHONERROR_BRIDGE_TRIAGE_20261106.md`. The existing `summary.json` has already been inspected and exactly matches the success oracle; preserve it and do not rerun or overwrite the success project. The Error Log has already been checked via More → Settings → Error Log → View Error Log and showed only Editor: PythonError; next use the read-only Console probe. Redact unrelated source and local paths before sharing. The separate wrapper is available as a current-conversation attachment and has passed 4/4 local CPython 3.13.5 oracle/safety checks; the read-only saved-exception probe also passed a local smoke test. Neither has been run on Pyodios.
 
 Do not follow the older start-page instruction to change classifier precedence directly. The exit-provenance matrix requires resolving child exit, wrapper exit, termination confirmation and contradictory observations before any classifier change. Preserve CASE-04 as INCOMPLETE / timed_out.
 
@@ -104,3 +120,18 @@ Classify as **artifact-level functional success (owner-inspected), bridge error 
 ## Error Log follow-up (2026-11-06)
 
 Owner checked Pyodios Settings → Error Log for the attempt. The only available detail was `Editor: PythonError`; no underlying exception or traceback was exposed. Root cause remains UNKNOWN. Next action is the read-only Console probe for `sys.last_exc` / `sys.last_value` in the existing session. Preserve the exact-match `summary.json`; do not rerun or overwrite the success project. If the probe returns no saved exception, classify it as unavailable evidence, not proof that no exception occurred.
+
+
+## Copy/paste prompt for the next ChatGPT conversation
+
+```text
+Continue PocketCode as the lead continuity/evidence/acceptance coordinator. This is a handoff, not a new discovery project. First read AI_COLLAB/CHAT_START_HERE.md and AI_COLLAB/STATE_LEDGER_20261106.md on branch pocketcode-ai-workflow-director-research-2026-10-28. Fetch the live branch head, compare with main, check PR #2/#3 and Actions by exact SHA, then read AI_COLLAB/PYODIOS_PYTHONERROR_BRIDGE_TRIAGE_20261106.md and AI_COLLAB/NEW_CHAT_HANDOFF_20261106.md. Do not ask me to repeat project context.
+
+Immediate task: preserve the existing Pyodios success project and run only the read-only Console probe already in the triage note (sys.last_exc, fallback sys.last_value). The owner already confirmed summary.json exactly matches the frozen oracle and the Error Log only showed Editor: PythonError; do not rerun/overwrite main.py, restart/reset the session, clear variables/logs or run GC. Give the exact steps and ask for the probe output. If unavailable, classify UNKNOWN and choose the next safe diagnostic. Later run malformed input in a separate fresh project, then export/read-back and normal relaunch checks separately.
+
+After the device diagnostic, continue PocketCode's highest-value source-level task: resolve typed child-exit vs wrapper-exit vs termination/lifecycle provenance before any scripts/report_contract.py change. Preserve CASE-04 as INCOMPLETE/timed_out; do not make a precedence-only patch. Audit degraded collection/teardown/artifact release and synchronous pre-execution network-isolation ordering. Preserve all canonical LOOP-01..14, CASE-01..16 and D IDs.
+
+Product direction: phone-first iOS/Android, provider-neutral Agentic Orchestration Control Plane, not a generic Python IDE. MVP is an explicit paste/import → bounded execution → truthful evidence/artifacts → copyable AI correction report loop. RevDev and PocketCode are intended to converge as one PC-and-phone program but remain separate repos, roadmaps, clients, adapters, runtimes, security boundaries, acceptance suites and release gates. Keep $0 default, no PC requirement, no runtime/provider/host selected, explicit paste-to-context, no clipboard polling/overlays, default-deny permissions, and no claims beyond evidence. Preserve CommandId → DispatchAttemptId → ExecutionId → ObservationSequence → ResultReceipt identity and separate lifecycle, child exit, wrapper exit, verdict, cleanup and artifact-release facts.
+
+Three-AI roles: Claude lead developer + architecture/implementation reviewer; Gemini co-developer + independent security/spec auditor; ChatGPT continuity holder + evidence reconciler + acceptance architect + cross-project coordinator. Owner forwards reports manually. One lead writer per shared branch/work item. Use competitor research as patterns only: OpenHands/Cline, MCP Tasks, ACP; do not adopt wholesale or import RevDev acceptance evidence. GitHub is durable memory; update entrypoint and append work log every 2–3 meaningful passes. Be honest about VERIFIED/INFERRED/UNKNOWN/NOT RUN. Finish the bounded task, checkpoint GitHub, then report DONE, STATE LEDGER, NEXT PASS and phone actions.
+```
