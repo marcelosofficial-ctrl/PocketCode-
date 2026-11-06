@@ -60,9 +60,12 @@ Python's `runpy` documentation explicitly says it executes in the current proces
 import sys
 import traceback
 
-exc = getattr(sys, "last_value", None)
+exc = getattr(sys, "last_exc", None)
 if exc is None:
-    print("No previous Python exception is available as sys.last_value.")
+    exc = getattr(sys, "last_value", None)
+
+if exc is None:
+    print("No previous Python exception is available.")
 else:
     print("EXCEPTION TYPE:", type(exc).__name__)
     print("EXCEPTION VALUE:", repr(exc))
@@ -129,3 +132,7 @@ This note and wrapper do not select Pyodios/Pyodide as PocketCode's runtime, cla
 - https://pyodios.caffeinatedmath.com/guide/projects
 - https://pyodios.caffeinatedmath.com/guide/settings
 - https://pyodios.caffeinatedmath.com/faq
+
+### Upstream Pyodide version cross-check
+
+As of 2026-11-06, the upstream Pyodide release list marks 314.0.7 as Latest (released 14 September 2026), while the installed Pyodios 1.1.0 documentation still specifies bundled Pyodide 314.0.5 / CPython 3.14.2. I fetched the exact `src/core/error_handling.c` files from both upstream tags 314.0.5 and 314.0.7: both contain the same `SystemExit` / `PyConfig.inspect` comment and exception-wrapping logic in the inspected function. This does not establish that other changes between the versions are irrelevant or that Pyodios can independently update its embedded runtime. Do not manually replace the bundled runtime; this is a compatibility/maintenance observation only. Sources: https://github.com/pyodide/pyodide/releases and https://raw.githubusercontent.com/pyodide/pyodide/314.0.5/src/core/error_handling.c and https://raw.githubusercontent.com/pyodide/pyodide/314.0.7/src/core/error_handling.c
