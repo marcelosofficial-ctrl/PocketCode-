@@ -134,3 +134,12 @@ After the successful RevDev process-harness run #21 (34/34 at `65d9b95ed346c42ed
 **Transferable workflow lesson:** keep test evidence pinned to exact commit SHA, read the job logs for failures, and distinguish old-green from current-head-green. A new test that catches a real boundary defect is useful progress, even when the first CI run fails. Record the regression, exact fix, and current verification status in GitHub before rotating chats. Avoid silent stops: finish each pass with a durable checkpoint, explicit NOT RUN/BLOCKED/IN_PROGRESS status, and a concise user-facing summary.
 
 PocketCode remains independent. Reuse only this testing/continuity method, not RevDev's PowerShell implementation or acceptance evidence. CASE-04 remains the immediate PocketCode task.
+
+
+## 2026-11-06 — RevDev latest CI and fail-closed 404 classification (method only)
+
+RevDev run #29 completed SUCCESS with **36/36** tests at exact source/test commit 5c0435d6e9412f3a1dc72410be6495a61acaeceb, Windows PowerShell 5.1 / Pester 5.7.1: https://github.com/marcelosofficial-ctrl/DevRelay-Missions/actions/runs/42135733497. This verified the native process harness and correct preservation/removal of the global LASTEXITCODE variable.
+
+RevDev then tightened immutable mission-path absence classification. It now requires gh's documented general failure exit code 1, a complete parse-clean HTTP 404 and JSON message Not Found; authentication exit 4 and cancellation exit 2 cannot be mistaken for absence. This follows the official gh exit-code reference: https://cli.github.com/manual/gh_help_exit-codes. Current RevDev commit 144d0aa361343277aed9af76ad5736969c29abc9 contains 42 Pester cases; Actions run #30 42136315313 was IN_PROGRESS at last observation. Re-fetch before quoting its outcome.
+
+PocketCode may reuse the fail-closed classification/testing principle only at its own boundary. No RevDev code or acceptance transfers. PocketCode remains separate, CASE-04 remains next, and runtime/provider selection remains open.

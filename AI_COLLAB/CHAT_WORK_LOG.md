@@ -88,3 +88,10 @@ RevDev run #21 `42133707971` is now verified **34/34 passed, 0 failed, 0 skipped
 RevDev process integration initially passed 34/34 at run #21. A subsequent hardening pass surfaced a genuine PowerShell automatic-variable scoping defect when a function-local sentinel shadowed the global `$LASTEXITCODE` written by a native process. The source fix now uses a global sentinel/read and restores the previous global value; Pester also asserts restoration. Commits: transport `94b552a56653a18504ee0291152634a7dabdda02`; tests `264692600e589c4a8fd3198e1ab930da80e5b4f0`. Run #26/#27 were pending/in progress at last observation. This is RevDev-only and must not be reported as PocketCode test evidence.
 
 **Process improvement:** every chat handoff must pin current branch head and exact test-run SHA, query Actions runs/jobs/logs directly when connector summaries are incomplete, preserve failures as useful evidence, and never let a previous green run stand in for a later revision. End every meaningful pass with a GitHub checkpoint and a user-facing result/status. Chat rotation is triggered by meaningful milestones or early context pressure, not by waiting until a conversation is full.
+
+
+## 2026-11-06 — PC-2026-11-06-P08 — RevDev CI verification update
+
+RevDev run #29 verified **36/36** Windows PowerShell 5.1 / Pester 5.7.1 tests at exact commit 5c0435d6e9412f3a1dc72410be6495a61acaeceb. It confirms the fake process harness and LASTEXITCODE lifecycle fix. A subsequent RevDev pass tightened 404 absence proof to require gh exit code 1, a complete parse-clean 404 and expected JSON Not Found body; auth exit 4 and cancellation exit 2 remain distinct. Current RevDev commit 144d0aa361343277aed9af76ad5736969c29abc9 contains 42 tests; run #30 42136315313 was in progress at last observation. Official gh exit-code reference: https://cli.github.com/manual/gh_help_exit-codes.
+
+PocketCode implementation was not changed by this cross-project update. The reusable lesson is exact-SHA CI, process-level fakes, and never treating malformed/ambiguous errors as proof of absence. CASE-04 remains PocketCode's next task.

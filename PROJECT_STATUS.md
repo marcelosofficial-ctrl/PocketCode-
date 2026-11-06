@@ -432,3 +432,8 @@ RevDev's fake native-process transport harness passed run #21, **34/34** on Wind
 RevDev's current process-harness hardening caught a PowerShell module/global automatic-variable issue after the earlier 34/34 success. The fix is committed, but run #26/#27 were pending/in progress at last observation. This is an example of the desired workflow: use exact-SHA CI evidence, inspect logs, fix regressions, and preserve the distinction between earlier green and current unverified code. PocketCode may adopt this work discipline, not RevDev implementation. For PocketCode, inspect CASE-04 and its own CI independently.
 
 Each project chat should checkpoint GitHub after every meaningful pass, refresh its start page/work log, state exact head SHA and verification status, and rotate before context exhaustion. If a tool call fails, recover from last confirmed GitHub state and provide a concise result rather than silently stopping.
+
+
+## 2026-11-06 — Cross-project CI evidence refresh
+
+RevDev run #29 passed 36/36 on Windows PowerShell 5.1 / Pester 5.7.1 at 5c0435d6e9412f3a1dc72410be6495a61acaeceb. Its latest 404 classification hardening is at commit 144d0aa361343277aed9af76ad5736969c29abc9 with 42 tests; run #30 42136315313 was in progress at last observation. This is RevDev-only evidence and implementation. PocketCode must continue with its own CASE-04/report-contract and independent CI.
