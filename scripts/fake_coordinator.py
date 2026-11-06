@@ -285,7 +285,7 @@ class FakeCoordinator:
 
     def create_result_receipt(self, receipt_store, *, effect_id: str, attempt_id: str,
                               revision_key: str, contract_version: str,
-                              execution_outcome: str, collection_state: str,
+                              execution_outcome: Optional[str] = None, collection_state: str,
                               lifecycle_disposition: str, cleanup_state: str,
                               artifact_ids: tuple[str, ...], created_at_ms: int,
                               uncertainties: tuple[str, ...] = (),

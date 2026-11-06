@@ -312,6 +312,26 @@ class FakeCoordinatorTests(unittest.TestCase):
         self.assertEqual(receipt.execution_outcome, "PASS")
         self.assertEqual(receipt.projection_reason, "trusted_success_and_child_exit_zero")
 
+    def test_receipt_builder_derives_verdict_when_caller_omits_label(self):
+        from result_receipts import ResultReceiptStore
+        lease = self.coordinator.claim("effect-1", "worker-A", now=20, lease_seconds=20)
+        self.coordinator.record_lifecycle_observation(
+            "effect-1", "attempt-1", event_id="lifecycle-success",
+            status="succeeded", fence=lease.fence, now=21,
+        )
+        self.coordinator.record_exit_observation(
+            "effect-1", "attempt-1", event_id="child-exit-zero",
+            producer="direct_child_wait", kind="natural_exit",
+            exit_code=0, fence=lease.fence, now=22,
+        )
+        receipt = self.coordinator.create_result_receipt(
+            ResultReceiptStore(), effect_id="effect-1", attempt_id="attempt-1",
+            revision_key="derived-pass", contract_version="pc-v1",
+            collection_state="complete", lifecycle_disposition="succeeded",
+            cleanup_state="complete", artifact_ids=(), created_at_ms=23,
+        )
+        self.assertEqual(receipt.execution_outcome, "PASS")
+
     def test_program_failed_lifecycle_produces_fail_receipt(self):
         from result_receipts import ResultReceiptStore
         lease = self.coordinator.claim("effect-1", "worker-A", now=20, lease_seconds=20)

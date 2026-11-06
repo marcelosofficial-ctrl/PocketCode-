@@ -131,8 +131,7 @@ class ResultReceiptTests(unittest.TestCase):
         self.assertEqual(first.collection_state, "complete")
 
     def test_revision_predecessor_must_match_effect_and_attempt(self):
-        predecessor = self.create(revision_key="attempt-2-receipt",
-                                  attempt_id="attempt-2", artifact_ids=())
+        predecessor = self.create(attempt_id="attempt-2", artifact_ids=())
         with self.assertRaises(ReceiptConflict):
             self.create(revision_key="wrong-attempt-link",
                         predecessor_receipt_id=predecessor.receipt_id,
