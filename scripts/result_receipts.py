@@ -265,7 +265,7 @@ class ResultReceiptStore:
             receipt_id, revision_key, version, effect_id, attempt_id, contract_version,
             execution_outcome, projection_reason, collection_state, lifecycle_disposition,
             cleanup_state, evidence_refs, evidence_sha256, tuple(manifest), uncertainties,
-            predecessor_receipt_id, revision_reason, created_at_ms, projection_reason, fingerprint,
+            predecessor_receipt_id, revision_reason, created_at_ms, fingerprint,
         )
         self._receipts.append(receipt)
         self._receipt_by_revision[revision_key] = receipt
