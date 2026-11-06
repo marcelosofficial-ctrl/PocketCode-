@@ -580,3 +580,12 @@ Next: await owner-provided read-only Pyodios saved-exception probe output; prese
 
 - Corrected the release method description: `ReleaseAuthorization` is a caller-supplied snapshot. The model validates the supplied decision but cannot authenticate the issuer, query live policy, or independently establish freshness/revocation. The caller must resolve a fresh trusted decision on each release. Production must enforce authorization at the storage boundary with complete scope binding.
 - Added malformed identifier guards and tests for the snapshot boundary. Receipt suite: 28 methods; CI pending.
+
+
+## 2026-11-06 — PC-2026-11-06-P27 — attempt-bound receipt evidence composition
+
+**CI evidence:** [Run 42309075221](https://github.com/marcelosofficial-ctrl/PocketCode-/actions/runs/42309075221), exact commit `6003375dddd51e5e11155a9144817a298d0f4cf0`, Ubuntu 24.04 / Python 3.12, `python -m unittest discover -s scripts -p "test_*.py" -v`, **186 passed, 0 failed**.
+
+**Implemented:** attempt-bound reservation events before first fence; current-fence validation after lease generation; coordinator receipt builder derives evidence refs/digests from accepted exact-attempt events only; quarantined conflicts excluded; linked receipt revisions tested with new evidence; reservation event replay after claim remains safe.
+
+**Limits:** in-memory only; no durable atomicity/concurrency, cryptographic producer authentication, real policy authority, mobile integration, signed attestation or actual artifact-release service.

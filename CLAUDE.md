@@ -82,3 +82,13 @@ When assigned work: inspect current code, define narrow acceptance criteria, imp
 - Result: **179 tests passed, 0 failed**. This includes the receipt version-chain regression tests.
 - Receipt revisions now form one linear chain per `(EffectId, DispatchAttemptId)`: first version has no predecessor; later versions must extend the latest version; cross-effect, cross-attempt and stale-predecessor forks are rejected.
 - This validates only the repository's standard-library Python test suite at this exact SHA. It does not establish iOS/Android/Pyodios behavior, durable atomic transactions, concurrent safety, real provider authentication, hostile-code sandboxing, artifact malware safety or release acceptance. Later source commits need their own exact-SHA run.
+
+
+## Latest receipt/evidence composition checkpoint
+
+- Exact tested commit: `6003375dddd51e5e11155a9144817a298d0f4cf0`
+- GitHub Actions run: https://github.com/marcelosofficial-ctrl/PocketCode-/actions/runs/42309075221
+- Python 3.12 / Ubuntu 24.04; `python -m unittest discover -s scripts -p "test_*.py" -v`; **186 passed, 0 failed**.
+- EventJournal now binds reservation events to EffectId + DispatchAttemptId before a lease exists (no fence yet), then requires the current fence for all attempt-bound events after the first lease. FakeCoordinator derives receipt evidence refs and payload digests only from accepted events for the exact effect/attempt; quarantined conflicts are excluded.
+- New integration tests cover accepted evidence binding, conflict exclusion, receipt version creation from later observations, and safe reservation replay after a lease exists.
+- This remains an in-memory research model. No durable storage, concurrent transaction guarantee, real producer authentication, real policy check, mobile/device integration or artifact release is established. Fetch live branch head before relying on this CI result.

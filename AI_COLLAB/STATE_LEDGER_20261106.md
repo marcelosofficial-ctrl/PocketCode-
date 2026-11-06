@@ -307,3 +307,13 @@ Next task: owner runs only the read-only Pyodios sys.last_exc / sys.last_value C
 
 - Red-team review found that the release method's earlier docstring overstated what it proves. It validates a caller-supplied authorization snapshot each time; it does not fetch/authenticate the authority or establish freshness/revocation independently. Updated the docstring and contract to state that the caller must resolve a fresh trusted decision for every release. Production needs storage-bound enforcement with principal/tenant/artifact-version/attempt/policy/scope/expiry/revocation binding.
 - Added malformed artifact/receipt identifier guards to avoid unhandled type errors at API boundaries, plus explicit snapshot semantics tests. New receipt test count: 28; CI pending.
+
+
+## Latest receipt/evidence composition checkpoint
+
+- Exact tested commit: `6003375dddd51e5e11155a9144817a298d0f4cf0`
+- GitHub Actions run: https://github.com/marcelosofficial-ctrl/PocketCode-/actions/runs/42309075221
+- Python 3.12 / Ubuntu 24.04; `python -m unittest discover -s scripts -p "test_*.py" -v`; **186 passed, 0 failed**.
+- EventJournal now binds reservation events to EffectId + DispatchAttemptId before a lease exists (no fence yet), then requires the current fence for all attempt-bound events after the first lease. FakeCoordinator derives receipt evidence refs and payload digests only from accepted events for the exact effect/attempt; quarantined conflicts are excluded.
+- New integration tests cover accepted evidence binding, conflict exclusion, receipt version creation from later observations, and safe reservation replay after a lease exists.
+- This remains an in-memory research model. No durable storage, concurrent transaction guarantee, real producer authentication, real policy check, mobile/device integration or artifact release is established. Fetch live branch head before relying on this CI result.
