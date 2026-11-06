@@ -72,6 +72,7 @@ class EventJournalTests(unittest.TestCase):
         self.assertIsNone(first.event.fence)
 
     def test_same_event_replay_under_new_fence_is_quarantined(self):
+        self.journal.advance_fence("effect-1", "attempt-1", 1)
         first = self.append(effect_id="effect-1", attempt_id="attempt-1", fence=1)
         self.journal.advance_fence("effect-1", "attempt-1", 2)
         replay = self.append(effect_id="effect-1", attempt_id="attempt-1", fence=2)
