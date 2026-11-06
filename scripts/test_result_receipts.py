@@ -105,10 +105,9 @@ class ResultReceiptTests(unittest.TestCase):
         self.assertEqual(len(self.store.receipts), 1)
 
     def test_projection_reason_is_part_of_immutable_receipt(self):
-        receipt = self.create(projection_reason="insufficient_terminal_evidence")
-        self.assertEqual(receipt.projection_reason, "insufficient_terminal_evidence")
+        self.assertIsNone(self.receipt.projection_reason)
         with self.assertRaises(ReceiptConflict):
-            self.create(projection_reason="different reason")
+            self.create(projection_reason="insufficient_terminal_evidence")
 
     def test_revision_key_cannot_be_reused_for_changed_content(self):
         self.create()
@@ -131,7 +130,8 @@ class ResultReceiptTests(unittest.TestCase):
         self.assertEqual(first.collection_state, "complete")
 
     def test_revision_predecessor_must_match_effect_and_attempt(self):
-        predecessor = self.create(attempt_id="attempt-2", artifact_ids=())
+        predecessor = self.create(revision_key="attempt-2-receipt",
+                                  attempt_id="attempt-2", artifact_ids=())
         with self.assertRaises(ReceiptConflict):
             self.create(revision_key="wrong-attempt-link",
                         predecessor_receipt_id=predecessor.receipt_id,
