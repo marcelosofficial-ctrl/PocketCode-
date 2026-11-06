@@ -225,3 +225,11 @@ else:
 Only if no useful Error Log or saved exception is available and no `summary.json` exists, use the separate downloadable attachment `pocketcode_pyodios_runpy_diagnostic.py`. It refuses to execute if an input is missing or an earlier output exists. Its caught value is a script-requested exit, not an OS process status. Local CPython 3.13.5 harness passed 4/4 guards/oracle checks; the saved-exception probe smoke test also passed locally. Device execution of the wrapper and probe is NOT RUN. See `PYODIOS_PYTHONERROR_BRIDGE_TRIAGE_20261106.md`.
 
 After external file additions, reopen the project. Pyodios documents project and Python working-folder synchronization at defined moments, not continuously.
+
+## 10. Artifact result update (2026-11-06)
+
+Owner inspected the existing project Files tab. `summary.json` exists and exactly matches the frozen success oracle: `grand_total` is string `10.75`, `line_items` is integer `2`, and item totals are `notebook: 7.00` and `pen: 3.75`. This supersedes Section 9's UNKNOWN artifact outcome.
+
+Classification: **ARTIFACT-LEVEL FUNCTIONAL SUCCESS (owner-inspected) / EDITOR BRIDGE ERROR UNRESOLVED / FULL RUN INCONCLUSIVE**. The visible Editor output remains `[Bridge/executePython] PythonError`. The artifact proves the correct output was written, but does not explain the bridge error or establish exit status, stderr, export/read-back, relaunch persistence, or PocketCode acceptance.
+
+Preserve this project. Do not rerun or overwrite it. Next inspect the timestamped Pyodios Error Log, redact private/source details, then use the already documented read-only `sys.last_exc` / `sys.last_value` probe only if needed. `SystemExit` remains an unconfirmed hypothesis. Test malformed input later in a separate fresh project.
