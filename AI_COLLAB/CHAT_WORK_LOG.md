@@ -161,3 +161,8 @@ PocketCode must continue its own CASE-04 timeout/report-contract work. No RevDev
 ## 2026-11-06 — RevDev installer dependency-closure lesson
 
 Updated `AI_COLLAB/CROSS_PROJECT_UPDATE_REVDEV_2026-11-06.md` with RevDev's discovery that runtime module dependencies must be traced through the clean installer/package path, not only unit-tested in their source folder. RevDev's 91-case suite is pending exact CI run #48 at this note. Transferable lesson only: test dependency closure, backup/rollback and one immutable source commit for multi-file installs. No RevDev code or acceptance transfers. PocketCode CASE-04 remains immediate priority.
+
+
+## 2026-11-06 — RevDev installer-aware CI closeout
+
+RevDev run #48 `42181302862` passed 91/91 at exact source/test head `935108a6937f15b76f75850ebdbe70c69000be32` under Windows PowerShell 5.1 / Pester 5.7.1. The suite includes publisher/transport, local-result/recovery/quarantine and installer dependency/source-pin tests. This is RevDev-only maintenance-source evidence, not live install or product acceptance. Updated `AI_COLLAB/CROSS_PROJECT_UPDATE_REVDEV_2026-11-06.md`. PocketCode CASE-04 remains immediate priority.
