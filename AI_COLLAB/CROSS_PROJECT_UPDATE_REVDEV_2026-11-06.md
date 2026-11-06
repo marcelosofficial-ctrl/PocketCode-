@@ -63,6 +63,11 @@ RevDev's run #42 exact source/test revision passed 81/81. This supersedes the pe
 
 A further RevDev integration review found that the R5 watcher/runner/publisher import four sibling modules that the previous clean installer did not stage. The RevDev review branch now updates the clean installer to stage, parse, hash, back up, install and roll back those modules, validate exports/import dependency, bind the publisher self-test to a local result digest, require exact remote-byte verification, and record module hashes in the installation marker. It also resolves main once and fetches all source files by that exact commit SHA to prevent mixed-revision installation.
 
-Exact RevDev installer blob `d28470e818f356c5379430f2f9b53c473559752d`; installer tests blob `0007bd4d50e0413c0d2cfbc89a1c2be396b0dcae` (10 cases). Full RevDev suite is 91 cases. Actions run #48 `42181302862` targets source/test head `935108a6937f15b76f75850ebdbe70c69000be32` and was still in progress at the Pester installation step. Do not claim 91/91 until exact CI completion.
+Exact RevDev installer blob `d28470e818f356c5379430f2f9b53c473559752d`; installer tests blob `0007bd4d50e0413c0d2cfbc89a1c2be396b0dcae` (10 cases). Full RevDev suite is 91 cases. Actions run #48 `42181302862` targets source/test head `935108a6937f15b76f75850ebdbe70c69000be32` and completed SUCCESS: **91 passed, 0 failed, 0 skipped, 0 inconclusive, 0 not run** in 5.23 seconds under Windows PowerShell 5.1 / Pester 5.7.1: https://github.com/marcelosofficial-ctrl/DevRelay-Missions/actions/runs/42181302862.
 
 This is RevDev-only. Its redirector/installer still fetch production files from main; review-branch changes do not reach the PC without deliberate merge. No installer was executed and no PC/live API/queue operation occurred. PocketCode should not copy its PowerShell code or delay CASE-04. Transferable method: trace every new runtime dependency through the real installer/package path, test install/rollback behavior, and pin one immutable source revision for a multi-file install.
+
+
+## Installer-aware CI closeout
+
+RevDev run #48 passed all 91 tests at exact source/test head 935108a6937f15b76f75850ebdbe70c69000be32. This includes installer dependency closure/source pin tests. The clean installer was not executed and no PC/live API/queue/mission operation occurred. P0 remains open and P8U/P0-D remain NOT RUN. PocketCode should continue CASE-04 independently.
