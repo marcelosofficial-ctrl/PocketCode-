@@ -92,6 +92,15 @@ def main() -> int:
     if not re.search(r"\bArrowLeft\b", html) or not re.search(r"\bArrowRight\b", html) or not re.search(r"\bHome\b", html) or not re.search(r"\bEnd\b", html):
         errors.append("Tab keyboard navigation must support arrows, Home and End")
     if not re.search(r"\baria-live=[\"']polite[\"']", html, re.IGNORECASE):
+    if 'id="codeTab" role="tab" aria-selected="true" aria-controls="codePanel" tabindex="0"' not in html:
+        errors.append("Selected code tab must start with tabindex=0")
+    if 'id="inputTab" role="tab" aria-selected="false" aria-controls="inputPanel" tabindex="-1"' not in html:
+        errors.append("Inactive input tab must start with tabindex=-1")
+    if "codeTab.setAttribute('tabindex',isCode?'0':'-1')" not in html:
+        errors.append("Code tab selection does not update the roving tabindex")
+    if "inputTab.setAttribute('tabindex',isCode?'-1':'0')" not in html:
+        errors.append("Input tab selection does not update the roving tabindex")
+
         errors.append("Missing aria-live status/output region")
 
     prompt = re.search(r"getElementById\(['\"]copyPrompt['\"]\)\.addEventListener\(['\"]click['\"],\s*\(\)=>\s*\{(.*?)\}\);", html, re.DOTALL)
