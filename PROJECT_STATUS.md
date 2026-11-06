@@ -498,3 +498,16 @@ Operational acceptance criteria:
 - Chat rotation starts before context exhaustion, without waiting for a user-requested handoff.
 
 This reduces avoidable interruptions but cannot eliminate platform context limits or external service failures. The target is graceful interruption without lost project state. PocketCode remains separate from RevDev in implementation, roadmap, runtime, acceptance suites and release gates.
+
+
+## 2026-11-06 — Pyodios first Editor attempt
+
+The owner reports one attempt using canonical `main.py` and renamed `items.csv` in the same Pyodios project. The green whole-file Editor play control was used; the complete visible result was `[Bridge/executePython] PythonError`, with no traceback. Status is **ATTEMPT OBSERVED / ROOT CAUSE UNKNOWN / ARTIFACT OUTCOME UNKNOWN**. No PASS/FAIL is assigned.
+
+Do not rerun `main.py` yet. First inspect the same project's Files tab for `summary.json`, preserve/read it if present, then inspect Settings → Diagnostics → Error Logs → View Error Log at the attempt timestamp. Pyodios documents timestamped details and warns that source text may appear in logs, so redact before sharing. If the artifact is absent and the log unhelpful, use the separately attached guarded diagnostic wrapper; local CPython 3.13.5 checks were 2/2, while Pyodios device execution of that wrapper remains NOT RUN.
+
+Pyodide 314.0.5 documents Python exceptions crossing the JavaScript boundary as `PythonError`; Python documents `sys.exit()` as raising `SystemExit`. Since the frozen fixture ends with `raise SystemExit(main())`, that is a plausible but unconfirmed bridge explanation. Missing input visibility or another exception remains possible. Details: [Pyodios PythonError bridge triage](AI_COLLAB/PYODIOS_PYTHONERROR_BRIDGE_TRIAGE_20261106.md).
+
+The current start-page instruction to reorder `classify_verdict()` is superseded by `AI_COLLAB/VERDICT_EVIDENCE_EXIT_PROVENANCE_MATRIX_20261105.md`: generic exit code may be child exit, wrapper exit, forced termination, stale or contradictory. Resolve typed provenance and termination evidence at the coordinator boundary first. Preserve canonical CASE-04 as INCOMPLETE / timed_out; no formatter patch is made in this pass.
+
+No product source, canonical fixture, LOOP/CASE/D suite, provider/runtime selection, PR #2/#3, Actions, merge, deployment, account or budget changed. $0 default remains.
