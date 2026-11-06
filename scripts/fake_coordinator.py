@@ -217,7 +217,12 @@ class FakeCoordinator:
                               uncertainties: tuple[str, ...] = (),
                               predecessor_receipt_id: Optional[str] = None,
                               revision_reason: Optional[str] = None):
-        """Create a receipt from accepted attempt-bound journal events only."""
+        """Create a progress receipt only; terminal verdict needs execution evidence."""
+        if execution_outcome != "INCOMPLETE":
+            raise OutboxConflict(
+                "coordinator journal currently proves dispatch/recovery only; "
+                "PASS or FAIL requires separately accepted terminal execution evidence"
+            )
         self.store.get(effect_id, attempt_id)
         events = [event for event in self.journal.events
                   if event.effect_id == effect_id and event.attempt_id == attempt_id]

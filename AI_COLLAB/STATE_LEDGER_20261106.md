@@ -325,3 +325,10 @@ Next task: owner runs only the read-only Pyodios sys.last_exc / sys.last_value C
 - FakeCoordinator now creates receipt evidence references/digests from accepted journal events for the exact EffectId/DispatchAttemptId. Quarantined conflicts are excluded. A later accepted event can be captured in a new linked receipt version without mutating the predecessor.
 - Reservation events are attempt-bound before a lease fence exists; lease-scoped events still require the current fence. This fixes the earlier inability to record reservation evidence before first claim.
 - Limits: all are in-memory research models; no durable transaction, concurrent writer guarantee, cryptographic producer authentication, real provider, device, sandbox or production artifact authority.
+
+
+## 2026-11-06 terminal verdict fail-closed gate
+
+- Red-team review of the new coordinator-to-receipt composition found that the builder accepted caller-supplied PASS/FAIL even though its journal currently contains only dispatch/recovery lifecycle evidence. That would allow dispatch evidence to be packaged with a false terminal claim.
+- FakeCoordinator receipt composition now accepts only INCOMPLETE until trusted terminal lifecycle + natural child-exit evidence or trusted program-failure evidence is integrated and projected through `execution_projection.py`. PASS/FAIL are rejected with no receipt append. Added regression test.
+- This is a temporary fail-closed model boundary, not a change to canonical verdict semantics. Next integration must derive terminal verdicts from typed evidence, never accept a caller-supplied label as proof.

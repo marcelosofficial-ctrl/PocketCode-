@@ -97,3 +97,8 @@ Finish the fake end-to-end recovery-to-receipt-to-artifact publication conforman
 - Python 3.12 / Ubuntu 24.04; 186 passed, 0 failed.
 - FakeCoordinator now binds accepted attempt-scoped journal evidence to immutable receipt revisions. Quarantined conflicts are excluded. Initial reservation event is attempt-bound before the first lease fence; later lease events remain fenced.
 - Always re-check the live branch head before relying on this checkpoint.
+
+
+### Terminal verdict gate
+
+The current FakeCoordinator receipt builder only permits INCOMPLETE because its journal has not yet integrated trusted terminal lifecycle and child-exit observations. PASS/FAIL must be derived via `execution_projection.py`, not supplied as a caller assertion. See the execution/recovery contract.

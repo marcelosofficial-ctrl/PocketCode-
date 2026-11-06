@@ -289,6 +289,20 @@ class FakeCoordinatorTests(unittest.TestCase):
         self.assertGreater(len(second.evidence_refs), len(first.evidence_refs))
         self.assertEqual(first.lifecycle_disposition, "pending")
 
+    def test_dispatch_only_journal_cannot_create_pass_or_fail_receipt(self):
+        from result_receipts import ResultReceiptStore
+        store = ResultReceiptStore()
+        for outcome in ("PASS", "FAIL"):
+            with self.subTest(outcome=outcome), self.assertRaises(OutboxConflict):
+                self.coordinator.create_result_receipt(
+                    store, effect_id="effect-1", attempt_id="attempt-1",
+                    revision_key="forbidden-" + outcome, contract_version="pc-v1",
+                    execution_outcome=outcome, collection_state="complete",
+                    lifecycle_disposition="succeeded", cleanup_state="complete",
+                    artifact_ids=(), created_at_ms=30,
+                )
+        self.assertEqual(store.receipts, ())
+
     def test_reservation_event_is_attempt_bound_and_reservation_replay_after_claim_is_safe(self):
         event = self.journal.events[0]
         self.assertEqual(event.effect_id, "effect-1")

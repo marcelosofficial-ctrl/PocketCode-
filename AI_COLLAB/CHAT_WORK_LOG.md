@@ -597,3 +597,9 @@ Next: await owner-provided read-only Pyodios saved-exception probe output; prese
 - FakeCoordinator now binds ResultReceipt evidence references and payload digests to accepted journal events scoped to the exact effect and attempt. Quarantined conflicts do not enter receipts. New observations produce a linked new receipt version and preserve the predecessor.
 - Event journal permits the initial attempt-bound reservation event before the first lease fence; lease-scoped events still require the current fence. Added regression tests for initial reservation binding and safe reservation replay after claim.
 - Authorization remains a caller-supplied snapshot in the receipt model. This is not production authentication, durable/concurrent storage, device, provider or sandbox acceptance.
+
+
+## 2026-11-06 — dispatch-only receipt cannot claim terminal verdict
+
+- Added a fail-closed gate to `FakeCoordinator.create_result_receipt()`: current journal evidence proves reservation/lease/dispatch/ack/reconciliation, not successful/failed child execution. Until trusted terminal evidence is integrated and projected, the coordinator builder only emits INCOMPLETE and rejects caller-supplied PASS or FAIL.
+- Added test asserting both terminal claims are rejected and no receipt is appended. This prevents the receipt composition path from turning dispatch acceptance into execution success. CI pending.
