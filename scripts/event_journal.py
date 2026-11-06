@@ -5,7 +5,6 @@ adapter as an AuthenticatedProducer value; this module does not verify keys,
 signatures, certificates, sessions, or external credentials.
 """
 from __future__ import annotations
-
 from dataclasses import dataclass
 from hashlib import sha256
 from typing import Optional
@@ -120,9 +119,10 @@ class EventJournal:
             same_producer = (
                 prior.producer_issuer == producer.issuer
                 and prior.producer_subject == producer.subject
-                and prior.producer_key_id == producer.key_id
             )
-            if same_producer and prior.payload_sha256 == digest and prior.payload == payload:
+            if (same_producer and prior.payload_sha256 == digest
+                    and prior.payload == payload
+                    and prior.occurred_at_ms == occurred_at_ms):
                 return AppendResult("duplicate", prior.sequence, event=prior)
             self._sequence += 1
             conflict = QuarantinedConflict(
