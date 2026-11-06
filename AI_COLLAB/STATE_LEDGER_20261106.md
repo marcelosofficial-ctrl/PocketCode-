@@ -99,3 +99,11 @@ Next task: owner runs only the read-only Pyodios sys.last_exc / sys.last_value C
 - Local recreated 11-case Python harness passed 11/11; this was not execution of the exact repository test file or CI. Static checker passed against a reconstructed HTML fixture containing the exact pinned source/input. Real browser, screen reader, iOS and Android interaction remain NOT RUN.
 - A checker indentation defect found during red-team review was corrected and read-back verified. The initial prototype remains simulation-only; no product runtime, provider, budget or acceptance ID changed.
 - Pyodios saved-exception Console probe remains NOT RUN and is still the next owner action.
+
+
+## 2026-11-06 — Fresh source maintenance gates
+
+- Research note extended with Pyodide module-worker behavior, iOS app lifecycle constraints, SQLite WAL durability and WAL-reset bug, and MCP Tasks/A2A limitations.
+- SQLite WAL selection is blocked until the bundled version is pinned at 3.51.3+ or supported backport (3.44.6 / 3.50.7), with the documented multi-connection write/checkpoint race tested. `synchronous=FULL` is required where power-loss durability is a requirement. WAL is not for network filesystems.
+- MCP Tasks remain experimental (2025-11-25 spec); A2A v1.0.1 task streaming/history can omit updates/messages after disconnect. PocketCode's own receipt/event journal remains authoritative.
+- Checker now accepts tab attributes regardless of class/id attribute ordering. Added a regression case for this. Test method count is 12; exact suite/CI not run.

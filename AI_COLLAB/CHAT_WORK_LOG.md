@@ -332,3 +332,10 @@ Next: await owner-provided read-only Pyodios saved-exception probe output; prese
 - No runtime/provider, account, workload, paid usage, product execution, artifact release, canonical acceptance ID, PR, merge or deployment changed.
 
 **Next:** continue with the owner-supplied Pyodios read-only saved-exception probe; then use the typed boundary-specific contract before changing CASE-04 classification.
+
+
+## 2026-11-06 — PC-2026-11-06-P21 — SQLite/protocol release gates and checker hardening
+
+- Added primary-source maintenance constraints to research: SQLite WAL-reset fix floor (3.51.3 or supported backports 3.44.6/3.50.7), FULL sync for power-loss durability, same-host WAL limitation, MCP Tasks experimental status, and A2A v1.0.1 streaming/history gaps.
+- Confirmed static checker now handles class/id attribute order for tab buttons; added a regression case. Test methods: 12. Exact repository test suite and CI remain NOT RUN.
+- No runtime/provider or canonical acceptance decision changed.

@@ -149,6 +149,11 @@ class PrototypeCheckerTests(unittest.TestCase):
         result = self.run_checker(html)
         self.assertEqual(result.returncode, 1)
         self.assertIn("Debugging prompt omits inputData.textContent", result.stdout)
+    def test_accepts_class_before_tab_id_attributes(self):
+        html = VALID_HTML.replace('<button id="codeTab"', '<button class="tab" id="codeTab"').replace('<button id="inputTab"', '<button class="tab" id="inputTab"')
+        result = self.run_checker(html)
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+
     def test_rejects_missing_roving_tabindex(self):
         html = VALID_HTML.replace('tabindex="-1"', '')
         result = self.run_checker(html)
