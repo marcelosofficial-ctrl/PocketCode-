@@ -420,3 +420,8 @@ This resolves the installed app/build/runtime baseline. Device model and iOS ver
 RevDev's typed HTTP parser and publisher preflight increment passed GitHub Actions run #17 with **24/24** tests on Windows PowerShell 5.1 / Pester 5.7.1 at commit `c559aa7db595cb890981544184807381991e7490`: https://github.com/marcelosofficial-ctrl/DevRelay-Missions/actions/runs/42132258538. This is RevDev source/test evidence only. It validates the continuity rule to inspect the repository Actions run collection and job logs by exact head SHA when a connector's commit workflow view is incomplete.
 
 PocketCode remains independent. Its next implementation priority is CASE-04 timeout classification/report-contract integrity in `scripts/report_contract.py`; no runtime/provider is selected, device comparison awaits owner observations, $0 budget and phone-first constraints remain, and canonical LOOP/CASE/D suites remain unchanged. PR #2/#3 are not modified by this update.
+
+
+## 2026-11-06 — RevDev fake-process test result (process lesson only)
+
+RevDev's fake native-process transport harness passed run #21, **34/34** on Windows PowerShell 5.1 / Pester 5.7.1 at commit `65d9b95ed346c42ed22bd920d70cb4e5c4429a26`: https://github.com/marcelosofficial-ctrl/DevRelay-Missions/actions/runs/42133707971. The transferable process lesson is to exercise real process boundaries with controlled fakes, without live network or external writes. This is not PocketCode implementation or acceptance. PocketCode's CASE-04 timeout/report-contract correction remains its immediate next task.
