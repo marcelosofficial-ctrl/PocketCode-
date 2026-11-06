@@ -1,38 +1,34 @@
 # Mobile Runner Prototype Preview
 
-**[Open the live phone preview](https://marcelosofficial-ctrl.github.io/PocketCode-/)** — sample output only; submitted code is not executed.
+This is a static, interactive **simulation-only** prototype. It does not execute Python, import files, create artifacts, select a runtime, or call a provider.
 
-This is a static, interactive UI prototype for product feedback. It does not execute submitted code and must not be treated as evidence that the runtime works.
+The example now represents the frozen CSV-to-JSON comparison task from [the fixed-task worksheet](../../AI_COLLAB/PRODUCT_FIXED_TASK_COMPARISON_WORKSHEET_20261028.md):
+- canonical `main.py` source shown unchanged;
+- success and malformed-header `items.csv` fixtures;
+- fixture expectations for `summary.json`, stdout and stderr;
+- explicit job, runtime, duration, cleanup, artifact-release and evidence-provenance states;
+- copyable example report and debugging prompt with selectable-text fallback.
 
-## Enable the phone-friendly preview
+The two scenario buttons switch between **expected examples**. They are not Run controls. No sample output is offered as a downloadable artifact.
 
-The repository's workflow is ready to publish only this folder to GitHub Pages:
-- Workflow: [Publish mobile prototype preview](../../.github/workflows/preview-prototype.yml)
-- Source: `prototypes/mobile-runner/index.html`
+## Preview
 
-GitHub Pages must be enabled once in repository settings. For this public repository, GitHub Free supports Pages. Configure the publishing source as GitHub Actions.
+Open `index.html` directly in a browser. The page has no external dependencies.
 
-1. Open the repository on GitHub.
-2. Open **Settings → Pages**.
-3. Under **Build and deployment → Source**, select **GitHub Actions** and save if prompted.
-4. Open the **Actions** tab.
-5. Open **Publish mobile prototype preview** and choose **Re-run all jobs** for the existing failed run, or use **Run workflow** on the default branch.
-6. Wait for a successful deployment. Open the published page URL shown in the workflow's deployment environment.
+## Static checks
 
-The preview is public because this repository is public. It contains only a sample interface and fabricated example output; do not add private data, credentials, or real user code to this demo.
+From the repository root:
 
-## What to review on a phone
+```sh
+python scripts/check_mobile_prototype.py
+python -m unittest scripts.test_check_mobile_prototype -v
+```
 
-- Can you understand what PocketCode does from the first screen?
-- Is the code / input file switcher clear?
-- Is the Run action easy to find and tap?
-- Is it obvious that the output is a simulation?
-- Is the error report understandable?
-- Would you use **Copy report** or **Copy AI prompt** after a real run?
+These checks inspect source structure only. They do not execute browser JavaScript, verify clipboard behavior, test screen readers, or execute the submitted Python fixture. Real iOS/Android interaction and accessibility remain NOT RUN.
 
-## Prototype boundaries
+## Review questions
 
-- No backend, runtime provider, login, persistence, analytics, or external JavaScript libraries.
-- The success/error output and download are samples only.
-- Clipboard behavior depends on browser permissions and secure-context support.
-- No browser interaction or accessibility audit has been completed yet.
+1. Is it clear that the buttons switch examples rather than run code?
+2. Can a reader distinguish fixture expectations from observations?
+3. Are stdout, stderr, artifact, cleanup and release states understandable?
+4. Can the report be selected and copied when clipboard access is unavailable?

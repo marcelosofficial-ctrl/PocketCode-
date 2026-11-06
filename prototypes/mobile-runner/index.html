@@ -4,70 +4,215 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#101318">
-<title>PocketCode — Mobile Runner Prototype</title>
+<title>PocketCode | Task receipt concept</title>
 <style>
 :root{color-scheme:dark;--bg:#101318;--panel:#181d25;--panel2:#202733;--line:#303946;--text:#f3f5f7;--muted:#a0aaba;--green:#9be7bd;--blue:#9bc7ff;--red:#ffaaa8;--yellow:#f3d58a}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:15px/1.5 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}button,textarea{font:inherit}button{cursor:pointer}button:focus-visible,textarea:focus-visible{outline:2px solid var(--blue);outline-offset:3px}.shell{max-width:760px;margin:auto;padding:0 16px 36px}.demo-banner{margin:0 -16px 20px;padding:10px 16px;background:#493b18;color:#ffe9a9;font-size:12px;font-weight:700;text-align:center;letter-spacing:.02em}.topbar{display:flex;align-items:center;justify-content:space-between;padding:7px 0 22px}.brand{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:-.03em;font-size:20px}.logo{display:grid;place-items:center;width:35px;height:35px;border-radius:11px;background:var(--green);color:#102018;font-weight:900;font-size:20px}.pill{border:1px solid var(--line);border-radius:999px;padding:5px 10px;color:var(--muted);font-size:12px}.intro h1{font-size:clamp(27px,7vw,38px);letter-spacing:-.045em;line-height:1.12;margin:0 0 8px}.intro p{margin:0 0 19px;color:var(--muted)}.workspace{border:1px solid var(--line);border-radius:18px;overflow:hidden;background:var(--panel);box-shadow:0 14px 45px #0002}.workspace-head{padding:14px 15px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:12px;align-items:center}.workspace-title{font-weight:700}.runtime{font-size:12px;color:var(--muted);margin-top:2px}.status{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--green);white-space:nowrap}.dot{width:7px;height:7px;background:currentColor;border-radius:50%}.tabs{display:flex;gap:6px;padding:10px 12px 0}.tab{border:1px solid transparent;border-radius:9px;padding:8px 12px;background:transparent;color:var(--muted);font-size:13px}.tab[aria-selected=true]{background:var(--panel2);border-color:var(--line);color:var(--text)}.editor-wrap{padding:12px}.editor{display:block;width:100%;min-height:225px;resize:vertical;border:1px solid var(--line);border-radius:12px;background:#11161d;color:#d9e5f6;padding:14px;font:13px/1.65 ui-monospace,SFMono-Regular,Menlo,monospace;tab-size:4}.csv-preview{display:none;min-height:225px;border:1px solid var(--line);border-radius:12px;background:#11161d;padding:14px;overflow:auto;font:13px/1.9 ui-monospace,monospace;color:#d9e5f6}.actions{display:flex;flex-wrap:wrap;gap:9px;padding:0 12px 14px}.btn{border:1px solid var(--line);border-radius:11px;padding:10px 14px;background:var(--panel2);color:var(--text);font-weight:650}.btn.primary{background:var(--green);border-color:var(--green);color:#102018}.btn.subtle{background:transparent;color:var(--muted)}.btn:active{transform:translateY(1px)}.runline{margin-left:auto;display:flex;align-items:center;gap:9px}.output{border-top:1px solid var(--line);padding:15px 14px 14px}.output-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}.output-head h2{font-size:14px;margin:0}.result-badge{font-size:11px;font-weight:800;letter-spacing:.04em;padding:4px 8px;border-radius:6px;background:#193c2b;color:var(--green)}.result-badge.failed{background:#482423;color:var(--red)}.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:13px}.metric{border:1px solid var(--line);border-radius:10px;padding:9px 10px;min-width:0}.metric span{display:block;color:var(--muted);font-size:11px;margin-bottom:3px}.metric strong{font-size:13px;overflow-wrap:anywhere}.console{border:1px solid var(--line);border-radius:10px;background:#0c1015;padding:12px;font:12px/1.65 ui-monospace,SFMono-Regular,Menlo,monospace;white-space:pre-wrap;overflow-wrap:anywhere;min-height:90px;color:#c8d3df}.console .ok{color:var(--green)}.console .err{color:var(--red)}.files{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:12px;padding:11px;border:1px solid var(--line);border-radius:10px}.file-name{font-size:13px}.file-meta{font-size:11px;color:var(--muted)}.download{font-size:12px;color:var(--blue);text-decoration:none;white-space:nowrap}.share-row{display:flex;gap:9px;margin-top:12px}.share-row .btn{flex:1}.footnote{font-size:12px;color:var(--muted);margin:13px 2px 0}.below{margin:22px 2px 0}.below h2{font-size:16px;margin:0 0 8px}.below ul{padding-left:20px;margin:0;color:var(--muted);font-size:13px}.below li+li{margin-top:5px}.toast{min-height:18px;margin-top:8px;color:var(--green);font-size:12px}.hidden{display:none!important}@media(min-width:600px){.shell{padding-top:4px}.editor{min-height:260px}.demo-banner{margin-top:0;border-radius:0 0 10px 10px}.workspace-head{padding:16px 18px}.editor-wrap{padding:14px}.output{padding:18px}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:15px/1.5 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}button,textarea{font:inherit}button{cursor:pointer}button:focus-visible,textarea:focus-visible{outline:2px solid var(--blue);outline-offset:3px}.shell{max-width:780px;margin:auto;padding:0 16px 36px}.demo-banner{margin:0 -16px 18px;padding:11px 16px;background:#493b18;color:#ffe9a9;font-size:12px;font-weight:800;text-align:center}.topbar{display:flex;justify-content:space-between;align-items:center;padding:7px 0 20px}.brand{display:flex;align-items:center;gap:10px;font-size:20px;font-weight:800}.logo{display:grid;place-items:center;width:35px;height:35px;border-radius:11px;background:var(--green);color:#102018}.pill{border:1px solid var(--line);border-radius:999px;padding:5px 10px;color:var(--muted);font-size:12px}.intro h1{font-size:clamp(27px,7vw,38px);line-height:1.12;letter-spacing:-.04em;margin:0 0 8px}.intro p{margin:0 0 18px;color:var(--muted)}.workspace{border:1px solid var(--line);border-radius:18px;overflow:hidden;background:var(--panel)}.workspace-head{padding:14px 15px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:12px;align-items:center}.workspace-title{font-weight:750}.subtle{font-size:12px;color:var(--muted)}.state{font-size:11px;color:var(--yellow);font-weight:800;letter-spacing:.03em;text-align:right}.tabs{display:flex;gap:6px;padding:10px 12px 0}.tab{border:1px solid transparent;border-radius:9px;padding:8px 12px;background:transparent;color:var(--muted);font-size:13px}.tab[aria-selected=true]{background:var(--panel2);border-color:var(--line);color:var(--text)}.panel{padding:12px}.code,.csv,.json,.stream{margin:0;border:1px solid var(--line);border-radius:11px;background:#0c1015;color:#d9e5f6;padding:13px;overflow:auto;white-space:pre-wrap;overflow-wrap:anywhere;font:12px/1.6 ui-monospace,SFMono-Regular,Menlo,monospace;max-height:430px}.csv,.json{max-height:none}.panel[hidden]{display:none}.actions{display:flex;flex-wrap:wrap;gap:9px;padding:0 12px 14px}.btn{border:1px solid var(--line);border-radius:10px;padding:10px 13px;background:var(--panel2);color:var(--text);font-weight:650}.btn.primary{border-color:var(--green);background:var(--green);color:#102018}.btn:active{transform:translateY(1px)}.section{padding:15px 14px;border-top:1px solid var(--line)}.section h2{font-size:14px;margin:0 0 10px}.badge{display:inline-block;border-radius:6px;padding:4px 8px;background:#493b18;color:var(--yellow);font-size:11px;font-weight:850;letter-spacing:.03em}.fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.field{border:1px solid var(--line);border-radius:10px;padding:9px 10px;min-width:0}.field span{display:block;color:var(--muted);font-size:11px;margin-bottom:3px}.field strong{font-size:13px;overflow-wrap:anywhere}.stream-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}.stream-card{min-width:0}.stream-card h3{font-size:12px;margin:0 0 5px}.stream-card .subtle{margin-bottom:6px}.stream{min-height:58px;max-height:190px}.artifact{border:1px solid var(--line);border-radius:10px;padding:11px;margin-top:10px}.artifact h3{font-size:13px;margin:0 0 5px}.artifact p{font-size:12px;color:var(--muted);margin:0 0 8px}.handoff{display:grid;gap:9px}.fallback{width:100%;min-height:170px;resize:vertical;border:1px solid var(--line);border-radius:10px;background:#0c1015;color:#d9e5f6;padding:12px;font:12px/1.55 ui-monospace,monospace}.notice{font-size:12px;color:var(--muted);margin:9px 0 0}.toast{min-height:20px;margin-top:8px;color:var(--yellow);font-size:12px}.below{margin:20px 2px 0;color:var(--muted);font-size:13px}.below h2{color:var(--text);font-size:15px}.below ul{padding-left:19px}.below li+li{margin-top:5px}@media(max-width:480px){.fields{grid-template-columns:1fr 1fr}.stream-grid{grid-template-columns:1fr}.workspace-head{align-items:flex-start}.state{max-width:125px}}
 </style>
 </head>
 <body>
 <div class="shell">
-  <div class="demo-banner">INTERACTIVE PROTOTYPE · SIMULATED EXECUTION ONLY · YOUR CODE IS NOT RUN</div>
-  <header class="topbar"><div class="brand"><span class="logo">›_</span><span>PocketCode</span></div><span class="pill">MVP concept</span></header>
-  <section class="intro"><h1>Try the PocketCode workflow</h1><p>Explore a sample script, see what a result or error could look like, then copy a report for an AI assistant.</p></section>
+  <div class="demo-banner">SIMULATED EXAMPLE — NOT AN EXECUTION · YOUR CODE IS NOT EXECUTED</div>
+  <header class="topbar"><div class="brand"><span class="logo">›_</span><span>PocketCode</span></div><span class="pill">Workflow concept</span></header>
+  <section class="intro"><h1>From a task to a trustworthy result</h1><p>This screen shows the same frozen CSV-to-JSON task in two example scenarios. Nothing runs, no files are imported, and no output artifact is created.</p></section>
   <main class="workspace">
-    <div class="workspace-head"><div><div class="workspace-title">Untitled workspace</div><div class="runtime">Python 3.x · proposed runtime</div></div><div class="status"><span class="dot"></span><span id="statusText">Ready to demo</span></div></div>
-    <div class="tabs" role="tablist" aria-label="Workspace files"><button class="tab" id="codeTab" role="tab" aria-selected="true">main.py</button><button class="tab" id="csvTab" role="tab" aria-selected="false">sales.csv</button></div>
-    <div class="editor-wrap"><textarea id="codeEditor" class="editor" spellcheck="false" aria-label="Example Python code">import csv
-
-with open("sales.csv", newline="") as source:
-    rows = list(csv.DictReader(source))
-
-total = sum(float(row["amount"]) for row in rows)
-print(f"Rows processed: {len(rows)}")
-print(f"Total sales: ${total:.2f}")
-
-with open("summary.txt", "w") as output:
-    output.write(f"Total sales: ${total:.2f}\n")</textarea>
-      <div id="csvPreview" class="csv-preview" role="tabpanel">date,category,amount
-2026-10-01,books,12.50
-2026-10-02,food,8.25
-2026-10-03,travel,24.00</div>
+    <div class="workspace-head"><div><div class="workspace-title">Canonical CSV-to-JSON fixture</div><div class="subtle">Sample workspace · fixed source and input fixture</div></div><div class="state">SIMULATION ONLY</div></div>
+    <div class="tabs" role="tablist" aria-label="Fixture files">
+      <button class="tab" id="codeTab" role="tab" aria-selected="true" aria-controls="codePanel">main.py</button>
+      <button class="tab" id="inputTab" role="tab" aria-selected="false" aria-controls="inputPanel">items.csv</button>
     </div>
-    <div class="actions"><button id="errorButton" class="btn subtle">Show error example</button><div class="runline"><button id="runButton" class="btn primary">Show success example</button></div></div><p class="footnote" style="padding:0 14px 12px;margin:0">These buttons switch between fixed examples. Your code is not executed.</p>
-    <section class="output" aria-live="polite">
-      <div class="output-head"><h2>Execution report</h2><span id="resultBadge" class="result-badge">SAMPLE RESULT</span></div>
-      <div class="metrics"><div class="metric"><span>Exit status</span><strong id="exitStatus">0 · success</strong></div><div class="metric"><span>Duration</span><strong id="duration">0.18s (sample)</strong></div><div class="metric"><span>Runtime</span><strong>Python 3.x</strong></div></div>
-      <div id="console" class="console"><span class="ok">Rows processed: 3
-Total sales: $44.75
-Process finished (sample output).</span></div>
-      <div id="fileCard" class="files"><div><div class="file-name">▤ summary.txt</div><div class="file-meta">Generated file · sample only</div></div><a id="downloadSample" class="download" href="data:text/plain;charset=utf-8,DEMO%20ONLY%0ATotal%20sales%3A%20%2444.75" download="summary-demo.txt">Download sample</a></div>
-      <div class="share-row"><button id="copyReport" class="btn">Copy report text</button><button id="copyPrompt" class="btn subtle">Copy debugging prompt</button></div><p class="footnote">Report text = status and sample output. Debugging prompt = your current editor code, sample CSV, and the simulated report, ready to paste into an AI assistant.</p><div id="toast" class="toast" role="status"></div>
-      <p class="footnote">Demo data only. In a real product, status, timing, logs, and files must come from the execution service—not from this screen.</p>
+    <section class="panel" id="codePanel" role="tabpanel" aria-labelledby="codeTab" tabindex="0">
+      <pre class="code"><code id="sourceCode">import csv
+import json
+import sys
+from collections import defaultdict
+from decimal import Decimal, InvalidOperation
+from pathlib import Path
+
+INPUT = Path("items.csv")
+OUTPUT = Path("summary.json")
+REQUIRED = {"item", "quantity", "unit_price"}
+
+
+def main():
+    try:
+        with INPUT.open("r", encoding="utf-8", newline="") as source:
+            reader = csv.DictReader(source)
+            headers = set(reader.fieldnames or [])
+            missing = sorted(REQUIRED - headers)
+            if missing:
+                raise ValueError("missing required CSV column(s): " + ", ".join(missing))
+
+            totals = defaultdict(Decimal)
+            line_items = 0
+            for row_number, row in enumerate(reader, start=2):
+                item = (row.get("item") or "").strip()
+                if not item:
+                    raise ValueError(f"row {row_number}: item is empty")
+                try:
+                    quantity = int(row["quantity"])
+                    unit_price = Decimal(row["unit_price"])
+                except (ValueError, InvalidOperation, TypeError):
+                    raise ValueError(f"row {row_number}: invalid quantity or unit_price")
+                totals[item] += Decimal(quantity) * unit_price
+                line_items += 1
+
+        grand_total = sum(totals.values(), Decimal("0"))
+        result = {
+            "grand_total": format(grand_total, ".2f"),
+            "line_items": line_items,
+            "totals_by_item": {
+                item: format(totals[item], ".2f") for item in sorted(totals)
+            },
+        }
+        OUTPUT.write_text(
+            json.dumps(result, indent=2, sort_keys=True) + "\n",
+            encoding="utf-8",
+        )
+        print(f"Wrote {OUTPUT.name}")
+        return 0
+    except (OSError, csv.Error, ValueError) as error:
+        print(f"ERROR: {error}", file=sys.stderr)
+        return 2
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())</code></pre>
+    </section>
+    <section class="panel" id="inputPanel" role="tabpanel" aria-labelledby="inputTab" tabindex="0" hidden>
+      <p class="subtle" id="inputLabel">Success fixture · UTF-8/LF · fixed sample bytes</p>
+      <pre class="csv" id="inputData">item,quantity,unit_price
+notebook,2,3.50
+pen,3,1.25</pre>
+    </section>
+    <div class="actions"><button id="successExample" class="btn primary">Show success expectation</button><button id="failureExample" class="btn">Show malformed-header expectation</button></div>
+    <section class="section" id="report" aria-live="polite">
+      <h2>Example result <span class="badge" id="resultBadge">EXPECTED SUCCESS EXAMPLE</span></h2>
+      <div class="fields">
+        <div class="field"><span>Example outcome</span><strong id="outcome">succeeded · fixture expectation</strong></div>
+        <div class="field"><span>Job disposition</span><strong>NOT_APPLICABLE — NO JOB WAS DISPATCHED</strong></div>
+        <div class="field"><span>Exit code</span><strong id="exitExpectation">fixture expectation: 0 (not observed)</strong></div>
+        <div class="field"><span>Duration</span><strong>NOT MEASURED</strong></div>
+        <div class="field"><span>Runtime</span><strong>NOT SELECTED / NOT RUN</strong></div>
+        <div class="field"><span>Cleanup</span><strong>NOT OBSERVED</strong></div>
+      </div>
+      <div class="stream-grid" style="margin-top:12px">
+        <div class="stream-card"><h3>stdout</h3><div class="subtle" id="stdoutState">SAMPLE CONTENT · not captured</div><pre class="stream" id="stdout">Wrote summary.json</pre></div>
+        <div class="stream-card"><h3>stderr</h3><div class="subtle" id="stderrState">SAMPLE EXPECTATION: EMPTY · not captured</div><pre class="stream" id="stderr">(empty by fixture expectation)</pre></div>
+      </div>
+      <div class="artifact">
+        <h3>Output artifact</h3>
+        <p id="artifactState">EXPECTED_OUTPUT · not generated by this prototype</p>
+        <pre class="json" id="artifactContent">{
+  "grand_total": "10.75",
+  "line_items": 2,
+  "totals_by_item": {
+    "notebook": "7.00",
+    "pen": "3.75"
+  }
+}</pre>
+      </div>
+      <div class="fields" style="margin-top:9px">
+        <div class="field"><span>Artifact release</span><strong>NOT IMPLEMENTED / NOT AUTHORIZED</strong></div>
+        <div class="field"><span>Evidence provenance</span><strong>Fixture expectations only · no process facts observed</strong></div>
+      </div>
+    </section>
+    <section class="section">
+      <h2>Copyable AI handoff</h2>
+      <div class="handoff">
+        <div class="actions" style="padding:0"><button id="copyReport" class="btn primary">Copy example report</button><button id="copyPrompt" class="btn">Copy debugging prompt</button></div>
+        <p class="notice">Both actions copy simulated example text only. A selectable-text fallback is always available below.</p>
+        <textarea id="copyFallback" class="fallback" readonly aria-label="Selectable text fallback for the example report"></textarea>
+        <div id="toast" class="toast" role="status" aria-live="polite">Select the text above if clipboard access is unavailable.</div>
+      </div>
     </section>
   </main>
-  <section class="below"><h2>Designed around real evidence</h2><ul><li>Separate program errors from service errors.</li><li>Make runtime limits and file outputs visible.</li><li>Copy a compact report into any AI assistant—no AI subscription required.</li></ul></section>
+  <section class="below"><h2>What this prototype does not claim</h2><ul><li>No submitted code is executed and no input file is imported.</li><li>Expected fixture values are not observed process results.</li><li>No runtime, cancellation, cleanup, isolation, artifact release or provider is selected.</li><li>The next real proof must run the exact same main.py and items.csv bytes on an approved path.</li></ul></section>
 </div>
 <script>
 (() => {
-  const codeTab=document.getElementById('codeTab'), csvTab=document.getElementById('csvTab');
-  const editor=document.getElementById('codeEditor'), csv=document.getElementById('csvPreview');
-  const consoleBox=document.getElementById('console'), badge=document.getElementById('resultBadge');
-  const exit=document.getElementById('exitStatus'), duration=document.getElementById('duration');
-  const status=document.getElementById('statusText'), fileCard=document.getElementById('fileCard');
-  const toast=document.getElementById('toast');
+  const codeTab=document.getElementById('codeTab'), inputTab=document.getElementById('inputTab');
+  const codePanel=document.getElementById('codePanel'), inputPanel=document.getElementById('inputPanel');
+  const sourceCode=document.getElementById('sourceCode'), inputData=document.getElementById('inputData');
+  const modeFields={
+    success:{label:'EXPECTED SUCCESS EXAMPLE',outcome:'succeeded · fixture expectation',exit:'fixture expectation: 0 (not observed)',inputLabel:'Success fixture · UTF-8/LF · fixed sample bytes',input:'item,quantity,unit_price\nnotebook,2,3.50\npen,3,1.25',stdoutState:'SAMPLE CONTENT · not captured',stdout:'Wrote summary.json',stderrState:'SAMPLE EXPECTATION: EMPTY · not captured',stderr:'(empty by fixture expectation)',artifactState:'EXPECTED_OUTPUT · not generated by this prototype',artifact:'{\n  "grand_total": "10.75",\n  "line_items": 2,\n  "totals_by_item": {\n    "notebook": "7.00",\n    "pen": "3.75"\n  }\n}'},
+    failure:{label:'EXPECTED FAILURE EXAMPLE',outcome:'program_failed · fixture expectation',exit:'fixture expectation: 2 (not observed)',inputLabel:'Malformed-header fixture · fresh workspace expectation',input:'item,quantity\nnotebook,2\npen,3',stdoutState:'SAMPLE EXPECTATION: EMPTY · not captured',stdout:'(empty by fixture expectation)',stderrState:'SAMPLE CONTENT · not captured',stderr:'ERROR: missing required CSV column(s): unit_price',artifactState:'NOT_CREATED (fresh-workspace fixture expectation)',artifact:'No summary.json is expected in this fresh malformed-input workspace.'}
+  };
   let mode='success';
-  const successText='Rows processed: 3\nTotal sales: $44.75\nProcess finished (sample output).';
-  const errorText='Traceback (most recent call last):\n  File "main.py", line 6, in <module>\n    total = sum(float(row["amount"]) for row in rows)\nValueError: could not convert string to float: \'unknown\'\n\nProcess exited with code 1 (simulated).';
-  function showTab(which){const isCode=which==='code';editor.style.display=isCode?'block':'none';csv.style.display=isCode?'none':'block';codeTab.setAttribute('aria-selected',String(isCode));csvTab.setAttribute('aria-selected',String(!isCode));}
-  function render(){toast.textContent='';status.textContent=mode==='success'?'Sample succeeded':'Sample failed';badge.textContent=mode==='success'?'SAMPLE SUCCESS':'SAMPLE FAILURE';badge.classList.toggle('failed',mode!=='success');exit.textContent=mode==='success'?'0 · success':'1 · program error';duration.textContent=mode==='success'?'0.18s (sample)':'0.04s (sample)';consoleBox.innerHTML=mode==='success'?'<span class="ok"></span>':'<span class="err"></span>';consoleBox.textContent=mode==='success'?successText:errorText;consoleBox.style.color=mode==='success'?'#c8d3df':'#ffaaa8';fileCard.classList.toggle('hidden',mode!=='success');}
-  codeTab.addEventListener('click',()=>showTab('code'));csvTab.addEventListener('click',()=>showTab('csv'));
-  document.getElementById('runButton').addEventListener('click',()=>{mode='success';render();toast.textContent='Showing the fixed success example. No code executed.';});
-  document.getElementById('errorButton').addEventListener('click',()=>{mode='error';render();toast.textContent='Showing the fixed error example. No code executed.';});
-  function report(){return 'POCKETCODE DEMO REPORT (SIMULATED)\nStatus: '+(mode==='success'?'succeeded':'program_failed')+'\nRuntime: Python 3.x (proposed)\nExit status: '+(mode==='success'?'0':'1')+'\nDuration: '+(mode==='success'?'0.18s':'0.04s')+' (sample, not measured)\nOutput:\n'+(mode==='success'?successText:errorText)+'\n\nIMPORTANT: This is a UI prototype. No code was executed.';}
-  async function copyText(value){try{await navigator.clipboard.writeText(value);toast.textContent='Copied to clipboard.';}catch(e){const area=document.createElement('textarea');area.value=value;area.style.position='fixed';area.style.opacity='0';document.body.appendChild(area);area.select();const ok=document.execCommand('copy');area.remove();toast.textContent=ok?'Copied to clipboard.':'Clipboard unavailable; select and copy the text manually.';}}
+  function setTab(which){
+    const isCode=which==='code';
+    codeTab.setAttribute('aria-selected',String(isCode));inputTab.setAttribute('aria-selected',String(!isCode));
+    codePanel.hidden=!isCode;inputPanel.hidden=isCode;
+  }
+  for(const [tab,which] of [[codeTab,'code'],[inputTab,'input']]){
+    tab.addEventListener('click',()=>setTab(which));
+    tab.addEventListener('keydown',event=>{
+      if(!['ArrowLeft','ArrowRight','Home','End'].includes(event.key))return;
+      event.preventDefault();
+      const next=event.key==='Home'?codeTab:event.key==='End'?inputTab:event.key==='ArrowRight'?inputTab:codeTab;
+      next.focus();setTab(next===codeTab?'code':'input');
+    });
+  }
+  function report(){
+    const x=modeFields[mode];
+    return [
+      'SIMULATED EXAMPLE — NOT AN EXECUTION',
+      'PocketCode fixed-task example report',
+      'Example outcome: '+x.outcome,
+      'Job disposition: NOT_APPLICABLE — NO JOB WAS DISPATCHED',
+      'Exit code: '+x.exit,
+      'Duration: NOT MEASURED',
+      'Runtime: NOT SELECTED / NOT RUN',
+      'stdout state: '+x.stdoutState,
+      'stdout:',
+      x.stdout,
+      'stderr state: '+x.stderrState,
+      'stderr:',
+      x.stderr,
+      'Artifact state: '+x.artifactState,
+      'Artifact content (fixture expectation only):',
+      x.artifact,
+      'Cleanup: NOT OBSERVED',
+      'Artifact release: NOT IMPLEMENTED / NOT AUTHORIZED',
+      'Evidence: fixture expectations only; no process, runtime or service facts were observed.',
+      'No code was executed and no output file was created by this prototype.'
+    ].join('\n');
+  }
+  function render(){
+    const x=modeFields[mode];
+    document.getElementById('resultBadge').textContent=x.label;
+    document.getElementById('resultBadge').style.color=mode==='success'?'var(--green)':'var(--red)';
+    document.getElementById('outcome').textContent=x.outcome;
+    document.getElementById('exitExpectation').textContent=x.exit;
+    document.getElementById('inputLabel').textContent=x.inputLabel;
+    inputData.textContent=x.input;
+    document.getElementById('stdoutState').textContent=x.stdoutState;
+    document.getElementById('stdout').textContent=x.stdout;
+    document.getElementById('stderrState').textContent=x.stderrState;
+    document.getElementById('stderr').textContent=x.stderr;
+    document.getElementById('artifactState').textContent=x.artifactState;
+    document.getElementById('artifactContent').textContent=x.artifact;
+    document.getElementById('copyFallback').value=report();
+    document.getElementById('toast').textContent='Selectable example report is ready. No code was executed.';
+  }
+  document.getElementById('successExample').addEventListener('click',()=>{mode='success';render();});
+  document.getElementById('failureExample').addEventListener('click',()=>{mode='failure';render();});
+  async function copyText(value){
+    document.getElementById('copyFallback').value=value;
+    try{
+      if(!navigator.clipboard||!navigator.clipboard.writeText)throw new Error('Clipboard API unavailable');
+      await navigator.clipboard.writeText(value);
+      document.getElementById('toast').textContent='Example text copied. No code was executed.';
+    }catch(error){
+      document.getElementById('toast').textContent='Clipboard unavailable. Select and copy the text in the fallback box.';
+    }
+  }
   document.getElementById('copyReport').addEventListener('click',()=>copyText(report()));
-  document.getElementById('copyPrompt').addEventListener('click',()=>copyText('Help me debug this Python program. This PocketCode prototype did not execute the code; the report below is simulated. Review the code and error, suggest a minimal fix, and explain what I should verify when I run it for real.\n\nCode from the editor (not executed):\n'+editor.value+'\n\nInput file sales.csv (sample):\n'+csv.textContent+'\n\n'+report()));
+  document.getElementById('copyPrompt').addEventListener('click',()=>{
+    const prompt='Review this exact PocketCode fixture example. This report is simulated and no code was executed. Do not claim a run occurred.\n\nCanonical main.py (displayed source, not executed):\n'+sourceCode.textContent+'\n\nCurrent items.csv fixture (displayed input, not imported):\n'+inputData.textContent+'\n\n'+report()+'\n\nExplain the expected behavior and identify what must be verified during a real run.';
+    copyText(prompt);
+  });
+  render();
 })();
 </script>
 </body>
