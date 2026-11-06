@@ -3,6 +3,10 @@
 **Last refreshed:** 2026-11-06 (final cross-project CI update)  
 **Authority:** live PocketCode branch state plus canonical source/spec/test records. This file is the compact first-read entrypoint for every new PocketCode chat.
 
+## Current cross-project note
+
+Read [RevDev progress and multi-chat continuity update](CROSS_PROJECT_UPDATE_REVDEV_2026-11-06.md) for transferable engineering lessons and the current RevDev status. This does not transfer RevDev implementation or acceptance evidence into PocketCode. PocketCode's own CASE-04/report-contract work remains the immediate priority.
+
 ## First action
 
 Read this file, verify the live branch/PR/CI state, and fetch only the linked task-specific evidence. Continue the active work. Do not restart discovery or ask the owner to reconstruct a prior chat.
