@@ -29,7 +29,7 @@ Read [RevDev progress and multi-chat continuity update](CROSS_PROJECT_UPDATE_REV
 
 ## Latest research decision (2026-11-06)
 
-Read [PocketCode task, evidence and recovery research](POCKETCODE_TASK_EVIDENCE_RECOVERY_RESEARCH_20261106.md). Key corrections: iOS embedded Python has no child process; CASE-04 is not a precedence patch; matching EffectId/fingerprint authorizes lookup/reconciliation, not blind replay. The simulation prototype pins the canonical fixture bytes; its static checks are not browser or product acceptance. PocketCode's differentiator is portable task/evidence/recovery/AI-correction orchestration, not another phone Python IDE. No runtime/provider selected.
+Read [PocketCode task, evidence and recovery research](POCKETCODE_TASK_EVIDENCE_RECOVERY_RESEARCH_20261106.md). Key corrections: iOS embedded Python has no child process; CASE-04 is not a precedence patch; matching EffectId/fingerprint authorizes lookup/reconciliation, not blind replay. The simulation prototype pins the canonical fixture bytes; its static checks are not browser or product acceptance. PocketCode's differentiator is portable task/evidence/recovery/AI-correction orchestration, not another phone Python IDE. The static prototype now uses the frozen CSV-to-JSON fixture and pins the canonical main.py hash; its 11-case local reconstructed regression harness passed, but exact repository CI and real browser/mobile interaction remain NOT RUN. No runtime/provider selected.
 
 ## First action
 

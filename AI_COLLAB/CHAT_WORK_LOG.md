@@ -314,3 +314,21 @@ Next: await owner-provided read-only Pyodios saved-exception probe output; prese
 **Architecture correction:** matching EffectId/fingerprint means same-effect lookup/reconciliation only. No blind redispatch after ambiguous acknowledgement. Require authoritative no-acceptance evidence or provider-documented idempotent start for the exact same key/fingerprint.
 
 **No product runtime, provider, schema, canonical acceptance, budget, PR, merge or deployment changed.** Prototype is simulation only. Pyodios saved-exception probe remains NOT RUN.
+
+
+## 2026-11-06 — PC-2026-11-06-P20 — Canonical prototype fixture and checker recovery
+
+**Completed:**
+- Replaced the former sales/summary.txt demonstration with the frozen CSV-to-JSON task and the canonical source/input fixtures. The two controls select success/malformed-header expectations; they do not run code.
+- Removed invented durations, generic Python 3.x runtime claims, sample download and fake Run behavior. Added separate stdout/stderr capture labels, fixture-only exit expectations, explicit job disposition, NOT MEASURED runtime/duration/cleanup/release fields, artifact expectation and provenance labels, plus selectable text fallback.
+- Added complete tab/panel relationships, arrow/Home/End keyboard navigation and roving tabindex behavior.
+- Pinned the displayed canonical `main.py` in the static checker by exact 1,939-byte SHA-256 and pinned success `items.csv` contents.
+- Red-team found a malformed indentation around the aria-live checker guard after the roving-tabindex update. Fixed it in `scripts/check_mobile_prototype.py` and verified the exact GitHub read-back.
+
+**Verification and limits:**
+- Extracted source from the committed HTML: 1,939 UTF-8 bytes; SHA-256 matched `70c66ad3a0132923cbf3190eb3546093fcc2c61c1bdcbf3b171696e1ae7521e7`.
+- Static checker passed against a reconstructed fixture containing those exact source bytes and success input bytes.
+- A locally recreated 11-case regression harness passed 11/11. This is not a claim that the exact repository test file or GitHub CI ran. Exact repository CI currently has no reported check runs; browser/mobile/screen-reader interaction remains NOT RUN.
+- No runtime/provider, account, workload, paid usage, product execution, artifact release, canonical acceptance ID, PR, merge or deployment changed.
+
+**Next:** continue with the owner-supplied Pyodios read-only saved-exception probe; then use the typed boundary-specific contract before changing CASE-04 classification.

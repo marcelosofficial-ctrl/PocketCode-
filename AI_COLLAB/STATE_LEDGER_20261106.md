@@ -89,3 +89,13 @@ Next task: owner runs only the read-only Pyodios sys.last_exc / sys.last_value C
 - Focused Python assertions for canonical source length/hash and CSV extraction/equality passed. Full unittest suite, browser JS, clipboard, VoiceOver/TalkBack and mobile tests remain NOT RUN. Current exact-head CI status has zero checks and zero workflow runs, not PASS.
 - EffectId wording corrected: same key/fingerprint permits lookup/reconciliation, not automatic replay. UNKNOWN forbids redispatch unless authoritative evidence or a documented provider idempotency contract permits it.
 - No product runtime/provider, canonical acceptance ID, budget, PR, merge or deployment changed. Pyodios owner probe remains outstanding.
+
+
+## 2026-11-06 — Prototype canonical-fixture alignment
+
+- `prototypes/mobile-runner/index.html` now displays the frozen CSV-to-JSON task, exact canonical `main.py`, success and malformed-header examples, and explicit simulated-only receipt fields. No code runs and no artifact is created/downloaded.
+- Embedded `main.py` was extracted and verified as 1,939 UTF-8 bytes with SHA-256 `70c66ad3a0132923cbf3190eb3546093fcc2c61c1bdcbf3b171696e1ae7521e7`, matching the frozen worksheet/archive record. Initial `items.csv` success fixture is pinned with UTF-8/LF final newline.
+- Static checker pins canonical source SHA and success input bytes; 11 regression test methods cover duplicate IDs, missing labels, fabricated timings, fake Run, tab relationships, prompt context, roving tabindex and fixture integrity.
+- Local recreated 11-case Python harness passed 11/11; this was not execution of the exact repository test file or CI. Static checker passed against a reconstructed HTML fixture containing the exact pinned source/input. Real browser, screen reader, iOS and Android interaction remain NOT RUN.
+- A checker indentation defect found during red-team review was corrected and read-back verified. The initial prototype remains simulation-only; no product runtime, provider, budget or acceptance ID changed.
+- Pyodios saved-exception Console probe remains NOT RUN and is still the next owner action.
