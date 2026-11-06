@@ -617,3 +617,12 @@ Next: await owner-provided read-only Pyodios saved-exception probe output; prese
 - Began connecting `execution_projection.py` to coordinator receipt generation. Coordinator can append typed lifecycle, direct-child exit and trusted runtime failure observations; projection reconstructs accepted events by sequence and delegates to the existing fail-closed verdict helper.
 - Receipt verdict is derived, not trusted from caller input. Caller-supplied verdict mismatch is rejected. Added immutable `projection_reason` field to receipt fingerprint. Multiple same-kind observations return INCOMPLETE until explicit reconciliation rules exist.
 - Tests added for PASS from succeeded + natural child exit 0, FAIL from coordinator program_failed, missing child exit => INCOMPLETE, and multiple lifecycle observations => INCOMPLETE. CI pending.
+
+
+## 2026-11-06 — PC-2026-11-06-P30 — typed verdict and observation fencing green
+
+- CI: [run 42310127313](https://github.com/marcelosofficial-ctrl/PocketCode-/actions/runs/42310127313), exact SHA `f82e853323d9c0c526eeaa8ad31cb47da199e249`, Ubuntu 24.04 / Python 3.12, **199 passed, 0 failed**.
+- Journal duplicate identity now includes effect/attempt scope. Same source/event ID and bytes cannot be replayed into a different attempt.
+- Terminal lifecycle/exit/failure observations require the current unexpired dispatch lease; after expiry or transition to reconciliation, the worker cannot append terminal facts. The malformed non-object JSON case fails closed to INCOMPLETE.
+- Receipt composition derives PASS/FAIL/INCOMPLETE through the typed execution projection. Caller labels must match. Projection reason is immutable receipt data.
+- Earlier intermediate failures (receipt constructor argument order and two test fixture assumptions) were corrected; this exact SHA is green. No mobile/durable/concurrent/provider/sandbox acceptance is implied.

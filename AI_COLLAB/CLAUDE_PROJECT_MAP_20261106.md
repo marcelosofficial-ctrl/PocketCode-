@@ -116,3 +116,12 @@ The current FakeCoordinator receipt builder only permits INCOMPLETE because its 
 ### Typed terminal evidence integration (in progress)
 
 FakeCoordinator now appends typed lifecycle, child-exit and program-failure observations and reconstructs a verdict through `execution_projection.py`. Receipt composition derives the verdict from accepted attempt-bound journal evidence and records the projection reason. Multiple same-kind observations fail closed. This remains in-memory and does not authenticate the payload's producer class. CI pending for the current source increment.
+
+
+## Latest verified test checkpoint
+
+- Exact SHA: `f82e853323d9c0c526eeaa8ad31cb47da199e249`
+- CI: https://github.com/marcelosofficial-ctrl/PocketCode-/actions/runs/42310127313
+- Python 3.12 / Ubuntu 24.04; 199 passed, 0 failed.
+- Terminal observations require a current unexpired dispatch lease. Event identity is attempt-scoped. Receipt verdicts derive from accepted typed observations. Expired workers reconcile instead of appending terminal facts.
+- Always fetch the live branch head before relying on this checkpoint.

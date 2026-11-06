@@ -115,3 +115,15 @@ When assigned work: inspect current code, define narrow acceptance criteria, imp
 - Result: **187 tests passed, 0 failed**.
 - FakeCoordinator receipt composition is now fail-closed: its current journal contains dispatch/recovery evidence only, so it may emit INCOMPLETE but rejects caller-supplied PASS/FAIL. Terminal verdicts must be derived from accepted trusted lifecycle + child-exit or program-failure evidence through `execution_projection.py` before they can be placed in a receipt.
 - This is standard-library Python CI only. It does not establish mobile/device behavior, durable atomicity, concurrency, authenticated producers, provider behavior, hostile-code sandboxing or production artifact authorization. Later source commits need their own exact-SHA run.
+
+
+## Latest exact-SHA CI result (2026-11-06)
+
+- Run: https://github.com/marcelosofficial-ctrl/PocketCode-/actions/runs/42310127313
+- Exact tested commit: `f82e853323d9c0c526eeaa8ad31cb47da199e249`
+- Environment: GitHub-hosted Ubuntu 24.04, Python 3.12.
+- Command: `python -m unittest discover -s scripts -p "test_*.py" -v`
+- Result: **199 tests passed, 0 failed**.
+- Event identity now includes the bound EffectId/DispatchAttemptId scope, preventing same source/event ID and payload from being replayed into a different attempt. The verdict reader fails closed on valid JSON that is not an object. Terminal observations require the current unexpired dispatch lease; expired/reconciling workers must use authoritative reconciliation.
+- Receipt verdicts are derived from accepted typed observations through `execution_projection.py`; a caller-supplied label must match the projection. Projection reason is included in the immutable receipt fingerprint.
+- This is standard-library Python CI only. It does not establish mobile/device behavior, durable atomicity, concurrent safety, cryptographic producer authentication, provider behavior, hostile-code sandboxing or production artifact authorization. Later source commits need a fresh exact-SHA run.

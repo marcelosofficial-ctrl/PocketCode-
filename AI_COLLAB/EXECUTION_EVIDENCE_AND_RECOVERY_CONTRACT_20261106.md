@@ -307,3 +307,12 @@ The current FakeCoordinator journal contains reservation, lease, dispatch, ackno
 FakeCoordinator now has explicit methods to append typed lifecycle, direct-child exit and trusted program-failure observations to the accepted event journal. `project_attempt_verdict()` reconstructs those observations from accepted attempt-bound events, uses the journal's ObservationSequence, rejects multiple same-kind observations as requiring reconciliation, and delegates verdict semantics to `execution_projection.project_verdict()`. Receipt composition derives its verdict from this projection; a caller-supplied label must match the projection or the operation is rejected. The receipt records the projection reason.
 
 The model remains in-memory and does not authenticate payload producer classes. In production, the coordinator must verify producer identity, attempt/tenant authorization, current fence and event schema before appending. A natural child exit must come from a trusted direct-child wait boundary. CI pending for this increment.
+
+
+## 2026-11-06 terminal observation acceptance boundary
+
+The fake coordinator now requires a terminal lifecycle, child-exit or program-failure observation to carry the current fencing token and arrive before the dispatch lease expires, while the outbox is in dispatching/acknowledged state. Once the lease expires or the attempt enters reconciliation, a worker cannot append a terminal fact using the old lease; the coordinator must obtain authoritative reconciliation evidence. This closes the gap where an expired worker could append before a replacement worker advanced the fence.
+
+EventJournal duplicate identity includes EffectId/DispatchAttemptId scope. Reusing the same source/event ID and payload for another attempt is quarantined, not treated as a duplicate. Verdict reconstruction also fails closed when an accepted payload is valid JSON but not an object.
+
+CI on exact SHA `f82e853323d9c0c526eeaa8ad31cb47da199e249`: 199/199 passed. These are synchronous in-memory tests only; durable fencing and atomic append remain unimplemented.

@@ -345,3 +345,12 @@ Next task: owner runs only the read-only Pyodios sys.last_exc / sys.last_value C
 - Added FakeCoordinator append methods for typed lifecycle, exit and program-failure observations, plus reconstruction of a `VerdictProjection` from accepted attempt-bound journal events using journal sequence numbers.
 - Receipt composition now derives the outcome from accepted evidence; an optional caller label must equal the projection. Projection reason is stored in the immutable receipt hash. Multiple observations of the same kind currently fail closed to INCOMPLETE/reconciliation rather than guessing a precedence.
 - Added PASS/FAIL/INCOMPLETE integration tests. CI pending. These methods remain an unauthenticated in-memory model; production producer authentication and event schema validation are not implemented.
+
+
+## 2026-11-06 — terminal observation fencing and journal scope CI green
+
+- Exact-SHA run: https://github.com/marcelosofficial-ctrl/PocketCode-/actions/runs/42310127313 at `f82e853323d9c0c526eeaa8ad31cb47da199e249`; Ubuntu 24.04 / Python 3.12; full Python suite **199 passed, 0 failed**.
+- EventJournal duplicate identity now includes EffectId/DispatchAttemptId scope as well as source/event ID and producer/payload identity. A source event cannot silently alias another attempt.
+- FakeCoordinator requires terminal observations to come from the current unexpired dispatch lease. Expired/reconciling workers cannot append terminal facts; they must use authoritative reconciliation. Valid non-object JSON payloads project to INCOMPLETE instead of raising.
+- Receipt outcomes are reconstructed from accepted typed observations via `execution_projection.py`; caller-supplied outcome mismatches are rejected and projection reason is fingerprinted into the immutable receipt.
+- Model limitations remain: in-memory, synchronous, no durable atomicity/concurrent safety, producer cryptographic authentication, device, provider or sandbox acceptance.
