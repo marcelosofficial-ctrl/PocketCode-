@@ -135,6 +135,44 @@ class FakeCoordinatorTests(unittest.TestCase):
         )
         self.assertEqual(len(self.journal.events), before)
 
+    def test_reconciliation_found_is_journaled_and_projected(self):
+        lease = self.coordinator.claim("effect-1", "worker-A", now=20, lease_seconds=2)
+        self.coordinator.mark_dispatching(lease, now=21)
+        self.assertEqual(self.coordinator.recover_expired("effect-1", now=22),
+                         "reconcile_before_any_retry")
+        self.assertEqual(self.coordinator.reconcile(
+            "effect-1", outcome="found", exact_identity_match=True,
+            authoritative=True, provider_reference="provider-9", now=23,
+        ), "adopt_existing")
+        rebuilt = self.coordinator.rebuild_effect("effect-1")
+        self.assertEqual(rebuilt.state, "acknowledged")
+        self.assertEqual(rebuilt.provider_reference, "provider-9")
+        self.assertEqual(self.coordinator.repair_missing_ack_event("effect-1"), "duplicate")
+
+    def test_final_absence_is_journaled_as_retry_authorization(self):
+        lease = self.coordinator.claim("effect-1", "worker-A", now=20, lease_seconds=2)
+        self.coordinator.mark_dispatching(lease, now=21)
+        self.coordinator.recover_expired("effect-1", now=22)
+        self.assertEqual(self.coordinator.reconcile(
+            "effect-1", outcome="not_found", exact_identity_match=True,
+            authoritative=True, absence_final=True, now=23,
+        ), "safe_to_retry_same_attempt")
+        self.assertEqual(self.coordinator.rebuild_effect("effect-1").state,
+                         "retry_authorized")
+
+    def test_nonfinal_absence_does_not_authorize_retry_or_emit_event(self):
+        lease = self.coordinator.claim("effect-1", "worker-A", now=20, lease_seconds=2)
+        self.coordinator.mark_dispatching(lease, now=21)
+        self.coordinator.recover_expired("effect-1", now=22)
+        before = len(self.journal.events)
+        self.assertEqual(self.coordinator.reconcile(
+            "effect-1", outcome="not_found", exact_identity_match=True,
+            authoritative=True, absence_final=False, now=23,
+        ), "hold_unknown")
+        self.assertEqual(len(self.journal.events), before)
+        self.assertEqual(self.coordinator.rebuild_effect("effect-1").state,
+                         "reconciliation_required")
+
     def test_wrong_audience_fails_closed(self):
         wrong = AuthenticatedProducer(
             issuer="other", subject="x", key_id="k", credential_fingerprint="f",

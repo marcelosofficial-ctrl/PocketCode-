@@ -219,3 +219,10 @@ Next task: owner runs only the read-only Pyodios sys.last_exc / sys.last_value C
 - The projection now surfaces interrupted outbox/journal boundaries explicitly as `dispatch_intent_unjournaled`, `reconciliation_required` and `acknowledgement_unjournaled`, rather than silently projecting an earlier event state.
 - Scope remains deterministic in-memory modeling. Durable atomicity, concurrent writers, process/power-loss recovery, real provider authentication, product integration and CI are NOT ESTABLISHED. The 14 tests were exercised against API-compatible in-memory test doubles, not canonical repository modules in a checkout.
 - Claude navigation: read `CLAUDE.md` and `AI_COLLAB/CLAUDE_HANDOFF_20261106.md` before taking the next implementation/review task.
+
+
+## 2026-11-06 reconciliation composition refinement
+
+- Added a coordinator-level exact-scope reconciliation operation. Authoritative provider-found outcomes now persist their coordinator observation timestamp and append a distinct `provider_acceptance_reconciled` event; authoritative final absence appends `final_absence_reconciled` and projects `retry_authorized`.
+- Non-final or non-authoritative absence remains held in `reconciliation_required` and emits no retry authorization event.
+- The fake model still trusts the caller's reconciliation authority booleans. Real adapter authentication, durable atomicity, concurrent safety and production behavior remain NOT ESTABLISHED.

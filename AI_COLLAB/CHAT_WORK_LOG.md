@@ -492,3 +492,10 @@ Next: await owner-provided read-only Pyodios saved-exception probe output; prese
 - The projection now reports unjournaled dispatch intent, required reconciliation and unjournaled acknowledgement as explicit gap states.
 - Verification caveat: the 14 coordinator tests were exercised in this session against API-compatible in-memory test doubles, not the canonical repository modules in a checkout. This is NOT canonical integration-test evidence. The repository test suite must be run by Claude or in a real checkout before promoting the result.
 - No provider, runtime, database, cloud host, paid service, deployment, merge or unrelated PR was selected or changed.
+
+
+## 2026-11-06 — reconciliation outcome journaling
+
+- Red-team review found that provider-found reconciliation updated the fake outbox but did not create a corresponding journal event, leaving the rebuilt projection incomplete. Final-absence retry authorization also lacked an explicit lifecycle event.
+- Added coordinator reconciliation composition for accepted provider-found and authoritative final-absence outcomes. The journal uses explicit event kinds and the coordinator observation timestamp; it does not claim to know the provider's original occurrence time.
+- Added focused tests for found, final absence and non-final absence. Test source added; canonical repository test execution remains pending.

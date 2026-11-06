@@ -185,7 +185,7 @@ class FakeOutboxStore:
     def resolve_reconciliation(
         self, effect_id: str, *, outcome: str, exact_identity_match: bool,
         authoritative: bool, absence_final: bool = False,
-        provider_reference: Optional[str] = None,
+        provider_reference: Optional[str] = None, now: Optional[int] = None,
     ) -> str:
         """Apply a supplied reconciliation result; caller trust is NOT verified here."""
         record = self.get(effect_id)
@@ -195,8 +195,11 @@ class FakeOutboxStore:
         if exact_identity_match is not True or authoritative is not True:
             return "hold_unknown"
         if outcome == "found" and isinstance(provider_reference, str) and provider_reference.strip():
+            if now is not None and (isinstance(now, bool) or not isinstance(now, int) or now < 0):
+                raise ValueError("reconciliation observation time must be a non-negative integer")
             self._records[key] = replace(
                 record, state="acknowledged", provider_reference=provider_reference,
+                acknowledged_at=now,
             )
             return "adopt_existing"
         if outcome == "not_found" and absence_final is True:

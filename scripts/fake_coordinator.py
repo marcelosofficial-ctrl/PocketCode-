@@ -131,6 +131,38 @@ class FakeCoordinator:
             provider_reference=record.provider_reference,
         ).disposition
 
+    def reconcile(self, effect_id: str, *, outcome: str, exact_identity_match: bool,
+                  authoritative: bool, now: int, absence_final: bool = False,
+                  provider_reference: Optional[str] = None) -> str:
+        """Apply a caller-verified exact-scope lookup and journal its observation.
+
+        This model does not authenticate the lookup result. A real adapter must
+        verify provider authority, scope and final-absence guarantees first.
+        """
+        record = self.store.get(effect_id)
+        attempt_id = record.reservation.attempt_id
+        disposition = self.store.resolve_reconciliation(
+            effect_id, outcome=outcome, exact_identity_match=exact_identity_match,
+            authoritative=authoritative, absence_final=absence_final,
+            provider_reference=provider_reference, now=now,
+        )
+        if disposition == "adopt_existing":
+            self._append(
+                kind="provider_acceptance_reconciled", effect_id=effect_id,
+                attempt_id=attempt_id,
+                event_id=f"reconciled-found:{effect_id}:{attempt_id}:{record.fence}",
+                at_ms=now, fence=record.fence,
+                provider_reference=provider_reference,
+            )
+        elif disposition == "safe_to_retry_same_attempt":
+            self._append(
+                kind="final_absence_reconciled", effect_id=effect_id,
+                attempt_id=attempt_id,
+                event_id=f"reconciled-absent:{effect_id}:{attempt_id}:{record.fence}",
+                at_ms=now, fence=record.fence,
+            )
+        return disposition
+
     def recover_expired(self, effect_id: str, *, now: int) -> str:
         return self.store.recover_expired(effect_id, now=now)
 
@@ -158,10 +190,12 @@ class FakeCoordinator:
             elif kind == "dispatch_intent":
                 state = "dispatching"
                 seen_dispatch_intent = True
-            elif kind == "dispatch_acknowledged":
+            elif kind in {"dispatch_acknowledged", "provider_acceptance_reconciled"}:
                 state = "acknowledged"
                 seen_acknowledgement = True
                 provider_reference = payload.get("provider_reference")
+            elif kind == "final_absence_reconciled":
+                state = "retry_authorized"
 
         # The outbox is the recovery authority for state transitions whose
         # corresponding journal append may have been interrupted. Surface the

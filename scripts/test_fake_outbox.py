@@ -164,6 +164,16 @@ class FakeOutboxTests(unittest.TestCase):
         self.store.acknowledge(lease, "provider-time", now=12)
         self.assertEqual(self.store.get("effect-1").acknowledged_at, 12)
 
+    def test_reconciliation_found_persists_observation_time(self):
+        lease = self.store.claim("effect-1", "worker", now=1, lease_seconds=2)
+        self.store.mark_dispatching(lease, now=2)
+        self.store.recover_expired("effect-1", now=3)
+        self.assertEqual(self.store.resolve_reconciliation(
+            "effect-1", outcome="found", exact_identity_match=True,
+            authoritative=True, provider_reference="provider-1", now=4,
+        ), "adopt_existing")
+        self.assertEqual(self.store.get("effect-1").acknowledged_at, 4)
+
     def test_acknowledgement_requires_current_dispatch_lease(self):
         lease = self.store.claim("effect-1", "worker-A", now=0, lease_seconds=5)
         self.store.mark_dispatching(lease, now=1)
