@@ -67,7 +67,7 @@ Python's `runpy` documentation explicitly says it executes in the current proces
 
 ## Separate diagnostic wrapper and local verification
 
-File: `AI_COLLAB/fixtures/pyodios_runpy_diagnostic.py`. It prints Python version and working directory, checks for the two inputs and prior output, refuses to run if an input is absent or `summary.json` already exists, runs the exact frozen script with `runpy.run_path()`, catches `SystemExit` as a script-requested exit value, prints ordinary Python tracebacks, then parses and compares any newly-created JSON against the success oracle. It does not modify `main.py`, create a subprocess, provide a sandbox or prove an OS exit status.
+Companion attachment: `pocketcode_pyodios_runpy_diagnostic.py` (downloadable from the current conversation; not a checked-in PocketCode product file). It prints Python version and working directory, checks for the two inputs and prior output, refuses to run if an input is absent or `summary.json` already exists, runs the exact frozen script with `runpy.run_path()`, catches `SystemExit` as a script-requested exit value, prints ordinary Python tracebacks, then parses and compares any newly-created JSON against the success oracle. It does not modify `main.py`, create a subprocess, provide a sandbox or prove an OS exit status.
 
 - Canonical `main.py`: 1,939 bytes; SHA-256 `70c66ad3a0132923cbf3190eb3546093fcc2c61c1bdcbf3b171696e1ae7521e7`.
 - Wrapper SHA-256: `f2abc0104d74e9910f1712dd582cfbccdebefe0eefc347aeb66c4f7786d73009`.
