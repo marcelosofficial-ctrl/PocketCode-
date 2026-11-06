@@ -20,7 +20,7 @@ GitHub is the durable project state. Do not rely on a last-minute full-chat hand
 **Important limitation:** this protocol reduces avoidable context pressure and tool stalls; it cannot prevent platform context limits, service outages or execution failures. The goal is graceful interruption with no lost project state.
 
 
-**Last refreshed:** 2026-11-06 (owner-inspected success artifact and bridge-error triage)  
+**Last refreshed:** 2026-11-06 (RevDev run #49 closeout; PocketCode triage preserved)  
 **Authority:** live PocketCode branch state plus canonical source/spec/test records. This file is the compact first-read entrypoint for every new PocketCode chat.
 
 ## Current cross-project note
@@ -223,3 +223,8 @@ RevDev run #48 42181302862 passed **91/91** at exact source/test SHA 935108a6937
 A follow-up source review found the install marker itself was not rolled back. RevDev added backup/restore/removal logic and two tests. Current RevDev source SHA a6defbb0e8b0902e8ecc20777d0a10dc25ae344b, 93 authored tests, run #49 42182731390 IN_PROGRESS at last check. Do not call the latest 93-case revision green until the exact run completes. This is a method-only update, not PocketCode code or acceptance evidence.
 
 PocketCode's own immediate priority remains CASE-04 timeout/report-contract evidence provenance, with the Pyodios PythonError attempt preserved as artifact-level functional success / bridge error unresolved / full run inconclusive. Do not rerun or overwrite the preserved success project.
+
+
+## 2026-11-06 — RevDev latest CI closeout (method only)
+
+RevDev run #49 `42182731390` passed **93/93** at exact source/test SHA `a6defbb0e8b0902e8ecc20777d0a10dc25ae344b`, Windows PowerShell 5.1 / Pester 5.7.1: https://github.com/marcelosofficial-ctrl/DevRelay-Missions/actions/runs/42182731390. It adds two tests for rollback of the R5 installation marker on top of the previous 91-case installer-aware suite. No installer or PC/live runtime operation occurred. This is RevDev-only source/test evidence. PocketCode remains on its independent CASE-04 and Pyodios diagnostic track.

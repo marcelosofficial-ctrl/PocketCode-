@@ -543,3 +543,8 @@ Status is now **ARTIFACT-LEVEL FUNCTIONAL SUCCESS (owner-inspected) / EDITOR BRI
 ## 2026-11-06 — Cross-project process lesson: installer dependency and provenance rollback
 
 RevDev's 91-case installer-aware CI pass revealed that runtime dependency closure must include the clean installer and rollback path, not just source imports. A later review found the installation marker itself also needed backup/restore/removal behavior. PocketCode may reuse the design-review method: inventory runtime imports, package/install them from one immutable source commit, validate dependency closure, and fault-test rollback of both runtime files and provenance markers. This is a transferable method only. No RevDev code or acceptance is adopted. PocketCode remains phone-first, $0, no PC requirement, no runtime/provider selected; CASE-04 remains immediate priority.
+
+
+## 2026-11-06 — RevDev installer rollback CI closeout (method only)
+
+RevDev run #49 passed 93/93 at exact source/test SHA a6defbb0e8b0902e8ecc20777d0a10dc25ae344b. This covers the installation-marker rollback fix, but not a real installer execution or live product runtime. PocketCode may reuse the test-design principle only. No code or acceptance transfers. Continue PocketCode CASE-04 independently.

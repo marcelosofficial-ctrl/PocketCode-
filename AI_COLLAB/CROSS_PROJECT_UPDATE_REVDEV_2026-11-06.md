@@ -82,3 +82,10 @@ Current source changes include strict local result discovery, SHA-256 binding fr
 Transfer only the method: hermetic real-boundary tests, exact-SHA CI evidence, semantic assertions, explicit UNKNOWN/INCOMPLETE states, dependency-closure tests, immutable source pinning and full rollback including provenance. Do not copy RevDev code or treat its tests as PocketCode acceptance.
 
 **PocketCode instruction:** continue the independent CASE-04 timeout/report-contract evidence-provenance work. Preserve the current Pyodios artifact-level success with unresolved bridge error; do not rerun or overwrite. Use the live AI_COLLAB/CHAT_START_HERE.md and current task-specific evidence.
+
+
+## 2026-11-06 — RevDev 93-case installer rollback CI closeout
+
+Correction to the prior pending note: RevDev run #49 `42182731390` completed SUCCESS at exact source/test SHA `a6defbb0e8b0902e8ecc20777d0a10dc25ae344b`: **93 passed / 0 failed / 0 skipped / 0 inconclusive / 0 not run** in 5.45 seconds under Windows PowerShell 5.1 / Pester 5.7.1. https://github.com/marcelosofficial-ctrl/DevRelay-Missions/actions/runs/42182731390
+
+This includes 59 publisher/transport, 22 local-result/recovery/quarantine and 12 installer dependency/source-pin/rollback tests. It validates tracked source/test behavior only. The installer was not executed; no PC files, live API, queue, watcher or mission were touched. Installed parity remains UNKNOWN; RevDev P0 OPEN; P8U/P0-D NOT RUN. This does not change PocketCode status or acceptance.

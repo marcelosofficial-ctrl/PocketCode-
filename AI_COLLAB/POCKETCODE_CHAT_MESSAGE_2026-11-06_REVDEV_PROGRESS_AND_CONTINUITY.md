@@ -52,3 +52,7 @@ The owner has explicitly broadened routine engineering authority: implement, tes
 Do not adopt RevDev PowerShell code, test counts, runtime choices, acceptance IDs or release conclusions. PocketCode's immediate priority remains its own CASE-04 timeout/report-contract evidence-provenance work. Preserve LOOP/CASE/D semantics, phone-first design, explicit paste-to-context, no clipboard polling/overlays, $0 budget and no runtime/provider selection.
 
 The current Pyodios attempt is recorded as artifact-level functional success, bridge error unresolved, full run inconclusive. Preserve the successful project and do not rerun or overwrite it. Follow the live PocketCode start page for the next diagnostic step.
+
+## Latest CI correction
+
+Run #49 is now complete and green at exact source/test SHA a6defbb0e8b0902e8ecc20777d0a10dc25ae344b: 93/93. This supersedes the pending status above. Source/test validation only; no installer execution or PC/live runtime action.

@@ -238,3 +238,9 @@ Transferable lesson: package/install/update/rollback are part of the execution b
 **Repository snapshot before this pass record:** branch `b18fc0c5b58825b54fe98c5486cfee48cecbbb56`, 805 ahead / 0 behind `main`; merge base `555840d8d83342513d9cd353d4d1522d46a5c82d`. PR #2 and #3 OPEN/DRAFT and unchanged. Ahead count is history divergence, not product progress.
 
 **Boundaries:** $0 default retained. No product implementation, fixture, schema, suite, runtime/provider, PR, Actions, deployment, merge or PC-side operation changed.
+
+## 2026-11-06 — PC-2026-11-06-P14 — RevDev 93-case CI closeout (method only)
+
+RevDev Actions run #49 `42182731390` completed SUCCESS at exact source/test SHA `a6defbb0e8b0902e8ecc20777d0a10dc25ae344b`: **93 passed, 0 failed, 0 skipped, 0 inconclusive, 0 not run** in 5.45 seconds under Windows PowerShell 5.1 / Pester 5.7.1. It validates the installation-marker rollback tests added after the 91-case run #48. No installer was executed and no PC/live runtime was touched. This is RevDev-only evidence.
+
+Transferable method: include mutable provenance markers in rollback; test install dependency closure and immutable source pins; verify CI at the exact SHA; preserve explicit limits between source CI and installed runtime. PocketCode remains independent. CASE-04 remains immediate priority; preserve the Pyodios success artifact and do not rerun it.
