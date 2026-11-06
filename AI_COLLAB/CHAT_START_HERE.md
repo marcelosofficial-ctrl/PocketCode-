@@ -228,3 +228,10 @@ PocketCode's own immediate priority remains CASE-04 timeout/report-contract evid
 ## 2026-11-06 — RevDev latest CI closeout (method only)
 
 RevDev run #49 `42182731390` passed **93/93** at exact source/test SHA `a6defbb0e8b0902e8ecc20777d0a10dc25ae344b`, Windows PowerShell 5.1 / Pester 5.7.1: https://github.com/marcelosofficial-ctrl/DevRelay-Missions/actions/runs/42182731390. It adds two tests for rollback of the R5 installation marker on top of the previous 91-case installer-aware suite. No installer or PC/live runtime operation occurred. This is RevDev-only source/test evidence. PocketCode remains on its independent CASE-04 and Pyodios diagnostic track.
+
+
+## 2026-11-06 — Cross-project continuity method update
+
+Owner explicitly requested that PocketCode adopt the improved multi-chat operating method. Read [RevDev continuity update for PocketCode](REVDEV_CONTINUITY_UPDATE_20261106.md) before the next substantial pass. GitHub is durable project memory; each chat is a replaceable worker. Checkpoint every 2–3 meaningful passes or after source/test/review/decision events, keep this entrypoint current, append the work log and rotate before context exhaustion. The forwardable note includes a complete copy/paste instruction for a new PocketCode chat and method-only RevDev lessons. No RevDev code, architecture, runtime, acceptance or security decision transfers.
+
+RevDev run #49 passed 93/93 at exact SHA `a6defbb0e8b0902e8ecc20777d0a10dc25ae344b` (Windows PowerShell 5.1 / Pester 5.7.1): https://github.com/marcelosofficial-ctrl/DevRelay-Missions/actions/runs/42182731390. This is RevDev-only method evidence. PocketCode priorities remain CASE-04 provenance and the read-only Pyodios saved-exception probe. Preserve the exact-match success artifact; do not rerun/overwrite. PR #2/#3 remain untouched.
