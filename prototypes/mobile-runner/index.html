@@ -18,8 +18,8 @@
   <main class="workspace">
     <div class="workspace-head"><div><div class="workspace-title">Canonical CSV-to-JSON fixture</div><div class="subtle">Sample workspace · fixed source and input fixture</div></div><div class="state">SIMULATION ONLY</div></div>
     <div class="tabs" role="tablist" aria-label="Fixture files">
-      <button class="tab" id="codeTab" role="tab" aria-selected="true" aria-controls="codePanel">main.py</button>
-      <button class="tab" id="inputTab" role="tab" aria-selected="false" aria-controls="inputPanel">items.csv</button>
+      <button class="tab" id="codeTab" role="tab" aria-selected="true" aria-controls="codePanel" tabindex="0">main.py</button>
+      <button class="tab" id="inputTab" role="tab" aria-selected="false" aria-controls="inputPanel" tabindex="-1">items.csv</button>
     </div>
     <section class="panel" id="codePanel" role="tabpanel" aria-labelledby="codeTab" tabindex="0">
       <pre class="code"><code id="sourceCode">import csv
@@ -142,6 +142,7 @@ pen,3,1.25</pre>
   function setTab(which){
     const isCode=which==='code';
     codeTab.setAttribute('aria-selected',String(isCode));inputTab.setAttribute('aria-selected',String(!isCode));
+    codeTab.setAttribute('tabindex',isCode?'0':'-1');inputTab.setAttribute('tabindex',isCode?'-1':'0');
     codePanel.hidden=!isCode;inputPanel.hidden=isCode;
   }
   for(const [tab,which] of [[codeTab,'code'],[inputTab,'input']]){
