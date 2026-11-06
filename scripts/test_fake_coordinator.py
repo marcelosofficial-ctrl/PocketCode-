@@ -633,12 +633,20 @@ class FakeCoordinatorTests(unittest.TestCase):
         self.assertEqual(released.content, artifact_bytes)
         failed_copy = receipts.publish_report(
             receipt.receipt_id, "clipboard", success=False, observed_at_ms=28,
+            idempotency_key="copy-request-1",
+        )
+        failed_copy_replay = receipts.publish_report(
+            receipt.receipt_id, "clipboard", success=False, observed_at_ms=28,
+            idempotency_key="copy-request-1",
         )
         retried_copy = receipts.publish_report(
             receipt.receipt_id, "clipboard", success=True, observed_at_ms=29,
+            idempotency_key="copy-request-2",
         )
+        self.assertEqual(failed_copy_replay, failed_copy)
         self.assertEqual(failed_copy.receipt_id, retried_copy.receipt_id)
-        self.assertEqual(retried_copy.attempt_number, 2)
+        self.assertEqual((failed_copy.attempt_number, retried_copy.attempt_number), (1, 2))
+        self.assertEqual(len(receipts.publication_attempts), 2)
         self.assertEqual(sum(b'"kind":"dispatch_intent"' in e.payload
                              for e in self.journal.events), 1)
 
