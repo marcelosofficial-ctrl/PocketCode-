@@ -439,3 +439,14 @@ New normative design draft: [AI_COLLAB/DURABLE_ADAPTER_CONTRACT_20261106.md](AI_
 - The branch-scoped workflow is test-only (Python 3.12 unittest; contents:read; no deploy step) and its push path filter includes `scripts/**`. The Actions UI can be checked at https://github.com/marcelosofficial-ctrl/PocketCode-/actions/workflows/pocketcode-python-tests.yml.
 - PR #2, #3 and #4 were inspected and remain OPEN/DRAFT/unmerged. No PR was edited, merged or marked ready.
 - No local execution, durable storage, concurrency test, provider operation, deployment, budget change or runtime selection occurred.
+
+
+## PC-2026-11-07-P36 — release grant lifecycle and interruption recovery
+
+- Added in-memory `ReleaseGrant` and append-only `ReleaseGrantEvent` snapshots to `scripts/result_receipts.py`.
+- Added reservation/recovery APIs: `reserve_release()` and `get_release_grant()`. Request identity is principal + tenant + request key; exact replay returns the same immutable grant, changed request details conflict, and a new request must pass the latest-receipt release gate. A grant reserved before a receipt successor remains pinned to the old receipt on exact replay.
+- Added transfer lifecycle APIs: `start_release_transfer()`, `record_release_progress()`, `complete_release_transfer()`, and `cancel_release_transfer()`. Transfer resume reuses the same grant; progress is monotonic and bounded; completion requires full byte count and matching staged digest; event timestamps cannot move backwards; completed grants cannot be retroactively cancelled.
+- Added ten lifecycle regressions plus one event-time ordering regression. Receipt test module now contains 54 uniquely named test methods. Test source blob: `de3ddc0e752b213b0d5e04ed78e6ba46d1dc18c2`; implementation source blob: `472e59d12e6409056a9690360dd6785619954ae5`; latest implementation/test commits: `a84740b005c7cd648a92cf911d023983a4e94d1a` and `93d329e950e8b88a4ca6fa1486bc39f358f47bc4`.
+- Updated T9 with the model lifecycle and strict limitations. This remains sequential/in-memory; no real transaction, concurrency, transport, client receipt, persistent grant, cryptographic policy authority or revocation semantics are proven.
+- Exact-head full CI has not yet been retrieved. Earlier 219/219 applies only to `d99f1ca350422b05610c7b62052f25de247d2d9b`, not this revision.
+- Next: obtain exact workflow result; independently inspect release grant transitions and idempotency semantics; add an adversarial crash/interleaving matrix; then implement adapter-neutral concurrency contract tests before any database choice.
