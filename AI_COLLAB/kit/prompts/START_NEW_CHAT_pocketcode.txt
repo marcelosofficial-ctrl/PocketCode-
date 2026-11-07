@@ -1,0 +1,9 @@
+New session on pocketcode. Repo https://github.com/marcelosofficial-ctrl/PocketCode-, branch pocketcode-ai-workflow-director-research-2026-10-28.
+
+1) Read ONLY AI_COLLAB/BOOT.md, STATE.md and NEXT_TASK.md (or the capsule pasted below). Open nothing else until they are read. Do not ask me to re-explain the project.
+2) Do NEXT_TASK until its "Done when" is true. Use INDEX.md to find any other file; read only the sections you need; never load a file over ~1,500 words whole.
+3) Normal mode, no Think, unless NEXT_TASK says otherwise. Keep each turn to about 350 lines of output. Checkpoint or commit after every unit of work.
+4) Tag claims VERIFIED / INFERRED / UNKNOWN. Never claim a test passed without its output. Never delete or rewrite history; move old material to ARCHIVE/.
+5) If you hit an error or stall twice, stop, write CHECKPOINT, and tell me.
+6) When done: update STATE.md (slim), write the next NEXT_TASK.md, overwrite CHECKPOINT.md, list changed paths, and give me the one-line resume message.
+If you cannot reach the repo, say so and work only from the capsule.
