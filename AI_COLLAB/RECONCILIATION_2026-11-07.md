@@ -19,7 +19,7 @@ All 15 newest commits fall within 48h. Author on all: Marcelo Ellwanger. Chat-se
 - b3bd2d2 | 10:40:14 | validate model inputs | 1 | FAIL
 - 2504eb1 | 10:39:32 | tighten auth/event tests | 2 | FAIL
 - 7848c98 | 10:38:56 | add grant reference model | 2 | PASS
-- 9a1d4eb | 10:35:51 | record recovery CI | 3 | NOT RUN
+- 4ae531f | 10:49:33 | record independent review handoff | 2 | NOT RUN
 
 All failures: workflow **PocketCode Python conformance tests**, job **unittest**; logs opened.
 - 933c732 / run 42365422424: `AssertionError: "not bound" does not match "stale receipt or artifact object version"`
