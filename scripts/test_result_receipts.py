@@ -576,16 +576,34 @@ class ResultReceiptTests(unittest.TestCase):
             )
         self.assertEqual(self.store.release_grants, ())
 
-    def test_release_request_key_cannot_be_reused_for_changed_request(self):
+    def test_release_request_replay_survives_refreshed_authorization(self):
+        first = self.store.reserve_release(
+            "artifact-1", self.auth(), receipt_id=self.receipt.receipt_id,
+            request_key="download-req-fixed", now_ms=102,
+        )
+        refreshed = self.auth(
+            authorization_id="auth-refreshed", policy_revision="policy-2",
+            observed_at_ms=110, expires_at_ms=250,
+        )
+        replay = self.store.reserve_release(
+            "artifact-1", refreshed, receipt_id=self.receipt.receipt_id,
+            request_key="download-req-fixed", now_ms=111,
+        )
+        self.assertEqual(replay, first)
+        self.assertEqual(replay.authorization_id, "auth-1")
+        self.assertEqual(replay.policy_revision, "policy-1")
+        self.assertEqual(len(self.store.release_grants), 1)
+
+    def test_release_request_key_cannot_be_reused_for_changed_intent(self):
         self.store.reserve_release(
             "artifact-1", self.auth(), receipt_id=self.receipt.receipt_id,
             request_key="download-req-fixed", now_ms=102,
         )
-        changed = self.auth(authorization_id="auth-different")
+        changed = self.auth(scope="artifact:share")
         with self.assertRaisesRegex(ReceiptConflict, "different request details"):
             self.store.reserve_release(
                 "artifact-1", changed, receipt_id=self.receipt.receipt_id,
-                request_key="download-req-fixed", now_ms=103,
+                request_key="download-req-fixed", now_ms=103, operation="share",
             )
         self.assertEqual(len(self.store.release_grants), 1)
 

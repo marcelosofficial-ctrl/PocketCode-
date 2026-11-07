@@ -231,9 +231,23 @@ class ResultReceiptStore:
             raise ReceiptConflict("release reservation time must be a non-negative integer")
 
         request_identity = (authorization.principal_id, authorization.tenant_id, request_key)
+        # Idempotency identifies the requested effect, not a particular
+        # short-lived authorization proof. A refreshed policy decision for the
+        # same principal/tenant and exact release intent must recover the first
+        # grant after a lost response. The original authorization ID/revision
+        # remain immutable grant provenance; this replay does not authorize a
+        # new transfer or bypass transfer-resume policy.
         canonical = {
             "artifact_id": artifact_id, "receipt_id": receipt_id,
-            "operation": operation, "authorization": authorization.__dict__,
+            "operation": operation,
+            "principal_id": authorization.principal_id,
+            "tenant_id": authorization.tenant_id,
+            "authorized_receipt_id": authorization.receipt_id,
+            "authorized_artifact_id": authorization.artifact_id,
+            "object_version": authorization.object_version,
+            "attempt_id": authorization.attempt_id,
+            "current_attempt_id": authorization.current_attempt_id,
+            "scope": authorization.scope,
         }
         fingerprint = sha256(json.dumps(
             canonical, sort_keys=True, separators=(",", ":")

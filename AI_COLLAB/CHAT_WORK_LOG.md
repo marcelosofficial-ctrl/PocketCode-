@@ -743,3 +743,12 @@ Next: await owner-provided read-only Pyodios saved-exception probe output; prese
 - Updated T9A in `AI_COLLAB/DURABLE_ADAPTER_CONTRACT_20261106.md` to point to the new detailed contract.
 - No product source, test code, runtime, provider, storage, PR or deployment was changed. No tests were run; this pass adds design requirements only.
 - Limits retained: P36 remains a sequential in-memory model. The new specification is not proof that any current implementation provides durable atomicity, concurrency control, fencing, revocation or transport guarantees.
+
+
+## 2026-11-07 — P38 release-intent idempotency correction
+
+- During adversarial review, identified a false-conflict case: P36's whole-authorization fingerprint meant a refreshed authorization token/policy revision/expiry changed the fingerprint even when the same principal retried the same exact release intent after losing the reservation response.
+- Corrected the reference model to fingerprint stable intent (receipt, artifact/object version, attempt and operation scope) separately from rotating authorization proof metadata. Original authorization ID and policy revision remain on the grant as immutable provenance.
+- Added regressions for refreshed-authorization replay returning the same grant and changed operation/scope under the same key conflicting.
+- Clarified in P37 contract and durable adapter contract that idempotency lookup is not permission to start/resume a transfer. Production must authenticate before lookup and separately apply the selected policy/revocation rule to transfer continuation.
+- Tests were not run. Source/test code is a sequential in-memory reference model only; no durable or concurrent behavior is established.

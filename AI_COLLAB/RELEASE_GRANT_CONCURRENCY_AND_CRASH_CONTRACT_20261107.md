@@ -52,14 +52,14 @@ No execution may commit a grant for R1 after R2 has won the shared head serializ
 
 The database uniqueness constraint, not a prior read, arbitrates concurrent duplicate requests.
 
-- Same principal + tenant + request key + same canonical fingerprint: one grant exists. All contenders resolve to that same grant ID and immutable binding.
+- Same principal + tenant + request key + same canonical *release-intent* fingerprint: one grant exists. The intent fingerprint binds receipt, artifact, immutable object version, effect/attempt and operation scope, but excludes rotating authorization proof fields such as authorization ID, policy revision and token expiry. A refreshed authorization for the same intent recovers the same grant after response loss. The original authorization decision provenance stays immutable on the grant. This lookup/replay does not authorize a new byte transfer; transfer resume must independently enforce the selected current-policy rule.
 - Same principal + tenant + request key + different fingerprint: conflict. Never overwrite or reinterpret the first request.
 - Different tenant or principal: distinct idempotency namespace.
 - A retry after a lost response looks up the committed grant before attempting a new reservation. It does not create a second grant and does not reinterpret the original request as a new grant against a later receipt.
 - A replay response that returns an existing grant is not itself permission to restart bytes. Transfer continuation/revocation policy is checked separately and explicitly. The product must decide whether an existing in-flight grant may resume after policy revocation; do not smuggle that decision into idempotency behavior.
 - Idempotency records and grant identity must be retained for at least the full retry/recovery horizon. Expiring a key while a transfer can still be retried can create a duplicate grant.
 
-The current P36 model fingerprints a caller-supplied authorization snapshot. Production must fingerprint a trusted decision reference or verifiable signed decision, not trust caller-supplied fields.
+P36 originally fingerprinted the entire caller-supplied authorization snapshot. P38 changes the in-memory reference model to fingerprint stable release intent separately from rotating proof metadata. Production must authenticate the caller before idempotency lookup, persist the original trusted decision provenance, and independently apply the selected transfer-resume/revocation rule. Never treat a successful idempotency lookup as a fresh allow decision.
 
 ## 5. Grant event and outbox atomicity
 
