@@ -208,9 +208,25 @@ class ResultReceiptStore:
             raise ReceiptConflict("release request key must be non-empty")
         if not isinstance(authorization, ReleaseAuthorization):
             raise ReceiptConflict("release authorization must be typed")
+        if not isinstance(artifact_id, str) or not artifact_id.strip():
+            raise ReceiptConflict("release artifact ID must be a non-empty string")
+        if not isinstance(receipt_id, str) or not receipt_id.strip():
+            raise ReceiptConflict("release receipt ID must be a non-empty string")
+        if not isinstance(operation, str):
+            raise ReceiptConflict("release operation must be a string")
         if not all(isinstance(value, str) and value.strip() for value in
                    (authorization.principal_id, authorization.tenant_id)):
             raise ReceiptConflict("release principal and tenant are required")
+        expected_types = {
+            "authorization_id": str, "policy_revision": str,
+            "principal_id": str, "tenant_id": str, "receipt_id": str,
+            "artifact_id": str, "object_version": str, "attempt_id": str,
+            "current_attempt_id": str, "scope": str, "authorized": bool,
+            "revoked": bool, "observed_at_ms": int, "expires_at_ms": int,
+        }
+        if any(type(getattr(authorization, name)) is not expected
+               for name, expected in expected_types.items()):
+            raise ReceiptConflict("release authorization fields must use their declared primitive types")
         if isinstance(now_ms, bool) or not isinstance(now_ms, int) or now_ms < 0:
             raise ReceiptConflict("release reservation time must be a non-negative integer")
 
@@ -564,7 +580,7 @@ class ResultReceiptStore:
         ):
             return ReleaseResult("denied_artifact_not_in_receipt", artifact_id, None, None,
                                  authorization.authorization_id)
-        if operation not in {"download", "share"} or authorization.scope != f"artifact:{operation}":
+        if not isinstance(operation, str) or operation not in {"download", "share"} or authorization.scope != f"artifact:{operation}":
             return ReleaseResult("denied_scope_mismatch", artifact_id, None, None,
                                  authorization.authorization_id)
         if type(authorization.authorized) is not bool or not authorization.authorized:
