@@ -1,0 +1,1 @@
+Resume. My last request was cut off by an error. Do not restart and do not re-read the project. Check CHECKPOINT.md (or the latest commit) for what is already done. In at most 5 lines say what is complete and what is missing, then continue with the next single unit only (under 200 lines). Normal mode, no Think. Checkpoint when finished.
