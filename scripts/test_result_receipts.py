@@ -430,6 +430,100 @@ class ResultReceiptTests(unittest.TestCase):
             self.store.publish_report(self.receipt.receipt_id, "clipboard", success=False, observed_at_ms=150, idempotency_key=" ")
 
 
+    def test_release_completed_before_successor_is_not_retroactively_revoked(self):
+        old_authorization = self.auth()
+        completed = self.store.release_artifact(
+            "artifact-1", old_authorization,
+            receipt_id=self.receipt.receipt_id, now_ms=102,
+        )
+        self.assertEqual(completed.disposition, "released")
+        self.assertEqual(completed.content, self.content)
+
+        latest = self.create(
+            revision_key="receipt-rev-2", created_at_ms=110,
+            predecessor_receipt_id=self.receipt.receipt_id,
+            revision_reason="later evidence arrived after completed release",
+            evidence_refs=("event-2",),
+            evidence_sha256=(self.digest,),
+        )
+        self.assertEqual(latest.version, 2)
+        self.assertEqual(completed.disposition, "released")
+        self.assertEqual(completed.content, self.content)
+
+        subsequent_old_request = self.store.release_artifact(
+            "artifact-1", old_authorization,
+            receipt_id=self.receipt.receipt_id, now_ms=111,
+        )
+        self.assertEqual(subsequent_old_request.disposition, "denied_superseded_receipt")
+        self.assertIsNone(subsequent_old_request.content)
+
+    def test_artifact_object_version_rollover_requires_latest_manifest(self):
+        new_content = b'{"ok":false}\\n'
+        new_digest = hashlib.sha256(new_content).hexdigest()
+        new_artifact = self.store.stage_artifact(ArtifactInput(
+            "artifact-2", "summary.json", "application/json", "effect-1", "attempt-1",
+            new_content, True, new_digest,
+        ))
+        latest = self.create(
+            revision_key="receipt-rev-2", created_at_ms=110,
+            predecessor_receipt_id=self.receipt.receipt_id,
+            revision_reason="artifact object version rolled forward",
+            artifact_ids=("artifact-2",),
+            evidence_refs=("event-2",),
+            evidence_sha256=(new_digest,),
+        )
+
+        old_result = self.store.release_artifact(
+            "artifact-1", self.auth(),
+            receipt_id=self.receipt.receipt_id, now_ms=111,
+        )
+        self.assertEqual(old_result.disposition, "denied_superseded_receipt")
+        self.assertIsNone(old_result.content)
+
+        latest_auth = self.auth(
+            authorization_id="auth-new-artifact",
+            receipt_id=latest.receipt_id,
+            artifact_id="artifact-2",
+            object_version=new_artifact.object_version,
+        )
+        latest_result = self.store.release_artifact(
+            "artifact-2", latest_auth,
+            receipt_id=latest.receipt_id, now_ms=111,
+        )
+        self.assertEqual(latest_result.disposition, "released")
+        self.assertEqual(latest_result.object_version, new_artifact.object_version)
+        self.assertEqual(latest_result.content, new_content)
+
+        omitted_artifact_auth = self.auth(
+            authorization_id="auth-omitted-artifact",
+            receipt_id=latest.receipt_id,
+        )
+        omitted_result = self.store.release_artifact(
+            "artifact-1", omitted_artifact_auth,
+            receipt_id=latest.receipt_id, now_ms=111,
+        )
+        self.assertEqual(omitted_result.disposition, "denied_artifact_not_in_receipt")
+        self.assertIsNone(omitted_result.content)
+
+    def test_latest_receipt_gate_is_scoped_to_exact_effect_and_attempt(self):
+        other_effect = self.create(
+            revision_key="other-effect-receipt",
+            effect_id="effect-2",
+            artifact_ids=(),
+            created_at_ms=105,
+            evidence_refs=("event-other-effect",),
+        )
+        self.assertEqual(other_effect.effect_id, "effect-2")
+        self.assertEqual(other_effect.version, 1)
+
+        original_result = self.store.release_artifact(
+            "artifact-1", self.auth(),
+            receipt_id=self.receipt.receipt_id, now_ms=111,
+        )
+        self.assertEqual(original_result.disposition, "released")
+        self.assertEqual(original_result.content, self.content)
+
+
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)
