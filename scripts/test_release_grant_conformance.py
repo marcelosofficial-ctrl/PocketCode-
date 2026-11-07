@@ -133,9 +133,9 @@ class ReleaseGrantConformanceTests(unittest.TestCase):
 
     def test_authorization_must_bind_exact_receipt_revision(self):
         with self.assertRaisesRegex(ContractConflict, "receipt revision"):
-            self.reserve(receipt_revision=2)
+            self.reserve(auth_receipt_revision=2)
         with self.assertRaisesRegex(ContractConflict, "not bound"):
-            self.reserve(receipt_id="receipt-2", receipt_revision=2, auth_receipt_id="receipt-2", auth_receipt_revision=2)
+            self.reserve(auth_receipt_id="receipt-2")
 
     def test_consumer_defers_future_event_until_predecessor_arrives(self):
         self.reserve()
