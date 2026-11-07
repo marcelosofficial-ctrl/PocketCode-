@@ -691,6 +691,28 @@ class ResultReceiptTests(unittest.TestCase):
                 grant.grant_id, reason="late cancellation", now_ms=106,
             )
 
+    def test_release_grant_rejects_non_primitive_authorization_fields(self):
+        malformed = self.auth(policy_revision=object())
+        with self.assertRaisesRegex(ReceiptConflict, "declared primitive types"):
+            self.store.reserve_release(
+                "artifact-1", malformed, receipt_id=self.receipt.receipt_id,
+                request_key="malformed-auth", now_ms=102,
+            )
+        self.assertEqual(self.store.release_grants, ())
+
+    def test_release_operation_with_unhashable_value_fails_closed(self):
+        legacy = self.store.release_artifact(
+            "artifact-1", self.auth(), receipt_id=self.receipt.receipt_id,
+            now_ms=102, operation=[],
+        )
+        self.assertEqual(legacy.disposition, "denied_scope_mismatch")
+        with self.assertRaisesRegex(ReceiptConflict, "operation must be a string"):
+            self.store.reserve_release(
+                "artifact-1", self.auth(), receipt_id=self.receipt.receipt_id,
+                request_key="malformed-operation", now_ms=102, operation=[],
+            )
+        self.assertEqual(self.store.release_grants, ())
+
     def test_release_grant_lookup_is_scoped_to_principal_and_tenant(self):
         grant = self.store.reserve_release(
             "artifact-1", self.auth(), receipt_id=self.receipt.receipt_id,
