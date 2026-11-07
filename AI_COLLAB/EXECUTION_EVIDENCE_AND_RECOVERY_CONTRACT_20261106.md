@@ -110,7 +110,16 @@ A receipt records attempt identity, contract version, ordered evidence reference
 
 For each artifact record safe logical name, size, media type, immutable object/version reference, exact-byte digest, producing attempt, write completion, integrity verification, quarantine, authorization and release observations. A partial write or digest mismatch is quarantined. Revalidate exact bytes and current authorization immediately before every download/share. A successful execution is not permission to release an artifact forever. A report-copy failure should retry publication/copy of the same receipt, not rerun the task.
 
-A digest establishes byte identity/integrity relative to the recorded digest, not producer authenticity, execution correctness, malware safety or authorization. in-toto statement/envelope ideas can inform a future signed receipt, but unsigned JSON is not an authenticated attestation. Before signing, define producer identity, signing keys, key custody, rotation, revocation, verifier policy and trust roots. SLSA build provenance applies to trusted builds of PocketCode itself, not arbitrary user scripts.
+A digest establishes byte identity/integrity relative to the recorded digest, not producer authenticity, execution correctness, malware safety or authorization.
+
+### Current receipt revision and release authorization
+
+For the current conformance model, a new download/share must be authorized against the latest immutable receipt revision for the exact (EffectId, DispatchAttemptId). A prior receipt remains a valid historical record, but it is superseded as an authority for starting a new release once a successor revision exists. This applies even if the successor retains the same artifact manifest. A fresh policy decision must bind the latest receipt ID/hash and exact artifact object version; if the latest receipt omits that object version, release is denied. Historical receipt bytes and hashes are never rewritten.
+
+This is a model-level rule, not yet a production authorization service. The production adapter must atomically compare the latest receipt revision, resolve current principal/tenant/policy/scope/expiry/revocation authority, and reserve the transfer. A check followed by a later unprotected transfer creates a receipt-revision/revocation race. The current in-memory helper does not solve that race. Authorization and transfer are distinct: once transfer starts, interruption, revocation during transfer, completion, and client-side digest verification require their own durable transfer identity and evidence. Do not infer client receipt from server-side authorization or send completion.
+
+The current fake artifact store is immutable: reusing an artifact ID with different bytes conflicts. It has no artifact replacement/version-advance operation. Exact object-version binding is tested, but end-to-end version rollover and automatic invalidation of earlier authorization remain open implementation work.
+ in-toto statement/envelope ideas can inform a future signed receipt, but unsigned JSON is not an authenticated attestation. Before signing, define producer identity, signing keys, key custody, rotation, revocation, verifier policy and trust roots. SLSA build provenance applies to trusted builds of PocketCode itself, not arbitrary user scripts.
 
 ## 8. Mobile lifecycle and runtime boundaries
 
