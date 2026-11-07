@@ -20,7 +20,7 @@ Within one transaction, the adapter MUST:
 2. Lock or compare-and-swap a stable receipt-head row for the exact `(EffectId, DispatchAttemptId)`. The head row must exist independently of receipt versions. Locking only the current receipt row is insufficient because two workers can otherwise race to insert competing successors (a phantom/new-row race).
 3. Re-read and validate the head and latest immutable receipt. The supplied receipt must equal the current head; the receipt manifest must contain the exact artifact ID and immutable object version; the artifact must be complete, digest-verified and not quarantined.
 4. Validate the authorization decision's identity, scope, policy revision, expiry and revocation snapshot against the request. Do not accept a caller-constructed allow object as trusted authority.
-5. Claim the unique idempotency identity `(tenant_id, principal_id, request_key)`. Store a canonical request fingerprint covering effect, attempt, receipt ID/version/hash, artifact ID/object version, operation scope and authorization decision identity/revision.
+5. Claim the unique idempotency identity `(tenant_id, principal_id, request_key)`. Store a canonical **stable release-intent** fingerprint covering effect, attempt, receipt ID/version/hash, artifact ID/object version and operation scope (including any explicit share-target scope). Exclude rotating authorization ID, token expiry and policy revision. The fresh authorization decision must still bind to the exact same principal, tenant, effect, attempt, receipt, artifact/object version and operation; preserve the first decision ID/revision as immutable grant provenance.
 6. Insert the immutable ReleaseGrant, its initial `reserved` event and a durable outbox event in the same transaction. Enforce uniqueness on the idempotency identity and stable grant/event IDs.
 7. Commit. Only after successful commit may transfer bytes be made available.
 
@@ -28,7 +28,7 @@ Within one transaction, the adapter MUST:
 
 ### Stable receipt-head requirement
 
-Maintain a stable serialization anchor keyed by `(EffectId, DispatchAttemptId)`, with current receipt ID/version (or an equivalent monotonic head token). Receipt successor creation and release-grant reservation must both update/read this same anchor under the same serialization rule.
+Maintain a stable serialization anchor keyed by `(EffectId, DispatchAttemptId)`, with current receipt ID/version (or an equivalent monotonic head token). Create the initial anchor and first immutable receipt in one transaction under a unique key; competing initializers must reload the winner. Receipt successor creation and release-grant reservation must both lock/CAS and re-read this same anchor under the same serialization rule.
 
 Acceptable mechanisms include:
 - row-level lock on the stable head row, then read/validate and update under the transaction;
@@ -69,7 +69,9 @@ The relay is at-least-once:
 - claim outbox work with a lease and monotonically increasing fencing token;
 - publish a stable event ID and aggregate/grant version;
 - mark delivered only if the relay still owns the current fence;
-- consumers deduplicate by stable event ID and reject stale aggregate versions;
+- relay claims and publishes events in aggregate-version order: for one grant, N+1 cannot be claimed while N remains undelivered;
+- consumers deduplicate by stable `(source,event_id)`; identical replay is a duplicate, changed payload under the same identity is a conflict;
+- a future aggregate version received before its predecessor is deferred without marking it consumed; apply only contiguous versions. An unknown event at or below the last applied version is stale/conflicting;
 - a crash after publish but before delivered-mark may publish again; duplicate delivery is expected and must not duplicate the logical event/effect.
 
 Do not claim exactly-once delivery. The achievable contract is atomic local intent plus at-least-once delivery plus idempotent consumers.
@@ -80,7 +82,7 @@ If transfer work is leased to workers, every lease claim increments a monotonic 
 
 A stale worker with fence n MUST be unable to mutate after a newer worker has claimed fence n+1, even if the stale worker resumes after a long pause. Lease expiry alone is not sufficient: the fence comparison is the authority. A worker that loses its lease must discard its result and re-read durable state.
 
-The fence protects PocketCode's durable state. It cannot retract bytes already sent by a stale worker to a remote client. If concurrent transfer streams are prohibited, the transport layer must also bind/rescind stream ownership or use a single-use capability. This is a separate transport guarantee.
+The fence epoch is durable and monotonic for the lifetime of the grant identity. Keep completed/cancelled grant identities and highest fence as tombstones for the recovery/audit horizon; never recycle grant IDs or reset a fence after deletion, restore or migration. The fence protects PocketCode's durable state but cannot retract bytes already sent by a stale worker. The transport must independently validate a current stream-scoped or single-use capability and enforce the selected revocation rule.
 
 Progress updates are monotonic and bounded by the immutable object's length. Completion must bind the server-observed object digest and length. A caller-reported digest is not proof of client receipt. If client receipt matters, define a separate authenticated client acknowledgement with its own provenance and idempotency.
 
@@ -124,6 +126,12 @@ Run these against the real candidate adapter using independent connections/proce
 15. **INTEGRITY-01 Event chain:** verify event IDs, aggregate versions, grant binding, monotonic progress and immutable event payloads after recovery.
 
 For each run capture adapter/build/version, isolation level, schema/migration revision, independent connection/process count, deterministic schedule/barrier trace, injected crash point, exact commit SHA and complete test output.
+
+## 8A. Initial-head, outbox-order and fencing invariants
+
+- The first receipt and stable head anchor are created atomically under a unique `(EffectId, DispatchAttemptId)` key. A losing initializer reloads the winner; it does not create a parallel root.
+- The relay only claims the minimum undelivered aggregate version for a grant. A future event at the consumer is deferred until its predecessor arrives. Event identity remains source-scoped and separate from aggregate sequence.
+- Fence counters and grant identities are never reset/reused after terminal state, deletion, restore or migration. Tombstones survive the complete recovery/audit horizon.
 
 ## 9. Decisions still required, not assumed
 

@@ -762,3 +762,15 @@ Next: await owner-provided read-only Pyodios saved-exception probe output; prese
 - The failing end-to-end regression was retained unchanged. Exact-head CI for the correction is pending.
 
 - CI evidence: [run 42364575235](https://github.com/marcelosofficial-ctrl/PocketCode-/actions/runs/42364575235), exact SHA `0d27105ab55b208edd9ea65d78055fce07c80839`, push event, checkout exact commit, Python conformance suite, 240 tests, SUCCESS.
+
+
+## 2026-11-07 — P39 full-power release-grant pass
+
+- Re-read live project status/roadmap, entrypoint, state ledger, Claude/Gemini handoffs and all task-specific grant/outbox/journal code and docs. Verified branch head at start: `9a1d4eb3e72b68d6c2d6760798cd70a6fdbd2b47`.
+- Ranked five gaps: receipt-head serialization; grant/event/outbox atomicity and order; worker fencing/stream effects; stable intent vs refreshed auth; trusted evidence/artifact immutability/revocation.
+- Researched primary sources from PostgreSQL 18, SQLite, AWS DynamoDB and outbox guidance, CloudEvents v1.0.2, etcd, Redis and Temporal. Opened official docs/repositories and checked relevant licensing/maintenance statements. No code copied; patterns only adapted.
+- Added `scripts/release_grant_conformance.py` and `scripts/test_release_grant_conformance.py`. The model covers CAS schedules, first-vs-successor receipt ordering, stable intent with exact refreshed-auth binding, staged atomicity failpoints, tenant/principal idempotency namespaces, worker fencing, monotonic progress and event dedupe/gap deferral.
+- Corrected P37/P38 contract gaps: authorization proof metadata excluded from stable fingerprint but exact current decision must bind to intent; initial receipt/head bootstrap must be atomic; relay order per aggregate; consumers defer future gaps; grant/fence identity cannot reset/recycle; stream-scoped capability remains separate from DB fencing.
+- Added `AI_COLLAB/RELEASE_GRANT_ADAPTER_RESEARCH_AND_REDTAM_20261107.md` with research, decisions, red-team corrections, adapter recipe, 23 acceptance tests and open policy decisions.
+- CI run `42364880874` was observed on earlier model SHA `2504eb1f9337e9f70aea4262555f5995df41d384`; it was queued/in progress at last observation. A subsequent source validation change created `b3bd2d273f6cbd95cb06852a9eb2f7d50c7624a4`, so that earlier run is not evidence for the current head. No local tests were run.
+- No database/provider/queue/workflow service selected; no PR or deployment changed.

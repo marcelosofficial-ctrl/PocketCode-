@@ -46,6 +46,33 @@ class ReleaseGrantConformanceTests(unittest.TestCase):
         values.update(changes)
         return self.store.advance_receipt_head(**values)
 
+    def test_seed_head_rejects_boolean_revision_and_non_integer_length(self):
+        with self.assertRaises(ValueError):
+            self.store.seed_head(ReceiptHead(
+                "e", "a", "r", True, "art", "v1", 1,
+            ))
+        with self.assertRaises(ValueError):
+            self.store.seed_head(ReceiptHead(
+                "e", "a", "r", 1, "art", "v1", "10",
+            ))
+
+    def test_unknown_release_operation_is_rejected(self):
+        with self.assertRaisesRegex(ValueError, "download or share"):
+            self.reserve(operation="execute", auth_operation="execute")
+
+    def test_worker_claim_rejects_non_string_or_blank_owner(self):
+        grant = self.reserve()
+        with self.assertRaises(ValueError):
+            self.store.claim_worker(grant_id=grant.grant_id, owner=123, now=0, lease_seconds=5)
+        with self.assertRaises(ValueError):
+            self.store.claim_worker(grant_id=grant.grant_id, owner=" ", now=0, lease_seconds=5)
+
+    def test_progress_rejects_boolean_timestamp(self):
+        grant = self.reserve()
+        lease = self.store.claim_worker(grant_id=grant.grant_id, owner="A", now=0, lease_seconds=5)
+        with self.assertRaises(ValueError):
+            self.store.record_progress(lease, now=True, progress_bytes=1)
+
     def test_grant_commit_wins_then_successor_keeps_grant_pinned(self):
         grant = self.reserve()
         self.successor()
