@@ -728,8 +728,8 @@ Next: await owner-provided read-only Pyodios saved-exception probe output; prese
 
 - Implemented in-memory release grant reservation, request-key idempotency, grant lookup/recovery, transfer start/resume, monotonic byte progress, digest/length completion, explicit cancellation and append-only transition events.
 - Exact reservation replay recovers the original grant even after receipt supersession. A fresh request using a new key is denied against the superseded receipt. Changed request details under an existing key conflict.
-- Added 11 regression methods covering no-byte reservation, lost-response replay, latest-receipt gate, key misuse, interrupted transfer resume, progress bounds, digest/length completion, cancellation, no retroactive cancellation, principal/tenant key isolation and monotonic event time.
+- Added 13 regression methods covering no-byte reservation, lost-response replay, latest-receipt gate, key misuse, interrupted transfer resume, progress bounds, digest/length completion, cancellation, no retroactive cancellation, principal/tenant key isolation, monotonic event time, grant lookup isolation and composed supersession/interruption recovery.
 - Source `scripts/result_receipts.py`: blob `472e59d12e6409056a9690360dd6785619954ae5`, commit `a84740b005c7cd648a92cf911d023983a4e94d1a`.
-- Tests `scripts/test_result_receipts.py`: blob `de3ddc0e752b213b0d5e04ed78e6ba46d1dc18c2`, commit `93d329e950e8b88a4ca6fa1486bc39f358f47bc4`; 54 unique method names.
+- Tests `scripts/test_result_receipts.py`: blob `7d07d6d7b717ff4e371f8cfdbeecbc36f44a9e28`, commit `009cebeed5f5103094954e9af59d98264a4e1c29`; 56 unique method names.
 - T9 now documents the model API and explicitly states that the in-memory completion digest is caller-supplied and does not prove remote delivery. No database, cloud, provider, runtime or production policy selected.
 - Verification status: source/test files are committed and fetched back. No local test execution was performed. Exact-head CI remains NOT VERIFIED until the matching GitHub Actions run is independently observed.
