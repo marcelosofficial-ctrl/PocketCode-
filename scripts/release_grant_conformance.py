@@ -89,10 +89,14 @@ class ReleaseGrantContractModel:
         key = (head.effect_id, head.attempt_id)
         if key in self.heads:
             raise ContractConflict("receipt head already exists")
-        if (not head.effect_id or not head.attempt_id or not head.receipt_id
-                or not head.artifact_id or not head.object_version
-                or isinstance(head.revision, bool) or head.revision < 1
-                or isinstance(head.artifact_length, bool) or head.artifact_length < 0):
+        identity_values = (
+            head.effect_id, head.attempt_id, head.receipt_id,
+            head.artifact_id, head.object_version,
+        )
+        if (not all(isinstance(value, str) and value.strip() for value in identity_values)
+                or isinstance(head.revision, bool) or not isinstance(head.revision, int) or head.revision < 1
+                or isinstance(head.artifact_length, bool) or not isinstance(head.artifact_length, int)
+                or head.artifact_length < 0):
             raise ValueError("invalid initial receipt head")
         self.heads[key] = head
 
@@ -102,6 +106,14 @@ class ReleaseGrantContractModel:
         artifact_id: str, object_version: str, artifact_length: int,
     ) -> ReceiptHead:
         """CAS the stable head. Competing successors from one predecessor cannot both win."""
+        if not all(isinstance(value, str) and value.strip() for value in (
+            effect_id, attempt_id, expected_receipt_id, successor_receipt_id,
+            artifact_id, object_version,
+        )):
+            raise ValueError("receipt-head identity values must be non-empty strings")
+        if (isinstance(expected_revision, bool) or not isinstance(expected_revision, int)
+                or expected_revision < 1):
+            raise ValueError("expected_revision must be a positive integer")
         key = (effect_id, attempt_id)
         current = self.heads.get(key)
         if current is None:
@@ -163,6 +175,8 @@ class ReleaseGrantContractModel:
             raise ValueError("all identity, scope and provenance values must be non-empty strings")
         if auth_allowed is not True or auth_tenant_id != tenant_id or auth_principal_id != principal_id:
             raise ContractConflict("authenticated authorization is not valid for this principal and tenant")
+        if operation not in ("download", "share"):
+            raise ValueError("operation must be download or share")
         if auth_operation != operation:
             raise ContractConflict("authorization operation scope mismatch")
         if (auth_effect_id, auth_attempt_id, auth_receipt_id, auth_artifact_id, auth_object_version) != (
@@ -228,7 +242,7 @@ class ReleaseGrantContractModel:
     def claim_worker(
         self, *, grant_id: str, owner: str, now: int, lease_seconds: int,
     ) -> WorkerLease:
-        if not owner or isinstance(now, bool) or not isinstance(now, int) or now < 0:
+        if not isinstance(owner, str) or not owner.strip() or isinstance(now, bool) or not isinstance(now, int) or now < 0:
             raise ValueError("valid owner and non-negative integer time required")
         if isinstance(lease_seconds, bool) or not isinstance(lease_seconds, int) or lease_seconds <= 0:
             raise ValueError("lease_seconds must be a positive integer")
@@ -247,6 +261,8 @@ class ReleaseGrantContractModel:
         return lease
 
     def record_progress(self, lease: WorkerLease, *, now: int, progress_bytes: int) -> Grant:
+        if isinstance(now, bool) or not isinstance(now, int) or now < 0:
+            raise ValueError("now must be a non-negative integer")
         current = self.leases.get(lease.grant_id)
         if (current is None or current.fence != lease.fence
                 or current.owner != lease.owner or current.expires_at <= now):
