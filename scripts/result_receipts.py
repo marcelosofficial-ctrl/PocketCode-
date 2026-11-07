@@ -5,7 +5,7 @@ system, malware scanner, provider authenticator, or production release service.
 """
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from hashlib import sha256
 import json
 import re
@@ -93,6 +93,38 @@ class ReleaseResult:
 
 
 @dataclass(frozen=True)
+class ReleaseGrant:
+    grant_id: str
+    request_key: str
+    request_fingerprint: str
+    receipt_id: str
+    effect_id: str
+    attempt_id: str
+    artifact_id: str
+    object_version: str
+    principal_id: str
+    tenant_id: str
+    scope: str
+    authorization_id: str
+    policy_revision: str
+    created_at_ms: int
+    state: str = "reserved"
+    bytes_transferred: int = 0
+    transfer_sha256: Optional[str] = None
+    completed_at_ms: Optional[int] = None
+    cancellation_reason: Optional[str] = None
+
+
+@dataclass(frozen=True)
+class ReleaseGrantEvent:
+    event_number: int
+    grant_id: str
+    transition: str
+    observed_at_ms: int
+    bytes_transferred: int
+
+
+@dataclass(frozen=True)
 class PublicationAttempt:
     receipt_id: str
     destination: str
@@ -115,6 +147,9 @@ class ResultReceiptStore:
         self._revision_fingerprints: dict[str, str] = {}
         self._publication_attempts: list[PublicationAttempt] = []
         self._publication_by_key: dict[tuple[str, str, str], tuple[str, PublicationAttempt]] = {}
+        self._release_grants: dict[str, ReleaseGrant] = {}
+        self._release_grant_by_request: dict[tuple[str, str, str], tuple[str, ReleaseGrant]] = {}
+        self._release_grant_events: list[ReleaseGrantEvent] = []
 
     @property
     def receipts(self) -> tuple[ResultReceipt, ...]:
@@ -127,6 +162,184 @@ class ResultReceiptStore:
     @property
     def publication_attempts(self) -> tuple[PublicationAttempt, ...]:
         return tuple(self._publication_attempts)
+
+    @property
+    def release_grants(self) -> tuple[ReleaseGrant, ...]:
+        return tuple(self._release_grants.values())
+
+    @property
+    def release_grant_events(self) -> tuple[ReleaseGrantEvent, ...]:
+        return tuple(self._release_grant_events)
+
+    def get_release_grant(self, request_key: str, *, principal_id: str,
+                          tenant_id: str) -> Optional[ReleaseGrant]:
+        if not all(isinstance(value, str) and value.strip()
+                   for value in (request_key, principal_id, tenant_id)):
+            raise ReceiptConflict("release grant lookup identity is required")
+        prior = self._release_grant_by_request.get((principal_id, tenant_id, request_key))
+        return prior[1] if prior is not None else None
+
+    def _record_release_grant(self, grant: ReleaseGrant, transition: str,
+                              observed_at_ms: int) -> ReleaseGrant:
+        updated = replace(grant)
+        self._release_grants[grant.grant_id] = updated
+        self._release_grant_events.append(ReleaseGrantEvent(
+            len(self._release_grant_events) + 1, grant.grant_id, transition,
+            observed_at_ms, updated.bytes_transferred,
+        ))
+        return updated
+
+    def reserve_release(self, artifact_id: str, authorization: ReleaseAuthorization, *,
+                        receipt_id: str, request_key: str, now_ms: int,
+                        operation: str = "download") -> ReleaseGrant:
+        """Reserve one idempotent release grant; no artifact bytes are returned.
+
+        The grant pins the exact receipt, attempt and immutable object version.
+        A replay with the same principal/tenant/request key and exact request
+        returns the original grant before re-evaluating receipt freshness. This
+        models recovery after a lost reservation response. A changed request
+        under the same key conflicts instead of minting another grant.
+        """
+        if not isinstance(request_key, str) or not request_key.strip():
+            raise ReceiptConflict("release request key must be non-empty")
+        if not isinstance(authorization, ReleaseAuthorization):
+            raise ReceiptConflict("release authorization must be typed")
+        if not all(isinstance(value, str) and value.strip() for value in
+                   (authorization.principal_id, authorization.tenant_id)):
+            raise ReceiptConflict("release principal and tenant are required")
+        if isinstance(now_ms, bool) or not isinstance(now_ms, int) or now_ms < 0:
+            raise ReceiptConflict("release reservation time must be a non-negative integer")
+
+        request_identity = (authorization.principal_id, authorization.tenant_id, request_key)
+        canonical = {
+            "artifact_id": artifact_id, "receipt_id": receipt_id,
+            "operation": operation, "authorization": authorization.__dict__,
+        }
+        fingerprint = sha256(json.dumps(
+            canonical, sort_keys=True, separators=(",", ":")
+        ).encode()).hexdigest()
+        prior = self._release_grant_by_request.get(request_identity)
+        if prior is not None:
+            prior_fingerprint, prior_grant = prior
+            if prior_fingerprint != fingerprint:
+                raise ReceiptConflict("release request key already binds different request details")
+            return prior_grant
+
+        decision = self.release_artifact(
+            artifact_id, authorization, receipt_id=receipt_id,
+            now_ms=now_ms, operation=operation,
+        )
+        if decision.disposition != "released":
+            raise ReceiptConflict("release authorization denied: " + decision.disposition)
+        stored = self._artifacts[artifact_id][0]
+        receipt = next(item for item in self._receipts if item.receipt_id == receipt_id)
+        grant = ReleaseGrant(
+            f"release-grant-{len(self._release_grants) + 1}",
+            request_key, fingerprint, receipt.receipt_id, receipt.effect_id,
+            receipt.attempt_id, artifact_id, stored.object_version,
+            authorization.principal_id, authorization.tenant_id,
+            authorization.scope, authorization.authorization_id,
+            authorization.policy_revision, now_ms,
+        )
+        recorded = self._record_release_grant(grant, "reserved", now_ms)
+        self._release_grant_by_request[request_identity] = (fingerprint, recorded)
+        return recorded
+
+    def start_release_transfer(self, grant_id: str, *, now_ms: int) -> ReleaseGrant:
+        if not isinstance(grant_id, str) or not grant_id.strip():
+            raise ReceiptConflict("release grant ID is required")
+        if isinstance(now_ms, bool) or not isinstance(now_ms, int) or now_ms < 0:
+            raise ReceiptConflict("transfer start time must be a non-negative integer")
+        grant = self._release_grants.get(grant_id)
+        if grant is None:
+            raise ReceiptConflict("unknown release grant")
+        if grant.state == "cancelled":
+            raise ReceiptConflict("cancelled release grant cannot start")
+        if grant.state == "completed":
+            return grant
+        if now_ms < grant.created_at_ms:
+            raise ReceiptConflict("transfer start cannot precede grant reservation")
+        if grant.state == "transferring":
+            return grant
+        return self._record_release_grant(
+            replace(grant, state="transferring"), "transfer_started", now_ms,
+        )
+
+    def record_release_progress(self, grant_id: str, *, bytes_transferred: int,
+                                now_ms: int) -> ReleaseGrant:
+        if isinstance(bytes_transferred, bool) or not isinstance(bytes_transferred, int) or bytes_transferred < 0:
+            raise ReceiptConflict("transferred byte count must be a non-negative integer")
+        if isinstance(now_ms, bool) or not isinstance(now_ms, int) or now_ms < 0:
+            raise ReceiptConflict("progress time must be a non-negative integer")
+        grant = self._release_grants.get(grant_id)
+        if grant is None:
+            raise ReceiptConflict("unknown release grant")
+        if grant.state != "transferring":
+            raise ReceiptConflict("progress requires a transferring grant")
+        entry = self._artifacts[grant.artifact_id][0]
+        if bytes_transferred > entry.byte_length:
+            raise ReceiptConflict("transferred byte count exceeds artifact length")
+        if bytes_transferred < grant.bytes_transferred:
+            raise ReceiptConflict("transfer progress cannot move backwards")
+        if now_ms < grant.created_at_ms:
+            raise ReceiptConflict("progress time cannot precede grant reservation")
+        if bytes_transferred == grant.bytes_transferred:
+            return grant
+        return self._record_release_grant(
+            replace(grant, bytes_transferred=bytes_transferred),
+            "progress_recorded", now_ms,
+        )
+
+    def complete_release_transfer(self, grant_id: str, *, observed_sha256: str,
+                                   now_ms: int) -> ReleaseGrant:
+        if not isinstance(observed_sha256, str) or not self._SHA256.fullmatch(observed_sha256):
+            raise ReceiptConflict("transfer completion requires a valid SHA-256 digest")
+        if isinstance(now_ms, bool) or not isinstance(now_ms, int) or now_ms < 0:
+            raise ReceiptConflict("completion time must be a non-negative integer")
+        grant = self._release_grants.get(grant_id)
+        if grant is None:
+            raise ReceiptConflict("unknown release grant")
+        if grant.state == "completed":
+            if grant.transfer_sha256 != observed_sha256:
+                raise ReceiptConflict("completed grant cannot bind a different transfer digest")
+            return grant
+        if grant.state != "transferring":
+            raise ReceiptConflict("only a transferring grant can complete")
+        entry, content = self._artifacts[grant.artifact_id]
+        if now_ms < grant.created_at_ms:
+            raise ReceiptConflict("completion time cannot precede grant reservation")
+        if grant.bytes_transferred != entry.byte_length:
+            raise ReceiptConflict("transfer cannot complete before all artifact bytes are recorded")
+        actual_digest = sha256(content).hexdigest()
+        if observed_sha256 != entry.sha256 or actual_digest != entry.sha256:
+            raise ReceiptConflict("transfer digest does not match the immutable artifact")
+        return self._record_release_grant(
+            replace(grant, state="completed", transfer_sha256=observed_sha256,
+                    completed_at_ms=now_ms),
+            "completed", now_ms,
+        )
+
+    def cancel_release_transfer(self, grant_id: str, *, reason: str,
+                                now_ms: int) -> ReleaseGrant:
+        if not isinstance(reason, str) or not reason.strip():
+            raise ReceiptConflict("release cancellation requires a reason")
+        if isinstance(now_ms, bool) or not isinstance(now_ms, int) or now_ms < 0:
+            raise ReceiptConflict("cancellation time must be a non-negative integer")
+        grant = self._release_grants.get(grant_id)
+        if grant is None:
+            raise ReceiptConflict("unknown release grant")
+        if grant.state == "completed":
+            raise ReceiptConflict("completed release cannot be retroactively cancelled")
+        if grant.state == "cancelled":
+            if grant.cancellation_reason != reason:
+                raise ReceiptConflict("cancelled grant reason is immutable")
+            return grant
+        if now_ms < grant.created_at_ms:
+            raise ReceiptConflict("cancellation time cannot precede grant reservation")
+        return self._record_release_grant(
+            replace(grant, state="cancelled", cancellation_reason=reason),
+            "cancelled", now_ms,
+        )
 
     def stage_artifact(self, item: ArtifactInput) -> ArtifactManifestEntry:
         if not isinstance(item, ArtifactInput):
