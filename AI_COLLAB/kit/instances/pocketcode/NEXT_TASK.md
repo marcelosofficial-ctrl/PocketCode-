@@ -1,25 +1,27 @@
-# NEXT TASK: PocketCode (seed; verify against live state)
+# NEXT TASK: P39 independent adversarial review
 
 ## Goal
-Get a real test result for the recovery prototypes: run the full existing Python test suite, including the new outbox and coordinator tests, against the actual repository modules, and record PASS / FAIL / NOT RUN with output.
+Obtain and reconcile two independent, source-pinned reviews of the release-grant recovery/concurrency design before any durable adapter or storage selection.
 
-## Files to read
-- [Recovery contract](AI_COLLAB/EXECUTION_EVIDENCE_AND_RECOVERY_CONTRACT_20261106.md) (section on lifecycle and recovery only)
-- scripts/fake_coordinator.py and scripts/test_fake_coordinator.py (headers and test names only)
+## Reviewer assignments
+- Claude: architecture, transaction linearization, receipt-head races, stable-intent/auth separation, outbox atomicity/order, fencing and stream effects.
+- Gemini: caller/producer trust boundary, tenant isolation, replay/revocation, event identity/digest/order, fence authority, source/license claims and adversarial tests.
 
-## Constraints for this task
-- Mode: normal. Output: about 350 lines per turn. Do not choose a database or provider.
-- If code cannot be executed in this chat, write NOT RUN and instead prepare the exact command list and expected-output checklist for a runtime that can (GitHub Actions or a PC).
-- Out of scope: durable storage choice, provider integration, merging PRs.
+## Exact brief
+Use `AI_COLLAB/P39_INDEPENDENT_REVIEW_PROMPT_20261107.md`. It contains exact branch/code pins, required output format and no-edit/no-commit instructions. Review the exact pinned source/test SHA and current documentation branch as specified. If any file is inaccessible, report NOT REVIEWED.
 
-## Steps
-1. Locate the test entry command (check .github/workflows and scripts/).
-2. Run, or prepare, the suite command.
-3. Record results; list failures with file and test name.
+## Owner-mediated handoff
+The owner forwards the prompt to Claude and Gemini and returns both complete Markdown reports. No direct AI-to-AI channel is assumed.
+
+## ChatGPT completion steps
+1. Verify both reports' file/line references against the live branch.
+2. Deduplicate and rank findings by severity and exploitability.
+3. Separate model-level gaps from adapter-only requirements and unsupported assumptions.
+4. Reconcile disagreements without erasing either reviewer's rationale.
+5. Recommend ACCEPT / ACCEPT WITH CHANGES / REJECT and define one next bounded task.
+
+## Constraints
+No code edits, PR changes, merges, deployment, provider calls, paid services, runtime/database selection or changes to canonical LOOP/CASE/D IDs. Do not treat the 266/266 suite as proof of real concurrency or durability.
 
 ## Done when
-- A results note exists in AI_COLLAB with the command, output or NOT RUN, and any failures listed.
-- STATE.md and CHECKPOINT.md updated.
-
-## If blocked
-Write the blocker into CHECKPOINT and stop.
+A review reconciliation note exists with both reviewer reports linked or quoted by exact source, findings verified against source, risk-ranked disposition and one next task. Until the owner returns both reports, status is BLOCKED / WAITING FOR OWNER INPUT.
