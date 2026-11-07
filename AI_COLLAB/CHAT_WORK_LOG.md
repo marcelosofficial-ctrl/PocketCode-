@@ -752,3 +752,11 @@ Next: await owner-provided read-only Pyodios saved-exception probe output; prese
 - Added regressions for refreshed-authorization replay returning the same grant and changed operation/scope under the same key conflicting.
 - Clarified in P37 contract and durable adapter contract that idempotency lookup is not permission to start/resume a transfer. Production must authenticate before lookup and separately apply the selected policy/revocation rule to transfer continuation.
 - Tests were not run. Source/test code is a sequential in-memory reference model only; no durable or concurrent behavior is established.
+
+
+## 2026-11-07 — P38A CI failure analysis and stale grant snapshot correction
+
+- GitHub Actions run `42364502424` for exact P38 SHA `c57873d321f66d89a649bc3d219337fe1b1b1efd` executed 240 tests and failed only `test_end_to_end_release_recovery_survives_receipt_successor`.
+- Failure: after a transfer advanced to `transferring` with 3 bytes recorded, `get_release_grant()` returned the original `reserved` snapshot. The idempotency index stored an immutable copy of the initial grant and both lookup and replay incorrectly returned that stale copy.
+- Corrected `get_release_grant()` and `reserve_release()` exact-replay path to resolve the current grant aggregate by grant ID while retaining the immutable request fingerprint in the index.
+- The failing end-to-end regression was retained unchanged. Exact-head CI for the correction is pending.

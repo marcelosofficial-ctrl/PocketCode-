@@ -473,3 +473,12 @@ New normative design draft: [AI_COLLAB/DURABLE_ADAPTER_CONTRACT_20261106.md](AI_
 - Updated P37 contract and durable adapter contract to distinguish idempotency lookup from permission to start/resume a byte transfer. Production must authenticate the caller before lookup, persist trusted original authorization provenance, and apply the explicitly selected policy/revocation rule independently when resuming transfer.
 - Source/test edits are committed and read back below. **Tests were not executed** in this pass; do not report the regression as passing. The model remains sequential/in-memory and does not implement trusted identity or transfer-resume policy.
 - This closes a semantic mismatch between lost-response recovery and short-lived authorization refresh without weakening operation-scope binding or allowing a changed request to reuse the key.
+
+
+## PC-2026-11-07-P38A — CI-discovered release-grant stale snapshot recovery fix
+
+- Exact-head CI for P38 commit `c57873d321f66d89a649bc3d219337fe1b1b1efd` ran 240 tests and failed one: `test_end_to_end_release_recovery_survives_receipt_successor`. The assertion showed that request-key lookup returned the original `reserved` grant snapshot instead of the latest `transferring` aggregate with 3 bytes recorded.
+- Root cause: `_release_grant_by_request` retained the initial immutable grant value, and both `get_release_grant()` and exact request replay returned that stale value after lifecycle transitions updated `_release_grants`.
+- Fixed both paths to use the idempotency index only to resolve grant identity/fingerprint, then read the current grant aggregate from `_release_grants`. The request fingerprint remains immutable; lifecycle state is obtained from the authoritative aggregate map.
+- The existing end-to-end recovery regression now directly exercises lookup and replay after partial progress and receipt supersession. No test was weakened. Exact-head CI for the correction is pending.
+- Important: this is a sequential in-memory map consistency fix. It does not prove durable transactional consistency or concurrency; the production adapter must atomically read the idempotency mapping and current grant aggregate.

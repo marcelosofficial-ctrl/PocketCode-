@@ -177,7 +177,12 @@ class ResultReceiptStore:
                    for value in (request_key, principal_id, tenant_id)):
             raise ReceiptConflict("release grant lookup identity is required")
         prior = self._release_grant_by_request.get((principal_id, tenant_id, request_key))
-        return prior[1] if prior is not None else None
+        if prior is None:
+            return None
+        # The idempotency index stores immutable request identity/fingerprint,
+        # not a mutable lifecycle snapshot. Resolve the current aggregate state
+        # so recovery cannot regress to the original reserved version.
+        return self._release_grants.get(prior[1].grant_id, prior[1])
 
     def _record_release_grant(self, grant: ReleaseGrant, transition: str,
                               observed_at_ms: int) -> ReleaseGrant:
@@ -257,7 +262,9 @@ class ResultReceiptStore:
             prior_fingerprint, prior_grant = prior
             if prior_fingerprint != fingerprint:
                 raise ReceiptConflict("release request key already binds different request details")
-            return prior_grant
+            # Return the latest committed in-memory aggregate state, not the
+            # original reserved snapshot retained in the idempotency index.
+            return self._release_grants.get(prior_grant.grant_id, prior_grant)
 
         decision = self.release_artifact(
             artifact_id, authorization, receipt_id=receipt_id,
