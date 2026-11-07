@@ -310,6 +310,71 @@ class ResultReceiptTests(unittest.TestCase):
         )
         self.assertEqual(result.disposition, "denied_artifact_not_in_receipt")
 
+    def test_historical_receipt_cannot_authorize_new_release_after_successor(self):
+        historical = self.receipt
+        historical_hash = historical.receipt_sha256
+        latest = self.create(
+            revision_key="receipt-rev-2", created_at_ms=110,
+            predecessor_receipt_id=historical.receipt_id,
+            revision_reason="late non-artifact observation",
+            evidence_refs=("event-1", "event-2"),
+            evidence_sha256=(self.digest, self.digest),
+        )
+        old_authorization = self.auth(receipt_id=historical.receipt_id)
+        denied = self.store.release_artifact(
+            "artifact-1", old_authorization,
+            receipt_id=historical.receipt_id, now_ms=111,
+        )
+        self.assertEqual(denied.disposition, "denied_superseded_receipt")
+        self.assertIsNone(denied.content)
+
+        fresh_authorization = self.auth(
+            authorization_id="auth-latest",
+            receipt_id=latest.receipt_id,
+        )
+        allowed = self.store.release_artifact(
+            "artifact-1", fresh_authorization,
+            receipt_id=latest.receipt_id, now_ms=111,
+        )
+        self.assertEqual(allowed.disposition, "released")
+        self.assertEqual(allowed.content, self.content)
+
+        self.assertEqual(len(self.store.receipts), 2)
+        self.assertEqual(self.store.receipts[0], historical)
+        self.assertEqual(self.store.receipts[0].receipt_sha256, historical_hash)
+        self.assertEqual(self.store.receipts[0].version, 1)
+        self.assertEqual(self.store.receipts[1].version, 2)
+
+    def test_latest_receipt_removing_artifact_denies_release_without_reviving_history(self):
+        historical = self.receipt
+        latest = self.create(
+            revision_key="receipt-rev-2", created_at_ms=110,
+            predecessor_receipt_id=historical.receipt_id,
+            revision_reason="artifact no longer included after reconciliation",
+            artifact_ids=(),
+            evidence_refs=("event-1", "event-2"),
+            evidence_sha256=(self.digest, self.digest),
+        )
+        old_authorization = self.auth(receipt_id=historical.receipt_id)
+        old_result = self.store.release_artifact(
+            "artifact-1", old_authorization,
+            receipt_id=historical.receipt_id, now_ms=111,
+        )
+        self.assertEqual(old_result.disposition, "denied_superseded_receipt")
+
+        latest_authorization = self.auth(
+            authorization_id="auth-latest-no-artifact",
+            receipt_id=latest.receipt_id,
+        )
+        latest_result = self.store.release_artifact(
+            "artifact-1", latest_authorization,
+            receipt_id=latest.receipt_id, now_ms=111,
+        )
+        self.assertEqual(latest_result.disposition, "denied_artifact_not_in_receipt")
+        self.assertIsNone(latest_result.content)
+        self.assertEqual(self.store.receipts[0], historical)
+        self.assertEqual(len(self.store.receipts), 2)
+
     def test_release_binds_exact_object_version_and_operation_scope(self):
         wrong_version = self.auth(object_version="artifact-1:v2")
         self.assertEqual(self.store.release_artifact(
