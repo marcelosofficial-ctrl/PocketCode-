@@ -774,3 +774,11 @@ Next: await owner-provided read-only Pyodios saved-exception probe output; prese
 - Added `AI_COLLAB/RELEASE_GRANT_ADAPTER_RESEARCH_AND_REDTAM_20261107.md` with research, decisions, red-team corrections, adapter recipe, 23 acceptance tests and open policy decisions.
 - CI run `42364880874` was observed on earlier model SHA `2504eb1f9337e9f70aea4262555f5995df41d384`; it was queued/in progress at last observation. A subsequent source validation change created `b3bd2d273f6cbd95cb06852a9eb2f7d50c7624a4`, so that earlier run is not evidence for the current head. No local tests were run.
 - No database/provider/queue/workflow service selected; no PR or deployment changed.
+
+
+## P39 exact-head CI and test correction record
+
+- Run 42365118269 at SHA e99c67c721fb749ec1e22e5f0b0e5db9bd36104b: 266 tests, failure. 24 errors shared one root cause: model test fixtures passed exact authorization binding fields absent from the reserve() signature. Corrected the signature.
+- Run 42365243652 at SHA 89bc1aa694083aaaaa42373592245cf56cddec56: 266 tests, one failure and one error. Fixed default-safe consumer version assertion and aligned the changed-object-intent test's refreshed authorization to the changed object version.
+- Final run 42365303138 at SHA 894a90ba874d0fca3c9e707a8248b41891d7c9a4: **266/266 passed**, 0.347s, exact commit checkout, SUCCESS. [GitHub Actions run](https://github.com/marcelosofficial-ctrl/PocketCode-/actions/runs/42365303138).
+- These are repository Python unit/conformance tests, including a sequential reference model. They do not prove database concurrency, process crash durability, mobile execution, transport stream revocation or production security.
