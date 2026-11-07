@@ -26,8 +26,8 @@ class ReleaseGrantConformanceTests(unittest.TestCase):
             auth_tenant_id="tenant-1", auth_principal_id="principal-1",
             auth_allowed=True, auth_operation="download",
             auth_effect_id="effect-1", auth_attempt_id="attempt-1",
-            auth_receipt_id="receipt-1", auth_artifact_id="artifact-1",
-            auth_object_version="object-v1",
+            auth_receipt_id="receipt-1", auth_receipt_revision=1,
+            auth_artifact_id="artifact-1", auth_object_version="object-v1",
             authorization_id="auth-1", policy_revision="policy-1",
         )
 
@@ -132,8 +132,10 @@ class ReleaseGrantConformanceTests(unittest.TestCase):
             self.reserve(object_version="object-v2")
 
     def test_authorization_must_bind_exact_receipt_revision(self):
+        with self.assertRaisesRegex(ContractConflict, "receipt revision"):
+            self.reserve(receipt_revision=2)
         with self.assertRaisesRegex(ContractConflict, "not bound"):
-            self.reserve(receipt_id="receipt-2", receipt_revision=2)
+            self.reserve(receipt_id="receipt-2", receipt_revision=2, auth_receipt_id="receipt-2", auth_receipt_revision=2)
 
     def test_consumer_defers_future_event_until_predecessor_arrives(self):
         self.reserve()

@@ -156,7 +156,8 @@ class ReleaseGrantContractModel:
         artifact_id: str, object_version: str, operation: str,
         auth_tenant_id: str, auth_principal_id: str, auth_allowed: bool,
         auth_operation: str, auth_effect_id: str, auth_attempt_id: str,
-        auth_receipt_id: str, auth_artifact_id: str, auth_object_version: str,
+        auth_receipt_id: str, auth_receipt_revision: int,
+        auth_artifact_id: str, auth_object_version: str,
         authorization_id: str, policy_revision: str,
         fail_at: Optional[str] = None,
     ) -> Grant:
@@ -185,6 +186,9 @@ class ReleaseGrantContractModel:
             effect_id, attempt_id, receipt_id, artifact_id, object_version
         ):
             raise ContractConflict("authorization decision is not bound to this exact release intent")
+        if (isinstance(auth_receipt_revision, bool) or not isinstance(auth_receipt_revision, int)
+                or auth_receipt_revision != receipt_revision):
+            raise ContractConflict("authorization decision receipt revision mismatch")
         if isinstance(receipt_revision, bool) or not isinstance(receipt_revision, int) or receipt_revision < 1:
             raise ValueError("receipt_revision must be a positive integer")
 
