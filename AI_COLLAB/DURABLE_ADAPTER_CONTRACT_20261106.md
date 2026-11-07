@@ -113,11 +113,17 @@ Required sequence:
 
 A crash before step 5 leaves an orphan staging object eligible for safe cleanup, not a published artifact. A crash after step 5 must allow exact read-back and digest verification. Never overwrite an existing object version.
 
-### T9. Artifact release authorization
+### T9. Artifact release authorization and transfer reservation
 
-Immediately before every download/share request, obtain and validate a current authorization decision bound to principal and tenant; exact receipt ID and version; artifact ID and immutable object version; effect and dispatch attempt; operation scope (download or share); policy revision; expiry; and current revocation state.
+A new download/share request must obtain a fresh trusted policy decision bound to principal and tenant; exact receipt ID and version; artifact ID and immutable object version; EffectId and DispatchAttemptId; operation scope (download or share); policy revision; expiry; and current revocation state.
 
-Do not cache a previous allow decision across requests. Re-check artifact quarantine, receipt membership, object digest and current attempt before releasing bytes. The persistence adapter cannot substitute for a real policy authority or producer authentication service.
+One transaction must re-read the latest receipt version for the exact (EffectId, DispatchAttemptId), verify that the requested receipt is still latest and contains the exact immutable artifact object version, validate the fresh policy decision and artifact integrity/quarantine state, and persist a unique ReleaseGrant/transfer reservation. No artifact bytes may flow before this transaction commits. This commit is the authorization linearization point.
+
+A receipt successor committed before the grant transaction causes the old-receipt request to be denied. A grant committed before a successor is an already-authorized release pinned to its receipt and object version; the successor affects later grant requests, not the historical grant. Whether a policy revocation cancels an already-started transfer is a separate explicit policy decision. Do not silently imply either retroactive revocation or unconditional continuation.
+
+If a process stops after grant commit, recovery must locate the same grant and either resume, complete or explicitly cancel it according to current policy. It must not mint a second grant or re-authorize against a superseded receipt merely because the original response was lost. Record authorization, transfer-start, byte-count/digest and completion/client-receipt facts separately where available.
+
+Do not cache a previous allow decision for a new request. Re-check artifact quarantine, receipt membership, object digest and current attempt. The persistence adapter cannot substitute for a real policy authority or producer authentication service. The in-memory model's synchronous `release_artifact()` return of `released` represents a completed byte-release operation, not a streaming transfer or durable grant.
 
 ### T10. Report publication
 
@@ -138,7 +144,7 @@ A candidate adapter must provide equivalent guarantees to these constraints:
 | Receipt | Unique EffectId, DispatchAttemptId and version; unique revision key |
 | Receipt chain | New version points to the immediately preceding version in its chain |
 | Artifact | Immutable ArtifactId/object_version with exact digest/size and effect/attempt binding |
-| Publication | Append-only attempts keyed to the same receipt; no execution side effect |
+| Release grant | Unique grant atomically bound to the latest receipt version, exact object version, principal/tenant and operation scope |\n| Publication | Append-only attempts keyed to the same receipt; no execution side effect |
 
 A process-local mutex is not a substitute for cross-process concurrency control. The design must survive two workers racing on different devices or processes.
 
@@ -157,7 +163,7 @@ A process-local mutex is not a substitute for cross-process concurrency control.
 | During artifact write | Staging object may be partial | Quarantine or remove staging object; do not expose |
 | After artifact verification, before manifest commit | Verified orphan object | Reconcile manifest; do not expose until committed |
 | After receipt/artifact commit, before clipboard/share | Receipt and artifact remain available | Retry publication using same receipt |
-| During release | No authorization may be assumed after interruption | Revalidate authorization on next request |
+| Before release-grant commit | No transfer grant exists | Re-authorize against the then-current latest receipt; send no bytes |\n| After release-grant commit, before transfer completion | One immutable grant pins receipt/object version | Recover the same grant; apply explicit revocation/cancellation policy; do not create a second grant |
 
 The adapter must expose enough state to distinguish not committed, committed but response lost, ambiguous external effect, and committed and verified.
 
@@ -173,7 +179,7 @@ Before a storage candidate is accepted, run the same semantic tests against it, 
 7. Concurrent receipt revision attempts and predecessor-chain validation.
 8. Artifact byte tampering, truncated writes, object-version substitution and stale authorization.
 9. Backup/restore, migration interruption and integrity verification.
-10. Re-run all canonical PocketCode tests without remapping LOOP/CASE/D IDs or weakening CASE-04.
+10. Re-run all canonical PocketCode tests without remapping LOOP/CASE/D IDs or weakening CASE-04.\n11. Race receipt revision against release-grant creation; prove exactly one linearization order wins and no stale grant is issued.\n12. Test object-version rollover, latest-manifest omission, response loss after grant commit, resumed transfer identity, and revocation of an already-started transfer under the explicitly selected policy.
 
 A harness that mocks the adapter is useful for unit testing but is not evidence of durable behavior. Record exact storage version/build, runtime, filesystem, transaction settings, commands, commit SHA and test results.
 
