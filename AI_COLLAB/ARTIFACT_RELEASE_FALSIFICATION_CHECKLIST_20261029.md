@@ -126,3 +126,18 @@ See [CROSS_DECISION_CONTRADICTION_AUDIT_AND_IMPLEMENTATION_GATES_20261029.md](CR
 ## 2026-11-07 additional falsification target: publication request replay
 
 Test that repeating the same report-publication request after a lost response, with the same idempotency key and same request fingerprint, returns the original attempt and does not append another attempt. Reusing that key with changed result or timestamp must conflict. A distinct key must create a new intentional attempt on the same receipt and must not redispatch the underlying execution. The in-memory model now has these tests; production still needs atomic durable key-claim/append, caller namespace scoping, retention, and destination delivery verification.
+
+
+## 2026-11-07 — receipt supersession cases
+
+Current model decision: only the latest receipt revision for the same effect/attempt may authorize a new artifact release. Historical receipt versions remain immutable audit evidence but are not release authority after supersession.
+
+Required cases:
+- Older receipt + successor retaining exact artifact object version: old authorization is denied as superseded; a fresh authorization naming the latest receipt may pass the remaining gates.
+- Older receipt + successor omitting artifact: old authorization is denied as superseded; latest-receipt authorization is denied because the artifact is not in the current manifest.
+- Historical receipt content/hash/version remain byte-for-byte unchanged after successor creation.
+- Receipt revision committed after policy check but before transfer reservation: production must atomically reject or reconcile the stale decision; the in-memory helper does not prove this.
+- Artifact object version changes: prior authorization bound to the old version must not release new bytes. The current fake store has immutable artifact IDs and no version-rollover operation, so end-to-end rollover remains NOT IMPLEMENTED.
+- Revocation/expiry during an already-started transfer and client-side receipt/integrity confirmation are separate transfer-lifecycle cases, not covered by the release predicate.
+
+Implementation evidence: scripts/result_receipts.py; tests: scripts/test_result_receipts.py (40 uniquely named methods after this pass). New source SHA cda3ceeeea4da60a80e0a397edc1b3721918da02; full repository CI for this SHA is pending independent verification. This is not storage, HTTP, concurrency, provider, device or production-security evidence.
