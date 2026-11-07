@@ -429,3 +429,13 @@ New normative design draft: [AI_COLLAB/DURABLE_ADAPTER_CONTRACT_20261106.md](AI_
 - **Verification:** source and test changes are committed/readable on the research branch. Full CI for this new exact source/test head is PENDING / NOT YET RETRIEVED. Prior 219/219 applies only to `d99f1ca350422b05610c7b62052f25de247d2d9b`; do not transfer it.
 - **Not established:** durable atomicity, concurrent revision-vs-release safety, cryptographic policy authority, streaming transfer, transfer completion/client receipt, real object-store version replacement, mobile/provider/sandbox behavior or production security.
 - Next: verify exact-head CI once; then ask Claude/Gemini to independently challenge T9 grant semantics and proceed to the durable adapter's concurrency/crash conformance design without selecting storage.
+
+
+### P35 exact-head verification closeout
+
+- Latest branch HEAD after the P35 documentation checkpoint: `586780bdc45f9d6b26b13208a7ec064e407dedf0`.
+- Exact script/test commit: `e0ffedd6e42c3882f06d8f494fa6047123573568`. The source and test blobs were read back from the branch and match the recorded SHAs above.
+- GitHub combined commit status for the test commit returned no individual statuses. The available commit-workflow-run connector only returns PR-triggered runs and returned no run; therefore the push-triggered Python workflow result could not be retrieved. **CI status is UNKNOWN / NOT VERIFIED, not PASS.**
+- The branch-scoped workflow is test-only (Python 3.12 unittest; contents:read; no deploy step) and its push path filter includes `scripts/**`. The Actions UI can be checked at https://github.com/marcelosofficial-ctrl/PocketCode-/actions/workflows/pocketcode-python-tests.yml.
+- PR #2, #3 and #4 were inspected and remain OPEN/DRAFT/unmerged. No PR was edited, merged or marked ready.
+- No local execution, durable storage, concurrency test, provider operation, deployment, budget change or runtime selection occurred.
