@@ -510,3 +510,5 @@ New normative design draft: [AI_COLLAB/DURABLE_ADAPTER_CONTRACT_20261106.md](AI_
 - Added auth_receipt_revision to the reserve() contract and fail-closed validation. Added/updated regressions for mismatched authorization receipt ID and receipt revision. The changed-intent regression uses a refreshed authorization bound to the changed object version, so it reaches the intended idempotency conflict path.
 - Exact-head GitHub Actions run [42365455316](https://github.com/marcelosofficial-ctrl/PocketCode-/actions/runs/42365455316) at SHA 744cb4dc7cd4994647c84ac7476d0c78a21f0540 completed SUCCESS: **266/266 repository Python tests passed in 0.294s**.
 - This remains a sequential in-memory model. It does not prove trusted credential verification, DB concurrency, durable crash behavior or transport enforcement. No adapter/provider/database selected.
+
+- Prepared `AI_COLLAB/P39_INDEPENDENT_REVIEW_PROMPT_20261107.md` with exact repository paths, code/test pins, Claude-specific architecture review and Gemini-specific security/spec audit instructions. The owner can attach this one file to both reviewers; no PR or repository review request was created.
