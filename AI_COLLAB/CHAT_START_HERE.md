@@ -35,6 +35,20 @@ Read [PocketCode task, evidence and recovery research](POCKETCODE_TASK_EVIDENCE_
 
 Read AI_COLLAB/EXECUTION_EVIDENCE_AND_RECOVERY_CONTRACT_20261106.md before changing report classification, dispatch retries, or receipts. New isolated helpers: scripts/execution_projection.py (31 local tests) and scripts/dispatch_reconciliation.py (28 local tests), both under CPython 3.13.5. Neither is integrated into a trusted runner, provider adapter or production report formatter. Research additions 13–17 extend the task/evidence/recovery research with Python 3.14 mobile constraints, signal/wrapper semantics, provider-scoped idempotency, CloudEvents/OpenTelemetry identity/time, and current release/licence checks. Legacy scripts/report_contract.py, LOOP/CASE/D IDs and CASE-04 wording are unchanged. Latest verified dispatch source checkpoint: 203628276e65909140bf4ed563071442c538548d; compare at that checkpoint was 843 ahead / 0 behind (history divergence only). Exact-head Actions runs/check-runs were zero and aggregate status pending. Fetch the live branch before further work.
 
+## Latest artifact-release authorization checkpoint (2026-11-07)
+
+The publication idempotency work is complete at exact tested source SHA d99f1ca350422b05610c7b62052f25de247d2d9b (CI run 42312110283, 219 passed). The next boundary is now partially implemented: new artifact releases must name the latest immutable receipt revision for the exact effect/attempt. Historical receipt versions remain auditable but cannot authorize a new download/share after a successor exists. A fresh authorization bound to the latest receipt and exact artifact object version is required.
+
+Latest code commits:
+- Tests: f4596e2f8d71066dfa154d1244f00749a7010108
+- Source: cda3ceeeea4da60a80e0a397edc1b3721918da02
+- Source file: scripts/result_receipts.py
+- Tests: scripts/test_result_receipts.py
+
+Two new regressions cover superseded-receipt denial, fresh authorization against a successor retaining the artifact, and denial when the latest manifest omits the artifact. The receipt test module contains 40 unique methods. Exact blobs were read back. Full repository CI for the latest source SHA is NOT YET VERIFIED; the prior 219/219 run does not cover these changes.
+
+Next: verify CI at the exact source SHA; then model receipt-revision-vs-transfer reservation races and immutable artifact object-version rollover. Production still requires atomic latest-receipt check + trusted policy decision + transfer reservation. No durable storage, HTTP transfer, provider, mobile or production authorization is established.
+
 ## First action
 
 Read this file, verify the live branch/PR/CI state, and fetch only the linked task-specific evidence. Continue the active work. Do not restart discovery or ask the owner to reconstruct a prior chat.
