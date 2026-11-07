@@ -30,7 +30,7 @@ PocketCode is a phone-first, provider-neutral Agentic Orchestration Control Plan
 
 1. [P39 research and red-team packet](https://github.com/marcelosofficial-ctrl/PocketCode-/blob/pocketcode-ai-workflow-director-research-2026-10-28/AI_COLLAB/RELEASE_GRANT_ADAPTER_RESEARCH_AND_REDTAM_20261107.md)
 2. [P37 concurrency and crash contract](https://github.com/marcelosofficial-ctrl/PocketCode-/blob/pocketcode-ai-workflow-director-research-2026-10-28/AI_COLLAB/RELEASE_GRANT_CONCURRENCY_AND_CRASH_CONTRACT_20261107.md)
-3. [Durable adapter contract](https://github.com/marcelosofficial-ctrl/PocketCode-/blob/pocketcode-ai-workflow-director-research-2026-11-28/AI_COLLAB/DURABLE_ADAPTER_CONTRACT_20261106.md)
+3. [Durable adapter contract](https://github.com/marcelosofficial-ctrl/PocketCode-/blob/pocketcode-ai-workflow-director-research-2026-10-28/AI_COLLAB/DURABLE_ADAPTER_CONTRACT_20261106.md)
 4. [Reference model](https://github.com/marcelosofficial-ctrl/PocketCode-/blob/744cb4dc7cd4994647c84ac7476d0c78a21f0540/scripts/release_grant_conformance.py)
 5. [Reference model tests](https://github.com/marcelosofficial-ctrl/PocketCode-/blob/744cb4dc7cd4994647c84ac7476d0c78a21f0540/scripts/test_release_grant_conformance.py)
 6. [Existing release-grant implementation](https://github.com/marcelosofficial-ctrl/PocketCode-/blob/744cb4dc7cd4994647c84ac7476d0c78a21f0540/scripts/result_receipts.py)
