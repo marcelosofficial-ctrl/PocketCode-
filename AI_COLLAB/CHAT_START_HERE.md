@@ -20,12 +20,12 @@ GitHub is the durable project state. Do not rely on a last-minute full-chat hand
 **Important limitation:** this protocol reduces avoidable context pressure and tool stalls; it cannot prevent platform context limits, service outages or execution failures. The goal is graceful interruption with no lost project state.
 
 
-**Last refreshed:** 2026-11-06 (typed execution projection, recovery contract and deeper primary-source verification incorporated)  
+**Last refreshed:** 2026-11-07 (P37 release-grant concurrency and crash contract added)  
 **Authority:** live PocketCode branch state plus canonical source/spec/test records. This file is the compact first-read entrypoint for every new PocketCode chat.
 
 ## Current cross-project note
 
-Read [RevDev progress and multi-chat continuity update](CROSS_PROJECT_UPDATE_REVDEV_2026-11-06.md) for transferable engineering lessons only; no RevDev implementation or acceptance evidence transfers into PocketCode. PocketCode now has in-memory models for dispatch reconciliation, fake outbox recovery, append-only event provenance, coordinator projection, immutable receipts, artifact release and publication idempotency. These are semantic conformance models, not durable storage or production security boundaries. The current active engineering checkpoint is P36 in [STATE_LEDGER_20261106.md](STATE_LEDGER_20261106.md): an in-memory idempotent release-grant lifecycle now models reservation, response-loss recovery, transfer progress, completion and explicit cancellation. It is not durable or concurrent; exact-head CI remains unverified. The owner Pyodios read-only saved-exception probe remains a separate outstanding device action.
+Read [RevDev progress and multi-chat continuity update](CROSS_PROJECT_UPDATE_REVDEV_2026-11-06.md) for transferable engineering lessons only; no RevDev implementation or acceptance evidence transfers into PocketCode. PocketCode now has in-memory models for dispatch reconciliation, fake outbox recovery, append-only event provenance, coordinator projection, immutable receipts, artifact release and publication idempotency. These are semantic conformance models, not durable storage or production security boundaries. The current active engineering checkpoint is P37 in [STATE_LEDGER_20261106.md](STATE_LEDGER_20261106.md): the P36 in-memory release-grant lifecycle now has an adapter-neutral concurrency/crash contract in [RELEASE_GRANT_CONCURRENCY_AND_CRASH_CONTRACT_20261107.md](RELEASE_GRANT_CONCURRENCY_AND_CRASH_CONTRACT_20261107.md), covering receipt-head serialization, grant/event/outbox atomicity, idempotency races, at-least-once delivery and fencing. This is a specification only; no durable/concurrent implementation is proven. The owner Pyodios read-only saved-exception probe remains a separate outstanding device action.
 
 ## Latest research decision (2026-11-06)
 

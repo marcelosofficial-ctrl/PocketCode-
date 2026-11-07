@@ -733,3 +733,13 @@ Next: await owner-provided read-only Pyodios saved-exception probe output; prese
 - Tests `scripts/test_result_receipts.py`: blob `41e71d5ebd77b75b0a582b71db0471ee28b1d35f`, latest commit `2e109382afd77b9cd20364d275ef986a9f222fec`; 58 unique method names.
 - T9 now documents the model API and explicitly states that the in-memory completion digest is caller-supplied and does not prove remote delivery. No database, cloud, provider, runtime or production policy selected.
 - Verification status: source/test files are committed and fetched back. No local test execution was performed. Exact-head CI remains NOT VERIFIED until the matching GitHub Actions run is independently observed.
+
+
+## 2026-11-07 — P37 release-grant concurrency and crash contract
+
+- Re-read the live entrypoint, P36 ledger, durable adapter contract, release-grant implementation and receipt tests. Confirmed branch head at start: `752a1fd06c3a8b97c2e413fb72c119686eb9e8f1`.
+- Found the existing T9 statement that grant reservation and latest-receipt validation belong in one transaction was not yet implementation-ready for a concurrent adapter: it did not spell out the stable receipt-head serialization anchor, database-arbitrated idempotency collision behavior, atomic outbox insertion, relay duplicate delivery or fencing on every worker mutation.
+- Authored `AI_COLLAB/RELEASE_GRANT_CONCURRENCY_AND_CRASH_CONTRACT_20261107.md` with a normative transaction sequence, two valid grant-vs-successor serialization outcomes, same-key/different-fingerprint rules, outbox delivery contract, transfer fencing semantics, crash matrix, 15 adapter conformance tests, open decisions and storage-selection exit criteria.
+- Updated T9A in `AI_COLLAB/DURABLE_ADAPTER_CONTRACT_20261106.md` to point to the new detailed contract.
+- No product source, test code, runtime, provider, storage, PR or deployment was changed. No tests were run; this pass adds design requirements only.
+- Limits retained: P36 remains a sequential in-memory model. The new specification is not proof that any current implementation provides durable atomicity, concurrency control, fencing, revocation or transport guarantees.

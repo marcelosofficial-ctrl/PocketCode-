@@ -129,6 +129,16 @@ The in-memory grant conformance model separately exposes `reserve_release()`, `s
 
 The conformance suite also composes reservation, partial transfer, receipt successor, lost-response replay, grant lookup, resume and completion in one scenario; it asserts that the original receipt/object binding and single grant survive the interruption. Grant lookup is scoped to principal + tenant + request key. Malformed non-primitive authorization fields and non-string operation values are rejected before fingerprint serialization or set membership, avoiding unhandled type errors in the model.\n\nThese APIs are a sequential in-memory state-machine model only. They do not prove atomic concurrent reservation, persistence, actual byte streaming, client receipt, observed transfer digest from a transport, crash-safe event append or a real revocation policy. In particular, the caller-supplied completion digest is compared with the staged artifact digest; it is not cryptographic evidence that a remote client received those bytes.
 
+### T9A. Release-grant concurrency and crash contract
+
+The detailed adapter-neutral contract is in [RELEASE_GRANT_CONCURRENCY_AND_CRASH_CONTRACT_20261107.md](RELEASE_GRANT_CONCURRENCY_AND_CRASH_CONTRACT_20261107.md). It is normative for candidate adapters and clarifies that T9's linearization point is the successful commit of one transaction containing the ReleaseGrant, initial immutable grant event and outbox row.
+
+Receipt successor creation and grant reservation must serialize through a stable head row keyed by exact (EffectId, DispatchAttemptId). Locking only an existing receipt row or querying MAX(version) is insufficient to prevent phantom/fork races. A grant transaction must re-read that head, verify the exact latest receipt and immutable object version, validate a trusted bounded policy decision, claim the unique (tenant, principal, request key) idempotency identity, and atomically insert grant + event + outbox before commit. Bytes flow only after commit.
+
+Concurrent same-key/same-fingerprint requests resolve to one grant; changed fingerprints conflict. A lost commit response is recovered by the same key. Outbox delivery is at-least-once with stable event IDs and idempotent consumers, not exactly-once. Transfer/outbox workers require monotonic fencing tokens on every state mutation; lease expiry alone is not protection. Fencing protects durable state but cannot retract bytes already sent, so stream exclusivity is a separate transport requirement.
+
+The new packet defines the two valid receipt-successor/grant serialization outcomes, 15 deterministic adapter race/crash/fencing tests, open policy decisions and explicit exit criteria. These are requirements, not implemented guarantees. P36 remains sequential/in-memory; no durable concurrency or crash behavior is proven.
+
 ### T10. Report publication
 
 Copy/share attempts are append-only records referencing an existing receipt. A failed clipboard/share operation may be retried against the same receipt ID/version. It must not rerun execution, create a new dispatch attempt or mutate receipt contents.

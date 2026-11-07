@@ -450,3 +450,16 @@ New normative design draft: [AI_COLLAB/DURABLE_ADAPTER_CONTRACT_20261106.md](AI_
 - Updated T9 with the model lifecycle and strict limitations. This remains sequential/in-memory; no real transaction, concurrency, transport, client receipt, persistent grant, cryptographic policy authority or revocation semantics are proven.
 - Exact-head full CI has not yet been retrieved. Malformed non-primitive authorization fields and unhashable operation values now fail closed without an unhandled type error. Earlier 219/219 applies only to `d99f1ca350422b05610c7b62052f25de247d2d9b`, not this revision.
 - Next: obtain exact workflow result; independently inspect release grant transitions and idempotency semantics; add an adversarial crash/interleaving matrix; then implement adapter-neutral concurrency contract tests before any database choice.
+
+
+## PC-2026-11-07-P37 — release-grant transaction and concurrency contract
+
+- Added `AI_COLLAB/RELEASE_GRANT_CONCURRENCY_AND_CRASH_CONTRACT_20261107.md`, a normative adapter-neutral specification for T9 grant linearization, receipt-head serialization, concurrent idempotency, atomic grant/event/outbox commit, at-least-once relay, transfer/outbox fencing, crash recovery and 15 deterministic adapter conformance tests.
+- Clarified the critical receipt race: grant commit first means a grant remains pinned to the predecessor receipt/object; successor commit first means a new grant against the predecessor is denied. Both receipt revision and grant reservation must serialize through a stable head keyed by exact EffectId + DispatchAttemptId. `SELECT MAX(version)` and process-local locks are insufficient.
+- Defined same-key concurrency: a database uniqueness constraint arbitrates contenders; same fingerprint returns one grant, changed fingerprint conflicts. Lost commit response is recovered through the same key. Grant + initial event + outbox row must commit atomically.
+- Defined at-least-once outbox delivery with stable event IDs and idempotent consumers. No exactly-once claim. Every worker mutation must carry a monotonic fencing token; lease expiry alone is insufficient. Fencing does not prevent a stale network stream from having already emitted bytes.
+- Updated `AI_COLLAB/DURABLE_ADAPTER_CONTRACT_20261106.md` T9A to point to the detailed packet.
+- **Implementation status:** documentation/specification only. No source or tests changed; no database, outbox relay, lease/fencing implementation, trusted policy authority or transport selected.
+- **Verification:** source branch head was fetched as `752a1fd06c3a8b97c2e413fb72c119686eb9e8f1` before this pass. Documentation changes were committed and read back at the new checkpoint. No tests were run because no executable implementation changed. Exact-head CI was not used as evidence for this docs-only change.
+- **Not established:** durable transaction isolation, concurrent receipt/grant races, crash injection, worker fencing, policy revocation behavior, actual transfer/client receipt or production security.
+- Next: obtain Claude and Gemini independent review against the P37 packet, resolve the explicit policy/stream/idempotency retention decisions, then map the contract to candidate adapter primitives. Do not select storage before the real adapter conformance suite can be run.
