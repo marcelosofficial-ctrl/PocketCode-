@@ -760,3 +760,5 @@ Next: await owner-provided read-only Pyodios saved-exception probe output; prese
 - Failure: after a transfer advanced to `transferring` with 3 bytes recorded, `get_release_grant()` returned the original `reserved` snapshot. The idempotency index stored an immutable copy of the initial grant and both lookup and replay incorrectly returned that stale copy.
 - Corrected `get_release_grant()` and `reserve_release()` exact-replay path to resolve the current grant aggregate by grant ID while retaining the immutable request fingerprint in the index.
 - The failing end-to-end regression was retained unchanged. Exact-head CI for the correction is pending.
+
+- CI evidence: [run 42364575235](https://github.com/marcelosofficial-ctrl/PocketCode-/actions/runs/42364575235), exact SHA `0d27105ab55b208edd9ea65d78055fce07c80839`, push event, checkout exact commit, Python conformance suite, 240 tests, SUCCESS.
