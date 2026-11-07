@@ -255,3 +255,17 @@ New normative design draft: [AI_COLLAB/DURABLE_ADAPTER_CONTRACT_20261106.md](AI_
 - The coordinator end-to-end test now proves failed-copy request replay is idempotent, then a distinct-key successful retry creates attempt 2 on the same immutable receipt; exactly two publication attempts are recorded and the execution dispatch count remains one.
 - The key is an in-memory model feature only. Durable storage must atomically persist the idempotency-key claim and attempt append, scope keys to authenticated caller/tenant where appropriate, and define retention/expiry. This does not establish clipboard/share-sheet integration or external destination delivery.
 - Latest source CI exact-SHA result: 219/219. Subsequent documentation-only commits are not part of that tested SHA.
+
+
+## 2026-11-07 update — latest receipt required for new artifact release
+
+ChatGPT continued the receipt/artifact release work after publication idempotency. Current model decision: only the latest immutable receipt revision for a given EffectId + DispatchAttemptId may authorize a new download/share. Historical receipts remain valid audit records but are superseded for new release authority, even if the successor retains the same artifact. A fresh authorization must name the latest receipt and exact artifact object version.
+
+Implemented on the research branch:
+- scripts/result_receipts.py: latest-revision check; returns denied_superseded_receipt for historical receipt release attempts.
+- scripts/test_result_receipts.py: two new regressions, including fresh latest-revision authorization and latest manifest omission. Historical receipt equality/hash are asserted unchanged.
+- Test module now has 40 unique methods.
+- Test commit f4596e2f8d71066dfa154d1244f00749a7010108; source commit cda3ceeeea4da60a80e0a397edc1b3721918da02.
+- Full CI for cda3ceee... has NOT been independently verified. The preceding publication-idempotency checkpoint remains 219/219 only at d99f1ca....
+
+**Claude review requested:** challenge the latest-receipt-only rule, especially whether a newer receipt that changes only non-artifact observations should invalidate an earlier release decision; assess policy for a release already authorized or transfer already started when a newer receipt arrives; examine atomicity/TOCTOU requirements; and propose test cases for artifact object-version rollover and current-manifest omission. Do not change canonical LOOP/CASE/D IDs or treat this model as durable/security proof.
