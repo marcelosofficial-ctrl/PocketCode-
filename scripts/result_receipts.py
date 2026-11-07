@@ -278,10 +278,14 @@ class ResultReceiptStore:
 
     def release_artifact(self, artifact_id: str, authorization: ReleaseAuthorization, *,
                          receipt_id: str, now_ms: int, operation: str = "download") -> ReleaseResult:
-        """Revalidate receipt membership, object identity and current authorization per request.
+        """Authorize a new release only against the latest immutable receipt revision.
 
-        Authorization fields are still caller-supplied model inputs, not proof that
-        a real policy authority authenticated the principal or checked revocation.
+        Historical receipt versions remain auditable but cannot authorize a new
+        download/share after a successor exists. Authorization fields are still
+        caller-supplied model inputs, not proof that a real policy authority
+        authenticated the principal or checked revocation. A production adapter
+        must atomically bind the latest-revision check, fresh policy decision and
+        release/transfer reservation to prevent a revision race.
         """
         if not isinstance(artifact_id, str) or not artifact_id.strip():
             return ReleaseResult("denied_invalid_artifact_id", str(artifact_id), None, None, None)
@@ -318,7 +322,18 @@ class ResultReceiptStore:
             return ReleaseResult("denied_stale_or_mismatched_attempt", artifact_id, None, None,
                                  authorization.authorization_id)
         receipt = next((item for item in self._receipts if item.receipt_id == receipt_id), None)
-        if receipt is None or receipt.effect_id != entry.effect_id or receipt.attempt_id != entry.attempt_id or not any(
+        if receipt is None or receipt.effect_id != entry.effect_id or receipt.attempt_id != entry.attempt_id:
+            return ReleaseResult("denied_artifact_not_in_receipt", artifact_id, None, None,
+                                 authorization.authorization_id)
+        latest_receipt = max(
+            (item for item in self._receipts
+             if item.effect_id == receipt.effect_id and item.attempt_id == receipt.attempt_id),
+            key=lambda item: item.version,
+        )
+        if receipt.receipt_id != latest_receipt.receipt_id:
+            return ReleaseResult("denied_superseded_receipt", artifact_id, None, None,
+                                 authorization.authorization_id)
+        if not any(
             manifest.artifact_id == artifact_id and manifest.object_version == entry.object_version
             for manifest in receipt.artifact_manifest
         ):
