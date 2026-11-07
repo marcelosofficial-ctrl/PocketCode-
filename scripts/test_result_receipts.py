@@ -524,6 +524,190 @@ class ResultReceiptTests(unittest.TestCase):
         self.assertEqual(original_result.content, self.content)
 
 
+    def test_release_grant_reservation_returns_no_artifact_bytes(self):
+        grant = self.store.reserve_release(
+            "artifact-1", self.auth(), receipt_id=self.receipt.receipt_id,
+            request_key="download-req-1", now_ms=102,
+        )
+        self.assertEqual(grant.state, "reserved")
+        self.assertEqual(grant.receipt_id, self.receipt.receipt_id)
+        self.assertEqual(grant.object_version, self.artifact.object_version)
+        self.assertEqual(grant.effect_id, "effect-1")
+        self.assertEqual(grant.attempt_id, "attempt-1")
+        self.assertFalse(hasattr(grant, "content"))
+        self.assertEqual(len(self.store.release_grants), 1)
+        self.assertEqual([event.transition for event in self.store.release_grant_events],
+                         ["reserved"])
+
+    def test_lost_reservation_response_recovers_same_grant_after_receipt_successor(self):
+        authorization = self.auth()
+        first = self.store.reserve_release(
+            "artifact-1", authorization, receipt_id=self.receipt.receipt_id,
+            request_key="download-req-recover", now_ms=102,
+        )
+        latest = self.create(
+            revision_key="receipt-rev-2", created_at_ms=110,
+            predecessor_receipt_id=self.receipt.receipt_id,
+            revision_reason="late evidence after grant reservation",
+            evidence_refs=("event-2",), evidence_sha256=(self.digest,),
+        )
+        self.assertEqual(latest.version, 2)
+
+        replay = self.store.reserve_release(
+            "artifact-1", authorization, receipt_id=self.receipt.receipt_id,
+            request_key="download-req-recover", now_ms=111,
+        )
+        self.assertEqual(replay, first)
+        self.assertEqual(replay.receipt_id, self.receipt.receipt_id)
+        self.assertEqual(len(self.store.release_grants), 1)
+        self.assertEqual(len(self.store.release_grant_events), 1)
+
+    def test_new_release_request_cannot_reserve_superseded_receipt(self):
+        self.create(
+            revision_key="receipt-rev-2", created_at_ms=110,
+            predecessor_receipt_id=self.receipt.receipt_id,
+            revision_reason="late evidence supersedes receipt",
+            evidence_refs=("event-2",), evidence_sha256=(self.digest,),
+        )
+        with self.assertRaisesRegex(ReceiptConflict, "denied_superseded_receipt"):
+            self.store.reserve_release(
+                "artifact-1", self.auth(), receipt_id=self.receipt.receipt_id,
+                request_key="new-download-after-successor", now_ms=111,
+            )
+        self.assertEqual(self.store.release_grants, ())
+
+    def test_release_request_key_cannot_be_reused_for_changed_request(self):
+        self.store.reserve_release(
+            "artifact-1", self.auth(), receipt_id=self.receipt.receipt_id,
+            request_key="download-req-fixed", now_ms=102,
+        )
+        changed = self.auth(authorization_id="auth-different")
+        with self.assertRaisesRegex(ReceiptConflict, "different request details"):
+            self.store.reserve_release(
+                "artifact-1", changed, receipt_id=self.receipt.receipt_id,
+                request_key="download-req-fixed", now_ms=103,
+            )
+        self.assertEqual(len(self.store.release_grants), 1)
+
+    def test_interrupted_transfer_resumes_same_grant_and_monotonic_progress(self):
+        grant = self.store.reserve_release(
+            "artifact-1", self.auth(), receipt_id=self.receipt.receipt_id,
+            request_key="download-interrupted", now_ms=102,
+        )
+        started = self.store.start_release_transfer(grant.grant_id, now_ms=103)
+        self.assertEqual(started.state, "transferring")
+        resumed = self.store.start_release_transfer(grant.grant_id, now_ms=120)
+        self.assertEqual(resumed, started)
+        progressed = self.store.record_release_progress(
+            grant.grant_id, bytes_transferred=4, now_ms=121,
+        )
+        self.assertEqual(progressed.bytes_transferred, 4)
+        replayed_progress = self.store.record_release_progress(
+            grant.grant_id, bytes_transferred=4, now_ms=122,
+        )
+        self.assertEqual(replayed_progress, progressed)
+        self.assertEqual(len(self.store.release_grants), 1)
+        self.assertEqual([event.transition for event in self.store.release_grant_events],
+                         ["reserved", "transfer_started", "progress_recorded"])
+
+    def test_release_transfer_progress_rejects_regression_and_overshoot(self):
+        grant = self.store.reserve_release(
+            "artifact-1", self.auth(), receipt_id=self.receipt.receipt_id,
+            request_key="download-progress-bounds", now_ms=102,
+        )
+        self.store.start_release_transfer(grant.grant_id, now_ms=103)
+        self.store.record_release_progress(
+            grant.grant_id, bytes_transferred=4, now_ms=104,
+        )
+        with self.assertRaisesRegex(ReceiptConflict, "move backwards"):
+            self.store.record_release_progress(
+                grant.grant_id, bytes_transferred=3, now_ms=105,
+            )
+        with self.assertRaisesRegex(ReceiptConflict, "exceeds artifact length"):
+            self.store.record_release_progress(
+                grant.grant_id, bytes_transferred=len(self.content) + 1, now_ms=105,
+            )
+
+    def test_release_transfer_requires_full_length_and_matching_digest(self):
+        grant = self.store.reserve_release(
+            "artifact-1", self.auth(), receipt_id=self.receipt.receipt_id,
+            request_key="download-completion-check", now_ms=102,
+        )
+        self.store.start_release_transfer(grant.grant_id, now_ms=103)
+        with self.assertRaisesRegex(ReceiptConflict, "before all artifact bytes"):
+            self.store.complete_release_transfer(
+                grant.grant_id, observed_sha256=self.digest, now_ms=104,
+            )
+        self.store.record_release_progress(
+            grant.grant_id, bytes_transferred=len(self.content), now_ms=105,
+        )
+        with self.assertRaisesRegex(ReceiptConflict, "digest"):
+            self.store.complete_release_transfer(
+                grant.grant_id, observed_sha256="0" * 64, now_ms=106,
+            )
+        completed = self.store.complete_release_transfer(
+            grant.grant_id, observed_sha256=self.digest, now_ms=107,
+        )
+        self.assertEqual(completed.state, "completed")
+        self.assertEqual(completed.transfer_sha256, self.digest)
+        self.assertEqual(completed.completed_at_ms, 107)
+        self.assertEqual(self.store.complete_release_transfer(
+            grant.grant_id, observed_sha256=self.digest, now_ms=108,
+        ), completed)
+
+    def test_cancelled_release_grant_cannot_resume_or_complete(self):
+        grant = self.store.reserve_release(
+            "artifact-1", self.auth(), receipt_id=self.receipt.receipt_id,
+            request_key="download-cancelled", now_ms=102,
+        )
+        cancelled = self.store.cancel_release_transfer(
+            grant.grant_id, reason="user cancelled", now_ms=103,
+        )
+        self.assertEqual(cancelled.state, "cancelled")
+        self.assertEqual(self.store.cancel_release_transfer(
+            grant.grant_id, reason="user cancelled", now_ms=104,
+        ), cancelled)
+        with self.assertRaisesRegex(ReceiptConflict, "cannot start"):
+            self.store.start_release_transfer(grant.grant_id, now_ms=105)
+        with self.assertRaisesRegex(ReceiptConflict, "only a transferring"):
+            self.store.complete_release_transfer(
+                grant.grant_id, observed_sha256=self.digest, now_ms=105,
+            )
+
+    def test_completed_release_grant_cannot_be_retroactively_cancelled(self):
+        grant = self.store.reserve_release(
+            "artifact-1", self.auth(), receipt_id=self.receipt.receipt_id,
+            request_key="download-completed", now_ms=102,
+        )
+        self.store.start_release_transfer(grant.grant_id, now_ms=103)
+        self.store.record_release_progress(
+            grant.grant_id, bytes_transferred=len(self.content), now_ms=104,
+        )
+        self.store.complete_release_transfer(
+            grant.grant_id, observed_sha256=self.digest, now_ms=105,
+        )
+        with self.assertRaisesRegex(ReceiptConflict, "retroactively cancelled"):
+            self.store.cancel_release_transfer(
+                grant.grant_id, reason="late cancellation", now_ms=106,
+            )
+
+    def test_release_grant_request_key_is_scoped_to_principal_and_tenant(self):
+        first = self.store.reserve_release(
+            "artifact-1", self.auth(), receipt_id=self.receipt.receipt_id,
+            request_key="same-client-key", now_ms=102,
+        )
+        second_auth = self.auth(
+            authorization_id="auth-other-tenant",
+            principal_id="user-2", tenant_id="tenant-2",
+        )
+        second = self.store.reserve_release(
+            "artifact-1", second_auth, receipt_id=self.receipt.receipt_id,
+            request_key="same-client-key", now_ms=103,
+        )
+        self.assertNotEqual(first.grant_id, second.grant_id)
+        self.assertEqual(len(self.store.release_grants), 2)
+
+
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)
