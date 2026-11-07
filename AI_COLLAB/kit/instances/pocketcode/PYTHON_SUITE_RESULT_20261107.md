@@ -2,7 +2,7 @@
 
 ## Result
 
-<badge>PASS</badge> GitHub Actions run [42365455316](https://github.com/marcelosofficial-ctrl/PocketCode-/actions/runs/42365455316), job `unittest`.
+**PASS:** GitHub Actions run [42365455316](https://github.com/marcelosofficial-ctrl/PocketCode-/actions/runs/42365455316), job `unittest`.
 
 - Tested commit: `744cb4dc7cd4994647c84ac7476d0c78a21f0540`
 - Workflow: `PocketCode Python conformance tests`
