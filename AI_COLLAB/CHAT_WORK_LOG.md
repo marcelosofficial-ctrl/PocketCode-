@@ -782,3 +782,10 @@ Next: await owner-provided read-only Pyodios saved-exception probe output; prese
 - Run 42365243652 at SHA 89bc1aa694083aaaaa42373592245cf56cddec56: 266 tests, one failure and one error. Fixed default-safe consumer version assertion and aligned the changed-object-intent test's refreshed authorization to the changed object version.
 - Final run 42365303138 at SHA 894a90ba874d0fca3c9e707a8248b41891d7c9a4: **266/266 passed**, 0.347s, exact commit checkout, SUCCESS. [GitHub Actions run](https://github.com/marcelosofficial-ctrl/PocketCode-/actions/runs/42365303138).
 - These are repository Python unit/conformance tests, including a sequential reference model. They do not prove database concurrency, process crash durability, mobile execution, transport stream revocation or production security.
+
+
+## P39B — exact authorization receipt-revision binding
+
+- Added explicit auth_receipt_revision to the executable reference model. A fresh authorization now must bind the exact receipt ID, receipt revision, artifact and immutable object version, effect, attempt and operation before replay lookup.
+- First CI attempt exposed a test expectation mismatch because a changed receipt was correctly rejected as stale by the current head before reaching fingerprint comparison. Rewrote the test to isolate proof revision mismatch and proof receipt-ID mismatch without relying on a stale-head branch.
+- Final exact-head run 42365455316 at SHA 744cb4dc7cd4994647c84ac7476d0c78a21f0540: **266/266 passed**, 0.294s, SUCCESS. This supersedes P39's earlier 266/266 pass at SHA 894a90ba874d0fca3c9e707a8248b41891d7c9a4 for the final model code.

@@ -502,3 +502,11 @@ New normative design draft: [AI_COLLAB/DURABLE_ADAPTER_CONTRACT_20261106.md](AI_
 - Follow-up run 42365243652 at SHA 89bc1aa694083aaaaa42373592245cf56cddec56 executed 266 tests and found two remaining test issues: one assertion indexed a missing zero-version consumer entry instead of using the defined default, and one changed-object-version test did not refresh the authorization's object binding, so authorization correctly rejected it before idempotency conflict comparison.
 - Corrected the API signature, made the no-consumer-state assertion default-safe, and made the changed-intent test use an authorization decision bound to the changed object version.
 - Final exact-head run [42365303138](https://github.com/marcelosofficial-ctrl/PocketCode-/actions/runs/42365303138) at SHA 894a90ba874d0fca3c9e707a8248b41891d7c9a4 completed SUCCESS: **266/266 repository Python tests passed in 0.347s**. The two earlier failures remain in the record and were not hidden.
+
+
+## PC-2026-11-07-P39B — authorization receipt-revision binding
+
+- Final red-team pass found the reference model authenticated exact receipt ID and object version but did not yet require the refreshed authorization proof to bind the exact receipt revision. The stable fingerprint already included the revision, but the authorization decision check was incomplete.
+- Added auth_receipt_revision to the reserve() contract and fail-closed validation. Added/updated regressions for mismatched authorization receipt ID and receipt revision. The changed-intent regression uses a refreshed authorization bound to the changed object version, so it reaches the intended idempotency conflict path.
+- Exact-head GitHub Actions run [42365455316](https://github.com/marcelosofficial-ctrl/PocketCode-/actions/runs/42365455316) at SHA 744cb4dc7cd4994647c84ac7476d0c78a21f0540 completed SUCCESS: **266/266 repository Python tests passed in 0.294s**.
+- This remains a sequential in-memory model. It does not prove trusted credential verification, DB concurrency, durable crash behavior or transport enforcement. No adapter/provider/database selected.
