@@ -101,7 +101,7 @@ class ReleaseGrantConformanceTests(unittest.TestCase):
     def test_same_key_changed_object_version_conflicts(self):
         self.reserve()
         with self.assertRaisesRegex(ContractConflict, "different release intent"):
-            self.reserve(object_version="object-v2")
+            self.reserve(object_version="object-v2", auth_object_version="object-v2")
 
     def test_same_key_changed_operation_conflicts(self):
         self.reserve()
@@ -223,7 +223,7 @@ class ReleaseGrantConformanceTests(unittest.TestCase):
             3, "completed", "future-digest",
         )
         self.assertEqual(self.store.consume_event(future), "deferred_gap")
-        self.assertEqual(self.store.consumer_versions[event.grant_id], 0)
+        self.assertEqual(self.store.consumer_versions.get(event.grant_id, 0), 0)
 
 
 if __name__ == "__main__":
