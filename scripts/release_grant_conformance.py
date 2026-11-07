@@ -155,7 +155,9 @@ class ReleaseGrantContractModel:
         effect_id: str, attempt_id: str, receipt_id: str, receipt_revision: int,
         artifact_id: str, object_version: str, operation: str,
         auth_tenant_id: str, auth_principal_id: str, auth_allowed: bool,
-        auth_operation: str, authorization_id: str, policy_revision: str,
+        auth_operation: str, auth_effect_id: str, auth_attempt_id: str,
+        auth_receipt_id: str, auth_artifact_id: str, auth_object_version: str,
+        authorization_id: str, policy_revision: str,
         fail_at: Optional[str] = None,
     ) -> Grant:
         """Authenticate first; exact replay recovers grant; new intent requires current head.
