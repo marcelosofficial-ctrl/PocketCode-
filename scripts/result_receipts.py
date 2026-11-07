@@ -181,6 +181,10 @@ class ResultReceiptStore:
 
     def _record_release_grant(self, grant: ReleaseGrant, transition: str,
                               observed_at_ms: int) -> ReleaseGrant:
+        prior_events = [event for event in self._release_grant_events
+                        if event.grant_id == grant.grant_id]
+        if prior_events and observed_at_ms < prior_events[-1].observed_at_ms:
+            raise ReceiptConflict("release grant event time cannot move backwards")
         updated = replace(grant)
         self._release_grants[grant.grant_id] = updated
         self._release_grant_events.append(ReleaseGrantEvent(
