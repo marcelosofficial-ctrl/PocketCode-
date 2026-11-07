@@ -1,0 +1,8 @@
+Reconcile after a stuck chat. Do not trust any earlier chat; use only the repo. Normal mode, no Think, no changes to existing files except the new note.
+Repo <URL>, branch <BRANCH>.
+1) List the last 15 commits on the branch: short sha, UTC time, author, message, files changed (count). Mark which look like they came from a chat session.
+2) For each commit in the last 48 hours, state the CI result for that commit (PASS, FAIL or NOT RUN). For every FAIL, name the failing workflow and job and read the log; give the first failing test or error line, quoted exactly.
+3) Compare what those commits actually contain against NEXT_TASK.md and STATE.md. Write three lists: COMMITTED (verified in a commit), CLAIMED-ONLY (mentioned in docs or chat but not in any commit), UNKNOWN.
+4) Write the result to <DIR>/RECONCILIATION_<date>.md (under 400 words) and commit it. Then update CHECKPOINT.md with the next single step. Do not fix, revert or merge anything unless I say so.
+5) Reply with the CI failures, the COMMITTED list and the one next step, in under 15 lines.
+If you cannot read commits or CI logs, say so plainly.
