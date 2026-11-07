@@ -713,3 +713,12 @@ Next: await owner-provided read-only Pyodios saved-exception probe output; prese
 - Updated `AI_COLLAB/DURABLE_ADAPTER_CONTRACT_20261106.md` with release-grant linearization, response-loss recovery, object-version rollover and race tests. No durable backend or storage selected.
 - Exact-head CI has not yet been independently retrieved. Prior 219/219 at d99f1ca is historical and does not validate this revision.
 - Limits: synchronous in-memory model only; no actual concurrent transaction, durable grant, cryptographic authorization, stream cancellation, client receipt or production release behavior.
+
+
+### P35 verification closeout
+
+- Branch HEAD after documentation closeout: `586780bdc45f9d6b26b13208a7ec064e407dedf0`.
+- Test-bearing commit: `e0ffedd6e42c3882f06d8f494fa6047123573568`; source/test blobs were fetched back exactly.
+- Combined commit status returned an empty status list. The available workflow-run lookup is limited to PR-triggered runs, so it did not expose the branch push run. Exact-head CI remains **UNKNOWN / NOT VERIFIED**. Do not report a pass.
+- The test-only workflow definition was read back: Python 3.12 unittest, contents:read, no deployment step, branch/path scoped to this research branch and `scripts/**`. Actions page: https://github.com/marcelosofficial-ctrl/PocketCode-/actions/workflows/pocketcode-python-tests.yml.
+- PR #2/#3/#4 remain open drafts and were not mutated. No merge, deployment, provider execution, paid service, budget or runtime/storage selection.
