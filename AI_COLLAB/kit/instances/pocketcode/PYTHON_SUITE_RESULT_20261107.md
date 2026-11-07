@@ -16,7 +16,7 @@ The exact job log includes 22 entries from `test_fake_outbox`, 43 from `test_fak
 
 ## Applicability to current branch
 
-Current branch HEAD at verification: `04f4db211d4bfdee76989c1dbe6c8bb9079e9bb0`. GitHub compare from tested SHA to HEAD reports 25 commits ahead, 0 behind. Changed paths are documentation-only; no `scripts/**` or workflow file changed. The workflow is path-filtered to scripts and its own workflow file. Thus the exact-SHA PASS remains applicable to the current source/test tree.
+At this verification, live branch HEAD is `e0aef94d856a1c3ef781c3ce6228cbb8259e0e89`. GitHub compare from tested SHA to HEAD reports 33 commits ahead, 0 behind. Changed paths are AI_COLLAB/continuity documentation only; no `scripts/**` or workflow file changed. Thus the exact-SHA PASS remains applicable to the current source/test tree.
 
 ## Limits
 
