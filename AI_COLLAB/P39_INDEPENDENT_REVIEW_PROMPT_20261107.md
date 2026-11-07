@@ -3,7 +3,7 @@
 **Review date:** 2026-11-07  
 **Repository:** https://github.com/marcelosofficial-ctrl/PocketCode-  
 **Active branch:** pocketcode-ai-workflow-director-research-2026-10-28  
-**Current documentation HEAD:** 6a9e84ab1735291c5f2d7e50d152ea083047af14  
+**Pinned documentation snapshot:** 04f4db211d4bfdee76989c1dbe6c8bb9079e9bb0 (the review brief's parent commit; fetch this exact snapshot for the docs)  
 **Tested source/test commit:** 744cb4dc7cd4994647c84ac7476d0c78a21f0540  
 **Exact-head CI:** https://github.com/marcelosofficial-ctrl/PocketCode-/actions/runs/42365455316 (266/266 passed)
 
@@ -77,7 +77,7 @@ Return: (1) exploitable or correctness-critical counterexamples, (2) security bo
 - Give a reproducible schedule or input for each finding.
 - Distinguish a model-level failure from a production-adapter failure.
 - Do not recommend a database or service without evidence about the actual target deployment topology and $0 budget.
-- Do not invent CI results. The 266/266 run is exact for source/test SHA 744cb4dc7cd4994647c84ac7476d0c78a21f0540. The latest branch HEAD 6a9e84ab1735291c5f2d7e50d152ea083047af14 adds only ledger/work-log/entrypoint documentation after that tested source/test commit.
+- Do not invent CI results. The 266/266 run is exact for source/test SHA 744cb4dc7cd4994647c84ac7476d0c78a21f0540. The pinned documentation snapshot 04f4db211d4bfdee76989c1dbe6c8bb9079e9bb0 is 25 commits ahead of the tested source/test SHA; compare confirms only documentation paths changed, with no scripts or workflow changes. This is the exact documentation snapshot to review, not a claim about a future branch HEAD.
 - Return the complete review in a standalone Markdown document suitable for committing to a review branch, but do not commit it yourself.
 
 ## Required final section
