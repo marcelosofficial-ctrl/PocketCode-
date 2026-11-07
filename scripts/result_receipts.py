@@ -283,9 +283,17 @@ class ResultReceiptStore:
         Historical receipt versions remain auditable but cannot authorize a new
         download/share after a successor exists. Authorization fields are still
         caller-supplied model inputs, not proof that a real policy authority
-        authenticated the principal or checked revocation. A production adapter
-        must atomically bind the latest-revision check, fresh policy decision and
-        release/transfer reservation to prevent a revision race.
+        authenticated the principal or checked revocation.
+
+        In this synchronous model, returning disposition="released" is the
+        linearization point and represents a completed byte-release operation;
+        this model does not represent a streaming or in-flight transfer. A
+        production adapter must atomically bind the latest-revision check, fresh
+        policy decision, immutable object version and durable release/transfer
+        reservation before any bytes flow. A grant committed before a successor
+        receipt is a previously authorized release; a successor affects only
+        later release requests. Active-transfer cancellation on revocation is a
+        separate policy decision, not an implicit consequence of receipt revision.
         """
         if not isinstance(artifact_id, str) or not artifact_id.strip():
             return ReleaseResult("denied_invalid_artifact_id", str(artifact_id), None, None, None)
