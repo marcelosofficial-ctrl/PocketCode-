@@ -699,3 +699,17 @@ Next: await owner-provided read-only Pyodios saved-exception probe output; prese
 **Not established:** durable atomicity, concurrent revision-vs-release race safety, trusted policy authority, transfer reservation/completion, client receipt, actual storage/object-version replacement, provider/mobile behavior or production security.
 
 **Next:** inspect exact-SHA CI for cda3ceee...; then test receipt supersession races and artifact object-version replacement semantics, while keeping transfer completion separate from authorization.
+
+
+## 2026-11-07 — P35 receipt release linearization and rollover red-team
+
+- Live branch head before this pass: `63533a8d75a4cf91b3f4006157ac044e74b53fc9`. Earlier user handoff at d624 was stale relative to later P26–P34 implementation already present on the branch.
+- Reviewed `scripts/result_receipts.py`, `scripts/test_result_receipts.py`, the durable adapter T1–T10 contract, Claude project map and CI workflow.
+- Found an important policy distinction: latest-receipt-only must gate **new release grants**. It must not retroactively revoke bytes already released under a grant that linearized before a successor receipt. The synchronous fake model treats return of `released` as completed release; streaming/in-flight transfer remains unmodeled.
+- Production contract now requires an atomic T9 transaction that re-reads the latest receipt for exact effect/attempt, validates current trusted policy and exact immutable object version, and persists a unique ReleaseGrant before bytes flow. Later receipts affect later grants; cancellation of an already-started transfer on revocation is a separate policy decision.
+- Added regression coverage for (1) a completed release followed by receipt supersession, (2) artifact identity/object-version rollover with the latest manifest changing to the new object, and (3) latest-receipt scoping to exact effect and attempt.
+- Source: `scripts/result_receipts.py`, blob `3dc0bc9855f6993be0bf70237e16516ddb764631`, commit `9240f7bb4f2c6b434a9ec3084ba6053e59194802`.
+- Tests: `scripts/test_result_receipts.py`, blob `6660161bcc43824af5cc8f9285a6d87f86165633`, commit `e0ffedd6e42c3882f06d8f494fa6047123573568`; 43 unique test methods.
+- Updated `AI_COLLAB/DURABLE_ADAPTER_CONTRACT_20261106.md` with release-grant linearization, response-loss recovery, object-version rollover and race tests. No durable backend or storage selected.
+- Exact-head CI has not yet been independently retrieved. Prior 219/219 at d99f1ca is historical and does not validate this revision.
+- Limits: synchronous in-memory model only; no actual concurrent transaction, durable grant, cryptographic authorization, stream cancellation, client receipt or production release behavior.
