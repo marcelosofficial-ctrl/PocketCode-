@@ -155,6 +155,8 @@ class ReleaseGrantContractModel:
             tenant_id, principal_id, request_key, effect_id, attempt_id,
             receipt_id, artifact_id, object_version, operation,
             auth_tenant_id, auth_principal_id, auth_operation,
+            auth_effect_id, auth_attempt_id, auth_receipt_id,
+            auth_artifact_id, auth_object_version,
             authorization_id, policy_revision,
         )
         if not all(isinstance(value, str) and value.strip() for value in strings):
@@ -163,6 +165,10 @@ class ReleaseGrantContractModel:
             raise ContractConflict("authenticated authorization is not valid for this principal and tenant")
         if auth_operation != operation:
             raise ContractConflict("authorization operation scope mismatch")
+        if (auth_effect_id, auth_attempt_id, auth_receipt_id, auth_artifact_id, auth_object_version) != (
+            effect_id, attempt_id, receipt_id, artifact_id, object_version
+        ):
+            raise ContractConflict("authorization decision is not bound to this exact release intent")
         if isinstance(receipt_revision, bool) or not isinstance(receipt_revision, int) or receipt_revision < 1:
             raise ValueError("receipt_revision must be a positive integer")
 
@@ -229,6 +235,8 @@ class ReleaseGrantContractModel:
         grant = next((g for g in self.grants.values() if g.grant_id == grant_id), None)
         if grant is None:
             raise ContractConflict("grant not found")
+        if grant.state not in ("reserved", "transferring"):
+            raise ContractConflict("grant is not eligible for a transfer worker")
         current = self.leases.get(grant_id)
         if current is not None and current.expires_at > now:
             raise ContractConflict("worker lease is still active")
@@ -272,8 +280,12 @@ class ReleaseGrantContractModel:
                 raise ContractConflict("same source/event identity has different payload")
             return "duplicate"
         last = self.consumer_versions.get(event.grant_id, 0)
-        if event.aggregate_version != last + 1:
-            raise ContractConflict("out-of-order aggregate event")
+        if event.aggregate_version > last + 1:
+            # A future event is not corrupt merely because its predecessor is
+            # delayed. Defer it without recording it as consumed.
+            return "deferred_gap"
+        if event.aggregate_version <= last:
+            raise ContractConflict("unknown or stale aggregate event version")
         self.consumer_seen[identity] = digest
         self.consumer_versions[event.grant_id] = event.aggregate_version
         return "accepted"

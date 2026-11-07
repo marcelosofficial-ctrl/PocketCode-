@@ -25,6 +25,9 @@ class ReleaseGrantConformanceTests(unittest.TestCase):
             object_version="object-v1", operation="download",
             auth_tenant_id="tenant-1", auth_principal_id="principal-1",
             auth_allowed=True, auth_operation="download",
+            auth_effect_id="effect-1", auth_attempt_id="attempt-1",
+            auth_receipt_id="receipt-1", auth_artifact_id="artifact-1",
+            auth_object_version="object-v1",
             authorization_id="auth-1", policy_revision="policy-1",
         )
 
@@ -97,6 +100,30 @@ class ReleaseGrantConformanceTests(unittest.TestCase):
         with self.assertRaisesRegex(ContractConflict, "scope mismatch"):
             self.reserve(auth_operation="share")
 
+    def test_authorization_must_bind_exact_artifact_object_version(self):
+        with self.assertRaisesRegex(ContractConflict, "not bound"):
+            self.reserve(object_version="object-v2")
+
+    def test_authorization_must_bind_exact_receipt_revision(self):
+        with self.assertRaisesRegex(ContractConflict, "not bound"):
+            self.reserve(receipt_id="receipt-2", receipt_revision=2)
+
+    def test_consumer_defers_future_event_until_predecessor_arrives(self):
+        self.reserve()
+        first = next(iter(self.store.events.values()))
+        future = type(first)(
+            first.source, "release-grant-1:v3", first.grant_id,
+            3, "completed", "future-digest",
+        )
+        self.assertEqual(self.store.consume_event(future), "deferred_gap")
+        self.assertEqual(self.store.consume_event(first), "accepted")
+        second = type(first)(
+            first.source, "release-grant-1:v2", first.grant_id,
+            2, "transferring", "second-digest",
+        )
+        self.assertEqual(self.store.consume_event(second), "accepted")
+        self.assertEqual(self.store.consume_event(future), "accepted")
+
     def test_crash_after_staged_grant_leaves_no_partial_state(self):
         with self.assertRaisesRegex(RuntimeError, "staged grant"):
             self.reserve(fail_at="after_grant")
@@ -161,15 +188,15 @@ class ReleaseGrantConformanceTests(unittest.TestCase):
         with self.assertRaisesRegex(ContractConflict, "different payload"):
             self.store.consume_event(changed)
 
-    def test_consumer_rejects_out_of_order_aggregate_event(self):
+    def test_consumer_does_not_mark_future_event_consumed_when_predecessor_is_missing(self):
         self.reserve()
         event = next(iter(self.store.events.values()))
         future = type(event)(
             event.source, "release-grant-1:v3", event.grant_id,
             3, "completed", "future-digest",
         )
-        with self.assertRaisesRegex(ContractConflict, "out-of-order"):
-            self.store.consume_event(future)
+        self.assertEqual(self.store.consume_event(future), "deferred_gap")
+        self.assertEqual(self.store.consumer_versions[event.grant_id], 0)
 
 
 if __name__ == "__main__":
