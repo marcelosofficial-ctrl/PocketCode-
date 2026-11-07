@@ -691,6 +691,62 @@ class ResultReceiptTests(unittest.TestCase):
                 grant.grant_id, reason="late cancellation", now_ms=106,
             )
 
+    def test_release_grant_lookup_is_scoped_to_principal_and_tenant(self):
+        grant = self.store.reserve_release(
+            "artifact-1", self.auth(), receipt_id=self.receipt.receipt_id,
+            request_key="lookup-key", now_ms=102,
+        )
+        self.assertEqual(self.store.get_release_grant(
+            "lookup-key", principal_id="user-1", tenant_id="tenant-1",
+        ), grant)
+        self.assertIsNone(self.store.get_release_grant(
+            "lookup-key", principal_id="user-2", tenant_id="tenant-1",
+        ))
+        self.assertIsNone(self.store.get_release_grant(
+            "lookup-key", principal_id="user-1", tenant_id="tenant-2",
+        ))
+
+    def test_end_to_end_release_recovery_survives_receipt_successor(self):
+        authorization = self.auth()
+        grant = self.store.reserve_release(
+            "artifact-1", authorization, receipt_id=self.receipt.receipt_id,
+            request_key="e2e-release-recovery", now_ms=102,
+        )
+        self.store.start_release_transfer(grant.grant_id, now_ms=103)
+        partial = self.store.record_release_progress(
+            grant.grant_id, bytes_transferred=3, now_ms=104,
+        )
+        self.assertEqual(partial.bytes_transferred, 3)
+
+        self.create(
+            revision_key="receipt-rev-2", created_at_ms=110,
+            predecessor_receipt_id=self.receipt.receipt_id,
+            revision_reason="late evidence during transfer",
+            evidence_refs=("event-2",), evidence_sha256=(self.digest,),
+        )
+
+        recovered = self.store.get_release_grant(
+            "e2e-release-recovery", principal_id="user-1", tenant_id="tenant-1",
+        )
+        self.assertEqual(recovered, partial)
+        replay = self.store.reserve_release(
+            "artifact-1", authorization, receipt_id=self.receipt.receipt_id,
+            request_key="e2e-release-recovery", now_ms=111,
+        )
+        self.assertEqual(replay, partial)
+        self.store.start_release_transfer(grant.grant_id, now_ms=112)
+        resumed = self.store.record_release_progress(
+            grant.grant_id, bytes_transferred=len(self.content), now_ms=113,
+        )
+        self.assertEqual(resumed.bytes_transferred, len(self.content))
+        completed = self.store.complete_release_transfer(
+            grant.grant_id, observed_sha256=self.digest, now_ms=114,
+        )
+        self.assertEqual(completed.state, "completed")
+        self.assertEqual(completed.receipt_id, self.receipt.receipt_id)
+        self.assertEqual(completed.bytes_transferred, len(self.content))
+        self.assertEqual(len(self.store.release_grants), 1)
+
     def test_release_grant_event_time_cannot_move_backwards(self):
         grant = self.store.reserve_release(
             "artifact-1", self.auth(), receipt_id=self.receipt.receipt_id,
