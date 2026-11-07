@@ -677,3 +677,25 @@ Next: await owner-provided read-only Pyodios saved-exception probe output; prese
 - The coordinator end-to-end test now proves failed-copy request replay is idempotent, then a distinct-key successful retry creates attempt 2 on the same immutable receipt; exactly two publication attempts are recorded and the execution dispatch count remains one.
 - The key is an in-memory model feature only. Durable storage must atomically persist the idempotency-key claim and attempt append, scope keys to authenticated caller/tenant where appropriate, and define retention/expiry. This does not establish clipboard/share-sheet integration or external destination delivery.
 - Latest source CI exact-SHA result: 219/219. Subsequent documentation-only commits are not part of that tested SHA.
+
+
+## 2026-11-07 — latest-receipt-only release authorization
+
+**Goal:** resolve whether a historical receipt can authorize a new artifact release after a later receipt revision exists.
+
+**Decision for the conformance model:** a new release must name the latest receipt revision for the same EffectId + DispatchAttemptId. Historical receipts remain immutable and auditable but cannot authorize a new download/share after a successor exists. This is intentionally stricter than merely checking whether the historical manifest contained the artifact.
+
+**Changes**
+- scripts/test_result_receipts.py: added regression coverage for (1) historical receipt denied after successor retains the artifact, while fresh authorization against the successor succeeds; (2) successor omits artifact, so neither historical authorization nor latest-receipt authorization can release it. Both verify historical receipt remains unchanged.
+- scripts/result_receipts.py: added latest-revision check and denied_superseded_receipt; documented the production atomicity requirement.
+- Test source count: 40 unique test methods in the receipt module.
+
+**Commits**
+- Tests: f4596e2f8d71066dfa154d1244f00749a7010108
+- Source: cda3ceeeea4da60a80e0a397edc1b3721918da02
+
+**Verification:** exact source/test blobs fetched back from GitHub and confirmed to contain the intended guard/tests. Full CI for cda3ceee... was not independently retrieved in this pass. Prior 219/219 applies only to d99f1ca...; do not carry that result forward.
+
+**Not established:** durable atomicity, concurrent revision-vs-release race safety, trusted policy authority, transfer reservation/completion, client receipt, actual storage/object-version replacement, provider/mobile behavior or production security.
+
+**Next:** inspect exact-SHA CI for cda3ceee...; then test receipt supersession races and artifact object-version replacement semantics, while keeping transfer completion separate from authorization.
