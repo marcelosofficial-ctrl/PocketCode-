@@ -691,6 +691,21 @@ class ResultReceiptTests(unittest.TestCase):
                 grant.grant_id, reason="late cancellation", now_ms=106,
             )
 
+    def test_release_grant_event_time_cannot_move_backwards(self):
+        grant = self.store.reserve_release(
+            "artifact-1", self.auth(), receipt_id=self.receipt.receipt_id,
+            request_key="download-event-time", now_ms=102,
+        )
+        self.store.start_release_transfer(grant.grant_id, now_ms=103)
+        self.store.record_release_progress(
+            grant.grant_id, bytes_transferred=2, now_ms=105,
+        )
+        with self.assertRaisesRegex(ReceiptConflict, "time cannot move backwards"):
+            self.store.cancel_release_transfer(
+                grant.grant_id, reason="cancel with stale event time", now_ms=104,
+            )
+        self.assertEqual(self.store.release_grants[0].state, "transferring")
+
     def test_release_grant_request_key_is_scoped_to_principal_and_tenant(self):
         first = self.store.reserve_release(
             "artifact-1", self.auth(), receipt_id=self.receipt.receipt_id,
