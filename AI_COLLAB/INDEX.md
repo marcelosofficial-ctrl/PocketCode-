@@ -10,6 +10,18 @@ Size classes: S under 8 KB, M 8-25 KB, L 25-50 KB, XL over 50 KB (never load who
 | CHECKPOINT.md | last unit of work, resume line | S | live |
 | MAILBOX.md | how AIs message each other | S | live |
 | MOVES.tsv | log of every moved or archived file | S | live |
+| kit/docs/WORK_PROTOCOL.md | working rules v2 | M | live |
+| kit/docs/PLUGIN_LESSONS.md | what we adopted from plugins | S | live |
+| kit/docs/REUSE_BACKLOG.md | open-source reuse candidates | S | live |
+
+## Product program (2026-11-08, research only)
+| path | what it answers | size | status |
+|---|---|---|---|
+| STRATEGY_PROGRAM_20261108.md | tracker for design, PoCo, App Store, website, LinkedIn, governance | S | live |
+| IPHONE_ONLY_APP_STORE_ROADMAP_20261108.md | phone-only build, sign, TestFlight, submit; Apple rules; costs | M | proposed |
+| WEBSITE_AUDIT_AND_POCO_PAGE_PLAN_20261108.md | portfolio design recipe, accuracy audit, PoCo page plan | M | proposed |
+| GOVERNANCE_AUDIT_20261108.md | KEEP / UPDATE / REMOVE / ADD rule audit | M | proposed |
+| CLAUDE_REVIEW_RELEASE_GRANT_RESEARCH_20261108.md | partial review F-01..F-09; superseded by the full P39 review held by the owner | S | superseded |
 
 ## Repo root (outside AI_COLLAB; read from repo root)
 | path | what it answers | size | status |
@@ -35,23 +47,8 @@ Size classes: S under 8 KB, M 8-25 KB, L 25-50 KB, XL over 50 KB (never load who
 | RELEASE_GRANT_CONCURRENCY_AND_CRASH_CONTRACT_20261107.md | concurrency and crash spec | M | under review |
 | P39_CHATGPT_STATIC_AUDIT_ADDENDUM_20261107.md | static audit | M | under review |
 | P39_INDEPENDENT_REVIEW_PROMPT_20261107.md | review brief | S | live |
-| CLAUDE_REVIEW_RELEASE_GRANT_RESEARCH_20261108.md | Claude review of research packet only; not source/model review | S | partial review |
-| P39_RESEARCH_REVIEW_DISPOSITIONS_20261108.md | interim decisions F-01..F-09 plus source cross-check | M | interim; P39 open |
-| P39_SOURCE_PINNED_AUDIT_CROSSWALK_20261108.md | source-pinned S1..S8 findings, P37 ID namespace correction and reviewer reconciliation template | M | audit complete; review gate open |
-| P39_CLAUDE_REVIEW_RECONCILIATION_20261108.md | full Claude independent review reconciliation, RG-B1..B3/H1..H4/O1..O10, test plan and gate | L | one review received; Gemini/owner gate open |
-| P39_RECEIPT_SUBSYSTEM_AUDIT_20261108.md | bounded audit of result_receipts.py/tests and durable adapter contract; RCP-01..05 | L | static audit complete; adapter unverified |
-| P39_EP_CANONICAL_ACCEPTANCE_CROSSWALK_20261108.md | maps P39/RG/RCP and EP-01..25 to unchanged LOOP/CASE, separates product decisions from adapter tests | L | traceability complete; owner/reviewer gates open |
 | VERDICT_EVIDENCE_EXIT_PROVENANCE_MATRIX_20261105.md | exit provenance matrix | M | live (O-5) |
-| EXIT_PROVENANCE_RESOLUTION_20261108.md | child vs wrapper exit, termination and verdict projection rules plus adversarial tests | M | proposed; review pending |
-| EXIT_PROVENANCE_STATIC_CONSISTENCY_AUDIT_20261108.md | EP-01..20 cross-check, formatter/projection incompatibility, EP-21..25 gaps and reviewer checklist | M | static audit; review pending |
 | PROVIDER_NEUTRAL_RECIPE_AND_DURABLE_TASK_MANIFEST_PROPOSAL_20261105.md | recipe and manifest proposal | M | proposal |
-
-
-| P39_EXIT_OWNER_DECISION_REGISTER_20261108.md | consolidated owner decisions OD-01..13 for streaming, revocation, trusted time, IDs, receipt binding and EP-18/24/projection/termination | M | owner decisions open; recommendations not approved |
-
-## Canonical acceptance and decisions
-| path | what it answers | size | status |
-|---|---|---|---|
 | CANONICAL_ACCEPTANCE_TRACEABILITY_20261029.md | LOOP and CASE traceability | S | live |
 | OWNER_DECISION_REGISTER_20261029.md | owner decisions | M | live |
 
