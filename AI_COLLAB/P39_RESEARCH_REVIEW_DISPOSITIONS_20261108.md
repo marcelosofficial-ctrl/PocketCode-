@@ -6,6 +6,9 @@
 **Reference source/tests:** `744cb4dc7cd4994647c84ac7476d0c78a21f0540`
 
 ## Scope and authority
+
+**Status update 2026-11-08:** the earlier statement below that Claude's review covered only the research packet is superseded. The owner subsequently supplied Claude's full independent source/model review as an attachment; it is reconciled in `P39_CLAUDE_REVIEW_RECONCILIATION_20261108.md`. This file remains the interim disposition of the earlier F-01..F-09 research review only. The new source/model findings and revised gate are governed by the reconciliation document.
+
 This note decides the nine findings in `CLAUDE_REVIEW_RELEASE_GRANT_RESEARCH_20261108.md`. That report explicitly reviewed only `RELEASE_GRANT_ADAPTER_RESEARCH_AND_REDTAM_20261107.md`; it did not review the source model, model tests, P37 concurrency contract or ChatGPT static audit addendum. These dispositions therefore do not close P39.
 
 The Gemini response supplied in chat is a research/implementation plan, not a complete independent P39 review: it contains no source-pinned finding table, adversarial schedules, verified line references or executed test evidence. The repository's Gemini review request remains open. No reviewer input is fabricated or inferred.
