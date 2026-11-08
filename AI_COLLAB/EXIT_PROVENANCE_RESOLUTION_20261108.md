@@ -99,3 +99,48 @@ A formatter unit test can establish deterministic projection only. It cannot pro
 **Pinned sources:** `scripts/report_contract.py` blob `2459137b6f8d4b6bfadd6218e5a9bd92e75b0817`; `scripts/test_report_contract.py` blob `85109f056009d65a274e9306deb39b68e1fefbd2`; `PRODUCT/EXECUTION_LOOP_ACCEPTANCE.md` blob `c6714c27db52b2962fe8d1c7e6a16829d46a8338`; `AI_COLLAB/VERDICT_EVIDENCE_EXIT_PROVENANCE_MATRIX_20261105.md` blob `f146bd45cdbc3e7f6f1301ad3c0e172ffa4443d7`.
 
 **Verification:** documentation-only. No code changed, no tests/builds/device runs executed, and no canonical LOOP/CASE/D identifier changed.
+
+
+## 6. Static consistency supplement (2026-11-08; proposed, not owner-approved)
+
+The immutable static audit is recorded in `EXIT_PROVENANCE_STATIC_CONSISTENCY_AUDIT_20261108.md`. The following clarifications are part of this proposal for independent review.
+
+### 6.1 Current formatter compatibility limitation
+
+The pinned `scripts/report_contract.py` implementation is not yet a renderer of an independently resolved verdict. `format_report()` calls `classify_verdict(status, exit_code)` itself. That helper returns FAIL for any valid nonzero exit code or `program_failed` status.
+
+Therefore:
+- EP-04 (`program_failed` plus natural child exit zero) and EP-05 (`succeeded` plus natural child nonzero) cannot currently render the proposed INCOMPLETE result while retaining those raw values in the two existing fields.
+- Do not feed wrapper/signal/forced-termination values into the legacy `exit_code` field.
+- Do not weaken or patch verdict precedence as a shortcut.
+- Before implementation, define a typed, already-resolved projection result that retains raw lifecycle and child/wrapper/termination observations separately, and define how a pure renderer displays its pre-resolved verdict. Alternatively, explicitly defer EP-04/05 renderer coverage until a versioned report contract is approved.
+- Authentication, process identity, event binding and policy trust remain coordinator/adapter responsibilities. The formatter stays a pure bounded renderer.
+
+The typed projection vocabulary in §2 remains descriptive, not a frozen wire schema. A possible result must preserve both the resolved verdict and the raw contradictory facts; it must not erase the original lifecycle status merely to force the legacy helper to return INCOMPLETE.
+
+### 6.2 Additional adversarial cases proposed
+
+These are new proposal IDs only. They do not change CASE-01..16.
+
+| Test | Input combination | Expected assertion |
+|---|---|---|
+| EP-21 | Deadline/cancellation/resource-limit termination requested, but termination acknowledgement is absent or lost | INCOMPLETE; termination NOT_CONFIRMED/UNKNOWN; cleanup and artifact release remain blocked where required |
+| EP-22 | Wrapper exits zero, child exit is unobserved | INCOMPLETE; wrapper success is not child success |
+| EP-23 | Child is terminated by signal/resource control; a shell-style code such as 137/143 is observed | Preserve signal/cause separately; do not call it a natural child nonzero exit; INCOMPLETE absent an independent trusted natural result |
+| EP-24 | Natural child exit zero is trusted, but wrapper fails during post-run collection or cleanup | Preserve child and wrapper/cleanup facts separately; execution verdict vs artifact-release disposition requires owner-approved mapping |
+| EP-25 | Timeout/resource limit and a purported natural child nonzero observation coexist | If trusted event ordering proves natural failure before the deadline, preserve that result; otherwise retain contradiction as INCOMPLETE pending reconciliation |
+
+EP-21 and EP-23 close the gap between a termination request, a signal/forced termination and confirmed process exit. EP-22 prevents a successful wrapper shutdown from being mistaken for child success. EP-25 prevents numeric code precedence from deciding a timeout race without event provenance.
+
+### 6.3 Explicit owner decisions required
+
+- **EP-18:** if a child exits zero but the required policy/egress barrier is absent or mismatched, the minimum safe result is no PASS and a recorded policy-boundary violation. Whether the execution verdict is INCOMPLETE or another disposition, and whether any artifact may be retained/released, requires owner-approved security semantics.
+- **EP-24:** if child execution succeeded but the wrapper failed during collection/cleanup, preserve the child result and wrapper failure separately. Define whether the execution verdict remains PASS while overall job disposition is degraded, or whether a required collection/cleanup gate makes it INCOMPLETE. Do not decide this in the formatter.
+- **EP-04/05:** approve the resolved-verdict/renderer boundary before adding implementation tests. Preserve raw lifecycle and child observations.
+- **Termination semantics:** define what evidence confirms process termination, how late exit observations are reconciled, and what cleanup can be called complete when termination is unconfirmed.
+
+### 6.4 Existing test coverage boundary
+
+The pinned tests cover direct succeeded+0, succeeded+nonzero, program_failed without a code, missing code, selected nonterminal statuses, timeout/cancel/rejection/infrastructure without a code, and bool rejection. They do not cover EP-04/05 contradictions, wrapper-vs-child identity, signal termination, stale observations, attempt binding or the new EP-21..25 cases. The current helper tests prove only deterministic two-field classification, not trusted provenance or coordinator projection.
+
+**Verification remains unchanged:** this supplement is documentation-only. No source/tests changed, no tests/builds/device runs executed, and canonical LOOP/CASE/D identifiers remain unchanged.
