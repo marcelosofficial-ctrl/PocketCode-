@@ -10,7 +10,7 @@ Close the independent-review and owner-decision gate for P39 and exit provenance
 - Consolidated owner decisions OD-01..OD-13: P39_EXIT_OWNER_DECISION_REGISTER_20261108.md. All OPEN; recommendations are not owner approvals.
 - Exit provenance proposal/static audit: EXIT_PROVENANCE_RESOLUTION_20261108.md and EXIT_PROVENANCE_STATIC_CONSISTENCY_AUDIT_20261108.md.
 - Gemini independent P39 review requested in INBOX_gemini.md MSG 2026-11-08-2.
-- Claude exit-provenance review requested in INBOX_claude.md MSG 2026-11-08-3/4.
+- Claude exit-provenance review was requested in earlier INBOX_claude MSG 2026-11-08-3/4, but those entries were superseded by Claude's later inbox rewrite; no independent exit review is present in the current ChatGPT inbox. Re-request only if this review remains in scope.
 
 ## Steps
 1. When Gemini's full report arrives, reconcile each finding against Claude and immutable source/test pins. Reject unsupported path/line claims; separate model defects from adapter obligations.
