@@ -1,39 +1,35 @@
 # STATE: PocketCode   (current state only; under 900 words)
-Updated: 2026-11-08 by ChatGPT. Sources: pinned GitHub source/test reads at 744cb4d; P39 review dispositions and source-pinned crosswalk. Claude did not re-run tests.
+Updated: 2026-11-08 by Claude. Sources: RECONCILIATION_2026-11-07.md (ChatGPT), NEW_CHAT_HANDOFF_20261106.md, owner handoff text, Claude's own reads of the release-grant files. Claude has not run the repository test suite.
 
 ## Status
-- Phase: Discovery and product definition. No runtime or provider selected. Branch is hundreds of commits ahead of main; that is history, not progress.
-- VERIFIED: GitHub Actions run 42365455316 on source/test SHA 744cb4d, workflow "PocketCode Python conformance tests", job unittest: 266/266 PASS. This is not a fresh run on current documentation HEAD.
-- Earlier intermediate commits were red during rapid pushes; later source/test SHA 744cb4d produced the 266/266 result. Judge the latest commit's actual CI, never infer from older runs.
-- COMMITTED: intent/proof separation; exact receipt-revision authorization binding; current-grant recovery; concurrency and crash specification; sequential grant model and tests; research/red-team packet; P39 interim dispositions; exit-provenance proposal; P39 source-pinned audit crosswalk.
-- CLAIMED ONLY (not built): durable adapter; real concurrent processes; transactional grant-event relay; durable crash recovery; production fencing; transport stream ownership/revocation; trusted policy authority; client receipt.
-- VERIFIED model gaps at pinned source/test SHA 744cb4d: P39-S1 aggregate version advances without matching event/outbox; S2 consumer trusts caller digest without canonical metadata binding; S3 grant-event outbox has no relay lease/fence; S5 consumer does not bind event to an existing tenant-scoped grant; S6 journal authentication/fence atomicity are adapter-supplied; S7 bare P37/P39 test IDs collide; S8 post-commit revocation transition is absent.
-- VERIFIED boundary limitation: P39-S4 worker-state fencing cannot stop bytes already emitted on an open stream. No transport implementation was found in reviewed source. Production behavior for S1-S8 remains UNKNOWN.
-- VERIFIED: P39-POLICY-02..04 and P39-STREAM-01..03 are in a source-pinned crosswalk; all P39 tests use P39-prefixed IDs. No canonical LOOP/CASE/D IDs changed.
-- VERIFIED: exit-provenance EP-01..20 were checked against immutable helper/test/acceptance pins. Current format_report() recalculates verdict from status + generic exit_code, so it cannot emit proposed INCOMPLETE for program_failed+child-zero or succeeded+child-nonzero while preserving those facts. EXIT_PROVENANCE_RESOLUTION_20261108.md §6 now records this compatibility limit, EP-21..25 and owner decisions for EP-18/24. No code change authorized.
-- Event journal prototype: in memory, 21/21 local tests per owner handoff; producer identity is not cryptographic; fence check plus append is not atomic. Fake coordinator: 14 harness tests on test doubles, not canonical. Not re-verified in this pass.
-- Pyodios on owner's iPhone (owner-reported): v1.1.0 build 7, Pyodide 314.0.5, Python 3.14.2. First Editor run showed "[Bridge/executePython] PythonError". Console probe for sys.last_exc: NOT RUN. Bridge cause and child exit status: UNKNOWN. Export/read-back, relaunch persistence and malformed-input test: NOT RUN.
+- Phase: Discovery and product definition. No runtime or provider selected. The branch is hundreds of commits ahead of main; that is history, not progress.
+- VERIFIED (per RECONCILIATION): GitHub Actions run 42365455316 on commit 744cb4d, workflow "PocketCode Python conformance tests", job unittest: 266/266 PASS. Earlier intermediate commits that evening were red and fixed by later commits; the failure emails were those runs. The result for the current HEAD must be checked, not assumed.
+- COMMITTED: intent/proof separation; exact receipt-revision authorization binding; current-grant recovery; concurrency and crash specification; sequential grant model and tests; research and red-team packet.
+- CLAIMED ONLY (not built): durable adapter; real concurrent processes; transactional outbox relay; durable crash recovery; production fencing; transport stream ownership and revocation; trusted policy authority; client receipt.
+- Claude's independent P39 review (2026-11-08, delivered to the owner as CLAUDE_P39_INDEPENDENT_REVIEW_2026-11-08.md, not committed at ChatGPT's request): P39-S1, S2, S3 CONFIRMED (blocking for use of the sequential model as an adapter oracle), S4 refined (contract gap, not a model defect). New findings: caller-supplied clock in lease logic (BLOCKING), revocation checked on a stale snapshot, non-unique grant IDs across restarts. Evidence: counterexamples executed against a byte-verified copy of scripts/release_grant_conformance.py at 744cb4d. Not reviewed: result_receipts.py and tests, durable adapter contract, PROJECT_STATUS, ROADMAP, STATE_LEDGER.
+- Event journal prototype: in memory, 21/21 local tests; producer identity is not cryptographic; fence check plus append is not atomic. Fake coordinator: 14 harness tests on test doubles. Both from the owner handoff.
+- Pyodios on the owner's iPhone (owner-reported): v1.1.0 build 7, Pyodide 314.0.5, Python 3.14.2. First Editor run showed only "[Bridge/executePython] PythonError"; Console probe NOT RUN; bridge cause UNKNOWN.
+- Product program (new, research only): iPhone-only App Store roadmap, website audit and PoCo page plan, governance audit; tracker in STRATEGY_PROGRAM_20261108.md.
 
 ## Decisions
-- D-001 unified PC-and-phone direction, separate development boundaries. D-002 GitHub is source of truth. D-003 no secrets in public repo. D-004 validate before stack commitment. D-005 zero spend.
-- OpenHands and Cline are pattern references only; reject Cline wildcard auto-approve default. MCP Tasks and ACP are optional adapters and never replace PocketCode command/attempt identity.
-- No durable store (SQLite, PostgreSQL, Redis, cloud) is chosen until an atomic persistence contract is defined and tested.
-- CASE-04 stays INCOMPLETE / timed_out. No precedence-only patch to scripts/report_contract.py until child-exit, wrapper-exit and termination provenance are resolved.
-- 2026-11-07 (owner): old process rules may be revised for efficiency. AGENTS.md carries revised decision rights.
+- D-001 unified PC-and-phone direction, separate development boundaries. D-002 GitHub is source of truth. D-003 no secrets in the public repo. D-004 validate before stack commitment. D-005 zero spend.
+- OpenHands and Cline are pattern references only; reject Cline's wildcard auto-approve default. MCP Tasks and ACP are optional adapters and never replace PocketCode command and attempt identity.
+- No durable store is chosen until an atomic persistence contract is defined and tested.
+- CASE-04 stays INCOMPLETE / timed_out; no precedence-only patch to scripts/report_contract.py until child-exit, wrapper-exit and termination provenance are resolved.
+- 2026-11-07 (owner): old process rules may be revised; AGENTS.md now carries tiered decision rights.
+- 2026-11-08 (owner, brief): PocketCode is officially considered for renaming to PoCo; the existing website design must not change; no PoCo claim beyond what is built. Nothing is renamed yet.
 
 ## Open items
-- O-1 Owner: run the read-only Pyodios Console probe (steps in PYODIOS_PYTHONERROR_BRIDGE_TRIAGE_20261106.md). Blocks device evidence.
-- O-2 Independent adversarial review status: Claude's full P39 source/model report was received as an uploaded file and reconciled in P39_CLAUDE_REVIEW_RECONCILIATION_20261108.md. Claude did not read result_receipts.py/tests or the durable adapter contract and did not run the repository suite. Gemini's complete source-pinned P39 review remains outstanding; supplied plan is not sufficient. Claude's separate exit-provenance review remains requested.
-- O-3 Run full Python suite in a real checkout or CI and record exact-SHA results.
-- O-4 Define and test atomic persistence contract in a real candidate adapter; current DURABLE_ADAPTER_CONTRACT is proposed only.
-- O-7 Owner decisions OD-01..OD-13 in P39_EXIT_OWNER_DECISION_REGISTER_20261108.md: streaming MVP, pre/post-commit revocation, retry/resume, trusted time, restart-safe IDs/fences, compact ReceiptHead binding, EP-18/24, typed renderer projection, termination proof and client-byte evidence. All OPEN; recommendations are not approvals.
-- O-5 EXIT_PROVENANCE_RESOLUTION_20261108.md contains typed child-vs-wrapper exit and termination rules plus EP-01..EP-20. Static consistency audit is in EXIT_PROVENANCE_STATIC_CONSISTENCY_AUDIT_20261108.md; EP-04/05 need a resolved-verdict/renderer contract, EP-21..25 are proposed additions, and EP-18/24 need owner mapping. Claude review and owner resolution remain pending; no code change authorized.
-- O-6 Compare one free local path (a-Shell or Carnets) only if it adds information.
-- Owner decision register: P39_EXIT_OWNER_DECISION_REGISTER_20261108.md consolidates OD-01..OD-13 with conservative recommendations and dependencies. All remain OPEN; recommendations are not owner decisions. P39/P40 implementation gate remains CLOSED.
-- P39 gate: Claude's full independent review is reconciled in P39_CLAUDE_REVIEW_RECONCILIATION_20261108.md. Bounded receipt/durable-contract audit is in P39_RECEIPT_SUBSYSTEM_AUDIT_20261108.md. Canonical traceability for P39/RG/RCP and EP-01..25 is in P39_EP_CANONICAL_ACCEPTANCE_CROSSWALK_20261108.md. Product-level trace maps to existing LOOP/CASE; relay, digest, tenant binding, trusted clock, ID continuity and durable races are adapter conformance, not new canonical IDs. Owner decisions remain for streaming MVP, pre/post-commit revocation, EP-18/24 and compact ReceiptHead digest binding. Gemini review remains open. No source/test changes until gate clears.
-- CI boundary: recent commits are documentation/continuity updates; verify latest HEAD Actions rather than assuming a run. Prior 266/266 remains the latest source/test evidence at 744cb4d.
+- O-1 Owner: run the read-only Pyodios Console probe (PYODIOS_PYTHONERROR_BRIDGE_TRIAGE_20261106.md).
+- O-2 ChatGPT: decide ACCEPT / REJECT / NEEDS-OWNER on each finding of CLAUDE_REVIEW_RELEASE_GRANT_RESEARCH_20261108.md and the full P39 review; Gemini's independent review pending.
+- O-3 Run the full Python suite in a real checkout or CI and record exact-SHA results.
+- O-4 Define the atomic persistence contract a durable adapter must satisfy.
+- O-5 Resolve typed child exit vs wrapper exit vs termination provenance (NEXT_TASK.md).
+- O-6 Recommended next slice P40: event chain and relay slice in the sequential model (see the full P39 review section 7).
+- O-7 Owner decisions for the product program: the name PoCo (check App Store name, trademark and domain first), whether to spend US$99 on the Apple Developer Program, LinkedIn text, whether to put a pointer banner on main.
+- O-8 Strategy research still to do: Apple design engineering, PoCo context engineering and provider caching, the rest of the website audit.
 
 ## Known risks
-- Old entry files are too large for a free chat; start from BOOT, STATE and NEXT_TASK only.
-- Rapid-fire commits create red intermediate CI runs and email noise; check commit history and latest CI.
-- INDEX classification of older docs is by filename/date, not by reading.
+- Entry files from before 2026-11-07 are far too large for a free chat. Start from BOOT, STATE, NEXT_TASK, CHECKPOINT, INBOX only.
+- Chats can freeze on "Stopped thinking" while commits continue; check commits, not the chat (kit/docs/STUCK_CHAT_FORENSICS.md).
+- The classification of older documents in INDEX.md is by filename and date, not by reading them.

@@ -1,7 +1,6 @@
 # CHECKPOINT   (overwrite each time; under 150 words)
-Time: 2026-11-08 | By: ChatGPT | Mode: normal
-Done: completed P39 owner decision consolidation. Created P39_EXIT_OWNER_DECISION_REGISTER_20261108.md with OD-01..13; indexed it; updated STATE/NEXT_TASK/INBOX_chatgpt. Reconciled prior review scope and confirmed both independent reviewer artifacts remain pending. No source/tests changed or run.
-Next: reconcile Gemini's independent P39 report and Claude's exit-provenance review when received; then obtain explicit owner decisions before considering P40. Implementation gate remains CLOSED.
-Blockers: Gemini P39 review; Claude exit review; owner OD-01..13 decisions. Production adapter, durable concurrency, transport and device evidence remain UNKNOWN / NOT RUN.
-CI: latest docs HEAD has no Actions run; previous 266/266 PASS is tied only to source/test SHA 744cb4d.
-Resume: "Continue working on PocketCode."
+Time: 2026-11-08 | By: Claude | Mode: normal
+Done: P39 independent review delivered (CLAUDE_P39_INDEPENDENT_REVIEW_2026-11-08.md, owner has it; not committed as requested). Added STRATEGY_PROGRAM, IPHONE_ONLY_APP_STORE_ROADMAP, WEBSITE_AUDIT_AND_POCO_PAGE_PLAN, GOVERNANCE_AUDIT (all 20261108). STATE.md and INDEX.md updated.
+Next single step: ChatGPT works NEXT_TASK.md (exit provenance spec) and answers the review findings (INBOX_chatgpt.md).
+Blockers: none. Owner decisions in STATE O-7.
+Resume line for a new chat: "Continue working on PocketCode."
