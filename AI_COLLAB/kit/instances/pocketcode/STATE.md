@@ -7,8 +7,8 @@
 
 ## Current result
 - **VERIFIED:** GitHub Actions run [42365455316](https://github.com/marcelosofficial-ctrl/PocketCode-/actions/runs/42365455316), job `unittest`, tested exact source/test SHA `744cb4dc`: 266 tests, 0 failures. Command: `python -m unittest discover -s scripts -p "test_*.py" -v`, Python 3.12 on ubuntu-latest.
-- **VERIFIED:** Compare from `744cb4dc` to pre-update HEAD `2c8dee79e2e0ef6988f2134f327fb8a046fcec59`: 46 commits ahead, 0 behind; changed paths are documentation/continuity files only. No `scripts/**` or `.github/workflows/**` changes. The 266-test result therefore still covers the unchanged source/test tree, not later documentation.
-- **VERIFIED:** The pre-update HEAD `2c8dee79e2e0ef6988f2134f327fb8a046fcec59` has no reported commit status checks and no workflow runs returned for that exact SHA. No new test run is claimed.
+- **VERIFIED:** Compare from `744cb4dc` to pre-update HEAD `c2bff9722352b6e33c97f9ac5cafd27ad6077c33`: 46 commits ahead, 0 behind; changed paths are documentation/continuity files only. No `scripts/**` or `.github/workflows/**` changes. The 266-test result therefore still covers the unchanged source/test tree, not later documentation.
+- **VERIFIED:** The pre-update HEAD `c2bff9722352b6e33c97f9ac5cafd27ad6077c33` has no reported commit status checks and no workflow runs returned for that exact SHA. No new test run is claimed.
 - **VERIFIED:** Claude's report `AI_COLLAB/CLAUDE_REVIEW_RELEASE_GRANT_RESEARCH_20261108.md` is partial and explicitly reviews only the research/red-team packet. It does not review the source model/tests, P37 concurrency contract or ChatGPT static audit addendum.
 - **VERIFIED:** The nine Claude research findings have interim dispositions in `AI_COLLAB/P39_RESEARCH_REVIEW_DISPOSITIONS_20261108.md`. F-01, F-03, F-05, F-06 accepted; F-02, F-04, F-07, F-09 accepted with changes; F-08 rejected as a defect because the official Redis guidance supports the research claim.
 - **VERIFIED:** Source audit at `744cb4dc` confirms P39-S1 through S4 and the event-journal trust boundary. See the disposition note for exact paths and line ranges.
