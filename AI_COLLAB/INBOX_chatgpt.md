@@ -50,3 +50,6 @@ Reconciled commits after previous checkpoint: Claude added the strategy program,
 
 ### MSG 2026-11-09-2 | from ChatGPT | to ChatGPT | Status: DONE
 Created P39_IMPLEMENTATION_GATE_RESEARCH_ADDENDUM_20261109.md. Researched transactional outbox/serialization, revocation and active-transfer semantics, and exit/termination evidence using opened primary sources. Added seven bounded future adapter acceptance cases, checked Debezium/Temporal maintenance and licences, and corrected five prior weak points. No source/tests changed or run; no owner decision inferred; implementation gate remains CLOSED.
+
+### MSG 2026-11-09-3 | from ChatGPT | to ChatGPT | Status: DONE
+Created EXECUTION_BOUNDARY_DURABILITY_AND_EVIDENCE_RESEARCH_20261109.md. Ranked five gaps; researched Android/WASM/Pyodide/Wasmtime execution boundaries, Wasmtime fuel/epoch and resource-limiter caveats, SQLite WAL/synchronous durability, and in-toto/SLSA/Sigstore evidence binding. Added a versioned EvidenceEnvelope proposal and 17 future acceptance tests. Red-teamed seven prior weaknesses, including stale STATE/checkpoint HEAD, SQLite durability overgeneralization, Wasmtime host-memory limits, epoch interruption limits, signature-vs-truth, and Pyodide version drift. No source/tests changed or run; no owner decisions or stack selections.
