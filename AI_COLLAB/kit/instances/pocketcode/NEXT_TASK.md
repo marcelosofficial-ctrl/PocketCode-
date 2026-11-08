@@ -12,10 +12,9 @@ Continue independent ChatGPT review of the release-grant model and contracts whi
 - ChatGPT static audit: `AI_COLLAB/P39_CHATGPT_STATIC_AUDIT_ADDENDUM_20261107.md`.
 
 ## Next ChatGPT audit slice
-1. Verify the full authorization trust boundary and policy-revocation semantics, including what the sequential model can and cannot establish.
-2. Cross-check the remaining event-journal and receipt-head acceptance requirements against all relevant tests without loading unrelated project history.
-3. Reconcile the new P39-S5..S7 findings with any complete Gemini/Claude reports when available.
-4. Record only new source-backed findings, with exact pins, counterexample schedules and model-vs-adapter boundaries.
+1. Finish the P39 source audit by checking the remaining policy-revocation and stream/cancellation obligations against the immutable contract and test pins.
+2. Reconcile the complete Gemini report when available; Claude's remaining source/model/P37 review scope is still open.
+3. Convert accepted review findings into one bounded, docs-first correction task. Do not start source implementation before the full P39 gate clears.
 
 ## Reviewer inputs
 - Claude has reviewed only `RELEASE_GRANT_ADAPTER_RESEARCH_AND_REDTAM_20261107.md`. Remaining Claude scope: source model/tests, P37 concurrency contract and P39 static audit addendum.

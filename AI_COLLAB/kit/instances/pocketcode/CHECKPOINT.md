@@ -12,6 +12,7 @@
 - Corrected Gemini plan target paths and recorded that its supplied response is not a complete independent P39 review.
 - Verified sequential tenant/principal idempotency and replay-after-successor tests; identified first-head concurrency as adapter-only.
 - Added P39-S5 event-to-tenant binding, P39-S6 producer authentication/fence atomicity, and P39-S7 P37/P39 test-ID collision findings.
+- Verified that authorization claims and lease time are caller-supplied model inputs; documented AUTH-01, CLOCK-01 and durable fence/grant-ID adapter obligations.
 - Updated indexes, state, next task and inbox continuity. No source code changed.
 
 ## CI and verification
@@ -21,4 +22,4 @@ GitHub Actions run [42365455316](https://github.com/marcelosofficial-ctrl/Pocket
 P39 is not closed. Claude's review is partial; Gemini's complete independent report is not present in the inspected repository and the supplied plan is not a review. No production adapter, database, provider or runtime selected. Real concurrency, durable crash recovery and transport revocation remain NOT RUN/UNKNOWN.
 
 ## Next
-Continue the independent ChatGPT source audit: authorization trust and revocation semantics, plus remaining journal and receipt-head acceptance requirements. No source edits until the review gate clears.
+Finish the source audit of policy revocation and transport cancellation, then reconcile complete reviewer reports. No source edits until the review gate clears.

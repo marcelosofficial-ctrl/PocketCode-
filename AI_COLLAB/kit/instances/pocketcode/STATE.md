@@ -15,6 +15,7 @@
 - **VERIFIED:** The owner-supplied Gemini response is a research/implementation plan, not the required complete independent P39 report. The repository Gemini review request remains open.
 - **VERIFIED:** The model correctly scopes idempotency by tenant/principal/request key and authenticates before replay lookup; tests cover these sequential cases. First-head concurrent initialization remains adapter-only and untested.
 - **VERIFIED:** Additional audit findings P39-S5 (event-to-grant/tenant binding), P39-S6 (producer authentication/fence append trust boundary) and P39-S7 (P37/P39 test-ID collisions) are recorded in the disposition note.
+- **VERIFIED:** Authorization claims and lease time in the sequential model are caller-supplied inputs, not production trust proofs or authoritative time. Durable auth, clock, fence and grant-ID persistence remain adapter obligations.
 - **NOT RUN:** No tests in this pass. No real concurrent database race, durable crash/restart, grant-event relay, transport revocation, mobile execution or production adapter test.
 - **UNKNOWN:** Whether either reviewer has additional work outside the inspected branch/chat. The partial Claude file does not establish completion of the full assignment.
 

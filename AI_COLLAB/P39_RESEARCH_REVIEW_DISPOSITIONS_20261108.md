@@ -91,6 +91,14 @@ These are ChatGPT's source-pinned findings, not findings from Claude's partial r
 
 **Negative evidence preserved:** the existing model tests do cover tenant/principal idempotency namespace, unauthenticated replay rejection, same-key replay after successor, and sequential stale-head rejection. They do not provide concurrent multi-process evidence, producer authentication, tenant-bound event consumption, or first-head race proof. No new test was run.
 
+### Additional trust-boundary verification: authorization, time and durable fencing
+
+**Authorization is structurally checked, not authenticated by the reference model.** `reserve()` receives `auth_allowed`, tenant/principal/scope fields, authorization ID and policy revision as arguments. It checks that the allow flag is true and that the supplied fields match the requested intent, but it does not verify a signature, issuer, audience, credential status, expiry or live revocation state. The negative replay test sets `auth_allowed=False`; it does not prove that an untrusted caller cannot construct `auth_allowed=True`. This is an intentional model boundary, not evidence of a production authorization flaw. A durable adapter must obtain these claims from a trusted policy/authentication authority and must never deserialize caller-provided booleans or claim objects as proof. Add AUTH-01 for forged allow, wrong issuer/audience, expired proof, revoked policy epoch and exact tenant/scope mismatch.
+
+**Lease time is caller-supplied in the model.** `claim_worker()` and `record_progress()` accept `now` as an argument. The expiry check is therefore only a deterministic model rule, not trusted time. A caller that supplies a backdated `now` can make an expired lease appear live before another worker takes over. The existing expiry test supplies the expected boundary time; it does not test a forged/backdated clock. This reinforces F-03 and CLOCK-01: production expiry decisions must use the authoritative persistence/coordinator clock, while current-fence comparison remains the decisive stale-writer safety check.
+
+**Fence and grant-ID durability are not modeled across restart.** `fences`, `leases` and `_next_grant` are in-memory dictionaries/counters initialized in `__init__()`. Reconstructing the model resets them. That is acceptable for a sequential semantic reference, but it cannot prove durable fence continuity, non-reuse, restore safety or idempotency retention. The adapter must persist these authorities outside deletable grant rows and test backup/restore and process restart.
+
 ## Gemini plan assessment
 The response supplied by the owner is **ACCEPT WITH CHANGES as research direction only**, not as a completed P39 review or implementation authorization. Its target paths need correction before any work:
 - P39-S1/S2 belong to `scripts/release_grant_conformance.py` and `scripts/test_release_grant_conformance.py`, not `result_receipts.py` and `test_result_receipts.py`.
