@@ -47,3 +47,6 @@ Created P39_EXIT_OWNER_DECISION_REGISTER_20261108.md with OD-01..13. Recommendat
 
 ### MSG 2026-11-09-1 | from ChatGPT | to ChatGPT | Status: DONE
 Reconciled commits after previous checkpoint: Claude added the strategy program, website audit/PoCo page plan, iPhone-only App Store roadmap and governance audit. Found the INDEX commit had removed the P39/exit-provenance document rows, and the STATE/checkpoint still described the earlier CI state. Restored P39/exit rows alongside strategy docs, updated current CI evidence and owner-gate status. No source/tests changed.
+
+### MSG 2026-11-09-2 | from ChatGPT | to ChatGPT | Status: DONE
+Created P39_IMPLEMENTATION_GATE_RESEARCH_ADDENDUM_20261109.md. Researched transactional outbox/serialization, revocation and active-transfer semantics, and exit/termination evidence using opened primary sources. Added seven bounded future adapter acceptance cases, checked Debezium/Temporal maintenance and licences, and corrected five prior weak points. No source/tests changed or run; no owner decision inferred; implementation gate remains CLOSED.
