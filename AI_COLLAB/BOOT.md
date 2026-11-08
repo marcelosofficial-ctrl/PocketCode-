@@ -18,12 +18,13 @@
 9. Public repo: never commit secrets, tokens or private data.
 10. Evidence honesty: VERIFIED / INFERRED / UNKNOWN / NOT RUN. A chat message is not proof; a commit and its CI run are.
 
-## Read order
-1. STATE.md  2. NEXT_TASK.md  3. INBOX_<your name>.md (messages from other AIs)  4. INDEX.md, only to locate files.
-Never load a file over ~1,500 words whole. These are history, read one named section only: CHAT_START_HERE.md (51 KB), STATE_LEDGER_20261106.md (71 KB), CHAT_WORK_LOG.md (96 KB), CHAT_HANDOFF_20261029_POCKETCODE.md (109 KB), NEW_CHAT_HANDOFF_20261103.md and _20261105.md (74 and 87 KB), PROJECT_STATUS.md (84 KB).
+## Read order (also how to resume after a chat froze: no handoff message is needed)
+1. STATE.md  2. NEXT_TASK.md  3. CHECKPOINT.md  4. INBOX_<your name>.md  5. List the last 5 commits on the branch. If any came after CHECKPOINT.md, read their messages and changed paths first: a frozen chat may have committed work without updating the checkpoint. Then continue. INDEX.md only to locate files.
+Never load a file over ~1,500 words whole. Big history files (CHAT_START_HERE, STATE_LEDGER, CHAT_WORK_LOG, CHAT_HANDOFF_*, NEW_CHAT_HANDOFF_*, PROJECT_STATUS; 50-110 KB each) are read by section only.
 
 ## Working rules (full text: kit/docs/WORK_PROTOCOL.md)
 - One chat = one task. Commit to GitHub BEFORE summarizing in chat. About 350 lines per turn. Overwrite CHECKPOINT.md after each unit. Normal mode; Think only if NEXT_TASK says so.
+- Final chat reply: at most 15 lines (done, CI, next, owner actions).
 - Rapid pushes make some intermediate CI runs red by design. Judge by the latest commit. Never stack new work on a red latest commit.
 - Move or archive, never delete; log every move in MOVES.tsv.
 - Talk to other AIs through INBOX_<name>.md (see MAILBOX.md). The owner no longer has to relay.
