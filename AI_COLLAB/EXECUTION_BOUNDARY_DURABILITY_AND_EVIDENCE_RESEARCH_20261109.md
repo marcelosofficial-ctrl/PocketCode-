@@ -16,7 +16,7 @@
 ### Verified primary-source findings
 
 - **Android app sandbox:** each app receives a distinct Linux UID and process isolation from other apps. Android's security checklist warns against dynamically loading code from outside the APK because it runs with the same permissions as the APK. An app that loads user code into its own process/runtime must not describe the Android application sandbox as a separate sandbox for that program. Sources opened 2026-11-09: https://developer.android.com/guide/components/fundamentals and https://developer.android.com/privacy-and-security/security-tips
-- **WebAssembly core security model:** WebAssembly has no ambient access to the host environment. I/O, resources and OS calls require functions imported from the embedder. The embedder is responsible for controlling those capabilities. Source: https://www.w3.org/TR/wasm-core/
+- **W3C WebAssembly core specification (located, not fully opened):** the search excerpt for its Security Considerations states that WebAssembly has no ambient access to the host environment and that I/O/resources/OS calls require functions imported by the embedder, which controls those capabilities. The full W3C page fetch failed because the response exceeded the retrieval limit, so this excerpt is not counted as an opened-source verification. Source: https://www.w3.org/TR/wasm-core/
 - **WebAssembly security overview:** modules execute in a sandbox, but their effective policy also depends on the embedding environment. Source opened 2026-11-09: https://webassembly.org/docs/security/
 - **Pyodide integration:** Pyodide is designed to run in a browser or backend JavaScript environment, and its documentation describes the JavaScript API and Python/JavaScript proxy interface. The embedding code therefore forms part of the capability boundary. Sources: https://pyodide.org/en/stable/usage/ and https://pyodide.org/en/stable/usage/api/js-api.html
 - **Wasmtime filesystem capabilities:** WASI filesystem access uses capability-based access to only the directories and files granted to the guest. Wasmtime also warns that untrusted terminal output can contain control sequences with dangerous side effects and filters terminal output. Source opened 2026-11-09: https://docs.wasmtime.dev/security.html
@@ -194,7 +194,7 @@ For every adapter test record exact source/build SHA, engine/runtime version, OS
 | Project/source | Verified maintenance/version | Licence checked | PocketCode use |
 |---|---|---|---|
 | Pyodide | 314.0.7 latest stable visible 2026-11-09; released 2026-09-14 | MPL-2.0 | Runtime reference; trusted/light only pending embedding audit |
-| Wasmtime | 50.0.1 released 2026-10-29; 51.0.0-rc.1 is prerelease | Apache-2.0 / Apache-2.0 WITH LLVM-exception metadata | Guest resource/capability reference; no dependency selected |
+| Wasmtime | 50.0.1 latest stable visible in the opened release listing; released 2026-10-29 | Apache-2.0 / Apache-2.0 WITH LLVM-exception metadata | Guest resource/capability reference; no dependency selected |
 | SQLite | Official docs opened 2026-11-09; current docs describe WAL and sync semantics | Public domain for core library | Local persistence candidate only; not selected |
 | in-toto Attestation | v1.2 latest tagged release visible 2026-11-09 | Apache-2.0 | Subject-bound evidence format reference |
 | Sigstore/Cosign | Bundle format 0.3.2 docs last updated 2025-01-14; exact current Cosign release not verified | Cosign Apache-2.0 | Optional signature verification reference; not MVP dependency |
@@ -209,4 +209,4 @@ For every adapter test record exact source/build SHA, engine/runtime version, OS
 - No runtime, provider, database, hosting, transport or app architecture is selected.
 - No canonical LOOP/CASE/D identifiers changed.
 - No code copied, no dependency added, no test executed.
-- **VERIFIED:** source documents opened as listed above. **INFERRED:** PocketCode recommendations and acceptance proposals. **UNKNOWN / NOT RUN:** actual mobile embedder capabilities, hostile-code containment, real adapter concurrency, process-level quotas, device interruption, crash/power-loss recovery and production provenance.
+- **VERIFIED:** source documents opened as listed above, except the W3C core specification, which was located via search excerpt but could not be fully opened due response size. Apple's iOS security page was also located but its full page returned HTTP 429. **INFERRED:** PocketCode recommendations and acceptance proposals. **UNKNOWN / NOT RUN:** actual mobile embedder capabilities, hostile-code containment, real adapter concurrency, process-level quotas, device interruption, crash/power-loss recovery and production provenance.
