@@ -103,3 +103,20 @@
 - Durable adapter, real multi-process races, production authorization, stream transport, client receipt and database behavior remain UNKNOWN / NOT RUN.
 - P39 review gate remains OPEN pending Gemini's complete independent source-pinned review and owner policy decisions.
 
+
+## 7. Proposed P39-prefixed test IDs added during reviewer reconciliation
+
+| Test family | Proposed IDs | Canonical trace |
+|---|---|---|
+| Event chain and canonical envelope | P39-EVENT-05/06 | CASE-11/13/16 and CASE-12/14/15, supporting only |
+| Relay ownership and ordering | P39-OUTBOX-04/05 | CASE-11/13/16, supporting only |
+| Trusted lease/observation time | P39-CLOCK-01; P39-TIME-01 | CASE-04/05/11, supporting only |
+| Non-reused grant/receipt/event IDs and fence continuity | P39-ID-01/02 | CASE-11/13/16, supporting only |
+| Pre-commit and post-commit policy epochs | P39-POLICY-05/06 | CASE-05/11/15, policy remains owner-resolved |
+| Stable intent and receipt ID reuse | P39-IDEMP-01; P39-RACE-06B | CASE-13/16, supporting only |
+| Stream resume and client byte evidence | P39-STREAM-04 (plus existing P39-STREAM-01..03) | CASE-04/05/11 and LOOP-10/12, only if streaming is in MVP |
+| Receipt digest binding and resume authorization | P39-RECEIPT-01/02 | CASE-12/14/15 and LOOP-07/10/12, supporting only |
+| Crash redelivery and test hygiene | P39-CRASH-04; P39-TEST-HYGIENE-01 | CASE-11/13, supporting only |
+| Poison-event handling and journal edge cases | P39-ORDER-04; P39-JOURNAL-01 | CASE-11/16 and LOOP-07, supporting only |
+
+All rows are proposed conformance tests, not new product acceptance IDs. IDs are reserved in the P39 namespace for traceability; they are not yet implemented or run. Merge overlapping stream assertions rather than duplicating cases.
