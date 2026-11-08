@@ -1,5 +1,5 @@
 # STATE: PocketCode   (current state only; under 900 words)
-Updated: 2026-11-07 by Claude. Sources: RECONCILIATION_2026-11-07.md (ChatGPT), NEW_CHAT_HANDOFF_20261106.md, owner handoff text. Claude did not re-run tests.
+Updated: 2026-11-08 by ChatGPT. Sources: RECONCILIATION_2026-11-07.md (ChatGPT), NEW_CHAT_HANDOFF_20261106.md, owner handoff text. Claude did not re-run tests.
 
 ## Status
 - Phase: Discovery and product definition. No runtime or provider selected. Branch is hundreds of commits ahead of main; that is history, not progress.
@@ -22,7 +22,7 @@ Updated: 2026-11-07 by Claude. Sources: RECONCILIATION_2026-11-07.md (ChatGPT), 
 - O-2 Independent adversarial reviews (Claude, Gemini) of RELEASE_GRANT_ADAPTER_RESEARCH_AND_REDTAM_20261107.md and the P39 static audit, before any adapter selection. Messages are in INBOX_claude.md and INBOX_gemini.md.
 - O-3 Run the full Python suite in a real checkout or CI and record exact-SHA results.
 - O-4 Define the atomic persistence contract a durable adapter must satisfy.
-- O-5 Resolve typed child exit vs wrapper exit vs termination provenance (VERDICT_EVIDENCE_EXIT_PROVENANCE_MATRIX_20261105.md).
+- O-5 Drafted EXIT_PROVENANCE_RESOLUTION_20261108.md with conservative typed-observation rules and EP-01..EP-20 proposed tests. Pending independent Claude review and owner resolution; no code change authorized.
 - O-6 Compare one free local path (a-Shell or Carnets) only if it adds information.
 
 ## Known risks

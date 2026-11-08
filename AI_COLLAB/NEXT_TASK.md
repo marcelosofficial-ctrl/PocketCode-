@@ -1,26 +1,26 @@
 # NEXT TASK: PocketCode   (one task; under 350 words)
 
 ## Goal
-Write the child-exit vs wrapper-exit vs termination provenance resolution as a short spec section plus a list of test cases, so scripts/report_contract.py can be changed safely later. No code change in this task.
+Continue the P39 independent audit without Claude availability. Focus on the policy-revocation and transport stream/cancellation boundary, then reconcile Claude's complete review when supplied. No source-code changes until the P39 review gate clears.
 
 ## Files to read
-- [Exit provenance matrix](VERDICT_EVIDENCE_EXIT_PROVENANCE_MATRIX_20261105.md) (read it in sections)
-- scripts/report_contract.py (function and class names first, then only the classifier)
-- STATE.md open item O-5
+- `AI_COLLAB/P39_RESEARCH_REVIEW_DISPOSITIONS_20261108.md` (relevant sections only)
+- `AI_COLLAB/P39_CHATGPT_STATIC_AUDIT_ADDENDUM_20261107.md` (relevant sections only)
+- `scripts/release_grant_conformance.py` and its tests only where needed for a specific claim
+- `AI_COLLAB/RELEASE_GRANT_CONCURRENCY_AND_CRASH_CONTRACT_20261107.md` (relevant sections only)
 
-## Constraints for this task
-- Mode: normal. About 350 lines per turn. Commit the draft to GitHub before summarizing.
-- Keep CASE-04 as INCOMPLETE / timed_out. Do not make a precedence-only patch. Do not claim any device or product test that was not run.
-- Out of scope: choosing a runtime, provider or database; changing LOOP, CASE or D IDs; touching PR #2 or #3.
+## Constraints
+- Mode: normal. About 350 lines per turn. Commit continuity work before summarizing.
+- Keep the P39 source-edit freeze. No adapter/provider/database/runtime selection.
+- No PR #2/#3/#4 changes. Do not change canonical LOOP, CASE or D IDs.
+- Preserve VERIFIED / INFERRED / UNKNOWN and model-vs-adapter evidence boundaries.
+- Do not claim tests passed unless an exact-SHA run provides output.
 
 ## Steps
-1. List the observable facts a result can carry: child exit, wrapper exit, termination confirmation, timeout, contradictory observations.
-2. Write a resolution table: which combinations give PASS, FAIL, INCOMPLETE, UNKNOWN, and why.
-3. Write test cases (inputs and expected verdicts) that would fail on a precedence-only patch.
-4. Save to AI_COLLAB/EXIT_PROVENANCE_RESOLUTION_<date>.md and add a row to INDEX.md.
+1. Audit policy revocation and transport-level cancellation/revocation as separate enforcement boundaries.
+2. Identify missing adversarial schedules and the exact adapter evidence required.
+3. Update the P39 disposition note only with source-pinned findings.
+4. When Claude's complete review arrives, reconcile finding by finding before any implementation.
 
 ## Done when
-- The new file exists and is committed, the CI run for the commit is checked, and STATE.md, CHECKPOINT.md and INBOX_claude.md (a request for review) are updated.
-
-## If blocked
-Write the blocker in CHECKPOINT.md and stop.
+The remaining audit slice is source-pinned, checkpointed, and explicit about unresolved reviewer/adapter obligations.
