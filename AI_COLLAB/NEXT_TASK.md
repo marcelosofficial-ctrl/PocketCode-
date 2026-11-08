@@ -1,29 +1,27 @@
 # NEXT TASK: PocketCode   (one task; under 350 words)
 
 ## Goal
-Reconcile the exit-provenance proposal with the static consistency audit, then prepare a precise independent review request for Claude and an owner decision list. Resolve the report projection boundary on paper only. No source-code or test changes until Claude's review and owner decisions clear the gate.
+Build a compact canonical acceptance traceability crosswalk for the new P39 adapter obligations and EP-01..EP-25 exit-provenance proposals. Identify which requirements are already covered by LOOP-01..14 / CASE-01..16, which are refinements of existing cases, and which are adapter-only obligations that must not be misrepresented as new canonical acceptance IDs.
 
 ## Files to read
-- `EXIT_PROVENANCE_RESOLUTION_20261108.md` (relevant sections only)
-- `EXIT_PROVENANCE_STATIC_CONSISTENCY_AUDIT_20261108.md` (relevant sections only)
-- `scripts/report_contract.py` and `scripts/test_report_contract.py` only at their immutable pins if needed
-- `PRODUCT/EXECUTION_LOOP_ACCEPTANCE.md` at its immutable pin
-- `AI_COLLAB/INBOX_claude.md` for the existing review request
+- `PRODUCT/EXECUTION_LOOP_ACCEPTANCE.md` at immutable blob `c6714c27db52b2962fe8d1c7e6a16829d46a8338`
+- `AI_COLLAB/CANONICAL_ACCEPTANCE_TRACEABILITY_20261029.md` (relevant sections only)
+- `AI_COLLAB/P39_SOURCE_PINNED_AUDIT_CROSSWALK_20261108.md`
+- `AI_COLLAB/EXIT_PROVENANCE_RESOLUTION_20261108.md` and `EXIT_PROVENANCE_STATIC_CONSISTENCY_AUDIT_20261108.md` (relevant sections only)
 
 ## Constraints
 - Normal mode, about 350 lines per turn. Commit continuity updates before summarizing.
-- No source/test changes and no verdict-precedence patch.
-- Preserve CASE-04 as INCOMPLETE / timed_out.
-- Do not change canonical LOOP, CASE or D IDs.
-- Preserve raw lifecycle, child exit, wrapper exit, termination, cleanup and artifact facts separately.
+- No source/test changes, no canonical LOOP/CASE/D ID changes, no adapter/provider/database/runtime selection.
+- Do not inflate product acceptance scope with implementation-only details.
 - Keep VERIFIED / INFERRED / UNKNOWN / NOT RUN distinct.
+- Preserve separate P37 and P39 test namespaces.
 
 ## Steps
-1. Clarify that EP-04/05 cannot be rendered by the current two-field classifier without a pre-resolved verdict/renderer contract or an explicitly documented compatibility limitation.
-2. Decide whether EP-21..25 are distinct required cases and merge overlaps without losing assertions.
-3. Record owner decisions required for EP-18 (policy/egress barrier violation) and EP-24 (child success plus wrapper/cleanup failure).
-4. Update the Claude review request with exact pins, static-audit findings and questions.
-5. Keep the implementation gate closed pending independent review and owner disposition.
+1. Map each P39-S1..S8 finding and P39-EVENT/OUTBOX/STREAM/POLICY test family to the closest canonical LOOP/CASE requirements, if any.
+2. Map EP-01..EP-25 to existing CASE coverage or explicitly label them as coordinator/adapter refinements.
+3. Identify true uncovered product requirements separately from lower-level conformance tests.
+4. Flag ambiguous mappings for owner review; do not invent canonical IDs.
+5. Record the crosswalk and reviewer decision points.
 
 ## Done when
-The proposal, static audit and reviewer request agree on unresolved semantics and a concrete acceptance path, with no source/test changes.
+Every new proposed test has a traceable relationship (or explicit no-direct-canonical-mapping rationale), without changing canonical acceptance or authorizing implementation.
