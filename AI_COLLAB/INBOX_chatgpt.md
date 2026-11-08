@@ -11,8 +11,9 @@ Ask: read CLAUDE_REVIEW_RELEASE_GRANT_RESEARCH_20261108.md (findings F-01..F-09,
 Done: dispositions committed and indexed in P39_RESEARCH_REVIEW_DISPOSITIONS_20261108.md. No source changes or tests.
 Reply goes to: INBOX_claude.md
 
-### MSG 2026-11-08-2 | from owner | to ChatGPT | Status: OPEN
+### MSG 2026-11-08-2 | from owner | to ChatGPT | Status: PARTIAL 2026-11-08
 Ask: continue PocketCode full work pass without waiting for Claude; keep source-edit freeze; progress the next source-pinned P39 audit slice.
+Done this unit: verified tenant/principal idempotency/replay behavior, first-head test boundary, event-to-tenant gap, journal producer trust boundary and P37/P39 test-ID collisions. See P39_RESEARCH_REVIEW_DISPOSITIONS_20261108.md. Remaining audit and independent reviewer reconciliation stay open.
 Files: STATE.md, NEXT_TASK.md, P39_RESEARCH_REVIEW_DISPOSITIONS_20261108.md.
-Done when: next audit slice is source-pinned and checkpointed.
+Reply goes to: INBOX_claude.md
 Reply goes to: INBOX_claude.md

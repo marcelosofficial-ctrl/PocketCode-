@@ -68,6 +68,29 @@ These are ChatGPT's source-pinned findings, not findings from Claude's partial r
 - **P39-S4, VERIFIED boundary limitation:** the reviewed grant model has no streaming transport. State fencing can reject later state writes but cannot terminate bytes already being emitted on an established socket. Transport capability validation, cancellation and byte-observation semantics remain adapter/transport obligations and UNKNOWN until implemented and tested.
 - **Journal trust boundary:** `scripts/event_journal.py` explicitly says producer authentication is supplied by a trusted adapter; `AuthenticatedProducer` is a data value, not cryptographic verification performed by the module. `advance_fence()` and `append()` are separate in-memory operations, so a durable adapter must make fence validation/advance and append atomic where required.
 
+### Additional source audit slice: idempotency, bootstrap, event binding and test traceability
+
+**VERIFIED: principal/tenant/request-key idempotency is correctly scoped in the sequential model.** `reserve()` constructs the identity as `(tenant_id, principal_id, request_key)`, validates caller authorization before lookup, and compares the stable-intent fingerprint on replay. Tests cover different tenant/principal namespaces and reject unauthenticated replay. `test_same_key_same_intent_replay_survives_refreshed_authorization_and_successor` confirms that an exact replay returns the original grant after the receipt head advances. This means F-02 is a recipe/document-order ambiguity, not a demonstrated defect in this model's replay order.
+
+**VERIFIED: first-head bootstrap is only specified, not concurrency-tested.** `seed_head()` checks for an existing key and inserts into a Python dictionary; it cannot model two concurrent initializers. P37 requires a stable head anchor and unique, atomic first-anchor/first-receipt creation, but the P37 minimum adapter matrix does not include a distinct two-initializer case. The P39 research matrix does. This remains a durable-adapter acceptance obligation, not evidence that a concurrent adapter exists.
+
+**P39-S5 — Event consumer does not bind event identity to an existing tenant-scoped grant.**  
+**Severity:** HIGH for a future trusted consumer boundary; production exploitability UNKNOWN.  
+**Source:** `GrantEvent` fields at `scripts/release_grant_conformance.py:51-59`; `consume_event()` at `:295-313`; `Grant` fields at `:27-39`. The event carries source, event ID, grant ID, version, state and a digest string, but no tenant/principal/effect/attempt binding. The consumer does not verify an allowed source, look up an existing grant, or compare event tenant/scope with grant metadata. A fabricated next-version event for an unknown grant can be accepted by the sequential consumer.  
+**Correction:** canonical event envelope must bind source, event ID, tenant, principal where relevant, grant, effect/attempt, aggregate version, event type/state and immutable payload. Trusted ingestion must authenticate producer/source, recompute digest from canonical bytes, verify the grant and tenant relationship, and enforce contiguous order. Add tests for unknown grant, cross-tenant reference, wrong source and metadata mutation with the original digest.
+
+**P39-S6 — Producer authentication and fence append are adapter-supplied, not established by the journal model.**  
+**Severity:** HIGH boundary requirement; actual production adapter UNKNOWN.  
+**Source:** `scripts/event_journal.py:1-7` and `:14-25`; `advance_fence()` and `append()` are separate methods. The module explicitly says it does not verify keys, signatures, certificates, sessions or external credentials. `AuthenticatedProducer` is caller-constructible data, not proof that authentication occurred.  
+**Correction:** only a trusted adapter may construct the value after credential/issuer/audience/source/revocation checks. In a durable implementation, fence validation and append must share the required atomic transaction. Never accept an app/provider-supplied `AuthenticatedProducer` object as authority.
+
+**P39-S7 — Adapter acceptance IDs collide across P37 and P39 documents.**  
+**Severity:** MEDIUM traceability risk.  
+**Evidence:** P39 research matrix uses `RACE-03` for two initial-head creators; P37 uses `RACE-03` for N same-key/same-fingerprint requests. P39 uses `FENCE-02` for an expired transfer worker writing before takeover; P37 uses `FENCE-02` for an old relay marking delivered after takeover. The same bare identifiers therefore name different acceptance cases.  
+**Correction:** give each matrix a distinct namespace (for example, `P37-RACE-03` and `P39-RACE-03`) or assign globally unique test IDs and maintain a crosswalk. Do not alter canonical LOOP/CASE/D identifiers.
+
+**Negative evidence preserved:** the existing model tests do cover tenant/principal idempotency namespace, unauthenticated replay rejection, same-key replay after successor, and sequential stale-head rejection. They do not provide concurrent multi-process evidence, producer authentication, tenant-bound event consumption, or first-head race proof. No new test was run.
+
 ## Gemini plan assessment
 The response supplied by the owner is **ACCEPT WITH CHANGES as research direction only**, not as a completed P39 review or implementation authorization. Its target paths need correction before any work:
 - P39-S1/S2 belong to `scripts/release_grant_conformance.py` and `scripts/test_release_grant_conformance.py`, not `result_receipts.py` and `test_result_receipts.py`.

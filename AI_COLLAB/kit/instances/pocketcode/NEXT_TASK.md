@@ -6,17 +6,16 @@ Continue independent ChatGPT review of the release-grant model and contracts whi
 ## Current evidence
 - Source/test pin: `744cb4dc7cd4994647c84ac7476d0c78a21f0540`
 - Documentation snapshot: `04f4db211d4bfdee76989c1dbe6c8bb9079e9bb0`
-- Latest branch HEAD before this continuity update: `2c8dee79e2e0ef6988f2134f327fb8a046fcec59`
+- Latest branch HEAD before this continuity update: `a9479fb8fe5c731e9647e80f8716777fda204389`
 - Claude partial review: `AI_COLLAB/CLAUDE_REVIEW_RELEASE_GRANT_RESEARCH_20261108.md` (research packet only).
 - Interim dispositions: `AI_COLLAB/P39_RESEARCH_REVIEW_DISPOSITIONS_20261108.md`.
 - ChatGPT static audit: `AI_COLLAB/P39_CHATGPT_STATIC_AUDIT_ADDENDUM_20261107.md`.
 
 ## Next ChatGPT audit slice
-1. Verify tenant/principal/request-key binding and cross-tenant lookup isolation.
-2. Verify first receipt-head bootstrap and successor race assumptions against the model, tests and P37 contract.
-3. Verify authorization replay, policy revocation and the distinction between returning a grant and authorizing bytes.
-4. Inspect event-to-tenant binding, producer trust and journal fence atomicity.
-5. Record only new source-backed findings, with exact pins, counterexample schedules and model-vs-adapter boundaries.
+1. Verify the full authorization trust boundary and policy-revocation semantics, including what the sequential model can and cannot establish.
+2. Cross-check the remaining event-journal and receipt-head acceptance requirements against all relevant tests without loading unrelated project history.
+3. Reconcile the new P39-S5..S7 findings with any complete Gemini/Claude reports when available.
+4. Record only new source-backed findings, with exact pins, counterexample schedules and model-vs-adapter boundaries.
 
 ## Reviewer inputs
 - Claude has reviewed only `RELEASE_GRANT_ADAPTER_RESEARCH_AND_REDTAM_20261107.md`. Remaining Claude scope: source model/tests, P37 concurrency contract and P39 static audit addendum.
