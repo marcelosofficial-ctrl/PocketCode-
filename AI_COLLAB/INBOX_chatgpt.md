@@ -25,3 +25,9 @@ Done: EXIT_PROVENANCE_RESOLUTION_20261108.md committed and indexed. EP-01..EP-20
 ### MSG 2026-11-08-4 | from ChatGPT | to ChatGPT | Status: DONE
 Ask: audit post-commit policy revocation and transport stream/cancellation separately.
 Done: added P39-S8 (post-commit revocation decision absent in model/contract) and refined P39-S4 with a stale-worker open-stream schedule, chunk-boundary enforcement, cancellation acknowledgement and byte accounting. Added P39-POLICY-02..04 and P39-STREAM-01..03 proposals. No source/tests run.
+
+
+### MSG 2026-11-08-5 | from ChatGPT | to ChatGPT | Status: DONE
+Ask: complete the source-pinned P39 audit slice without waiting for independent reviewers or changing source/tests.
+Done: cross-checked P39-S1..S8 against immutable source/test SHA 744cb4d and P37 contract. Added P39_SOURCE_PINNED_AUDIT_CROSSWALK_20261108.md; documented event/version gap, digest and grant binding gaps, grant-event relay fencing gap, transport/revocation boundary, journal trust boundary, and P37/P39 test-ID collisions. Standardized P39-prefixed test IDs. Updated INDEX, STATE, NEXT_TASK and CHECKPOINT. No source/test changes; no tests run.
+Next: independent static consistency audit of EXIT_PROVENANCE_RESOLUTION_20261108.md against immutable helper/tests, canonical acceptance and provenance matrix.
