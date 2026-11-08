@@ -21,3 +21,7 @@ Reply goes to: INBOX_claude.md
 ### MSG 2026-11-08-3 | from ChatGPT | to ChatGPT | Status: DONE
 Ask: resolve NEXT_TASK O-5 as a short child-exit vs wrapper-exit vs termination spec and adversarial test list.
 Done: EXIT_PROVENANCE_RESOLUTION_20261108.md committed and indexed. EP-01..EP-20 proposed. No source changes/tests. Claude review requested in INBOX_claude.md.
+
+### MSG 2026-11-08-4 | from ChatGPT | to ChatGPT | Status: DONE
+Ask: audit post-commit policy revocation and transport stream/cancellation separately.
+Done: added P39-S8 (post-commit revocation decision absent in model/contract) and refined P39-S4 with a stale-worker open-stream schedule, chunk-boundary enforcement, cancellation acknowledgement and byte accounting. Added P39-POLICY-02..04 and P39-STREAM-01..03 proposals. No source/tests run.

@@ -99,6 +99,30 @@ These are ChatGPT's source-pinned findings, not findings from Claude's partial r
 
 **Fence and grant-ID durability are not modeled across restart.** `fences`, `leases` and `_next_grant` are in-memory dictionaries/counters initialized in `__init__()`. Reconstructing the model resets them. That is acceptable for a sequential semantic reference, but it cannot prove durable fence continuity, non-reuse, restore safety or idempotency retention. The adapter must persist these authorities outside deletable grant rows and test backup/restore and process restart.
 
+### Additional source audit: post-commit revocation and transport enforcement
+
+**P39-S8 — Post-commit policy revocation has no defined enforcement transition in the reference model.**  
+**Severity:** HIGH as an unresolved authorization boundary; production exploitability UNKNOWN.  
+**Source:** `Grant` stores the initial `authorization_id` and `policy_revision` (`scripts/release_grant_conformance.py:27-39`). `reserve()` receives caller-supplied `auth_allowed` and policy metadata (`:118-225`). `claim_worker()` checks grant state and worker lease/fence (`:231-268`); `record_progress()` checks fence, expiry and byte bounds (`:269-293`). Neither worker method checks current policy revision, a revocation epoch, authorization expiry, or a trusted revocation decision. The model has no grant-revocation transition or policy-authority interface.  
+**Existing specification boundary:** P37 §4 explicitly says replay is not a fresh allow and transfer continuation/resume must independently apply the selected current-policy rule. P37 §7 says revocation after grant commit requires a separately selected in-flight policy. P37 §9 lists that choice as still required. F-01 addresses revocation between authorization fetch and grant commit; it does not decide post-commit/in-flight behavior.  
+**Conclusion:** This is a verified omission in the reference model and an unresolved product/adapter decision, not proof of a production bypass. Do not silently assume either “grant is irrevocable” or “all existing grants stop immediately.”  
+**Required decision/tests:** define behavior for revocation (a) after grant commit but before worker claim, (b) during an active transfer, (c) after worker takeover, and (d) on retry/resume. Bind the decision to a trusted policy epoch and record the effective policy revision. If revocation must stop work, specify the linearization point and propagation guarantee; if an in-flight grace period is allowed, bound it explicitly. Add separate pre-commit and post-commit tests. Never treat idempotent grant recovery as authorization to send more bytes.
+
+**P39-S4 refinement — worker-state fencing is not stream fencing.**  
+The pinned model only protects a later `record_progress()` mutation. A stale worker may have already emitted data before its stale progress write is rejected. There is no stream ID, stream-scoped capability, chunk/range revalidation, cancellation acknowledgement, transport close, or byte-observation accounting in the model. P37 §6 already states that a durable worker fence cannot retract bytes already sent; the transport must independently enforce revocation.  
+**Adversarial schedule:** A claims fence n and opens a stream; A emits chunk k; B takes over with fence n+1; policy is revoked; A resumes and attempts chunk k+1 while its next state write is pending or rejected. The adapter must prove the transport rejects or bounds that chunk independently of the later progress write. Also test cancellation request delivered but not acknowledged, connection loss, reconnect/resume under a new fence, and late client acknowledgement from the old stream.  
+**Minimum transport evidence:** define the enforcement point (per bounded chunk or range), maximum in-flight bytes after revocation, cancellation propagation and acknowledgement, stream capability binding to grant/fence/object version/operation/range, and separate counters for bytes accepted by transport, emitted, observed by client, and client-acknowledged. No one counter proves another.
+
+**Proposed adapter tests (new P39-prefixed IDs; no canonical IDs changed):**
+- `P39-POLICY-02`: revoke after grant commit but before worker claim; assert the explicitly selected policy.
+- `P39-POLICY-03`: revoke during an open stream between bounded chunks; assert the documented post-revocation byte bound.
+- `P39-POLICY-04`: revoke, then retry/resume after worker takeover; old capability rejected and any new capability reissued only after current-policy authorization.
+- `P39-STREAM-01`: stale worker attempts next chunk after fence takeover; transport enforcement rejects it even if state mutation is delayed.
+- `P39-STREAM-02`: cancellation requested but not acknowledged; report termination as unconfirmed and keep execution state incomplete.
+- `P39-STREAM-03`: compare transport-accepted, emitted, client-observed and client-acknowledged byte counts; never infer client receipt from server progress.
+
+**Negative evidence:** no production transport exists in the reviewed source; no revocation or stream test was run. The current model remains a sequential reference, not proof of adapter behavior.
+
 ## Gemini plan assessment
 The response supplied by the owner is **ACCEPT WITH CHANGES as research direction only**, not as a completed P39 review or implementation authorization. Its target paths need correction before any work:
 - P39-S1/S2 belong to `scripts/release_grant_conformance.py` and `scripts/test_release_grant_conformance.py`, not `result_receipts.py` and `test_result_receipts.py`.
