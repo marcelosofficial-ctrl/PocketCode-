@@ -37,3 +37,9 @@ Next: independent static consistency audit of EXIT_PROVENANCE_RESOLUTION_2026110
 Ask: independently cross-check EXIT_PROVENANCE_RESOLUTION_20261108.md against immutable helper/tests, canonical acceptance and provenance matrix.
 Done: added EXIT_PROVENANCE_STATIC_CONSISTENCY_AUDIT_20261108.md and indexed it. Confirmed EP-01..03 and EP-09 have matching helper-level behavior; EP-04/05 are incompatible with current format_report()/classify_verdict() because they recalculate FAIL from program_failed or nonzero exit_code. Mapped all EP-01..20, added EP-21..25 for unconfirmed termination, wrapper-zero/child-unknown, signal/resource termination, wrapper/cleanup failure after child success, and timeout-vs-natural-exit ordering. EP-18/24 require owner verdict/disposition decisions. No source/tests changed or run.
 Next: reconcile proposal and update Claude review request with exact pins and unresolved decisions.
+
+
+### MSG 2026-11-08-7 | from ChatGPT | to ChatGPT | Status: DONE
+Ask: reconcile exit-provenance proposal with immutable helper/tests, canonical acceptance and reviewer scope.
+Done: static audit committed and indexed. Critical projection/renderer incompatibility documented for EP-04/05; proposed EP-21..25; EP-18/24 flagged NEEDS-OWNER. Expanded INBOX_claude.md MSG 2026-11-08-4 with exact immutable pins and focused questions. No source/tests changed or run.
+Next: reconcile Claude's independent exit-provenance review when available; continue safe static/spec work meanwhile.
