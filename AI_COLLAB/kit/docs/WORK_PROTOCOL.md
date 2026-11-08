@@ -1,60 +1,53 @@
-# WORK PROTOCOL (universal: any AI, any tier, any project)
+# WORK PROTOCOL v2 (any AI, any tier, any project)
 
-Goal: a brand-new chat, on a free account with a small context window, can resume work in one message and never has to "catch up" on a huge file.
+Goal: a brand-new chat on a free account resumes from about 1,700 words of context, and any chat can die at any moment without losing work.
 
-## 1. Tiers (what gets loaded, in order)
-- Tier 0 BOOT.md (<=500 words): identity, hard constraints, read order.
-- Tier 1 STATE.md (<=900) + NEXT_TASK.md (<=350): current state, the one task.
-- Tier 2 INDEX.md (<=1,200): find the one file a task needs. Read sections only.
-- Tier 3 everything else, including ARCHIVE/ and the work log: on demand, never whole.
-Total start-up load is about 1,750 words (roughly 2.5k-3k tokens). `ctx_kit.py capsule` builds this as one paste-able block for chats with no repo access.
+## 1. Context tiers
+- Tier 0 BOOT.md (500 words max). Tier 1 STATE.md (900) + NEXT_TASK.md (350) + your INBOX file (600). Tier 2 INDEX.md (1,200): locate files. Tier 3 everything else, by section only.
+- Never load a file over ~1,500 words whole. If your tool can only return whole files, do not open files marked L or XL in INDEX.md; use an extract instead.
+- Extract once, then read the extract: when a big document is needed more than once, write EXTRACT_<name>.md (500 words max, with pointers to the sections) next to it and add it to INDEX.md. Extract, do not paraphrase away facts.
+- Start-up load is about 1,700 words (roughly 2.5k to 3k tokens), which fits a 16K-token free chat (reported free-tier size; check your account).
 
 ## 2. Session rules
-1. One chat = one task = one commit-sized result. Finished task? Close and start a new chat.
-2. Boot: read the capsule only. Open nothing else until it is read.
-3. Turn size: about 350 lines of new text per turn; files written in chunks of <=200 lines; <=6 files per commit. Use patches or section edits, not whole-file rewrites.
-4. Mode: default to normal mode. Use "Think" only for architecture challenge, security review, or a bug that survived two normal attempts. Give Think the NEXT_TASK card and at most 3 files, never "read everything and continue".
-5. Checkpoint after every unit of work and always before a Think request or a long output: commit, or overwrite CHECKPOINT.md (<150 words).
-6. Close: update STATE (slim), write the next NEXT_TASK, overwrite CHECKPOINT, list changed paths and evidence status.
+1. One chat = one task = one commit-sized result. Finished? Close and start a fresh chat.
+2. Boot: BOOT, STATE, NEXT_TASK, INBOX only. Open nothing else until they are read.
+3. Write-ahead: commit work to GitHub BEFORE summarizing it in chat. The chat is a notification; the commit is the record.
+4. About 350 lines per turn; files in chunks of at most 200 lines; at most 6 files per commit.
+5. Normal mode by default. Think only for architecture challenge, security review, or a bug that survived two normal attempts, with the task card and at most 3 files.
+6. Overwrite CHECKPOINT.md after every unit of work (under 150 words).
+7. Close: update STATE (slim), write the next NEXT_TASK, overwrite CHECKPOINT, list changed paths and evidence status.
 
-## 3. Error runbook (free ChatGPT and others)
-- "Streaming interrupted. Waiting for the complete message": the connection dropped. Do not resend. Stay in the app, wait 60 seconds, then reopen the chat. If the answer appeared, continue. If not, send RESUME_AFTER_ERROR once.
-- "The operation couldn't be completed" or "could not load this conversation": force-close and reopen the app, or open the same chat on the web. Check status.openai.com. If the chat will not open after two tries, abandon it: start a new chat with START_NEW_CHAT. Nothing is lost because state lives in the repo.
-- Two failures in one chat: abandon the chat. Long chats fail more often.
-- Never retry the identical request a third time. Shrink the task, drop Think, or move to a new chat.
-- While a Think request runs, keep the app in the foreground and the screen on.
+## 3. Lean rules (adapted from the Ponytail skill and similar token-saving plugins)
+- Before writing anything: (1) does the platform or standard library already do it? (2) does the repo already have it? (3) is there a maintained open-source piece with a compatible licence? (4) only then write the smallest version. No speculative features, surgical diffs, no new framework or dependency without a one-line reason.
+- Lean output contract: the final chat reply is at most 15 lines: DONE (paths and commit sha), CI (latest commit), NEXT, OWNER ACTIONS (max 3). Never restate project context. Plain language, not telegraphic "caveman" speech.
+- Filter tool output: for a failed CI run read only the first failing assertion of the failing job; never paste logs into chat.
+- Ponytail's own benchmark claims about 54% less code and 22% fewer tokens; an independent JetBrains test credited about 10%. Treat the numbers as hygiene, not a promise.
 
-## 3b. "Stopped thinking", silent failures and lost chats
-- Treat every chat as disposable and GitHub as the truth. See STUCK_CHAT_FORENSICS.md.
-- Write-ahead rule: a finding or a change is committed to a repo file BEFORE you summarize it in chat. The chat message is only a notification.
-- One commit per unit of work, each under about 10 minutes of model time. Commit message: "[chat-<id>] <what>". Open the commit list, not the chat, to see progress.
-- Red CI rule: if the latest CI run on the branch is red, the first task is to fix it or to record exactly why it is red. Never stack new work on a red commit.
-- After any "Stopped thinking" or a chat that goes silent: wait 60 seconds, then check the branch commits. If a new commit appeared, the work continued. If nothing for 15 minutes, send RECONCILE_AFTER_STUCK in a NEW chat.
-- Long Think and Work runs are the most exposed. Use them only for a short, bounded task card, and keep the app open.
+## 4. CI and commits
+- Many quick pushes create red intermediate runs and failure emails. Judge by the latest commit. Never stack new work on a red latest commit; the first task is to fix it or record exactly why it is red.
+- Commit message: "[chat-<id>] <what changed>". A commit that changes nothing is a loop. Three consecutive commits with the same message mean stop and write the blocker in CHECKPOINT.md.
+- NOT RUN (no workflow run for that exact commit) is not evidence of failure, and never evidence of success.
 
-## 4. Stall detection
-Two identical outputs, diffs or errors in a row means stop. Write the symptom into CHECKPOINT, then change something: smaller task, normal mode, fresh chat, different AI.
-
-## 5. Lean rules (YAGNI ladder; inspired by the Ponytail skill, which an independent JetBrains test credited with only ~10% savings, so treat it as hygiene, not magic)
-Before writing anything: (1) does the platform or standard library already do it? (2) does the repo already have it? (3) is there a maintained open-source piece with a compatible licence? (4) only then write the smallest version. Do not build for needs nobody has stated.
+## 5. Stuck chats and errors (see STUCK_CHAT_FORENSICS.md)
+- "Streaming interrupted": do not resend. Wait 60 seconds, reopen the chat, then check the branch commits.
+- "The operation couldn't be completed" or "Could not load this conversation": force-close and reopen, try the web, check status.openai.com. Two failures in one chat: abandon it and start a fresh one; nothing is lost because the repo holds the state.
+- "Stopped thinking" with no error: the work may still be running. After 15 minutes with no new commit, treat the chat as dead.
+- Keep the app in the foreground during Think or long runs.
+- Stall rule: two identical outputs, diffs or errors in a row means change something (smaller task, normal mode, fresh chat, another AI).
 
 ## 6. Honesty and evidence
-VERIFIED = you opened it or ran it and can show output. INFERRED = reasoning. UNKNOWN = not checked. Test results are PASS / FAIL / NOT RUN, with the pasted output. A chat message is never proof that a file changed: look at the commit.
+VERIFIED = opened or ran it and can show output. INFERRED = reasoning. UNKNOWN = not checked. Tests are PASS / FAIL / NOT RUN with pasted output. Do not claim a device, PC or product test that was not run.
 
-## 7. No-loss rule (nothing is ever deleted)
-- Never delete, never rewrite history. Move old material to `ARCHIVE/` and add a row to `MOVES.tsv` (old<TAB>new).
-- Leave a one-line pointer where the content used to be.
-- IDs (decisions, tests, acceptance criteria) are permanent; never renumber.
-- Before and after any reorganisation: `ctx_kit.py manifest`, then `ctx_kit.py verify`. Any LOST line blocks the commit.
-- Extract, do not paraphrase: STATE, INDEX and NEXT_TASK point to originals instead of replacing them.
+## 7. Nothing is lost
+- Never delete content that exists nowhere else. Move old material to ARCHIVE/, leave a pointer, log old and new path in MOVES.tsv.
+- IDs (decisions, tests, acceptance criteria) are permanent. Never renumber.
+- The repo's AGENTS.md or BOOT.md defines who may do what; irreversible actions (force-push, history rewrite, deleting unique content) always need the owner's explicit OK.
 
 ## 8. Rotation
-STATE.md holds current state only. When it passes 900 words, move closed items to ARCHIVE/STATE_<date>.md and leave a pointer. The work log is append-only and read by its last 30 lines.
+STATE.md holds current state only. Over 900 words: move closed items to ARCHIVE/STATE_<date>.md with a pointer. Work logs are append-only and read by their last 30 lines.
 
 ## 9. Multi-AI lanes
-Same BOOT for every assistant. One primary implementer per task; others review. Provider files (CLAUDE.md, GEMINI.md, AGENTS.md, custom instructions) only point at BOOT.md and add nothing that contradicts it.
+Same BOOT for every assistant. One lead writer per work item; others review or take disjoint files. Messages between AIs go in INBOX_<name>.md (MAILBOX.md). Provider files (CLAUDE.md, GEMINI.md, AGENTS.md, ChatGPT custom instructions) only point at BOOT.md.
 
 ## 10. Tier compatibility
-- Free ChatGPT, no connector: paste CAPSULE.txt. Works with a 16K-token window (reported free-tier figure; verify in your account).
-- Paid ChatGPT, Claude, Gemini, Copilot, Cursor and similar: same files; point their rules file at BOOT.md.
-- Any chat: if you cannot reach the repo, say so and work from the pasted capsule only.
+Free ChatGPT, paid ChatGPT, Claude, Gemini, Copilot, Cursor: same files. With no repo access: paste BOOT.md, STATE.md and NEXT_TASK.md as the start message and say so.
