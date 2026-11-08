@@ -1,29 +1,29 @@
 # NEXT TASK: PocketCode   (one task; under 350 words)
 
 ## Goal
-Perform a separate source-pinned consistency audit of `EXIT_PROVENANCE_RESOLUTION_20261108.md` against the immutable report helper, its tests, canonical execution-loop acceptance and provenance matrix. Identify any missing/contradictory EP cases and prepare a precise reviewer checklist. This is a ChatGPT static check only, not a substitute for Claude's independent review or owner resolution.
+Reconcile the exit-provenance proposal with the static consistency audit, then prepare a precise independent review request for Claude and an owner decision list. Resolve the report projection boundary on paper only. No source-code or test changes until Claude's review and owner decisions clear the gate.
 
 ## Files to read
 - `EXIT_PROVENANCE_RESOLUTION_20261108.md` (relevant sections only)
-- `scripts/report_contract.py` and `scripts/test_report_contract.py` at their recorded immutable blob/source pins
-- `PRODUCT/EXECUTION_LOOP_ACCEPTANCE.md` at its recorded immutable pin
-- `AI_COLLAB/VERDICT_EVIDENCE_EXIT_PROVENANCE_MATRIX_20261105.md` (relevant sections only)
-- `AI_COLLAB/P39_SOURCE_PINNED_AUDIT_CROSSWALK_20261108.md` only if needed for shared evidence-boundary terminology
+- `EXIT_PROVENANCE_STATIC_CONSISTENCY_AUDIT_20261108.md` (relevant sections only)
+- `scripts/report_contract.py` and `scripts/test_report_contract.py` only at their immutable pins if needed
+- `PRODUCT/EXECUTION_LOOP_ACCEPTANCE.md` at its immutable pin
+- `AI_COLLAB/INBOX_claude.md` for the existing review request
 
 ## Constraints
 - Normal mode, about 350 lines per turn. Commit continuity updates before summarizing.
-- No source/test changes; no verdict precedence patch.
-- Preserve CASE-04 as INCOMPLETE / timed_out until child/wrapper/termination provenance is resolved.
+- No source/test changes and no verdict-precedence patch.
+- Preserve CASE-04 as INCOMPLETE / timed_out.
 - Do not change canonical LOOP, CASE or D IDs.
+- Preserve raw lifecycle, child exit, wrapper exit, termination, cleanup and artifact facts separately.
 - Keep VERIFIED / INFERRED / UNKNOWN / NOT RUN distinct.
-- Do not select a runtime, provider, database or adapter.
 
 ## Steps
-1. Re-fetch and verify every immutable source/test/acceptance pin before relying on it.
-2. Cross-check every EP-01..EP-20 case against helper behavior, current tests and canonical acceptance.
-3. Identify missing adversarial combinations: contradictory child/wrapper observations, delayed/stale exit, signal/forced termination, timeout/cancel races, missing evidence, cleanup degradation and attempt/command misbinding.
-4. Record only demonstrable gaps and exact source lines; avoid duplicating existing CASE tests.
-5. Prepare a reviewer reconciliation checklist for Claude and owner decisions.
+1. Clarify that EP-04/05 cannot be rendered by the current two-field classifier without a pre-resolved verdict/renderer contract or an explicitly documented compatibility limitation.
+2. Decide whether EP-21..25 are distinct required cases and merge overlaps without losing assertions.
+3. Record owner decisions required for EP-18 (policy/egress barrier violation) and EP-24 (child success plus wrapper/cleanup failure).
+4. Update the Claude review request with exact pins, static-audit findings and questions.
+5. Keep the implementation gate closed pending independent review and owner disposition.
 
 ## Done when
-The static consistency audit and reviewer checklist are committed and indexed, with source/test execution status stated honestly. The independent review gate remains open until Claude's report and owner disposition arrive.
+The proposal, static audit and reviewer request agree on unresolved semantics and a concrete acceptance path, with no source/test changes.
