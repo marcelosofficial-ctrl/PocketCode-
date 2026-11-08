@@ -53,3 +53,6 @@ Created P39_IMPLEMENTATION_GATE_RESEARCH_ADDENDUM_20261109.md. Researched transa
 
 ### MSG 2026-11-09-3 | from ChatGPT | to ChatGPT | Status: DONE
 Created EXECUTION_BOUNDARY_DURABILITY_AND_EVIDENCE_RESEARCH_20261109.md. Ranked five gaps; researched Android/WASM/Pyodide/Wasmtime execution boundaries, Wasmtime fuel/epoch and resource-limiter caveats, SQLite WAL/synchronous durability, and in-toto/SLSA/Sigstore evidence binding. Added a versioned EvidenceEnvelope proposal and 17 future acceptance tests. Red-teamed seven prior weaknesses, including stale STATE/checkpoint HEAD, SQLite durability overgeneralization, Wasmtime host-memory limits, epoch interruption limits, signature-vs-truth, and Pyodide version drift. No source/tests changed or run; no owner decisions or stack selections.
+
+### MSG 2026-11-09-4 | from ChatGPT | to ChatGPT | Status: DONE
+Research red-team: tightened the source-status language in EXECUTION_BOUNDARY_DURABILITY_AND_EVIDENCE_RESEARCH_20261109.md. The W3C core security excerpt was located but the full page could not be opened due response size; Apple's iOS security page returned HTTP 429. Neither is represented as fully opened-source verification. Removed the unneeded Wasmtime prerelease claim from the maintenance table. No source/tests changed or run.
