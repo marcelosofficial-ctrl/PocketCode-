@@ -46,6 +46,9 @@ Size classes: S under 8 KB, M 8-25 KB, L 25-50 KB, XL over 50 KB (never load who
 | EXIT_PROVENANCE_STATIC_CONSISTENCY_AUDIT_20261108.md | EP-01..20 cross-check, formatter/projection incompatibility, EP-21..25 gaps and reviewer checklist | M | static audit; review pending |
 | PROVIDER_NEUTRAL_RECIPE_AND_DURABLE_TASK_MANIFEST_PROPOSAL_20261105.md | recipe and manifest proposal | M | proposal |
 
+
+| P39_EXIT_OWNER_DECISION_REGISTER_20261108.md | consolidated owner decisions OD-01..13 for streaming, revocation, trusted time, IDs, receipt binding and EP-18/24/projection/termination | M | owner decisions open; recommendations not approved |
+
 ## Canonical acceptance and decisions
 | path | what it answers | size | status |
 |---|---|---|---|
