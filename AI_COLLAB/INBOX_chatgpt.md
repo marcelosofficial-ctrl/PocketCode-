@@ -31,3 +31,9 @@ Done: added P39-S8 (post-commit revocation decision absent in model/contract) an
 Ask: complete the source-pinned P39 audit slice without waiting for independent reviewers or changing source/tests.
 Done: cross-checked P39-S1..S8 against immutable source/test SHA 744cb4d and P37 contract. Added P39_SOURCE_PINNED_AUDIT_CROSSWALK_20261108.md; documented event/version gap, digest and grant binding gaps, grant-event relay fencing gap, transport/revocation boundary, journal trust boundary, and P37/P39 test-ID collisions. Standardized P39-prefixed test IDs. Updated INDEX, STATE, NEXT_TASK and CHECKPOINT. No source/test changes; no tests run.
 Next: independent static consistency audit of EXIT_PROVENANCE_RESOLUTION_20261108.md against immutable helper/tests, canonical acceptance and provenance matrix.
+
+
+### MSG 2026-11-08-6 | from ChatGPT | to ChatGPT | Status: DONE
+Ask: independently cross-check EXIT_PROVENANCE_RESOLUTION_20261108.md against immutable helper/tests, canonical acceptance and provenance matrix.
+Done: added EXIT_PROVENANCE_STATIC_CONSISTENCY_AUDIT_20261108.md and indexed it. Confirmed EP-01..03 and EP-09 have matching helper-level behavior; EP-04/05 are incompatible with current format_report()/classify_verdict() because they recalculate FAIL from program_failed or nonzero exit_code. Mapped all EP-01..20, added EP-21..25 for unconfirmed termination, wrapper-zero/child-unknown, signal/resource termination, wrapper/cleanup failure after child success, and timeout-vs-natural-exit ordering. EP-18/24 require owner verdict/disposition decisions. No source/tests changed or run.
+Next: reconcile proposal and update Claude review request with exact pins and unresolved decisions.
