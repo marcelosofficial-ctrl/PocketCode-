@@ -23,12 +23,12 @@ Updated: 2026-11-08 by ChatGPT. Sources: pinned GitHub source/test reads at 744c
 
 ## Open items
 - O-1 Owner: run the read-only Pyodios Console probe (steps in PYODIOS_PYTHONERROR_BRIDGE_TRIAGE_20261106.md). Blocks device evidence.
-- O-2 Independent adversarial reviews (Claude, Gemini) of the research packet, source model, P37 contract and P39 audit remain open. Claude's committed report covers the research packet only; exit-provenance review is separately requested. Gemini's supplied plan is not a complete source-pinned P39 review.
+- O-2 Independent adversarial review status: Claude's full P39 source/model report was received as an uploaded file and reconciled in P39_CLAUDE_REVIEW_RECONCILIATION_20261108.md. Claude did not read result_receipts.py/tests or the durable adapter contract and did not run the repository suite. Gemini's complete source-pinned P39 review remains outstanding; supplied plan is not sufficient. Claude's separate exit-provenance review remains requested.
 - O-3 Run full Python suite in a real checkout or CI and record exact-SHA results.
 - O-4 Define atomic persistence contract a durable adapter must satisfy.
 - O-5 EXIT_PROVENANCE_RESOLUTION_20261108.md contains typed child-vs-wrapper exit and termination rules plus EP-01..EP-20. Static consistency audit is in EXIT_PROVENANCE_STATIC_CONSISTENCY_AUDIT_20261108.md; EP-04/05 need a resolved-verdict/renderer contract, EP-21..25 are proposed additions, and EP-18/24 need owner mapping. Claude review and owner resolution remain pending; no code change authorized.
 - O-6 Compare one free local path (a-Shell or Carnets) only if it adds information.
-- P39 gate: source-pinned crosswalk is complete for this audit slice, but independent reviewer reconciliation and owner policy decisions remain open. No source/test changes until gate clears.
+- P39 gate: Claude's full independent review received 2026-11-08 and reconciled in P39_CLAUDE_REVIEW_RECONCILIATION_20261108.md. Claude confirms/refines S1-S3, reclassifies S4 as a contract/MVP scope gap rather than a sequential-model defect, and adds RG-B3 trusted-clock, RG-H3 pre-commit revocation epoch, RG-H4 non-reused IDs and RG-O1..O9 issues. Gemini's complete source-pinned review and owner decisions remain open. No source/test changes until gate clears.
 - CI boundary: recent commits are documentation/continuity updates; verify latest HEAD Actions rather than assuming a run. Prior 266/266 remains the latest source/test evidence at 744cb4d.
 
 ## Known risks
