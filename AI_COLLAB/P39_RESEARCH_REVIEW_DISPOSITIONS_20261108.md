@@ -109,7 +109,7 @@ The proposed provider/runtime comparisons and mobile platform claims are not ind
 ## Gate and next action
 **P39 remains OPEN / BLOCKED for final reconciliation.** Claude's committed review covers only the research packet. Gemini's supplied plan is not the required independent source-pinned report. ChatGPT's source audit verifies S1–S4 and the journal boundary, but does not substitute for the two reviewer reports. No source code was changed; no tests were run in this pass.
 
-Next bounded task: continue the ChatGPT source audit against the pinned model/tests and P37 contract, focusing on tenant/event binding, first-head races, authorization replay/revocation and the exact model-test gaps. When Gemini's complete review arrives, reconcile it with this note. Do not modify source code or select an adapter before the P39 gate clears.
+Next bounded task: finish the source audit of policy-revocation and transport stream/cancellation obligations against the pinned P37 contract and tests. Reconcile complete reviewer reports when available. Do not modify source code or select an adapter before the P39 gate clears.
 
 ## Primary sources
 - SQLite release history: https://www.sqlite.org/changes.html
