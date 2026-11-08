@@ -1,6 +1,7 @@
 # CHECKPOINT   (overwrite each time; under 150 words)
 Time: 2026-11-08 | By: ChatGPT | Mode: normal
-Done: reconciled Claude's full P39 review in P39_CLAUDE_REVIEW_RECONCILIATION_20261108.md. Bounded audit of result_receipts.py, its tests and DURABLE_ADAPTER_CONTRACT committed in P39_RECEIPT_SUBSYSTEM_AUDIT_20261108.md. Rich receipt model does include receipt/artifact hashes and quarantine; separate compact ReceiptHead gap remains contract-dependent. New findings: process-local IDs/sequences, no policy gate in transfer-resume API, caller-supplied timestamps, and no durable/concurrent evidence. No source/tests changed or run.
-Next: map reconciled P39/RG/RCP findings and EP-01..25 to canonical LOOP/CASE acceptance.
-Blockers: Gemini's complete source-pinned P39 review and owner policy choices remain pending; no source implementation authorized.
-Resume line: "Continue working on PocketCode."
+Done: reconciled Claude's P39 report; audited receipt subsystem and durable adapter contract; created P39_EP_CANONICAL_ACCEPTANCE_CROSSWALK_20261108.md mapping P39/RG/RCP and EP-01..25 to unchanged LOOP/CASE, including new P39-prefixed test IDs. Updated index, state and inboxes; marked Claude's P39 request answered. No source/tests changed or run.
+Next: reconcile Gemini's independent source-pinned P39 review and Claude's separate exit-provenance review; prepare owner decision table; only then consider P40 model-only implementation.
+Blockers: Gemini report and Claude exit review pending; owner decisions pending for streaming scope, revocation, EP-18/24 and compact ReceiptHead binding. No source changes authorized.
+CI: latest docs HEAD has no Actions run; 266/266 remains tied to source/test SHA 744cb4d.
+Resume: "Continue working on PocketCode."
