@@ -1,7 +1,11 @@
-# CHECKPOINT   (overwrite each time; under 150 words)
+# CHECKPOINT
+
 Time: 2026-11-09 | By: ChatGPT | Mode: normal
-Done: repaired continuity drift after Claude's strategy-program commits. Restored P39/exit rows in INDEX and ChatGPT work history; aligned STATE and NEXT_TASK with current review gates and CI trigger semantics. Latest branch and last-five commits revalidated before this checkpoint. No source/tests changed or run.
-Next: reconcile Gemini's independent P39 review and obtain owner OD-01..13 decisions. Confirm whether Claude's separate exit-provenance review is still required; its old inbox request was superseded. Keep implementation gate CLOSED.
-Blockers: Gemini review and owner decisions; possible Claude exit review. Production adapter, durable concurrency, transport and device evidence UNKNOWN / NOT RUN.
-CI: no run on docs-only HEAD; workflow triggers on scripts/** or workflow edits. 266/266 PASS is tied to 744cb4d.
-Resume: "Continue working on PocketCode."
+
+Done: added and indexed P39_IMPLEMENTATION_GATE_RESEARCH_ADDENDUM_20261109.md; researched outbox/serialization, revocation/in-flight transfer, exit provenance and termination; added seven future adapter tests; corrected five prior gaps including duplicate INDEX row and revocation/termination overclaims. No source/tests changed or run. Pre-checkpoint HEAD: 821522a6085ba80cce88a918c1693bac1ade8b3e. Previous five commits: 821522a inbox, 3b75a02 next task, 914be40 state, 91ff549 index, fab8f3e research addendum.
+
+Next: obtain Gemini P39 review; confirm whether Claude exit review is still required; obtain explicit OD-01..13 owner decisions. Gate remains CLOSED.
+
+CI: no run on docs-only HEAD; workflow path filter is scripts/** and workflow file. 266/266 PASS is historical and pinned to 744cb4dc7cd4994647c84ac7476d0c78a21f0540 only.
+
+Blockers: independent review and owner decisions. Adapter, durable concurrency, transport and device evidence UNKNOWN / NOT RUN.
