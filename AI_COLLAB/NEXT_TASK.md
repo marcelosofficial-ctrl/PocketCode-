@@ -1,27 +1,29 @@
 # NEXT TASK: PocketCode   (one task; under 350 words)
 
 ## Goal
-Build a compact canonical acceptance traceability crosswalk for the new P39 adapter obligations and EP-01..EP-25 exit-provenance proposals. Identify which requirements are already covered by LOOP-01..14 / CASE-01..16, which are refinements of existing cases, and which are adapter-only obligations that must not be misrepresented as new canonical acceptance IDs.
+Close the evidence gap Claude explicitly left: independently audit the receipt-head implementation and its tests, plus the durable-adapter contract, against P37/P39 receipt identity, immutable fingerprint, concurrency and recovery claims. Claude did not read these files, so do not assume RG-O1/O2/O3 or RACE-01..06 describe the whole receipt subsystem.
 
-## Files to read
-- `PRODUCT/EXECUTION_LOOP_ACCEPTANCE.md` at immutable blob `c6714c27db52b2962fe8d1c7e6a16829d46a8338`
-- `AI_COLLAB/CANONICAL_ACCEPTANCE_TRACEABILITY_20261029.md` (relevant sections only)
-- `AI_COLLAB/P39_SOURCE_PINNED_AUDIT_CROSSWALK_20261108.md`
-- `AI_COLLAB/EXIT_PROVENANCE_RESOLUTION_20261108.md` and `EXIT_PROVENANCE_STATIC_CONSISTENCY_AUDIT_20261108.md` (relevant sections only)
+## Files to inspect (bounded reads only)
+- `scripts/result_receipts.py` at source SHA `744cb4dc7cd4994647c84ac7476d0c78a21f0540`, in focused line ranges (never whole file; it is ~35 KB).
+- `scripts/test_result_receipts.py` at the same SHA, focused test ranges only (~40 KB).
+- `AI_COLLAB/DURABLE_ADAPTER_CONTRACT_20261106.md`, relevant sections only.
+- `AI_COLLAB/RELEASE_GRANT_CONCURRENCY_AND_CRASH_CONTRACT_20261107.md`, relevant sections only.
+- `AI_COLLAB/P39_CLAUDE_REVIEW_RECONCILIATION_20261108.md` and `P39_SOURCE_PINNED_AUDIT_CROSSWALK_20261108.md`.
 
 ## Constraints
 - Normal mode, about 350 lines per turn. Commit continuity updates before summarizing.
-- No source/test changes, no canonical LOOP/CASE/D ID changes, no adapter/provider/database/runtime selection.
-- Do not inflate product acceptance scope with implementation-only details.
-- Keep VERIFIED / INFERRED / UNKNOWN / NOT RUN distinct.
-- Preserve separate P37 and P39 test namespaces.
+- Use line-range reads and search; never open a file over 1,500 words whole.
+- No source/test changes, no database/provider/runtime selection, no canonical ID changes.
+- Distinguish model behavior from real concurrent/durable adapter evidence.
+- Keep VERIFIED / CLAUDE-REPORTED / INFERRED / UNKNOWN / NOT RUN distinct.
 
 ## Steps
-1. Map each P39-S1..S8 finding and P39-EVENT/OUTBOX/STREAM/POLICY test family to the closest canonical LOOP/CASE requirements, if any.
-2. Map EP-01..EP-25 to existing CASE coverage or explicitly label them as coordinator/adapter refinements.
-3. Identify true uncovered product requirements separately from lower-level conformance tests.
-4. Flag ambiguous mappings for owner review; do not invent canonical IDs.
-5. Record the crosswalk and reviewer decision points.
+1. Verify blob pins for both receipt source and tests at 744cb4d.
+2. Map functions and test names for seed/advance/head CAS, receipt identity reuse, digest/quarantine, same-key replay, idempotency fingerprint and concurrency.
+3. Check whether tests assert stored state after races, and whether barriers/independent connections exist or only sequential simulation.
+4. Cross-check durable-adapter clauses for atomicity, restore, retention, crash windows and uniqueness.
+5. Reconcile Claude RG-O1..O4 and missing-test proposals with actual coverage; correct or reject any overreach.
+6. Commit a bounded source-pinned receipt audit and update the reviewer/owner reconciliation table.
 
 ## Done when
-Every new proposed test has a traceable relationship (or explicit no-direct-canonical-mapping rationale), without changing canonical acceptance or authorizing implementation.
+The previously unread receipt subsystem and durable-adapter contract have a precise evidence map, with all claims scoped to what the code/tests can actually establish.
