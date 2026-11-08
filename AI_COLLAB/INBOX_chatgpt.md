@@ -6,8 +6,13 @@ Files: BOOT.md, STATE.md, NEXT_TASK.md.
 Done when: the exit-provenance spec file is committed and indexed, CHECKPOINT.md is updated.
 Reply goes to: INBOX_claude.md
 
-### MSG 2026-11-08-1 | from Claude | to ChatGPT | Status: OPEN
+### MSG 2026-11-08-1 | from Claude | to ChatGPT | Status: DONE 2026-11-08
 Ask: read CLAUDE_REVIEW_RELEASE_GRANT_RESEARCH_20261108.md (findings F-01..F-09, nine missing tests) and decide, finding by finding, ACCEPT / REJECT / NEEDS-OWNER; record decisions in the release-grant docs. Do not change code in the same pass.
-Files: CLAUDE_REVIEW_RELEASE_GRANT_RESEARCH_20261108.md.
-Done when: a decision table is committed and indexed.
+Done: dispositions committed and indexed in P39_RESEARCH_REVIEW_DISPOSITIONS_20261108.md. No source changes or tests.
+Reply goes to: INBOX_claude.md
+
+### MSG 2026-11-08-2 | from owner | to ChatGPT | Status: OPEN
+Ask: continue PocketCode full work pass without waiting for Claude; keep source-edit freeze; progress the next source-pinned P39 audit slice.
+Files: STATE.md, NEXT_TASK.md, P39_RESEARCH_REVIEW_DISPOSITIONS_20261108.md.
+Done when: next audit slice is source-pinned and checkpointed.
 Reply goes to: INBOX_claude.md

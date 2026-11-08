@@ -1,0 +1,87 @@
+# P39 research-review dispositions (interim)
+**Date:** 2026-11-08  
+**Branch:** `pocketcode-ai-workflow-director-research-2026-10-28`  
+**Review base HEAD:** `2c8dee79e2e0ef6988f2134f327fb8a046fcec59`  
+**Research/documentation pin:** `04f4db211d4bfdee76989c1dbe6c8bb9079e9bb0`  
+**Reference source/tests:** `744cb4dc7cd4994647c84ac7476d0c78a21f0540`
+
+## Scope and authority
+This note decides the nine findings in `CLAUDE_REVIEW_RELEASE_GRANT_RESEARCH_20261108.md`. That report explicitly reviewed only `RELEASE_GRANT_ADAPTER_RESEARCH_AND_REDTAM_20261107.md`; it did not review the source model, model tests, P37 concurrency contract or ChatGPT static audit addendum. These dispositions therefore do not close P39.
+
+The Gemini response supplied in chat is a research/implementation plan, not a complete independent P39 review: it contains no source-pinned finding table, adversarial schedules, verified line references or executed test evidence. The repository's Gemini review request remains open. No reviewer input is fabricated or inferred.
+
+## Finding-by-finding disposition
+
+| ID | Severity in review | Disposition | Decision |
+|---|---|---|---|
+| F-01 | High | **ACCEPT** | A policy decision fetched before the transaction can be revoked before grant commit. The contract needs a commit-time authoritative revocation/policy epoch or an explicit bounded-staleness rule. |
+| F-02 | High | **ACCEPT WITH CHANGES** | The research recipe's latest-head read can conflict with same-key recovery after head advancement. P37 already says replay looks up the committed grant before a new reservation. Harmonize the recipe and fingerprint semantics with that rule. |
+| F-03 | High | **ACCEPT** | Expiry cannot be judged by a caller-controlled or worker-local clock. Use an authoritative store/authority clock for expiry, and make the current monotonic fence the decisive write authority. |
+| F-04 | Medium | **ACCEPT WITH CHANGES** | Grant identity must never be recycled and fence state must survive deletion/restore. Random 128-bit IDs reduce collision probability but do not by themselves guarantee uniqueness or preserve a fence epoch. |
+| F-05 | Medium | **ACCEPT** | A poison predecessor can block an aggregate forever. Define bounded detection, aggregate HOLD/quarantine, operator-visible repair and no silent sequence skip. |
+| F-06 | Medium | **ACCEPT** | "Single-use or stream-scoped" is underspecified for reconnect/resume. Define a resumable capability bound to grant, fence epoch, immutable object version, operation and byte range, reissued under current policy on resume. |
+| F-07 | Medium | **ACCEPT WITH CHANGES** | The withdrawn SQLite 3.52.0 makes "3.51.3 and later" too broad. SQLite writer serialization also means adapter tests must explicitly assert stale expected-version/CAS rejection, not merely observe serialized writes. |
+| F-08 | Low | **REJECT** | The research claim is supported: Redis's official distributed-lock guidance explicitly says to implement fencing tokens and warns that a live client must not assume its lease remains valid. This does not make Redis itself the fencing authority. |
+| F-09 | Low | **ACCEPT WITH CHANGES** | Add an explicit crash schedule where the consumer has durably applied an event but the relay's delivered marker is not durable. Verify redelivery is deduplicated before acknowledgement and produces one logical effect. |
+
+## Detailed corrections required
+
+### F-01: authorization revocation linearization
+**Verified specification gap.** The adapter recipe obtains fresh authorization before beginning the transaction, then validates a snapshot. If revocation occurs after that decision but before grant commit, the recipe does not define an authoritative re-check that makes POLICY-01 true.
+
+Add POLICY-03 with a deterministic schedule: obtain allow at policy epoch P; pause before commit; revoke to P+1; resume. The result must be denied if the product promises "revocation before grant commit: denied". The adapter must compare a monotonic policy/revocation epoch inside the same authority/transaction boundary, or explicitly define and test a bounded-staleness window if the policy authority cannot participate in that boundary. Do not claim strict atomic revocation across independent stores without a protocol. Revocation after grant commit/in-flight remains a separate owner policy decision.
+
+### F-02: stable intent versus latest-head resolution
+**Partly covered elsewhere, but the research recipe is ambiguous.** P37 §4 says a lost-response retry looks up the committed grant before attempting a new reservation and does not reinterpret the request against a later receipt. The P39 research recipe's step 4 re-reads latest head before step 6 claims the key, which can be read as applying the new-head gate to retries.
+
+Clarify the order: authenticate caller; resolve same-key replay against the immutable original intent and current authorization binding; return the original grant without authorizing bytes; only a genuinely new key proceeds through current-head validation and new reservation. The stable fingerprint must not include a server-resolved moving "latest" value. If the API accepts "latest", persist its first resolved immutable receipt reference as the request's canonical intent. Add IDEMP-01 for retry after head advancement.
+
+### F-03: trusted time and fencing
+Add CLOCK-01. A client-supplied `now` or worker-local wall clock is not an authority for lease expiry. Use the authoritative persistence/coordinator clock for expiry eligibility. Regardless of expiry, every protected mutation must atomically compare the presented fence with the current durable fence. Expiry is a takeover/liveness condition; the monotonic fence is the stale-writer safety condition.
+
+### F-04: identity and fence continuity
+Add ID-01 covering delete, restore, backup rollback and migration. Require non-reusable grant identity enforced by a durable uniqueness constraint and collision handling, plus a fence namespace/high-water mark that cannot reset when a grant row is deleted or restored. Random 128-bit IDs are a useful collision-resistant identifier, not a proof of mathematical uniqueness and not a substitute for durable fence continuity. Specify tombstone retention and recovery horizon explicitly.
+
+### F-05: poison-event handling
+Add ORDER-04. If event N is permanently malformed or unavailable, do not publish/apply N+1 as if the gap did not matter. After a bounded retry/age threshold, place the aggregate in an operator-visible HOLD/quarantine state, retain the original event and evidence, and provide an audited repair/replay path. Any authorized skip must be an explicit, durable, versioned resolution event, never an implicit timeout skip.
+
+### F-06: resumable stream capability
+Add STREAM-02. A resume capability should bind at least grant ID, current fence epoch, immutable object version/digest, operation scope, stream identity and permitted byte range. The authority reissues it after authenticating the caller and checking current policy/fence; takeover invalidates the old epoch. Define whether concurrent streams are forbidden and how cancellation/revocation reaches an established transport. Already-emitted bytes cannot be recalled.
+
+### F-07: SQLite version and race evidence
+The official SQLite release history marks 3.52.0 as **Withdrawn**, lists the WAL-reset fix in 3.51.3 and 3.53.0, and later lists 3.54.x releases. Replace the broad "3.51.3 and later" phrase with explicit known fixed release lines and require pinning the exact SQLite library actually bundled by the app/runtime. Do not select SQLite here.
+
+Add RACE-08 (or extend the existing matrix): use independent connections/processes and barriers; submit the same stale expected head/version after one writer commits; prove the second operation fails/reloads rather than creating a fork or overwriting the winner. Separately test SQLITE_BUSY handling and retry. State honestly that SQLite's single-writer serialization does not simulate overlapping database writers from engines with different concurrency models.
+
+### F-08: Redis fencing reference
+Reject as a defect. The official Redis distributed-lock page says "You should implement fencing tokens" for long-running processes and warns that lock validity can be compromised by clock shifts. Keep the citation, but phrase the limitation precisely: Redis documents the fencing pattern; a PocketCode adapter still needs a monotonic token from its chosen authority and enforcement at the protected resource. Redis TTL locks alone are not that authority.
+
+### F-09: consumer-commit / relay-marker crash
+Add CRASH-04 as an explicit end-to-end schedule: publish event; consumer durably applies it and records source/event identity; relay's delivered-marker write is lost or crashes; event is redelivered after restart; consumer returns duplicate without repeating the logical effect; relay then marks delivered under its current fence. This supplements, rather than replaces, CRASH-03.
+
+## Independent source audit cross-check at source SHA 744cb4d
+These are ChatGPT's source-pinned findings, not findings from Claude's partial review:
+
+- **P39-S1, VERIFIED model gap:** `scripts/release_grant_conformance.py`, `record_progress()` lines 269–293, increments `aggregate_version` and updates progress without appending a matching `GrantEvent` or `OutboxItem`. This creates a permanent event-version gap after progress.
+- **P39-S2, VERIFIED model gap:** `GrantEvent` lines 51–59 and `consume_event()` lines 295–313 store/trust a caller-provided digest string without canonical payload bytes or recomputation. `test_consumer_rejects_same_event_identity_with_changed_payload` lines 209–218 changes only the digest; it does not change grant/version/state metadata while preserving the digest.
+- **P39-S3, VERIFIED model gap:** grant-event `mark_outbox_delivered()` lines 315–321 checks only event existence and flips `delivered`; it has no claim, owner, lease or fence. Do not confuse this with `scripts/fake_outbox.py`, whose separate effect-dispatch state machine has claim/lease/fence checks (including `claim()` and `_require_current_lease()`).
+- **P39-S4, VERIFIED boundary limitation:** the reviewed grant model has no streaming transport. State fencing can reject later state writes but cannot terminate bytes already being emitted on an established socket. Transport capability validation, cancellation and byte-observation semantics remain adapter/transport obligations and UNKNOWN until implemented and tested.
+- **Journal trust boundary:** `scripts/event_journal.py` explicitly says producer authentication is supplied by a trusted adapter; `AuthenticatedProducer` is a data value, not cryptographic verification performed by the module. `advance_fence()` and `append()` are separate in-memory operations, so a durable adapter must make fence validation/advance and append atomic where required.
+
+## Gemini plan assessment
+The response supplied by the owner is **ACCEPT WITH CHANGES as research direction only**, not as a completed P39 review or implementation authorization. Its target paths need correction before any work:
+- P39-S1/S2 belong to `scripts/release_grant_conformance.py` and `scripts/test_release_grant_conformance.py`, not `result_receipts.py` and `test_result_receipts.py`.
+- P39-S3 is the grant-event outbox in `release_grant_conformance.py`; `fake_outbox.py` is a different effect-dispatch state machine that already has lease/fence mechanics.
+- P39-S4 cannot be solved by editing the sequential model alone; it needs a defined transport authority and cancellation/revalidation boundary.
+The proposed provider/runtime comparisons and mobile platform claims are not independently re-verified in this note. No provider, runtime, database or hosted service is selected.
+
+## Gate and next action
+**P39 remains OPEN / BLOCKED for final reconciliation.** Claude's committed review covers only the research packet. Gemini's supplied plan is not the required independent source-pinned report. ChatGPT's source audit verifies S1–S4 and the journal boundary, but does not substitute for the two reviewer reports. No source code was changed; no tests were run in this pass.
+
+Next bounded task: continue the ChatGPT source audit against the pinned model/tests and P37 contract, focusing on tenant/event binding, first-head races, authorization replay/revocation and the exact model-test gaps. When Gemini's complete review arrives, reconcile it with this note. Do not modify source code or select an adapter before the P39 gate clears.
+
+## Primary sources
+- SQLite release history: https://www.sqlite.org/changes.html
+- Redis distributed-lock guidance: https://redis.io/docs/latest/develop/clients/patterns/distributed-locks/
+- Exact source/test pin: https://github.com/marcelosofficial-ctrl/PocketCode-/tree/744cb4dc7cd4994647c84ac7476d0c78a21f0540
+- Claude partial review: https://github.com/marcelosofficial-ctrl/PocketCode-/blob/2c8dee79e2e0ef6988f2134f327fb8a046fcec59/AI_COLLAB/CLAUDE_REVIEW_RELEASE_GRANT_RESEARCH_20261108.md

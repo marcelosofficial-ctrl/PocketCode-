@@ -3,9 +3,10 @@
 Use this file to locate only the evidence needed for the active task.
 
 ## Current task: P39 independent review
-
 - Review instructions and exact pins: `AI_COLLAB/P39_INDEPENDENT_REVIEW_PROMPT_20261107.md`
 - Research, red-team corrections and adapter gate: `AI_COLLAB/RELEASE_GRANT_ADAPTER_RESEARCH_AND_REDTAM_20261107.md`
+- Claude's partial research review: `AI_COLLAB/CLAUDE_REVIEW_RELEASE_GRANT_RESEARCH_20261108.md`
+- Interim dispositions and ChatGPT source cross-check: `AI_COLLAB/P39_RESEARCH_REVIEW_DISPOSITIONS_20261108.md`
 - Receipt-head concurrency, outbox ordering and fencing contract: `AI_COLLAB/RELEASE_GRANT_CONCURRENCY_AND_CRASH_CONTRACT_20261107.md`
 - Durable adapter boundaries: `AI_COLLAB/DURABLE_ADAPTER_CONTRACT_20261106.md`
 - Grant model: `scripts/release_grant_conformance.py`
@@ -14,7 +15,6 @@ Use this file to locate only the evidence needed for the active task.
 - Existing receipt tests: `scripts/test_result_receipts.py`
 
 ## Project constraints and continuity
-
 - Project status: `PROJECT_STATUS.md`
 - Current source of project history/evidence: `AI_COLLAB/STATE_LEDGER_20261106.md`
 - Work log: `AI_COLLAB/CHAT_WORK_LOG.md` (last 30 lines only)

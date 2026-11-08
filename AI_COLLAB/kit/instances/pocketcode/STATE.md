@@ -1,26 +1,25 @@
 # PocketCode current state
 
 **Branch:** `pocketcode-ai-workflow-director-research-2026-10-28`  
-**Last verified live HEAD before this continuity refresh:** `e0aef94d856a1c3ef781c3ce6228cbb8259e0e89`  
+**Last verified live HEAD before this continuity update:** `2c8dee79e2e0ef6988f2134f327fb8a046fcec59`  
 **P39 documentation snapshot:** `04f4db211d4bfdee76989c1dbe6c8bb9079e9bb0`  
 **Exact source/test checkpoint:** `744cb4dc7cd4994647c84ac7476d0c78a21f0540`
 
 ## Current result
-
-- **VERIFIED:** GitHub Actions run [42365455316](https://github.com/marcelosofficial-ctrl/PocketCode-/actions/runs/42365455316), job `unittest`, checked out exact source/test SHA `744cb4dc` and passed the repository-wide Python conformance suite: 266 tests, 0 failures.
-- **VERIFIED:** Workflow command: `python -m unittest discover -s scripts -p "test_*.py" -v`, Python 3.12 on ubuntu-latest.
-- **VERIFIED:** GitHub compare from source/test SHA `744cb4dc` to live HEAD `e0aef94d856a1c3ef781c3ce6228cbb8259e0e89` reports 33 commits ahead, 0 behind. The changed paths are AI_COLLAB/continuity documentation only; no `scripts/**` or `.github/workflows/**` paths changed. The 266-test result therefore still covers the unchanged source/test tree, not the later documentation.
-- **VERIFIED:** Added [P39 ChatGPT static audit addendum](../../P39_CHATGPT_STATIC_AUDIT_ADDENDUM_20261107.md), commit `fd013786ef6daa4c13f2dce14f9782f13e43655d`. It documents four source-backed model gaps, primary-source research, immutable P39 links and ten proposed adapter acceptance additions.
-- **VERIFIED:** Continuity documents now share the same pre-refresh branch-head checkpoint. This avoids conflicting stale HEAD values in BOOT, STATE and CHECKPOINT.
-- **NOT RUN:** No local Python execution in this pass. No real multi-process/database race, durable crash recovery, grant-event relay, transport revocation, mobile execution or production adapter test.
-- **UNKNOWN:** Whether Claude/Gemini reports exist outside the inspected repository. No matching reviewer-report files appear in the branch's changes since the pinned source/test checkpoint, and repository searches for P39 Claude/Gemini review reports returned no results. This does not prove no reports exist outside GitHub.
+- **VERIFIED:** GitHub Actions run [42365455316](https://github.com/marcelosofficial-ctrl/PocketCode-/actions/runs/42365455316), job `unittest`, tested exact source/test SHA `744cb4dc`: 266 tests, 0 failures. Command: `python -m unittest discover -s scripts -p "test_*.py" -v`, Python 3.12 on ubuntu-latest.
+- **VERIFIED:** Compare from `744cb4dc` to pre-update HEAD `2c8dee79e2e0ef6988f2134f327fb8a046fcec59`: 44 commits ahead, 0 behind; changed paths are documentation/continuity files only. No `scripts/**` or `.github/workflows/**` changes. The 266-test result therefore still covers the unchanged source/test tree, not later documentation.
+- **VERIFIED:** The pre-update HEAD `2c8dee79e2e0ef6988f2134f327fb8a046fcec59` has no reported commit status checks and no workflow runs returned for that exact SHA. No new test run is claimed.
+- **VERIFIED:** Claude's report `AI_COLLAB/CLAUDE_REVIEW_RELEASE_GRANT_RESEARCH_20261108.md` is partial and explicitly reviews only the research/red-team packet. It does not review the source model/tests, P37 concurrency contract or ChatGPT static audit addendum.
+- **VERIFIED:** The nine Claude research findings have interim dispositions in `AI_COLLAB/P39_RESEARCH_REVIEW_DISPOSITIONS_20261108.md`. F-01, F-03, F-05, F-06 accepted; F-02, F-04, F-07, F-09 accepted with changes; F-08 rejected as a defect because the official Redis guidance supports the research claim.
+- **VERIFIED:** Source audit at `744cb4dc` confirms P39-S1 through S4 and the event-journal trust boundary. See the disposition note for exact paths and line ranges.
+- **VERIFIED:** The owner-supplied Gemini response is a research/implementation plan, not the required complete independent P39 report. The repository Gemini review request remains open.
+- **NOT RUN:** No tests in this pass. No real concurrent database race, durable crash/restart, grant-event relay, transport revocation, mobile execution or production adapter test.
+- **UNKNOWN:** Whether either reviewer has additional work outside the inspected branch/chat. The partial Claude file does not establish completion of the full assignment.
 
 ## Product and safety boundaries
-
 Phone-first, provider-neutral; $0 default. No database, runtime, provider, backend or cloud host selected. Release-grant, outbox and coordinator code remain sequential in-memory conformance models, not production security or durability boundaries. Keep PocketCode and RevDev repositories, roadmaps, runtimes, acceptance suites and release gates separate. PR #2/#3 remain untouched. No canonical LOOP/CASE/D IDs changed.
 
 ## Next work
+Continue the ChatGPT source-pinned P39 audit without waiting for Claude. Next inspect tenant/event binding, first-head/bootstrap races, authorization replay/revocation and model-test gaps at the immutable source/document pins. Reconcile Gemini's complete independent report when supplied. No source-code edits before the P39 gate clears.
 
-Owner forwards the P39 brief and static audit addendum to Claude and Gemini. Use docs SHA `04f4db2`, source/test SHA `744cb4d`, review-brief SHA `4c9d17b`, and addendum SHA `fd01378`. Reconcile both complete reports before correcting the reference model or planning an adapter. The owner-reported Pyodios saved-exception probe remains a separate outstanding device action.
-
-**Continuity rule:** this file records the live HEAD verified immediately before this continuity refresh. Fetch the branch before consequential work.
+**Continuity rule:** fetch the live branch before consequential work. This state records the HEAD verified immediately before this continuity update.

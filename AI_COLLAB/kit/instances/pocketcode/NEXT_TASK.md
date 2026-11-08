@@ -1,44 +1,30 @@
-# NEXT TASK: P39 independent adversarial review reconciliation
+# NEXT TASK: Continue P39 source-pinned adversarial audit
 
 ## Goal
-Obtain and reconcile two independent, source-pinned reviews of the release-grant recovery/concurrency design before correcting the reference model or selecting/planning a durable adapter.
+Continue independent ChatGPT review of the release-grant model and contracts while Claude is unavailable. Keep the source-edit freeze in force. The final P39 reconciliation gate still requires the complete independent Gemini report and completion of Claude's assigned review scope; do not wait idle if source-backed audit work remains.
 
-## Reviewer assignments
-- Claude: architecture, transaction linearization, receipt-head races, stable-intent/auth separation, outbox atomicity/order, fencing and stream effects.
-- Gemini: caller/producer trust boundary, tenant isolation, replay/revocation, event identity/digest/order, fence authority, source/license claims and adversarial tests.
+## Current evidence
+- Source/test pin: `744cb4dc7cd4994647c84ac7476d0c78a21f0540`
+- Documentation snapshot: `04f4db211d4bfdee76989c1dbe6c8bb9079e9bb0`
+- Latest branch HEAD before this continuity update: `2c8dee79e2e0ef6988f2134f327fb8a046fcec59`
+- Claude partial review: `AI_COLLAB/CLAUDE_REVIEW_RELEASE_GRANT_RESEARCH_20261108.md` (research packet only).
+- Interim dispositions: `AI_COLLAB/P39_RESEARCH_REVIEW_DISPOSITIONS_20261108.md`.
+- ChatGPT static audit: `AI_COLLAB/P39_CHATGPT_STATIC_AUDIT_ADDENDUM_20261107.md`.
 
-## Exact review inputs
-Forward both documents:
-1. P39 brief: https://github.com/marcelosofficial-ctrl/PocketCode-/blob/4c9d17b818fd823eff5e183e6728655262446336/AI_COLLAB/P39_INDEPENDENT_REVIEW_PROMPT_20261107.md
-2. ChatGPT source-pinned static audit addendum: https://github.com/marcelosofficial-ctrl/PocketCode-/blob/fd013786ef6daa4c13f2dce14f9782f13e43655d/AI_COLLAB/P39_CHATGPT_STATIC_AUDIT_ADDENDUM_20261107.md
+## Next ChatGPT audit slice
+1. Verify tenant/principal/request-key binding and cross-tenant lookup isolation.
+2. Verify first receipt-head bootstrap and successor race assumptions against the model, tests and P37 contract.
+3. Verify authorization replay, policy revocation and the distinction between returning a grant and authorizing bytes.
+4. Inspect event-to-tenant binding, producer trust and journal fence atomicity.
+5. Record only new source-backed findings, with exact pins, counterexample schedules and model-vs-adapter boundaries.
 
-The immutable pins are:
-- P39 documentation snapshot: `04f4db211d4bfdee76989c1dbe6c8bb9079e9bb0`
-- Source and tests: `744cb4dc7cd4994647c84ac7476d0c78a21f0540`
-- P39 review brief: `4c9d17b818fd823eff5e183e6728655262446336`
-- Supplemental audit addendum: `fd013786ef6daa4c13f2dce14f9782f13e43655d`
-
-Use immutable links in the addendum, not branch-floating paths. If any file is inaccessible, report NOT REVIEWED. Reviewers must not edit the repository, create commits, change PRs or claim tests they did not run.
-
-## Findings that must be challenged
-- P39-S1: `record_progress()` increments aggregate version without creating matching event/outbox record.
-- P39-S2: `consume_event()` trusts caller-supplied digest and does not bind digest to grant/version/state metadata.
-- P39-S3: grant-event outbox has no relay claim/lease/fence; distinguish it from the separate fake effect-dispatch outbox.
-- P39-S4: state fencing does not stop bytes already being sent on an established stream.
-- Also challenge the journal adapter trust boundary, event-to-tenant binding, first-head bootstrap races, authorization replay/revocation, tombstone/fence durability, and all research/license/maintenance claims.
-
-## Owner-mediated handoff
-The owner forwards the exact brief and addendum to Claude and Gemini, then returns both complete Markdown reports. No direct AI-to-AI channel is assumed.
-
-## ChatGPT completion steps
-1. Verify each report's file/line references against the exact pinned source and docs.
-2. Deduplicate and rank findings by severity and exploitability.
-3. Separate model-level defects from adapter-only obligations and unsupported assumptions.
-4. Reconcile disagreements without erasing either reviewer's rationale.
-5. Produce a review reconciliation note with ACCEPT / ACCEPT WITH CHANGES / REJECT disposition and one bounded next task.
+## Reviewer inputs
+- Claude has reviewed only `RELEASE_GRANT_ADAPTER_RESEARCH_AND_REDTAM_20261107.md`. Remaining Claude scope: source model/tests, P37 concurrency contract and P39 static audit addendum.
+- Gemini's owner-supplied chat response is a research/implementation plan, not a complete source-pinned review. The independent review request remains open; do not infer its completion.
+- Owner-mediated review only. Do not assume direct AI-to-AI communication.
 
 ## Constraints
-No source-code edits before the reviews are reconciled. No PR #2/#3 changes, merges, deployment, provider calls, paid services, runtime/database selection or changes to canonical LOOP/CASE/D IDs. Do not treat the 266/266 CI result as proof of real concurrency or durability. Keep $0 default and all PocketCode/RevDev separation boundaries.
+No source-code edits before full review reconciliation. No PR #2/#3/#4 changes, merges, deployment, provider calls, paid services, runtime/database selection or canonical LOOP/CASE/D ID changes. Preserve $0 default and PocketCode/RevDev separation. No tests are claimed unless output exists.
 
 ## Done when
-Both complete reports are available; all material findings are verified and risk-ranked; disagreements have explicit dispositions; and the next bounded task is recorded. Until both reports are returned, status is BLOCKED / WAITING FOR OWNER INPUT.
+The ChatGPT source audit is complete and source-pinned; Gemini's complete independent report is reconciled when available; Claude's remaining review scope is reconciled when available; all material findings have explicit dispositions; and one bounded implementation task is recorded. Until the independent reviews are complete, P39 remains OPEN / BLOCKED.
