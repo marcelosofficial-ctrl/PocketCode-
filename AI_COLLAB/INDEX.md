@@ -40,6 +40,7 @@ Size classes: S under 8 KB, M 8-25 KB, L 25-50 KB, XL over 50 KB (never load who
 | P39_SOURCE_PINNED_AUDIT_CROSSWALK_20261108.md | source-pinned S1..S8 findings, P37 ID namespace correction and reviewer reconciliation template | M | audit complete; review gate open |
 | VERDICT_EVIDENCE_EXIT_PROVENANCE_MATRIX_20261105.md | exit provenance matrix | M | live (O-5) |
 | EXIT_PROVENANCE_RESOLUTION_20261108.md | child vs wrapper exit, termination and verdict projection rules plus adversarial tests | M | proposed; review pending |
+| EXIT_PROVENANCE_STATIC_CONSISTENCY_AUDIT_20261108.md | EP-01..20 cross-check, formatter/projection incompatibility, EP-21..25 gaps and reviewer checklist | M | static audit; review pending |
 | PROVIDER_NEUTRAL_RECIPE_AND_DURABLE_TASK_MANIFEST_PROPOSAL_20261105.md | recipe and manifest proposal | M | proposal |
 
 ## Canonical acceptance and decisions
