@@ -56,6 +56,7 @@ Size classes: S under 8 KB, M 8-25 KB, L 25-50 KB, XL over 50 KB (never load who
 | EXIT_PROVENANCE_RESOLUTION_20261108.md | child vs wrapper exit, termination and verdict projection rules plus adversarial tests | M | proposed; review pending |
 | EXIT_PROVENANCE_STATIC_CONSISTENCY_AUDIT_20261108.md | EP-01..20 cross-check, formatter/projection incompatibility and EP-21..25 gaps | M | static audit; review pending |
 | P39_IMPLEMENTATION_GATE_RESEARCH_ADDENDUM_20261109.md | primary-source research on outbox, revocation, exit provenance and termination; red-team corrections | M | research complete; owner/reviewer gate remains closed |
+| EXECUTION_BOUNDARY_DURABILITY_AND_EVIDENCE_RESEARCH_20261109.md | mobile/WASM trust boundary, Wasmtime controls, SQLite crash durability, evidence provenance and acceptance proposals | M | research complete; no stack selection |
 
 | VERDICT_EVIDENCE_EXIT_PROVENANCE_MATRIX_20261105.md | exit provenance matrix | M | live (O-5) |
 | PROVIDER_NEUTRAL_RECIPE_AND_DURABLE_TASK_MANIFEST_PROPOSAL_20261105.md | recipe and manifest proposal | M | proposal |
