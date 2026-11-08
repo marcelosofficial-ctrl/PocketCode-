@@ -37,6 +37,7 @@ Size classes: S under 8 KB, M 8-25 KB, L 25-50 KB, XL over 50 KB (never load who
 | P39_INDEPENDENT_REVIEW_PROMPT_20261107.md | review brief | S | live |
 | CLAUDE_REVIEW_RELEASE_GRANT_RESEARCH_20261108.md | Claude review of research packet only; not source/model review | S | partial review |
 | P39_RESEARCH_REVIEW_DISPOSITIONS_20261108.md | interim decisions F-01..F-09 plus source cross-check | M | interim; P39 open |
+| P39_SOURCE_PINNED_AUDIT_CROSSWALK_20261108.md | source-pinned S1..S8 findings, P37 ID namespace correction and reviewer reconciliation template | M | audit complete; review gate open |
 | VERDICT_EVIDENCE_EXIT_PROVENANCE_MATRIX_20261105.md | exit provenance matrix | M | live (O-5) |
 | EXIT_PROVENANCE_RESOLUTION_20261108.md | child vs wrapper exit, termination and verdict projection rules plus adversarial tests | M | proposed; review pending |
 | PROVIDER_NEUTRAL_RECIPE_AND_DURABLE_TASK_MANIFEST_PROPOSAL_20261105.md | recipe and manifest proposal | M | proposal |
