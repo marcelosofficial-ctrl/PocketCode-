@@ -47,6 +47,15 @@ Size classes: S under 8 KB, M 8-25 KB, L 25-50 KB, XL over 50 KB (never load who
 | RELEASE_GRANT_CONCURRENCY_AND_CRASH_CONTRACT_20261107.md | concurrency and crash spec | M | under review |
 | P39_CHATGPT_STATIC_AUDIT_ADDENDUM_20261107.md | static audit | M | under review |
 | P39_INDEPENDENT_REVIEW_PROMPT_20261107.md | review brief | S | live |
+| P39_RESEARCH_REVIEW_DISPOSITIONS_20261108.md | finding-by-finding decisions on Claude's research review and source cross-check | M | interim; P39 gate open |
+| P39_SOURCE_PINNED_AUDIT_CROSSWALK_20261108.md | source-pinned S1..S8 findings, P37 namespace correction and reviewer reconciliation | M | audit complete; review gate open |
+| P39_CLAUDE_REVIEW_RECONCILIATION_20261108.md | full Claude P39 review reconciliation, RG findings, test plan and gate | L | Claude review received; Gemini/owner gate open |
+| P39_RECEIPT_SUBSYSTEM_AUDIT_20261108.md | bounded audit of receipt model/tests and durable adapter contract; RCP-01..05 | L | static audit complete; adapter unverified |
+| P39_EP_CANONICAL_ACCEPTANCE_CROSSWALK_20261108.md | maps P39/RG/RCP and EP-01..25 to unchanged LOOP/CASE criteria | L | traceability complete; owner/reviewer gates open |
+| P39_EXIT_OWNER_DECISION_REGISTER_20261108.md | OD-01..13 owner decisions for streaming, revocation, clocks, identity, receipts and exit provenance | M | all decisions OPEN; recommendations not approved |
+| EXIT_PROVENANCE_RESOLUTION_20261108.md | child vs wrapper exit, termination and verdict projection rules plus adversarial tests | M | proposed; review pending |
+| EXIT_PROVENANCE_STATIC_CONSISTENCY_AUDIT_20261108.md | EP-01..20 cross-check, formatter/projection incompatibility and EP-21..25 gaps | M | static audit; review pending |
+| P39_SOURCE_PINNED_AUDIT_CROSSWALK_20261108.md | P39-S1..S8 source pins, contract gaps and P39-prefixed test proposals | M | audit complete; independent review open |
 | VERDICT_EVIDENCE_EXIT_PROVENANCE_MATRIX_20261105.md | exit provenance matrix | M | live (O-5) |
 | PROVIDER_NEUTRAL_RECIPE_AND_DURABLE_TASK_MANIFEST_PROPOSAL_20261105.md | recipe and manifest proposal | M | proposal |
 | CANONICAL_ACCEPTANCE_TRACEABILITY_20261029.md | LOOP and CASE traceability | S | live |
