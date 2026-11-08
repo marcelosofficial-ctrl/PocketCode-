@@ -2,10 +2,10 @@
 
 Time: 2026-11-09 | By: ChatGPT | Mode: normal
 
-Done: added and indexed P39_IMPLEMENTATION_GATE_RESEARCH_ADDENDUM_20261109.md; researched outbox/serialization, revocation/in-flight transfer, exit provenance and termination; added seven future adapter tests; corrected five prior gaps including duplicate INDEX row and revocation/termination overclaims. No source/tests changed or run. Pre-checkpoint HEAD: 821522a6085ba80cce88a918c1693bac1ade8b3e. Previous five commits: 821522a inbox, 3b75a02 next task, 914be40 state, 91ff549 index, fab8f3e research addendum.
+Done: created EXECUTION_BOUNDARY_DURABILITY_AND_EVIDENCE_RESEARCH_20261109.md; ranked five gaps, researched mobile/WASM isolation, Wasmtime controls, SQLite durability and evidence attestations; proposed EvidenceEnvelope and 17 tests; corrected seven prior weaknesses. No source/tests changed or run. Pre-checkpoint HEAD: 90e72172fa386da4f26773d06c95acfcc2d55a53. Last five before checkpoint: 90e7217 inbox, 8302f3e next task, ca4405b state, bc1ede4 index, bcae533 research.
 
-Next: obtain Gemini P39 review; confirm whether Claude exit review is still required; obtain explicit OD-01..13 owner decisions. Gate remains CLOSED.
+Next: reconcile Gemini P39 review; confirm Claude exit review scope; obtain OD-01..13 decisions. Gate CLOSED.
 
-CI: no run on docs-only HEAD; workflow path filter is scripts/** and workflow file. 266/266 PASS is historical and pinned to 744cb4dc7cd4994647c84ac7476d0c78a21f0540 only.
+CI: no run on docs-only HEAD. Workflow triggers on scripts/** or workflow edits. 266/266 PASS is historical and pinned only to 744cb4dc7cd4994647c84ac7476d0c78a21f0540.
 
-Blockers: independent review and owner decisions. Adapter, durable concurrency, transport and device evidence UNKNOWN / NOT RUN.
+Evidence: primary docs opened; mobile embedder, real adapter, device, concurrency and crash/power-loss behavior UNKNOWN / NOT RUN.
