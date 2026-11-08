@@ -6,7 +6,7 @@ Continue independent ChatGPT review of the release-grant model and contracts whi
 ## Current evidence
 - Source/test pin: `744cb4dc7cd4994647c84ac7476d0c78a21f0540`
 - Documentation snapshot: `04f4db211d4bfdee76989c1dbe6c8bb9079e9bb0`
-- Latest branch HEAD before this continuity update: `a9479fb8fe5c731e9647e80f8716777fda204389`
+- Latest branch HEAD before this continuity update: `c2bff9722352b6e33c97f9ac5cafd27ad6077c33`
 - Claude partial review: `AI_COLLAB/CLAUDE_REVIEW_RELEASE_GRANT_RESEARCH_20261108.md` (research packet only).
 - Interim dispositions: `AI_COLLAB/P39_RESEARCH_REVIEW_DISPOSITIONS_20261108.md`.
 - ChatGPT static audit: `AI_COLLAB/P39_CHATGPT_STATIC_AUDIT_ADDENDUM_20261107.md`.

@@ -12,13 +12,14 @@
 - Corrected Gemini plan target paths and recorded that its supplied response is not a complete independent P39 review.
 - Verified sequential tenant/principal idempotency and replay-after-successor tests; identified first-head concurrency as adapter-only.
 - Added P39-S5 event-to-tenant binding, P39-S6 producer authentication/fence atomicity, and P39-S7 P37/P39 test-ID collision findings.
+- Verified sequential idempotency/replay ordering and identified first-head initialization as an adapter-only concurrency obligation.
 - Updated indexes, state, next task and inbox continuity. No source code changed.
 
 ## CI and verification
-GitHub Actions run [42365455316](https://github.com/marcelosofficial-ctrl/PocketCode-/actions/runs/42365455316) passed 266/266 on exact source/test SHA `744cb4dc`. Compare to pre-update HEAD `2c8dee79e2e0ef6988f2134f327fb8a046fcec59` is 45 commits ahead, 0 behind, documentation-only; no scripts or workflow paths changed. The latest pre-update HEAD has no reported status checks/workflow run. No new tests run in this unit.
+GitHub Actions run [42365455316](https://github.com/marcelosofficial-ctrl/PocketCode-/actions/runs/42365455316) passed 266/266 on exact source/test SHA `744cb4dc`. Compare to pre-update HEAD `2c8dee79e2e0ef6988f2134f327fb8a046fcec59` is 46 commits ahead, 0 behind, documentation-only; no scripts or workflow paths changed. The latest pre-update HEAD has no reported status checks/workflow run. No new tests run in this unit.
 
 ## Not done / still open
 P39 is not closed. Claude's review is partial; Gemini's complete independent report is not present in the inspected repository and the supplied plan is not a review. No production adapter, database, provider or runtime selected. Real concurrency, durable crash recovery and transport revocation remain NOT RUN/UNKNOWN.
 
 ## Next
-Continue the independent ChatGPT source audit: tenant/event binding, first-head races, authorization replay/revocation, event-journal trust and test gaps. No source edits until the review gate clears.
+Continue the independent ChatGPT source audit: authorization trust and revocation semantics, plus remaining journal and receipt-head acceptance requirements. No source edits until the review gate clears.
