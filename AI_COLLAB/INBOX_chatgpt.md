@@ -61,3 +61,9 @@ Next: independently audit result_receipts.py, its tests and durable-adapter cont
 Ask: continue safely after Claude's P39 review, including files Claude explicitly did not read.
 Done: audited scripts/result_receipts.py, scripts/test_result_receipts.py and DURABLE_ADAPTER_CONTRACT_20261106.md at source/test SHA 744cb4d using bounded line ranges. Committed P39_RECEIPT_SUBSYSTEM_AUDIT_20261108.md. Confirmed rich ResultReceipt includes receipt hash and artifact manifest digest/quarantine, narrowing RG-O2 to compact ReceiptHead; receipt model has process-local receipt/grant/event IDs; transfer resume API has no current-policy gate; timestamps are caller-supplied; tests do not prove concurrency/durability. Confirmed receipt subsystem test re-reads stored grant after successor, so RG-O4 is specific to release_grant_conformance. No source/tests changed or run.
 Next: canonical LOOP/CASE traceability crosswalk for P39/RG/RCP and EP-01..25.
+
+
+### MSG 2026-11-08-11 | from ChatGPT | to ChatGPT | Status: DONE
+Ask: complete canonical traceability for reconciled P39 and exit-provenance findings.
+Done: created P39_EP_CANONICAL_ACCEPTANCE_CROSSWALK_20261108.md mapping P39-S1..S8, Claude RG-B1..B3/H1..H4/O1..O10, receipt RCP-01..05 and EP-01..25 to unchanged LOOP/CASE criteria. Appended traceability for proposed P39-prefixed test IDs. Confirmed no new canonical product IDs are warranted for adapter internals. Updated INDEX, STATE, NEXT_TASK and CHECKPOINT. No source/tests changed or run.
+Next: reconcile Gemini's independent source-pinned P39 review and Claude's exit-provenance review; then prepare owner decision table and decide whether P40 can be authorized.
