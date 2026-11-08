@@ -7,6 +7,7 @@ Updated: 2026-11-08 by ChatGPT. Sources: RECONCILIATION_2026-11-07.md (ChatGPT),
 - Several earlier commits that evening were red (933c732, 89bc1aa, e99c67c, b3bd2d2, 2504eb1: assertion, KeyError and TypeError failures in the release-grant model tests) because commits were pushed in quick sequences and fixed by later commits. The failure emails were these intermediate runs. The run result for the current HEAD must be checked, not assumed.
 - COMMITTED: intent/proof separation; exact receipt-revision authorization binding; current-grant recovery; concurrency and crash specification; sequential grant model and tests; research and red-team packet.
 - CLAIMED ONLY (not built): durable adapter; real concurrent processes; transactional outbox relay; durable crash recovery; production fencing; transport stream ownership and revocation; trusted policy authority; client receipt.
+- VERIFIED: P39-S8 records that post-commit revocation has no defined transition in the sequential model; P39-S4 now includes the stale-worker open-stream schedule and chunk/cancellation evidence requirements. Production behavior remains UNKNOWN.
 - Event journal prototype: in memory, 21/21 local tests; producer identity is not cryptographic; fence check plus append is not atomic. Fake coordinator: 14 harness tests on test doubles, not canonical. Both from the owner handoff, not re-verified by Claude.
 - Pyodios on the owner's iPhone (owner-reported): v1.1.0 build 7, Pyodide 314.0.5, Python 3.14.2. First Editor run showed only "[Bridge/executePython] PythonError". The existing summary.json exactly matches the success oracle (owner-inspected). Error Log shows only "Editor: PythonError". Console probe for sys.last_exc: NOT RUN. Bridge cause and child exit status: UNKNOWN. Export/read-back, relaunch persistence and malformed-input test: NOT RUN.
 
@@ -19,10 +20,11 @@ Updated: 2026-11-08 by ChatGPT. Sources: RECONCILIATION_2026-11-07.md (ChatGPT),
 
 ## Open items
 - O-1 Owner: run the read-only Pyodios Console probe (steps in PYODIOS_PYTHONERROR_BRIDGE_TRIAGE_20261106.md). Blocks the device evidence.
-- O-2 Independent adversarial reviews (Claude, Gemini) of RELEASE_GRANT_ADAPTER_RESEARCH_AND_REDTAM_20261107.md and the P39 static audit, before any adapter selection. Messages are in INBOX_claude.md and INBOX_gemini.md.
+- O-2 Independent adversarial reviews (Claude, Gemini) of the research packet, source model, P37 contract and P39 audit remain open. Claude's available report covers the research packet only; the separate exit-provenance review is requested. Gemini's supplied plan is not a complete source-pinned P39 review.
 - O-3 Run the full Python suite in a real checkout or CI and record exact-SHA results.
 - O-4 Define the atomic persistence contract a durable adapter must satisfy.
 - O-5 Drafted EXIT_PROVENANCE_RESOLUTION_20261108.md with conservative typed-observation rules and EP-01..EP-20 proposed tests. Pending independent Claude review and owner resolution; no code change authorized.
+- Latest verified HEAD: `4c092356af633a6d95945ae80621e7f28a7a235d`. No workflow run exists for this documentation-only commit. GitHub compare from source/test SHA 744cb4d shows 53 commits ahead and only AI_COLLAB/continuity paths; no scripts or workflow changes. The prior 266/266 CI result remains the latest source/test evidence, not a fresh run on HEAD.
 - O-6 Compare one free local path (a-Shell or Carnets) only if it adds information.
 
 ## Known risks
