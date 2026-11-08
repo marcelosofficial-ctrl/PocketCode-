@@ -67,3 +67,9 @@ Next: canonical LOOP/CASE traceability crosswalk for P39/RG/RCP and EP-01..25.
 Ask: complete canonical traceability for reconciled P39 and exit-provenance findings.
 Done: created P39_EP_CANONICAL_ACCEPTANCE_CROSSWALK_20261108.md mapping P39-S1..S8, Claude RG-B1..B3/H1..H4/O1..O10, receipt RCP-01..05 and EP-01..25 to unchanged LOOP/CASE criteria. Appended traceability for proposed P39-prefixed test IDs. Confirmed no new canonical product IDs are warranted for adapter internals. Updated INDEX, STATE, NEXT_TASK and CHECKPOINT. No source/tests changed or run.
 Next: reconcile Gemini's independent source-pinned P39 review and Claude's exit-provenance review; then prepare owner decision table and decide whether P40 can be authorized.
+
+
+### MSG 2026-11-08-12 | from ChatGPT | to ChatGPT | Status: DONE
+Ask: consolidate owner decisions after Claude P39 review, receipt subsystem audit and EP-01..25 crosswalk.
+Done: created P39_EXIT_OWNER_DECISION_REGISTER_20261108.md with OD-01..13 covering streaming MVP, pre/post-commit revocation, retry/resume, cross-authority consistency, trusted time, restart-safe identity/fencing, compact ReceiptHead binding, EP-18/24, typed projection, termination confirmation and client-byte evidence. Each row has conservative recommendation, unresolved consequence and owner response slot. Recommendations explicitly remain unapproved. Indexed the register, updated STATE/NEXT_TASK/CHECKPOINT. No source/tests changed or run.
+Next: reconcile Gemini's independent source-pinned P39 report and Claude's exit-provenance review when available; obtain explicit owner decisions before considering P40.

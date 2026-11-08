@@ -1,7 +1,7 @@
 # CHECKPOINT   (overwrite each time; under 150 words)
 Time: 2026-11-08 | By: ChatGPT | Mode: normal
-Done: reconciled Claude's P39 report; audited receipt subsystem and durable adapter contract; created P39_EP_CANONICAL_ACCEPTANCE_CROSSWALK_20261108.md mapping P39/RG/RCP and EP-01..25 to unchanged LOOP/CASE, including new P39-prefixed test IDs. Updated index, state and inboxes; marked Claude's P39 request answered. No source/tests changed or run.
-Next: reconcile Gemini's independent source-pinned P39 review and Claude's separate exit-provenance review; prepare owner decision table; only then consider P40 model-only implementation.
-Blockers: Gemini report and Claude exit review pending; owner decisions pending for streaming scope, revocation, EP-18/24 and compact ReceiptHead binding. No source changes authorized.
-CI: latest docs HEAD has no Actions run; 266/266 remains tied to source/test SHA 744cb4d.
+Done: boot/read-order completed; confirmed HEAD 114a3ea and latest five branch commits. Rechecked crosswalk, Claude reconciliation, receipt audit, exit spec, reviewer inboxes and INDEX. Created P39_EXIT_OWNER_DECISION_REGISTER_20261108.md with OD-01..13, conservative recommendations, dependencies and owner response table. Indexed it and updated STATE. No source/tests changed or run.
+Next: continue safe static reconciliation while Gemini's independent P39 report and Claude's exit-provenance review are pending; when supplied, reconcile finding-by-finding. Keep P39/P40 implementation gate closed until reviews and owner decisions clear.
+Blockers: Gemini P39 review; Claude exit review; owner OD-01..13 decisions; device probe and real adapter/CI evidence remain separate.
+CI: latest docs HEAD must be checked; prior 266/266 PASS is tied to source/test SHA 744cb4d only.
 Resume: "Continue working on PocketCode."
