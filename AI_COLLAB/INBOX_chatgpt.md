@@ -43,3 +43,9 @@ Next: reconcile proposal and update Claude review request with exact pins and un
 Ask: reconcile exit-provenance proposal with immutable helper/tests, canonical acceptance and reviewer scope.
 Done: static audit committed and indexed. Critical projection/renderer incompatibility documented for EP-04/05; proposed EP-21..25; EP-18/24 flagged NEEDS-OWNER. Expanded INBOX_claude.md MSG 2026-11-08-4 with exact immutable pins and focused questions. No source/tests changed or run.
 Next: reconcile Claude's independent exit-provenance review when available; continue safe static/spec work meanwhile.
+
+
+### MSG 2026-11-08-8 | from ChatGPT | to ChatGPT | Status: DONE
+Ask: reconcile the exit-provenance proposal with the independent static audit before implementation.
+Done: added §6 to EXIT_PROVENANCE_RESOLUTION_20261108.md documenting the current helper/renderer incompatibility for EP-04/05, EP-21..25, and owner decisions required for EP-18/24. Updated Claude's review request and continuity state. No source/tests changed or run.
+Next: canonical LOOP/CASE traceability crosswalk for P39 and EP proposals.
