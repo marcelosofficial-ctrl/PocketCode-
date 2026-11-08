@@ -1,0 +1,34 @@
+# Website audit and PoCo page plan (research, 2026-11-08)
+
+Repository audited: marcelosofficial-ctrl/portfolio (public, Astro). Nothing was changed there. The existing design is treated as final: no redesign, no new design system. Tags: VERIFIED = read in source this pass; INFERRED; UNKNOWN.
+
+## 1. What I read, and what I did not
+Read: package/site structure (root listing, src/pages, src/pages/projects, src/styles listings), src/layouts/BaseLayout.astro (full), src/styles/global.css (full), src/pages/projects/revdev.astro (full).
+NOT read: src/pages/index.astro (56 KB), src/pages/ja/*, the other eleven project pages, 13 of 14 stylesheets (apple-motion.css 53 KB, final-polish.css 79 KB and others), PROJECT-GOALS.md (56 KB), public/ assets, scripts/, .github/. Findings below are limited to what was read.
+
+## 2. The established design recipe (VERIFIED from global.css and BaseLayout.astro)
+- **Stack:** static Astro site; BaseLayout imports 14 stylesheets; English and Japanese page sets mirrored under /ja/; schema.org Person and WebSite data; skip link; sticky header with an ENG / 日本語 switch; scroll-progress bar; mobile navigation with focus trap; one-shot reveal-on-scroll; mobile view transitions with Reduce Motion fallbacks; safe-area insets.
+- **Tokens:** --bg #0b0d0e, --panel #111416, --panel-2 #161a1d, --text #f2efe9, --muted #9ea3a6, --line #2a2f32, --line-soft #1d2225, --accent #d6ff57, --max 1180px; fonts Inter then the system stack; monospace for labels; theme-color #0b0d0e; color-scheme dark.
+- **Character:** a dark, squared, hairline-grid "instrument" look: 1px borders, no card rounding (only pills use a 999px radius), mono uppercase eyebrows in the accent colour, a glowing status dot, big tight headlines (clamp sizes, negative letter-spacing), muted body text, subtle 28-32 px grid backgrounds. It is deliberately not the Apple glass style the apps may adopt, so the site and the apps must not be forced to share a look.
+- **Project page recipe (revdev.astro):** BaseLayout with title and description, then in order: case-hero (eyebrow, h1, case-copy, case-actions buttons, case-status-panel with head, rows and a status-dot foot), case-section case-intro-grid (the problem), case-section with rules-table (rule-row: label, statement, tag), further case-section blocks, architecture-note (mono, accent left border), and a case-closing section stating the current boundary. The copy style is plain, hedged and states what is NOT yet true ("No public download", "Real final-state captures only", "ACTIVE DEVELOPMENT, not a public release").
+- **Rename precedent (VERIFIED):** small stub pages exist (forgedeck.astro 889 B, media-library.astro 922 B, reelshelf.astro 884 B), BaseLayout maps the EasyFlix icon to reelshelf.webp, and a .project-rename-note class exists. So a rename can follow an established pattern.
+
+## 3. Accuracy audit of what was read (revdev.astro)
+| Claim on the page | Status | Evidence |
+|---|---|---|
+| "Native .NET 8 / WPF control surface" | UNVERIFIED | no RevDev application source exists in any of the owner's 12 GitHub repositories (VERIFIED by listing; DevRelay-Missions has only handoffs, incoming, maintenance, payloads, protocol, publication, research, results, resume). Only the owner's PC can confirm |
+| "5 PROVIDERS" (ExactArtifact, GapTrace, VektorDeck, CrashScope, EasyFlix) | UNVERIFIED by me | the five repositories exist and are public; the provider contracts live in RevDev source I cannot see |
+| "self-contained Windows x64 package, guarded installer/update/uninstall" | UNVERIFIED | PC state is UNKNOWN in RevDev's own BOOT; the page hedges ("still in progress") |
+| "HOSTED_DENY", "local-first", Dev Relay as execution authority | VERIFIED in RevDev docs (private repo) | resume/revdev/BOOT.md and the onboarding document |
+| "FINAL ACCEPTANCE IN PROGRESS" | LIKELY OVERSTATED | RevDev's own state: all acceptance suites NOT RUN, zero accepted, P0 durable publication OPEN. Suggest "ACTIVE DEVELOPMENT · ACCEPTANCE PENDING" |
+| "A fresh agent can resume from machine-readable truth" | PARTLY TRUE | true in intent; the entry documents were far too large for a free chat until 2026-11-07. Claim is fine once the new entry set proves itself |
+These are proposals for the owner to approve; none has been applied.
+
+## 4. Adding PoCo (proposal only)
+**What may be said (VERIFIED in the PocketCode repo):** a public repository whose description reads "An app that facilitates work between ai and user on the phone from anywhere"; a static mobile prototype published through GitHub Pages; a research and specification phase with 266 of 266 unit tests passing in CI at commit 744cb4d (workflow "PocketCode Python conformance tests"); no runtime, provider or database selected; no native app and no App Store listing.
+**What must not be said:** that PoCo orchestrates AI providers, recovers interrupted work durably, runs code on device, supports named providers, is on the App Store, or has users. Those are plans (see STATE.md and the roadmap).
+**Page outline in the existing recipe:** eyebrow "Mobile AI work · Research and specification"; case-status-panel rows Platform ("iPhone-first, web prototype"), Stage ("DISCOVERY / SPECIFICATION"), Execution ("NONE SELECTED"), Safety ("DEFAULT-DENY · EXPLICIT CONTEXT"), foot status-dot "NO PUBLIC RELEASE"; sections: The problem (AI work scattered across chats), What is being specified (bounded work packets, evidence, recovery), Architecture boundary rules-table (Control plane, Execution, Evidence, Context, each tagged PLANNED), Current boundary closing ("RESEARCH PHASE, not a release"). No screenshots until a real build exists.
+**Files that would change (exact):** new src/pages/projects/poco.astro; new src/pages/ja/projects/poco.astro; src/layouts/BaseLayout.astro (add ['/projects/poco', '/ja/projects/poco'] to languagePairs; add to projectMarks only if an icon file exists); src/pages/index.astro and src/pages/ja/index.astro (a project card in the existing .project pattern; location not read); public/brand/poco.webp only if the owner supplies an icon. Check astro.config.mjs and any sitemap for page lists (not read). Name caution: see the name check in the iPhone roadmap section 7. Use the final name only after the owner decides; PocketCode never appeared on the site (VERIFIED: no such page), so no redirect stub is needed.
+
+## 5. Remaining audit work
+Read index.astro and the ja pages; audit each of the other eleven project pages against its repository README and CI (public repos allow this); verify the Japanese pages mirror the English claims; check README.md and PROJECT-GOALS.md for stale facts; then prepare exact copy changes for owner review. Deploying any change is a separate owner authorization (a push to main may trigger a Pages deployment; work on a branch).
