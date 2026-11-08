@@ -25,7 +25,7 @@ Updated: 2026-11-08 by ChatGPT. Sources: RECONCILIATION_2026-11-07.md (ChatGPT),
 - O-3 Run the full Python suite in a real checkout or CI and record exact-SHA results.
 - O-4 Define the atomic persistence contract a durable adapter must satisfy.
 - O-5 Drafted EXIT_PROVENANCE_RESOLUTION_20261108.md with conservative typed-observation rules and EP-01..EP-20 proposed tests. Pending independent Claude review and owner resolution; no code change authorized.
-- Latest verified HEAD: `d4f35e69ea47d3dd9328553887eebfdf22c2ee14`. No workflow run exists for this documentation-only commit. GitHub compare from source/test SHA 744cb4d shows 55 commits ahead and only AI_COLLAB/continuity paths; no scripts or workflow changes. The prior 266/266 CI result remains the latest source/test evidence, not a fresh run on HEAD.
+- CI/evidence boundary: no workflow run is present for the recent documentation-only updates. Compare from source/test SHA 744cb4d shows only AI_COLLAB/continuity paths, with no scripts or workflow changes. The prior 266/266 result remains the latest source/test evidence, not a fresh run on the current branch.
 - O-6 Compare one free local path (a-Shell or Carnets) only if it adds information.
 
 ## Known risks
