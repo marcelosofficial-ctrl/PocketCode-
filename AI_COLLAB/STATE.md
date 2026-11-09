@@ -1,5 +1,5 @@
 # STATE: PocketCode   (current state only; under 900 words)
-Updated: 2026-11-09 by ChatGPT. Sources: live branch files, GitHub API state, Claude P39 reconciliation, owner decision register and primary-source browser-storage research. No PocketCode source/tests or device tests were run in this pass.
+Updated: 2026-11-09 by ChatGPT. Sources: live branch files, GitHub API state, Claude/Gemini P39 reconciliations, owner decision register and primary-source browser-storage/origin research. No PocketCode source/tests or device tests were run in this pass.
 
 ## Status
 - Phase: Discovery and product definition. P39/exit-provenance gate remains CLOSED. No runtime/provider/database/transport selected. Branch divergence from main is history, not product progress.
@@ -11,6 +11,7 @@ Updated: 2026-11-09 by ChatGPT. Sources: live branch files, GitHub API state, Cl
 - Pyodios on the owner's iPhone (owner-reported): v1.1.0 build 7, Pyodide 314.0.5, Python 3.14.2. First Editor run showed only "[Bridge/executePython] PythonError"; Console probe NOT RUN; bridge cause UNKNOWN.
 - Product program (research only): STRATEGY_PROGRAM_20261108.md; website audit, governance audit, iPhone roadmap and the no-spend PWA path are committed. No spending is authorized.
 - COMMITTED PWA research: PWA_LOCAL_STORAGE_AND_RECOVERY_CONTRACT_20261109.md defines IndexedDB atomic metadata, OPFS staging/readback, local fencing, service-worker recovery and 22 proposed PWA tests. NO_SPEND_PWA_PATH_20261108.md corrected: WebKit Home Screen origins are ITP seven-day exempt and isolated from Safari, but still face quota/pressure/user clearing; iOS 26 Add to Home Screen includes Open as Web App; qualifying EU browsers may use entitled alternative engines. Owner device iOS/Safari build, persist() result, quota and lifecycle behavior remain UNKNOWN. No storage engine selected.
+- COMMITTED origin-security research: `GITHUB_PAGES_ORIGIN_ISOLATION_AND_LOCAL_DATA_SECURITY_20261109.md` identifies a HIGH-priority conditional risk: GitHub Pages project paths under the same `<owner>.github.io` host are same-origin because URL paths do not partition origin-scoped IndexedDB/OPFS. Sibling same-origin scripts may access app storage. Actual Pages URL, sibling inventory, CSP and worker scope remain UNKNOWN; no deployment settings were changed. Ten proposed ORIGIN acceptance cases added as research only. This is a deployment threat-model finding, not proof of an observed exploit.
 
 ## Decisions
 - D-001 unified PC-and-phone direction, separate development boundaries. D-002 GitHub is source of truth. D-003 no secrets in the public repo. D-004 validate before stack commitment. D-005 zero spend.
@@ -25,7 +26,7 @@ Updated: 2026-11-09 by ChatGPT. Sources: live branch files, GitHub API state, Cl
 - O-1 Owner: run the read-only Pyodios Console probe (PYODIOS_PYTHONERROR_BRIDGE_TRIAGE_20261106.md).
 - O-2 Gemini's P39 report is received and reconciled in `GEMINI_P39_REVIEW_RECONCILIATION_20261109.md`; the combined review matrix and gate plan are committed. Await any additional Claude artifact supplied by owner. Do not create a competing Claude request while its strategy assignment is OPEN. Owner OD-01..OD-13 remain OPEN.
 - O-3 Run the full Python suite in a real checkout or CI and record exact-SHA results.
-- O-4 Define the atomic persistence contract a durable adapter must satisfy.
+- O-4 Define the atomic persistence contract a durable adapter must satisfy, including browser origin isolation and same-origin sibling threat model before storing user workspace data.
 - O-5 Resolve typed child exit vs wrapper exit vs termination provenance (NEXT_TASK.md).
 - O-6 Recommended next slice P40: event chain and relay slice in the sequential model (P39 review section 7).
 - O-7 Owner decisions still open: the name PoCo (check App Store name, trademark and domain first, even though the App Store is deferred); LinkedIn work waits for a laptop or a LinkedIn data export (about one month).
