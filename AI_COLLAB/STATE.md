@@ -1,5 +1,5 @@
 # STATE: PocketCode   (current state only; under 900 words)
-Updated: 2026-11-09 by ChatGPT. Sources: live branch, GitHub API, P39 reconciliations and primary-source security/storage research. No source/tests or device tests run.
+Updated: 2026-11-10 by ChatGPT. Sources: live branch, GitHub API, P39 reconciliations and primary-source security/storage research. No source/tests or device tests run.
 
 ## Status
 - Phase: Discovery/product definition. P39/exit-provenance gate CLOSED. No runtime/provider/database/transport selected.
@@ -14,7 +14,7 @@ Updated: 2026-11-09 by ChatGPT. Sources: live branch, GitHub API, P39 reconcilia
 - COMMITTED origin-security research: shared-host Pages paths are same-origin; sibling scripts may access IndexedDB/OPFS. Actual Pages URL/custom domain/sibling inventory/headers UNKNOWN. GitHub Pages custom response headers are not supported per GitHub staff response; meta CSP cannot apply CSP sandbox. No live exploit confirmed.
 - COMMITTED deep research: `PHONE_FIRST_EXECUTION_AND_RECOVERY_REDTEAM_20261109.md` corrects seven prior weaknesses, defines execution modes, OPFS+IDB crash protocol and proposed ORIGIN/EXEC/PWA-ART tests. No implementation authorized.
 - COMMITTED verification: `PAGES_AND_EXIT_PROVENANCE_VERIFICATION_20261110.md`. Pages enabled; main workflow deploys `prototypes/mobile-runner`; no CNAME in main. URL/custom domain/deployed SHA/headers UNKNOWN. Python subprocess excludes mobile/WASI; Worker terminate is not child exit; Node exit/stdio-close differ. PAGES-01..08 and EP-26..35 proposed; NOT RUN.
-- COMMITTED conditional red-team: `PYODIDE_WORKER_CONTROL_CHANNEL_REDTEAM_20261110.md`. Exact Pyodide 314.0.5 docs show Python `js` FFI can access worker `globalThis`, `subprocess` raises RuntimeError, and the official worker example uses default `self.postMessage` for result. Same-realm guest may spoof parent messages if channel/ID is exposed or guessable. Actual PocketCode topology UNKNOWN. Proposes private closure-held MessagePort and PYO-CTRL-01..10; NOT RUN.
+- COMMITTED conditional red-team: `PYODIDE_WORKER_CONTROL_CHANNEL_REDTEAM_20261110.md`. Exact Pyodide 314.0.5 docs show Python `js` FFI can access worker `globalThis`, `subprocess` raises RuntimeError, and the official worker example uses default `self.postMessage` for result. Same-realm guest may spoof parent messages if channel/ID is exposed or guessable. **Follow-up bounded repo inventory:** the active branch contains only a simulation-only Pages prototype; no committed Pyodide worker/runtime bridge was found. The risk is not a vulnerability in that prototype; the installed Pyodios app topology remains UNKNOWN. Private closure-held MessagePort and PYO-CTRL-01..10 remain future design gates; NOT RUN.
 
 ## Decisions
 - D-001 unified PC-and-phone direction, separate development boundaries. D-002 GitHub is source of truth. D-003 no secrets in the public repo. D-004 validate before stack commitment. D-005 zero spend.
