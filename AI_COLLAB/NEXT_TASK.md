@@ -15,7 +15,7 @@ Complete P39 reconciliation and owner gate. Implementation remains blocked.
 2. Maintain one conflict matrix with source pin, severity, model/adapter/owner layer, canonical trace, test ID and evidence status. Preserve LOOP/CASE/D IDs.
 3. Obtain OD-01..OD-13 explicitly: streaming; revocation; clock/identity; receipt binding; exit/termination; client-byte evidence.
 4. Finish PAGES-01..08 and ORIGIN-01..10: actual URL/custom domain, deployed SHA/environment URL, live headers and sibling-origin inventory. Never infer URL from metadata or absent CNAME.
-5. Extend O-5 with Worker runner-vs-child evidence, termination request/ack, output close and PYO-CTRL-01..10 private-channel tests. Do not freeze a schema or change canonical CASE IDs.
+5. Extend O-5 with Worker runner-vs-child evidence, termination request/ack, output close and PYO-CTRL-01..10 private-channel tests. Current branch inventory confirms the Pages prototype is simulation-only and has no Pyodide worker/bridge; do not call it vulnerable. Inspect the separately installed app only when its implementation is available. Do not freeze a schema or change canonical CASE IDs.
 6. Freeze model semantics only after owner decisions; seek explicit authorization for bounded model-only P40.
 7. Run targeted P39 and full suite on exact SHA; separately test durable adapter, concurrency, crash/restart/restore and transport.
 8. Keep PR #2/#3/#4 untouched. No stack choice, spend, device/PWA implementation or source/test edits before gate clearance.
