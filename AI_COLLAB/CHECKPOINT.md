@@ -1,6 +1,11 @@
-# CHECKPOINT   (overwrite each time; under 150 words)
-Time: 2026-11-08 | By: Claude | Mode: normal
-Done: owner decisions recorded (D-006 no spending; main README banner pushed, commit 319d3da; PR handling decided). Added NO_SPEND_PWA_PATH_20261108.md. P39 review delivered to the owner and ChatGPT.
-Next single step: ChatGPT works NEXT_TASK.md (exit provenance), answers the P39 findings and reconciles PR #4 (INBOX_chatgpt.md). Claude does the RevDev egress-authority review (RevDev INBOX).
-Blockers: none. Open owner items: name PoCo, LinkedIn later.
-Resume line for a new chat: "Continue working on PocketCode."
+# CHECKPOINT — 2026-11-09
+
+Unit complete; pre-checkpoint HEAD: `1f656b4fe774f0c04ba425528ed34c00d42290d7`.
+
+**Committed:** P39 event/relay/exit research; PR #4 seven-file reconciliation; selective BOOT/WORK_PROTOCOL rules; INDEX, STATE, NEXT_TASK and inbox updates. BOOT verified at 459 words. No product source/tests or PR state changed.
+
+**Evidence:** external primary-source research opened 2026-11-09; seven PR files verified from GitHub API; PR branch 11 ahead / 312 behind. Historical CI run 42365455316 passed 266/266 only at source/test SHA `744cb4dc7cd4994647c84ac7476d0c78a21f0540`. CI on documentation HEAD: NOT RUN.
+
+**Gate:** P39/exit implementation CLOSED. Gemini review absent; OD-01..OD-13 OPEN. Claude has one OPEN strategy assignment, so no second exit-review ask was sent. PR #4 remains OPEN/DRAFT and untouched.
+
+**Next:** obtain Gemini's source-pinned report and owner OD decisions; resolve Claude lane priority; then reconcile reviews and decide whether model-only P40 is authorized.
