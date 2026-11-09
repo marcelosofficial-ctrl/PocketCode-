@@ -2,7 +2,7 @@
 
 ## Identity
 - Phone-first, provider-neutral "Agentic Orchestration Control Plane" for iOS and Android. Not a generic mobile Python IDE. MVP loop: explicit paste/import, bounded execution, truthful evidence and artifacts, a copyable report for any AI, a corrected rerun as a distinct attempt.
-- Repo: marcelosofficial-ctrl/PocketCode- (PUBLIC). Active branch: pocketcode-ai-workflow-director-research-2026-10-28. Live HEAD seen 2026-11-07 14:23 UTC: c4c00f7bb1b84200060dcfb0bad89bfb8a109815 (re-fetch before relying on it).
+- Repo: marcelosofficial-ctrl/PocketCode- (PUBLIC). Active branch: pocketcode-ai-workflow-director-research-2026-10-28. Always fetch the live HEAD; no saved HEAD line is authoritative.
 - `main` is STALE (early discovery README). Do all work on the active branch. PR #2 and #3 are open drafts: do not modify them.
 - AI_COLLAB/ holds 100+ docs (about 2.7 MB). Code and tests are in scripts/. CI: workflow "PocketCode Python conformance tests".
 
@@ -24,6 +24,7 @@ Never load a file over ~1,500 words whole. Big history files (CHAT_START_HERE, S
 
 ## Working rules (full text: kit/docs/WORK_PROTOCOL.md)
 - One chat = one task. Commit to GitHub BEFORE summarizing in chat. About 350 lines per turn. Overwrite CHECKPOINT.md after each unit. Normal mode; Think only if NEXT_TASK says so.
+- Owner decisions and canonical specs outrank proposals/history. One lead writer per shared work item; re-fetch branch/file SHAs after concurrent writes or rejected updates. See WORK_PROTOCOL sections 11–13.
 - Final chat reply: at most 15 lines (done, CI, next, owner actions).
 - Rapid pushes make some intermediate CI runs red by design. Judge by the latest commit. Never stack new work on a red latest commit.
 - Move or archive, never delete; log every move in MOVES.tsv.
