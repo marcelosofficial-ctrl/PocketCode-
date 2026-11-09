@@ -139,3 +139,15 @@ No code copied, dependencies added or stack selected. No source/tests, deploymen
 - **UNKNOWN:** exact Pages URL/custom domain, actual deployment SHA/environment URL, live headers/meta CSP, sibling origin inventory, target iOS/Android engine behavior, future runtime's process/termination contract.
 - **NOT RUN:** live deployment verification, ORIGIN/PAGES tests, worker crash/termination tests, Pyodide subprocess capability probe on the owner's device, native process adapter tests, output-close/crash tests, device tests.
 - P39/P40 implementation gate remains CLOSED; OD-01..OD-13 remain OPEN. No implementation authorization is implied.
+
+
+## 8. Current-branch execution inventory (2026-11-10 follow-up)
+
+- **VERIFIED:** the active branch tree contains the Pages prototype at `prototypes/mobile-runner/index.html`, its README, the static checker/tests and the Pages workflow. The prototype README explicitly says it is simulation-only and does not execute Python, import files, create artifacts, select a runtime or call a provider.
+- **VERIFIED:** the prototype HTML labels itself “SIMULATED EXAMPLE — NOT AN EXECUTION”, and its visible controls switch between expected examples and copy simulated report/prompt text. It contains no Pyodide import, Worker construction, MessageChannel, runtime bridge or execution dispatch.
+- **VERIFIED (bounded inventory):** a recursive current-branch tree search for worker, Pyodide, bridge, runner and execution paths found no PocketCode implementation file for a Pyodide worker or runtime bridge. This does not prove no external/installed app implementation exists.
+- **INFERRED:** the conditional PYO-CTRL spoofing scenario is not exploitable through the committed Pages prototype because that prototype does not execute guest code or instantiate a worker. It remains a design requirement for any future real execution path.
+- **UNKNOWN:** whether the owner's separately installed Pyodios app has a worker/runtime implementation matching the conditional threat model. No app bundle or device was inspected.
+- **NOT RUN:** browser interaction, worker construction, Pyodide execution, exploit reproduction, live Pages deployment, and device tests.
+
+This narrows the finding: do not describe the current prototype as vulnerable or as an execution runtime. Preserve the private-control-channel acceptance tests as future implementation gates, and inspect the actual execution source only when that implementation is available and authorized for review.
