@@ -60,8 +60,8 @@ The following remain unauthorized:
 - Claude P39 review: reconciled in `P39_CLAUDE_REVIEW_RECONCILIATION_20261108.md`; Claude did not read the receipt subsystem/durable adapter contract and did not run the repository suite.
 - Receipt subsystem: bounded static audit in `P39_RECEIPT_SUBSYSTEM_AUDIT_20261108.md`, source/test SHA `744cb4dc7cd4994647c84ac7476d0c78a21f0540`; no tests run by ChatGPT.
 - Canonical mapping: `P39_EP_CANONICAL_ACCEPTANCE_CROSSWALK_20261108.md`; canonical LOOP/CASE definitions remain unchanged.
-- Exit provenance: `EXIT_PROVENANCE_RESOLUTION_20261108.md` and `EXIT_PROVENANCE_STATIC_CONSISTENCY_AUDIT_20261108.md`; Claude review remains requested.
-- Gemini's independent P39 source-pinned review remains outstanding. The earlier Gemini research plan is not a substitute.
+- Exit provenance: `EXIT_PROVENANCE_RESOLUTION_20261108.md` and `EXIT_PROVENANCE_STATIC_CONSISTENCY_AUDIT_20261108.md`; an additional Claude exit-provenance artifact is not currently a separate OPEN inbox assignment. Await any further review supplied by the owner or later reprioritization.
+- Gemini's independent P39 source-pinned review is received and reconciled in `GEMINI_P39_REVIEW_RECONCILIATION_20261109.md`. Its test matrix is NOT RUN; reconciliation corrects multiple source/module misattributions. The review does not close owner decisions.
 - CI: latest branch HEAD must be checked separately. Previous 266/266 PASS is tied only to source/test SHA `744cb4dc7cd4994647c84ac7476d0c78a21f0540`.
 
 ## 6. Owner response template
