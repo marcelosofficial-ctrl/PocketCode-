@@ -1,9 +1,16 @@
 # CHECKPOINT — 2026-11-09
 
-Unit complete; pre-checkpoint HEAD: `c24006b405dd695b5eeee12748e08b4ce2d73faf`.
+Unit complete; pre-checkpoint HEAD: `8d4d44f4e6a8cb489985681c697e823a1ca1b20f`.
 
-**Committed:** `P39_GATE_CLOSURE_PLAN_20261109.md` and `P39_REVIEW_CONSENSUS_MATRIX_20261109.md`; INDEX fixed/updated; NEXT_TASK and STATE refreshed; owner decision register now records Gemini's received review. The matrix separates verified model gaps, adapter duties, rejected/misattributed Gemini claims, owner choices and evidence limits. No source/tests changed.
+**Verified refresh:** active branch remains `pocketcode-ai-workflow-director-research-2026-10-28`. Required boot files were re-read in order. Latest five commits before this unit matched the prior checkpoint; no newer external work or owner-supplied Claude artifact was present. Claude's single strategy-program assignment remains OPEN.
 
-**Gate:** P39/P40 implementation CLOSED; OD-01..OD-13 OPEN. Claude P39 and Gemini P39 reviews reconciled. Await any additional Claude artifact supplied by owner; do not create a competing inbox request while Claude's strategy assignment is OPEN.
+**Committed in this unit:**
+- `AI_COLLAB/INBOX_gemini.md`: closed the completed Gemini review/addendum requests and recorded the source-reconciliation outcome. Gemini's report was supplied in chat, not committed as a separate source artifact.
+- `AI_COLLAB/GEMINI_P39_REVIEW_RECONCILIATION_20261109.md`: clarified the historical review-time HEAD separately from the live branch HEAD found during this follow-up.
+- No source, tests, canonical contracts/IDs, PRs, provider, runtime, database, transport or storage choice changed.
 
-**Evidence:** Gemini tests NOT RUN; ChatGPT tests NOT RUN; full repository suite NOT RUN in this pass. Historical Actions 42365455316: 266/266 only at source/test SHA `744cb4dc7cd4994647c84ac7476d0c78a21f0540`. CI on current docs HEAD: NOT RUN. CASE-04 remains INCOMPLETE / timed_out.
+**Gate:** P39/P40 implementation CLOSED. OD-01..OD-13 remain OPEN. Await any additional Claude artifact supplied by owner; do not create a competing Claude assignment. PR #2/#3/#4 remain untouched.
+
+**Evidence:** historical Actions run 42365455316 reports 266/266 PASS only at exact source/test SHA `744cb4dc7cd4994647c84ac7476d0c78a21f0540`. No Actions run exists for follow-up docs HEAD `c4981a03e5ba14c89f32b12579311a7ecdc02f8b`; later continuity-only docs commits have CI NOT RUN. Gemini tests NOT RUN. ChatGPT tests NOT RUN. CASE-04 remains INCOMPLETE / timed_out.
+
+**Next:** wait for owner-supplied Claude review and explicit OD-01..OD-13 decisions. Reconcile new evidence only if supplied; do not implement P39/P40 until the gate is explicitly cleared.
