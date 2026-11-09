@@ -12,7 +12,8 @@ Updated: 2026-11-09 by ChatGPT. Sources: live branch, GitHub API, P39 reconcilia
 - Product, website and governance research is committed. No spending authorized.
 - COMMITTED PWA research: PWA_LOCAL_STORAGE_AND_RECOVERY_CONTRACT_20261109.md defines IndexedDB atomic metadata, OPFS staging/readback, local fencing, service-worker recovery and 22 proposed PWA tests. NO_SPEND_PWA_PATH_20261108.md corrected: WebKit Home Screen origins are ITP seven-day exempt and isolated from Safari, but still face quota/pressure/user clearing; iOS 26 Add to Home Screen includes Open as Web App; qualifying EU browsers may use entitled alternative engines. Owner device iOS/Safari build, persist() result, quota and lifecycle behavior remain UNKNOWN. No storage engine selected.
 - COMMITTED origin-security research: shared-host Pages paths are same-origin; sibling scripts may access IndexedDB/OPFS. Actual Pages URL/custom domain/sibling inventory/headers UNKNOWN. GitHub Pages custom response headers are not supported per GitHub staff response; meta CSP cannot apply CSP sandbox. No live exploit confirmed.
-- COMMITTED deep research: `PHONE_FIRST_EXECUTION_AND_RECOVERY_REDTEAM_20261109.md` corrects seven prior weaknesses, defines local/browsersandbox/untrusted execution modes, OPFS+IDB crash protocol, crash matrix and proposed ORIGIN/EXEC/PWA-ART tests. No implementation authorized.
+- COMMITTED deep research: `PHONE_FIRST_EXECUTION_AND_RECOVERY_REDTEAM_20261109.md` corrects seven prior weaknesses, defines execution modes, OPFS+IDB crash protocol and proposed ORIGIN/EXEC/PWA-ART tests. No implementation authorized.
+- COMMITTED verification: `PAGES_AND_EXIT_PROVENANCE_VERIFICATION_20261110.md`. Repo metadata says Pages enabled, homepage null; main workflow deploys `prototypes/mobile-runner` and main tree has no CNAME. Exact URL/custom domain/deployed SHA/headers remain UNKNOWN. Python 3.15.2 docs exclude `subprocess` on iOS/Android/WASI; browser Worker termination has no returned exit code/ack event; Node exit and stdio-close are distinct. Adds PAGES-01..08 and EP-26..35 proposals; NOT RUN.
 
 ## Decisions
 - D-001 unified PC-and-phone direction, separate development boundaries. D-002 GitHub is source of truth. D-003 no secrets in the public repo. D-004 validate before stack commitment. D-005 zero spend.
@@ -27,8 +28,8 @@ Updated: 2026-11-09 by ChatGPT. Sources: live branch, GitHub API, P39 reconcilia
 - O-1 Owner: run the read-only Pyodios Console probe (PYODIOS_PYTHONERROR_BRIDGE_TRIAGE_20261106.md).
 - O-2 Gemini's P39 report is received and reconciled in `GEMINI_P39_REVIEW_RECONCILIATION_20261109.md`; the combined review matrix and gate plan are committed. Await any additional Claude artifact supplied by owner. Do not create a competing Claude request while its strategy assignment is OPEN. Owner OD-01..OD-13 remain OPEN.
 - O-3 Run the full Python suite in a real checkout or CI and record exact-SHA results.
-- O-4 Verify actual Pages URL/headers/sibling origin and finish atomic persistence contract, including iframe and storage threat model.
-- O-5 Resolve typed child exit vs wrapper exit vs termination provenance (NEXT_TASK.md).
+- O-4 Pages is enabled and workflow is verified; still obtain exact Pages URL/custom domain/deployed SHA/live headers/sibling origin and finish storage threat model.
+- O-5 Resolve typed child exit vs wrapper exit vs termination provenance; distinguish browser worker runner-observation from native child exit (NEXT_TASK.md).
 - O-6 Recommended next slice P40: event chain and relay slice in the sequential model (P39 review section 7).
 - O-7 PoCo name remains undecided; LinkedIn work waits for laptop/export.
 - O-8 Remaining design/context/provider-cache research is a separate Claude lane.
