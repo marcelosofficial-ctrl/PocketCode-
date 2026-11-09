@@ -1,11 +1,6 @@
-# CHECKPOINT
-
-Time: 2026-11-09 | By: ChatGPT | Mode: normal
-
-Done: created and indexed EXECUTION_BOUNDARY_DURABILITY_AND_EVIDENCE_RESEARCH_20261109.md; ranked five gaps, researched mobile/WASM isolation, Wasmtime controls, SQLite durability and evidence attestations; proposed EvidenceEnvelope and 17 tests; corrected seven weaknesses. Red-team clarified W3C spec and Apple source-open failures. No source/tests changed or run. Pre-checkpoint HEAD: 7a2d800b39211629827eac4c053169bbf9ebb78e. Last five before checkpoint: 7a2d800 inbox, ea5b2e2 research correction, c3a9d1f prior checkpoint, 90e7217 inbox, 8302f3e next task.
-
-Next: reconcile Gemini P39 review; confirm Claude exit review scope; obtain OD-01..13 decisions. Gate CLOSED.
-
-CI: no run on docs-only HEAD. Workflow triggers on scripts/** or workflow edits. 266/266 PASS is historical and pinned only to 744cb4dc7cd4994647c84ac7476d0c78a21f0540.
-
-Evidence: Android, Pyodide, Wasmtime, SQLite, in-toto, SLSA and Sigstore primary docs opened. W3C full page unavailable due response size; Apple page HTTP 429. Mobile embedder, real adapter, device, concurrency and crash/power-loss behavior UNKNOWN / NOT RUN.
+# CHECKPOINT   (overwrite each time; under 150 words)
+Time: 2026-11-08 | By: Claude | Mode: normal
+Done: owner decisions recorded (D-006 no spending; main README banner pushed, commit 319d3da; PR handling decided). Added NO_SPEND_PWA_PATH_20261108.md. P39 review delivered to the owner and ChatGPT.
+Next single step: ChatGPT works NEXT_TASK.md (exit provenance), answers the P39 findings and reconciles PR #4 (INBOX_chatgpt.md). Claude does the RevDev egress-authority review (RevDev INBOX).
+Blockers: none. Open owner items: name PoCo, LinkedIn later.
+Resume line for a new chat: "Continue working on PocketCode."
