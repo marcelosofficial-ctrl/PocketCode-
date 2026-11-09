@@ -1,19 +1,19 @@
 # CHECKPOINT — 2026-11-10
 
-Unit complete; pre-checkpoint HEAD: `21276addd050e8dd2a6f4a923b9adff7b4ab287e`.
+Unit complete; pre-checkpoint HEAD: `6c2b5f949cc322dc7d23684c153a057e860d0a83`.
 
-**Pass goal:** Continue independent PocketCode verification without duplicating Claude's OPEN strategy assignment. Preserve P39/P40 gate and no-spend constraints.
+**Pass goal:** Continue independent PocketCode verification, deepen O-5 exit evidence and avoid duplicating Claude's OPEN strategy assignment. P39/P40 remains CLOSED.
 
-**New deliverable:** `AI_COLLAB/PAGES_AND_EXIT_PROVENANCE_VERIFICATION_20261110.md` (142 lines, 2,094 words). It records repository Pages facts, exact deployment unknowns, browser Worker vs native child-process semantics, Python mobile/WASM subprocess limits, Node exit-vs-close semantics, and proposed PAGES-01..08 / EP-26..35 acceptance cases.
+**New deliverable:** `AI_COLLAB/PYODIDE_WORKER_CONTROL_CHANNEL_REDTEAM_20261110.md` (131 lines, 1,748 words). It pins Pyodide 314.0.5 docs and identifies a conditional same-worker spoofing path: Python's `js` FFI reaches worker `globalThis`; the official example uses `self.postMessage` for wrapper results; guest code in that same realm may attempt to forge default-channel messages if it knows/guesses an ID. It proposes a closure-held private MessagePort contract and PYO-CTRL-01..10 tests.
 
-**Verified Pages facts:** repository metadata reports `has_pages=true`, `homepage=null`, default branch `main`; `.github/workflows/preview-prototype.yml` (blob `58b1bb968aa8e6a2ae824079046e5968a140ab16`) auto-deploys on relevant main pushes and uploads `prototypes/mobile-runner` as site root; main tree `03e65ef35d8b22cb4337ac7097b2a31247c3721e` has no CNAME file. This does not prove exact URL, custom domain, deployed SHA or headers. Those remain UNKNOWN.
+**Additional verified detail:** Pyodide 314.0.5 FAQ says `threading`, `multiprocessing` and `subprocess` attempts raise RuntimeError because fork/pthreads do not work. This is stronger version-specific evidence than relying only on generic CPython platform availability. No code copied or dependencies added.
 
-**Verified runtime findings:** HTML Living Standard worker termination algorithm; MDN Worker.terminate returns undefined and has no completion acknowledgement; Python 3.15.2 subprocess docs exclude iOS/Android/WASI; Node v26.13.0 distinguishes process `exit` from `close` after stdio closure. Node upstream MIT license was checked at blob `ec72f56e16fb19944a55acdbff67727d2bfadb8a`. No code copied or dependencies added.
+**Pages/exit crosswalk:** `PAGES_AND_EXIT_PROVENANCE_VERIFICATION_20261110.md` records Pages-enabled metadata, main-only automatic workflow and exact deployment unknowns, plus Worker-vs-native-child evidence and PAGES-01..08 / EP-26..35 tests. Exact URL/custom domain/deployed SHA/headers remain UNKNOWN.
 
-**Updated:** `INDEX.md`, `STATE.md` (797 words), `NEXT_TASK.md` (347 words). NEXT_TASK now asks for actual Pages URL/settings/deployment/header evidence and adds worker-vs-child exit checks. Claude's strategy assignment remains OPEN; its design/context/provider-cache work and promised no-spend index row were not duplicated. PocketCode O-5 remains separate from any RevDev O-5 decision.
+**Updated:** `INDEX.md`, `STATE.md` (839 words), `NEXT_TASK.md` (316 words), and this checkpoint. Claude's strategy assignment remains OPEN; no duplicate Apple-design/context/provider-cache research was created. No RevDev evidence or decisions imported.
 
-**Scope:** No source/tests, canonical LOOP/CASE/D IDs, OD-01..OD-13 decisions, PRs, deployment settings, runtime/provider/database/transport choices or spending changed. No live deployment, device, worker, native process or crash tests run. No RevDev evidence imported.
+**Scope:** No source/tests, canonical LOOP/CASE/D IDs, OD-01..OD-13 decisions, PRs, Pages settings, runtime/provider/database/transport choices or spending changed. No exploit demonstration, device, browser, crash or worker tests run. Actual PocketCode worker topology and message listener remain UNKNOWN.
 
-**CI:** Historical 266/266 PASS remains tied only to source/test SHA `744cb4dc7cd4994647c84ac7476d0c78a21f0540`. Latest checked docs-only SHA `756f4f1ddd3b300073cf5599d91f33922667d310` had zero check runs/statuses (NOT RUN). Recheck final checkpoint SHA. Documentation changes have no test evidence.
+**CI:** Historical 266/266 PASS applies only to source/test SHA `744cb4dc7cd4994647c84ac7476d0c78a21f0540`. Recheck exact status/Actions on final checkpoint SHA; documentation-only commits do not imply test evidence.
 
-**Next:** Obtain actual Pages settings/deployment URL and live response headers; then continue the O-5 typed evidence contract and owner-decision gate. Keep implementation CLOSED.
+**Next:** Verify actual Pages settings/deployment URL/headers when available; then test whether PocketCode's worker control channel is guest-accessible and continue the OD-01..OD-13 gate. Keep implementation CLOSED.
