@@ -20,7 +20,7 @@ This is more consequential than ordinary storage eviction. PocketCode's local wo
 
 ## 2. Evidence
 
-1. GitHub documents project-site default locations as `http(s)://<owner>.github.io/<repositoryname>`, distinct from user/organization sites at `http(s)://<owner>.github.io`: [GitHub Pages: What is GitHub Pages?](https://docs.github.com/en/pages/getting-started-with-github-pages/what-is-github-pages).
+1. GitHub documents project-site default locations as `http(s)://<owner>.github.io/<repositoryname>`, distinct from user/organization sites at `http(s)://<owner>.github.io`: [GitHub Pages: What is GitHub Pages?](https://docs.github.com/en/pages/getting-started-with-github-pages/what-is-github-pages). GitHub also documents that a user/organization custom domain is inherited by project sites unless a project overrides it: [About custom domains and GitHub Pages](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/about-custom-domains-and-github-pages).
 2. MDN defines origin as protocol, host and port. Paths do not distinguish origins; its examples explicitly classify different paths on the same host as same-origin: [Same-origin policy](https://developer.mozilla.org/en-US/docs/Web/Security/Defenses/Same-origin_policy).
 3. MDN says IndexedDB databases are associated with an origin, and every origin has its own set of databases: [IndexedDB basic terminology](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API/Basic_Terminology).
 4. WebKit describes storage quotas and eviction per origin, including IndexedDB and File System storage: [Updates to Storage Policy](https://webkit.org/blog/14403/updates-to-storage-policy/).
@@ -58,7 +58,7 @@ Do not recommend buying a domain or changing the approved GitHub Pages path with
 1. Treat every script and every page hosted on `OWNER.github.io` as part of PocketCode's trusted computing base, regardless of repository or URL path.
 2. Do not store provider API keys, GitHub tokens, passwords, long-lived bearer tokens, signing keys or other reusable credentials in IndexedDB, OPFS, LocalStorage, Cache Storage, service-worker state or application files.
 3. Never load third-party scripts, analytics, widgets or executable dependencies without pinned versions, integrity/provenance review and a clear need. Avoid dynamic script execution and unsafe HTML insertion.
-4. Apply a restrictive Content Security Policy and other suitable response headers where GitHub Pages configuration permits. Verify the actual deployed headers; a meta CSP cannot express every header-only directive and does not protect against every same-origin compromise.
+4. Do not assume GitHub Pages supports custom response headers. A GitHub staff response in the official Pages discussion says custom headers were unsupported (2023-05-02); the current Pages docs opened 2026-11-09 still expose no response-header configuration feature. Verify live headers. A meta CSP is partial: it cannot express header-only controls such as frame-ancestors, and CSP sandbox is ignored in meta. Use the iframe sandbox attribute for embedded content, not a meta CSP sandbox directive. Sources: https://github.com/orgs/community/discussions/54257 and https://www.w3.org/TR/CSP/.
 5. Keep app data schema namespaced by product and schema version to avoid accidental collisions, but do not call namespacing isolation.
 6. Keep immutable per-attempt artifact staging paths. Never let retries or stale workers write into a shared/final artifact path. A stale worker may still write its own abandoned staging object; only a current-fence transaction may publish a manifest reference to it.
 7. On launch, verify database schema/version and integrity invariants. Treat missing or malformed records as recovery-required, not empty success.
@@ -107,9 +107,10 @@ SQLite WAL's documented reset bug affected versions through 3.51.2 under a speci
 4. Add ORIGIN-01..10 to the proposed PWA acceptance plan without changing canonical CASE IDs.
 5. Preserve the no-spend rule. If adequate origin isolation requires a paid domain or hosting, surface that as an owner decision rather than silently changing direction.
 
-## 9. Verification boundary
+## 9. Red-team corrections and verification boundary
 
-- **VERIFIED:** GitHub Pages project-site URL structure; origin tuple excludes path; IndexedDB is origin-scoped; WebKit storage policy is origin-scoped; IndexedDB strict durability is a hint; OPFS flush is a file-level persistence operation; SQLite WAL durability/version constraints described above.
+- **VERIFIED:** GitHub Pages project-site URL structure and custom-domain inheritance; origin tuple excludes path; IndexedDB is origin-scoped; WebKit storage policy is origin-scoped; IndexedDB strict durability is a hint; OPFS flush attempts transfer to underlying storage and may be a no-op on in-memory filesystems; SQLite WAL durability/version constraints described above.
+- **CORRECTED:** Previous wording about response headers “where GitHub Pages configuration permits” was too optimistic. GitHub staff said custom headers were unsupported in 2023; current docs opened for this pass still expose no header configuration feature. Meta CSP cannot apply CSP sandbox or every header-only directive.
 - **INFERRED:** sibling project pages on the same `github.io` host can access PocketCode origin storage if PocketCode is served from that same origin.
 - **UNKNOWN:** actual PocketCode deployed URL, sibling-site inventory, deployed CSP/headers, worker scope, storage API behavior on the owner's device.
 - **NOT RUN:** controlled sibling-origin access test, device storage tests, browser crash/power-loss tests, export/restore tests, app integration tests.
