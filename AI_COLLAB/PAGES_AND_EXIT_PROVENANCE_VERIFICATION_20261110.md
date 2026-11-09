@@ -151,3 +151,11 @@ No code copied, dependencies added or stack selected. No source/tests, deploymen
 - **NOT RUN:** browser interaction, worker construction, Pyodide execution, exploit reproduction, live Pages deployment, and device tests.
 
 This narrows the finding: do not describe the current prototype as vulnerable or as an execution runtime. Preserve the private-control-channel acceptance tests as future implementation gates, and inspect the actual execution source only when that implementation is available and authorized for review.
+
+
+## 9. Deployment lookup retry (2026-11-10)
+
+- **VERIFIED:** a fresh repository metadata read still reports `has_pages: true`, `homepage: null`, default branch `main`.
+- **NOT VERIFIED:** a direct browser open of the conventional candidate `https://marcelosofficial-ctrl.github.io/PocketCode-` was inaccessible to the available browser tool, and an exact-host search returned no results. This is a tool-access result, not evidence that the site returns 404 or that Pages is unconfigured. Do not publish the candidate as the app URL.
+- **UNKNOWN:** repository Pages settings, inherited owner-level custom domain, successful deployment run and environment URL remain inaccessible through the available GitHub read surface. No settings, DNS, deployment or workflow dispatch was changed.
+- **Next evidence required:** owner-provided Pages settings screenshot/URL or an Actions run page showing the `github-pages` environment URL and deployed SHA. A live HTTP response/redirect/header capture is still needed for origin and policy verification.
