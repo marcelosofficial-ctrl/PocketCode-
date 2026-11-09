@@ -10,6 +10,7 @@
 
 This is not a hypothetical capability invented from generic Pyodide behavior:
 - **VERIFIED:** Pyodide 314.0.5 documents that Python imports JavaScript globals from the worker's `globalThis` via `import js`; properties are looked up and translated.
+- **VERIFIED:** the same Pyodide 314.0.5 FAQ says `threading`, `multiprocessing` and `subprocess` attempts raise `RuntimeError` because fork/pthreads do not work. This version-pinned fact reinforces that Pyodide's Python runtime is not a native child-process supervisor.
 - **VERIFIED:** a Dedicated Worker exposes `postMessage()` on its global scope to send messages to the parent.
 - **VERIFIED:** the Pyodide 314.0.5 worker example uses `self.postMessage({ result, id })` and `self.postMessage({ error, id })` for its wrapper result messages. Its parent API resolves a pending promise when it receives a message whose `id` matches the pending request.
 - **INFERRED:** Python executing in that same worker can call `js.self.postMessage(...)`. Therefore an ordinary worker message is not, by itself, proof that the wrapper generated it. If the guest knows, guesses or can influence the correlation ID, it may forge a shape-compatible result before the wrapper's real completion.
@@ -23,6 +24,7 @@ The official Pyodide example is an interoperability example, not a hostile-code 
 |---|---|---|
 | Pyodide worker guide | 314.0.5, opened 2026-11-10 | Example wrapper uses `self.postMessage({result,id})` / `self.postMessage({error,id})`; parent resolves by matching numeric ID |
 | Pyodide type translations | 314.0.5, opened 2026-11-10 | `import js` maps JavaScript attributes from `globalThis` into Python |
+| Pyodide FAQ | 314.0.5, opened 2026-11-10 | `threading`, `multiprocessing` and `subprocess` attempts raise `RuntimeError` in Pyodide |
 | MDN DedicatedWorkerGlobalScope.postMessage | Page last modified 2026-04-13, opened 2026-11-10 | Worker-global `postMessage()` sends data to the main thread |
 | HTML Living Standard, workers | Updated 2026-11-09, opened 2026-11-10 | Worker has its own global scope; worker-to-parent messaging uses its outside port |
 
