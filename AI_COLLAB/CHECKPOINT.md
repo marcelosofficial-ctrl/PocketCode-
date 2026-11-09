@@ -1,6 +1,6 @@
 # CHECKPOINT — 2026-11-10
 
-Unit complete; pre-checkpoint HEAD: `9a394f5430de9ae69c585ce199614ccb9977489f`.
+Unit complete; pre-checkpoint HEAD: `21276addd050e8dd2a6f4a923b9adff7b4ab287e`.
 
 **Pass goal:** Continue independent PocketCode verification without duplicating Claude's OPEN strategy assignment. Preserve P39/P40 gate and no-spend constraints.
 
@@ -14,6 +14,6 @@ Unit complete; pre-checkpoint HEAD: `9a394f5430de9ae69c585ce199614ccb9977489f`.
 
 **Scope:** No source/tests, canonical LOOP/CASE/D IDs, OD-01..OD-13 decisions, PRs, deployment settings, runtime/provider/database/transport choices or spending changed. No live deployment, device, worker, native process or crash tests run. No RevDev evidence imported.
 
-**CI:** Historical 266/266 PASS remains tied only to source/test SHA `744cb4dc7cd4994647c84ac7476d0c78a21f0540`. Latest docs-only HEAD `920c7db9ff4c3740351840f71a3cf109699c197a` had zero check runs/statuses (NOT RUN). Recheck final checkpoint SHA. Documentation changes have no test evidence.
+**CI:** Historical 266/266 PASS remains tied only to source/test SHA `744cb4dc7cd4994647c84ac7476d0c78a21f0540`. Latest checked docs-only SHA `756f4f1ddd3b300073cf5599d91f33922667d310` had zero check runs/statuses (NOT RUN). Recheck final checkpoint SHA. Documentation changes have no test evidence.
 
 **Next:** Obtain actual Pages settings/deployment URL and live response headers; then continue the O-5 typed evidence contract and owner-decision gate. Keep implementation CLOSED.
