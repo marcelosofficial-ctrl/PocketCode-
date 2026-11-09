@@ -16,10 +16,11 @@ Complete P39 review reconciliation and owner-decision gate. No implementation un
 1. If an additional Claude review arrives, pin its repo/branch/SHA/blob hashes, scope, files read and tests run. Reconcile each claim against the existing matrix and canonical crosswalk; do not create a competing Claude assignment.
 2. Complete one finding-level consensus/conflict matrix with severity, exact source pin, model/adapter/owner classification, canonical trace, P39 test ID and evidence status. Merge overlaps; do not duplicate tests or alter LOOP/CASE/D IDs.
 3. Obtain explicit OD-01..OD-13 decisions. Resolve streaming first; revocation lifecycle together; clock/identity; receipt binding; exit verdict/termination/cleanup; client-byte evidence.
-4. Freeze versioned model semantics only after owner decisions. Then seek explicit authorization for a bounded model-only P40 slice.
-5. Prove model behavior with targeted P39 tests and full suite on exact SHA. Test durable adapter, concurrency, crash/restart/restore and transport separately. Supporting P39 tests never imply canonical CASE PASS.
-6. Keep PR #2/#3/#4 untouched. No stack/provider/database/runtime/transport choice, paid service, device/PWA implementation or source/test edits without gate clearance.
-7. Refresh branch HEAD, latest five commits and exact-SHA Actions before checkpointing.
+4. Before selecting or implementing local persistence, verify the exact GitHub Pages URL/site type and sibling same-origin content; resolve ORIGIN-01..10 against the deployed origin. If shared-origin exposure remains, obtain an explicit owner threat-boundary decision or propose an isolated hostname without spending.
+5. Freeze versioned model semantics only after owner decisions. Then seek explicit authorization for a bounded model-only P40 slice.
+6. Prove model behavior with targeted P39 tests and full suite on exact SHA. Test durable adapter, concurrency, crash/restart/restore and transport separately. Supporting P39 tests never imply canonical CASE PASS.
+7. Keep PR #2/#3/#4 untouched. No stack/provider/database/runtime/transport choice, paid service, device/PWA implementation or source/test edits without gate clearance.
+8. Refresh branch HEAD, latest five commits and exact-SHA Actions before checkpointing.
 
 ## Constraints
 - P39/P40 implementation gate CLOSED; OD-01..OD-13 OPEN.
