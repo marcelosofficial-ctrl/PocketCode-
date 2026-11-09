@@ -62,6 +62,7 @@ Size classes: S under 8 KB, M 8-25 KB, L 25-50 KB, XL over 50 KB (never load who
 | EXECUTION_BOUNDARY_DURABILITY_AND_EVIDENCE_RESEARCH_20261109.md | mobile/WASM trust boundary, Wasmtime controls, SQLite crash durability, evidence provenance and acceptance proposals | M | research complete; no stack selection |
 | P39_EVENT_RELAY_AND_EXIT_BOUNDARY_RESEARCH_20261109.md | outbox/event sourcing, retries, fencing, broker dedupe, mobile exit evidence and P39 acceptance crosswalk | L | research complete; implementation gate closed |
 | PWA_LOCAL_STORAGE_AND_RECOVERY_CONTRACT_20261109.md | IndexedDB transactions, Storage API/eviction, OPFS staging, Web Locks, service-worker interruption and 22 PWA tests | L | research complete; no storage engine selected |
+| GITHUB_PAGES_ORIGIN_ISOLATION_AND_LOCAL_DATA_SECURITY_20261109.md | GitHub Pages shared-origin storage exposure, threat model and 10 proposed acceptance cases | M | security research; deployment URL unverified |
 | PR4_CONTINUITY_REFINEMENT_RECONCILIATION_20261109.md | seven-file PR #4 review, KEEP/MERGE-INTO-BOOT/DROP classifications and no-merge recommendation | M | review complete; PR remains owner-controlled |
 
 | VERDICT_EVIDENCE_EXIT_PROVENANCE_MATRIX_20261105.md | exit provenance matrix | M | live (O-5) |
