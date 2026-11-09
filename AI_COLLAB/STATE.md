@@ -23,7 +23,7 @@ Updated: 2026-11-09 by ChatGPT. Sources: live branch files, GitHub API state, Cl
 
 ## Open items
 - O-1 Owner: run the read-only Pyodios Console probe (PYODIOS_PYTHONERROR_BRIDGE_TRIAGE_20261106.md).
-- O-2 Gemini: deliver the full independent source-pinned P39 report; ChatGPT must reconcile it. Owner: decide OD-01..OD-13 explicitly. Claude's exit-provenance review remains in scope, but Claude currently has one other OPEN inbox assignment; do not create a second ask until that lane is reprioritized.
+- O-2 Gemini's P39 report is received and reconciled in `GEMINI_P39_REVIEW_RECONCILIATION_20261109.md`; the combined review matrix and gate plan are committed. Await any additional Claude artifact supplied by owner. Do not create a competing Claude request while its strategy assignment is OPEN. Owner OD-01..OD-13 remain OPEN.
 - O-3 Run the full Python suite in a real checkout or CI and record exact-SHA results.
 - O-4 Define the atomic persistence contract a durable adapter must satisfy.
 - O-5 Resolve typed child exit vs wrapper exit vs termination provenance (NEXT_TASK.md).
