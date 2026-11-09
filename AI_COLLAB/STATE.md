@@ -3,7 +3,7 @@ Updated: 2026-11-09 by ChatGPT. Sources: live branch, GitHub API, P39 reconcilia
 
 ## Status
 - Phase: Discovery/product definition. P39/exit-provenance gate CLOSED. No runtime/provider/database/transport selected.
-- VERIFIED: Actions run 42365455316 on exact source/test SHA 744cb4dc7cd4994647c84ac7476d0c78a21f0540, workflow "PocketCode Python conformance tests", job unittest: 266/266 PASS. Historical source/test evidence only. Latest documentation-only HEAD had no check run; CI there is NOT RUN, not PASS/FAIL.
+- VERIFIED: Actions run 42365455316 on exact source/test SHA 744cb4dc7cd4994647c84ac7476d0c78a21f0540, workflow "PocketCode Python conformance tests", job unittest: 266/266 PASS. Historical source/test evidence only. Latest docs-only HEAD `920c7db9ff4c3740351840f71a3cf109699c197a` has zero check runs/statuses; CI is NOT RUN, not PASS/FAIL.
 - COMMITTED: intent/proof separation, receipt-revision binding, grant recovery, concurrency/crash models and research.
 - CLAIMED ONLY (not built): durable adapter; real concurrent processes; transactional outbox relay; durable crash recovery; production fencing; transport stream ownership and revocation; trusted policy authority; client receipt.
 - Claude and Gemini P39 reviews are reconciled. Gemini attribution corrections: S1 is in release_grant_conformance.py, not event_journal.py; S2 names a nonexistent receipt function, but consume_event() trusts supplied digest; S3 misattributes FakeOutbox fencing, while grant-event relay lacks it; S4 is adapter/MVP scope. Receipt blob 0d1588f was separately checked. Gemini tests NOT RUN; Claude C1-C7 were against a byte-verified copy, not repo CI.
