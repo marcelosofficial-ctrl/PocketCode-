@@ -1,36 +1,33 @@
-# NEXT TASK: PocketCode   (one task; under 350 words)
+# NEXT TASK: PocketCode
 
 ## Goal
-Close the independent-review and owner-decision gate for P39 and exit provenance. Do not implement until the gate is explicitly cleared.
+Close the independent-review and owner-decision gate for P39 and exit provenance. Do not implement until explicitly cleared.
 
-## Current artifacts
-- Claude P39 review: owner-supplied attachment, reconciled in P39_CLAUDE_REVIEW_RECONCILIATION_20261108.md.
-- Receipt subsystem/durable-adapter audit: P39_RECEIPT_SUBSYSTEM_AUDIT_20261108.md.
-- Canonical traceability: P39_EP_CANONICAL_ACCEPTANCE_CROSSWALK_20261108.md.
-- Consolidated owner decisions OD-01..OD-13: P39_EXIT_OWNER_DECISION_REGISTER_20261108.md. All OPEN; recommendations are not owner approvals.
-- Exit provenance proposal/static audit: EXIT_PROVENANCE_RESOLUTION_20261108.md and EXIT_PROVENANCE_STATIC_CONSISTENCY_AUDIT_20261108.md.
-- Primary-source research and red-team corrections: P39_IMPLEMENTATION_GATE_RESEARCH_ADDENDUM_20261109.md.
-- Execution boundary, Wasmtime resource controls, SQLite durability and evidence provenance: EXECUTION_BOUNDARY_DURABILITY_AND_EVIDENCE_RESEARCH_20261109.md.
-- Event relay, idempotency, workflow retry and mobile exit-boundary research: P39_EVENT_RELAY_AND_EXIT_BOUNDARY_RESEARCH_20261109.md. It includes corrected upstream versions, licences, proposed acceptance crosswalk and red-team fixes; no stack selected.
-- PR #4 file-by-file process review: PR4_CONTINUITY_REFINEMENT_RECONCILIATION_20261109.md. Seven files verified; do not merge/close PR without owner action.
-- Gemini independent P39 review requested in INBOX_gemini.md MSG 2026-11-08-2.
-- Claude exit-provenance review was requested in earlier INBOX_claude MSG 2026-11-08-3/4, but those entries were superseded by Claude's later inbox rewrite; no independent exit review is present in the current ChatGPT inbox. Re-request only if this review remains in scope.
+## Current evidence
+- Claude P39 review reconciled: `P39_CLAUDE_REVIEW_RECONCILIATION_20261108.md`.
+- Source findings and traceability: `P39_SOURCE_PINNED_AUDIT_CROSSWALK_20261108.md`, `P39_EP_CANONICAL_ACCEPTANCE_CROSSWALK_20261108.md`.
+- Receipt/durable adapter audit: `P39_RECEIPT_SUBSYSTEM_AUDIT_20261108.md`.
+- Owner decisions OD-01..OD-13: `P39_EXIT_OWNER_DECISION_REGISTER_20261108.md`. All OPEN.
+- Exit provenance proposal/audit: `EXIT_PROVENANCE_RESOLUTION_20261108.md`, `EXIT_PROVENANCE_STATIC_CONSISTENCY_AUDIT_20261108.md`. CASE-04 stays INCOMPLETE / timed_out.
+- Primary-source P39 research: `P39_IMPLEMENTATION_GATE_RESEARCH_ADDENDUM_20261109.md`, `EXECUTION_BOUNDARY_DURABILITY_AND_EVIDENCE_RESEARCH_20261109.md`, `P39_EVENT_RELAY_AND_EXIT_BOUNDARY_RESEARCH_20261109.md`.
+- No-spend PWA storage/lifecycle contract: `PWA_LOCAL_STORAGE_AND_RECOVERY_CONTRACT_20261109.md`; corrected owner path: `NO_SPEND_PWA_PATH_20261108.md`. Research only; no device test or storage choice.
+- PR #4 file-by-file review: `PR4_CONTINUITY_REFINEMENT_RECONCILIATION_20261109.md`. Leave PR #4 OPEN/DRAFT; no merge/close without owner.
+- Gemini source-pinned P39 review request remains OPEN in `INBOX_gemini.md` MSG 2026-11-08-2.
 
 ## Steps
-1. When Gemini's full report arrives, reconcile each finding against Claude and immutable source/test pins. Reject unsupported path/line claims; separate model defects from adapter obligations.
-2. Claude exit-provenance review remains in scope because EP-01..25 and CASE-04 are still unresolved. Claude currently has one OPEN strategy-program request in INBOX_claude.md; do not create a second open ask. Reprioritize that lane with the owner before requesting the EP review. If supplied, reconcile typed projection/renderer, termination proof and CASE-04.
-3. Obtain explicit owner dispositions for OD-01..OD-13. Do not infer decisions from silence or reviewer agreement.
-4. Produce one conflict/consensus matrix and a bounded implementation proposal only after both reviews and owner decisions are reconciled.
-5. Decide whether a model-only P40 slice is authorized. If any policy or security decision remains open, keep implementation gate closed. Before any adapter proposal, reconcile the new execution-boundary and evidence-envelope requirements against OD-01..OD-13.
-6. Treat PR #4 as process-only and not mergeable as-is: reconcile any further process edits only in the active canonical files; owner controls the open/draft PR's close/merge. PR #2/#3 remain untouched.
-7. Refresh branch HEAD, last five commits and latest Actions before checkpointing. Preserve exact-SHA CI: 266/266 applies only to 744cb4d, not documentation HEAD.
+1. When Gemini's full report arrives, reconcile each finding against immutable source/test pins and Claude; reject unsupported line claims and separate model defects from adapter obligations.
+2. Claude exit-provenance review remains desirable for EP-01..25 and CASE-04. Claude has one OPEN strategy-program assignment in `INBOX_claude.md`; do not create a second ask until the owner reprioritizes that lane.
+3. Obtain explicit owner dispositions for OD-01..OD-13. Recommendations and reviewer agreement are not approvals.
+4. Produce a consensus/conflict matrix and bounded implementation proposal only after reviews and owner decisions are reconciled. Keep P40 closed if any policy/security issue remains.
+5. Before any PWA implementation, create a device work packet and test storage, export/import, quota/eviction, multi-tab fencing and worker interruption on supported iOS/Android browsers. The current research does not authorize implementation or establish device behavior.
+6. PR #2/#3 remain untouched; PR #4 is not mergeable as-is. No database/provider/runtime/transport selection and no canonical LOOP/CASE/D changes.
+7. Refresh HEAD, last five commits and exact-SHA Actions before checkpointing.
 
 ## Constraints
-- No source/test changes until review gate and owner decisions clear.
-- No database/provider/runtime/transport selection.
-- No canonical LOOP/CASE/D changes; keep P37/P39 namespaces separate.
-- Distinguish sequential model evidence from real adapter evidence.
+- No source/test changes until P39 review and owner-decision gate clears.
+- Keep P37/P39 namespaces distinct.
 - Preserve VERIFIED / CLAUDE-REPORTED / INFERRED / UNKNOWN / NOT RUN.
+- 266/266 PASS applies only to source/test SHA `744cb4dc7cd4994647c84ac7476d0c78a21f0540`, not later documentation HEADs.
 
 ## Done when
 Both independent reviews are reconciled, all owner decisions are explicit, and the next implementation slice is either authorized or blocked with exact reasons.
