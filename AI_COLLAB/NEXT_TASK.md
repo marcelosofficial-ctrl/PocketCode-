@@ -10,17 +10,20 @@ Close the independent-review and owner-decision gate for P39 and exit provenance
 - Consolidated owner decisions OD-01..OD-13: P39_EXIT_OWNER_DECISION_REGISTER_20261108.md. All OPEN; recommendations are not owner approvals.
 - Exit provenance proposal/static audit: EXIT_PROVENANCE_RESOLUTION_20261108.md and EXIT_PROVENANCE_STATIC_CONSISTENCY_AUDIT_20261108.md.
 - Primary-source research and red-team corrections: P39_IMPLEMENTATION_GATE_RESEARCH_ADDENDUM_20261109.md.
-- Execution boundary, Wasmtime resource controls, SQLite durability and evidence provenance: EXECUTION_BOUNDARY_DURABILITY_AND_EVIDENCE_RESEARCH_20261109.md. It proposes tests but makes no owner decisions or stack selections.
+- Execution boundary, Wasmtime resource controls, SQLite durability and evidence provenance: EXECUTION_BOUNDARY_DURABILITY_AND_EVIDENCE_RESEARCH_20261109.md.
+- Event relay, idempotency, workflow retry and mobile exit-boundary research: P39_EVENT_RELAY_AND_EXIT_BOUNDARY_RESEARCH_20261109.md. It includes corrected upstream versions, licences, proposed acceptance crosswalk and red-team fixes; no stack selected.
+- PR #4 file-by-file process review: PR4_CONTINUITY_REFINEMENT_RECONCILIATION_20261109.md. Seven files verified; do not merge/close PR without owner action.
 - Gemini independent P39 review requested in INBOX_gemini.md MSG 2026-11-08-2.
 - Claude exit-provenance review was requested in earlier INBOX_claude MSG 2026-11-08-3/4, but those entries were superseded by Claude's later inbox rewrite; no independent exit review is present in the current ChatGPT inbox. Re-request only if this review remains in scope.
 
 ## Steps
 1. When Gemini's full report arrives, reconcile each finding against Claude and immutable source/test pins. Reject unsupported path/line claims; separate model defects from adapter obligations.
-2. Confirm whether Claude's exit review remains required. If received, reconcile EP-01..25, the typed projection/renderer boundary, termination proof and CASE-04.
+2. Claude exit-provenance review remains in scope because EP-01..25 and CASE-04 are still unresolved. Claude currently has one OPEN strategy-program request in INBOX_claude.md; do not create a second open ask. Reprioritize that lane with the owner before requesting the EP review. If supplied, reconcile typed projection/renderer, termination proof and CASE-04.
 3. Obtain explicit owner dispositions for OD-01..OD-13. Do not infer decisions from silence or reviewer agreement.
 4. Produce one conflict/consensus matrix and a bounded implementation proposal only after both reviews and owner decisions are reconciled.
 5. Decide whether a model-only P40 slice is authorized. If any policy or security decision remains open, keep implementation gate closed. Before any adapter proposal, reconcile the new execution-boundary and evidence-envelope requirements against OD-01..OD-13.
-6. Refresh branch HEAD, last five commits and latest Actions before checkpointing. Preserve the exact-SHA boundary: 266/266 applies only to 744cb4d, not documentation HEAD.
+6. Treat PR #4 as process-only and not mergeable as-is: reconcile any further process edits only in the active canonical files; owner controls the open/draft PR's close/merge. PR #2/#3 remain untouched.
+7. Refresh branch HEAD, last five commits and latest Actions before checkpointing. Preserve exact-SHA CI: 266/266 applies only to 744cb4d, not documentation HEAD.
 
 ## Constraints
 - No source/test changes until review gate and owner decisions clear.
