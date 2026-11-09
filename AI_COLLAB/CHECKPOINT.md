@@ -1,19 +1,19 @@
 # CHECKPOINT — 2026-11-10
 
-Unit complete; starting HEAD: `83fc09365d51eea917d050029aefe00bfb3b07e1`. Additional commits in this pass: `3437a479`, `31af866`, and this checkpoint.
+Unit complete. Starting HEAD: `1f91e00b11d336115c284765c085f5d9281eb7f9`. Latest unit commit: pending final verification.
 
-**Pass goal:** Continue Pages/origin verification and O-5 evidence work without duplicating Claude's OPEN strategy assignment or crossing the P39/P40 implementation gate.
+**Pass goal:** Advance O-5 evidence design without duplicating Claude's OPEN strategy assignment or crossing the P39/P40 implementation gate.
 
-**Pages retry:** Fresh repository metadata still says `has_pages=true`, `homepage=null`, default branch `main`. Direct browser open of the conventional candidate URL was inaccessible; exact-host search returned no results. Neither result proves a 404 or confirms the URL. Pages settings, custom-domain inheritance, deployment run/environment URL, deployed SHA and live headers remain UNKNOWN. No workflow dispatch, settings or DNS changes.
+**Fresh mandatory read:** BOOT, STATE, NEXT_TASK, CHECKPOINT and INBOX_chatgpt read in order. Branch HEAD confirmed as `1f91e00b11d336115c284765c085f5d9281eb7f9`; exact branch API lists the latest five commits. The prior search-commits wrapper returned stale results, so the branch-specific commits endpoint was used as authority.
 
-**Current execution inventory:** branch Pages prototype remains explicitly simulation-only; bounded tree search found no committed Pyodide worker/runtime bridge. Conditional Pyodide default-message spoofing is a future-runtime design risk, not a vulnerability in this prototype. Installed Pyodios app topology remains UNKNOWN.
+**Review status:** `INBOX_claude.md` still has only the OPEN strategy-program assignment. No new Claude strategy artifact. Owner OD-01..OD-13 remain OPEN. Consensus matrix and gate plan remain current; no owner choice is inferred from the recommended defaults.
 
-**Updated:** `AI_COLLAB/PAGES_AND_EXIT_PROVENANCE_VERIFICATION_20261110.md` (section 9) and `STATE.md`. No new document, so INDEX unchanged.
+**O-5 refinement:** Added section 10 to `PAGES_AND_EXIT_PROVENANCE_VERIFICATION_20261110.md`. It separates guest outcome, trusted bootstrap outcome, output finalization, worker lifecycle, cancellation/termination and durable receipt. Proposed PYO-CTRL-11..15 cover output-close races, terminate-without-ack, worker error/private-port close, completion-vs-cancel ordering, and crash after terminal message before receipt commit. Added source/topology, identity/order, termination, output, durability and adversarial-test closure criteria.
 
-**Claude lane:** strategy assignment remains OPEN in `INBOX_claude.md`; no competing Apple-design, context-engineering, provider-cache or website-audit work created.
+**Evidence boundary:** committed Pages prototype remains simulation-only; no Pyodide worker/runtime bridge found in branch. Installed Pyodios topology remains UNKNOWN. PYO-CTRL-01..15 NOT RUN. No canonical LOOP/CASE/D ID changed.
 
-**Scope:** No source/tests, canonical LOOP/CASE/D IDs, OD-01..OD-13 decisions, PRs, Pages settings, runtime/provider/database/transport choices or spending changed. No browser/device/worker/exploit/live-deployment tests run. No RevDev material imported.
+**Scope:** documentation only. No source/tests, PRs, Pages settings, runtime/provider/database/transport choice, deployment, spend or RevDev work. P39/P40 implementation gate remains CLOSED.
 
-**CI:** final SHA must be checked after this commit. STATE remains under 900 words. Historical 266/266 PASS applies only to source/test SHA `744cb4dc7cd4994647c84ac7476d0c78a21f0540`.
+**CI/tests:** exact-SHA CI and tests must be checked after the final checkpoint commit. Historical 266/266 PASS applies only to source/test SHA `744cb4dc7cd4994647c84ac7476d0c78a21f0540`.
 
-**Next:** obtain Pages settings or Actions environment URL/deployed SHA from owner; inspect actual installed-app execution implementation when available; continue OD-01..OD-13 owner gate. P39/P40 remains CLOSED.
+**Next:** obtain OD-01..OD-13 owner dispositions; obtain Pages settings/deployment URL and inspect actual installed-app implementation when available; then revisit bounded P40 authorization only after gate closure.
