@@ -1,5 +1,5 @@
 # STATE: PocketCode   (current state only; under 900 words)
-Updated: 2026-11-09 by ChatGPT. Sources: live branch files, GitHub API state, Claude P39 reconciliation, owner decision register and primary-source research. No PocketCode source/tests were changed or run in this pass.
+Updated: 2026-11-09 by ChatGPT. Sources: live branch files, GitHub API state, Claude P39 reconciliation, owner decision register and primary-source browser-storage research. No PocketCode source/tests or device tests were run in this pass.
 
 ## Status
 - Phase: Discovery and product definition. P39/exit-provenance gate remains CLOSED. No runtime/provider/database/transport selected. Branch divergence from main is history, not product progress.
@@ -10,13 +10,14 @@ Updated: 2026-11-09 by ChatGPT. Sources: live branch files, GitHub API state, Cl
 - Event journal prototype: in memory, 21/21 local tests; producer identity is not cryptographic; fence check plus append is not atomic. Fake coordinator: 14 harness tests on test doubles. Both from the owner handoff.
 - Pyodios on the owner's iPhone (owner-reported): v1.1.0 build 7, Pyodide 314.0.5, Python 3.14.2. First Editor run showed only "[Bridge/executePython] PythonError"; Console probe NOT RUN; bridge cause UNKNOWN.
 - Product program (research only): STRATEGY_PROGRAM_20261108.md; website audit, governance audit, iPhone roadmap and the no-spend PWA path are committed. No spending is authorized.
+- COMMITTED PWA research: PWA_LOCAL_STORAGE_AND_RECOVERY_CONTRACT_20261109.md defines IndexedDB atomic metadata, OPFS staging/readback, local fencing, service-worker recovery and 22 proposed PWA tests. NO_SPEND_PWA_PATH_20261108.md corrected: WebKit Home Screen origins are ITP seven-day exempt and isolated from Safari, but still face quota/pressure/user clearing; iOS 26 Add to Home Screen includes Open as Web App; qualifying EU browsers may use entitled alternative engines. Owner device iOS/Safari build, persist() result, quota and lifecycle behavior remain UNKNOWN. No storage engine selected.
 
 ## Decisions
 - D-001 unified PC-and-phone direction, separate development boundaries. D-002 GitHub is source of truth. D-003 no secrets in the public repo. D-004 validate before stack commitment. D-005 zero spend.
 - D-006 (owner, 2026-11-08): no spending of any kind. No Apple Developer Program, TestFlight or App Store for now; distribution is the installable web app on GitHub Pages (NO_SPEND_PWA_PATH_20261108.md).
 - Owner-delegated README banner on main is done (commit 319d3da); main otherwise unchanged. PR #2/#3 stay open drafts and untouched. PR #4 remains open/draft and untouched. ChatGPT's review found seven files (not six), 11 commits ahead / 312 behind, recommends no merge as-is, and records per-file disposition in PR4_CONTINUITY_REFINEMENT_RECONCILIATION_20261109.md. Useful unique rules were selectively integrated into BOOT and WORK_PROTOCOL; owner controls close/merge.
 - OpenHands and Cline are pattern references only; reject Cline's wildcard auto-approve default. MCP Tasks and ACP are optional adapters and never replace PocketCode command and attempt identity.
-- No durable store is chosen until an atomic persistence contract is defined and tested. Patterns and current source checks are recorded in P39_EVENT_RELAY_AND_EXIT_BOUNDARY_RESEARCH_20261109.md; this does not select Temporal, NATS, Redis, PostgreSQL, SQLite or Pyodide as a product dependency.
+- No durable store is chosen until an atomic persistence contract is defined and tested. Patterns and current source checks are recorded in P39_EVENT_RELAY_AND_EXIT_BOUNDARY_RESEARCH_20261109.md and PWA_LOCAL_STORAGE_AND_RECOVERY_CONTRACT_20261109.md; these do not select Temporal, NATS, Redis, PostgreSQL, SQLite, IndexedDB wrappers or Pyodide as a product dependency.
 - CASE-04 stays INCOMPLETE / timed_out; no precedence-only patch to scripts/report_contract.py until child-exit, wrapper-exit and termination provenance are resolved.
 - 2026-11-07 (owner): old process rules may be revised; AGENTS.md carries tiered decision rights. 2026-11-08 (owner): PocketCode is considered for renaming to PoCo; the website design must not change; no claim beyond what is built. Nothing is renamed yet.
 
