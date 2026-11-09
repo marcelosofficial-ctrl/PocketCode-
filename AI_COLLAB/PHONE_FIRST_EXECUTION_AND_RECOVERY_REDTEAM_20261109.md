@@ -211,6 +211,7 @@ Required rule: retain distinct transfer identity, emitted/observed/acknowledged 
 4. **IndexedDB standard status needed refreshing:** earlier material cited the 2025 Working Draft. The latest published snapshot opened here is 2026-10-30 and remains a Working Draft. **Correction:** update reference date/status; atomic transaction guarantees are within IDB's own transaction scope only.
 5. **The live Pages risk was never confirmed:** project URL and custom domain were UNKNOWN, and custom-domain inheritance can alter the hostname. **Correction:** keep the risk conditional and require actual Pages settings/live URL before asserting PocketCode is exposed to sibling content.
 6. **Service-worker recovery must not imply background execution:** a service worker may be terminated by the user agent. **Correction:** execution completion is foreground/runner-owned; background events are optional wake-up triggers only.
+7. **OpenHands licence was misstated in an earlier summary:** its core repository LICENSE is MIT, not Apache-2.0. The Docker sandbox documentation is a pattern reference; no code was copied. Verify enterprise and separately packaged component terms before any future reuse.
 
 ## 7. Source quality, maintenance and licence notes
 
@@ -225,7 +226,7 @@ Required rule: retain distinct transfer identity, emitted/observed/acknowledged 
 | W3C Service Workers | Candidate Recommendation Draft 2026-10-29 | Draft; no code copied | Worker termination |
 | Pyodide | Stable API docs opened for API semantics | Upstream MPL-2.0, no code copied | JS bridge and worker distinction |
 | Deno | Security docs opened 2026-11-09 | MIT, no code copied | Default-deny and layered isolation pattern |
-| OpenHands | Docker sandbox docs opened 2026-11-09 | OpenHands Apache-2.0; docs referenced, no code copied | Separate host/container sandbox pattern |
+| OpenHands | Docker sandbox docs opened 2026-11-09; core LICENSE opened 2026-11-09 | MIT for core repository; verify enterprise/component-specific terms separately; no code copied | Separate host/container sandbox pattern |
 | WebAssembly | Official security overview opened 2026-11-09 | Standard/documentation; no code copied | Engine vs embedder capabilities |
 
 No source code was copied, no dependency was added, and no runtime, database, hosting provider or architecture was selected.
