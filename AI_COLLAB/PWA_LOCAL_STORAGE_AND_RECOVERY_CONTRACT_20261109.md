@@ -252,7 +252,7 @@ These are proposed `PWA-*` tests, not additions to canonical LOOP/CASE/D or P39 
 
 All factual platform statements above are tied to primary/specification sources opened 2026-11-09. Publication dates are included to distinguish current platform behavior from older release notes.
 
-1. W3C, [Indexed Database API 3.0](https://www.w3.org/TR/IndexedDB-3/) (Working Draft 2026-10-30): transaction lifecycle/scopes/durability hints.
+1. W3C, [Indexed Database API 3.0](https://www.w3.org/TR/IndexedDB/) (latest published snapshot opened 2026-10-30, Working Draft): transaction lifecycle/scopes/durability hints.
 2. W3C, [Service Workers](https://www.w3.org/TR/2026/CRD-service-workers-20261029/) (Candidate Recommendation Draft 2026-10-29): worker lifetime and termination.
 3. WebKit, [Tracking Prevention](https://webkit.org/tracking-prevention/): current shipped behavior including seven-day storage purge and explicit Home Screen origin exemption.
 4. WebKit, [Full Third-Party Cookie Blocking and More](https://webkit.org/blog/10218/full-third-party-cookie-blocking-and-more/) (2020-03-24): seven-day script-storage deletion and Home Screen counter/isolation behavior.
