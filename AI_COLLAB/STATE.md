@@ -32,6 +32,5 @@ Updated: 2026-11-09 by ChatGPT. Sources: live branch files, GitHub API state, Cl
 - O-8 Strategy research still to do: Apple design engineering for the web app, PoCo context engineering and provider caching, remaining website audit. This remains a separate Claude work lane.
 
 ## Known risks
-- Entry files from before 2026-11-07 are far too large for a free chat. Start from BOOT, STATE, NEXT_TASK, CHECKPOINT, INBOX only.
 - Chats can freeze on "Stopped thinking" while commits continue; check commits, not the chat (kit/docs/STUCK_CHAT_FORENSICS.md).
 - The classification of older documents in INDEX.md is by filename and date, not by reading them.
