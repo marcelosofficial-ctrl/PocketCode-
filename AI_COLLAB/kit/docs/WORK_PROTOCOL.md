@@ -51,3 +51,25 @@ Same BOOT for every assistant. One lead writer per work item; others review or t
 
 ## 10. Tier compatibility
 Free ChatGPT, paid ChatGPT, Claude, Gemini, Copilot, Cursor: same files. With no repo access: paste BOOT.md, STATE.md and NEXT_TASK.md as the start message and say so.
+
+
+## 11. Source-of-truth and decision status
+When records disagree, preserve and record the conflict. Use this order:
+1. The owner's latest explicit instruction or decision.
+2. Canonical acceptance specifications and frozen fixtures for semantics and IDs.
+3. Explicitly accepted decision-register entries.
+4. Current source, tests and exact-SHA CI evidence.
+5. Live STATE, NEXT_TASK, CHECKPOINT and task-specific packets.
+6. Historical logs, older handoffs and chat transcripts.
+
+A proposal, reviewer recommendation, competitor feature or AI-generated plan is not accepted scope until the owner or a delegated decision authority accepts it. Preserve good but unselected ideas as PROPOSED or DEFERRED; do not silently delete them or promote them to an accepted decision.
+
+## 12. Shared-branch concurrency
+One lead writer owns each shared-branch work item. Before a write, fetch the current branch head and the target file's current blob SHA. If an update is rejected or the head changes, stop and re-fetch the head, changed paths and target blobs before rebuilding the intended edit. Treat a stale-SHA rejection as a concurrency signal, not a reason to retry blindly.
+
+When two contributors need overlapping paths, coordinate disjoint assignments or use an isolated branch based on the latest verified head, then reconcile the diff. Never force-push or overwrite another contributor's legitimate work. Record which branch contains a proposal and whether it has been integrated.
+
+## 13. Exact-SHA CI evidence and cancellation
+Bind every CI claim to workflow, run ID, event, branch, exact SHA, job, environment and test totals. A result proves only the files and tests actually exercised at that SHA. A later documentation-only commit does not invalidate earlier source/test evidence, but it does not create fresh test evidence either.
+
+Keep useful completed exact-SHA runs. Do not cancel a run only because a newer commit exists. Cancel only when it is demonstrably obsolete, costly and completely superseded by a newer equivalent run. Record CANCELLED as CANCELLED, never FAIL. For a pending run, record run ID and SHA and stop polling after one reasonable check.
