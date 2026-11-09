@@ -29,8 +29,8 @@ Updated: 2026-11-09 by ChatGPT. Sources: live branch files, GitHub API state, Cl
 - O-4 Define the atomic persistence contract a durable adapter must satisfy, including browser origin isolation and same-origin sibling threat model before storing user workspace data.
 - O-5 Resolve typed child exit vs wrapper exit vs termination provenance (NEXT_TASK.md).
 - O-6 Recommended next slice P40: event chain and relay slice in the sequential model (P39 review section 7).
-- O-7 Owner decisions still open: the name PoCo (check App Store name, trademark and domain first, even though the App Store is deferred); LinkedIn work waits for a laptop or a LinkedIn data export (about one month).
-- O-8 Strategy research still to do: Apple design engineering for the web app, PoCo context engineering and provider caching, remaining website audit. This remains a separate Claude work lane.
+- O-7 PoCo name remains undecided; LinkedIn work waits for laptop/export.
+- O-8 Remaining design/context/provider-cache research is a separate Claude lane.
 
 ## Known risks
 - Chats can freeze on "Stopped thinking" while commits continue; check commits, not the chat (kit/docs/STUCK_CHAT_FORENSICS.md).
