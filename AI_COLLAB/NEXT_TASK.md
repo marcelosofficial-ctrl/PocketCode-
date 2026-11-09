@@ -1,32 +1,31 @@
 # NEXT TASK: PocketCode
 
 ## Goal
-Close independent-review and owner-decision gate for P39/exit provenance. No implementation until explicitly cleared.
+Complete P39 review reconciliation and owner-decision gate. No implementation until explicitly cleared.
 
 ## Evidence
-- Claude review: `P39_CLAUDE_REVIEW_RECONCILIATION_20261108.md`.
-- Source/acceptance maps: `P39_SOURCE_PINNED_AUDIT_CROSSWALK_20261108.md`, `P39_EP_CANONICAL_ACCEPTANCE_CROSSWALK_20261108.md`.
+- Claude P39: `P39_CLAUDE_REVIEW_RECONCILIATION_20261108.md`; C1-C7 were Claude-reported runs against a byte-identical copy, not the repository suite.
+- Gemini P39: `GEMINI_P39_REVIEW_RECONCILIATION_20261109.md`; independent report received and source-reconciled. Gemini tests NOT RUN.
+- Integrated sequence: `P39_GATE_CLOSURE_PLAN_20261109.md`.
+- Canonical traceability: `P39_SOURCE_PINNED_AUDIT_CROSSWALK_20261108.md`, `P39_EP_CANONICAL_ACCEPTANCE_CROSSWALK_20261108.md`.
 - Owner decisions OD-01..OD-13: `P39_EXIT_OWNER_DECISION_REGISTER_20261108.md`, all OPEN.
-- Exit provenance: `EXIT_PROVENANCE_RESOLUTION_20261108.md`, `EXIT_PROVENANCE_STATIC_CONSISTENCY_AUDIT_20261108.md`; CASE-04 stays INCOMPLETE / timed_out.
-- P39 research: `P39_IMPLEMENTATION_GATE_RESEARCH_ADDENDUM_20261109.md`, `EXECUTION_BOUNDARY_DURABILITY_AND_EVIDENCE_RESEARCH_20261109.md`, `P39_EVENT_RELAY_AND_EXIT_BOUNDARY_RESEARCH_20261109.md`.
-- PWA research only: `PWA_LOCAL_STORAGE_AND_RECOVERY_CONTRACT_20261109.md`, corrected `NO_SPEND_PWA_PATH_20261108.md`; no device test or storage choice.
-- PR #4: `PR4_CONTINUITY_REFINEMENT_RECONCILIATION_20261109.md`; keep OPEN/DRAFT, no merge/close without owner.
-- Gemini report received and reconciled in `GEMINI_P39_REVIEW_RECONCILIATION_20261109.md`. Corrected gaps: progress aggregate version/event parity, canonical consumer envelope digest, grant-event relay fencing/order, and authoritative worker clock. Gemini's result_receipts.verify_receipt() and fake_outbox.py no-fence claims are contradicted by source. Gemini tests NOT RUN.
+- Exit provenance: `EXIT_PROVENANCE_RESOLUTION_20261108.md`, `EXIT_PROVENANCE_STATIC_CONSISTENCY_AUDIT_20261108.md`; CASE-04 remains INCOMPLETE / timed_out.
+- Claude inbox: one OPEN strategy-program assignment. Await any additional Claude artifact supplied by owner; do not create a competing assignment.
 
 ## Steps
-1. Reconcile Gemini's full report finding-by-finding against immutable pins and Claude; separate model defects, adapter obligations and owner policy.
-2. Claude exit-provenance review remains desirable for EP-01..25/CASE-04. Claude has one OPEN strategy assignment; do not create a second ask until owner reprioritizes.
-3. After owner decisions, merge corrected Gemini findings with Claude dispositions into a conflict/consensus matrix and bounded model-only proposal.
-4. Keep P40 closed if security/policy issues remain. No source/test edits until explicit gate clearance.
-5. Before PWA implementation, create device packet and test storage, export/import, quota/eviction, multi-tab fencing and worker interruption on supported iOS/Android browsers.
-6. Leave PR #2/#3 untouched; PR #4 is not mergeable as-is. No database/provider/runtime/transport selection or canonical LOOP/CASE/D changes.
-7. Refresh HEAD, latest five commits and exact-SHA Actions before checkpointing.
+1. If an additional Claude review arrives, pin its repo/branch/SHA/blob hashes, scope, files read and tests run. Reconcile each claim against existing Claude/Gemini findings and canonical crosswalk.
+2. Complete one finding-level consensus/conflict matrix with severity, exact source pin, model/adapter/owner classification, canonical trace, P39 test ID and evidence status. Merge overlaps; do not duplicate tests or alter LOOP/CASE/D IDs.
+3. Obtain explicit OD-01..OD-13 decisions. Resolve streaming first; revocation lifecycle together; clock/identity; receipt binding; exit verdict/termination/cleanup; client-byte evidence.
+4. Freeze versioned model semantics only after owner decisions. Then seek explicit authorization for a bounded model-only P40 slice.
+5. Prove model behavior with targeted P39 tests and full suite on exact SHA. Test durable adapter, concurrency, crash/restart/restore and transport separately. Supporting P39 tests never imply canonical CASE PASS.
+6. Keep PR #2/#3/#4 untouched. No stack/provider/database/runtime/transport choice, paid service, device/PWA implementation or source/test edits without gate clearance.
+7. Refresh branch HEAD, latest five commits and exact-SHA Actions before checkpointing.
 
 ## Constraints
-- No source/test changes until P39 review and owner-decision gate clears.
-- Keep P37/P39 namespaces distinct.
-- Preserve VERIFIED / CLAUDE-REPORTED / INFERRED / UNKNOWN / NOT RUN.
-- 266/266 PASS applies only to source/test SHA `744cb4dc7cd4994647c84ac7476d0c78a21f0540`, not later documentation HEADs.
+- P39/P40 implementation gate CLOSED; OD-01..OD-13 OPEN.
+- Preserve VERIFIED / INFERRED / UNKNOWN / NOT RUN and PASS / FAIL / NOT RUN.
+- Historical 266/266 PASS applies only to source/test SHA `744cb4dc7cd4994647c84ac7476d0c78a21f0540`.
+- Keep RevDev evidence separate.
 
 ## Done when
-Both independent reviews are reconciled, all owner decisions are explicit, and next implementation slice is authorized or blocked with exact reasons.
+All supplied reviews are reconciled, conflicts are explicit, owner decisions are recorded or deliberately deferred, and the owner authorizes a bounded next slice or the exact blockers remain documented.
