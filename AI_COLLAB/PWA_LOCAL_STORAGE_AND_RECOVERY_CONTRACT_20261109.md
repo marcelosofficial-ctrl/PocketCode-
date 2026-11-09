@@ -82,7 +82,7 @@ This is not a stylistic recommendation. The browser transaction can become inact
 
 ## 4. Large artifacts: OPFS staging, IndexedDB commit and recovery
 
-**VERIFIED:** OPFS is a private, origin-scoped file system, available in workers and subject to browser quota/eviction. Clearing site data deletes OPFS. Synchronous access handles are available in workers; their `flush()` method ensures that writes through the handle have been flushed to the file. OPFS data is not a user-visible local filesystem. Sources: [MDN OPFS](https://developer.mozilla.org/en-US/docs/Web/API/File_System_API/Origin_private_file_system) and [WebKit OPFS introduction](https://webkit.org/blog/12257/the-file-system-access-api-with-origin-private-file-system/).
+**VERIFIED:** OPFS is a private, origin-scoped file system, available in workers and subject to browser quota/eviction. Clearing site data deletes OPFS. Synchronous access handles are available in dedicated workers. Their `flush()` method attempts to transfer cached changes to underlying storage and may be a no-op on some filesystems. OPFS data is not a user-visible local filesystem. Sources: [MDN OPFS](https://developer.mozilla.org/en-US/docs/Web/API/File_System_API/Origin_private_file_system) and [WebKit OPFS introduction](https://webkit.org/blog/12257/the-file-system-access-api-with-origin-private-file-system/).
 
 **Important boundary (INFERRED):** OPFS operations and IndexedDB transactions are separate APIs. No cross-API atomic transaction is specified. Never describe a file write plus a database manifest write as one ACID commit.
 
@@ -91,7 +91,7 @@ This is not a stylistic recommendation. The browser transaction can become inact
 1. Allocate a new immutable ArtifactId/object version and a unique staging path. Do not reuse an old path for different bytes.
 2. Persist an artifact record with disposition `staging` and bind it to CommandId, DispatchAttemptId and ExecutionId in IndexedDB.
 3. Write bytes to the OPFS staging file. Check every write's returned byte count; handle short/failed writes.
-4. Flush and close the access handle. Read the stored file back and calculate SHA-256 over those stored bytes, not only the producer's in-memory buffer.
+4. Call flush() and close the access handle. Treat flush as an attempt to transfer cached changes to underlying storage, not a universal power-loss guarantee; the standard permits a no-op on some filesystems. Reopen/read the stored file and calculate SHA-256 over those stored bytes, not only the producer's in-memory buffer.
 5. Verify exact byte length and digest against the expected result. A producer-supplied digest remains a claim until readback succeeds.
 6. In one IndexedDB transaction, re-check attempt identity and current fence; append the artifact-integrity observation; set the immutable artifact manifest to `verified_staged`; create the next receipt revision; append the corresponding event/outbox record. Commit this transaction before the artifact can be released.
 7. Release/read/export only by resolving the committed receipt manifest to that exact immutable object version and rechecking existence, length and digest.
