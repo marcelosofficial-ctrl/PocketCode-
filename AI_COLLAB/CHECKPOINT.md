@@ -1,16 +1,15 @@
 # CHECKPOINT — 2026-11-09
 
-Unit complete; pre-checkpoint HEAD: `8d4d44f4e6a8cb489985681c697e823a1ca1b20f`.
+Unit complete; pre-checkpoint HEAD: `124ab64bdc8ddac9ff0942928ef2a63c981c9086`.
 
-**Verified refresh:** active branch remains `pocketcode-ai-workflow-director-research-2026-10-28`. Required boot files were re-read in order. Latest five commits before this unit matched the prior checkpoint; no newer external work or owner-supplied Claude artifact was present. Claude's single strategy-program assignment remains OPEN.
+**Work completed:** Deep primary-source review of PocketCode's $0 GitHub Pages/PWA local-data boundary. Added `AI_COLLAB/GITHUB_PAGES_ORIGIN_ISOLATION_AND_LOCAL_DATA_SECURITY_20261109.md` and indexed it. The key new finding is conditional but high priority: GitHub Pages project sites under the same `<owner>.github.io` host are same-origin despite different repository paths. Same-origin sibling scripts may access IndexedDB/OPFS storage. The actual deployment URL and sibling inventory are UNKNOWN, so this is a threat-model finding, not a confirmed live exploit.
 
-**Committed in this unit:**
-- `AI_COLLAB/INBOX_gemini.md`: closed the completed Gemini review/addendum requests and recorded the source-reconciliation outcome. Gemini's report was supplied in chat, not committed as a separate source artifact.
-- `AI_COLLAB/GEMINI_P39_REVIEW_RECONCILIATION_20261109.md`: clarified the historical review-time HEAD separately from the live branch HEAD found during this follow-up.
-- No source, tests, canonical contracts/IDs, PRs, provider, runtime, database, transport or storage choice changed.
+**Contract updates:** `STATE.md` records the finding and expands O-4. `NEXT_TASK.md` adds an origin verification gate and ORIGIN-01..10 acceptance cases. State is 887 words; NEXT_TASK is 306 words. Both within their limits.
 
-**Gate:** P39/P40 implementation CLOSED. OD-01..OD-13 remain OPEN. Await any additional Claude artifact supplied by owner; do not create a competing Claude assignment. PR #2/#3/#4 remain untouched.
+**Research conclusions:** IndexedDB strict durability remains a user-agent hint, not a backup/power-loss guarantee. OPFS flush persists file writes but does not make an atomic transaction with IndexedDB. Keep unique immutable per-attempt staging paths and publish only through a current-fence metadata transaction. SQLite WAL/FULL durability and the fixed WAL-reset bug remain evaluation guardrails only; no database selected.
 
-**Evidence:** historical Actions run 42365455316 reports 266/266 PASS only at exact source/test SHA `744cb4dc7cd4994647c84ac7476d0c78a21f0540`. No Actions run exists for follow-up docs HEAD `c4981a03e5ba14c89f32b12579311a7ecdc02f8b`; later continuity-only docs commits have CI NOT RUN. Gemini tests NOT RUN. ChatGPT tests NOT RUN. CASE-04 remains INCOMPLETE / timed_out.
+**Gate and scope:** P39/P40 CLOSED; OD-01..OD-13 OPEN. Claude strategy assignment remains OPEN; await owner-supplied additional Claude material. No source/tests, runtime, provider, database, transport, hosting setting, canonical IDs or PRs changed. No tests or device checks run.
 
-**Next:** wait for owner-supplied Claude review and explicit OD-01..OD-13 decisions. Reconcile new evidence only if supplied; do not implement P39/P40 until the gate is explicitly cleared.
+**Evidence:** Primary sources and verification limits are in the new research document. Historical 266/266 PASS remains tied only to source/test SHA `744cb4dc7cd4994647c84ac7476d0c78a21f0540`. No fresh CI on documentation commits; current HEAD status must be refreshed after this checkpoint.
+
+**Next:** Verify the actual GitHub Pages URL/site type and same-origin sibling content before any local persistence implementation. Keep owner decisions and additional Claude review as separate gates.
