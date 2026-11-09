@@ -64,6 +64,7 @@ Size classes: S under 8 KB, M 8-25 KB, L 25-50 KB, XL over 50 KB (never load who
 | PWA_LOCAL_STORAGE_AND_RECOVERY_CONTRACT_20261109.md | IndexedDB transactions, Storage API/eviction, OPFS staging, Web Locks, service-worker interruption and 22 PWA tests | L | research complete; no storage engine selected |
 | GITHUB_PAGES_ORIGIN_ISOLATION_AND_LOCAL_DATA_SECURITY_20261109.md | GitHub Pages shared-origin storage exposure, threat model and 10 proposed acceptance cases | M | security research; deployment URL unverified |
 | PHONE_FIRST_EXECUTION_AND_RECOVERY_REDTEAM_20261109.md | origin/header corrections, Pyodide/iframe trust boundary, OPFS/IndexedDB crash protocol, P39 evidence layers and 28 proposed tests | L | deep research and red-team corrections; no implementation authorized |
+| PAGES_AND_EXIT_PROVENANCE_VERIFICATION_20261110.md | verified Pages workflow/repo facts, remaining URL unknowns, browser-worker vs native child-exit evidence and EP-26..35 tests | M | deployment/runtime evidence crosswalk; no implementation authorized |
 | PR4_CONTINUITY_REFINEMENT_RECONCILIATION_20261109.md | seven-file PR #4 review, KEEP/MERGE-INTO-BOOT/DROP classifications and no-merge recommendation | M | review complete; PR remains owner-controlled |
 
 | VERDICT_EVIDENCE_EXIT_PROVENANCE_MATRIX_20261105.md | exit provenance matrix | M | live (O-5) |
