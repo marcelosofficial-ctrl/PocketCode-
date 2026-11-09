@@ -120,7 +120,7 @@ These IDs extend the EP research proposal only. They do not alter canonical CASE
 | HTML Living Standard, workers | Living Standard updated 2026-11-09; opened 2026-11-10 | Normative web standard; no code copied |
 | MDN Worker.terminate | Page last modified 2024-07-26; opened 2026-11-10; Baseline API | Maintained reference docs; no code copied |
 | Python subprocess docs | Python 3.15.2 docs; opened 2026-11-10 | Official CPython docs; PSF project; no code copied |
-| Node.js child_process docs | Node.js v26.13.0 docs; opened 2026-11-10 | Official Node docs; MIT project; semantic reference only, no code copied |
+| Node.js child_process docs | Node.js v26.13.0 docs opened 2026-11-10; upstream LICENSE blob `ec72f56e16fb19944a55acdbff67727d2bfadb8a` opened | Official Node docs; MIT license verified; semantic reference only, no code copied |
 
 Primary references:
 - [HTML Living Standard: Web Workers](https://html.spec.whatwg.org/multipage/workers.html)
