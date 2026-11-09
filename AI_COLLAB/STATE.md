@@ -1,9 +1,9 @@
 # STATE: PocketCode   (current state only; under 900 words)
-Updated: 2026-11-10 by ChatGPT. Previous HEAD `83fc09365d51eea917d050029aefe00bfb3b07e1`: zero checks; CI NOT RUN. Sources: live branch, GitHub API, P39 reconciliations and primary-source security/storage research. No source/tests or device tests run.
+Updated: 2026-11-10 by ChatGPT. Latest docs-only HEAD `e657f196b0ce4bbcc021b720cb023bc063906c92`: zero checks; CI NOT RUN. Sources: live branch, GitHub API, P39 reconciliations and primary-source security/storage research. No source/tests or device tests run.
 
 ## Status
 - Phase: Discovery/product definition. P39/exit-provenance gate CLOSED. No runtime/provider/database/transport selected.
-- VERIFIED: Actions run 42365455316 on exact source/test SHA 744cb4dc7cd4994647c84ac7476d0c78a21f0540, workflow "PocketCode Python conformance tests", job unittest: 266/266 PASS. Historical source/test evidence only. Latest docs-only SHA checked `756f4f1ddd3b300073cf5599d91f33922667d310` has zero check runs/statuses; CI is NOT RUN, not PASS/FAIL. Final checkpoint SHA is checked separately.
+- VERIFIED: Actions run 42365455316 on exact source/test SHA 744cb4dc7cd4994647c84ac7476d0c78a21f0540, workflow "PocketCode Python conformance tests", job unittest: 266/266 PASS. Historical source/test evidence only. Latest docs-only SHA checked `756f4f1ddd3b300073cf5599d91f33922667d310` has zero check runs/statuses; CI is NOT RUN, not PASS/FAIL. Final checkpoint SHA `e657f196b0ce4bbcc021b720cb023bc063906c92`: zero check runs/statuses; CI NOT RUN.
 - COMMITTED: intent/proof separation, receipt-revision binding, grant recovery, concurrency/crash models and research.
 - CLAIMED ONLY (not built): durable adapter; real concurrent processes; transactional outbox relay; durable crash recovery; production fencing; transport stream ownership and revocation; trusted policy authority; client receipt.
 - Claude and Gemini P39 reviews are reconciled. Gemini attribution corrections: S1 is in release_grant_conformance.py, not event_journal.py; S2 names a nonexistent receipt function, but consume_event() trusts supplied digest; S3 misattributes FakeOutbox fencing, while grant-event relay lacks it; S4 is adapter/MVP scope. Receipt blob 0d1588f was separately checked. Gemini tests NOT RUN; Claude C1-C7 were against a byte-verified copy, not repo CI.
