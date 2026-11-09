@@ -62,7 +62,7 @@ Merge these with existing Claude P39 tests where equivalent; do not duplicate ru
 - Gemini: all listed tests NOT RUN. No live provider, remote sandbox, device or transport tests.
 - This reconciliation: static GitHub source reads only; tests NOT RUN.
 - Historical Actions 42365455316: 266/266 PASS only at source/test SHA `744cb4dc7cd4994647c84ac7476d0c78a21f0540`.
-- Current documentation HEAD `3cd1b689cb6d37963c2f9eb2005e9a9b834b11c1`: no associated workflow runs returned; CI NOT RUN.
+- At reconciliation time, the documentation HEAD was `3cd1b689cb6d37963c2f9eb2005e9a9b834b11c1`; no associated workflow runs were returned then. Follow-up audit on 2026-11-09 found active branch HEAD `c4981a03e5ba14c89f32b12579311a7ecdc02f8b`, with no Actions run for that SHA. The continuity-only commits after that audit are documentation-only; CI on those commits is NOT RUN.
 - Owner OD-01..OD-13 remain OPEN. Reviewer recommendations do not authorize implementation.
 
 **Next:** obtain explicit owner decisions; reconcile the corrected event parity/digest/relay findings with the existing Claude dispositions; only then prepare a bounded model-only implementation proposal. No source/test change is authorized by this review.
