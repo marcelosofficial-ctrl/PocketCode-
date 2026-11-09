@@ -1,32 +1,30 @@
 # NEXT TASK: PocketCode
 
 ## Goal
-Complete P39 review reconciliation and owner-decision gate. No implementation until explicitly cleared.
+Complete P39 reconciliation and owner gate. Implementation remains blocked.
 
 ## Evidence
-- Claude P39: `P39_CLAUDE_REVIEW_RECONCILIATION_20261108.md`; C1-C7 were Claude-reported runs against a byte-identical copy, not the repository suite.
-- Gemini P39: `GEMINI_P39_REVIEW_RECONCILIATION_20261109.md`; independent report received and source-reconciled. Gemini tests NOT RUN.
-- Integrated sequence: `P39_GATE_CLOSURE_PLAN_20261109.md`; finding-level consensus/conflict matrix: `P39_REVIEW_CONSENSUS_MATRIX_20261109.md`.
-- Canonical traceability: `P39_SOURCE_PINNED_AUDIT_CROSSWALK_20261108.md`, `P39_EP_CANONICAL_ACCEPTANCE_CROSSWALK_20261108.md`.
-- Owner decisions OD-01..OD-13: `P39_EXIT_OWNER_DECISION_REGISTER_20261108.md`, all OPEN.
-- Exit provenance: `EXIT_PROVENANCE_RESOLUTION_20261108.md`, `EXIT_PROVENANCE_STATIC_CONSISTENCY_AUDIT_20261108.md`; CASE-04 remains INCOMPLETE / timed_out.
-- Claude inbox: one OPEN strategy-program assignment. Await any additional Claude artifact supplied by owner; do not create a competing assignment.
+- Claude P39: `P39_CLAUDE_REVIEW_RECONCILIATION_20261108.md`; C1-C7 were run against a byte-verified copy, not repo CI.
+- Gemini P39: `GEMINI_P39_REVIEW_RECONCILIATION_20261109.md`; report reconciled, tests NOT RUN.
+- Combined findings: `P39_REVIEW_CONSENSUS_MATRIX_20261109.md`; sequence: `P39_GATE_CLOSURE_PLAN_20261109.md`.
+- Owner decisions OD-01..OD-13: `P39_EXIT_OWNER_DECISION_REGISTER_20261108.md`, all OPEN. CASE-04 remains INCOMPLETE / timed_out.
+- Claude inbox has one OPEN strategy assignment. Await any additional owner-supplied Claude artifact; do not create a competing assignment.
 
 ## Steps
-1. If an additional Claude review arrives, pin its repo/branch/SHA/blob hashes, scope, files read and tests run. Reconcile each claim against the existing matrix and canonical crosswalk; do not create a competing Claude assignment.
-2. Complete one finding-level consensus/conflict matrix with severity, exact source pin, model/adapter/owner classification, canonical trace, P39 test ID and evidence status. Merge overlaps; do not duplicate tests or alter LOOP/CASE/D IDs.
-3. Obtain explicit OD-01..OD-13 decisions. Resolve streaming first; revocation lifecycle together; clock/identity; receipt binding; exit verdict/termination/cleanup; client-byte evidence.
-4. Before selecting or implementing local persistence, verify the exact GitHub Pages URL/site type and sibling same-origin content; resolve ORIGIN-01..10 against the deployed origin. If shared-origin exposure remains, obtain an explicit owner threat-boundary decision or propose an isolated hostname without spending.
-5. Freeze versioned model semantics only after owner decisions. Then seek explicit authorization for a bounded model-only P40 slice.
-6. Prove model behavior with targeted P39 tests and full suite on exact SHA. Test durable adapter, concurrency, crash/restart/restore and transport separately. Supporting P39 tests never imply canonical CASE PASS.
-7. Keep PR #2/#3/#4 untouched. No stack/provider/database/runtime/transport choice, paid service, device/PWA implementation or source/test edits without gate clearance.
+1. If another Claude review arrives, pin repo/branch/SHA/blob hashes, scope, files read and tests run. Reconcile only evidence-backed changes.
+2. Keep one conflict matrix with severity, source pin, model/adapter/owner layer, canonical trace, P39 test ID and evidence status. Preserve LOOP/CASE/D IDs.
+3. Obtain OD-01..OD-13 explicitly: streaming; revocation lifecycle; clock/identity; receipt binding; exit/termination; client-byte evidence.
+4. Before local persistence selection, verify the exact GitHub Pages URL/site type and sibling same-origin content. Resolve ORIGIN-01..10. If shared-origin exposure remains, obtain an owner threat-boundary decision or propose isolation without spending.
+5. Freeze model semantics only after owner decisions; then seek explicit authorization for bounded model-only P40.
+6. Run targeted P39 tests and full suite on exact SHA. Test durable adapter, concurrency, crash/restart/restore and transport separately. P39 tests never imply canonical CASE PASS.
+7. Keep PR #2/#3/#4 untouched. No stack choice, spending, device/PWA implementation or source/test edits before gate clearance.
 8. Refresh branch HEAD, latest five commits and exact-SHA Actions before checkpointing.
 
 ## Constraints
-- P39/P40 implementation gate CLOSED; OD-01..OD-13 OPEN.
+- P39/P40 gate CLOSED; OD-01..OD-13 OPEN.
 - Preserve VERIFIED / INFERRED / UNKNOWN / NOT RUN and PASS / FAIL / NOT RUN.
 - Historical 266/266 PASS applies only to source/test SHA `744cb4dc7cd4994647c84ac7476d0c78a21f0540`.
 - Keep RevDev evidence separate.
 
 ## Done when
-All supplied reviews are reconciled, conflicts are explicit, owner decisions are recorded or deliberately deferred, and the owner authorizes a bounded next slice or the exact blockers remain documented.
+All supplied reviews are reconciled, conflicts explicit, owner decisions recorded or deferred, and the owner authorizes a bounded next slice or the remaining blockers are documented.
