@@ -1,6 +1,6 @@
 # CHECKPOINT — 2026-11-10
 
-Unit complete; starting HEAD: `83fc09365d51eea917d050029aefe00bfb3b07e1`.
+Unit complete; starting HEAD: `83fc09365d51eea917d050029aefe00bfb3b07e1`. Additional commits in this pass: `3437a479`, `31af866`, and this checkpoint.
 
 **Pass goal:** Continue Pages/origin verification and O-5 evidence work without duplicating Claude's OPEN strategy assignment or crossing the P39/P40 implementation gate.
 
@@ -14,6 +14,6 @@ Unit complete; starting HEAD: `83fc09365d51eea917d050029aefe00bfb3b07e1`.
 
 **Scope:** No source/tests, canonical LOOP/CASE/D IDs, OD-01..OD-13 decisions, PRs, Pages settings, runtime/provider/database/transport choices or spending changed. No browser/device/worker/exploit/live-deployment tests run. No RevDev material imported.
 
-**CI:** final SHA must be checked after this commit. Historical 266/266 PASS applies only to source/test SHA `744cb4dc7cd4994647c84ac7476d0c78a21f0540`.
+**CI:** final SHA must be checked after this commit. STATE remains under 900 words. Historical 266/266 PASS applies only to source/test SHA `744cb4dc7cd4994647c84ac7476d0c78a21f0540`.
 
 **Next:** obtain Pages settings or Actions environment URL/deployed SHA from owner; inspect actual installed-app execution implementation when available; continue OD-01..OD-13 owner gate. P39/P40 remains CLOSED.
