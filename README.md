@@ -1,5 +1,7 @@
 # PocketCode
 
+> **Active development is on the branch `pocketcode-ai-workflow-director-research-2026-10-28`, not on `main`.** This page describes the project's early state. Contributors and AI assistants: read [`AI_COLLAB/BOOT.md` on the active branch](https://github.com/marcelosofficial-ctrl/PocketCode-/blob/pocketcode-ai-workflow-director-research-2026-10-28/AI_COLLAB/BOOT.md) first; it points to the current state and the next task in under 2,000 words.
+
 **Vibe code. Run it. Fix it. From your phone.**
 
 PocketCode is an early-stage project exploring a mobile-first workspace for people who use AI to create code and want to test and improve it without always having access to a computer.
@@ -70,4 +72,4 @@ The repository is public. Do not commit API keys, credentials, private user data
 
 ## Naming
 
-PocketCode is a provisional project name. Naming, product collisions, trademark risk, and domain availability have not yet been fully reviewed.
+PocketCode is a provisional project name. A rename to PoCo is under consideration; no decision has been made. Naming, product collisions, trademark risk, and domain availability have not yet been fully reviewed.
