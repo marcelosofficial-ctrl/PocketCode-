@@ -159,3 +159,47 @@ This narrows the finding: do not describe the current prototype as vulnerable or
 - **NOT VERIFIED:** a direct browser open of the conventional candidate `https://marcelosofficial-ctrl.github.io/PocketCode-` was inaccessible to the available browser tool, and an exact-host search returned no results. This is a tool-access result, not evidence that the site returns 404 or that Pages is unconfigured. Do not publish the candidate as the app URL.
 - **UNKNOWN:** repository Pages settings, inherited owner-level custom domain, successful deployment run and environment URL remain inaccessible through the available GitHub read surface. No settings, DNS, deployment or workflow dispatch was changed.
 - **Next evidence required:** owner-provided Pages settings screenshot/URL or an Actions run page showing the `github-pages` environment URL and deployed SHA. A live HTTP response/redirect/header capture is still needed for origin and policy verification.
+
+
+## 10. O-5 closure refinement: worker terminal, cancellation and output finalization
+
+This section extends the proposed EP/PYO acceptance work only. It does not freeze a wire schema, change canonical CASE IDs, or authorize implementation.
+
+### 10.1 Evidence must be represented as independent observations
+
+For a browser/Pyodide path, keep these observations separate and bind each to the parent-created attempt and worker instance:
+
+1. **Guest outcome:** Python return value, exception, stdout/stderr and guest-provided claims. These are program data, not trusted lifecycle evidence.
+2. **Bootstrap outcome:** the trusted wrapper observed `runPythonAsync` resolve or reject. This is a runner-level observation, not an OS child exit.
+3. **Output finalization:** the wrapper/output collector has stopped accepting writes, flushed its bounded buffers, and completed any required artifact digest/staging step. A guest return alone does not prove this.
+4. **Worker lifecycle:** normal terminal control message, `error`, `messageerror`, private-port close, unexpected disappearance, or host `terminate()` invocation. These are distinct events.
+5. **Cancellation/termination:** user cancellation request, coordinator decision, host termination invocation, and any independently observable acknowledgement. Do not synthesize an acknowledgement from the invocation or from a missing worker.
+6. **Durability:** transaction/receipt commit confirmation and later recovery readback. An in-memory terminal message is not a durable result receipt.
+
+A future coordinator may project these observations into a bounded report, but it must preserve their provenance and ordering. No individual observation above is sufficient by itself to claim native child exit, cleanup completion, artifact publication or client receipt.
+
+### 10.2 Additional proposed acceptance tests
+
+These IDs extend the research test plan only. They do not amend LOOP/CASE/D IDs.
+
+| ID | Fault / race | Required assertion |
+|---|---|---|
+| PYO-CTRL-11 | Python invocation resolves while stdout/stderr callbacks or output staging are still pending | No terminal artifact/result is finalized until the required output-finalization boundary completes; runner completion and output completion remain separately observable |
+| PYO-CTRL-12 | Parent requests cancellation, invokes `Worker.terminate()`, then receives no private terminal message or acknowledgement | Preserve request and invocation; termination/cleanup remain UNKNOWN; attempt remains INCOMPLETE and no artifact is released where the gate requires confirmation |
+| PYO-CTRL-13 | Worker emits `error` or `messageerror`, or private MessagePort closes before a valid terminal observation | Treat as runner/control-channel failure, not child exit; retain attempt as INCOMPLETE pending durable recovery |
+| PYO-CTRL-14 | Valid terminal message races with cancellation/termination request | Resolve using a parent-owned, attempt-scoped ordering/linearization rule; if ordering cannot establish whether completion preceded cancellation, preserve both and return INCOMPLETE |
+| PYO-CTRL-15 | Bootstrap sends terminal observation before output finalization or receipt commit, then worker crashes | Do not equate accepted in-memory terminal observation with durable completion; reconcile staged output and committed receipt on recovery, with no automatic rerun |
+
+### 10.3 O-5 evidence boundary and closure checklist
+
+O-5 cannot close from a Pages mock, Pyodide documentation, a Worker `error` event, or a successful `runPythonAsync` promise alone. Closure requires all applicable layers to be demonstrated in the actual implementation:
+
+- **Source/topology:** identify the actual installed/runtime source, Pyodide version, worker topology, guest-visible globals, control-channel listener and output callbacks. Current committed Pages prototype remains simulation-only; installed Pyodios topology remains UNKNOWN.
+- **Identity/order:** show parent-owned CommandId/DispatchAttemptId/ExecutionId binding, worker-instance binding and monotonic observation sequencing without exposing the private result capability to guest Python.
+- **Natural runner completion:** show the trusted bootstrap's resolve/reject observation and distinguish it from guest return claims and native child-process exit.
+- **Cancellation/termination:** show request, host invocation, acknowledgement if the platform provides one, worker disappearance and cleanup as distinct facts. Where the platform offers no acknowledgement, retain UNKNOWN rather than inventing one.
+- **Output finalization:** show stdout/stderr callback closure, bounded output completion, artifact staging/digest verification and their ordering relative to terminal observation.
+- **Durability/recovery:** show the exact committed receipt/revision and restart readback; an accepted message or transaction-start callback is insufficient.
+- **Adversarial tests:** execute PYO-CTRL-01..15, including forged default-channel messages, private-channel isolation, termination races, output-close races and crash-after-terminal recovery, against the exact implementation SHA and target browser/device.
+
+**Current status:** these are proposed tests and closure criteria, not implementation evidence. PYO-CTRL-01..15 are NOT RUN; actual installed app topology, device behavior and durable receipt behavior remain UNKNOWN. P39/P40 stays CLOSED and OD-01..OD-13 stay OPEN.
