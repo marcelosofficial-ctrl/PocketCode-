@@ -1,6 +1,6 @@
 # CHECKPOINT — 2026-11-10
 
-Unit complete. Starting HEAD: `1f91e00b11d336115c284765c085f5d9281eb7f9`. Latest HEAD: `0eb1f1f96adb85337046b4437b87d05c33508a83`.
+Unit complete. Starting HEAD: `1f91e00b11d336115c284765c085f5d9281eb7f9`. Pre-checkpoint work HEAD: `0eb1f1f96adb85337046b4437b87d05c33508a83`.
 
 **Pass goal:** Advance O-5 evidence design without duplicating Claude's OPEN strategy assignment or crossing the P39/P40 implementation gate.
 
