@@ -1,9 +1,9 @@
 # CHECKPOINT — 2026-11-09
 
-Unit complete; pre-checkpoint HEAD: `e727a46eabd3c880d7dccaa463f021ae9872b354`.
+Unit complete; pre-checkpoint HEAD: `98568f9221a5cfa58384369a58e7a43e8b252bc1`.
 
-**Committed:** PWA_LOCAL_STORAGE_AND_RECOVERY_CONTRACT (IndexedDB/OPFS, fencing, lifecycle, 22 proposed tests); corrected NO_SPEND_PWA_PATH; fixed/indexed docs; updated STATE and NEXT_TASK. No source/tests/PR/device changes.
+**Committed:** Gemini P39 review addendum in INBOX_gemini.md, exact six source/test blob pins at `744cb4dc7cd4994647c84ac7476d0c78a21f0540`, nine review topics, output requirements and explicit RevDev exclusion. NEXT_TASK and STATE updated. No source/tests changed.
 
-**Red-team:** ITP exemption is not permanent durability; iOS 26 install has Open as Web App; EU alternative browser engines invalidate “all iOS browsers use WebKit”; OPFS and IndexedDB are not one transaction; service workers can terminate; fixed literal `\\n` in INDEX.
+**Gate:** Gemini report pending; OD-01..OD-13 OPEN. Claude's P39 review already reconciled; Claude's active strategy assignment remains OPEN, so no competing exit-provenance request sent. P39/P40 gate CLOSED.
 
-**Verification:** read-back passed; BOOT 459 words, STATE 850, NEXT_TASK 344, INDEX 1,095. Historical 266/266 only at source/test SHA `744cb4dc7cd4994647c84ac7476d0c78a21f0540`. CI on docs HEAD: NOT RUN. P39 gate CLOSED; Gemini/OD-01..13 still open.
+**Evidence:** historical Actions run 42365455316: 266/266 at exact source/test SHA `744cb4dc7cd4994647c84ac7476d0c78a21f0540`. Current docs HEAD CI: NOT RUN. No test run in this unit.
