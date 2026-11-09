@@ -49,7 +49,9 @@ Size classes: S under 8 KB, M 8-25 KB, L 25-50 KB, XL over 50 KB (never load who
 | P39_INDEPENDENT_REVIEW_PROMPT_20261107.md | review brief | S | live |
 | P39_RESEARCH_REVIEW_DISPOSITIONS_20261108.md | finding-by-finding decisions on Claude's research review and source cross-check | M | interim; P39 gate open |
 | P39_SOURCE_PINNED_AUDIT_CROSSWALK_20261108.md | source-pinned S1..S8 findings, P37 namespace correction and reviewer reconciliation | M | audit complete; review gate open |
-| P39_CLAUDE_REVIEW_RECONCILIATION_20261108.md | full Claude P39 review reconciliation, RG findings, test plan and gate | L | Claude review received; Gemini/owner gate open |\n| GEMINI_P39_REVIEW_RECONCILIATION_20261109.md | source-pinned reconciliation of Gemini findings, corrected model gaps and adapter boundaries | M | review reconciled; owner gate open |
+| P39_CLAUDE_REVIEW_RECONCILIATION_20261108.md | full Claude P39 review reconciliation, RG findings, test plan and gate | L | Claude P39 review received; owner gate open |
+| GEMINI_P39_REVIEW_RECONCILIATION_20261109.md | source-pinned reconciliation of Gemini findings, corrected model gaps and adapter boundaries | M | review reconciled; owner gate open |
+| P39_GATE_CLOSURE_PLAN_20261109.md | integrated review, owner-decision, model, adapter and evidence sequence | M | work plan; no implementation authorized |
 | P39_RECEIPT_SUBSYSTEM_AUDIT_20261108.md | bounded audit of receipt model/tests and durable adapter contract; RCP-01..05 | L | static audit complete; adapter unverified |
 | P39_EP_CANONICAL_ACCEPTANCE_CROSSWALK_20261108.md | maps P39/RG/RCP and EP-01..25 to unchanged LOOP/CASE criteria | L | traceability complete; owner/reviewer gates open |
 | P39_EXIT_OWNER_DECISION_REGISTER_20261108.md | OD-01..13 owner decisions for streaming, revocation, clocks, identity, receipts and exit provenance | M | all decisions OPEN; recommendations not approved |
