@@ -1,23 +1,19 @@
-# CHECKPOINT — 2026-11-09
+# CHECKPOINT — 2026-11-10
 
-Unit complete; pre-checkpoint HEAD: `c0285da7f7c578efe4e2eef1a8bd1c67a4c2d2d3`.
+Unit complete; pre-checkpoint HEAD: `f42fc20694969c45d7fe17008c417a9e942b59b8`.
 
-**Pass goal:** Rank and research the highest-value unfinished PocketCode gaps, produce concrete deliverables, red-team earlier claims and update the next handoff. The P39/P40 implementation gate remains CLOSED.
+**Pass goal:** Continue independent PocketCode verification without duplicating Claude's OPEN strategy assignment. Preserve P39/P40 gate and no-spend constraints.
 
-**Ranked gaps addressed:**
-1. GitHub Pages same-origin storage and response-header limitations.
-2. Pyodide/WebAssembly/worker capability boundary and safe execution-mode claims.
-3. IndexedDB/OPFS two-domain artifact publication and crash recovery.
-4. P39 revocation, termination, artifact and client-receipt evidence separation.
+**New deliverable:** `AI_COLLAB/PAGES_AND_EXIT_PROVENANCE_VERIFICATION_20261110.md` (142 lines, 2,094 words). It records repository Pages facts, exact deployment unknowns, browser Worker vs native child-process semantics, Python mobile/WASM subprocess limits, Node exit-vs-close semantics, and proposed PAGES-01..08 / EP-26..35 acceptance cases.
 
-**New deliverable:** `AI_COLLAB/PHONE_FIRST_EXECUTION_AND_RECOVERY_REDTEAM_20261109.md` (241 lines, 4,093 words). Includes platform research, competitor/OSS patterns, concrete execution modes, a two-domain commit protocol, crash matrix, 28 proposed ORIGIN/EXEC/PWA-ART tests and seven red-team corrections. No code copied and no dependencies added.
+**Verified Pages facts:** repository metadata reports `has_pages=true`, `homepage=null`, default branch `main`; `.github/workflows/preview-prototype.yml` (blob `58b1bb968aa8e6a2ae824079046e5968a140ab16`) auto-deploys on relevant main pushes and uploads `prototypes/mobile-runner` as site root; main tree `03e65ef35d8b22cb4337ac7097b2a31247c3721e` has no CNAME file. This does not prove exact URL, custom domain, deployed SHA or headers. Those remain UNKNOWN.
 
-**Corrections applied:** `GITHUB_PAGES_ORIGIN_ISOLATION_AND_LOCAL_DATA_SECURITY_20261109.md` now states GitHub Pages custom response headers are not available per GitHub staff's 2023 response and current docs; CSP sandbox is ignored in meta. `PWA_LOCAL_STORAGE_AND_RECOVERY_CONTRACT_20261109.md` now qualifies OPFS flush as a transfer attempt that may be a no-op on some filesystems. OpenHands core license was corrected to MIT after opening the upstream LICENSE. `INDEX.md` includes the new document.
+**Verified runtime findings:** HTML Living Standard worker termination algorithm; MDN Worker.terminate returns undefined and has no completion acknowledgement; Python 3.15.2 subprocess docs exclude iOS/Android/WASI; Node v26.13.0 distinguishes process `exit` from `close` after stdio closure. Node upstream MIT license was checked at blob `ec72f56e16fb19944a55acdbff67727d2bfadb8a`. No code copied or dependencies added.
 
-**Handoff:** `STATE.md` is 731 words; `NEXT_TASK.md` is 299 words. Next task prioritizes verifying actual Pages settings/live URL/custom-domain inheritance/headers/sibling content, then validating execution and artifact-recovery boundaries. Actual Pages URL/settings remain UNKNOWN; no false deployment claim is made.
+**Updated:** `INDEX.md`, `STATE.md` (797 words), `NEXT_TASK.md` (347 words). NEXT_TASK now asks for actual Pages URL/settings/deployment/header evidence and adds worker-vs-child exit checks. Claude's strategy assignment remains OPEN; its design/context/provider-cache work and promised no-spend index row were not duplicated. PocketCode O-5 remains separate from any RevDev O-5 decision.
 
-**Scope:** No source/tests, canonical LOOP/CASE/D IDs, owner OD-01..OD-13 decisions, PRs, hosting settings, runtime/provider/database/transport choices or spending changed. No tests, device tests, sibling-origin tests or crash tests run. Claude's additional artifact remains pending owner delivery; do not create a competing assignment.
+**Scope:** No source/tests, canonical LOOP/CASE/D IDs, OD-01..OD-13 decisions, PRs, deployment settings, runtime/provider/database/transport choices or spending changed. No live deployment, device, worker, native process or crash tests run. No RevDev evidence imported.
 
-**CI:** Historical 266/266 PASS remains tied only to source/test SHA `744cb4dc7cd4994647c84ac7476d0c78a21f0540`. Documentation commits have no test evidence. Refresh exact-SHA Actions after this checkpoint.
+**CI:** Historical 266/266 PASS remains tied only to source/test SHA `744cb4dc7cd4994647c84ac7476d0c78a21f0540`. Refresh exact-SHA Actions/status after this checkpoint. Documentation changes have no test evidence.
 
-**Next:** Verify the actual Pages URL and response headers; then resolve OD-01..OD-13 and keep implementation blocked until the owner gate clears.
+**Next:** Obtain actual Pages settings/deployment URL and live response headers; then continue the O-5 typed evidence contract and owner-decision gate. Keep implementation CLOSED.
