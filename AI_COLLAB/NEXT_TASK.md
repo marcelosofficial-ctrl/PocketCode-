@@ -4,9 +4,9 @@
 Complete P39 reconciliation and owner gate. Implementation remains blocked.
 
 ## Evidence
-- Claude P39: `P39_CLAUDE_REVIEW_RECONCILIATION_20261108.md`; C1-C7 were run against a byte-verified copy, not repo CI.
+- Claude P39: `P39_CLAUDE_REVIEW_RECONCILIATION_20261108.md`; C1-C7 were not repo CI.
 - Gemini P39: `GEMINI_P39_REVIEW_RECONCILIATION_20261109.md`; report reconciled, tests NOT RUN.
-- Combined findings: `P39_REVIEW_CONSENSUS_MATRIX_20261109.md`; sequence: `P39_GATE_CLOSURE_PLAN_20261109.md`.
+- Matrix/plan: `P39_REVIEW_CONSENSUS_MATRIX_20261109.md`; `P39_GATE_CLOSURE_PLAN_20261109.md`.
 - Owner decisions OD-01..OD-13: `P39_EXIT_OWNER_DECISION_REGISTER_20261108.md`, all OPEN. CASE-04 remains INCOMPLETE / timed_out.
 - Claude inbox has one OPEN strategy assignment. Await any additional owner-supplied Claude artifact; do not create a competing assignment.
 
