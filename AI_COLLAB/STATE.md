@@ -1,5 +1,5 @@
 # STATE: PocketCode   (current state only; under 900 words)
-Updated: 2026-11-10 by ChatGPT. Active branch HEAD at final verification: `188f98b4dd80bfcaf139f83b878949e4f9a014be`. Exact-SHA Actions query returned zero workflow runs, zero check runs and zero statuses; CI NOT RUN. No source/tests/device tests were run.
+Updated: 2026-11-10 by ChatGPT. Last exact-SHA verification before this metadata refresh: `188f98b4dd80bfcaf139f83b878949e4f9a014be` had zero workflow runs, zero check runs and zero statuses; CI NOT RUN. The current state/checkpoint refresh is a docs-only descendant; query the live branch tip for its exact SHA. No source/tests/device tests were run.
 
 ## Status
 - Phase: Discovery/product definition. P39/exit-provenance gate CLOSED. No runtime/provider/database/transport selected.

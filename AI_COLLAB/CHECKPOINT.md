@@ -3,7 +3,7 @@
 **Unit:** Gated P40 model-only execution protocol prepared.  
 **Starting HEAD:** `4adf2c14ea39c6f62d67da0d8784b13d35c83053`.  
 **Protocol commit:** `c23c2b671a79b978be5a602c91d270543ccedd0c`.  
-**Final checkpoint HEAD:** `188f98b4dd80bfcaf139f83b878949e4f9a014be`.  
+**Checkpoint metadata base:** `188f98b4dd80bfcaf139f83b878949e4f9a014be`; this refresh creates a docs-only descendant. Use the live branch ref for the resulting tip SHA.  
 **Branch:** `pocketcode-ai-workflow-director-research-2026-10-28`.
 
 ## Mandatory resume and branch evidence
@@ -36,7 +36,7 @@
 - **VERIFIED:** GitHub read/write permissions available; branch update succeeded for protocol commit.
 - **VERIFIED:** exact HEAD before work was `4adf2c14...`; protocol commit is `c23c2b671a79b978be5a602c91d270543ccedd0c`.
 - **NOT RUN:** source tests, P40 model scenarios, browser/device/transport/adapter tests.
-- **VERIFIED:** exact-SHA query for final HEAD `188f98b4dd80bfcaf139f83b878949e4f9a014be` returned zero Actions runs, zero check runs and zero statuses. CI NOT RUN. Historical 266/266 PASS remains tied only to source/test SHA `744cb4dc7cd4994647c84ac7476d0c78a21f0540`.
+- **VERIFIED:** exact-SHA query for metadata base `188f98b4dd80bfcaf139f83b878949e4f9a014be` returned zero Actions runs, zero check runs and zero statuses. CI NOT RUN. This checkpoint-only descendant also requires its own live exact-SHA query. Historical 266/266 PASS remains tied only to source/test SHA `744cb4dc7cd4994647c84ac7476d0c78a21f0540`.
 
 ## Final branch evidence
 Latest five commits:
