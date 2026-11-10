@@ -2,7 +2,8 @@
 
 **Unit:** Gated P40 model-only execution protocol prepared.  
 **Starting HEAD:** `4adf2c14ea39c6f62d67da0d8784b13d35c83053`.  
-**Current work commit:** `c23c2b671a79b978be5a602c91d270543ccedd0c` (protocol document).  
+**Protocol commit:** `c23c2b671a79b978be5a602c91d270543ccedd0c`.  
+**Final checkpoint HEAD:** `188f98b4dd80bfcaf139f83b878949e4f9a014be`.  
 **Branch:** `pocketcode-ai-workflow-director-research-2026-10-28`.
 
 ## Mandatory resume and branch evidence
@@ -35,7 +36,15 @@
 - **VERIFIED:** GitHub read/write permissions available; branch update succeeded for protocol commit.
 - **VERIFIED:** exact HEAD before work was `4adf2c14...`; protocol commit is `c23c2b671a79b978be5a602c91d270543ccedd0c`.
 - **NOT RUN:** source tests, P40 model scenarios, browser/device/transport/adapter tests.
-- **UNKNOWN until final exact-SHA query:** Actions runs/checks/statuses for final docs commit. Historical 266/266 PASS remains tied only to source/test SHA `744cb4dc7cd4994647c84ac7476d0c78a21f0540`.
+- **VERIFIED:** exact-SHA query for final HEAD `188f98b4dd80bfcaf139f83b878949e4f9a014be` returned zero Actions runs, zero check runs and zero statuses. CI NOT RUN. Historical 266/266 PASS remains tied only to source/test SHA `744cb4dc7cd4994647c84ac7476d0c78a21f0540`.
+
+## Final branch evidence
+Latest five commits:
+1. `188f98b4` docs(checkpoint): index gated P40 execution protocol
+2. `c23c2b67` docs(p40): prepare gated model-only execution protocol
+3. `4adf2c14` docs(checkpoint): record exact-SHA CI boundary
+4. `493a5d20` docs(checkpoint): record full-power gap research pass
+5. `f2cd5f0b` docs(next): prioritize full-power gap findings
 
 ## Next
 1. Ingest Claude artifact by exact pins if/when supplied.
