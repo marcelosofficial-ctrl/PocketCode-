@@ -1,40 +1,38 @@
 # STATE: PocketCode   (current state only; under 900 words)
-Updated: 2026-11-10 by ChatGPT. Latest docs-only HEAD is tracked in CHECKPOINT; latest queried SHA `c6c159189cc6f899744a0b3ba3659c485281461d` has zero checks and CI NOT RUN. No source/tests or device tests run.
+Updated: 2026-11-10 by ChatGPT. Active branch HEAD at last verified checkpoint: `c23c2b671a79b978be5a602c91d270543ccedd0c`. Exact-SHA CI query for that HEAD is pending in this pass; no source/tests/device tests were run.
 
 ## Status
 - Phase: Discovery/product definition. P39/exit-provenance gate CLOSED. No runtime/provider/database/transport selected.
-- VERIFIED: Actions run 42365455316 on exact source/test SHA 744cb4dc7cd4994647c84ac7476d0c78a21f0540, workflow "PocketCode Python conformance tests", job unittest: 266/266 PASS. Historical source/test evidence only. Latest docs-only SHA checked `756f4f1ddd3b300073cf5599d91f33922667d310` has zero check runs/statuses; CI is NOT RUN, not PASS/FAIL. Final checkpoint SHA `e657f196b0ce4bbcc021b720cb023bc063906c92`: zero check runs/statuses; CI NOT RUN.
-- COMMITTED: intent/proof separation, receipt binding, grant recovery and concurrency/crash models.
+- VERIFIED: historical Actions run 42365455316 on source/test SHA `744cb4dc7cd4994647c84ac7476d0c78a21f0540`, workflow "PocketCode Python conformance tests", job unittest: 266/266 PASS. This is historical source/test evidence only, not current HEAD evidence.
+- COMMITTED: intent/proof separation, receipt binding, grant recovery, concurrency/crash models, PWA/origin/exit-provenance research, worker-channel red-team and full-power outbox/fencing/storage/evidence research.
 - CLAIMED ONLY (not built): durable adapter; real concurrent processes; transactional outbox relay; durable crash recovery; production fencing; transport stream ownership and revocation; trusted policy authority; client receipt.
-- Claude and Gemini P39 reviews are reconciled. Gemini attribution corrections: S1 is in release_grant_conformance.py, not event_journal.py; S2 names a nonexistent receipt function, but consume_event() trusts supplied digest; S3 misattributes FakeOutbox fencing, while grant-event relay lacks it; S4 is adapter/MVP scope. Receipt blob 0d1588f was separately checked. Gemini tests NOT RUN; Claude C1-C7 were against a byte-verified copy, not repo CI.
+- Claude and Gemini P39 reviews are reconciled. Gemini attribution corrections: S1 is in release_grant_conformance.py, not event_journal.py; S2 names a nonexistent receipt function, but consume_event() trusts supplied digest; S3 misattributes FakeOutbox fencing, while grant-event relay lacks it; S4 is adapter/MVP scope. Gemini tests NOT RUN; Claude C1-C7 were against a byte-verified copy, not repo CI.
 - Event journal (21/21) and fake coordinator (14 harness tests) are in-memory/test-double evidence only; no durable/authenticated adapter proof.
-- Pyodios on the owner's iPhone (owner-reported): v1.1.0 build 7, Pyodide 314.0.5, Python 3.14.2. First Editor run showed only "[Bridge/executePython] PythonError"; Console probe NOT RUN; bridge cause UNKNOWN.
-- COMMITTED PWA research: PWA_LOCAL_STORAGE_AND_RECOVERY_CONTRACT_20261109.md defines IndexedDB atomic metadata, OPFS staging/readback, local fencing, service-worker recovery and 22 proposed PWA tests. NO_SPEND_PWA_PATH_20261108.md corrected: WebKit Home Screen origins are ITP seven-day exempt and isolated from Safari, but still face quota/pressure/user clearing; iOS 26 Add to Home Screen includes Open as Web App; qualifying EU browsers may use entitled alternative engines. Owner device iOS/Safari build, persist() result, quota and lifecycle behavior remain UNKNOWN. No storage engine selected.
-- COMMITTED origin-security research: shared-host Pages paths are same-origin; sibling scripts may access IndexedDB/OPFS. Actual Pages URL/custom domain/sibling inventory/headers UNKNOWN. GitHub Pages custom response headers are not supported per GitHub staff response; meta CSP cannot apply CSP sandbox. No live exploit confirmed.
-- COMMITTED deep research: `PHONE_FIRST_EXECUTION_AND_RECOVERY_REDTEAM_20261109.md` corrects seven prior weaknesses, defines execution modes, OPFS+IDB crash protocol and proposed ORIGIN/EXEC/PWA-ART tests. No implementation authorized.
-- COMMITTED verification: `PAGES_AND_EXIT_PROVENANCE_VERIFICATION_20261110.md`. Pages enabled; main workflow deploys `prototypes/mobile-runner`; no CNAME in main. URL/custom domain/deployed SHA/headers UNKNOWN. Candidate URL lookup was inaccessible; no 404 or URL confirmation. Python subprocess excludes mobile/WASI; Worker terminate is not child exit; Node exit/stdio-close differ. PAGES-01..08 and EP-26..35 proposed; NOT RUN.
-- COMMITTED conditional red-team: `PYODIDE_WORKER_CONTROL_CHANNEL_REDTEAM_20261110.md` pins Pyodide 314.0.5 FFI/default Worker messaging. Same-realm guest spoofing is conditional; branch Pages prototype is simulation-only with no worker bridge. Installed Pyodios topology UNKNOWN. PYO-CTRL-01..15 are proposed, NOT RUN.
-- COMMITTED `FULL_POWER_GAP_RESEARCH_20261110.md`: transactional outbox, replay/idempotency, fence-at-write, Web Locks `steal` caveat, IndexedDB/OPFS two-resource recovery and typed Worker lifecycle. Red-team corrections: Web Locks is not a fence; IDB completion/persist is not power-loss backup; OPFS+IDB is not one ACID transaction. No code copied/dependency added.
+- Pyodios on owner's iPhone (owner-reported): v1.1.0 build 7, Pyodide 314.0.5, Python 3.14.2. First Editor run showed only "[Bridge/executePython] PythonError"; Console probe NOT RUN; bridge cause UNKNOWN.
+- PWA research defines IndexedDB atomic metadata, OPFS staging/readback, local fencing and recovery. No storage engine selected; target iOS/Safari build, persist() result, quota and lifecycle behavior UNKNOWN.
+- Pages enabled and workflow verified; workflow deploys `prototypes/mobile-runner`. Actual URL/custom domain/deployed SHA/headers/sibling inventory UNKNOWN. No live exploit confirmed.
+- Pyodide 314.0.5 FFI exposes worker globals; same-realm guest spoofing of default Worker messages is a conditional risk. Actual installed app topology UNKNOWN. PYO-CTRL-01..15 proposed, NOT RUN.
+- `FULL_POWER_GAP_RESEARCH_20261110.md` records transactional outbox, replay/idempotency, fence-at-write, Web Locks caveat, IndexedDB/OPFS two-resource recovery and typed Worker lifecycle. No code copied/dependency added.
+- `P40_MODEL_ONLY_EXECUTION_PROTOCOL_20261110.md` now turns those findings into four gated slices: event parity/canonical envelope; relay ordering/fencing/time; policy/revocation/receipt binding; typed exit/output/receipt projection. It is a plan only, NOT AUTHORIZED / NOT RUN.
 
 ## Decisions
-- D-001 unified PC-and-phone direction, separate development boundaries. D-002 GitHub is source of truth. D-003 no secrets in the public repo. D-004 validate before stack commitment. D-005 zero spend.
-- D-006 (owner, 2026-11-08): no spending of any kind. No Apple Developer Program, TestFlight or App Store for now; distribution is the installable web app on GitHub Pages (NO_SPEND_PWA_PATH_20261108.md).
-- README banner on main is done. PR #2/#3/#4 remain owner-controlled and untouched; PR #4 review recommends no merge as-is.
-- OpenHands/Cline are references only; reject wildcard auto-approve. MCP Tasks/ACP do not replace PocketCode identity.
-- No durable store selected. Event relay, PWA and origin research are contracts only; no database/runtime/provider dependency chosen.
-- CASE-04 stays INCOMPLETE / timed_out; no precedence-only patch to scripts/report_contract.py until child-exit, wrapper-exit and termination provenance are resolved.
-- 2026-11-07 (owner): old process rules may be revised; AGENTS.md carries tiered decision rights. 2026-11-08 (owner): PocketCode is considered for renaming to PoCo; the website design must not change; no claim beyond what is built. Nothing is renamed yet.
+- D-001 unified PC-and-phone direction, separate development boundaries. D-002 GitHub is source of truth. D-003 no secrets in public repo. D-004 validate before stack commitment. D-005 zero spend.
+- D-006 (owner, 2026-11-08): no spending of any kind. No Apple Developer Program, TestFlight or App Store for now; distribution is installable web app on GitHub Pages.
+- PR #2/#3/#4 remain owner-controlled and untouched. No durable store, provider, runtime or transport selected.
+- CASE-04 stays INCOMPLETE / timed_out. No precedence-only patch to scripts/report_contract.py until trusted child/wrapper/termination provenance is resolved.
+- 2026-11-07 owner: old process rules may be revised; AGENTS.md carries tiered decision rights. 2026-11-08 owner: PocketCode considered for renaming to PoCo; website design must not change; nothing renamed.
 
 ## Open items
-- O-1 Owner: run the read-only Pyodios Console probe (PYODIOS_PYTHONERROR_BRIDGE_TRIAGE_20261106.md).
-- O-2 Gemini's P39 report is received and reconciled in `GEMINI_P39_REVIEW_RECONCILIATION_20261109.md`; the combined review matrix and gate plan are committed. Await any additional Claude artifact supplied by owner. Do not create a competing Claude request while its strategy assignment is OPEN. Owner OD-01..OD-13 remain OPEN.
-- O-3 Run the full Python suite in a real checkout or CI and record exact-SHA results.
-- O-4 Pages is enabled and workflow is verified; still obtain exact Pages URL/custom domain/deployed SHA/live headers/sibling origin and finish storage threat model.
-- O-5 Resolve typed child exit vs wrapper exit vs termination provenance; distinguish browser worker runner-observation from native child exit (NEXT_TASK.md).
-- O-6 Recommended next slice P40: event chain and relay slice in the sequential model (P39 review section 7).
+- O-1 Owner: run read-only Pyodios Console probe in `PYODIOS_PYTHONERROR_BRIDGE_TRIAGE_20261106.md`.
+- O-2 Await any additional Claude artifact supplied by owner. Do not create a competing Claude request while strategy assignment remains OPEN. OD-01..OD-13 remain OPEN.
+- O-3 Run full Python suite in a real checkout/CI and record exact-SHA results.
+- O-4 Obtain actual Pages URL/custom domain/deployed SHA/live headers/sibling-origin inventory; do not infer.
+- O-5 Resolve typed child exit vs wrapper exit vs termination provenance and receipt ordering.
+- O-6 P40 protocol prepared; execution still gated by owner decisions and explicit authorization.
 - O-7 PoCo name remains undecided; LinkedIn work waits for laptop/export.
-- O-8 Remaining design/context/provider-cache research is a separate Claude lane.
+- O-8 Apple design/context/provider-cache and website strategy work remain Claude's lane.
 
-## Known risks
-- Chats can freeze on "Stopped thinking" while commits continue; check commits, not the chat (kit/docs/STUCK_CHAT_FORENSICS.md).
-- The classification of older documents in INDEX.md is by filename and date, not by reading them.
+## Evidence limits
+- Historical 266/266 PASS applies only to source/test SHA `744cb4dc7cd4994647c84ac7476d0c78a21f0540`.
+- All current P40 scenarios, durable adapter, browser/device, origin exploit, transport and full-suite checks are NOT RUN.
+- Keep PocketCode and RevDev evidence strictly separate.

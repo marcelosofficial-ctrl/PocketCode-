@@ -32,7 +32,7 @@ Size classes: S under 8 KB, M 8-25 KB, L 25-50 KB, XL over 50 KB (never load who
 | ../DECISIONS.md | decision log (D IDs) | S | live |
 | ../ROADMAP.md | roadmap | S | reference |
 | ../PRODUCT_SPEC.md | product spec | M | reference |
-| ../SECURITY.md | security notes | S | reference |
+| ../SECURITY.md | security notes | S | live |
 | ../PROJECT_STATUS.md | long status history | XL | history |
 | ../CLAUDE.md | Claude-specific notes (18 KB); Claude only | M | provider |
 | ../GEMINI.md | Gemini-specific notes | S | provider |
@@ -68,6 +68,7 @@ Size classes: S under 8 KB, M 8-25 KB, L 25-50 KB, XL over 50 KB (never load who
 | PAGES_AND_EXIT_PROVENANCE_VERIFICATION_20261110.md | Pages facts, URL unknowns, Worker/native exit and EP tests | M | no implementation |
 | PYODIDE_WORKER_CONTROL_CHANNEL_REDTEAM_20261110.md | Pyodide FFI and Worker channel spoofing tests | M | actual topology UNKNOWN |
 | FULL_POWER_GAP_RESEARCH_20261110.md | outbox, fencing, PWA recovery, execution evidence and red-team corrections | M | NOT IMPLEMENTED / NOT RUN |
+| P40_MODEL_ONLY_EXECUTION_PROTOCOL_20261110.md | gated four-slice P40 test sequence, failure injection and evidence boundaries | M | prepared; NOT AUTHORIZED / NOT RUN |
 | PR4_CONTINUITY_REFINEMENT_RECONCILIATION_20261109.md | seven-file PR #4 review, KEEP/MERGE-INTO-BOOT/DROP classifications and no-merge recommendation | M | review complete; PR remains owner-controlled |
 
 | VERDICT_EVIDENCE_EXIT_PROVENANCE_MATRIX_20261105.md | exit provenance matrix | M | live (O-5) |

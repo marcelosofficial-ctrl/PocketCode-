@@ -1,24 +1,43 @@
 # CHECKPOINT — 2026-11-10
 
-**Unit:** Full-power gap research pass. Starting HEAD: `c6c159189cc6f899744a0b3ba3659c485281461d`. Pre-checkpoint work HEAD: `f2cd5f0bc0181fd378eddbdf575f0599802e5769`.
+**Unit:** Gated P40 model-only execution protocol prepared.  
+**Starting HEAD:** `4adf2c14ea39c6f62d67da0d8784b13d35c83053`.  
+**Current work commit:** `c23c2b671a79b978be5a602c91d270543ccedd0c` (protocol document).  
+**Branch:** `pocketcode-ai-workflow-director-research-2026-10-28`.
 
-## Fresh resume and branch evidence
-Read BOOT, STATE, NEXT_TASK, CHECKPOINT and INBOX_chatgpt in the required order. Listed the latest five branch commits. Branch had advanced since prior chat: Claude committed `APPLE_DESIGN_ENGINEERING_SPEC_20261108.md` at `c6c1591`; Claude strategy assignment remains OPEN. The design spec is indexed and treated as Claude-owned. No duplicate Apple design or context/provider-cache research was done.
+## Mandatory resume and branch evidence
+- Read in order: BOOT.md, STATE.md, NEXT_TASK.md, CHECKPOINT.md, INBOX_chatgpt.md.
+- Branch API confirms HEAD `4adf2c14ea39c6f62d67da0d8784b13d35c83053`. The commit-search endpoint returned stale results; branch-specific commit list is authoritative for this check.
+- Latest five before work:
+  1. `4adf2c14` docs(checkpoint): record exact-SHA CI boundary
+  2. `493a5d20` docs(checkpoint): record full-power gap research pass
+  3. `f2cd5f0b` docs(next): prioritize full-power gap findings
+  4. `f9ea145f` docs(state): record full-power research
+  5. `e50fcfe3` index Apple spec and research
+- The previous STATE/CHECKPOINT had stale HEAD/checkpoint references; corrected in this unit.
 
-## Deliverables
-- Created and indexed `AI_COLLAB/FULL_POWER_GAP_RESEARCH_20261110.md` (2,485 words, 140 lines): transactional outbox/replay, fence-at-write/revocation, Web Locks, IndexedDB/OPFS recovery, Worker termination/result provenance, competitor reuse assessment and concrete acceptance mapping to existing IDs.
-- Corrected INDEX omissions: added Claude's Apple design spec and this research document; compressed INDEX to 1,126 words, under its 1,200-word target.
-- Updated STATE (870 words) and NEXT_TASK (398 words) with new evidence and next steps.
-- Red-team corrections recorded: Web Locks `steal` does not stop old callback code; IndexedDB completion/persist is not universal power-loss backup; OPFS and IndexedDB do not share one atomic transaction; prototype CI trigger/checker limitations are verified.
+## Work completed
+- Created `AI_COLLAB/P40_MODEL_ONLY_EXECUTION_PROTOCOL_20261110.md` (1,708 words). It provides four ordered slices:
+  1. Aggregate/event parity, no-op/terminal semantics and canonical envelope integrity.
+  2. Relay ordering, duplicate delivery, stale-worker fencing, trusted time, poison predecessor and ID continuity.
+  3. Owner-gated revocation phases and immutable receipt/grant binding.
+  4. Typed exit, worker control-channel, output finalization, artifact readback and receipt projection.
+- Mapped to existing P39-EVENT, OUTBOX, CLOCK, ID, POLICY, RECEIPT, RCP, EP and PYO-CTRL families and existing LOOP/CASE traces. No new canonical or P39 IDs.
+- Explicitly separates sequential-model evidence from adapter, browser/device, transport and canonical product CASE evidence. Added non-vacuity requirements and stop conditions.
+- Updated INDEX, STATE and NEXT_TASK to index the protocol and establish the next ranked work. CHECKPOINT overwritten with this unit's evidence.
 
-## Evidence and limits
-- **VERIFIED:** AWS outbox guidance; Temporal replay/retry semantics; Redis fencing/clock caveat; PostgreSQL row locks; W3C Web Locks WD dated 2026-11-09; MDN IndexedDB, persist and OPFS; WHATWG Worker termination; OpenAI Agents SDK lifecycle; Cline checkpoints/licence, Aider repo-map options, Sentry repo licence.
-- **VERIFIED:** `.github/workflows/pocketcode-python-tests.yml` triggers on `scripts/**` and workflow changes, or manual dispatch. `scripts/check_mobile_prototype.py` is a static source checker and does not execute JavaScript or Python.
-- **UNKNOWN:** actual Pages URL/deployment headers, installed Pyodios worker topology, target-device storage guarantees and production adapter behavior.
-- **NOT RUN:** all fault injection, device tests, browser exploit tests and current full Python suite. Exact-SHA query for prior checkpoint `493a5d208485e37bd6799899f88088988b462238`: zero Actions runs, zero check runs, zero statuses; CI NOT RUN. Workflow path filter covers `scripts/**` and its workflow only, plus manual dispatch, so docs-only commits do not trigger it. Historical 266/266 PASS remains only for source/test SHA `744cb4dc7cd4994647c84ac7476d0c78a21f0540`.
-- P39/P40 CLOSED; OD-01..OD-13 OPEN; CASE-04 remains INCOMPLETE / timed_out. No source/tests, canonical IDs, PRs, runtime/provider/database/transport selection, spend, deployment or RevDev work.
+## Gate and red lines
+- P39/P40 remain CLOSED. OD-01..OD-13 remain OPEN. Protocol is PREPARED only, NOT AUTHORIZED / NOT RUN.
+- No source/test edits, schema freeze, runtime/provider/database/transport choice, dependency, spend, deployment, device test, PR change or RevDev work.
+- Claude's additional material remains awaited; this work deliberately does not duplicate Claude's Apple design, website, context-engineering or provider-cache lane.
+
+## Verification
+- **VERIFIED:** GitHub read/write permissions available; branch update succeeded for protocol commit.
+- **VERIFIED:** exact HEAD before work was `4adf2c14...`; protocol commit is `c23c2b671a79b978be5a602c91d270543ccedd0c`.
+- **NOT RUN:** source tests, P40 model scenarios, browser/device/transport/adapter tests.
+- **UNKNOWN until final exact-SHA query:** Actions runs/checks/statuses for final docs commit. Historical 266/266 PASS remains tied only to source/test SHA `744cb4dc7cd4994647c84ac7476d0c78a21f0540`.
 
 ## Next
-1. Obtain owner OD-01..OD-13 decisions or explicit deferrals.
-2. Complete Pages/ORIGIN evidence only with actual URL/settings; do not guess.
-3. Keep O-5/relay/fencing/storage acceptance design separate from implementation until gate closure.
+1. Ingest Claude artifact by exact pins if/when supplied.
+2. Obtain OD-01..OD-13 decisions/deferrals.
+3. Only after gate clearance, request bounded P40 model-only execution authorization.
