@@ -1,19 +1,24 @@
 # CHECKPOINT — 2026-11-10
 
-Unit complete. Starting HEAD: `1f91e00b11d336115c284765c085f5d9281eb7f9`. Pre-checkpoint work HEAD: `0eb1f1f96adb85337046b4437b87d05c33508a83`.
+**Unit:** Full-power gap research pass. Starting HEAD: `c6c159189cc6f899744a0b3ba3659c485281461d`. Pre-checkpoint work HEAD: `f2cd5f0bc0181fd378eddbdf575f0599802e5769`.
 
-**Pass goal:** Advance O-5 evidence design without duplicating Claude's OPEN strategy assignment or crossing the P39/P40 implementation gate.
+## Fresh resume and branch evidence
+Read BOOT, STATE, NEXT_TASK, CHECKPOINT and INBOX_chatgpt in the required order. Listed the latest five branch commits. Branch had advanced since prior chat: Claude committed `APPLE_DESIGN_ENGINEERING_SPEC_20261108.md` at `c6c1591`; Claude strategy assignment remains OPEN. The design spec is indexed and treated as Claude-owned. No duplicate Apple design or context/provider-cache research was done.
 
-**Fresh mandatory read:** BOOT, STATE, NEXT_TASK, CHECKPOINT and INBOX_chatgpt read in order. Branch-specific API confirmed the starting HEAD and latest five commits. A search-commits wrapper returned stale results; branch-specific commits are authoritative.
+## Deliverables
+- Created and indexed `AI_COLLAB/FULL_POWER_GAP_RESEARCH_20261110.md` (2,485 words, 140 lines): transactional outbox/replay, fence-at-write/revocation, Web Locks, IndexedDB/OPFS recovery, Worker termination/result provenance, competitor reuse assessment and concrete acceptance mapping to existing IDs.
+- Corrected INDEX omissions: added Claude's Apple design spec and this research document; compressed INDEX to 1,126 words, under its 1,200-word target.
+- Updated STATE (870 words) and NEXT_TASK (398 words) with new evidence and next steps.
+- Red-team corrections recorded: Web Locks `steal` does not stop old callback code; IndexedDB completion/persist is not universal power-loss backup; OPFS and IndexedDB do not share one atomic transaction; prototype CI trigger/checker limitations are verified.
 
-**Review status:** `INBOX_claude.md` still has only the OPEN strategy-program assignment. No new Claude strategy artifact. Owner OD-01..OD-13 remain OPEN. Consensus matrix and gate plan remain current; no owner choice is inferred from recommended defaults.
+## Evidence and limits
+- **VERIFIED:** AWS outbox guidance; Temporal replay/retry semantics; Redis fencing/clock caveat; PostgreSQL row locks; W3C Web Locks WD dated 2026-11-09; MDN IndexedDB, persist and OPFS; WHATWG Worker termination; OpenAI Agents SDK lifecycle; Cline checkpoints/licence, Aider repo-map options, Sentry repo licence.
+- **VERIFIED:** `.github/workflows/pocketcode-python-tests.yml` triggers on `scripts/**` and workflow changes, or manual dispatch. `scripts/check_mobile_prototype.py` is a static source checker and does not execute JavaScript or Python.
+- **UNKNOWN:** actual Pages URL/deployment headers, installed Pyodios worker topology, target-device storage guarantees and production adapter behavior.
+- **NOT RUN:** all fault injection, device tests, browser exploit tests and current full Python suite. Exact-SHA CI for latest checkpoint must be read from GitHub after this commit.
+- P39/P40 CLOSED; OD-01..OD-13 OPEN; CASE-04 remains INCOMPLETE / timed_out. No source/tests, canonical IDs, PRs, runtime/provider/database/transport selection, spend, deployment or RevDev work.
 
-**O-5 refinement:** Added section 10 to `PAGES_AND_EXIT_PROVENANCE_VERIFICATION_20261110.md`. It separates guest outcome, trusted bootstrap outcome, output finalization, worker lifecycle, cancellation/termination and durable receipt. Proposed PYO-CTRL-11..15 cover output-close races, terminate-without-ack, worker error/private-port close, completion-vs-cancel ordering, and crash after terminal message before receipt commit. Added source/topology, identity/order, termination, output, durability and adversarial-test closure criteria.
-
-**Evidence boundary:** committed Pages prototype remains simulation-only; no Pyodide worker/runtime bridge found in branch. Installed Pyodios topology remains UNKNOWN. PYO-CTRL-01..15 NOT RUN. No canonical LOOP/CASE/D ID changed.
-
-**Scope:** documentation only. No source/tests, PRs, Pages settings, runtime/provider/database/transport choice, deployment, spend or RevDev work. P39/P40 implementation gate remains CLOSED.
-
-**CI/tests:** latest SHA exact-check returned zero Actions runs, zero check runs and zero statuses; CI NOT RUN. Historical 266/266 PASS applies only to source/test SHA `744cb4dc7cd4994647c84ac7476d0c78a21f0540`. STATE is 897 words, below its 900-word limit.
-
-**Next:** obtain OD-01..OD-13 owner dispositions; obtain Pages settings/deployment URL and inspect actual installed-app implementation when available; then revisit bounded P40 authorization only after gate closure.
+## Next
+1. Obtain owner OD-01..OD-13 decisions or explicit deferrals.
+2. Complete Pages/ORIGIN evidence only with actual URL/settings; do not guess.
+3. Keep O-5/relay/fencing/storage acceptance design separate from implementation until gate closure.
