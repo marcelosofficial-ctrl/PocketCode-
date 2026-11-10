@@ -17,12 +17,12 @@ Size classes: S under 8 KB, M 8-25 KB, L 25-50 KB, XL over 50 KB (never load who
 ## Product program (2026-11-08, research only)
 | path | what it answers | size | status |
 |---|---|---|---|
-| STRATEGY_PROGRAM_20261108.md | tracker for design, PoCo, App Store, website, LinkedIn, governance | S | live |
-| APPLE_DESIGN_ENGINEERING_SPEC_20261108.md | proposed Apple-style design engineering for the PoCo web app; Claude-owned, not implemented | S | proposed |
-| IPHONE_ONLY_APP_STORE_ROADMAP_20261108.md | phone-only build, sign, TestFlight, submit; Apple rules; costs | M | proposed |
-| WEBSITE_AUDIT_AND_POCO_PAGE_PLAN_20261108.md | portfolio design recipe, accuracy audit, PoCo page plan | M | proposed |
-| GOVERNANCE_AUDIT_20261108.md | KEEP / UPDATE / REMOVE / ADD rule audit | M | proposed |
-| CLAUDE_REVIEW_RELEASE_GRANT_RESEARCH_20261108.md | partial review F-01..F-09; superseded by the full P39 review held by the owner | S | superseded |
+| STRATEGY_PROGRAM_20261108.md | design/product strategy tracker | S | live |
+| APPLE_DESIGN_ENGINEERING_SPEC_20261108.md | Claude's proposed PoCo web design; not implemented | S | proposed |
+| IPHONE_ONLY_APP_STORE_ROADMAP_20261108.md | phone-only build, signing, TestFlight and submission | M | proposed |
+| WEBSITE_AUDIT_AND_POCO_PAGE_PLAN_20261108.md | portfolio audit and PoCo page plan | M | proposed |
+| GOVERNANCE_AUDIT_20261108.md | rule audit and recommendations | M | proposed |
+| CLAUDE_REVIEW_RELEASE_GRANT_RESEARCH_20261108.md | partial F-01..F-09 review; superseded | S | superseded |
 
 ## Repo root (outside AI_COLLAB; read from repo root)
 | path | what it answers | size | status |
@@ -48,26 +48,26 @@ Size classes: S under 8 KB, M 8-25 KB, L 25-50 KB, XL over 50 KB (never load who
 | RELEASE_GRANT_CONCURRENCY_AND_CRASH_CONTRACT_20261107.md | concurrency and crash spec | M | under review |
 | P39_CHATGPT_STATIC_AUDIT_ADDENDUM_20261107.md | static audit | M | under review |
 | P39_INDEPENDENT_REVIEW_PROMPT_20261107.md | review brief | S | live |
-| P39_RESEARCH_REVIEW_DISPOSITIONS_20261108.md | finding-by-finding decisions on Claude's research review and source cross-check | M | interim; P39 gate open |
-| P39_SOURCE_PINNED_AUDIT_CROSSWALK_20261108.md | source-pinned S1..S8 findings, P37 namespace correction and reviewer reconciliation | M | audit complete; review gate open |
-| P39_CLAUDE_REVIEW_RECONCILIATION_20261108.md | full Claude P39 review reconciliation, RG findings, test plan and gate | L | Claude P39 review received; owner gate open |
-| GEMINI_P39_REVIEW_RECONCILIATION_20261109.md | source-pinned reconciliation of Gemini findings, corrected model gaps and adapter boundaries | M | review reconciled; owner gate open |
-| P39_GATE_CLOSURE_PLAN_20261109.md | integrated review, owner-decision, model, adapter and evidence sequence | M | work plan; no implementation authorized |
-| P39_REVIEW_CONSENSUS_MATRIX_20261109.md | reconciles Claude and Gemini claims, source corrections, priorities and owner dependencies | L | working matrix; owner gate open |
-| P39_RECEIPT_SUBSYSTEM_AUDIT_20261108.md | bounded audit of receipt model/tests and durable adapter contract; RCP-01..05 | L | static audit complete; adapter unverified |
-| P39_EP_CANONICAL_ACCEPTANCE_CROSSWALK_20261108.md | maps P39/RG/RCP and EP-01..25 to unchanged LOOP/CASE criteria | L | traceability complete; owner/reviewer gates open |
-| P39_EXIT_OWNER_DECISION_REGISTER_20261108.md | OD-01..13 owner decisions for streaming, revocation, clocks, identity, receipts and exit provenance | M | all decisions OPEN; recommendations not approved |
-| EXIT_PROVENANCE_RESOLUTION_20261108.md | child vs wrapper exit, termination and verdict projection rules plus adversarial tests | M | proposed; review pending |
-| EXIT_PROVENANCE_STATIC_CONSISTENCY_AUDIT_20261108.md | EP-01..20 cross-check, formatter/projection incompatibility and EP-21..25 gaps | M | static audit; review pending |
-| P39_IMPLEMENTATION_GATE_RESEARCH_ADDENDUM_20261109.md | primary-source research on outbox, revocation, exit provenance and termination; red-team corrections | M | research complete; owner/reviewer gate remains closed |
-| EXECUTION_BOUNDARY_DURABILITY_AND_EVIDENCE_RESEARCH_20261109.md | mobile/WASM trust boundary, Wasmtime controls, SQLite crash durability, evidence provenance and acceptance proposals | M | research complete; no stack selection |
-| P39_EVENT_RELAY_AND_EXIT_BOUNDARY_RESEARCH_20261109.md | outbox/event sourcing, retries, fencing, broker dedupe, mobile exit evidence and P39 acceptance crosswalk | L | research complete; implementation gate closed |
-| PWA_LOCAL_STORAGE_AND_RECOVERY_CONTRACT_20261109.md | IndexedDB transactions, Storage API/eviction, OPFS staging, Web Locks, service-worker interruption and 22 PWA tests | L | research complete; no storage engine selected |
-| GITHUB_PAGES_ORIGIN_ISOLATION_AND_LOCAL_DATA_SECURITY_20261109.md | GitHub Pages shared-origin storage exposure, threat model and 10 proposed acceptance cases | M | security research; deployment URL unverified |
-| PHONE_FIRST_EXECUTION_AND_RECOVERY_REDTEAM_20261109.md | origin/header corrections, Pyodide/iframe trust boundary, OPFS/IndexedDB crash protocol, P39 evidence layers and 28 proposed tests | L | deep research and red-team corrections; no implementation authorized |
-| PAGES_AND_EXIT_PROVENANCE_VERIFICATION_20261110.md | verified Pages workflow/repo facts, remaining URL unknowns, browser-worker vs native child-exit evidence and EP-26..35 tests | M | deployment/runtime evidence crosswalk; no implementation authorized |
-| PYODIDE_WORKER_CONTROL_CHANNEL_REDTEAM_20261110.md | Pyodide 314.0.5 FFI and default Worker message spoofing risk; private control-channel contract and PYO-CTRL-01..10 tests | M | conditional red-team finding; actual PocketCode worker topology UNKNOWN |
-| FULL_POWER_GAP_RESEARCH_20261110.md | full-pass research and concrete acceptance guidance for outbox, fencing, PWA recovery and execution evidence; red-team corrections | M | research; NOT IMPLEMENTED / NOT RUN |
+| P39_RESEARCH_REVIEW_DISPOSITIONS_20261108.md | Claude research finding dispositions | M | interim; gate open |
+| P39_SOURCE_PINNED_AUDIT_CROSSWALK_20261108.md | source-pinned S1..S8 and P37 crosswalk | M | audit complete; gate open |
+| P39_CLAUDE_REVIEW_RECONCILIATION_20261108.md | Claude P39 findings, tests and gate | L | owner gate open |
+| GEMINI_P39_REVIEW_RECONCILIATION_20261109.md | Gemini findings and corrected adapter boundaries | M | owner gate open |
+| P39_GATE_CLOSURE_PLAN_20261109.md | review, owner-decision and implementation-gate sequence | M | no implementation |
+| P39_REVIEW_CONSENSUS_MATRIX_20261109.md | Claude/Gemini reconciliation and owner dependencies | L | owner gate open |
+| P39_RECEIPT_SUBSYSTEM_AUDIT_20261108.md | receipt model/test audit; RCP-01..05 | L | adapter unverified |
+| P39_EP_CANONICAL_ACCEPTANCE_CROSSWALK_20261108.md | P39/RG/RCP and EP-01..25 to LOOP/CASE | L | gates open |
+| P39_EXIT_OWNER_DECISION_REGISTER_20261108.md | OD-01..13 streaming, revocation, identity, receipts and exit | M | all OPEN |
+| EXIT_PROVENANCE_RESOLUTION_20261108.md | child/wrapper exit, termination and verdict rules | M | proposed |
+| EXIT_PROVENANCE_STATIC_CONSISTENCY_AUDIT_20261108.md | EP-01..25 consistency and formatter gaps | M | static audit |
+| P39_IMPLEMENTATION_GATE_RESEARCH_ADDENDUM_20261109.md | outbox, revocation and exit-provenance research | M | gate closed |
+| EXECUTION_BOUNDARY_DURABILITY_AND_EVIDENCE_RESEARCH_20261109.md | mobile/WASM boundary, crash durability and evidence | M | no stack selected |
+| P39_EVENT_RELAY_AND_EXIT_BOUNDARY_RESEARCH_20261109.md | outbox, retries, fencing and mobile exit evidence | L | gate closed |
+| PWA_LOCAL_STORAGE_AND_RECOVERY_CONTRACT_20261109.md | IndexedDB/OPFS recovery, Web Locks and PWA tests | L | no storage engine selected |
+| GITHUB_PAGES_ORIGIN_ISOLATION_AND_LOCAL_DATA_SECURITY_20261109.md | shared-origin storage threat and ORIGIN tests | M | URL unknown |
+| PHONE_FIRST_EXECUTION_AND_RECOVERY_REDTEAM_20261109.md | origin, Pyodide, storage crash and evidence red-team | L | no implementation |
+| PAGES_AND_EXIT_PROVENANCE_VERIFICATION_20261110.md | Pages facts, URL unknowns, Worker/native exit and EP tests | M | no implementation |
+| PYODIDE_WORKER_CONTROL_CHANNEL_REDTEAM_20261110.md | Pyodide FFI and Worker channel spoofing tests | M | actual topology UNKNOWN |
+| FULL_POWER_GAP_RESEARCH_20261110.md | outbox, fencing, PWA recovery, execution evidence and red-team corrections | M | NOT IMPLEMENTED / NOT RUN |
 | PR4_CONTINUITY_REFINEMENT_RECONCILIATION_20261109.md | seven-file PR #4 review, KEEP/MERGE-INTO-BOOT/DROP classifications and no-merge recommendation | M | review complete; PR remains owner-controlled |
 
 | VERDICT_EVIDENCE_EXIT_PROVENANCE_MATRIX_20261105.md | exit provenance matrix | M | live (O-5) |
