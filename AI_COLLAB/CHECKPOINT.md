@@ -15,7 +15,7 @@ Read BOOT, STATE, NEXT_TASK, CHECKPOINT and INBOX_chatgpt in the required order.
 - **VERIFIED:** AWS outbox guidance; Temporal replay/retry semantics; Redis fencing/clock caveat; PostgreSQL row locks; W3C Web Locks WD dated 2026-11-09; MDN IndexedDB, persist and OPFS; WHATWG Worker termination; OpenAI Agents SDK lifecycle; Cline checkpoints/licence, Aider repo-map options, Sentry repo licence.
 - **VERIFIED:** `.github/workflows/pocketcode-python-tests.yml` triggers on `scripts/**` and workflow changes, or manual dispatch. `scripts/check_mobile_prototype.py` is a static source checker and does not execute JavaScript or Python.
 - **UNKNOWN:** actual Pages URL/deployment headers, installed Pyodios worker topology, target-device storage guarantees and production adapter behavior.
-- **NOT RUN:** all fault injection, device tests, browser exploit tests and current full Python suite. Exact-SHA CI for latest checkpoint must be read from GitHub after this commit.
+- **NOT RUN:** all fault injection, device tests, browser exploit tests and current full Python suite. Exact-SHA query for prior checkpoint `493a5d208485e37bd6799899f88088988b462238`: zero Actions runs, zero check runs, zero statuses; CI NOT RUN. Workflow path filter covers `scripts/**` and its workflow only, plus manual dispatch, so docs-only commits do not trigger it. Historical 266/266 PASS remains only for source/test SHA `744cb4dc7cd4994647c84ac7476d0c78a21f0540`.
 - P39/P40 CLOSED; OD-01..OD-13 OPEN; CASE-04 remains INCOMPLETE / timed_out. No source/tests, canonical IDs, PRs, runtime/provider/database/transport selection, spend, deployment or RevDev work.
 
 ## Next
