@@ -1,5 +1,5 @@
 # STATE: PocketCode   (current state only; under 900 words)
-Updated: 2026-11-11 by ChatGPT. Audited active branch before this pass at `3545c1e15da6041906bf9cf886c9acdd0a5e7e07`; its exact-SHA Actions query returned zero workflow runs, check runs and statuses. CI NOT RUN. This pass changes docs only; final branch tip is recorded in CHECKPOINT.
+Updated: 2026-11-11 by ChatGPT. Active branch HEAD at final verification: `5794fa175d1639290a8af9e1b86d4252e24ef466`. Exact-SHA Actions query returned zero workflow runs, zero check runs and zero statuses; CI NOT RUN. This pass changes docs only; no source/test/device tests were run.
 
 ## Status
 - Phase: Discovery/product definition. P39/exit-provenance gate CLOSED. No runtime/provider/database/transport selected.
@@ -12,7 +12,7 @@ Updated: 2026-11-11 by ChatGPT. Audited active branch before this pass at `3545c
 - PWA storage research defines IndexedDB metadata, OPFS staging/readback, local fencing and recovery. No storage engine selected; target iOS/Safari build, persist() result, quota and lifecycle behavior UNKNOWN.
 - VERIFIED Pages: last located successful deploy run 39433670146 on 2026-10-20 used main SHA `90cc378df1f7c7f1b5f5535c322eddcfbfb9b26c`, with environment URL `https://marcelosofficial-ctrl.github.io/PocketCode-/`. Workflow auto-deploy is main-only and path-filtered. Main now at `03e65ef35d8b22cb4337ac7097b2a31247c3721e`; no later Pages workflow run found in 75 Actions runs.
 - VERIFIED shared origin: public `portfolio` repo also has Pages enabled at `https://marcelosofficial-ctrl.github.io/portfolio/`. Same scheme/host/port as PocketCode; paths do not isolate origin storage. This is a concrete shared-origin trust boundary, not proof of exploit. No secrets in localStorage/IndexedDB.
-- UNKNOWN: out-of-band deploy after 2026-10-20; live headers/redirects/current response; complete sibling script behavior; target-device storage; actual Pyodios worker topology.
+- UNKNOWN: out-of-band deploy after 2026-10-20; live headers/redirects/current response; generated portfolio script behavior; target-device storage; actual Pyodios worker topology.
 - `P40_MODEL_ONLY_EXECUTION_PROTOCOL_20261110.md` revised to six lanes with exact existing test methods. Known model gaps are marked FAIL/BLOCKED rather than described as passing coverage. NOT AUTHORIZED / NOT RUN.
 - `P40_SOURCE_PINNED_COVERAGE_AND_PAGES_ORIGIN_AUDIT_20261111.md` pins model/test blobs, corrects seven prior claims, records exact Pages deployment and portfolio sibling origin, and reviews W3C/WPT/OWASP reuse/licences.
 
