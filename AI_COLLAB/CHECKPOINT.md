@@ -1,52 +1,35 @@
-# CHECKPOINT — 2026-11-10
+# CHECKPOINT — 2026-11-11
 
-**Unit:** Gated P40 model-only execution protocol prepared.  
-**Starting HEAD:** `4adf2c14ea39c6f62d67da0d8784b13d35c83053`.  
-**Protocol commit:** `c23c2b671a79b978be5a602c91d270543ccedd0c`.  
-**Checkpoint metadata base:** `188f98b4dd80bfcaf139f83b878949e4f9a014be`; this refresh creates a docs-only descendant. Use the live branch ref for the resulting tip SHA.  
-**Branch:** `pocketcode-ai-workflow-director-research-2026-10-28`.
+**Unit:** Source-pinned P40 model coverage and Pages shared-origin audit.  
+**Starting HEAD:** `3545c1e15da6041906bf9cf886c9acdd0a5e7e07`.  
+**Branch:** `pocketcode-ai-workflow-director-research-2026-10-28`.  
+**Commit containing this unit:** recorded in the next metadata refresh after branch update.
 
-## Mandatory resume and branch evidence
+## Mandatory resume
 - Read in order: BOOT.md, STATE.md, NEXT_TASK.md, CHECKPOINT.md, INBOX_chatgpt.md.
-- Branch API confirms HEAD `4adf2c14ea39c6f62d67da0d8784b13d35c83053`. The commit-search endpoint returned stale results; branch-specific commit list is authoritative for this check.
-- Latest five before work:
-  1. `4adf2c14` docs(checkpoint): record exact-SHA CI boundary
-  2. `493a5d20` docs(checkpoint): record full-power gap research pass
-  3. `f2cd5f0b` docs(next): prioritize full-power gap findings
-  4. `f9ea145f` docs(state): record full-power research
-  5. `e50fcfe3` index Apple spec and research
-- The previous STATE/CHECKPOINT had stale HEAD/checkpoint references; corrected in this unit.
+- Latest five before this unit: 3545c1e; b49b4c2; 188f98b; c23c2b6; 4adf2c1. Re-query live branch tip and latest five on resume.
 
 ## Work completed
-- Created `AI_COLLAB/P40_MODEL_ONLY_EXECUTION_PROTOCOL_20261110.md` (1,708 words). It provides four ordered slices:
-  1. Aggregate/event parity, no-op/terminal semantics and canonical envelope integrity.
-  2. Relay ordering, duplicate delivery, stale-worker fencing, trusted time, poison predecessor and ID continuity.
-  3. Owner-gated revocation phases and immutable receipt/grant binding.
-  4. Typed exit, worker control-channel, output finalization, artifact readback and receipt projection.
-- Mapped to existing P39-EVENT, OUTBOX, CLOCK, ID, POLICY, RECEIPT, RCP, EP and PYO-CTRL families and existing LOOP/CASE traces. No new canonical or P39 IDs.
-- Explicitly separates sequential-model evidence from adapter, browser/device, transport and canonical product CASE evidence. Added non-vacuity requirements and stop conditions.
-- Updated INDEX, STATE and NEXT_TASK to index the protocol and establish the next ranked work. CHECKPOINT overwritten with this unit's evidence.
+- Created `AI_COLLAB/P40_SOURCE_PINNED_COVERAGE_AND_PAGES_ORIGIN_AUDIT_20261111.md` (about 2,600 words). Pins ten source/test blobs; audits actual APIs and test names; distinguishes release-grant event outbox, effect-dispatch FakeOutbox, EventJournal, ResultReceiptStore and pure verdict projection.
+- Revised `AI_COLLAB/P40_MODEL_ONLY_EXECUTION_PROTOCOL_20261110.md` from four broad slices to six source-mapped lanes. Identifies equal-progress version/event mismatch, untrusted first-delivery consumer, missing grant-event relay fencing and exact model limitations. No canonical IDs added.
+- Discovered the exact successful Pages deploy run 39433670146: main SHA `90cc378df1f7c7f1b5f5535c322eddcfbfb9b26c`, 2026-10-20, environment URL `https://marcelosofficial-ctrl.github.io/PocketCode-/`. Workflow is main/path filtered; current main and active branch are later.
+- Enumerated 11 public repositories. Only PocketCode and `portfolio` report Pages enabled. Portfolio homepage is `https://marcelosofficial-ctrl.github.io/portfolio/`; same host/path-only difference establishes a sibling same-origin Pages site.
+- Researched GitHub Pages origin rules, MDN same-origin, OWASP HTML5/Micro-Frontend security, W3C Web Locks Working Draft 2026-11-09, WPT conformance suite and licences. No code copied or dependencies added.
+- Red-teamed seven prior weaknesses and corrected the protocol/audit. No source/test code changed.
 
-## Gate and red lines
-- P39/P40 remain CLOSED. OD-01..OD-13 remain OPEN. Protocol is PREPARED only, NOT AUTHORIZED / NOT RUN.
-- No source/test edits, schema freeze, runtime/provider/database/transport choice, dependency, spend, deployment, device test, PR change or RevDev work.
-- Claude's additional material remains awaited; this work deliberately does not duplicate Claude's Apple design, website, context-engineering or provider-cache lane.
+## Gate and constraints
+- P39/P40 CLOSED; OD-01..OD-13 OPEN; CASE-04 remains INCOMPLETE / timed_out.
+- No implementation, test execution, runtime/provider/database/transport selection, schema freeze, spend, Pages setting/DNS/deployment, device test, PR change or RevDev work.
+- Claude's additional artifact still awaited; no duplicate strategy lane created.
 
 ## Verification
-- **VERIFIED:** GitHub read/write permissions available; branch update succeeded for protocol commit.
-- **VERIFIED:** exact HEAD before work was `4adf2c14...`; protocol commit is `c23c2b671a79b978be5a602c91d270543ccedd0c`.
-- **NOT RUN:** source tests, P40 model scenarios, browser/device/transport/adapter tests.
-- **VERIFIED:** exact-SHA query for metadata base `188f98b4dd80bfcaf139f83b878949e4f9a014be` returned zero Actions runs, zero check runs and zero statuses. CI NOT RUN. This checkpoint-only descendant also requires its own live exact-SHA query. Historical 266/266 PASS remains tied only to source/test SHA `744cb4dc7cd4994647c84ac7476d0c78a21f0540`.
-
-## Final branch evidence
-Latest five commits:
-1. `188f98b4` docs(checkpoint): index gated P40 execution protocol
-2. `c23c2b67` docs(p40): prepare gated model-only execution protocol
-3. `4adf2c14` docs(checkpoint): record exact-SHA CI boundary
-4. `493a5d20` docs(checkpoint): record full-power gap research pass
-5. `f2cd5f0b` docs(next): prioritize full-power gap findings
+- **VERIFIED:** static source/test blob pins; Pages workflow run/job logs and URL; repo Pages metadata for PocketCode and portfolio; current main/active branch refs.
+- **INFERRED:** shared-origin script privileges imply the portfolio site could access PocketCode origin storage if data is stored there.
+- **UNKNOWN:** out-of-band deploy, live headers/current response, generated portfolio script behavior, target-device storage and actual Pyodios worker topology.
+- **NOT RUN:** P40 tests, full Python suite, browser/device tests, live response/header probe, origin sibling test and Worker spoof test.
+- Exact-SHA CI query for starting HEAD 3545c1e returned zero workflow runs, check runs and statuses. CI NOT RUN.
 
 ## Next
-1. Ingest Claude artifact by exact pins if/when supplied.
+1. Ingest Claude artifact when supplied, with exact pins.
 2. Obtain OD-01..OD-13 decisions/deferrals.
-3. Only after gate clearance, request bounded P40 model-only execution authorization.
+3. Only after gate clearance, request authorization for bounded six-lane P40 run.

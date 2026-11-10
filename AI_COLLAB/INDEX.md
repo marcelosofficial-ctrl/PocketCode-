@@ -63,12 +63,13 @@ Size classes: S under 8 KB, M 8-25 KB, L 25-50 KB, XL over 50 KB (never load who
 | EXECUTION_BOUNDARY_DURABILITY_AND_EVIDENCE_RESEARCH_20261109.md | mobile/WASM boundary, crash durability and evidence | M | no stack selected |
 | P39_EVENT_RELAY_AND_EXIT_BOUNDARY_RESEARCH_20261109.md | outbox, retries, fencing and mobile exit evidence | L | gate closed |
 | PWA_LOCAL_STORAGE_AND_RECOVERY_CONTRACT_20261109.md | IndexedDB/OPFS recovery, Web Locks and PWA tests | L | no storage engine selected |
-| GITHUB_PAGES_ORIGIN_ISOLATION_AND_LOCAL_DATA_SECURITY_20261109.md | shared-origin storage threat and ORIGIN tests | M | URL unknown |
+| GITHUB_PAGES_ORIGIN_ISOLATION_AND_LOCAL_DATA_SECURITY_20261109.md | shared-origin storage threat and ORIGIN tests | M | sibling Pages host verified; live headers unknown |
 | PHONE_FIRST_EXECUTION_AND_RECOVERY_REDTEAM_20261109.md | origin, Pyodide, storage crash and evidence red-team | L | no implementation |
-| PAGES_AND_EXIT_PROVENANCE_VERIFICATION_20261110.md | Pages facts, URL unknowns, Worker/native exit and EP tests | M | no implementation |
+| PAGES_AND_EXIT_PROVENANCE_VERIFICATION_20261110.md | Pages facts, URL unknowns, Worker/native exit and EP tests | M | superseded on deployment/origin facts by 11/11 audit |
 | PYODIDE_WORKER_CONTROL_CHANNEL_REDTEAM_20261110.md | Pyodide FFI and Worker channel spoofing tests | M | actual topology UNKNOWN |
 | FULL_POWER_GAP_RESEARCH_20261110.md | outbox, fencing, PWA recovery, execution evidence and red-team corrections | M | NOT IMPLEMENTED / NOT RUN |
-| P40_MODEL_ONLY_EXECUTION_PROTOCOL_20261110.md | gated four-slice P40 test sequence, failure injection and evidence boundaries | M | prepared; NOT AUTHORIZED / NOT RUN |
+| P40_MODEL_ONLY_EXECUTION_PROTOCOL_20261110.md | six-lane, source-pinned model coverage and gated test sequence | M | prepared; NOT AUTHORIZED / NOT RUN |
+| P40_SOURCE_PINNED_COVERAGE_AND_PAGES_ORIGIN_AUDIT_20261111.md | model boundaries, exact test mapping, stale deployment and shared-origin sibling evidence | M | static audit; no implementation |
 | PR4_CONTINUITY_REFINEMENT_RECONCILIATION_20261109.md | seven-file PR #4 review, KEEP/MERGE-INTO-BOOT/DROP classifications and no-merge recommendation | M | review complete; PR remains owner-controlled |
 
 | VERDICT_EVIDENCE_EXIT_PROVENANCE_MATRIX_20261105.md | exit provenance matrix | M | live (O-5) |

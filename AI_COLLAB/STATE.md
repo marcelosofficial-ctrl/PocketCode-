@@ -1,19 +1,20 @@
 # STATE: PocketCode   (current state only; under 900 words)
-Updated: 2026-11-10 by ChatGPT. Last exact-SHA verification before this metadata refresh: `188f98b4dd80bfcaf139f83b878949e4f9a014be` had zero workflow runs, zero check runs and zero statuses; CI NOT RUN. The current state/checkpoint refresh is a docs-only descendant; query the live branch tip for its exact SHA. No source/tests/device tests were run.
+Updated: 2026-11-11 by ChatGPT. Audited active branch before this pass at `3545c1e15da6041906bf9cf886c9acdd0a5e7e07`; its exact-SHA Actions query returned zero workflow runs, check runs and statuses. CI NOT RUN. This pass changes docs only; final branch tip is recorded in CHECKPOINT.
 
 ## Status
 - Phase: Discovery/product definition. P39/exit-provenance gate CLOSED. No runtime/provider/database/transport selected.
-- VERIFIED: historical Actions run 42365455316 on source/test SHA `744cb4dc7cd4994647c84ac7476d0c78a21f0540`, workflow "PocketCode Python conformance tests", job unittest: 266/266 PASS. This is historical source/test evidence only, not current HEAD evidence.
-- COMMITTED: intent/proof separation, receipt binding, grant recovery, concurrency/crash models, PWA/origin/exit-provenance research, worker-channel red-team and full-power outbox/fencing/storage/evidence research.
-- CLAIMED ONLY (not built): durable adapter; real concurrent processes; transactional outbox relay; durable crash recovery; production fencing; transport stream ownership and revocation; trusted policy authority; client receipt.
-- Claude and Gemini P39 reviews are reconciled. Gemini attribution corrections: S1 is in release_grant_conformance.py, not event_journal.py; S2 names a nonexistent receipt function, but consume_event() trusts supplied digest; S3 misattributes FakeOutbox fencing, while grant-event relay lacks it; S4 is adapter/MVP scope. Gemini tests NOT RUN; Claude C1-C7 were against a byte-verified copy, not repo CI.
-- Event journal (21/21) and fake coordinator (14 harness tests) are in-memory/test-double evidence only; no durable/authenticated adapter proof.
+- VERIFIED: historical Actions run 42365455316 on source/test SHA `744cb4dc7cd4994647c84ac7476d0c78a21f0540`, workflow "PocketCode Python conformance tests", job unittest: 266/266 PASS. Historical source/test evidence only.
+- COMMITTED: intent/proof separation, receipt binding, grant recovery, concurrency/crash models, PWA/origin/exit-provenance research, worker-channel red-team, full-power gap research, and the 2026-11-11 source-pinned P40 coverage/Pages origin audit.
+- CLAIMED ONLY (not built): durable adapter; real concurrent processes; transactional grant-event relay; durable crash recovery; production fencing; transport stream ownership and revocation; trusted policy authority; client receipt.
+- Claude and Gemini P39 reviews are reconciled. The source-pinned audit confirms: grant progress increments aggregate_version even for equal progress and emits no matching event/outbox; grant-event consumer trusts first-delivery digest and lacks grant/source/producer binding; FakeOutbox fencing protects effect dispatch, not grant-event publication; EventJournal producer identity is adapter-verified input, not cryptographic authentication.
+- Event journal and fake coordinator remain in-memory/test-double evidence only. No durable/authenticated adapter proof.
 - Pyodios on owner's iPhone (owner-reported): v1.1.0 build 7, Pyodide 314.0.5, Python 3.14.2. First Editor run showed only "[Bridge/executePython] PythonError"; Console probe NOT RUN; bridge cause UNKNOWN.
-- PWA research defines IndexedDB atomic metadata, OPFS staging/readback, local fencing and recovery. No storage engine selected; target iOS/Safari build, persist() result, quota and lifecycle behavior UNKNOWN.
-- Pages enabled and workflow verified; workflow deploys `prototypes/mobile-runner`. Actual URL/custom domain/deployed SHA/headers/sibling inventory UNKNOWN. No live exploit confirmed.
-- Pyodide 314.0.5 FFI exposes worker globals; same-realm guest spoofing of default Worker messages is a conditional risk. Actual installed app topology UNKNOWN. PYO-CTRL-01..15 proposed, NOT RUN.
-- `FULL_POWER_GAP_RESEARCH_20261110.md` records transactional outbox, replay/idempotency, fence-at-write, Web Locks caveat, IndexedDB/OPFS two-resource recovery and typed Worker lifecycle. No code copied/dependency added.
-- `P40_MODEL_ONLY_EXECUTION_PROTOCOL_20261110.md` now turns those findings into four gated slices: event parity/canonical envelope; relay ordering/fencing/time; policy/revocation/receipt binding; typed exit/output/receipt projection. It is a plan only, NOT AUTHORIZED / NOT RUN.
+- PWA storage research defines IndexedDB metadata, OPFS staging/readback, local fencing and recovery. No storage engine selected; target iOS/Safari build, persist() result, quota and lifecycle behavior UNKNOWN.
+- VERIFIED Pages: last located successful deploy run 39433670146 on 2026-10-20 used main SHA `90cc378df1f7c7f1b5f5535c322eddcfbfb9b26c`, with environment URL `https://marcelosofficial-ctrl.github.io/PocketCode-/`. Workflow auto-deploy is main-only and path-filtered. Main now at `03e65ef35d8b22cb4337ac7097b2a31247c3721e`; no later Pages workflow run found in 75 Actions runs.
+- VERIFIED shared origin: public `portfolio` repo also has Pages enabled at `https://marcelosofficial-ctrl.github.io/portfolio/`. Same scheme/host/port as PocketCode; paths do not isolate origin storage. This is a concrete shared-origin trust boundary, not proof of exploit. No secrets in localStorage/IndexedDB.
+- UNKNOWN: out-of-band deploy after 2026-10-20; live headers/redirects/current response; complete sibling script behavior; target-device storage; actual Pyodios worker topology.
+- `P40_MODEL_ONLY_EXECUTION_PROTOCOL_20261110.md` revised to six lanes with exact existing test methods. Known model gaps are marked FAIL/BLOCKED rather than described as passing coverage. NOT AUTHORIZED / NOT RUN.
+- `P40_SOURCE_PINNED_COVERAGE_AND_PAGES_ORIGIN_AUDIT_20261111.md` pins model/test blobs, corrects seven prior claims, records exact Pages deployment and portfolio sibling origin, and reviews W3C/WPT/OWASP reuse/licences.
 
 ## Decisions
 - D-001 unified PC-and-phone direction, separate development boundaries. D-002 GitHub is source of truth. D-003 no secrets in public repo. D-004 validate before stack commitment. D-005 zero spend.
@@ -26,13 +27,13 @@ Updated: 2026-11-10 by ChatGPT. Last exact-SHA verification before this metadata
 - O-1 Owner: run read-only Pyodios Console probe in `PYODIOS_PYTHONERROR_BRIDGE_TRIAGE_20261106.md`.
 - O-2 Await any additional Claude artifact supplied by owner. Do not create a competing Claude request while strategy assignment remains OPEN. OD-01..OD-13 remain OPEN.
 - O-3 Run full Python suite in a real checkout/CI and record exact-SHA results.
-- O-4 Obtain actual Pages URL/custom domain/deployed SHA/live headers/sibling-origin inventory; do not infer.
+- O-4 Confirm current live Pages response/settings/headers and audit the shared `portfolio` origin's generated script behavior. Deployment URL and last workflow SHA are known; current live state is not.
 - O-5 Resolve typed child exit vs wrapper exit vs termination provenance and receipt ordering.
-- O-6 P40 protocol prepared; execution still gated by owner decisions and explicit authorization.
+- O-6 P40 six-lane protocol prepared; execution still gated by owner decisions and explicit authorization.
 - O-7 PoCo name remains undecided; LinkedIn work waits for laptop/export.
 - O-8 Apple design/context/provider-cache and website strategy work remain Claude's lane.
 
 ## Evidence limits
 - Historical 266/266 PASS applies only to source/test SHA `744cb4dc7cd4994647c84ac7476d0c78a21f0540`.
-- All current P40 scenarios, durable adapter, browser/device, origin exploit, transport and full-suite checks are NOT RUN.
+- Current P40 scenarios, durable adapter, browser/device, live origin exploit, transport and full-suite checks are NOT RUN.
 - Keep PocketCode and RevDev evidence strictly separate.

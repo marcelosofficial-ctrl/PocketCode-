@@ -1,153 +1,140 @@
 # P40 model-only execution protocol
+**Source-pinned revision:** 2026-11-11  
+**Status:** PREPARED / NOT AUTHORIZED / NOT RUN  
+**Target branch:** `pocketcode-ai-workflow-director-research-2026-10-28`  
+**Authority:** P39 consensus, OD-01..OD-13, canonical LOOP-01..14 and CASE-01..16. This document does not authorize implementation, source/test edits, schema freeze, adapter selection, device tests, deployment, spending or canonical ID changes.
 
-**Date:** 2026-11-10  
-**Status:** PREPARED / NOT AUTHORIZED TO EXECUTE / NOT RUN  
-**Target:** `marcelosofficial-ctrl/PocketCode-`, branch `pocketcode-ai-workflow-director-research-2026-10-28`  
-**Authority:** P39 gate plan, owner decision register, reconciled Claude/Gemini findings, canonical crosswalk and the 2026-11-10 gap research. This protocol does not authorize source/test edits, schema freeze, adapter selection, device tests, deployment, spend, or changes to canonical LOOP/CASE/D IDs.
+## 1. What this protocol tests, and what it cannot test
 
-## 1. Purpose and boundary
+The current repository has five distinct in-memory/pure models. They are not interchangeable:
+- `ReleaseGrantContractModel`: receipt-head CAS, release-grant reservation, grant event/outbox and transfer-worker progress.
+- `FakeOutboxStore`: effect reservation, external dispatch intent, worker lease/fence and ambiguous provider reconciliation.
+- `EventJournal`: append-only event evidence and local fencing.
+- `ResultReceiptStore`: artifact/receipt revisions and caller-supplied release authorization snapshots.
+- `project_verdict()`: pure projection of typed coordinator lifecycle and child-exit observations.
 
-This is the next useful engineering-preparation unit while Claude's additional material is pending. It converts the already reconciled findings into an executable sequence for the existing sequential reference model. It is deliberately not a new review lane and does not duplicate Claude's Apple design, website, context-engineering or provider-cache work.
+A passing test proves only the tested model behavior. It does not prove database atomicity, cryptographic producer authentication, cross-process fencing, crash durability, browser origin isolation, IndexedDB/OPFS persistence, transport cancellation or client acknowledgement.
 
-**Gate remains CLOSED.** The protocol may be reviewed and refined, but it must not be run against or used to modify scripts/tests until the owner gate is explicitly cleared. Existing P39 test-family names are retained. No new canonical or P39 test IDs are created here.
+P39/P40 implementation gate is CLOSED. This sequence is a preparation artifact only. Do not run or edit tests until the owner gate is explicitly cleared and a bounded run is authorized.
 
-A passing sequential model test would prove only that the model implements the selected semantics. It would not prove database atomicity, cross-process fencing, durable identity, browser storage recovery, transport cancellation, client receipt or production authentication.
+## 2. Required run pins and evidence rules
 
-## 2. Preconditions and evidence contract
+Before an authorized run, record repository, branch, exact source SHA, test SHA, blob SHAs, Python version, OS, command and test runner. Record the relevant OD decisions or explicit deferrals. Use the existing IDs and test families. Every case records initial state, operation, injected fault, final state and exact output. Assertions must fail if their preconditions are absent; empty collections or skipped branches cannot satisfy security assertions.
 
-Before an authorized run, pin all of the following in the run record:
+Tag evidence VERIFIED, INFERRED or UNKNOWN. Record PASS, FAIL or NOT RUN. Keep model, adapter, browser/device and canonical product outcomes separate.
 
-1. Repository, branch, commit SHA, source blob SHAs and test blob SHAs.
-2. Python version, OS, command, dependency lock/environment and test runner version.
-3. Owner dispositions for the relevant OD rows, including explicit deferrals. Silence is not a decision.
-4. Canonical mapping and exact existing test-family names from the P39 crosswalk.
-5. Initial model state and deterministic authority clock/ID sources used by the fixture.
+## 3. Ordered model lanes
 
-Every assertion must identify the state before, operation, injected fault, state after, and observable evidence. A test must fail if its critical precondition is absent; do not let an empty collection or skipped branch satisfy a security assertion vacuously.
+### Lane 1: release-grant transaction and aggregate parity
 
-Record outcomes as PASS, FAIL or NOT RUN. Tag source facts VERIFIED, model expectations INFERRED and unavailable runtime/adapter facts UNKNOWN. Preserve the original event, receipt and conflict evidence on failure.
+**Source:** `scripts/release_grant_conformance.py`  
+**Tests:** `scripts/test_release_grant_conformance.py`  
+**Existing methods:** `test_crash_after_staged_grant_leaves_no_partial_state`, `test_crash_after_staged_event_leaves_no_partial_state`, `test_crash_before_commit_leaves_no_partial_state`, `test_successful_commit_lost_response_replays_original_grant`, `test_grant_commit_wins_then_successor_keeps_grant_pinned`, `test_successor_commit_wins_then_old_receipt_grant_is_denied`, `test_only_one_successor_from_same_predecessor_can_win`.
 
-## 3. Ordered model-only sequence
+Sequence:
+1. Seed receipt head revision N. Reserve one exact release intent; assert one immutable grant, one v1 event, one outbox item and a pinned object version.
+2. Inject each existing pre-commit failure point. Assert grant/event/outbox/fence/sequence state remains unchanged.
+3. Simulate committed response loss; replay same tenant/principal/request key and same intent; assert the original grant and provenance are returned.
+4. Race the two sequential CAS orderings: grant first then successor, and successor first then stale grant. Assert only the selected linearization order wins.
+5. Add a gated assertion for equal-progress replay. Current `record_progress()` increments aggregate_version even when progress_bytes is unchanged. The intended no-op rule therefore is not satisfied by the current model. The current test suite does not cover this case.
+6. Assert every aggregate version transition has exactly one matching immutable event/outbox item. Current `record_progress()` advances aggregate_version without appending a matching event/outbox record. Mark parity FAIL if the existing model is run against this requirement.
 
-### Slice A: aggregate/event parity and canonical envelope
+**Stop condition:** this lane exposes known model gaps. Do not silently weaken the expected parity rule to make the model pass.
 
-**Existing families:** P39-EVENT-05, P39-EVENT-06.  
-**Canonical support:** CASE-11, CASE-12, CASE-13, CASE-14, CASE-15, CASE-16; LOOP-07, LOOP-10, LOOP-11.
+### Lane 2: grant-event consumer integrity
 
-**A1. Atomic semantic transition**
-- Start from a known aggregate version N and its matching event/outbox high-water.
-- Apply one state-changing progress transition.
-- Assert exactly one version increment and exactly one immutable event/outbox identity for N+1.
-- Replay the exact request and assert the original transition/event identity is returned.
-- Apply a semantic no-op and assert no version increment, event, outbox item or new terminal transition.
-- Inject failure before the model's commit boundary and assert no partial aggregate/event/outbox state is visible.
-- Inject failure after commit but before the caller receives the response; replay must recover the committed identity, not create a second transition.
+**Existing methods:** `test_consumer_deduplicates_same_source_event_id`, `test_consumer_rejects_same_event_identity_with_changed_payload`, `test_consumer_defers_future_event_until_predecessor_arrives`, `test_consumer_does_not_mark_future_event_consumed_when_predecessor_is_missing`.
 
-**A2. Terminal transition and replay**
-- Exercise each allowed terminal transition from a valid non-terminal state.
-- Attempt a second conflicting terminal transition and a post-terminal progress update.
-- Assert no silent overwrite, duplicate terminal event or version gap. If the current model does not define the transition, record a specification conflict, not a guessed expected value.
+Sequence:
+1. Deliver the original event twice; assert the second is duplicate.
+2. Reuse an already accepted source/event identity with a changed digest; assert conflict.
+3. Deliver version N+2 before N+1; assert `deferred_gap` and no consumed-version advance; then deliver predecessor and retry.
+4. Record that these tests do not prove first-delivery authentication, digest recomputation or tenant/grant/source binding.
 
-**A3. Canonical event integrity and scope**
-- Build a valid first-delivery event with canonical semantic fields and digest.
-- Mutate one semantic field while retaining the original digest; consumer must reject/quarantine it.
-- Submit a forged first-delivery event with a self-consistent digest but unknown grant, wrong tenant, source, effect or attempt; digest validity must not authorize it.
-- Replay the exact producer/event identity and exact canonical bytes; return the original accepted event.
-- Reuse that identity with changed bytes or scope; preserve the original and record a conflict.
-- Verify canonical serialization is deterministic across key order and rejects ambiguous types/encodings.
+**BLOCKED assertions:** forged first delivery; altered semantic fields with retained digest; unknown grant; wrong tenant/source; producer spoofing. The current `GrantEvent` contains only a supplied digest, not canonical payload bytes, and `consume_event()` accepts a next-version first delivery without authenticating producer or validating grant scope. A meaningful test requires an owner-approved canonical envelope and trusted ingress contract. Do not invent either.
 
-**Stop condition:** if the model has no explicit canonical byte encoding or trusted producer boundary, do not invent one in this test plan. Mark the corresponding assertion BLOCKED pending owner/contract decision.
+### Lane 3: effect-dispatch outbox recovery
 
-### Slice B: relay ordering, fencing and trusted time
+**Source:** `scripts/fake_outbox.py`  
+**Tests:** `scripts/test_fake_outbox.py`  
+**Existing methods:** `test_reservation_and_outbox_intent_are_created_together`, `test_crash_before_commit_leaves_no_partial_reservation_or_sequence`, `test_crash_before_send_can_be_reclaimed`, `test_active_lease_cannot_be_stolen`, `test_stale_worker_is_fenced_after_reclaim`, `test_crash_after_dispatch_intent_requires_reconciliation`, `test_lost_ack_found_reconciles_without_second_dispatch`, `test_eventually_consistent_not_found_holds_unknown`, `test_final_exact_absence_allows_same_attempt_retry`, `test_duplicate_delivery_is_deduplicated`.
 
-**Existing families:** P39-OUTBOX-04/05, P39-CLOCK-01, P39-ID-01, P39-ORDER-04, P39-CRASH-04.  
-**Canonical support:** CASE-11, CASE-13, CASE-16; LOOP-07, LOOP-11, LOOP-12.
+Sequence:
+1. Verify reservation and outbox intent are created together in the model.
+2. Verify pre-send expiry is reclaimable and increments the fence.
+3. Verify active lease cannot be stolen and stale worker mutation is rejected after reclaim.
+4. Verify post-send-intent expiry enters reconciliation, not direct retry.
+5. Verify authoritative exact found adopts the existing provider operation; eventually consistent absence remains HOLD; final exact absence authorizes same-attempt retry only.
 
-**B1. Stale relay worker**
-- Worker A claims aggregate sequence N with fence F.
-- Advance authority time beyond the lease and let worker B claim with F+1.
-- A attempts publish acknowledgement and delivered-marker mutation after takeover.
-- Assert both protected mutations reject A atomically; B can complete only the current sequence.
-- Assert a worker-provided future or backdated timestamp cannot change lease expiry or take ownership.
+**Boundary:** these are effect-dispatch semantics. They do not prove grant-event relay claim, ordering or delivered-marker fencing.
 
-**B2. Duplicate delivery and ambiguous acknowledgement**
-- Relay publishes event N, then simulate loss of the relay's response before the delivered marker commits.
-- Redeliver N. Consumer must deduplicate by stable event identity and semantic digest.
-- Assert no duplicate external effect or duplicate terminal event is inferred from delivery.
-- Keep publish accepted, consumer processed, external effect completed, delivered marker committed and receipt committed as separate facts.
+### Lane 4: grant-event relay boundary
 
-**B3. Poison predecessor and order**
-- Place valid N, malformed/poison N+1 and valid N+2 in one aggregate stream.
-- Assert N+2 is not delivered/accepted past the unresolved predecessor.
-- Assert visible HOLD/quarantine includes the missing/poison sequence and original evidence.
-- Resolve only through an explicit audited repair path; never rewrite the original event or silently skip a sequence.
+**Source:** `scripts/release_grant_conformance.py`, especially `mark_outbox_delivered()`.  
+**Current capability:** outbox item exists and a delivered boolean can be set.
 
-**B4. Fence continuity**
-- Simulate restart, restore, deletion/tombstone and a second instance.
-- Assert grant/event identity and fence high-water do not reset or repeat.
-- If the sequential model uses process-local counters, mark adapter-level continuity UNKNOWN; do not claim the model proves durable uniqueness.
+**NOT TESTABLE in the current model:** relay claim/lease, relay fence generation, stale relay acknowledgement, ordered predecessor cursor, poison-event HOLD/quarantine and audited repair. The existing transfer-worker lease protects `record_progress()`, not `mark_outbox_delivered()`.
 
-### Slice C: policy/revocation and receipt binding
+After gate clearance, first agree whether relay semantics belong in the model or adapter contract. Do not borrow FakeOutbox lease assertions as evidence for this separate relay.
 
-**Existing families:** P39-POLICY-02..06, P39-RECEIPT-02, RCP-01..05.  
-**Canonical support:** CASE-05, CASE-11, CASE-12, CASE-13, CASE-14, CASE-15, CASE-16; LOOP-07, LOOP-10, LOOP-12.
+### Lane 5: event journal provenance and fencing
 
-This slice is conditional on explicit owner choices for OD-02..08. Keep each policy phase separate:
-- Revocation before grant commit.
-- Revocation after grant commit but before claim.
-- Revocation during transfer, only if streaming is selected for MVP.
-- Recovery/resume after takeover or revocation.
-- Policy change across separate authorities before grant commit.
+**Source:** `scripts/event_journal.py`  
+**Tests:** `scripts/test_event_journal.py`  
+**Existing methods:** `test_accepts_verified_authorized_producer`, `test_duplicate_same_source_event_and_same_payload_is_idempotent`, `test_same_source_event_id_cannot_be_replayed_across_attempt_scope`, `test_unfenced_worker_event_is_rejected_even_with_flag`, `test_same_event_replay_under_new_fence_is_quarantined`, `test_same_source_event_id_with_changed_payload_is_quarantined`, `test_quarantine_is_append_only_and_does_not_replace_accepted_event`, `test_wrong_audience_rejected`, `test_unauthorized_source_rejected`.
 
-For each phase, assert the selected policy outcome, current policy epoch, grant identity, fence, receipt revision and artifact object version. A recovered grant lookup is not a fresh authorization to send bytes. A stale or unknown policy epoch must not be treated as allow.
+Sequence:
+1. Verify payload digest is recomputed from immutable bytes.
+2. Verify same source/event/payload/scope is idempotent and conflicting payload/scope is quarantined without replacing accepted evidence.
+3. Verify stale/missing fence rejection and append-only quarantine.
+4. Record that `AuthenticatedProducer` is an adapter-verified input type, not a credential verifier. The pure model does not prove cryptographic authentication, persistent fence continuity or atomic database check-and-append.
 
-For receipt binding, race a receipt successor against a release-grant reservation in the model's sequential orderings. If successor commits first, an old-receipt request must not obtain a new grant. If grant commits first, it remains pinned to its exact historical receipt/object version. Same idempotency key plus same stable intent recovers the same grant; changed intent conflicts. Rotating authorization proof metadata must not mutate historical grant provenance.
+### Lane 6: receipt store and typed verdict projection
 
-### Slice D: typed exit, output and receipt projection
+**Sources:** `scripts/result_receipts.py`, `scripts/execution_projection.py`.  
+**Tests:** `scripts/test_result_receipts.py`, `scripts/test_execution_projection.py`.
 
-**Existing families:** EP-01..25, EP-26..35, PYO-CTRL-01..15.  
-**Canonical support:** CASE-01..06, CASE-09, CASE-11, CASE-12, CASE-14, CASE-15; LOOP-03..07, LOOP-10..12.
+Receipt assertions:
+- artifact bytes produce the stored length and SHA-256;
+- partial writes and digest mismatches are quarantined;
+- receipt revision keys bind immutable content and revisions extend the latest predecessor without forking;
+- release checks exact attempt, receipt revision, artifact membership and the supplied authorization snapshot;
+- historical receipt cannot authorize a new release after a successor.
 
-Use a table-driven set of facts, not a precedence-only formatter test. Keep guest outcome, wrapper outcome, host Worker observation, native child exit, termination request, termination acknowledgement, cleanup, output finalization, artifact readback and receipt commit distinct.
+Projection assertions:
+- PASS requires coordinator lifecycle `succeeded` and direct-child natural exit zero;
+- wrapper exit, embedded SystemExit, signal termination, timeout, stale attempt, unknown status and contradictory evidence never become a fabricated child exit;
+- no evidence remains INCOMPLETE.
 
-Required adversarial cases:
-- Guest reports success but trusted wrapper rejects or never completes.
-- Worker sends a wrapper-shaped message through a guest-accessible default channel.
-- Worker errors or is terminated without a trusted termination acknowledgement.
-- Natural child exit is zero but a mandatory policy/egress gate is absent or mismatched.
-- Child exits zero, then required output collection or cleanup fails.
-- Output callbacks close, but OPFS readback or IndexedDB receipt commit fails.
-- Terminal observation arrives, then the process crashes before receipt commit.
-- Stale, contradictory or wrong-attempt observations arrive after timeout.
+**Boundary:** the receipt model is in-memory and authorization is caller-supplied. The projection is pure and does not authenticate its inputs. Neither models Worker errors, private control channels, cancellation acknowledgement, cleanup, stream closure, OPFS readback or IndexedDB transaction commit.
 
-Assert the coordinator projection never derives native child exit from guest/Worker messages, never converts missing evidence to PASS, and never equates cancellation request with completed termination. Execution verdict, lifecycle disposition, collection status, cleanup status, artifact disposition and receipt commit remain separate. Preserve CASE-04 as INCOMPLETE / timed_out until trusted boundary evidence resolves it.
+## 4. Explicitly outside the model-only run
 
-## 4. Cross-layer acceptance and non-vacuity rules
+These require a separately selected and implemented adapter/browser boundary, plus owner approval:
+- IndexedDB transaction commit/abort, quota, eviction, reload, reinstall and target iOS/Android browser behavior.
+- OPFS staging, flush, close, readback and reconciliation with IndexedDB metadata.
+- Same-origin sibling Pages access to localStorage, IndexedDB, Cache API and service-worker scope.
+- Pyodide Worker default-channel spoofing, private MessagePort reachability and actual guest-global access.
+- Worker crash, error, messageerror, terminate invocation, disappearance and any runner-level completion observation.
+- Real streaming, active-transfer revocation, bytes emitted versus client acknowledged, and native child-process exit.
+- Durable adapter concurrency, process crash, backup/restore, producer authentication and external provider behavior.
 
-| Layer | What a PASS may establish | What it cannot establish |
-|---|---|---|
-| Sequential reference model | Deterministic state transition and rejection behavior in the tested model | Atomic database commit, real races, crash durability |
-| Adapter conformance | Selected adapter's transactions, conditional writes, fencing and recovery under named build/configuration | Hostile guest isolation or client receipt unless actually exercised |
-| Browser/device | Behavior on named browser, OS, origin and device under tested faults | Other devices, permanent backup or physical-media guarantees |
-| Transport | Server/transport/client observations actually measured | Client acknowledgement from server-side progress alone |
-| Canonical product CASE | End-to-end behavior in the real controlled product boundary | Unexecuted scenarios or supporting model tests |
+The current Pages prototype is explicitly simulation-only. It does not execute Python, import files, create artifacts, select a runtime or call a provider. Do not describe it as a live execution product or as vulnerable to a Worker exploit that it cannot currently instantiate.
 
-Do not report supporting P39/EP/PYO tests as canonical CASE passes. A test that only checks a digest against a caller-supplied digest does not prove producer authentication. A lock test that does not attempt a stale write after takeover does not prove fencing. A crash test that does not restart and inspect state does not prove recovery.
+## 5. Gate and exit criteria
 
-## 5. Exit criteria and handoff
+Before any model run:
+1. OD-01..OD-13 must be answered or explicitly deferred by the owner.
+2. Relevant unresolved contract gaps must be named, not silently assumed away.
+3. The owner must explicitly open the P39/P40 gate and authorize the bounded run.
+4. Exact source/test SHA and environment must be pinned.
 
-A model-only slice is ready to be proposed for execution only after:
-- The relevant OD decisions are explicit or explicitly deferred by the owner.
-- Existing model APIs can express the scenario without adding semantics by assumption.
-- Test assertions map to existing families and preserve canonical IDs.
-- The source/test SHA and environment are pinned.
-- The owner explicitly opens the P39/P40 gate and authorizes the bounded run.
-
-After a model run, publish exact command/output and source/test pins. Any adapter, browser, device or transport claim remains NOT RUN until separately tested. Claude's additional artifact, when supplied, must be ingested by exact repo/branch/SHA/blob pins and reconciled into the existing matrix before it changes this sequence.
+A model pass cannot close canonical CASE acceptance by itself. Keep LOOP-01..14, CASE-01..16 and all D-IDs unchanged. CASE-04 remains INCOMPLETE / timed_out until trusted boundary evidence resolves it.
 
 ## 6. Current status
 
-- **VERIFIED:** current gate plan and owner register prohibit implementation; OD-01..OD-13 are OPEN; canonical crosswalk distinguishes supporting tests from product acceptance.
-- **INFERRED:** the four-slice ordering above minimizes dependency overlap and exposes the highest-risk semantic gaps before adapter work.
-- **UNKNOWN:** selected policy outcomes, actual installed Pyodios worker topology, live Pages origin/deployment, durable adapter and target-device behavior.
-- **NOT RUN:** all scenarios in this protocol. No code or tests were changed.
+- **VERIFIED:** the source methods and existing test names listed above were statically inspected at the pinned branch.
+- **INFERRED:** equal progress is a semantic no-op under the accepted P39 parity rule; current implementation violates it by advancing the aggregate version without a matching event/outbox.
+- **UNKNOWN:** selected policy outcomes, canonical event envelope, trusted ingress, actual Pyodios Worker topology, deployed live Pages response, durable adapter and target-device storage behavior.
+- **NOT RUN:** every scenario in this protocol. No source/test changes were made.
+- **Gate:** CLOSED. OD-01..OD-13 OPEN. No implementation or execution authorization is implied.

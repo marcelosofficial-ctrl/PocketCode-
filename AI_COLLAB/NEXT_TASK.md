@@ -1,22 +1,22 @@
 # NEXT TASK: PocketCode
 
 ## Goal
-Finish owner-gated P39 reconciliation and prepare a bounded, non-duplicative P40 model-only run. Implementation remains blocked.
+Close owner-gated P39 decisions and prepare a correctly scoped P40 model-only run. Implementation remains blocked.
 
 ## Current evidence
-- Claude/Gemini P39 reconciliations and consensus matrix are committed. Await any additional Claude artifact supplied by the owner; do not create a competing Claude request while the strategy assignment remains OPEN.
+- Claude/Gemini P39 reviews reconciled. Await additional Claude artifact from owner; do not create a competing request while Claude's strategy assignment remains OPEN.
 - OD-01..OD-13 all OPEN. CASE-04 remains INCOMPLETE / timed_out.
-- Pages enabled; workflow deploys `prototypes/mobile-runner`; actual URL/deployment/headers/sibling-origin evidence UNKNOWN.
-- Pyodide worker-channel spoofing is conditional; installed Pyodios topology UNKNOWN.
-- `FULL_POWER_GAP_RESEARCH_20261110.md` records outbox, fencing, PWA recovery and execution-evidence research.
-- `P40_MODEL_ONLY_EXECUTION_PROTOCOL_20261110.md` is prepared. It defines four slices and preserves existing P39/EP/PYO and LOOP/CASE IDs. It is NOT AUTHORIZED / NOT RUN.
+- P40 protocol revised to six source-pinned lanes. Known model gaps: equal-progress aggregate/event parity; first-delivery event trust; separate grant-event relay fencing; policy revalidation; Worker/receipt/storage boundaries. NOT AUTHORIZED / NOT RUN.
+- Last verified Pages workflow deploy: run 39433670146, main SHA `90cc378df1f7c7f1b5f5535c322eddcfbfb9b26c`, URL `https://marcelosofficial-ctrl.github.io/PocketCode-/`. Automatic deploy is main/path filtered.
+- Public `portfolio` repo also has Pages enabled at `https://marcelosofficial-ctrl.github.io/portfolio/`, same browser origin as PocketCode. No exploit confirmed; no sensitive browser storage.
+- Live Pages response/headers and generated portfolio script behavior UNKNOWN. Pyodios worker topology UNKNOWN.
 
 ## Ranked next actions
-1. **Claude artifact arrives:** pin exact repo, branch, source/test/docs SHA and blob hashes; inspect its actual scope; reconcile only evidence-backed findings into the existing consensus matrix. Do not assume it covers exit provenance.
-2. **Owner gate:** obtain explicit OD-01..OD-13 decisions or explicit deferrals. Resolve OD-01 first, OD-02..05 as one revocation lifecycle, OD-06..07 clock/identity, OD-08 receipt binding, OD-09..12 verdict/termination/cleanup, OD-13 client-byte evidence. Silence is not approval.
-3. **After gate clearance only:** request explicit authorization for the bounded four-slice model-only sequence in `P40_MODEL_ONLY_EXECUTION_PROTOCOL_20261110.md`. Pin source/test SHA and environment; run exact existing test families; keep supporting tests distinct from canonical CASE outcomes.
-4. **Evidence-dependent only:** complete PAGES-01..08 / ORIGIN-01..10 if owner supplies actual URL/settings or a reachable deployment identifier. Do not guess URL or headers.
-5. **Separately:** run full Python suite on an exact SHA in a real checkout/CI; historical 266/266 is not current evidence.
+1. **Claude artifact arrives:** pin exact repo, branch, source/test/docs SHA and blob hashes; reconcile evidence-backed findings into the existing matrix. Do not assume it covers exit provenance.
+2. **Owner gate:** obtain OD-01..OD-13 decisions or explicit deferrals. Resolve OD-01 first, OD-02..05 as one revocation lifecycle, OD-06..07 clock/identity, OD-08 receipt binding, OD-09..12 verdict/termination/cleanup, OD-13 client-byte evidence.
+3. **After gate clearance only:** obtain explicit authorization for the six-lane model run in `P40_MODEL_ONLY_EXECUTION_PROTOCOL_20261110.md`. Pin source/test SHA and environment. Keep model results separate from canonical CASE acceptance.
+4. **Origin follow-up:** verify current Pages deployment, response headers and service-worker scope; inspect the `portfolio` generated output for origin-scoped storage access. Do not change hosting/domain or store secrets.
+5. **Separately:** run the full Python suite on an exact SHA in real checkout/CI. Historical 266/266 is not current evidence.
 
 ## Hard constraints
 - P39/P40 CLOSED; OD-01..OD-13 OPEN until owner responds.
@@ -26,4 +26,4 @@ Finish owner-gated P39 reconciliation and prepare a bounded, non-duplicative P40
 - Keep RevDev evidence separate.
 
 ## Done when
-Supplied reviews are reconciled; owner decisions are explicit or explicitly deferred; model/adapter/product acceptance boundaries are clear; and the owner authorizes a bounded slice or remaining blockers are documented.
+Reviews are reconciled; owner decisions are explicit or explicitly deferred; model/adapter/product acceptance boundaries are clear; and owner authorizes a bounded slice or remaining blockers are documented.
