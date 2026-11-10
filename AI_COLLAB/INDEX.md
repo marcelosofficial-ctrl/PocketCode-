@@ -18,6 +18,7 @@ Size classes: S under 8 KB, M 8-25 KB, L 25-50 KB, XL over 50 KB (never load who
 | path | what it answers | size | status |
 |---|---|---|---|
 | STRATEGY_PROGRAM_20261108.md | tracker for design, PoCo, App Store, website, LinkedIn, governance | S | live |
+| APPLE_DESIGN_ENGINEERING_SPEC_20261108.md | proposed Apple-style design engineering for the PoCo web app; Claude-owned, not implemented | S | proposed |
 | IPHONE_ONLY_APP_STORE_ROADMAP_20261108.md | phone-only build, sign, TestFlight, submit; Apple rules; costs | M | proposed |
 | WEBSITE_AUDIT_AND_POCO_PAGE_PLAN_20261108.md | portfolio design recipe, accuracy audit, PoCo page plan | M | proposed |
 | GOVERNANCE_AUDIT_20261108.md | KEEP / UPDATE / REMOVE / ADD rule audit | M | proposed |
@@ -66,6 +67,7 @@ Size classes: S under 8 KB, M 8-25 KB, L 25-50 KB, XL over 50 KB (never load who
 | PHONE_FIRST_EXECUTION_AND_RECOVERY_REDTEAM_20261109.md | origin/header corrections, Pyodide/iframe trust boundary, OPFS/IndexedDB crash protocol, P39 evidence layers and 28 proposed tests | L | deep research and red-team corrections; no implementation authorized |
 | PAGES_AND_EXIT_PROVENANCE_VERIFICATION_20261110.md | verified Pages workflow/repo facts, remaining URL unknowns, browser-worker vs native child-exit evidence and EP-26..35 tests | M | deployment/runtime evidence crosswalk; no implementation authorized |
 | PYODIDE_WORKER_CONTROL_CHANNEL_REDTEAM_20261110.md | Pyodide 314.0.5 FFI and default Worker message spoofing risk; private control-channel contract and PYO-CTRL-01..10 tests | M | conditional red-team finding; actual PocketCode worker topology UNKNOWN |
+| FULL_POWER_GAP_RESEARCH_20261110.md | full-pass research and concrete acceptance guidance for outbox, fencing, PWA recovery and execution evidence; red-team corrections | M | research; NOT IMPLEMENTED / NOT RUN |
 | PR4_CONTINUITY_REFINEMENT_RECONCILIATION_20261109.md | seven-file PR #4 review, KEEP/MERGE-INTO-BOOT/DROP classifications and no-merge recommendation | M | review complete; PR remains owner-controlled |
 
 | VERDICT_EVIDENCE_EXIT_PROVENANCE_MATRIX_20261105.md | exit provenance matrix | M | live (O-5) |
