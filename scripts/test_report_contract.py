@@ -1,4 +1,5 @@
 """Unit tests for report semantics/formatting; no code execution is performed."""
+import math
 import unittest
 
 from report_contract import classify_verdict, format_report
@@ -8,8 +9,20 @@ class VerdictTests(unittest.TestCase):
     def test_pass_requires_confirmed_success_and_zero_exit(self):
         self.assertEqual(classify_verdict("succeeded", 0), "PASS")
 
-    def test_nonzero_exit_overrides_script_printed_pass(self):
+    def test_nonzero_exit_is_fail_for_confirmed_success(self):
         self.assertEqual(classify_verdict("succeeded", 2), "FAIL")
+
+    def test_nonzero_exit_does_not_override_uncertain_lifecycle(self):
+        for state, exit_code in (
+            ("timed_out", 137),
+            ("cancelled", 143),
+            ("infrastructure_failed", 1),
+            ("rejected", 2),
+            ("running", 1),
+            ("unknown", 1),
+        ):
+            with self.subTest(state=state, exit_code=exit_code):
+                self.assertEqual(classify_verdict(state, exit_code), "INCOMPLETE")
 
     def test_program_failure_is_fail_even_without_exit_code(self):
         self.assertEqual(classify_verdict("program_failed", None), "FAIL")
@@ -59,12 +72,73 @@ class ReportTests(unittest.TestCase):
         self.assertIn("Verdict: PASS", report)
         self.assertIn("FAIL | column_present | source=program-reported", report)
 
-    def test_output_and_report_are_bounded(self):
-        report = format_report({"execution_status": "running", "stdout": "x" * 100_000,
-                                "checks": [{"name": str(i)} for i in range(150)]})
-        self.assertLessEqual(len(report), 12_000)
+    def test_non_finite_duration_is_unknown(self):
+        for duration in (math.nan, math.inf, -math.inf):
+            with self.subTest(duration=duration):
+                report = format_report({"execution_status": "running", "duration_seconds": duration})
+                self.assertIn("Duration: unknown", report)
+
+    def test_actual_output_truncation_is_reported_without_source_flag(self):
+        report = format_report({"execution_status": "running", "stdout": "x" * 10_000})
+        self.assertIn("stdout: yes", report)
         self.assertIn("field truncated", report)
-        self.assertIn("check list truncated", report)
+
+    def test_string_false_truncation_flag_is_not_treated_as_true(self):
+        report = format_report({
+            "execution_status": "running",
+            "stdout": "short output",
+            "stdout_truncated": "false",
+        })
+        self.assertIn("- stdout: no", report)
+        self.assertIn("Invalid stdout_truncated flag ignored; expected a boolean.", report)
+        self.assertNotIn("output truncated by source", report)
+
+    def test_string_false_list_truncation_flags_are_not_treated_as_true(self):
+        report = format_report({
+            "execution_status": "running",
+            "checks": [{"name": "one"}],
+            "output_files": [{"name": "one.txt", "size_bytes": 1}],
+            "check_list_truncated": "false",
+            "file_list_truncated": "false",
+        })
+        self.assertIn("- check list: no", report)
+        self.assertIn("- file list: no", report)
+        self.assertIn("Invalid check_list_truncated flag ignored; expected a boolean.", report)
+        self.assertIn("Invalid file_list_truncated flag ignored; expected a boolean.", report)
+
+    def test_actual_check_list_truncation_is_reported_without_source_flag(self):
+        report = format_report({
+            "execution_status": "running",
+            "checks": [{"name": str(i)} for i in range(105)],
+        })
+        self.assertIn("check list: yes", report)
+        self.assertIn("check list truncated: 5 additional item(s) omitted", report)
+
+    def test_malformed_entries_are_disclosed(self):
+        report = format_report({
+            "execution_status": "running",
+            "checks": [{"name": "valid"}, None, "bad-check"],
+            "output_files": [{"name": "valid.txt", "size_bytes": 1}, None, "bad-file"],
+        })
+        self.assertIn("malformed check entr", report)
+        self.assertIn("malformed output file entr", report)
+
+    def test_report_cap_preserves_header_and_uncertainty_footer(self):
+        report = format_report({
+            "execution_status": "running",
+            "run_id": "cap-test",
+            "stdout": "x" * 100_000,
+            "stderr": "y" * 100_000,
+            "checks": [{"name": str(i), "detail": "z" * 500} for i in range(150)],
+            "output_files": [{"name": str(i), "size_bytes": i} for i in range(80)],
+            "notes": ["Execution outcome remains unconfirmed."] + ["n" * 500 for _ in range(20)],
+        })
+        self.assertLessEqual(len(report), 12_000)
+        self.assertIn("Verdict: INCOMPLETE", report)
+        self.assertIn("Execution status: running", report)
+        self.assertIn("[REPORT TRUNCATED TO SIZE LIMIT]", report)
+        self.assertIn("Uncertainty / notes:", report)
+        self.assertIn("Execution outcome remains unconfirmed.", report)
 
 
 if __name__ == "__main__":
