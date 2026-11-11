@@ -1,38 +1,25 @@
 # NEXT TASK: PocketCode
 
 ## Goal
-Resolve the owner-controlled P39 decisions and prepare a properly scoped P40 model-only run. Implementation remains blocked.
+Resolve or explicitly defer the owner-controlled P39 decisions; keep implementation and P40 execution gated until then.
 
 ## Current evidence
-- **VERIFIED:** Claude's provider caching/context and AI-lane drafts are in the active branch. Their exact commits are recorded in STATE. The CSS Dynamic Type correction is present.
-- **VERIFIED:** independent audit `CLAUDE_PROVIDER_AND_LANES_INDEPENDENT_AUDIT_20261111.md` opens current Anthropic, OpenAI, Gemini, Aider and MCP sources; corrects outdated provider caching claims; defines an instrumentation contract; and red-teams the role/dispatch proposal.
-- **VERIFIED:** INDEX now measures 520 whitespace-delimited words, below its 1,200-word ceiling.
-- OD-01..OD-13 remain OPEN. CASE-04 remains INCOMPLETE / timed_out. P39/P40 implementation gate CLOSED.
-- P40 six-lane protocol is prepared but NOT AUTHORIZED / NOT RUN. Historical 266/266 applies only to source/test SHA `744cb4dc7cd4994647c84ac7476d0c78a21f0540`.
-- OD-01 is live/incremental streaming only; it does not automatically exclude bounded staged download/share. If bounded release stays in MVP, OD-02..05 still require revocation and recovery semantics.
-- Pages last located successful deployment remains run 39433670146, main SHA `90cc378df1f7c7f1b5f5535c322eddcfbfb9b26c`. Public `portfolio` Pages shares the PocketCode origin. Current live response/headers and generated portfolio script remain UNKNOWN.
-- Pyodios iPhone error cause and Worker topology remain UNKNOWN; Console probe NOT RUN.
+- VERIFIED: Claude and Gemini P39 reviews are reconciled. Claude's provider/design strategy drafts were independently audited but are not P39 gate evidence.
+- VERIFIED: P40 six-lane protocol exists; NOT AUTHORIZED / NOT RUN. Historical 266/266 PASS applies only to SHA `744cb4dc7cd4994647c84ac7476d0c78a21f0540`.
+- OD-01..OD-13 OPEN. OD-01 is live streaming only, not bounded artifact release. If bounded release remains MVP, decide OD-02..05 grant/revocation/recovery together. OD-13 governs client receipt.
+- CASE-04 INCOMPLETE / timed_out. Pyodios Console probe NOT RUN. Live Pages response/headers and sibling script behavior UNKNOWN.
+- Claude C01.4: repository continuity has been used in practice; fresh-chat one-line resume remains unproven. ChatGPT repo creation UNKNOWN. Current CI has path filters/cancellation/Python 3.12 but no Python/SQLite version print.
 
-## Ranked next actions
-1. **Owner gate:** resolve OD-01..OD-13 or explicitly defer them. Resolve OD-01 with a precise distinction between live streaming and bounded artifact release. Then decide the OD-02..05 lifecycle as one unit.
-2. **Claude P39/exit material:** ingest any additional artifact the owner supplies, pin exact repo/branch/SHA/blob hashes, and reconcile evidence. The provider/design drafts audited this pass are not P39 gate evidence.
-3. **After gate clearance only:** obtain explicit authorization for the six-lane P40 model run in `P40_MODEL_ONLY_EXECUTION_PROTOCOL_20261110.md`. Pin source/test SHA and environment; keep model tests separate from canonical CASE acceptance.
-4. **Current code confidence:** run the full Python suite in real checkout/CI on exact SHA after authorization; historical 266/266 is not current.
-5. **Device and origin evidence:** owner runs the read-only Pyodios Console probe; separately verify live Pages deployment/headers/service-worker scope and portfolio generated script. No deployment, settings or domain changes.
+## Ranked steps
+1. Owner resolves or explicitly defers OD-01..OD-13.
+2. Ingest any further Claude P39/exit artifact supplied by owner; pin repo, branch, commit and blob SHAs, then reconcile.
+3. Only after gate clearance and explicit authorization, pin and run the six P40 model lanes and full Python suite separately from canonical CASE acceptance.
+4. Obtain owner-run Pyodios Console evidence and reliable read-only Pages/origin evidence.
+5. Prove fresh-chat resume with a new chat using only the one-line instruction and repository boot sequence; record outcome. Treat CI Python/SQLite version printing as a proposal, not an authorized workflow change.
 
-## Hard constraints
-- D-005/D-006: $0. No API keys, provider calls, paid caching tests, paid hosting, Apple Developer Program, TestFlight or App Store.
-- No provider/runtime/database/transport selection, source/test edits, schema freeze, device tests, Pages deployment/settings/DNS changes, PR #2/#3/#4 changes or RevDev work before applicable explicit owner authorization.
-- Preserve LOOP-01..14, CASE-01..16, D-IDs and all existing canonical IDs.
-- Evidence labels: VERIFIED / INFERRED / UNKNOWN / NOT RUN. Test outcomes: PASS / FAIL / NOT RUN.
-- Python CI path filter covers `scripts/**` and its workflow, plus manual dispatch; docs-only commits do not trigger the source/test workflow.
-- Keep PocketCode and RevDev completely separate.
-
-## Done when
-Owner decisions are explicit or deferred; Claude reviews are reconciled; model/adapter/product acceptance boundaries are clear; and a bounded implementation or test slice is explicitly authorized.
-
-
-## 2026-11-11 execution note
-- Current active HEAD at last refresh: `cac5abc0fc10eeebca971c670c2b7f9f91a23408`; latest five are docs-only. No source/test drift.
-- A read-only browser open of the two known Pages URLs was unavailable. Do not infer live state from this tool failure. The remaining Pages work requires a reliable browser/network probe or owner-provided response/header evidence; no deployment/settings change is authorized.
-- With OD-01..OD-13 still OPEN and no owner authorization, no meaningful P40 test execution or source change is permitted. Continue only non-invasive evidence reconciliation; do not manufacture additional documentation to simulate progress.
+## Constraints
+- D-005/D-006: $0. No API keys/provider calls, paid tests/hosting, Apple Developer Program, TestFlight or App Store.
+- No runtime/provider/database/transport choice, source/test edits, device tests, deployment/settings/DNS changes, PR #2/#3/#4 changes or RevDev work without applicable owner authorization.
+- Preserve LOOP-01..14, CASE-01..16 and all D-IDs. No inference of owner decisions.
+- Evidence: VERIFIED / INFERRED / UNKNOWN / NOT RUN. Tests: PASS / FAIL / NOT RUN.
+- Commit before summarizing; checkpoint after each unit; keep files within their stated word limits.
