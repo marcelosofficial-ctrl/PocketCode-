@@ -13,13 +13,16 @@ Size classes: S under 8 KB, M 8-25 KB, L 25-50 KB, XL over 50 KB (never load who
 | kit/docs/WORK_PROTOCOL.md | working rules v2 | M | live |
 | kit/docs/PLUGIN_LESSONS.md | what we adopted from plugins | S | live |
 | kit/docs/REUSE_BACKLOG.md | open-source reuse candidates | S | live |
+| kit/docs/AI_LANES_AND_DISPATCH.md | which AI does what, task packets, routing | S | proposed |
 
 ## Product program (2026-11-08, research only)
 | path | what it answers | size | status |
 |---|---|---|---|
 | STRATEGY_PROGRAM_20261108.md | design/product strategy tracker | S | live |
 | APPLE_DESIGN_ENGINEERING_SPEC_20261108.md | Claude's proposed PoCo web design; not implemented | S | proposed |
-| IPHONE_ONLY_APP_STORE_ROADMAP_20261108.md | phone-only build, signing, TestFlight and submission | M | proposed |
+| PROVIDER_CACHING_AND_CONTEXT_ENGINEERING_20261110.md | provider caching facts, context layers, tool schemas, routing | M | proposed |
+| RED_TEAM_CORRECTIONS_CLAUDE_20261110.md | Claude's corrections to its own earlier documents | S | live |
+| IPHONE_ONLY_APP_STORE_ROADMAP_20261108.md | phone-only build, signing, TestFlight and submission (paid steps deferred by D-006; see corrections) | M | proposed |
 | WEBSITE_AUDIT_AND_POCO_PAGE_PLAN_20261108.md | portfolio audit and PoCo page plan | M | proposed |
 | GOVERNANCE_AUDIT_20261108.md | rule audit and recommendations | M | proposed |
 | CLAUDE_REVIEW_RELEASE_GRANT_RESEARCH_20261108.md | partial F-01..F-09 review; superseded | S | superseded |
@@ -71,7 +74,6 @@ Size classes: S under 8 KB, M 8-25 KB, L 25-50 KB, XL over 50 KB (never load who
 | P40_MODEL_ONLY_EXECUTION_PROTOCOL_20261110.md | six-lane, source-pinned model coverage and gated test sequence | M | prepared; NOT AUTHORIZED / NOT RUN |
 | P40_SOURCE_PINNED_COVERAGE_AND_PAGES_ORIGIN_AUDIT_20261111.md | model boundaries, exact test mapping, stale deployment and shared-origin sibling evidence | M | static audit; no implementation |
 | PR4_CONTINUITY_REFINEMENT_RECONCILIATION_20261109.md | seven-file PR #4 review, KEEP/MERGE-INTO-BOOT/DROP classifications and no-merge recommendation | M | review complete; PR remains owner-controlled |
-
 | VERDICT_EVIDENCE_EXIT_PROVENANCE_MATRIX_20261105.md | exit provenance matrix | M | live (O-5) |
 | PROVIDER_NEUTRAL_RECIPE_AND_DURABLE_TASK_MANIFEST_PROPOSAL_20261105.md | recipe and manifest proposal | M | proposal |
 | CANONICAL_ACCEPTANCE_TRACEABILITY_20261029.md | LOOP and CASE traceability | S | live |
