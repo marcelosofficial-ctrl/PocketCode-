@@ -10,11 +10,11 @@
 ## Mandatory resume
 - Read in order: BOOT.md, STATE.md, NEXT_TASK.md, CHECKPOINT.md, INBOX_chatgpt.md.
 - Latest five commits before this checkpoint update:
-  1. `9fc34ebd` docs(checkpoint): capture provider audit and index repair
-  2. `753fcd70` docs(next-task): rank owner gate and provider audit followups
-  3. `2b96c970` docs(state): record Claude research audit and current head
-  4. `3585703f` docs(index): restore word budget and index independent audit
-  5. `1a8efd48` docs(research): audit provider caching and AI lane claims
+  1. `d6f5be1d` docs(checkpoint): pin latest five commit lineage
+  2. `9fc34ebd` docs(checkpoint): capture provider audit and index repair
+  3. `753fcd70` docs(next-task): rank owner gate and provider audit followups
+  4. `2b96c970` docs(state): record Claude research audit and current head
+  5. `3585703f` docs(index): restore word budget and index independent audit
 
 ## Work completed
 - Reconciled Claude's new provider/context and AI-lane research in the active branch. Source commit `3b73e2c` adds `PROVIDER_CACHING_AND_CONTEXT_ENGINEERING_20261110.md`, `RED_TEAM_CORRECTIONS_CLAUDE_20261110.md`, `kit/docs/AI_LANES_AND_DISPATCH.md`, and index rows. Commit `2247851` fixes the Dynamic Type CSS override and qualifies the Safari `linear()` wording.
@@ -33,9 +33,9 @@
 5. Claude's further P39/exit-provenance material from owner remains awaited; the new strategy drafts do not close P39.
 
 ## Verification and limits
-- **VERIFIED:** seven commits after prior checkpoint `ba1d3dd` are documentation-only: two Claude research/design commits plus five audit/index/state/next/checkpoint commits. No `scripts/` or test paths changed.
-- **VERIFIED:** branch tip before checkpoint update was `753fcd7008498a2d69df35a03d4ebc1ec36079af` after STATE/NEXT_TASK updates; index measured 520 words.
-- Exact-SHA combined status for final HEAD `9fc34ebd4164c75dcbd35b12310d78eee8454a6d` returned no statuses. Workflow-run connector returned no PR-triggered runs; source/test workflow not expected for docs-only changes. CI NOT RUN.
+- **VERIFIED:** all changes since prior checkpoint `ba1d3dd` are documentation-only: Claude's research/design drafts plus the audit/index/state/next/checkpoint updates. No `scripts/` or test paths changed.
+- **VERIFIED:** branch tip before this checkpoint update was `d6f5be1d1aacaa613cc1281cb34f30d59a5a992a`; index measured 520 words.
+- Exact-SHA combined status for pre-checkpoint HEAD `d6f5be1d1aacaa613cc1281cb34f30d59a5a992a` returned no statuses. Workflow-run connector returned no PR-triggered runs; source/test workflow not expected for docs-only changes. CI NOT RUN.
 - **NOT RUN:** full Python suite, P40 lanes, provider API/cache calls, device/browser tests, live Pages/header checks and Pyodios Console probe.
 - D-005/D-006 no-spend preserved. No API key, provider, runtime, database, transport, dependency or paid service selected. PR #2/#3/#4 untouched. No RevDev work.
 - Historical 266/266 PASS remains tied only to source/test SHA `744cb4dc7cd4994647c84ac7476d0c78a21f0540`.
