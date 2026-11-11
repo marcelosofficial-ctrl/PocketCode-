@@ -1,7 +1,7 @@
 # NEXT TASK: PocketCode
 
 ## Goal
-Prepare a bounded, source-pinned P40 model-only execution request against the adopted OD-01..OD-13 policies; do not execute until the owner explicitly authorizes that bounded run.
+Obtain approval for the exact read-only P40 model run in `P40_BOUNDED_MODEL_RUN_AUTHORIZATION_20261111.md`; after approval, verify the pinned HEAD/blobs and execute only the listed tests.
 
 ## Current evidence
 - VERIFIED: Claude and Gemini P39 reviews are reconciled. Claude's provider/design strategy drafts were independently audited but are not P39 gate evidence.
@@ -11,11 +11,11 @@ Prepare a bounded, source-pinned P40 model-only execution request against the ad
 - Claude C01.4: repository continuity has been used in practice; fresh-chat one-line resume remains unproven. ChatGPT repo creation UNKNOWN. Current CI has path filters/cancellation/Python 3.12 but no Python/SQLite version print.
 
 ## Ranked steps
-1. Prepare the smallest P40 lane set needed to test adopted policy invariants; pin exact source/test blobs, command, environment and expected PASS/FAIL/BLOCKED outcomes.
-2. Request only the bounded P40 execution authorization needed for those model tests; do not ask Claude for another review while busy.
-3. After authorization, run targeted model lanes and full suite separately; never treat model PASS as adapter or CASE acceptance.
+1. Await approval of the exact P40 read-only run request; do not broaden it to code edits, adapters or device tests.
+2. After approval, revalidate target HEAD and ten source/test blob SHAs, run lanes 1/2/3/5/6 and full suite; lane 4 stays BLOCKED.
+3. Publish exact test output and environment; keep model results separate from adapter and canonical CASE acceptance.
 4. Obtain owner-run Pyodios Console evidence and reliable read-only Pages/origin evidence.
-5. Prove fresh-chat resume. CI Python/SQLite version printing remains a proposal, not an authorized workflow change.
+5. Prove fresh-chat resume. CI version printing is included only in the bounded run request, not a workflow change.
 
 ## Constraints
 - D-005/D-006: $0. No API keys/provider calls, paid tests/hosting, Apple Developer Program, TestFlight or App Store.
