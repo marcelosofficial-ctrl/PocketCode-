@@ -1,19 +1,18 @@
 # CHECKPOINT — 2026-11-11
 
-Unit: adopted P39 policy and bounded P40 run preparation.
+Unit: reconcile live branch state and P40 authorization after docs-only branch advance.
 Branch: `pocketcode-ai-workflow-director-research-2026-10-28`.
-Starting HEAD: `a4d92908b787d59cec83f2841082abd67c946e59`.
 
-Decisions:
-- OD-01..OD-13 adopted under explicit owner delegation; full record: `P39_OWNER_DELEGATED_DECISIONS_20261111.md`.
-- No live streaming in MVP; verified bounded artifact download/share remains. Fail closed on revoked/stale authority and missing security/evidence/termination gates.
-- Updated `DECISIONS.md`, `INDEX.md`, `STATE.md`, `NEXT_TASK.md`.
+Verified:
+- Live branch HEAD: `0c2096c1e82cc5f7b4d51918889b86a8a4fa387f`.
+- Latest five commits: `0c2096c1`, `c937efbd`, `521bf391`, `6b495a8d`, `4d4cd5f2`; all documentation-only.
+- Re-fetched all ten P40 source/test blobs at live HEAD; every SHA matches the immutable target commit `319cffef121e327331aeaff59522ae279b112ecc`.
+- Latest HEAD has zero combined statuses and zero check runs: CI NOT RUN.
 
-P40:
-- Prepared `P40_BOUNDED_MODEL_RUN_AUTHORIZATION_20261111.md` against target commit `319cffef121e327331aeaff59522ae279b112ecc`.
-- Revalidated all ten source/test blob SHAs. Lanes 1/2/3/5/6 and full suite commands pinned; lane 4 BLOCKED / NOT TESTABLE.
-- Exact request is read-only tests only; no code/config/workflow changes.
+Reconciled:
+- STATE.md now records live HEAD/latest five and the ten-pin verification.
+- P40 authorization now permits only docs-only branch advances while tests remain pinned to exact target SHA and all ten pins remain identical. Approval is required for this revised request.
 
-Gate: policy decisions CLEARED; bounded P40 execution NOT AUTHORIZED / NOT RUN. CI/tests NOT RUN. CASE-04 remains INCOMPLETE / timed_out. Claude not asked for more work.
+Gate: no P40 tests run; no source/test/workflow/config changes. No Claude request. CASE-04 remains INCOMPLETE / timed_out.
 
-Next: owner approves or narrows the bounded run request.
+Next: owner approves or narrows the revised read-only P40 request. After approval, verify ancestry and pins at target SHA before any test execution.

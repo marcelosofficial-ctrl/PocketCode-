@@ -3,7 +3,7 @@
 **Prepared:** 2026-11-11  
 **Branch:** `pocketcode-ai-workflow-director-research-2026-10-28`  
 **Target commit:** `319cffef121e327331aeaff59522ae279b112ecc`  
-**Status:** PREPARED / NOT AUTHORIZED / NOT RUN  
+**Status:** REVISED AFTER BRANCH ADVANCE / APPROVAL REQUIRED / NOT RUN  
 **Decision basis:** OD-01..OD-13 adopted in `P39_OWNER_DELEGATED_DECISIONS_20261111.md`. This request does not itself open the technical gate.
 
 ## 1. Exact scope requested
@@ -20,7 +20,7 @@ Lane 4 (grant-event relay fencing) is explicitly BLOCKED / NOT TESTABLE in the c
 
 ## 2. Source and test pins
 
-All ten current branch blob SHAs were re-fetched after docs-only decision commits and match the prior P40 audit:
+All ten source/test blob SHAs were re-fetched at live branch HEAD `0c2096c1e82cc5f7b4d51918889b86a8a4fa387f` and match the immutable target commit `319cffef121e327331aeaff59522ae279b112ecc`. The five intervening branch commits (`4d4cd5f2`, `6b495a8d`, `521bf391`, `c937efbd`, `0c2096c1`) are documentation-only. The test run remains pinned to the immutable target commit, not to a moving branch ref:
 
 | Lane | Source blob SHA | Test blob SHA | Command |
 |---|---|---|---|
@@ -52,8 +52,8 @@ Run environment: the existing CI workflow specifies `ubuntu-latest` and Python `
 
 ## 4. Stop conditions
 
-Stop without running if target branch HEAD differs from `319cffef121e327331aeaff59522ae279b112ecc`, any of the ten blob pins differs, the workflow would trigger a deployment or billable workload, or the test command requires code/config changes. Do not rebase, force-push, merge, modify PR #2/#3/#4, or use RevDev evidence.
+Stop without running if the active branch no longer descends from target commit `319cffef121e327331aeaff59522ae279b112ecc`, any of the ten blob pins at that target commit differs from the table, the pinned checkout cannot be established, the workflow would trigger a deployment or billable workload, or the test command requires code/config changes. Docs-only commits after the target are permitted only while all ten target-commit pins remain exact; execute tests at the pinned target SHA, never silently at the moving branch HEAD. Do not rebase, force-push, merge, modify PR #2/#3/#4, or use RevDev evidence.
 
 ## 5. Authorization state
 
-**NOT AUTHORIZED.** The owner delegated OD policy decisions but has not yet explicitly authorized this bounded P40 execution. Replying with approval of this exact request (or a narrower lane subset) will open only this read-only test run. It will not authorize implementation, adapter selection, provider calls, device tests, deployment or spending.
+**NOT AUTHORIZED.** The owner delegated OD policy decisions but has not yet explicitly authorized this bounded P40 execution. Replying with approval of this revised exact request (or a narrower lane subset) will open only this read-only test run. It will not authorize implementation, adapter selection, provider calls, device tests, deployment or spending.
