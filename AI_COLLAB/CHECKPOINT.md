@@ -1,17 +1,17 @@
 # CHECKPOINT — 2026-11-11
 
-Unit: Claude C01.4 reconciliation and continuity-file compaction.
+Unit: owner-delegated P39 policy decisions.
 Branch: `pocketcode-ai-workflow-director-research-2026-10-28`.
-Starting HEAD: `163eef5f004b39360a37fcf89aca22018ea235d4`.
-STATE: `d378f03b9f1ade62c609776dd2dbf6f2247c4be0` (final state-head clarification).
-NEXT_TASK: `f35b629ec988ddd871093dab9ba1d8445b74a08b`.
+Starting HEAD: `a4d92908b787d59cec83f2841082abd67c946e59`.
 
 Done:
-- Re-read required five files and latest five commits.
-- Confirmed branch HEAD and docs-only history; inspected actual Python CI workflow.
-- Recorded Claude's continuity findings; fresh-chat resume and repo creation remain unproven.
-- Compacted STATE, NEXT_TASK and this checkpoint to their word budgets.
+- Adopted OD-01..OD-13 conservative defaults under the owner's explicit delegation.
+- Recorded full rationale/boundaries in `AI_COLLAB/P39_OWNER_DELEGATED_DECISIONS_20261111.md`.
+- Updated `DECISIONS.md`, `AI_COLLAB/INDEX.md`, `STATE.md` and `NEXT_TASK.md`.
+- No Claude request; existing Claude/Gemini reviews suffice absent new conflict.
 
-Evidence: CI/tests NOT RUN. Workflow config has path filters, cancellation and Python 3.12; no Python/SQLite version print. OD-01..OD-13 OPEN; P39/P40 gate CLOSED; CASE-04 INCOMPLETE / timed_out. No source/test, device, provider, spend, deployment, PR or RevDev work.
+Decision: no live streaming in MVP; bounded verified artifact handoff remains. Fail closed on revocation/unknown authority, require trusted time/restore-safe identity/receipt binding, typed exit projection, termination acknowledgement and client acknowledgement. No stack selected.
 
-Next: owner decisions; further Claude P39 artifact; authorized P40/full-suite run only after gate clearance.
+Gate: product-policy decisions CLEARED; technical conformance/P40 execution remains CLOSED pending explicit bounded execution authorization. No source/test edits or runs. CI/tests NOT RUN. CASE-04 remains INCOMPLETE / timed_out.
+
+Next: pin minimal P40 lane source/test set and prepare an exact bounded execution authorization request.
