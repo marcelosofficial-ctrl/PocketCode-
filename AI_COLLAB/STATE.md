@@ -15,6 +15,7 @@ Updated: 2026-11-11 by ChatGPT. At the start of the 2026-11-11 lineage refresh, 
 - UNKNOWN: out-of-band deploy after 2026-10-20; live headers/redirects/current response; generated portfolio script behavior; target-device storage; actual Pyodios worker topology.
 - `P40_MODEL_ONLY_EXECUTION_PROTOCOL_20261110.md` revised to six lanes with exact existing test methods. Known model gaps are marked FAIL/BLOCKED rather than described as passing coverage. NOT AUTHORIZED / NOT RUN.
 - `P40_SOURCE_PINNED_COVERAGE_AND_PAGES_ORIGIN_AUDIT_20261111.md` pins model/test blobs, corrects seven prior claims, records exact Pages deployment and portfolio sibling origin, and reviews W3C/WPT/OWASP reuse/licences.
+- 2026-11-11 owner-gate clarification: OD-01 decides live streaming only; NO does not automatically exclude bounded artifact download/share. If bounded release remains in MVP, OD-02..05 still require explicit grant/revocation/recovery semantics. OD-13 governs claims of client receipt. No OD decision was inferred.
 - VERIFIED current-branch continuity at start of refresh: HEAD `3d3102f` was three documentation-only commits after audited HEAD `3545c1e`; compare output listed only `AI_COLLAB/` documentation paths. The audit's source/test pins therefore remained applicable.
 
 ## Decisions
