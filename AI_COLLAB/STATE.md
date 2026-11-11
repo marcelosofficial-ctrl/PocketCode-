@@ -47,3 +47,12 @@ Updated: 2026-11-11 by ChatGPT. This pass began at active branch HEAD `2247851a8
 - VERIFIED: all 10 source/test blob pins in the P40 source-pinned audit still match the active branch exactly: release-grant model/tests, FakeOutbox/tests, EventJournal/tests, execution projection/tests and receipt store/tests. No source/test drift since those pins.
 - VERIFIED: combined status for exact HEAD returned no statuses; the workflow-run connector returned no PR-triggered runs. CI NOT RUN (not PASS or FAIL); full suite and P40 lanes NOT RUN.
 - No owner OD decision changed. P39/P40 gate remains CLOSED; no source/test/device/provider/deployment/PR/RevDev work performed in this refresh.
+
+
+## 2026-11-11 follow-up refresh (after prior checkpoint)
+- **VERIFIED:** active branch resolves to `cac5abc0fc10eeebca971c670c2b7f9f91a23408`; comparison against the branch ref is identical.
+- **VERIFIED:** latest five branch commits are `cac5abc0`, `2b2f8b45`, `0b757548`, `227b8d52`, `d6f5be1d`. All five touch only `AI_COLLAB/CHECKPOINT.md` or `AI_COLLAB/STATE.md`; no scripts/tests or product files changed.
+- **VERIFIED:** exact-HEAD combined status has no statuses; the available commit workflow-run query returns no PR-triggered runs. CI status is therefore **NOT RUN / no check evidence**, not PASS.
+- **VERIFIED:** all ten P40 source/test blob pins were re-read in the immediately preceding refresh and matched exactly. No intervening commit touched source/test files.
+- **UNKNOWN:** direct read-only browser opens of both `https://marcelosofficial-ctrl.github.io/PocketCode-/` and `https://marcelosofficial-ctrl.github.io/portfolio/` were inaccessible to the available web reader. This does not establish outage, headers, current deployment content or exploitability. Live response and same-origin sibling behavior remain UNKNOWN.
+- OD-01..OD-13 remain OPEN; P39/P40 gate CLOSED; CASE-04 INCOMPLETE / timed_out. No owner decision, source/test/device/provider/deployment/PR/RevDev change or test run occurred.
