@@ -1,5 +1,5 @@
 # STATE: PocketCode
-Updated: 2026-11-11. Active branch HEAD: `163eef5f004b39360a37fcf89aca22018ea235d4`.
+Updated: 2026-11-11. Unit began at active branch HEAD: `163eef5f004b39360a37fcf89aca22018ea235d4`.
 
 ## Status and evidence
 - Phase: discovery/product definition. P39/exit-provenance and P40 implementation gates CLOSED. No runtime, provider, database, transport or storage engine selected.
