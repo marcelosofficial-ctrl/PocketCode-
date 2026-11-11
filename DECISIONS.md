@@ -30,6 +30,12 @@ Only record decisions that have actually been made. Proposals belong in the open
 - **Operational detail:** Promotional credits and advertised free tiers are not proof of zero cost. Conserve GitHub Actions minutes and do not trigger deployments for documentation-only changes.
 - **Reference:** [Zero-budget work plan](PRODUCT/ZERO_BUDGET_WORK_PLAN.md).
 
+## OD-01..OD-13: P39 product-policy decisions (2026-11-11)
+- **Status:** Accepted under the owner's explicit delegation to ChatGPT to make project-fit decisions in the 2026-11-11 conversation.
+- **Decision:** Adopt the conservative policy set in [P39_OWNER_DELEGATED_DECISIONS_20261111.md](AI_COLLAB/P39_OWNER_DELEGATED_DECISIONS_20261111.md): no live streaming in MVP; bounded verified artifact handoff remains; re-check policy before claim and commit; fail closed on stale/revoked authority; require current-policy authorization for resume; authoritative time and restore-safe identities; immutable receipt binding; INCOMPLETE on missing security/evidence/termination gates; typed coordinator projection; client acknowledgement for client-receipt claims.
+- **Boundary:** These settle product policy only. They do not authorize source/test edits or runs, close technical conformance, select a provider/runtime/database/transport/storage engine, or relax D-005/D-006. P39/P40 implementation gate remains closed pending a bounded source-pinned execution authorization. Preserve LOOP-01..14, CASE-01..16 and all D-IDs.
+- **Reason:** The recommendations are conservative, provider-neutral, preserve bounded artifact handoff, and avoid promising streaming/revocation/receipt guarantees the current evidence cannot prove.
+
 ## Proposed, not yet decided
 - Start with a mobile-first PWA.
 - Use a remote isolated Python runtime for the first vertical slice.
