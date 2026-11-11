@@ -1,6 +1,6 @@
-# Apple-style design engineering spec for the PoCo web app (research and proposal, 2026-11-08)
+# Apple-style design engineering spec for the PoCo web app (research and proposal, 2026-11-08; corrected 2026-11-10)
 
-Status: PROPOSED. Nothing here is implemented. Target stack: the current prototype is one static HTML file (prototypes/mobile-runner/index.html, about 17 KB) served from GitHub Pages and installed on the iPhone from Safari (see NO_SPEND_PWA_PATH_20261108.md). RevDev is out of scope here: its UI source is not on GitHub, and the site claims .NET 8 / WPF (UNVERIFIED), so a RevDev design spec waits for PC access. Tags: VERIFIED = read on an Apple primary page (accessed 2026-11-08); SECONDARY = summaries and skill-pack pages; INFERRED; UNKNOWN = test on the iPhone.
+Status: PROPOSED. Nothing here is implemented. Correction note 2026-11-10: fixed a CSS bug in section 3 (see RED_TEAM_CORRECTIONS_CLAUDE_20261110.md). Target stack: the current prototype is one static HTML file (prototypes/mobile-runner/index.html, about 17 KB) served from GitHub Pages and installed on the iPhone from Safari (see NO_SPEND_PWA_PATH_20261108.md). RevDev is out of scope here: its UI source is not on GitHub, and the site claims .NET 8 / WPF (UNVERIFIED), so a RevDev design spec waits for PC access. Tags: VERIFIED = read on an Apple primary page (accessed 2026-11-08); SECONDARY = summaries and skill-pack pages; INFERRED; UNKNOWN = test on the iPhone.
 
 ## 1. What actually makes it feel like Apple (and what does not)
 - **Liquid Glass is a navigation-layer material, not a content style.** HIG Materials (VERIFIED): Liquid Glass forms a functional layer for controls and navigation floating above content; do not use it in the content layer; use standard materials (blur, vibrancy) for content-layer structure; limit glass effects to the most important functional elements; the clear variant only over visually rich backgrounds, with a dimming layer (35% opacity suggested) over bright content. So "glass everywhere" is the opposite of the guidance.
@@ -44,10 +44,11 @@ Status: PROPOSED. Nothing here is implemented. Target stack: the current prototy
   :root { --bg: #000000; --bg-grouped: #000000; --surface: #1c1c1e; --label: #f5f5f7;
           --label-2: #a1a1a6; --separator: rgba(84, 84, 88, 0.6); }
 }
-html { font: -apple-system-body; font-size: 100%; }  /* Dynamic Type hook in WebKit; UNKNOWN until verified on the device */
+/* Dynamic Type hook in WebKit. Do NOT add a font-size declaration after this line: it would override the size this shorthand provides. UNKNOWN until verified on the device. */
+html { font: -apple-system-body; }
 body { font-family: var(--font); font-size: var(--text-body); color: var(--label); background: var(--bg-grouped); }
 ```
-- `linear()` easing is supported in Safari (a 17.4 release note lists a fix to it; VERIFIED). Do not impose universal physics values: treat the spring curve as a tunable token per interaction.
+- `linear()` easing is supported in Safari at least since 17.4 (a 17.4 release note lists a fix to it; VERIFIED). Do not impose universal physics values: treat the spring curve as a tunable token per interaction.
 - Continuous (squircle) corners: the CSS `corner-shape` property exists in the specification and in some engines but Safari support is UNKNOWN to me; use `border-radius` and add `@supports (corner-shape: squircle) { .card { corner-shape: squircle; } }` as progressive enhancement only.
 
 ## 4. Components (each with a state, a size rule and an accessibility rule)
