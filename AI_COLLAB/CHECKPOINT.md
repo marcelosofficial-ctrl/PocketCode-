@@ -1,18 +1,18 @@
 # CHECKPOINT — 2026-11-11
 
-Unit: reconcile live branch state and P40 authorization after docs-only branch advance.
+Unit: execute approved P40 bounded read-only model run, or establish execution blocker.
 Branch: `pocketcode-ai-workflow-director-research-2026-10-28`.
 
 Verified:
-- Live branch HEAD: `0c2096c1e82cc5f7b4d51918889b86a8a4fa387f`.
-- Latest five commits: `0c2096c1`, `c937efbd`, `521bf391`, `6b495a8d`, `4d4cd5f2`; all documentation-only.
-- Re-fetched all ten P40 source/test blobs at live HEAD; every SHA matches the immutable target commit `319cffef121e327331aeaff59522ae279b112ecc`.
-- Latest HEAD has zero combined statuses and zero check runs: CI NOT RUN.
+- Owner approval received for exact P40 request.
+- Target SHA `319cffef121e327331aeaff59522ae279b112ecc` is merge base of live HEAD `35cb8881f66f519d365858520cc3e8c4b12a61bb`; six docs-only commits ahead, zero behind.
+- All ten source/test blob SHAs re-fetched at target SHA and match the authorization table.
+- Existing workflow has workflow_dispatch, Ubuntu latest, Python 3.12, full scripts unittest discovery; it does not print SQLite version.
 
-Reconciled:
-- STATE.md now records live HEAD/latest five and the ten-pin verification.
-- P40 authorization now permits only docs-only branch advances while tests remain pinned to exact target SHA and all ten pins remain identical. Approval is required for this revised request.
+Execution:
+- Tests NOT RUN. GitHub connector has no workflow-dispatch/write action; local git clone failed because container DNS could not resolve github.com.
+- No source/test/workflow/config changes, no spend, no provider/device/deployment actions.
+- CI latest HEAD has zero statuses/check runs: NOT RUN.
 
-Gate: no P40 tests run; no source/test/workflow/config changes. No Claude request. CASE-04 remains INCOMPLETE / timed_out.
-
-Next: owner approves or narrows the revised read-only P40 request. After approval, verify ancestry and pins at target SHA before any test execution.
+Next: obtain a viable runner. Workflow-only version-print/target-SHA checkout change requires separate owner approval; alternatively owner runs exact commands and provides complete output.
+CASE-04 remains INCOMPLETE / timed_out. Claude not contacted.

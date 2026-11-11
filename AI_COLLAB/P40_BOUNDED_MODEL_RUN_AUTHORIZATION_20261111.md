@@ -3,7 +3,7 @@
 **Prepared:** 2026-11-11  
 **Branch:** `pocketcode-ai-workflow-director-research-2026-10-28`  
 **Target commit:** `319cffef121e327331aeaff59522ae279b112ecc`  
-**Status:** REVISED AFTER BRANCH ADVANCE / APPROVAL REQUIRED / NOT RUN  
+**Status:** OWNER APPROVED 2026-11-11 / EXECUTION BLOCKED / NOT RUN  
 **Decision basis:** OD-01..OD-13 adopted in `P39_OWNER_DELEGATED_DECISIONS_20261111.md`. This request does not itself open the technical gate.
 
 ## 1. Exact scope requested
@@ -56,4 +56,4 @@ Stop without running if the active branch no longer descends from target commit 
 
 ## 5. Authorization state
 
-**NOT AUTHORIZED.** The owner delegated OD policy decisions but has not yet explicitly authorized this bounded P40 execution. Replying with approval of this revised exact request (or a narrower lane subset) will open only this read-only test run. It will not authorize implementation, adapter selection, provider calls, device tests, deployment or spending.
+**APPROVED BY OWNER IN CHAT ON 2026-11-11.** Approval covers only this exact read-only run. Execution was attempted but blocked because the connected GitHub toolset has no workflow-dispatch action and the local runner could not resolve github.com. No tests ran. See `P40_EXECUTION_ATTEMPT_20261111.md`. A workflow-only change to print Python/SQLite versions and pin checkout to the target SHA is outside this approval and requires separate owner approval. No implementation, adapter selection, provider calls, device tests, deployment or spending are authorized.

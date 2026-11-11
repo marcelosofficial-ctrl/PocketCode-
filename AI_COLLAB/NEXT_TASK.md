@@ -1,7 +1,7 @@
 # NEXT TASK: PocketCode
 
 ## Goal
-Obtain approval for the exact read-only P40 model run in `P40_BOUNDED_MODEL_RUN_AUTHORIZATION_20261111.md`; after approval, verify the pinned HEAD/blobs and execute only the listed tests.
+Complete the owner-approved P40 read-only run. Approval is recorded; execution is currently blocked because GitHub dispatch is not exposed and local checkout cannot reach GitHub.
 
 ## Current evidence
 - VERIFIED: Claude and Gemini P39 reviews are reconciled. Claude's provider/design strategy drafts were independently audited but are not P39 gate evidence.
@@ -11,9 +11,9 @@ Obtain approval for the exact read-only P40 model run in `P40_BOUNDED_MODEL_RUN_
 - Claude C01.4: repository continuity has been used in practice; fresh-chat one-line resume remains unproven. ChatGPT repo creation UNKNOWN. Current CI has path filters/cancellation/Python 3.12 but no Python/SQLite version print.
 
 ## Ranked steps
-1. Await approval of the exact P40 read-only run request; do not broaden it to code edits, adapters or device tests.
-2. After approval, revalidate target HEAD and ten source/test blob SHAs, run lanes 1/2/3/5/6 and full suite; lane 4 stays BLOCKED.
-3. Publish exact test output and environment; keep model results separate from adapter and canonical CASE acceptance.
+1. Secure an execution path for the approved exact target SHA. The current GitHub connector supports reads/log retrieval but no workflow dispatch; container clone failed DNS.
+2. Ask owner before any workflow-only change that prints Python/SQLite versions and pins checkout to target SHA. No workflow/config edits are currently authorized.
+3. Alternatively, owner can run the exact commands in the authorization record at target SHA and supply complete output. Keep lane 4 BLOCKED and model results separate from adapter/CASE acceptance.
 4. Obtain owner-run Pyodios Console evidence and reliable read-only Pages/origin evidence.
 5. Prove fresh-chat resume. CI version printing is included only in the bounded run request, not a workflow change.
 

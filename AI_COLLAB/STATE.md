@@ -1,12 +1,12 @@
 # STATE: PocketCode
-Updated: 2026-11-11. Reconciled against live branch HEAD `0c2096c1e82cc5f7b4d51918889b86a8a4fa387f`.
+Updated: 2026-11-11. Reconciled against live branch HEAD `35cb8881f66f519d365858520cc3e8c4b12a61bb`.
 
 ## Status and evidence
 - Phase: discovery/product definition. P39 product-policy decision gate CLEARED by owner delegation; P39 technical-conformance/P40 execution gate remains CLOSED pending bounded execution authorization. No runtime, provider, database, transport or storage engine selected.
 - Historical PASS: Actions run `42365455316`, workflow "PocketCode Python conformance tests", 266/266 on source/test SHA `744cb4dc7cd4994647c84ac7476d0c78a21f0540`. Historical only, not current.
-- Live branch latest five (verified through GitHub branch history): `0c2096c1`, `c937efbd`, `521bf391`, `6b495a8d`, `4d4cd5f2`. These are documentation-only commits; no scripts/tests changed. The earlier `163eef5f` checkpoint reference was stale.
-- Ten P40 source/test pins revalidated exact at live branch HEAD `0c2096c1e82cc5f7b4d51918889b86a8a4fa387f` and all match the immutable target commit `319cffef121e327331aeaff59522ae279b112ecc`. The intervening commits are docs-only. Exact commands and scope are in `P40_BOUNDED_MODEL_RUN_AUTHORIZATION_20261111.md`. Lane 4 grant-event relay remains BLOCKED / NOT TESTABLE.
-- Exact HEAD combined status: no statuses. CI and full suite: NOT RUN, not PASS. P40 six-lane protocol prepared but NOT AUTHORIZED / NOT RUN.
+- Live branch latest five: `35cb8881`, `0c2096c1`, `c937efbd`, `521bf391`, `6b495a8d`. All five are documentation-only; no scripts/tests changed.
+- Ten P40 source/test pins revalidated exact directly at target commit `319cffef121e327331aeaff59522ae279b112ecc`; live HEAD is six documentation-only commits ahead and zero behind. Owner approved the bounded read-only run, but execution is BLOCKED by unavailable dispatch/runner capability; see `P40_EXECUTION_ATTEMPT_20261111.md`. Lane 4 remains BLOCKED / NOT TESTABLE.
+- Latest HEAD combined status: no statuses and zero check runs. CI and full suite: NOT RUN, not PASS. P40 execution explicitly APPROVED but NOT RUN due unavailable dispatch/runner.
 - Model findings: equal grant progress increments aggregate_version without matching event/outbox; grant-event consumer lacks grant/source/producer binding; FakeOutbox fencing covers effect dispatch, not grant-event publication; EventJournal producer identity is adapter-verified input, not cryptographic authentication. These are model/test-double findings, not durable production proof.
 - Pyodios iPhone (owner-reported): app 1.1.0 Build 7, Pyodide 314.0.5, Python 3.14.2. Editor returned "[Bridge/executePython] PythonError"; Console probe NOT RUN; cause and worker topology UNKNOWN.
 - Pages: last located successful deploy run `39433670146` (2026-10-20), main SHA `90cc378df1f7c7f1b5f5535c322eddcfbfb9b26c`, URL `https://marcelosofficial-ctrl.github.io/PocketCode-/`. Public portfolio Pages URL `https://marcelosofficial-ctrl.github.io/portfolio/` shares scheme/host/port; paths do not isolate origin storage. This is a trust boundary, not proof of exploit. Current live response, headers, out-of-band deployment and generated sibling script behavior UNKNOWN.
@@ -24,7 +24,7 @@ Updated: 2026-11-11. Reconciled against live branch HEAD `0c2096c1e82cc5f7b4d519
 - 2026-11-07 owner: AGENTS.md carries tiered decision rights. 2026-11-08 owner: possible PoCo rename undecided; website design must not change. Nothing renamed.
 
 ## Open items
-1. Owner: approve or narrow the exact read-only P40 run in `P40_BOUNDED_MODEL_RUN_AUTHORIZATION_20261111.md`; no code edits or adapters are included.
+1. Obtain a runner for the approved P40 run: either owner-authorized workflow-only instrumentation/dispatch pinned to target SHA, or owner-supplied complete output from the exact commands. Current GitHub connector exposes no workflow-dispatch action and local checkout is blocked by DNS.
 2. Owner: run read-only Pyodios Console probe in `PYODIOS_PYTHONERROR_BRIDGE_TRIAGE_20261106.md`.
 3. Claude is busy; do not request another review unless new evidence creates a material unresolved conflict. Existing Claude/Gemini reviews are reconciled.
 4. After explicit bounded authorization, run applicable P40 lanes and full Python suite on exact pinned SHA; keep model tests separate from CASE acceptance.
