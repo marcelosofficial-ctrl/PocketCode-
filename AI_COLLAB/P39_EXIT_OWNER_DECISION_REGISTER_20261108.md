@@ -85,3 +85,18 @@ The owner can reply with decision IDs and short choices, or amend any recommenda
 | OD-13 | OPEN |
 
 **Verification:** documentation only. No source/tests changed or run. No canonical identifier changed.
+
+## 7. Scope clarification: live streaming vs bounded artifact transfer (2026-11-11)
+
+**Purpose:** resolve a cross-document ambiguity without deciding any OD item or changing the gate.
+
+- **OD-01 is specifically about live/incremental streaming** of result or artifact bytes, including chunk-level enforcement and stream-resume capability. A NO decision on live streaming does **not** by itself mean that artifact download/share is absent from MVP.
+- The existing durable-adapter contract separately defines T8 artifact staging/verification and T9 download/share authorization plus transfer reservation. It requires no bytes before the grant transaction commits, binds a grant to the exact receipt/object version, and says an already-started transfer's revocation policy must be explicit. The same contract says the in-memory grant model does not prove actual transport behavior or client receipt.
+- Therefore, if OD-01 is NO but PocketCode still supports a bounded download/share after full artifact staging, OD-02 (pre-claim/current-policy check), OD-03 (revocation during that transfer), OD-04 (interruption/recovery/retry semantics) and OD-05 (pre-commit policy/grant consistency) are **not automatically deferred**. Their exact application may be narrower than a live stream, but the product still needs an explicit rule for an already-started download/share and its recovery.
+- If the intended MVP excludes **all** artifact release/download/share, not merely live streaming, state that separately. Do not infer this broader exclusion from OD-01.
+- OD-13 is conditional on the product claiming that the client received or verified bytes. Server staging, grant creation, transport completion and client acknowledgement remain distinct evidence. A completed server-side operation must not be worded as confirmed client receipt without client-observed/acknowledged evidence.
+- The P39 canonical crosswalk already classifies P39-S4 streaming enforcement as supporting only if streaming is in MVP, while P39-S8 post-commit revocation/transfer remains an owner/adapter policy question. Durable-adapter T9/T9A covers ordinary download/share and explicitly leaves in-flight revocation to policy. These statements are compatible once live streaming is separated from bounded artifact transfer.
+
+**Owner impact:** OD-01..OD-13 remain OPEN. No recommendation is promoted to a decision. This clarification adds no canonical LOOP/CASE/D/P39 test ID, selects no transport or adapter, and authorizes no implementation or test run.
+
+**Evidence tags:** VERIFIED STATIC (the cited contract/crosswalk text); INFERRED (the resulting decision dependency); NOT RUN (no product transfer or client-receipt behavior tested).
