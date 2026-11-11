@@ -1,25 +1,30 @@
 # CHECKPOINT — 2026-11-11
 
-**Unit:** Exact active-branch refresh; P40 source/test pin revalidation; STATE refresh.  
+**Unit:** Active-branch revalidation, P40 source-pin continuity, read-only Pages evidence boundary.  
 **Branch:** `pocketcode-ai-workflow-director-research-2026-10-28`.  
-**Starting HEAD:** `0b75754876ceeb7974fc2f959bb7e226b982e9e7`.  
-**STATE commit:** `2b2f8b45044030906fe4cd93a78a98f6c9c02f0a`.
+**Starting HEAD:** `cac5abc0fc10eeebca971c670c2b7f9f91a23408`.  
+**STATE commit:** `b7b017828bbbec2140f740dd4913e9c11e152da0`.  
+**NEXT_TASK commit:** `5038739b1810be5ead309d2233a2ac611e099c0a`.
 
 ## Work completed
-- Confirmed active branch HEAD was identical to `0b757548`. A repo-wide commit search also surfaced main-history commits; compare confirmed those were not part of this branch.
-- Verified the latest five active-branch commits before this checkpoint refresh: `0b757548`, `227b8d52`, `d6f5be1d`, `442df189`, `9fc34ebd`. All five changed only `AI_COLLAB/CHECKPOINT.md`.
-- Revalidated all ten source/test blob pins in `P40_SOURCE_PINNED_COVERAGE_AND_PAGES_ORIGIN_AUDIT_20261111.md`: release-grant model/tests, FakeOutbox/tests, EventJournal/tests, execution projection/tests and receipt store/tests. All ten exact blob SHAs still match the active branch.
-- Updated `STATE.md` with exact active HEAD, source-pin verification and CI/test status.
-- Re-read the owner decision register, P39 gate plan, independent-review consensus and six-lane P40 protocol. OD-01..OD-13 remain OPEN; P39/P40 gate remains CLOSED. No recommendation was promoted to an owner decision.
+- Re-read BOOT, STATE, NEXT_TASK, CHECKPOINT and INBOX_chatgpt in required order.
+- Verified active branch is identical to starting HEAD `cac5abc0`.
+- Verified latest five starting commits: `cac5abc0`, `2b2f8b45`, `0b757548`, `227b8d52`, `d6f5be1d`. All five changed only AI_COLLAB continuity files.
+- Reconfirmed all ten P40 source/test blob pins in the preceding unit; no intervening source/test changes.
+- Attempted read-only opens of PocketCode and portfolio Pages URLs. The web reader could not access either. This is not evidence of an outage or current serving state.
+- Updated STATE and NEXT_TASK to distinguish that access limitation from unknown live headers/deployment behavior.
 
 ## Verification
-- **VERIFIED:** exact active HEAD and ten source/test blob matches.
-- **VERIFIED:** latest-five branch commits are documentation-only.
-- **CI:** combined status for `0b757548` returned no statuses; workflow-run connector returned no PR-triggered runs. CI NOT RUN.
-- **Tests:** full Python suite, P40 lanes, device/browser, provider, transport and adapter tests NOT RUN.
-- No source/test edits, provider calls, spending, device probes, deployment/settings changes, PR changes or RevDev work.
+- **VERIFIED:** exact starting HEAD; latest-five commit paths; no source/test drift.
+- **VERIFIED:** exact-HEAD combined status returned no statuses; commit workflow-run query returned no PR-triggered runs.
+- **CI:** NOT RUN / no check evidence.  
+- **Tests:** full Python suite, P40 lanes, browser/device, provider, transport and adapter tests NOT RUN.
+- **UNKNOWN:** current Pages response/headers/content; sibling-origin behavior; Pyodios Worker topology; durable adapter behavior.
+- OD-01..OD-13 remain OPEN; P39/P40 gate CLOSED; CASE-04 INCOMPLETE / timed_out.
+- No source/test edits, owner decisions, provider calls, spending, device probes, deployments, Pages settings/DNS changes, PR changes or RevDev work.
 
 ## Next
-1. Wait for explicit owner OD-01..OD-13 decisions or deferrals; keep the gate closed.
-2. Ingest any further Claude artifact only when supplied by the owner. Do not create a competing request while Claude's strategy assignment is OPEN.
-3. After explicit gate clearance and authorization, pin and run the bounded P40 protocol and full suite separately.
+1. Obtain owner OD-01..OD-13 decisions or explicit deferrals; keep the gate closed until then.
+2. Accept and reconcile any further Claude artifact supplied by the owner; do not create a competing request.
+3. After gate clearance and explicit authorization, pin and execute the bounded P40 protocol and full suite separately.
+4. Verify live Pages response/headers only through a reliable read-only browser/network probe; do not infer from inaccessible opens.
