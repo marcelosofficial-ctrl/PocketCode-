@@ -1,25 +1,24 @@
 # CHECKPOINT — 2026-11-11
 
 **Unit:** Source-pinned P40 model coverage and Pages shared-origin audit; current-branch lineage refresh.  
-**Starting audited HEAD:** `3545c1e15da6041906bf9cf886c9acdd0a5e7e07`.  
-**Research/protocol commit:** `5794fa175d1639290a8af9e1b86d4252e24ef466`.  
-**Metadata commits:** `611c2422baeb8dffa53350b7cd2954bfea08f66c`, then `3d3102f36fbc575206e89e3a65e0c0d22270f16d`.  
-**Current branch:** `pocketcode-ai-workflow-director-research-2026-10-28`.  
-**Current HEAD before this refresh:** `3d3102f36fbc575206e89e3a65e0c0d22270f16d`.
+**Audited HEAD:** `3545c1e15da6041906bf9cf886c9acdd0a5e7e07`.  
+**Research/content commit:** `5794fa175d1639290a8af9e1b86d4252e24ef466`.  
+**Metadata commits in this pass:** `6e7624ed013213bac40015c837c4fa159ab89018`, `24c540bc82f307f6c26ba75e104e2116560c9fb3`, `8b7c156f5d5e4bcb8ca0cc4775fc82fd3bc4ee5f`.  
+**Branch:** `pocketcode-ai-workflow-director-research-2026-10-28`.
 
 ## Mandatory resume
 - Read in order: BOOT.md, STATE.md, NEXT_TASK.md, CHECKPOINT.md, INBOX_chatgpt.md.
-- Latest five branch commits before this metadata refresh:
-  1. `3d3102f3` docs(checkpoint): clarify P40 audit verification lineage
-  2. `611c2422` docs(checkpoint): pin P40 audit and shared origin evidence
-  3. `5794fa17` docs(p40): audit model coverage and shared Pages origin
-  4. `3545c1e1` docs(checkpoint): clarify exact-SHA verification boundary
-  5. `b49b4c20` docs(checkpoint): record final P40 protocol verification
+- Latest five commits immediately before this checkpoint refresh:
+  1. `8b7c156f` docs(state): clarify branch lineage refresh boundary
+  2. `24c540bc` docs(checkpoint): refresh PocketCode branch lineage and CI
+  3. `6e7624ed` docs(state): pin current PocketCode branch verification
+  4. `3d3102f3` docs(checkpoint): clarify P40 audit verification lineage
+  5. `611c2422` docs(checkpoint): pin P40 audit and shared origin evidence
 
 ## Current-branch verification
-- **VERIFIED:** active branch resolves to `3d3102f36fbc575206e89e3a65e0c0d22270f16d`; compare from audited HEAD `3545c1e` reports three commits ahead, zero behind.
-- **VERIFIED:** the three intervening commits changed only `AI_COLLAB/CHECKPOINT.md`, `AI_COLLAB/INDEX.md`, `AI_COLLAB/NEXT_TASK.md`, `AI_COLLAB/P40_MODEL_ONLY_EXECUTION_PROTOCOL_20261110.md`, `AI_COLLAB/P40_SOURCE_PINNED_COVERAGE_AND_PAGES_ORIGIN_AUDIT_20261111.md` and `AI_COLLAB/STATE.md`. No `scripts/` or test paths changed. The ten source/test blob pins in the audit remain valid at branch HEAD.
-- **VERIFIED:** exact-SHA workflow-run query for `3d3102f` returned no associated workflow runs; combined commit status returned no statuses. CI NOT RUN. This connector's workflow-run wrapper is PR-trigger-filtered, so it is not a complete Actions-history enumeration.
+- **VERIFIED:** at start of lineage refresh, active branch HEAD was `3d3102f36fbc575206e89e3a65e0c0d22270f16d`; compare from audited HEAD `3545c1e` reported three commits ahead, zero behind.
+- **VERIFIED:** the three intervening commits changed only `AI_COLLAB/` documentation paths: CHECKPOINT, INDEX, NEXT_TASK, P40 protocol, P40 audit and STATE. No `scripts/` or test paths changed. The ten source/test blob pins in the audit remained valid at the start-of-refresh branch tip.
+- **VERIFIED:** exact-SHA workflow-run query for `3d3102f` returned no associated workflow runs; combined commit status returned no statuses. CI NOT RUN. The workflow-run wrapper is PR-trigger-filtered, so it is not a complete Actions-history enumeration.
 - **NOT RUN:** full Python suite, P40 model lanes, browser/device tests, live Pages response/header probe, sibling-origin test and Pyodios Console probe.
 - **Historical only:** 266/266 PASS remains tied to source/test SHA `744cb4dc7cd4994647c84ac7476d0c78a21f0540`.
 
@@ -30,6 +29,7 @@
 - Enumerated 11 public repositories. Only PocketCode and `portfolio` report Pages enabled. Portfolio homepage is `https://marcelosofficial-ctrl.github.io/portfolio/`; same host/path-only difference establishes a sibling same-origin Pages site.
 - Researched GitHub Pages origin rules, MDN same-origin, OWASP HTML5/Micro-Frontend security, W3C Web Locks Working Draft 2026-11-09, WPT conformance suite and licences. No code copied or dependencies added.
 - Red-teamed seven prior weaknesses and corrected the protocol/audit. No source/test code changed.
+- Reconciled metadata lineage against the live branch and refreshed STATE/CHECKPOINT; no source or test files changed.
 
 ## Gate and constraints
 - P39/P40 CLOSED; OD-01..OD-13 OPEN; CASE-04 remains INCOMPLETE / timed_out.
