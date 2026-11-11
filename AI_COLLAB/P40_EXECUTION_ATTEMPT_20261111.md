@@ -23,3 +23,12 @@ Owner explicitly approved the exact revised read-only P40 request in chat on 202
 
 ## Minimum next action
 Owner approval is needed for a narrowly scoped workflow-only change that adds explicit Python and SQLite version output and runs the existing test suite on the pinned target commit. This is outside the just-approved read-only request, so it has not been attempted. Alternatively, owner can run the exact commands in the authorization document in a checkout of the target SHA and provide the complete output.
+
+
+## Follow-up runner-path verification — 2026-11-12
+- VERIFIED: active branch remains at `ce9238d47ec0bc537bfaebfbd5176e4b6d9a02c9`; latest five commits are documentation-only. Exact target workflow blob at `319cffef121e327331aeaff59522ae279b112ecc` remains `c708bb47d490f6bf749eb208e08230ca8b4ad0ac`.
+- VERIFIED: repository default branch is `main`. Its `.github/workflows` directory contains only `preview-prototype.yml`; the Python conformance workflow is absent from main.
+- VERIFIED: GitHub documents that a `workflow_dispatch` workflow must exist on the default branch. Therefore the Actions UI/manual dispatch path cannot be used for this workflow without a default-branch change, which is not authorized. Reference: https://docs.github.com/en/actions/how-tos/manage-workflow-runs/manually-run-a-workflow
+- VERIFIED: the existing workflow on the active branch has a `push` trigger restricted to this branch and paths `scripts/**` or `.github/workflows/pocketcode-python-tests.yml`. A narrowly scoped workflow-only commit on this active branch can trigger the workflow without touching main, while checking out the exact target SHA; however, this is outside the approved read-only run and still requires separate owner approval.
+- VERIFIED: latest HEAD status endpoint reports `pending` with zero statuses; Actions runs query returns zero runs. CI remains NOT RUN.
+- No temporary branch was created. No workflow, source, test, PR, Pages or deployment changes were made.

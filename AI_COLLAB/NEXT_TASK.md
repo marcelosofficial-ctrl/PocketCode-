@@ -11,8 +11,8 @@ Complete the owner-approved P40 read-only run. Approval is recorded; execution i
 - Claude C01.4: repository continuity has been used in practice; fresh-chat one-line resume remains unproven. ChatGPT repo creation UNKNOWN. Current CI has path filters/cancellation/Python 3.12 but no Python/SQLite version print.
 
 ## Ranked steps
-1. Secure an execution path for the approved exact target SHA. The current GitHub connector supports reads/log retrieval but no workflow dispatch; container clone failed DNS.
-2. Ask owner before any workflow-only change that prints Python/SQLite versions and pins checkout to target SHA. No workflow/config edits are currently authorized.
+1. Secure an execution path for the approved exact target SHA. Manual `workflow_dispatch` is not available because the workflow file is absent from default branch `main` (GitHub requires it there). The current GitHub connector supports reads/log retrieval but no dispatch; container clone failed DNS.
+2. Ask owner before a narrowly scoped workflow-only change on the active branch that prints Python/SQLite versions and pins checkout to target SHA. The existing push path filter will trigger it. No workflow/config edits are currently authorized.
 3. Alternatively, owner can run the exact commands in the authorization record at target SHA and supply complete output. Keep lane 4 BLOCKED and model results separate from adapter/CASE acceptance.
 4. Obtain owner-run Pyodios Console evidence and reliable read-only Pages/origin evidence.
 5. Prove fresh-chat resume. CI version printing is included only in the bounded run request, not a workflow change.

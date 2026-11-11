@@ -1,12 +1,13 @@
 # STATE: PocketCode
-Updated: 2026-11-11. Reconciled against live branch HEAD `35cb8881f66f519d365858520cc3e8c4b12a61bb`.
+Updated: 2026-11-12. Reconciled against live branch HEAD `ce9238d47ec0bc537bfaebfbd5176e4b6d9a02c9`.
 
 ## Status and evidence
 - Phase: discovery/product definition. P39 product-policy decision gate CLEARED by owner delegation; P39 technical-conformance/P40 execution gate remains CLOSED pending bounded execution authorization. No runtime, provider, database, transport or storage engine selected.
 - Historical PASS: Actions run `42365455316`, workflow "PocketCode Python conformance tests", 266/266 on source/test SHA `744cb4dc7cd4994647c84ac7476d0c78a21f0540`. Historical only, not current.
 - Live branch latest five: `35cb8881`, `0c2096c1`, `c937efbd`, `521bf391`, `6b495a8d`. All five are documentation-only; no scripts/tests changed.
 - Ten P40 source/test pins revalidated exact directly at target commit `319cffef121e327331aeaff59522ae279b112ecc`; live HEAD is six documentation-only commits ahead and zero behind. Owner approved the bounded read-only run, but execution is BLOCKED by unavailable dispatch/runner capability; see `P40_EXECUTION_ATTEMPT_20261111.md`. Lane 4 remains BLOCKED / NOT TESTABLE.
-- Latest HEAD combined status: no statuses and zero check runs. CI and full suite: NOT RUN, not PASS. P40 execution explicitly APPROVED but NOT RUN due unavailable dispatch/runner.
+- Latest HEAD `ce9238d47ec0bc537bfaebfbd5176e4b6d9a02c9`: status endpoint reports `pending` with zero statuses; Actions run query returns zero runs. CI and full suite: NOT RUN, not PASS. P40 execution explicitly APPROVED but NOT RUN due unavailable runner.
+- VERIFIED 2026-11-12: manual `workflow_dispatch` is not a viable no-edit route because `.github/workflows/pocketcode-python-tests.yml` is absent from default branch `main` (main only has `preview-prototype.yml`). GitHub requires a `workflow_dispatch` workflow to exist on the default branch. A workflow-only change on the active branch can instead trigger its existing path-filtered `push` event, but still requires separate owner approval; see `P40_EXECUTION_ATTEMPT_20261111.md`.
 - Model findings: equal grant progress increments aggregate_version without matching event/outbox; grant-event consumer lacks grant/source/producer binding; FakeOutbox fencing covers effect dispatch, not grant-event publication; EventJournal producer identity is adapter-verified input, not cryptographic authentication. These are model/test-double findings, not durable production proof.
 - Pyodios iPhone (owner-reported): app 1.1.0 Build 7, Pyodide 314.0.5, Python 3.14.2. Editor returned "[Bridge/executePython] PythonError"; Console probe NOT RUN; cause and worker topology UNKNOWN.
 - Pages: last located successful deploy run `39433670146` (2026-10-20), main SHA `90cc378df1f7c7f1b5f5535c322eddcfbfb9b26c`, URL `https://marcelosofficial-ctrl.github.io/PocketCode-/`. Public portfolio Pages URL `https://marcelosofficial-ctrl.github.io/portfolio/` shares scheme/host/port; paths do not isolate origin storage. This is a trust boundary, not proof of exploit. Current live response, headers, out-of-band deployment and generated sibling script behavior UNKNOWN.
@@ -24,7 +25,7 @@ Updated: 2026-11-11. Reconciled against live branch HEAD `35cb8881f66f519d365858
 - 2026-11-07 owner: AGENTS.md carries tiered decision rights. 2026-11-08 owner: possible PoCo rename undecided; website design must not change. Nothing renamed.
 
 ## Open items
-1. Obtain a runner for the approved P40 run: either owner-authorized workflow-only instrumentation/dispatch pinned to target SHA, or owner-supplied complete output from the exact commands. Current GitHub connector exposes no workflow-dispatch action and local checkout is blocked by DNS.
+1. Obtain a runner for the approved P40 run: separate owner approval for a narrowly scoped workflow-only change on the active branch (print Python/SQLite versions and checkout target SHA; its workflow-path push filter will trigger), or owner-supplied complete output from the exact commands. Manual workflow_dispatch is unavailable because the workflow file is not on default branch `main`; local checkout is blocked by DNS.
 2. Owner: run read-only Pyodios Console probe in `PYODIOS_PYTHONERROR_BRIDGE_TRIAGE_20261106.md`.
 3. Claude is busy; do not request another review unless new evidence creates a material unresolved conflict. Existing Claude/Gemini reviews are reconciled.
 4. After explicit bounded authorization, run applicable P40 lanes and full Python suite on exact pinned SHA; keep model tests separate from CASE acceptance.
