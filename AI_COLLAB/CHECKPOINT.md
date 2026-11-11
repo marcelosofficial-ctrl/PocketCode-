@@ -33,9 +33,9 @@
 5. Claude's further P39/exit-provenance material from owner remains awaited; the new strategy drafts do not close P39.
 
 ## Verification and limits
-- **VERIFIED:** four commits after prior checkpoint `ba1d3dd` are documentation-only; no `scripts/` or test paths changed.
+- **VERIFIED:** seven commits after prior checkpoint `ba1d3dd` are documentation-only: two Claude research/design commits plus five audit/index/state/next/checkpoint commits. No `scripts/` or test paths changed.
 - **VERIFIED:** branch tip before checkpoint update was `753fcd7008498a2d69df35a03d4ebc1ec36079af` after STATE/NEXT_TASK updates; index measured 520 words.
-- Exact-SHA combined status for prior content HEAD `3585703` returned no statuses. Workflow-run connector returned no PR-triggered runs; source/test workflow not expected for docs-only changes. CI NOT RUN.
+- Exact-SHA combined status for final HEAD `9fc34ebd4164c75dcbd35b12310d78eee8454a6d` returned no statuses. Workflow-run connector returned no PR-triggered runs; source/test workflow not expected for docs-only changes. CI NOT RUN.
 - **NOT RUN:** full Python suite, P40 lanes, provider API/cache calls, device/browser tests, live Pages/header checks and Pyodios Console probe.
 - D-005/D-006 no-spend preserved. No API key, provider, runtime, database, transport, dependency or paid service selected. PR #2/#3/#4 untouched. No RevDev work.
 - Historical 266/266 PASS remains tied only to source/test SHA `744cb4dc7cd4994647c84ac7476d0c78a21f0540`.
