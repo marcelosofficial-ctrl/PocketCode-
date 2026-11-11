@@ -1,30 +1,32 @@
 # NEXT TASK: PocketCode
 
 ## Goal
-Close owner-gated P39 decisions and prepare a correctly scoped P40 model-only run. Implementation remains blocked.
+Resolve the owner-controlled P39 decisions and prepare a properly scoped P40 model-only run. Implementation remains blocked.
 
 ## Current evidence
-- Claude/Gemini P39 reviews reconciled. Await additional Claude artifact from owner; do not create a competing request while Claude's strategy assignment remains OPEN.
-- OD-01..OD-13 all OPEN. CASE-04 remains INCOMPLETE / timed_out.
-- P40 protocol revised to six source-pinned lanes. Known model gaps: equal-progress aggregate/event parity; first-delivery event trust; separate grant-event relay fencing; policy revalidation; Worker/receipt/storage boundaries. NOT AUTHORIZED / NOT RUN.
-- **Scope clarification added to the owner register:** OD-01 is about live/incremental streaming. A NO decision does not exclude bounded download/share of a fully staged artifact. If bounded release remains in MVP, OD-02..05 still need explicit pre-claim, in-flight revocation, interruption/recovery and policy/grant consistency semantics. If all artifact release is excluded, state that separately. OD-13 applies to claims of client receipt.
-- Last verified Pages workflow deploy: run 39433670146, main SHA `90cc378df1f7c7f1b5f5535c322eddcfbfb9b26c`, URL `https://marcelosofficial-ctrl.github.io/PocketCode-/`. Automatic deploy is main/path filtered.
-- Public `portfolio` repo also has Pages enabled at `https://marcelosofficial-ctrl.github.io/portfolio/`, same browser origin as PocketCode. No exploit confirmed; no sensitive browser storage.
-- Live Pages response/headers and generated portfolio script behavior UNKNOWN. Pyodios worker topology UNKNOWN.
+- **VERIFIED:** Claude's provider caching/context and AI-lane drafts are in the active branch. Their exact commits are recorded in STATE. The CSS Dynamic Type correction is present.
+- **VERIFIED:** independent audit `CLAUDE_PROVIDER_AND_LANES_INDEPENDENT_AUDIT_20261111.md` opens current Anthropic, OpenAI, Gemini, Aider and MCP sources; corrects outdated provider caching claims; defines an instrumentation contract; and red-teams the role/dispatch proposal.
+- **VERIFIED:** INDEX now measures 520 whitespace-delimited words, below its 1,200-word ceiling.
+- OD-01..OD-13 remain OPEN. CASE-04 remains INCOMPLETE / timed_out. P39/P40 implementation gate CLOSED.
+- P40 six-lane protocol is prepared but NOT AUTHORIZED / NOT RUN. Historical 266/266 applies only to source/test SHA `744cb4dc7cd4994647c84ac7476d0c78a21f0540`.
+- OD-01 is live/incremental streaming only; it does not automatically exclude bounded staged download/share. If bounded release stays in MVP, OD-02..05 still require revocation and recovery semantics.
+- Pages last located successful deployment remains run 39433670146, main SHA `90cc378df1f7c7f1b5f5535c322eddcfbfb9b26c`. Public `portfolio` Pages shares the PocketCode origin. Current live response/headers and generated portfolio script remain UNKNOWN.
+- Pyodios iPhone error cause and Worker topology remain UNKNOWN; Console probe NOT RUN.
 
 ## Ranked next actions
-1. **Claude artifact arrives:** pin exact repo, branch, source/test/docs SHA and blob hashes; reconcile evidence-backed findings into the existing matrix. Do not assume it covers exit provenance.
-2. **Owner gate:** obtain OD-01..OD-13 decisions or explicit deferrals. Resolve OD-01 first, explicitly distinguishing live streaming from bounded artifact download/share; then resolve OD-02..05 as one revocation lifecycle, OD-06..07 clock/identity, OD-08 receipt binding, OD-09..12 verdict/termination/cleanup, and OD-13 client-byte evidence.
-3. **After gate clearance only:** obtain explicit authorization for the six-lane model run in `P40_MODEL_ONLY_EXECUTION_PROTOCOL_20261110.md`. Pin source/test SHA and environment. Keep model results separate from canonical CASE acceptance.
-4. **Origin follow-up:** verify current Pages deployment, response headers and service-worker scope; inspect the `portfolio` generated output for origin-scoped storage access. Do not change hosting/domain or store secrets.
-5. **Separately:** run the full Python suite on an exact SHA in real checkout/CI. Historical 266/266 is not current evidence.
+1. **Owner gate:** resolve OD-01..OD-13 or explicitly defer them. Resolve OD-01 with a precise distinction between live streaming and bounded artifact release. Then decide the OD-02..05 lifecycle as one unit.
+2. **Claude P39/exit material:** ingest any additional artifact the owner supplies, pin exact repo/branch/SHA/blob hashes, and reconcile evidence. The provider/design drafts audited this pass are not P39 gate evidence.
+3. **After gate clearance only:** obtain explicit authorization for the six-lane P40 model run in `P40_MODEL_ONLY_EXECUTION_PROTOCOL_20261110.md`. Pin source/test SHA and environment; keep model tests separate from canonical CASE acceptance.
+4. **Current code confidence:** run the full Python suite in real checkout/CI on exact SHA after authorization; historical 266/266 is not current.
+5. **Device and origin evidence:** owner runs the read-only Pyodios Console probe; separately verify live Pages deployment/headers/service-worker scope and portfolio generated script. No deployment, settings or domain changes.
 
 ## Hard constraints
-- P39/P40 CLOSED; OD-01..OD-13 OPEN until owner responds.
-- No source/test edits, schema freeze, runtime/provider/database/transport selection, spend, deployment, device test or PR #2/#3/#4 modification before explicit gate clearance.
-- Preserve VERIFIED / INFERRED / UNKNOWN / NOT RUN and PASS / FAIL / NOT RUN.
-- Python CI path filter covers `scripts/**` and its workflow only, plus manual dispatch; docs-only commits do not trigger it. Static prototype checker does not execute JS or Python.
-- Keep RevDev evidence separate.
+- D-005/D-006: $0. No API keys, provider calls, paid caching tests, paid hosting, Apple Developer Program, TestFlight or App Store.
+- No provider/runtime/database/transport selection, source/test edits, schema freeze, device tests, Pages deployment/settings/DNS changes, PR #2/#3/#4 changes or RevDev work before applicable explicit owner authorization.
+- Preserve LOOP-01..14, CASE-01..16, D-IDs and all existing canonical IDs.
+- Evidence labels: VERIFIED / INFERRED / UNKNOWN / NOT RUN. Test outcomes: PASS / FAIL / NOT RUN.
+- Python CI path filter covers `scripts/**` and its workflow, plus manual dispatch; docs-only commits do not trigger the source/test workflow.
+- Keep PocketCode and RevDev completely separate.
 
 ## Done when
-Reviews are reconciled; owner decisions are explicit or explicitly deferred; model/adapter/product acceptance boundaries are clear; and owner authorizes a bounded slice or remaining blockers are documented.
+Owner decisions are explicit or deferred; Claude reviews are reconciled; model/adapter/product acceptance boundaries are clear; and a bounded implementation or test slice is explicitly authorized.
