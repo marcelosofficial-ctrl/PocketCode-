@@ -30,3 +30,9 @@ Resolve the owner-controlled P39 decisions and prepare a properly scoped P40 mod
 
 ## Done when
 Owner decisions are explicit or deferred; Claude reviews are reconciled; model/adapter/product acceptance boundaries are clear; and a bounded implementation or test slice is explicitly authorized.
+
+
+## 2026-11-11 execution note
+- Current active HEAD at last refresh: `cac5abc0fc10eeebca971c670c2b7f9f91a23408`; latest five are docs-only. No source/test drift.
+- A read-only browser open of the two known Pages URLs was unavailable. Do not infer live state from this tool failure. The remaining Pages work requires a reliable browser/network probe or owner-provided response/header evidence; no deployment/settings change is authorized.
+- With OD-01..OD-13 still OPEN and no owner authorization, no meaningful P40 test execution or source change is permitted. Continue only non-invasive evidence reconciliation; do not manufacture additional documentation to simulate progress.
