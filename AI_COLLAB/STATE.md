@@ -1,5 +1,5 @@
 # STATE: PocketCode   (current state only; under 900 words)
-Updated: 2026-11-11 by ChatGPT. Live active-branch HEAD verified as `3d3102f36fbc575206e89e3a65e0c0d22270f16d`. Latest research/content commit: `5794fa175d1639290a8af9e1b86d4252e24ef466`; checkpoint metadata commits: `611c2422baeb8dffa53350b7cd2954bfea08f66c` and `3d3102f36fbc575206e89e3a65e0c0d22270f16d`. The three commits after audited HEAD `3545c1e15da6041906bf9cf886c9acdd0a5e7e07` changed documentation only; the ten pinned source/test blobs remain unchanged. Exact-SHA workflow/status queries for HEAD returned no associated workflow runs and no statuses; CI NOT RUN. No source/test/device tests were run.
+Updated: 2026-11-11 by ChatGPT. At the start of the 2026-11-11 lineage refresh, the active branch HEAD was `3d3102f36fbc575206e89e3a65e0c0d22270f16d`. This pass added metadata commits `6e7624ed013213bac40015c837c4fa159ab89018` (STATE) and `24c540bc82f307f6c26ba75e104e2116560c9fb3` (CHECKPOINT). Latest research/content commit remains `5794fa175d1639290a8af9e1b86d4252e24ef466`. The three commits after audited HEAD `3545c1e15da6041906bf9cf886c9acdd0a5e7e07` changed documentation only; the ten pinned source/test blobs remain unchanged. Exact-SHA workflow/status queries for pre-refresh HEAD returned no associated workflow runs and no statuses; CI NOT RUN. No source/test/device tests were run.
 
 ## Status
 - Phase: Discovery/product definition. P39/exit-provenance gate CLOSED. No runtime/provider/database/transport selected.
@@ -15,7 +15,7 @@ Updated: 2026-11-11 by ChatGPT. Live active-branch HEAD verified as `3d3102f36fb
 - UNKNOWN: out-of-band deploy after 2026-10-20; live headers/redirects/current response; generated portfolio script behavior; target-device storage; actual Pyodios worker topology.
 - `P40_MODEL_ONLY_EXECUTION_PROTOCOL_20261110.md` revised to six lanes with exact existing test methods. Known model gaps are marked FAIL/BLOCKED rather than described as passing coverage. NOT AUTHORIZED / NOT RUN.
 - `P40_SOURCE_PINNED_COVERAGE_AND_PAGES_ORIGIN_AUDIT_20261111.md` pins model/test blobs, corrects seven prior claims, records exact Pages deployment and portfolio sibling origin, and reviews W3C/WPT/OWASP reuse/licences.
-- VERIFIED current-branch continuity: HEAD `3d3102f` is three documentation-only commits after the audited HEAD `3545c1e`; compare output lists only `AI_COLLAB/` documentation paths. The audit's source/test pins therefore remain applicable to the branch tip.
+- VERIFIED current-branch continuity at start of refresh: HEAD `3d3102f` was three documentation-only commits after audited HEAD `3545c1e`; compare output listed only `AI_COLLAB/` documentation paths. The audit's source/test pins therefore remained applicable.
 
 ## Decisions
 - D-001 unified PC-and-phone direction, separate development boundaries. D-002 GitHub is source of truth. D-003 no secrets in public repo. D-004 validate before stack commitment. D-005 zero spend.
