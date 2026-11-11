@@ -1,42 +1,47 @@
 # CHECKPOINT — 2026-11-11
 
-**Unit:** Source-pinned P40 audit lineage refresh and OD-01 transfer-scope clarification.  
-**Research/content commit:** `5794fa175d1639290a8af9e1b86d4252e24ef466`.  
-**P40 audit source baseline:** `3545c1e15da6041906bf9cf886c9acdd0a5e7e07`.  
-**Branch:** `pocketcode-ai-workflow-director-research-2026-10-28`.
+**Unit:** Claude provider-cache/context and AI-lane research audit; index budget repair; state/next-task refresh.  
+**Branch:** `pocketcode-ai-workflow-director-research-2026-10-28`.  
+**Starting HEAD:** `2247851a8bcff798609c27bec78e2dd72b0dd11b`.  
+**Claude research commit:** `3b73e2cc8a8371508b80d1e65393375f986b3760`.  
+**ChatGPT audit commit:** `1a8efd485d8f762906d26979e8730e78d8267073`.  
+**INDEX commit:** `3585703f544ce75b17f51db930894e0ccf37862c`.
 
 ## Mandatory resume
 - Read in order: BOOT.md, STATE.md, NEXT_TASK.md, CHECKPOINT.md, INBOX_chatgpt.md.
-- Latest five commits immediately before this checkpoint update:
-  1. `5d90342c` docs(state): record artifact transfer scope clarification
-  2. `46f4abfe` docs(next-task): separate streaming and artifact release gates
-  3. `bc05af71` docs(p39): clarify streaming versus artifact transfer gate
-  4. `055c37cd` docs(checkpoint): record final PocketCode lineage refresh
-  5. `8b7c156f` docs(state): clarify branch lineage refresh boundary
+- Latest five commits before this checkpoint update:
+  1. `753fcd70` docs(next-task): rank owner gate and provider audit followups
+  2. `2b96c970` docs(state): record Claude research audit and current head
+  3. `3585703f` docs(index): restore word budget and index independent audit
+  4. `1a8efd48` docs(research): audit provider caching and AI lane claims
+  5. `2247851a` Fix the Dynamic Type CSS bug in the design spec (font-size override) and the linear() wording
 
 ## Work completed
-- Created `AI_COLLAB/P40_SOURCE_PINNED_COVERAGE_AND_PAGES_ORIGIN_AUDIT_20261111.md` (about 2,650 words). Pins ten source/test blobs; audits actual APIs and test names; distinguishes release-grant event outbox, effect-dispatch FakeOutbox, EventJournal, ResultReceiptStore and pure verdict projection.
-- Revised `AI_COLLAB/P40_MODEL_ONLY_EXECUTION_PROTOCOL_20261110.md` to six source-mapped lanes. No canonical IDs added.
-- Verified the three commits after audit baseline `3545c1e` were documentation-only. No `scripts/` or test paths changed; the ten source/test blob pins remain applicable.
-- Verified the last located Pages workflow deployment: run 39433670146, main SHA `90cc378df1f7c7f1b5f5535c322eddcfbfb9b26c`, URL `https://marcelosofficial-ctrl.github.io/PocketCode-/`. Automatic deployment is main/path filtered.
-- Verified public `portfolio` Pages site at `https://marcelosofficial-ctrl.github.io/portfolio/` shares the PocketCode browser origin. This is a trust-boundary fact, not evidence of an exploit.
-- Researched GitHub Pages, MDN same-origin, OWASP HTML5/Micro-Frontend security, W3C Web Locks Working Draft 2026-11-09 and WPT/licences. Corrected seven prior claims. No code/dependencies copied.
-- **New cross-document finding:** OD-01 asks only whether live/incremental streaming is in MVP. Durable-adapter T8/T9 separately define staged artifact download/share and a transfer reservation. Therefore, NO to live streaming does not automatically remove bounded download/share or defer its active-transfer revocation, interruption/recovery and client-receipt semantics. If all artifact release is excluded, the owner must say so separately.
-- Appended this scope clarification to `P39_EXIT_OWNER_DECISION_REGISTER_20261108.md`; updated `NEXT_TASK.md` and `STATE.md`. OD-01..OD-13 remain OPEN. No recommendation became an owner decision.
+- Reconciled Claude's new provider/context and AI-lane research in the active branch. Source commit `3b73e2c` adds `PROVIDER_CACHING_AND_CONTEXT_ENGINEERING_20261110.md`, `RED_TEAM_CORRECTIONS_CLAUDE_20261110.md`, `kit/docs/AI_LANES_AND_DISPATCH.md`, and index rows. Commit `2247851` fixes the Dynamic Type CSS override and qualifies the Safari `linear()` wording.
+- Created `CLAUDE_PROVIDER_AND_LANES_INDEPENDENT_AUDIT_20261111.md` (129 added lines). It verifies current Anthropic/OpenAI/Gemini cache semantics, exact usage fields, model/API limits, provider-specific prompt ordering, current schema restrictions, Aider/MCP reuse/license facts, and a normalized cache measurement contract.
+- Red-teamed seven issues: OpenAI's model-generation split and cache-key semantics; cache-prefix versus 128-token reporting; Gemini model/API support and minimums; telemetry field guesses; universal prefix ordering; AI-lane role conflict; unsupported dispatch thresholds.
+- **VERIFIED:** OpenAI GPT-5.6+ supports implicit/explicit cache breakpoints, 1,024 visible token minimum, 30m/12h TTL; earlier models differ and use implicit breakpoints. Anthropic uses tools → system → messages prefix order, four total breakpoint slots, model-dependent minimums and documented cache usage fields. Gemini explicit caching is Beta on v1beta, supported for Gemini 2.5/3 but not Gemini 4; Interactions API only supports implicit caching.
+- **VERIFIED:** Aider repo map is a useful graph-ranked context pattern; Aider is Apache-2.0, latest listed release v0.86.0 published 2025-08-09, repository last push 2026-05-22. MCP repo describes TypeScript-first and JSON Schema outputs, README states MIT; no dependency or code was adopted.
+- Updated `AI_COLLAB/INDEX.md`. Previous count was 1,232 whitespace-delimited words, exceeding the stated 1,200 ceiling. New measured count is 520.
+- Updated `STATE.md` and `NEXT_TASK.md`. No owner decision, canonical ID, provider, runtime, database, transport or implementation gate changed.
 
-## Gate and constraints
-- P39/P40 CLOSED; OD-01..OD-13 OPEN; CASE-04 remains INCOMPLETE / timed_out.
-- No source/test changes, tests, implementation, adapter/provider/runtime/database/transport selection, spend, deployment, device test, PR change or RevDev work.
-- Claude's additional artifact still awaited. No competing Claude request created.
+## Highest-value open gaps
+1. OD-01..13 owner decisions remain open; they gate policy/contract choices.
+2. P40 six-lane model run remains NOT AUTHORIZED / NOT RUN; current full suite is not established.
+3. Pyodios Console/Worker/device evidence remains NOT RUN / UNKNOWN.
+4. Live Pages response/headers and sibling portfolio script behavior remain UNKNOWN.
+5. Claude's further P39/exit-provenance material from owner remains awaited; the new strategy drafts do not close P39.
 
-## Verification
-- **VERIFIED:** OD-scope clarification is supported by static text in the P39 consensus/crosswalk and durable-adapter T8/T9/T9A.
-- **INFERRED:** if bounded download/share remains in MVP, OD-02..05 still require explicit rules even when live streaming is excluded.
-- **UNKNOWN:** owner intent on whether any artifact release is excluded; live Pages response/headers; generated portfolio script behavior; target-device storage; actual Pyodios Worker topology.
-- **NOT RUN:** P40 lanes, full Python suite, browser/device tests, live Pages/header probe, sibling-origin test and Pyodios Console probe.
-- Historical 266/266 PASS remains tied only to source/test SHA `744cb4dc7cd4994647c84ac7476d0c78a21f0540`. Exact-SHA CI status for the latest docs-only commits is NOT RUN; no source/test workflow was expected to trigger.
+## Verification and limits
+- **VERIFIED:** four commits after prior checkpoint `ba1d3dd` are documentation-only; no `scripts/` or test paths changed.
+- **VERIFIED:** branch tip before checkpoint update was `753fcd7008498a2d69df35a03d4ebc1ec36079af` after STATE/NEXT_TASK updates; index measured 520 words.
+- Exact-SHA combined status for prior content HEAD `3585703` returned no statuses. Workflow-run connector returned no PR-triggered runs; source/test workflow not expected for docs-only changes. CI NOT RUN.
+- **NOT RUN:** full Python suite, P40 lanes, provider API/cache calls, device/browser tests, live Pages/header checks and Pyodios Console probe.
+- D-005/D-006 no-spend preserved. No API key, provider, runtime, database, transport, dependency or paid service selected. PR #2/#3/#4 untouched. No RevDev work.
+- Historical 266/266 PASS remains tied only to source/test SHA `744cb4dc7cd4994647c84ac7476d0c78a21f0540`.
 
 ## Next
-1. Ingest Claude artifact when supplied; pin exact repo/branch/source/test/docs SHA and blob hashes.
-2. Obtain OD-01..OD-13 decisions/deferrals, explicitly separating live streaming from bounded artifact release.
-3. Only after gate clearance, obtain authorization for the bounded six-lane P40 model run.
+1. Resolve or explicitly defer OD-01..OD-13, keeping live streaming distinct from bounded artifact download/share.
+2. Ingest additional Claude P39/exit artifact when owner supplies it; pin exact sources.
+3. After gate clearance, request authorization for the six-lane P40 model run and exact-SHA full suite.
+4. Separately obtain Pyodios and live Pages evidence without changing deployment/settings.
