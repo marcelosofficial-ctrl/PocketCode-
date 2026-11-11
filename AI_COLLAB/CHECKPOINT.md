@@ -11,10 +11,10 @@
 - Read in order: BOOT.md, STATE.md, NEXT_TASK.md, CHECKPOINT.md, INBOX_chatgpt.md.
 - Latest five commits before this checkpoint update:
   1. `d6f5be1d` docs(checkpoint): pin latest five commit lineage
-  2. `9fc34ebd` docs(checkpoint): capture provider audit and index repair
-  3. `753fcd70` docs(next-task): rank owner gate and provider audit followups
-  4. `2b96c970` docs(state): record Claude research audit and current head
-  5. `3585703f` docs(index): restore word budget and index independent audit
+  2. `442df189` docs(checkpoint): correct lineage count and final CI pin
+  3. `9fc34ebd` docs(checkpoint): capture provider audit and index repair
+  4. `753fcd70` docs(next-task): rank owner gate and provider audit followups
+  5. `2b96c970` docs(state): record Claude research audit and current head
 
 ## Work completed
 - Reconciled Claude's new provider/context and AI-lane research in the active branch. Source commit `3b73e2c` adds `PROVIDER_CACHING_AND_CONTEXT_ENGINEERING_20261110.md`, `RED_TEAM_CORRECTIONS_CLAUDE_20261110.md`, `kit/docs/AI_LANES_AND_DISPATCH.md`, and index rows. Commit `2247851` fixes the Dynamic Type CSS override and qualifies the Safari `linear()` wording.
