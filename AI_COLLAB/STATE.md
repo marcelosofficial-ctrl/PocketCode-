@@ -1,5 +1,5 @@
 # STATE: PocketCode   (current state only; under 900 words)
-Updated: 2026-11-11 by ChatGPT. At the start of the 2026-11-11 lineage refresh, the active branch HEAD was `3d3102f36fbc575206e89e3a65e0c0d22270f16d`. This pass added metadata commits `6e7624ed013213bac40015c837c4fa159ab89018` (STATE) and `24c540bc82f307f6c26ba75e104e2116560c9fb3` (CHECKPOINT). Latest research/content commit remains `5794fa175d1639290a8af9e1b86d4252e24ef466`. The three commits after audited HEAD `3545c1e15da6041906bf9cf886c9acdd0a5e7e07` changed documentation only; the ten pinned source/test blobs remain unchanged. Exact-SHA workflow/status queries for pre-refresh HEAD returned no associated workflow runs and no statuses; CI NOT RUN. No source/test/device tests were run.
+Updated: 2026-11-11 by ChatGPT. This pass began at active branch HEAD `2247851a8bcff798609c27bec78e2dd72b0dd11b`; Claude research commit `3b73e2cc8a8371508b80d1e65393375f986b3760` and CSS correction commit `2247851a8bcff798609c27bec78e2dd72b0dd11b` were present. ChatGPT added provider/lane audit `1a8efd485d8f762906d26979e8730e78d8267073` and INDEX correction `3585703f544ce75b17f51db930894e0ccf37862c`. Latest branch HEAD after this pass's content commits: `3585703f544ce75b17f51db930894e0ccf37862c`. Four commits after prior checkpoint `ba1d3ddbfd76e00277c252ef4c7279d0b1dc345b` changed documentation only; no scripts/tests changed. Exact-SHA combined status had no statuses; workflow-run connector returned no PR-triggered runs. CI NOT RUN; no source/test/device tests were run.
 
 ## Status
 - Phase: Discovery/product definition. P39/exit-provenance gate CLOSED. No runtime/provider/database/transport selected.
@@ -15,6 +15,7 @@ Updated: 2026-11-11 by ChatGPT. At the start of the 2026-11-11 lineage refresh, 
 - UNKNOWN: out-of-band deploy after 2026-10-20; live headers/redirects/current response; generated portfolio script behavior; target-device storage; actual Pyodios worker topology.
 - `P40_MODEL_ONLY_EXECUTION_PROTOCOL_20261110.md` revised to six lanes with exact existing test methods. Known model gaps are marked FAIL/BLOCKED rather than described as passing coverage. NOT AUTHORIZED / NOT RUN.
 - `P40_SOURCE_PINNED_COVERAGE_AND_PAGES_ORIGIN_AUDIT_20261111.md` pins model/test blobs, corrects seven prior claims, records exact Pages deployment and portfolio sibling origin, and reviews W3C/WPT/OWASP reuse/licences.
+- Claude's 2026-11-10 provider-cache/context and AI-lane drafts are present at branch commit `3b73e2c`; design CSS correction is at `2247851`. Independent audit `CLAUDE_PROVIDER_AND_LANES_INDEPENDENT_AUDIT_20261111.md` corrects provider cache facts, adds a normalized measurement contract, resolves role wording against BOOT, and records seven red-team corrections. No provider/API spend or runtime selected.
 - 2026-11-11 owner-gate clarification: OD-01 decides live streaming only; NO does not automatically exclude bounded artifact download/share. If bounded release remains in MVP, OD-02..05 still require explicit grant/revocation/recovery semantics. OD-13 governs claims of client receipt. No OD decision was inferred.
 - VERIFIED current-branch continuity at start of refresh: HEAD `3d3102f` was three documentation-only commits after audited HEAD `3545c1e`; compare output listed only `AI_COLLAB/` documentation paths. The audit's source/test pins therefore remained applicable.
 
@@ -33,7 +34,7 @@ Updated: 2026-11-11 by ChatGPT. At the start of the 2026-11-11 lineage refresh, 
 - O-5 Resolve typed child exit vs wrapper exit vs termination provenance and receipt ordering.
 - O-6 P40 six-lane protocol prepared; execution still gated by owner decisions and explicit authorization.
 - O-7 PoCo name remains undecided; LinkedIn work waits for laptop/export.
-- O-8 Apple design/context/provider-cache and website strategy work remain Claude's lane.
+- O-8 Claude design/provider-cache/AI-lane drafts are now present and independently audited; further Claude P39/exit-provenance material from owner remains awaited. Do not treat strategy drafts as P39 gate closure.
 
 ## Evidence limits
 - Historical 266/266 PASS applies only to source/test SHA `744cb4dc7cd4994647c84ac7476d0c78a21f0540`.
