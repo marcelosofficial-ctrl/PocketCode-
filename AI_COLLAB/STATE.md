@@ -2,7 +2,7 @@
 Updated: 2026-11-11. Unit began at active branch HEAD: `163eef5f004b39360a37fcf89aca22018ea235d4`.
 
 ## Status and evidence
-- Phase: discovery/product definition. P39/exit-provenance and P40 implementation gates CLOSED. No runtime, provider, database, transport or storage engine selected.
+- Phase: discovery/product definition. P39 product-policy decision gate CLEARED by owner delegation; P39 technical-conformance/P40 execution gate remains CLOSED pending bounded execution authorization. No runtime, provider, database, transport or storage engine selected.
 - Historical PASS: Actions run `42365455316`, workflow "PocketCode Python conformance tests", 266/266 on source/test SHA `744cb4dc7cd4994647c84ac7476d0c78a21f0540`. Historical only, not current.
 - Current branch latest five: `163eef5f`, `5038739b`, `b7b01782`, `cac5abc0`, `2b2f8b45`. All documentation-only; no scripts/tests changed.
 - Ten P40 source/test pins last revalidated exact: release-grant model/tests, FakeOutbox/tests, EventJournal/tests, execution projection/tests, receipt store/tests. No later source/test drift.
@@ -19,15 +19,15 @@ Updated: 2026-11-11. Unit began at active branch HEAD: `163eef5f004b39360a37fcf8
 ## Decisions and constraints
 - D-001 unified PC-and-phone direction with separate project boundaries; D-002 GitHub source of truth; D-003 no secrets in public repo; D-004 validate before stack commitment; D-005 $0.
 - D-006 owner decision (2026-11-08): no spending of any kind; no Apple Developer Program, TestFlight or App Store; installable web app on GitHub Pages for now.
-- OD-01..OD-13 OPEN. OD-01 is live/incremental streaming only; NO does not automatically exclude bounded artifact download/share. If bounded release remains MVP, OD-02..05 need grant/revocation/recovery semantics. OD-13 governs client-receipt claims. No decision inferred.
+- OD-01..OD-13 ADOPTED 2026-11-11 under the owner's explicit delegation; see `P39_OWNER_DELEGATED_DECISIONS_20261111.md`. First MVP excludes live streaming but retains fully staged, integrity-verified bounded artifact download/share. Revocation, policy epochs, authoritative time, restore-safe identity, receipt binding, typed exit projection, termination acknowledgement and client-receipt semantics are decided there. These are policy decisions, not implementation proof or test authorization.
 - Preserve LOOP-01..14, CASE-01..16 and all D-IDs. PR #2/#3/#4 remain owner-controlled and untouched. Keep PocketCode and RevDev separate. No provider calls, spending, source/test edits, device tests, deployment/settings/DNS changes or PR changes without applicable authorization.
 - 2026-11-07 owner: AGENTS.md carries tiered decision rights. 2026-11-08 owner: possible PoCo rename undecided; website design must not change. Nothing renamed.
 
 ## Open items
-1. Owner: resolve or explicitly defer OD-01..OD-13.
+1. Implementer: prepare a bounded model-only P40 execution request and acceptance checklist against adopted OD decisions; do not run until explicit bounded execution authorization.
 2. Owner: run read-only Pyodios Console probe in `PYODIOS_PYTHONERROR_BRIDGE_TRIAGE_20261106.md`.
-3. Await further Claude P39/exit-provenance artifact from owner; do not issue competing request.
-4. After gate clearance and explicit authorization, run six P40 lanes and full Python suite on exact pinned SHA; keep model tests separate from CASE acceptance.
+3. Claude is busy; do not request another review unless new evidence creates a material unresolved conflict. Existing Claude/Gemini reviews are reconciled.
+4. After explicit bounded authorization, run applicable P40 lanes and full Python suite on exact pinned SHA; keep model tests separate from CASE acceptance.
 5. Obtain reliable read-only live Pages/header/service-worker and portfolio-script evidence; no deployment or settings changes.
 6. Resolve typed child exit vs wrapper exit vs termination provenance and receipt ordering. PoCo name undecided; LinkedIn work waits for laptop/export.
 
