@@ -49,6 +49,7 @@ Size: S <8 KB, M 8–25 KB, L 25–50 KB, XL >50 KB (never load XL whole). “Hi
 | PYODIDE_WORKER_CONTROL_CHANNEL_REDTEAM_20261110.md | Worker-channel threats; topology unknown |
 | FULL_POWER_GAP_RESEARCH_20261110.md | Gap research (not implemented/run) |
 | P40_MODEL_ONLY_EXECUTION_PROTOCOL_20261110.md | Six-lane model-only plan (not authorized/run) |
+| P40_BOUNDED_MODEL_RUN_AUTHORIZATION_20261111.md | Exact source-pinned read-only run request; NOT AUTHORIZED / NOT RUN |
 | P40_SOURCE_PINNED_COVERAGE_AND_PAGES_ORIGIN_AUDIT_20261111.md | Source/test mapping and Pages/shared-origin audit |
 | PR4_CONTINUITY_REFINEMENT_RECONCILIATION_20261109.md | PR #4 seven-file review; no merge recommendation |
 | VERDICT_EVIDENCE_EXIT_PROVENANCE_MATRIX_20261105.md; PROVIDER_NEUTRAL_RECIPE_AND_DURABLE_TASK_MANIFEST_PROPOSAL_20261105.md | Exit matrix and manifest proposal |
