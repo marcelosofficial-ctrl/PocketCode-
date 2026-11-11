@@ -5,7 +5,7 @@ Updated: 2026-11-11. Unit began at active branch HEAD: `163eef5f004b39360a37fcf8
 - Phase: discovery/product definition. P39 product-policy decision gate CLEARED by owner delegation; P39 technical-conformance/P40 execution gate remains CLOSED pending bounded execution authorization. No runtime, provider, database, transport or storage engine selected.
 - Historical PASS: Actions run `42365455316`, workflow "PocketCode Python conformance tests", 266/266 on source/test SHA `744cb4dc7cd4994647c84ac7476d0c78a21f0540`. Historical only, not current.
 - Current branch latest five: `163eef5f`, `5038739b`, `b7b01782`, `cac5abc0`, `2b2f8b45`. All documentation-only; no scripts/tests changed.
-- Ten P40 source/test pins last revalidated exact: release-grant model/tests, FakeOutbox/tests, EventJournal/tests, execution projection/tests, receipt store/tests. No later source/test drift.
+- Ten P40 source/test pins revalidated exact at target commit `319cffef121e327331aeaff59522ae279b112ecc`: release-grant model/tests, FakeOutbox/tests, EventJournal/tests, execution projection/tests, receipt store/tests. Exact commands and scope are in `P40_BOUNDED_MODEL_RUN_AUTHORIZATION_20261111.md`. Lane 4 grant-event relay remains BLOCKED / NOT TESTABLE.
 - Exact HEAD combined status: no statuses. CI and full suite: NOT RUN, not PASS. P40 six-lane protocol prepared but NOT AUTHORIZED / NOT RUN.
 - Model findings: equal grant progress increments aggregate_version without matching event/outbox; grant-event consumer lacks grant/source/producer binding; FakeOutbox fencing covers effect dispatch, not grant-event publication; EventJournal producer identity is adapter-verified input, not cryptographic authentication. These are model/test-double findings, not durable production proof.
 - Pyodios iPhone (owner-reported): app 1.1.0 Build 7, Pyodide 314.0.5, Python 3.14.2. Editor returned "[Bridge/executePython] PythonError"; Console probe NOT RUN; cause and worker topology UNKNOWN.
@@ -24,7 +24,7 @@ Updated: 2026-11-11. Unit began at active branch HEAD: `163eef5f004b39360a37fcf8
 - 2026-11-07 owner: AGENTS.md carries tiered decision rights. 2026-11-08 owner: possible PoCo rename undecided; website design must not change. Nothing renamed.
 
 ## Open items
-1. Implementer: prepare a bounded model-only P40 execution request and acceptance checklist against adopted OD decisions; do not run until explicit bounded execution authorization.
+1. Owner: approve or narrow the exact read-only P40 run in `P40_BOUNDED_MODEL_RUN_AUTHORIZATION_20261111.md`; no code edits or adapters are included.
 2. Owner: run read-only Pyodios Console probe in `PYODIOS_PYTHONERROR_BRIDGE_TRIAGE_20261106.md`.
 3. Claude is busy; do not request another review unless new evidence creates a material unresolved conflict. Existing Claude/Gemini reviews are reconciled.
 4. After explicit bounded authorization, run applicable P40 lanes and full Python suite on exact pinned SHA; keep model tests separate from CASE acceptance.
