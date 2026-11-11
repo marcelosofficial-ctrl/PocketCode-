@@ -1,5 +1,5 @@
 # STATE: PocketCode   (current state only; under 900 words)
-Updated: 2026-11-11 by ChatGPT. Latest research/content commit: `5794fa175d1639290a8af9e1b86d4252e24ef466`; checkpoint metadata commit: `611c2422baeb8dffa53350b7cd2954bfea08f66c`. Exact-SHA queries for both returned zero workflow runs, zero check runs and zero statuses; CI NOT RUN. The current branch tip is a docs-only descendant; re-query the branch ref on resume. No source/test/device tests were run.
+Updated: 2026-11-11 by ChatGPT. Live active-branch HEAD verified as `3d3102f36fbc575206e89e3a65e0c0d22270f16d`. Latest research/content commit: `5794fa175d1639290a8af9e1b86d4252e24ef466`; checkpoint metadata commits: `611c2422baeb8dffa53350b7cd2954bfea08f66c` and `3d3102f36fbc575206e89e3a65e0c0d22270f16d`. The three commits after audited HEAD `3545c1e15da6041906bf9cf886c9acdd0a5e7e07` changed documentation only; the ten pinned source/test blobs remain unchanged. Exact-SHA workflow/status queries for HEAD returned no associated workflow runs and no statuses; CI NOT RUN. No source/test/device tests were run.
 
 ## Status
 - Phase: Discovery/product definition. P39/exit-provenance gate CLOSED. No runtime/provider/database/transport selected.
@@ -15,6 +15,7 @@ Updated: 2026-11-11 by ChatGPT. Latest research/content commit: `5794fa175d16392
 - UNKNOWN: out-of-band deploy after 2026-10-20; live headers/redirects/current response; generated portfolio script behavior; target-device storage; actual Pyodios worker topology.
 - `P40_MODEL_ONLY_EXECUTION_PROTOCOL_20261110.md` revised to six lanes with exact existing test methods. Known model gaps are marked FAIL/BLOCKED rather than described as passing coverage. NOT AUTHORIZED / NOT RUN.
 - `P40_SOURCE_PINNED_COVERAGE_AND_PAGES_ORIGIN_AUDIT_20261111.md` pins model/test blobs, corrects seven prior claims, records exact Pages deployment and portfolio sibling origin, and reviews W3C/WPT/OWASP reuse/licences.
+- VERIFIED current-branch continuity: HEAD `3d3102f` is three documentation-only commits after the audited HEAD `3545c1e`; compare output lists only `AI_COLLAB/` documentation paths. The audit's source/test pins therefore remain applicable to the branch tip.
 
 ## Decisions
 - D-001 unified PC-and-phone direction, separate development boundaries. D-002 GitHub is source of truth. D-003 no secrets in public repo. D-004 validate before stack commitment. D-005 zero spend.
@@ -25,7 +26,7 @@ Updated: 2026-11-11 by ChatGPT. Latest research/content commit: `5794fa175d16392
 
 ## Open items
 - O-1 Owner: run read-only Pyodios Console probe in `PYODIOS_PYTHONERROR_BRIDGE_TRIAGE_20261106.md`.
-- O-2 Await any additional Claude artifact supplied by owner. Do not create a competing Claude request while strategy assignment remains OPEN. OD-01..OD-13 remain OPEN.
+- O-2 Await any additional Claude artifact supplied by owner. Do not create a competing request while Claude's strategy assignment remains OPEN. OD-01..OD-13 remain OPEN.
 - O-3 Run full Python suite in a real checkout/CI and record exact-SHA results.
 - O-4 Confirm current live Pages response/settings/headers and audit the shared `portfolio` origin's generated script behavior. Deployment URL and last workflow SHA are known; current live state is not.
 - O-5 Resolve typed child exit vs wrapper exit vs termination provenance and receipt ordering.
