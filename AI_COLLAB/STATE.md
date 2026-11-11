@@ -34,9 +34,16 @@ Updated: 2026-11-11 by ChatGPT. This pass began at active branch HEAD `2247851a8
 - O-5 Resolve typed child exit vs wrapper exit vs termination provenance and receipt ordering.
 - O-6 P40 six-lane protocol prepared; execution still gated by owner decisions and explicit authorization.
 - O-7 PoCo name remains undecided; LinkedIn work waits for laptop/export.
-- O-8 Claude design/provider-cache/AI-lane drafts are now present and independently audited; further Claude P39/exit-provenance material from owner remains awaited. Do not treat strategy drafts as P39 gate closure.
+- O-8 Claude design/provider-cache/AI-lane drafts are now present and independently audited; further Claude P39/exit-provenance material from owner remains awaited. Do not treat strategy drafts as P39 gate evidence.
 
 ## Evidence limits
 - Historical 266/266 PASS applies only to source/test SHA `744cb4dc7cd4994647c84ac7476d0c78a21f0540`.
 - Current P40 scenarios, durable adapter, browser/device, live origin exploit, transport and full-suite checks are NOT RUN.
 - Keep PocketCode and RevDev evidence strictly separate.
+
+## 2026-11-11 exact-head refresh
+- VERIFIED: active branch is exactly `0b75754876ceeb7974fc2f959bb7e226b982e9e7`; compare against that SHA reports identical. The repo-wide commit search also returned main-history commits; those were excluded from active-branch history.
+- VERIFIED: latest five active-branch commits are `0b757548`, `227b8d52`, `d6f5be1d`, `442df189`, `9fc34ebd`; all five modify only `AI_COLLAB/CHECKPOINT.md`.
+- VERIFIED: all 10 source/test blob pins in the P40 source-pinned audit still match the active branch exactly: release-grant model/tests, FakeOutbox/tests, EventJournal/tests, execution projection/tests and receipt store/tests. No source/test drift since those pins.
+- VERIFIED: combined status for exact HEAD returned no statuses; the workflow-run connector returned no PR-triggered runs. CI NOT RUN (not PASS or FAIL); full suite and P40 lanes NOT RUN.
+- No owner OD decision changed. P39/P40 gate remains CLOSED; no source/test/device/provider/deployment/PR/RevDev work performed in this refresh.
