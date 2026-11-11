@@ -10,11 +10,11 @@
 ## Mandatory resume
 - Read in order: BOOT.md, STATE.md, NEXT_TASK.md, CHECKPOINT.md, INBOX_chatgpt.md.
 - Latest five commits before this checkpoint update:
-  1. `753fcd70` docs(next-task): rank owner gate and provider audit followups
-  2. `2b96c970` docs(state): record Claude research audit and current head
-  3. `3585703f` docs(index): restore word budget and index independent audit
-  4. `1a8efd48` docs(research): audit provider caching and AI lane claims
-  5. `2247851a` Fix the Dynamic Type CSS bug in the design spec (font-size override) and the linear() wording
+  1. `9fc34ebd` docs(checkpoint): capture provider audit and index repair
+  2. `753fcd70` docs(next-task): rank owner gate and provider audit followups
+  3. `2b96c970` docs(state): record Claude research audit and current head
+  4. `3585703f` docs(index): restore word budget and index independent audit
+  5. `1a8efd48` docs(research): audit provider caching and AI lane claims
 
 ## Work completed
 - Reconciled Claude's new provider/context and AI-lane research in the active branch. Source commit `3b73e2c` adds `PROVIDER_CACHING_AND_CONTEXT_ENGINEERING_20261110.md`, `RED_TEAM_CORRECTIONS_CLAUDE_20261110.md`, `kit/docs/AI_LANES_AND_DISPATCH.md`, and index rows. Commit `2247851` fixes the Dynamic Type CSS override and qualifies the Safari `linear()` wording.
