@@ -78,3 +78,8 @@ Next startup should re-read the five boot files and fetch latest five commits fr
 - VERIFIED HEAD combined status: no status checks. Latest relevant Actions run #59 / 43126974602 SUCCESS remains pinned to historical model target `319cffef121e327331aeaff59522ae279b112ecc`; 266/266 model suite. This does not establish tests on current HEAD, adapter acceptance or CASE acceptance.
 - Tests in this unit: NOT RUN. No source/test/device/deployment/provider/PR changes. P39 implementation/adapter gate remains CLOSED; D-005/D-006 remain $0.
 - Next: owner-run read-only Pyodios Console probe only, preserving `summary.json`; no rerun of `main.py`. If Pages preview URL was the one opened, no repeat visual check needed.
+
+
+## Final verification for live-head reconciliation
+
+The reconciliation notes in STATE.md and NEXT_TASK.md were refreshed against the branch at unit start (`8298111d2b5d60cab9bbe8d5610fe52861e940c9`). A malformed abbreviated SHA introduced in the first STATE.md update was corrected to the exact third commit SHA `214c39bdd90947efaa660db280182f112c29ba61` before closing this unit. The three startup documents were committed sequentially; no source files or tests were touched. Final branch ref is checked after this checkpoint commit. Tests remain NOT RUN; current-head combined status was empty before these documentation-only updates.
