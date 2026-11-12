@@ -30,3 +30,10 @@ Move from design contracts to evidence closure while keeping the P39 implementat
 - Preserve LOOP-01..14, CASE-01..16, all D-IDs and OD-01..OD-13. CASE-04 stays INCOMPLETE / timed_out without authoritative evidence.
 - Evidence: VERIFIED / INFERRED / UNKNOWN / NOT RUN. Tests: PASS / FAIL / NOT RUN.
 - Commit before summarizing; update CHECKPOINT after each unit; keep INDEX below 1,200 words.
+
+
+## Live branch baseline (2026-11-12)
+- VERIFIED current HEAD: `8298111d2b5d60cab9bbe8d5610fe52861e940c9`.
+- VERIFIED latest five commits: `8298111d2b5d60cab9bbe8d5610fe52861e940c9`, `9c05f9158df250efa8cb3d7dcadcab047f5b6087`, `214c39bdd90947efaa660db280182f112c29ba61`, `04d8181bf159f5a90ae6b7ace017c7f58e31611d`, `0d7f8736d0db9855eda5d9d05da07fdf4ff7d0e0`.
+- VERIFIED source boundary: compare from `b71315068ec33a0175fed46ef96912e954d87f9f` to HEAD = 38 ahead / 0 behind / 11 paths, all AI_COLLAB. No source/scripts/tests/workflow/assets changed.
+- VERIFIED current HEAD has no status checks. Latest CI remains run #59, successful only on historical target `319cffef121e327331aeaff59522ae279b112ecc`; current-head tests NOT RUN.
