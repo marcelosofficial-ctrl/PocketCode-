@@ -42,14 +42,15 @@ No device probe, app code, tests, deployment, host/provider, DNS/settings or sto
 - ZERO_BUDGET_ORIGIN_OPTIONS_20261112.md
 - PHONE_DEVICE_VALIDATION_RUNBOOK_20261112.md
 
-## Branch head before this reconciliation unit
+## Branch reconciliation completed
 
-- `8b148413898ec273bed2ec3b70b2f328f9be7bd7` — checkpoint clarification (active head)
-- `6619ad9fa33f18f94731dca803931a022159ec6f` — checkpoint verification
-- `28552091ad0dba628db866b4b2149486d2a5e6be` — device runbook checkpoint
-- `639722e08684b8542b75350f394c631953d2bb92` — next task routing
-- `5e1d4727f165539876d3be8c53bccdda7bb6d0ab` — state reconciliation
+The previous head before this unit was `8b148413898ec273bed2ec3b70b2f328f9be7bd7`. This unit updated STATE, NEXT_TASK and CHECKPOINT only. Latest five immediately before this final checkpoint update:
+- `fc959d417263a0397f89e0157d103a516c0e47db` — final STATE head reconciliation
+- `7faf225e50cdec6749e5b07fe08e0030e580eeec` — checkpoint/CI reconciliation
+- `6a0d6eb7549bf428c3892fdebdc0f0fa33af8922` — NEXT_TASK update
+- `5245a29a433846e7989de89698b32991a11d3b69` — STATE update
+- `8b148413898ec273bed2ec3b70b2f328f9be7bd7` — prior checkpoint clarification
 
-All five were fetched and verified as documentation-only commits. The active head has no status checks and no associated workflow runs. GitHub's commit search returned an older list, so this reconciliation uses the exact fetched commit and branch-ref content rather than the stale search response. Tests in this unit: NOT RUN.
+Each commit was fetched and verified as AI_COLLAB-only. Latest known HEAD before this checkpoint write has no status checks. Tests in this unit: NOT RUN. Latest relevant test evidence remains P40 run #59, 266/266 on exact historical model target SHA `319cffef121e327331aeaff59522ae279b112ecc`; not current-code or adapter/CASE acceptance.
 
 Next startup: read BOOT.md, STATE.md, NEXT_TASK.md, CHECKPOINT.md, INBOX_chatgpt.md; then list latest five commits. Use INDEX for further reads. Never open CHAT_START_HERE, HOT_RESUME or STATE_LEDGER; never read any file over 1,500 words whole.
