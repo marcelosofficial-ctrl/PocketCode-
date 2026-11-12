@@ -8,17 +8,18 @@ Move from design contracts to evidence closure while keeping the P39 implementat
 - VERIFIED: four design deliverables are committed and indexed: GRANT_EVENT_ENVELOPE_AND_RELAY_CONTRACT_20261112.md; OPAQUE_ORIGIN_EXECUTION_PROTOCOL_20261112.md; BROWSER_ARTIFACT_STORAGE_RECOVERY_CONTRACT_20261112.md; LIFECYCLE_TERMINATION_RECEIPT_ACCEPTANCE_20261112.md.
 - VERIFIED: OD-01..OD-13 are adopted policy; implementation and durable adapter proof remain outstanding.
 - VERIFIED: grant model has event/version parity, first-delivery authenticity/scope and relay-fence gaps. report_contract can misclassify timeout plus nonzero wrapper code; no precedence-only patch.
-- VERIFIED: last successful Pages run #17 deployed commit 90cc378df1f7c7f1b5f5535c322eddcfbfb9b26c; deployed index.html + workflow blob hashes match current main. Uploaded subtree had only README.md and simulated-only index.html. No worker/service worker/manifest/backend/runtime appears in that source artifact. UNKNOWN: live HTTP response, headers, Pages settings and device registrations.
+- VERIFIED: Pages run #17 deployed commit 90cc378df1f7c7f1b5f5535c322eddcfbfb9b26c; current main source blobs match. Portfolio is on the same github.io origin and its BaseLayout uses localStorage. No sensitive persistent data on this host before isolation. UNKNOWN: live HTTP response, headers and device registrations.
 - O-7: Pocket Code by Catrobat and POCO C++ are verified product/search collisions. Xiaomi POCO trademark claims remain UNKNOWN pending official database verification. No rename or PoCo publication.
 
 ## Ranked next steps
 1. Owner-run the read-only Pyodios Console probe from PYODIOS_PYTHONERROR_BRIDGE_TRIAGE_20261106.md. Return exact console output and sys.last_exc/sys.last_value; do not rerun the successful artifact-producing attempt or overwrite summary.json.
-2. Owner: open https://marcelosofficial-ctrl.github.io/PocketCode-/ on phone and confirm the live content. If it differs from the static simulated prototype in PAGES_READ_ONLY_SOURCE_AUDIT_20261112.md, send a screenshot. Headers/service-worker state need read-only device inspection; no deployment, DNS, settings or hosting changes.
-3. Convert the grant-event contract's acceptance matrix into a separately scoped model-only test plan; require a new explicit implementation/test gate before source/test edits. Do not select DB, broker or authentication algorithm.
-4. Convert opaque-origin and storage matrices into a device-validation plan for actual iOS Safari/WKWebView and Android versions. Test CSP network paths, sender/channel checks, worker deadline/termination, cold restart, quota, eviction, multi-tab and export/restore. No device acceptance claims before output.
-5. Resolve typed lifecycle/termination evidence and a versioned report input/renderer without a precedence-only patch. Keep child exit, wrapper exit, embedded exception, termination acknowledgement, collection and artifact disposition separate. CASE-04 remains INCOMPLETE / timed_out.
-6. Prove the five-file fresh-chat resume protocol. Preserve existing names/IDs; do not open CHAT_START_HERE, HOT_RESUME or STATE_LEDGER.
-7. Complete O-7 name clearance only if a product naming decision is needed. Verify official trademark records and intended markets before rename/publication.
+2. Owner: open https://marcelosofficial-ctrl.github.io/PocketCode-/ on phone and confirm live content; capture headers/service-worker registrations for both PocketCode and portfolio paths if possible. Do not store secrets/private code on the shared origin.
+3. Resolve the shared-origin data boundary before any persistent user data. Compare $0 options without selecting a host or changing D-006.
+4. Convert the grant-event contract's acceptance matrix into a separately scoped model-only test plan; require a new explicit implementation/test gate before source/test edits. Do not select DB, broker or authentication algorithm.
+5. Convert opaque-origin and storage matrices into a device-validation plan for actual iOS Safari/WKWebView and Android versions. Test CSP network paths, sender/channel checks, worker deadline/termination, cold restart, quota, eviction, multi-tab and export/restore. No device acceptance claims before output.
+6. Resolve typed lifecycle/termination evidence and a versioned report input/renderer without a precedence-only patch. Keep child exit, wrapper exit, embedded exception, termination acknowledgement, collection and artifact disposition separate. CASE-04 remains INCOMPLETE / timed_out.
+7. Prove the five-file fresh-chat resume protocol. Preserve existing names/IDs; do not open CHAT_START_HERE, HOT_RESUME or STATE_LEDGER.
+8. Complete O-7 name clearance only if a product naming decision is needed. Verify official trademark records and intended markets before rename/publication.
 
 ## Constraints
 - D-005/D-006: $0. No paid API keys/provider calls, hosting, Apple Developer Program, TestFlight or App Store.

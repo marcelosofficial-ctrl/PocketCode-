@@ -44,3 +44,39 @@ The workflow uploads prototypes/mobile-runner as the Pages root. Therefore, the 
 No CSP, COOP/COEP, Permissions Policy, service-worker or cross-origin-isolation claim is made from workflow success.
 
 **NOT RUN:** no new CI, browser test, public HTTP/header request, phone inspection, Pages settings read or deployment. No product or infrastructure decision changed.
+
+
+## Addendum: shared origin and iOS storage correction (2026-11-12)
+
+A second read-only source inspection expanded the audit to the separate `marcelosofficial-ctrl/portfolio` repository. Its current `main` configures Astro with `site: https://marcelosofficial-ctrl.github.io` and `base: /portfolio`. The PocketCode preview URL and portfolio URL therefore share the same scheme, host and port; only their paths differ.
+
+**VERIFIED:** portfolio `src/layouts/BaseLayout.astro` includes an inline script that reads the `marcelo-language` key from `localStorage`. The current portfolio tree has no service-worker, web-manifest, `_headers` or `_redirects` path. This is source evidence, not a live browser inventory.
+
+**Security consequence:** browser storage is origin-scoped, not path-scoped. MDN states that all documents with the same origin share localStorage. Therefore, any same-origin script executing on either path can access origin storage written by the other path. The current portfolio script is not evidence of malicious behaviour; it demonstrates that ordinary same-origin JavaScript has the relevant privilege. Treat the entire `marcelosofficial-ctrl.github.io` host as one browser trust domain.
+
+Until a real origin boundary or explicit owner-accepted threat model exists, do not persist provider credentials, auth tokens, private source, secrets or sensitive artifacts on this shared origin. A different repository, URL path or unsandboxed iframe is not isolation. The opaque-origin child protocol protects the child from parent-origin access; it does not split the trusted parent page from other same-origin pages.
+
+### Corrected WebKit persistence statement
+
+The official WebKit Tracking Prevention page documents deletion of script-writable storage after seven days without user interaction under its stated conditions. It also explicitly exempts the first-party domain of Home Screen web applications from this 7-day cap and says their website data is isolated from Safari. Do not generalize the Safari-tab rule to standalone Home Screen web apps. This exemption is not a backup guarantee and does not rule out quota eviction, user deletion, device loss, app removal or other storage failures. Safari, Home Screen web app and WKWebView must be tested separately.
+
+### Acceptance probes added
+
+| ID | Probe | Required evidence | Current |
+|---|---|---|---|
+| PG-04 | Harmless cross-path storage marker | Write random non-sensitive marker on one path, read from other path, then delete; never use real data | NOT RUN |
+| PG-05 | Script inventory on both paths | Exact live script URLs/hashes and inline-script inventory | PARTIAL: source inspection only |
+| PG-06 | Storage/service-worker inventory | localStorage, IndexedDB, Cache Storage, OPFS, registrations, quota estimate and persist() result | NOT RUN |
+| PG-07 | iOS install-mode comparison | Safari tab vs Home Screen app vs WKWebView; OS/browser versions; cold start, force quit and export/restore | NOT RUN |
+| PG-08 | Live response policy | Status, redirects, CSP, COOP/COEP, Permissions-Policy, Referrer-Policy and cache headers for both paths | NOT RUN |
+
+### Sources opened 2026-11-12
+
+- WebKit Tracking Prevention: https://webkit.org/tracking-prevention/
+- MDN Web Storage API: https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API
+- MDN Origin glossary: https://developer.mozilla.org/en-US/docs/Glossary/Origin
+- MDN Same-origin policy: https://developer.mozilla.org/en-US/docs/Web/Security/Defenses/Same-origin_policy
+- GitHub Pages publishing-source documentation: https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site
+- GitHub Pages custom workflow documentation: https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages
+
+No code, hosting, DNS, Pages setting, workflow or deployment changes were made. No live response headers or device storage behaviour were verified.

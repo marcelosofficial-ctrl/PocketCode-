@@ -56,3 +56,11 @@ INDEX/STATE/NEXT_TASK updated to separate verified repository deployment source 
 
  
 Final read-only Pages audit unit committed as 90f312f6dd04301176fc80e678a5c6b4ffe13d8c. This checkpoint refresh records that unit; no workflow or deployment was triggered.
+
+
+## Shared-origin red-team correction — 2026-11-12
+- Inspected portfolio repo read-only: Astro base `/portfolio`, same github.io scheme/host/port as PocketCode; BaseLayout inline script reads localStorage. Same-origin storage is shared across paths. Treat host as one trust domain; no sensitive persistence before origin boundary/owner-accepted threat model.
+- Corrected WebKit persistence statement: Safari's 7-day cap is conditional; first-party Home Screen web-app domain is explicitly exempt and its data is isolated from Safari. Not a backup guarantee. Test Safari, Home Screen app and WKWebView separately.
+- Added PG-04..08 for harmless cross-path storage marker, live script inventory, storage/service-worker inventory, iOS install-mode comparison and response-header policy.
+- Sources opened: official WebKit Tracking Prevention, MDN Web Storage/Origin/Same-origin policy, GitHub Pages publishing/workflow docs.
+- No source/test/workflow/host/Pages/DNS changes. Live headers and device probes NOT RUN.
