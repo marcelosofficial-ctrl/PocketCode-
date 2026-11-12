@@ -37,6 +37,7 @@ Size: S <8 KB, M 8–25 KB, L 25–50 KB, XL >50 KB (never load XL whole). “Hi
 | P39_OWNER_DELEGATED_DECISIONS_20261111.md | OD-01..OD-13 adopted; implementation gate remains closed |
 | P39_OD02_OD08_MODEL_COVERAGE_CROSSWALK_20261112.md | Static source/test coverage mapping for OD-02..OD-08; model-only, implementation gate closed |
 | P39_SUPPLEMENTAL_MODEL_CANONICAL_TRACEABILITY_20261112.md | Maps local grant/report model cases to canonical LOOP/CASE obligations; support only, no closure |
+| P39_OD09_OD13_MODEL_COVERAGE_CROSSWALK_20261112.md | Static source/test coverage mapping for OD-09..OD-13; lifecycle, policy barrier and receipt gaps |
 | P39_EXIT_OWNER_DECISION_REGISTER_20261108.md; EXIT_PROVENANCE_RESOLUTION_20261108.md; EXIT_PROVENANCE_STATIC_CONSISTENCY_AUDIT_20261108.md | Exit provenance and historical decision register |
 | P39 implementation research set: P39_IMPLEMENTATION_GATE_RESEARCH_ADDENDUM_20261109.md; P39_EVENT_RELAY_AND_EXIT_BOUNDARY_RESEARCH_20261109.md | Earlier gate research; do not treat as implementation evidence |
 | EXECUTION_BOUNDARY_DURABILITY_AND_EVIDENCE_RESEARCH_20261109.md; PWA_LOCAL_STORAGE_AND_RECOVERY_CONTRACT_20261109.md | Mobile/WASM, storage and recovery |
