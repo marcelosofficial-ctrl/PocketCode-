@@ -1,116 +1,62 @@
 # CHECKPOINT — 2026-11-12
 
-## Current completed unit
+## Unit completed
 
-Added `AI_COLLAB/PHONE_DEVICE_VALIDATION_RUNBOOK_20261112.md` as a read-only owner/device evidence protocol.
+Full documentation, source-to-policy and canonical-traceability pass. No source/test implementation was authorized or changed.
 
-Coverage:
-- Non-destructive Pyodios Console probe. Preserve the already matching `summary.json`; do not rerun `main.py` or any artifact-producing attempt.
-- Separate iOS Safari tab, Home Screen web app, WKWebView, Android Chrome tab, Android installed PWA and Android WebView contexts. No cross-context inference.
-- Future synthetic-data acceptance for opaque-origin iframe isolation, exact source-bound handshake, narrow wildcard bootstrap, MessagePort validation, CSP/no-network, cancellation evidence, staged artifact read-back, quota/eviction, multi-tab CAS and export/restore.
-- Typed lifecycle evidence keeps child exit, wrapper exit, embedded exception, termination acknowledgement, cleanup, artifact collection and client receipt separate.
-- Explicit evidence record template and PASS/FAIL/BLOCKED/NOT RUN rules.
+### Work delivered
 
-No device probe, app code, tests, deployment, host/provider, DNS/settings or storage-engine changes. The runbook does not authorize future device testing or implementation; browser acceptance requires an approved synthetic-data test build. Existing Pyodios success artifact remains untouched.
+- Restored missing `REPORT_PROJECTION_V2_MIGRATION_AND_ACCEPTANCE_20261112.md`: preserves format 1; proposes gated format 2 with separate execution, job/evidence and artifact projections; 14 regression cases.
+- Hardened `OPAQUE_ORIGIN_EXECUTION_PROTOCOL_20261112.md`: canonical ExecutionId distinct from parent-generated execution_instance_id in INIT and channel messages; browser CANCEL_ACK narrowly records supervisor invocation of terminate() on its exact Worker and closure of the task channel, not native child exit or renderer/OS teardown.
+- Hardened `GRANT_EVENT_ENVELOPE_AND_RELAY_CONTRACT_20261112.md`: distinct event/receipt/artifact digests, exact omitted-vs-null field rules, safe-integer bounds, receipt and artifact content binding, current authorization scope and verified/non-quarantined artifact requirement.
+- Hardened `BROWSER_ARTIFACT_STORAGE_RECOVERY_CONTRACT_20261112.md`: receipt head binds immutable receipt digest; artifact manifest binds digest/length/integrity/quarantine; added identity-rebinding and grant-denial recovery cases.
+- Expanded `GRANT_EVENT_MODEL_ACCEPTANCE_PLAN_20261112.md` to 33 local cases: A1–A8, B1–B9, C1–C9, D1–D7. Added static coverage crosswalk against existing in-memory source/tests.
+- Added `P39_OD02_OD08_MODEL_COVERAGE_CROSSWALK_20261112.md`: exact source pins and gaps in claim-time authorization, active revocation, recovery capability, policy epoch, authoritative time, restore high-water and receipt/artifact proof.
+- Added `P39_SUPPLEMENTAL_MODEL_CANONICAL_TRACEABILITY_20261112.md`: maps grant/report local tests to canonical LOOP/CASE criteria as supporting coverage only.
+- Added `P39_OD09_OD13_MODEL_COVERAGE_CROSSWALK_20261112.md`: policy/egress barriers, projection separation, coordinator identity, termination acknowledgement and client receipt gaps.
+- Updated `PHONE_DEVICE_VALIDATION_RUNBOOK_20261112.md` with exact ExecutionId/execution_instance_id checks and narrow Worker termination acknowledgement semantics.
+- Rewrote `STATE.md` as a compact live state; rewrote `NEXT_TASK.md` with ranked owner-gated next work; updated INDEX.
 
-## Project invariants and gates
+### Static findings
 
-- Phone-first, provider-neutral, $0; D-005/D-006 unchanged.
-- Keep PocketCode separate from RevDev. Preserve LOOP-01..14, CASE-01..16, all D-IDs and OD-01..OD-13. PR #2/#3/#4 untouched.
-- P39 policy decisions OD-01..OD-13 adopted; implementation/adapter gate remains CLOSED.
-- CASE-04 remains INCOMPLETE / timed_out.
-- No runtime, provider, database, transport, storage engine or host selected.
-- Explicit user paste/import only; no clipboard polling/overlays. No sensitive persistence on shared github.io origin.
+- The grant-conformance model's progress method advances aggregate_version even on equal progress without matching event/outbox. First-delivery consumer trusts supplied digest; grant-event relay is only a boolean delivered flag.
+- Receipt model has artifact digest/quarantine and receipt fingerprint, but grant ReceiptHead/reservation does not bind receipt/artifact content hashes. Its Python json.dumps fingerprint is not proof of JCS cross-language canonicalization.
+- Execution projection is a pure helper with typed child/wrapper/signal/embedded observations, but lacks canonical ExecutionId/tenant/effect scope, authenticated ingress, ordered-stream reduction, policy/egress barriers and durable persistence.
+- Receipt/transfer model separates lifecycle/collection/cleanup/artifact facts but is in-memory. No authoritative termination request/ack or authenticated client acknowledgement bound to exact artifact digest/object/range. Publication success is caller-supplied.
+- EventJournal's AuthenticatedProducer is a supplied model value, not cryptographic authentication.
+- Report format-1 helper still lets a bare nonzero integer override timeout/cancel/infrastructure/nonterminal lifecycle. No precedence-only patch.
 
-## Existing evidence
+## Safety and test boundary
 
-- P40 exact-SHA model run #59 / 43126974602 SUCCESS, full scripts 266/266, exact target `319cffef121e327331aeaff59522ae279b112ecc`; Lane 4 BLOCKED / NOT TESTABLE. Historical model-only evidence, not adapter/CASE acceptance.
-- Latest relevant CI remains run #59. Latest documentation HEAD has no status checks; tests in this unit NOT RUN.
-- Pages preview run #17 / 39433670146 deployed a static simulation subtree, not app runtime.
-- Pyodios iPhone error reported by owner; Console probe NOT RUN; cause/topology UNKNOWN.
-- Live Pages response/headers and actual device storage/service-worker state UNKNOWN.
+- P39 product-policy gate is CLEARED by OD-01..OD-13; P39 implementation/adapter gate remains CLOSED.
+- D-005/D-006 remain $0. No provider, runtime, database, transport, storage, host or name selected.
+- LOOP-01..14, CASE-01..16, all D-IDs and OD-01..OD-13 unchanged. CASE-04 remains INCOMPLETE / timed_out.
+- No source/test, workflow, product asset, device, deployment, DNS, settings, PR or RevDev changes.
+- Tests/device checks in this pass: NOT RUN. Existing Pyodios Console probe remains optional; preserve matching summary.json and do not rerun main.py.
 
-## Indexed design/acceptance documents
+## Startup and branch reconciliation
 
-- GRANT_EVENT_ENVELOPE_AND_RELAY_CONTRACT_20261112.md
-- GRANT_EVENT_MODEL_ACCEPTANCE_PLAN_20261112.md: 29 deterministic model scenarios; implementation/test gate still requires explicit owner approval.
-- OPAQUE_ORIGIN_EXECUTION_PROTOCOL_20261112.md
-- BROWSER_ARTIFACT_STORAGE_RECOVERY_CONTRACT_20261112.md
-- LIFECYCLE_TERMINATION_RECEIPT_ACCEPTANCE_20261112.md
-- REPORT_PROJECTION_V2_MIGRATION_AND_ACCEPTANCE_20261112.md: format-2 proposal; preserve legacy format 1; no precedence-only patch.
-- PAGES_READ_ONLY_SOURCE_AUDIT_20261112.md
-- ZERO_BUDGET_ORIGIN_OPTIONS_20261112.md
-- PHONE_DEVICE_VALIDATION_RUNBOOK_20261112.md
+Startup protocol was followed: BOOT.md, STATE.md, NEXT_TASK.md, CHECKPOINT.md, INBOX_chatgpt.md, then latest five branch commits. Latest five at unit start:
+- `7c9c13195ec2e435328a704471764173b5573967` — report projection artifact checkpoint
+- `78e513745b810ebd94ab71f63cb1cd352c62f8c9` — report projection migration plan
+- `31aa2d44ee4cc5cea1547a9b3fecd842d5dfd356` — live branch reconciliation checkpoint
+- `73c7237b359d9a91e454d5387b34c91ed6f79347` — next-pass plan refresh
+- `a97aae0e53aa6516b0ff7a500462aff4050060bc` — state branch reconciliation
 
-## Full work pass: owner visual-check clarification and branch reconciliation
+Final baseline before this checkpoint update:
+- VERIFIED HEAD `56789cb438e19be96765c9760fc3f91428c16572`.
+- Latest five: `56789cb` NEXT_TASK; `e2d078f` STATE; `d2494de` OD09–OD13 crosswalk clarification; `e8b678c` device runbook alignment; `adcb0eb` INDEX OD crosswalk.
+- Compare from source-audit pin `b71315068ec33a0175fed46ef96912e954d87f9f`: 77 ahead, 0 behind, 18 changed paths, all AI_COLLAB. No application source, scripts/tests, workflow or product assets changed.
+- HEAD combined status: pending, zero attached entries; no current-HEAD check.
+- Latest CI remains Actions #59 / `43126974602`, SUCCESS on historical target `319cffef121e327331aeaff59522ae279b112ecc`, 266/266 full scripts suite. Model-only, not current-head CI or adapter/CASE proof.
+- INDEX: 655 words, 90 Markdown references, no missing basenames.
 
-The owner reports opening the previously requested GitHub link and says it looked okay. The previous assistant reply included a GitHub commit URL and separately asked the owner to open the PocketCode Pages preview URL. Therefore the exact target is ambiguous. Record this as an owner-reported informal visual observation only. If the URL was `https://marcelosofficial-ctrl.github.io/PocketCode-/`, it establishes at most that the preview appeared to load/look okay in that one unrecorded context. No exact URL, page content, device/browser/version, screenshot, HTTP headers or service-worker state were captured. Do not ask the owner to repeat the check unless they actually opened the commit URL instead. This does not close the live Pages/device acceptance items.
+## Next
 
-Startup protocol completed: BOOT.md, STATE.md, NEXT_TASK.md, CHECKPOINT.md and INBOX_chatgpt.md were read in required order. Exact branch-ref API history, not stale commit search, supplied the latest five commits at unit start:
-- `6c67df2bd2d7623836bf824c24ebb0a72b4a2cea` — checkpoint
-- `56007305d110b94cd5f13ee17a6b766eec3cc027` — next task
-- `5b54464ab0423292cec8ef9b0e4bc5481c508c6c` — state
-- `3565d63f34c9476e58f96ded42af6fc4bfc1b615` — checkpoint
-- `64ad86ce65b1b1ddbc41096700bc082a7f97fbbf` — next task
+1. Keep P39 implementation/adapter gate CLOSED until a separate explicit source/test authorization.
+2. Only continue static review for a concrete new gap; OD-02..OD-13 and canonical traceability now have indexed crosswalks.
+3. Use approved synthetic-data build and exact target devices for browser acceptance; none is currently authorized/available.
+4. Owner may optionally perform read-only Pyodios Console check. No need to repeat unless they choose to provide it.
+5. Do not deploy, migrate host, rename or change PRs without owner decision.
 
-All five were verified as AI_COLLAB-only. This unit updated STATE.md and NEXT_TASK.md to capture the owner observation with its ambiguity and correct branch chronology, then refreshed this checkpoint. No app source, tests, workflow, deployment, host/provider, DNS/settings, PR or RevDev changes.
-
-CI at unit start: head `6c67df2bd2d7623836bf824c24ebb0a72b4a2cea` had no status checks. Latest relevant run remains #59 / 43126974602 SUCCESS, workflow commit `d93cd11e6873090cdb280fd18e45d9eeee9a973f`, exact historical model target `319cffef121e327331aeaff59522ae279b112ecc`, full scripts suite 266/266. This is not current-head, adapter or CASE acceptance. Tests in this unit: NOT RUN.
-
-Next: owner read-only Pyodios Console probe only. Keep the already matching `summary.json`; do not rerun the artifact-producing attempt. The Pages visual check need not be repeated if the preview URL was the one opened. Keep P39 implementation/adapter gate CLOSED and D-005/D-006 at $0.
-
-
-## Source-delta verification
-
-GitHub compare from source audit pin `b71315068ec33a0175fed46ef96912e954d87f9f` to the verified branch head at the start of this unit, `04d8181bf159f5a90ae6b7ace017c7f58e31611d`, reports 35 commits ahead, 0 behind, and 11 changed paths. Every changed path is under `AI_COLLAB/`. No application source, scripts/tests, workflow or product assets changed in that interval. This verifies the documented source/test boundary since the source audit pin; it does not imply current-HEAD tests or adapter acceptance.
-
-The user says the previously requested GitHub link looked okay. Since the earlier reply contained both a commit URL and a Pages-preview action, the exact target is ambiguous. This remains a user-reported visual observation, not independently verified live Pages response evidence. If the Pages preview was opened, no repeat check is needed.
-
-Next startup should re-read the five boot files and fetch latest five commits from the active branch. Current CI evidence remains run #59 on the historical pinned model target; current docs head has no status checks. Tests in this unit: NOT RUN.
-
-
-## Live-head reconciliation unit — 2026-11-12
-
-- Startup sequence completed: BOOT, STATE, NEXT_TASK, CHECKPOINT, INBOX_chatgpt, then branch history. The branch-ref history endpoint was used because commit search returned stale results.
-- VERIFIED current branch HEAD: `8298111d2b5d60cab9bbe8d5610fe52861e940c9`.
-- VERIFIED latest five commits, newest first: `8298111d2b5d60cab9bbe8d5610fe52861e940c9` (CHECKPOINT), `9c05f9158df250efa8cb3d7dcadcab047f5b6087` (NEXT_TASK), `214c39bdd90947efaa660db280182f112c29ba61` (STATE), `04d8181bf159f5a90ae6b7ace017c7f58e31611d` (CHECKPOINT), `0d7f8736d0db9855eda5d9d05da07fdf4ff7d0e0` (NEXT_TASK).
-- VERIFIED compare from source audit pin `b71315068ec33a0175fed46ef96912e954d87f9f` to HEAD: 38 commits ahead, 0 behind, 11 changed paths, all under AI_COLLAB. No application source, scripts/tests, workflow or product assets changed.
-- VERIFIED HEAD combined status: no status checks. Latest relevant Actions run #59 / 43126974602 SUCCESS remains pinned to historical model target `319cffef121e327331aeaff59522ae279b112ecc`; 266/266 model suite. This does not establish tests on current HEAD, adapter acceptance or CASE acceptance.
-- Tests in this unit: NOT RUN. No source/test/device/deployment/provider/PR changes. P39 implementation/adapter gate remains CLOSED; D-005/D-006 remain $0.
-- Next: owner-run read-only Pyodios Console probe only, preserving `summary.json`; no rerun of `main.py`. If Pages preview URL was the one opened, no repeat visual check needed.
-
-
-## Final verification for live-head reconciliation
-
-The reconciliation notes in STATE.md and NEXT_TASK.md were refreshed against the branch at unit start (`8298111d2b5d60cab9bbe8d5610fe52861e940c9`). A malformed abbreviated SHA introduced in the first STATE.md update was corrected to the exact third commit SHA `214c39bdd90947efaa660db280182f112c29ba61` before closing this unit. The three startup documents were committed sequentially; no source files or tests were touched. Final branch ref is checked after this checkpoint commit. Tests remain NOT RUN; current-head combined status was empty before these documentation-only updates.
-
-
-## Owner-friendly Pyodios diagnostic unit — 2026-11-12
-
-The owner clarified that “run the probe” was not actionable because they do not know what that means. This is a documentation/usability gap; no diagnostic was attempted and no user action is assumed. Updated `PHONE_DEVICE_VALIDATION_RUNBOOK_20261112.md` with section 2A: plain-language iPhone navigation, Console vs Editor distinction, exact copyable read-only code, what output to send, privacy/redaction guidance, and clear stop conditions. Updated NEXT_TASK.md and STATE.md to use the understandable instructions and make the action optional/deferable.
-
-Safety boundary: the code only reads `sys.last_exc` / `sys.last_value` in the existing session. It does not import or execute project files, modify the project, or write artifacts. The owner must not tap Editor's green run button, rerun `main.py`, run the wrapper, restart the session, clear logs or overwrite the already matching `summary.json`. If Console or its input/run control is unclear, stop and report the visible screen text. No owner-side action is required to continue repo-only work.
-
-No application source, scripts/tests, workflow, Pages settings, provider/host, deployment, PR or RevDev changes. Tests: NOT RUN. P39 implementation/adapter gate remains CLOSED; D-005/D-006 remain $0.
-
-## Live branch reconciliation — 2026-11-12 22:43 local
-
-- VERIFIED active branch HEAD at start of this pass: `928bc31dd41b854f6beda0e74d2774b72257b71b`.
-- VERIFIED latest five commits, newest first:
-- 928bc31dd41b854f6beda0e74d2774b72257b71b — docs(checkpoint): close owner diagnostic usability unit
-- ebdaf6dbf4e116f5ab9d887d9b747f3f3e9b2584 — docs(state): record owner-friendly diagnostic guidance
-- 599391c0fb57d45b20e3593d99d5013164d21977 — docs(next): clarify owner Pyodios diagnostic steps
-- 7cc887837596e2d3099ecfefa738ca716aab84b3 — docs(runbook): make Pyodios probe owner-friendly
-- 93f1b7dd40142437270455921303a4704a3e1aa5 — docs(checkpoint): close branch history reconciliation
-- VERIFIED compare from source audit pin `b71315068ec33a0175fed46ef96912e954d87f9f` to HEAD: 47 commits ahead, 0 behind, 11 changed paths. Every changed path is under `AI_COLLAB/`; no application source, scripts/tests, workflow or product assets changed in this interval.
-- VERIFIED HEAD combined commit status: `pending` with zero status entries (`total_count: 0`). This means no status checks are attached, not that a check passed.
-- VERIFIED latest relevant Actions run remains #59 / `43126974602`, SUCCESS, workflow commit `d93cd11e6873090cdb280fd18e45d9eeee9a973f`, checking out historical model target `319cffef121e327331aeaff59522ae279b112ecc`; full scripts suite 266/266. This is model-only evidence on that exact historical target, not current-HEAD CI, adapter proof or CASE acceptance. Lane 4 remains BLOCKED / NOT TESTABLE; CASE-04 remains INCOMPLETE / timed_out.
-- Previous baseline entries naming `8298111d2b5d60cab9bbe8d5610fe52861e940c9` or earlier are historical snapshots. This live reconciliation supersedes them for the branch head at this pass.
-- The owner-friendly Pyodios instructions remain optional; the Console probe is NOT RUN. No owner action is required for repo-only work. Preserve the existing matching `summary.json`; never rerun the artifact-producing attempt.
-- Tests in this documentation reconciliation: NOT RUN. No source/test/device/deployment/provider/DNS/settings/PR/RevDev changes. P39 implementation/adapter gate remains CLOSED; D-005/D-006 remain $0.
-
-## Report-projection migration artifact closure — 2026-11-12
-
-A final repository integrity check found that STATE.md, NEXT_TASK.md and INDEX.md referenced `REPORT_PROJECTION_V2_MIGRATION_AND_ACCEPTANCE_20261112.md`, but the path was absent from the branch tree at the start of this pass and at the previous reconciled heads. This was a missing deliverable, not a rename: the tree contained only the earlier `REPORT_VERDICT_PROVENANCE_PROJECTION_AUDIT_20261104.md` and related legacy report-projection references. The missing migration/acceptance document has now been created and committed as `78e513745b810ebd94ab71f63cb1cd352c62f8c9`. It is based on re-read pinned source blobs and the existing exit-provenance and lifecycle contracts. It preserves format 1, proposes a gated version-2 migration across three projections, includes 14 future regression cases, and explicitly leaves implementation NOT AUTHORIZED / NOT RUN. No source/test or canonical acceptance changes.
-
-Verification: the new path exists in the Git tree and is already indexed in INDEX.md. This closes the broken document reference. Tests remain NOT RUN; P39 implementation/adapter gate remains CLOSED; D-005/D-006 remain $0.
+Evidence labels: VERIFIED / INFERRED / UNKNOWN / NOT RUN. Tests: PASS / FAIL / NOT RUN.
