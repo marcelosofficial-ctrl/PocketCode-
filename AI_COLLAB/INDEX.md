@@ -42,6 +42,7 @@ Size: S <8 KB, M 8–25 KB, L 25–50 KB, XL >50 KB (never load XL whole). “Hi
 | PYODIDE_WORKER_CONTROL_CHANNEL_REDTEAM_20261110.md | Worker-channel threats; actual topology UNKNOWN |
 | FULL_POWER_GAP_RESEARCH_20261112.md | Ranked execution, grant, storage and evidence research |
 | PAGES_READ_ONLY_SOURCE_AUDIT_20261112.md | Exact Pages source/deploy artifact comparison; live response remains unknown |
+| ZERO_BUDGET_ORIGIN_OPTIONS_20261112.md | Supplemental $0 hosting-origin comparison; Cloudflare/Netlify research only, no provider selected |
 | OPAQUE_ORIGIN_EXECUTION_PROTOCOL_20261112.md | Opaque-origin frame, MessageChannel, CSP, bounded I/O and teardown contract |
 | BROWSER_ARTIFACT_STORAGE_RECOVERY_CONTRACT_20261112.md | Origin trust, staged artifact durability signals, eviction recovery and export contract |
 | LIFECYCLE_TERMINATION_RECEIPT_ACCEPTANCE_20261112.md | Typed lifecycle, child/wrapper distinction, same-attempt termination and receipt acceptance contract |

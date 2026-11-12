@@ -93,18 +93,3 @@ No implementation/test edits or test execution. Requires explicit owner gate bef
 A count audit found the test-plan tables contain 29 cases (A1-A7 = 7, B1-B7 = 7, C1-C8 = 8, D1-D7 = 7), not 28. STATE and this checkpoint now use 29. No scenario was removed or added in the correction.
 Latest completed test-plan unit commit before this checkpoint refresh: a348a53824a6459169fc4afff7bdfe7419839843. The current branch is documentation-only; latest five commits were a348a538, 38ff79c, cc4b455, b94e700 and 90f312f. Index is 574 words.
 CI: no new run for docs-only commits. P40 run #59 remains SUCCESS (266/266 exact model baseline); Pages run #17 remains SUCCESS for the static simulation preview. Tests during this pass: NOT RUN.
-
-## Typed report projection migration audit — 2026-11-12
-Added `AI_COLLAB/REPORT_PROJECTION_V2_MIGRATION_AND_ACCEPTANCE_20261112.md`. Source pins: report_contract.py 2459137b6f8d4b6bfadd6218e5a9bd92e75b0817; test_report_contract.py 85109f056009d65a274e9306deb39b68e1fefbd2; execution_projection.py f32237c8c5ee5d62b0416b3dd867515ce567c21b; test_execution_projection.py cbd756cce1bc42a6aab0d5c48d8fac6f56cce7c1.
-VERIFIED: legacy classify_verdict treats any integer nonzero as FAIL before lifecycle, including timeout/cancel/reject/infrastructure/nonterminal/unknown statuses; it cannot distinguish child natural exit from wrapper, signal, embedded or caller values. Typed execution_projection already tests timeout + wrapper 137 as INCOMPLETE, but it is pure and unauthenticated. The report packet defines a versioned format-2 migration, preserves format 1, separates execution/job/artifact projections, and supplies a regression matrix. No precedence-only patch.
-Updated INDEX: corrected grant-event plan to 29 scenarios and indexed report migration packet; INDEX is 589 words. STATE and NEXT_TASK link the new packet. No application/test source changed; no tests run. P39 implementation/adapter gate remains CLOSED; CASE-04 remains INCOMPLETE / timed_out.
-Unit commit: a326cc3dc1644a6f2349dfdc56897a3f59847894. This checkpoint refresh is a separate documentation-only commit.
-
-## Final branch and CI reconciliation — 2026-11-12
-Latest five branch commits verified after the report migration and state refresh:
-- 4020384bb4be0ae7d20b89e1a61f5531b5abdf32 — state reconciliation
-- e0876a094ebe8761ad51eef9d3e8ae71b91cd474 — report migration checkpoint
-- a326cc3dc1644a6f2349dfdc56897a3f59847894 — report migration/acceptance packet
-- 06f52ae8eb1fb4714e14561b64b6a08874c52f58 — grant-event scenario-count/next-gate reconciliation
-- a348a53824a6459169fc4afff7bdfe7419839843 — grant-event 29-scenario plan
-Branch source audit remains pinned through b71315068ec33a0175fed46ef96912e954d87f9f; commits after that source pin in this list are documentation-only. Latest commit has no combined status checks. No new CI is claimed. Latest relevant Python conformance run remains #59 / 43126974602 SUCCESS, workflow head d93cd11e6873090cdb280fd18e45d9eeee9a973f, exact P40 checkout target 319cffef121e327331aeaff59522ae279b112ecc, full scripts 266/266. Tests in this pass NOT RUN. No application/test/workflow/config changes, device probes, deployment or spending.
