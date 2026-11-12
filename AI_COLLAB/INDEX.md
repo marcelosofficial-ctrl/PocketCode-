@@ -48,7 +48,7 @@ Size: S <8 KB, M 8–25 KB, L 25–50 KB, XL >50 KB (never load XL whole). “Hi
 | LIFECYCLE_TERMINATION_RECEIPT_ACCEPTANCE_20261112.md | Typed lifecycle, child/wrapper distinction, same-attempt termination and receipt acceptance contract |
 | REPORT_PROJECTION_V2_MIGRATION_AND_ACCEPTANCE_20261112.md | Pinned report formatter defect, typed projection boundary and versioned migration/regression packet |
 | GRANT_EVENT_ENVELOPE_AND_RELAY_CONTRACT_20261112.md | Versioned event envelope, atomic parity, relay fence and inbox acceptance contract |
-| GRANT_EVENT_MODEL_ACCEPTANCE_PLAN_20261112.md | 32 deterministic model scenarios for parity, integrity, relay fencing and inbox/restore |
+| GRANT_EVENT_MODEL_ACCEPTANCE_PLAN_20261112.md | 33 deterministic model scenarios for parity, integrity, relay fencing and inbox/restore |
 | P40 source/run set: P40_MODEL_ONLY_EXECUTION_PROTOCOL_20261110.md; P40_BOUNDED_MODEL_RUN_AUTHORIZATION_20261111.md; P40_EXECUTION_ATTEMPT_20261111.md; P40_SOURCE_PINNED_COVERAGE_AND_PAGES_ORIGIN_AUDIT_20261111.md | Exact-SHA model-only plan, approval, run record and coverage/origin audit |
 | PR4_CONTINUITY_REFINEMENT_RECONCILIATION_20261109.md | PR #4 seven-file review; no owner action |
 | VERDICT_EVIDENCE_EXIT_PROVENANCE_MATRIX_20261105.md; PROVIDER_NEUTRAL_RECIPE_AND_DURABLE_TASK_MANIFEST_PROPOSAL_20261105.md | Exit matrix and manifest proposal |
