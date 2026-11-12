@@ -4,13 +4,14 @@
 Move from design contracts to evidence closure while keeping the P39 implementation/adapter gate CLOSED. Do not implement or select infrastructure from these specifications alone.
 
 ## Current evidence
+- VERIFIED branch documentation head at last reconciliation: `8b148413898ec273bed2ec3b70b2f328f9be7bd7`. Latest five commits are documentation-only; no source/test code changed. Latest head has no status checks or associated workflow runs. Do not mistake the stale search-index commit list for the active branch tip.
 - VERIFIED: P40 model lanes and full scripts suite PASS on exact target SHA 319cffef121e327331aeaff59522ae279b112ecc; Actions run 43126974602; full suite 266/266. Lane 4 BLOCKED / NOT TESTABLE. Model-only.
 - VERIFIED: contract and acceptance documents are committed: GRANT_EVENT_ENVELOPE_AND_RELAY_CONTRACT_20261112.md; OPAQUE_ORIGIN_EXECUTION_PROTOCOL_20261112.md; BROWSER_ARTIFACT_STORAGE_RECOVERY_CONTRACT_20261112.md; LIFECYCLE_TERMINATION_RECEIPT_ACCEPTANCE_20261112.md; GRANT_EVENT_MODEL_ACCEPTANCE_PLAN_20261112.md (29 model scenarios); REPORT_PROJECTION_V2_MIGRATION_AND_ACCEPTANCE_20261112.md.
 - VERIFIED: OD-01..OD-13 are adopted policy; implementation and durable adapter proof remain outstanding.
 - VERIFIED: grant model has event/version parity, first-delivery authenticity/scope and relay-fence gaps. report_contract can misclassify timeout plus nonzero wrapper code; no precedence-only patch.
 - VERIFIED: Pages run #17 deployed commit 90cc378df1f7c7f1b5f5535c322eddcfbfb9b26c; current main prototype/workflow blobs match. Portfolio is on the same github.io origin and its BaseLayout uses localStorage. No sensitive persistent data on this host before isolation. UNKNOWN: live HTTP response, headers and device registrations.
 - VERIFIED: ZERO_BUDGET_ORIGIN_OPTIONS_20261112.md compares no-spend origin candidates; Cloudflare Pages is research-only, Netlify secondary, Vercel Hobby excluded. No provider selected or account authorized.
-- VERIFIED: PHONE_DEVICE_VALIDATION_RUNBOOK_20261112.md now consolidates non-destructive Pyodios diagnosis, device-context inventory, and future synthetic-data isolation/storage/lifecycle acceptance. Owner/device execution NOT RUN.
+- VERIFIED: PHONE_DEVICE_VALIDATION_RUNBOOK_20261112.md now consolidates non-destructive Pyodios diagnosis, device-context inventory, and future synthetic-data isolation/storage/lifecycle acceptance. Owner/device execution NOT RUN. The read-only probe matches the exact steps in PYODIOS_PYTHONERROR_BRIDGE_TRIAGE_20261106.md; preserve the existing success artifact.
 - O-7: Pocket Code by Catrobat and POCO C++ are verified product/search collisions. Xiaomi POCO trademark claims remain UNKNOWN pending official database verification. No rename or PoCo publication.
 
 ## Ranked next steps
