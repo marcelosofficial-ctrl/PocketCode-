@@ -46,3 +46,10 @@ Verified changed-file boundary for all five commits: AI_COLLAB documentation onl
 INDEX.md verified at 546 words, below the 1,200-word target. AI_LANES_AND_DISPATCH appears once.
 Latest relevant CI: Actions run #59 / 43126974602, completed SUCCESS on workflow-only commit d93cd11e6873090cdb280fd18e45d9eeee9a973f, exact P40 checkout target 319cffef121e327331aeaff59522ae279b112ecc, full scripts suite 266/266. Docs-only commits do not match the workflow's scripts/workflow path filter; no new CI run is claimed for them.
 This checkpoint update itself is a documentation-only commit after the HEAD above. On the next resume, read the required five files first and re-fetch the latest five commits to establish the new tip.
+
+
+## Read-only Pages audit unit — 2026-11-12
+Added AI_COLLAB/PAGES_READ_ONLY_SOURCE_AUDIT_20261112.md.
+VERIFIED latest successful preview run #17 / 39433670146 deployed main commit 90cc378df1f7c7f1b5f5535c322eddcfbfb9b26c on 2026-10-20. Current main 03e65ef35d8b22cb4337ac7097b2a31247c3721e is 34 commits ahead; prototype HTML blob e2c4ece041be95ce9a73bc60ff354702b21c33c2 and workflow blob 58b1bb968aa8e6a2ae824079046e5968a140ab16 are unchanged. Published subtree contains README.md + simulated-only index.html. No runtime, external JS, worker, service worker, manifest, DB, backend or login appears in that source subtree. Workflow runs source-only checker and Python suite before deployment.
+UNKNOWN current Pages settings, live HTTP response and headers: settings endpoint rejected, web reader inaccessible, direct HTTP probe failed DNS. No device inspection or deployment. Portfolio scripts/service-worker state outside this repo remain UNKNOWN.
+INDEX/STATE/NEXT_TASK updated to separate verified repository deployment source from unverified live serving.
