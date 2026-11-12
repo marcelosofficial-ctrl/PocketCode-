@@ -41,3 +41,19 @@ Move from design contracts to evidence closure while keeping the P39 implementat
 
 ## Owner usability clarification (2026-11-12)
 The owner said the earlier phrase “run the probe” was unclear. The exact simple iPhone steps and copyable read-only code are now in section 2A of PHONE_DEVICE_VALIDATION_RUNBOOK_20261112.md. No Python knowledge is required. Owner action is optional and may be deferred: open Pyodios, tap Console (not Editor), paste the supplied block, run once, and send the output. If Console or its input/run control is unclear or unavailable, stop and report the screen text. Do not rerun main.py, run the wrapper, restart the session, or overwrite summary.json.
+
+## Live branch reconciliation — 2026-11-12 22:43 local
+
+- VERIFIED active branch HEAD at start of this pass: `928bc31dd41b854f6beda0e74d2774b72257b71b`.
+- VERIFIED latest five commits, newest first:
+- 928bc31dd41b854f6beda0e74d2774b72257b71b — docs(checkpoint): close owner diagnostic usability unit
+- ebdaf6dbf4e116f5ab9d887d9b747f3f3e9b2584 — docs(state): record owner-friendly diagnostic guidance
+- 599391c0fb57d45b20e3593d99d5013164d21977 — docs(next): clarify owner Pyodios diagnostic steps
+- 7cc887837596e2d3099ecfefa738ca716aab84b3 — docs(runbook): make Pyodios probe owner-friendly
+- 93f1b7dd40142437270455921303a4704a3e1aa5 — docs(checkpoint): close branch history reconciliation
+- VERIFIED compare from source audit pin `b71315068ec33a0175fed46ef96912e954d87f9f` to HEAD: 47 commits ahead, 0 behind, 11 changed paths. Every changed path is under `AI_COLLAB/`; no application source, scripts/tests, workflow or product assets changed in this interval.
+- VERIFIED HEAD combined commit status: `pending` with zero status entries (`total_count: 0`). This means no status checks are attached, not that a check passed.
+- VERIFIED latest relevant Actions run remains #59 / `43126974602`, SUCCESS, workflow commit `d93cd11e6873090cdb280fd18e45d9eeee9a973f`, checking out historical model target `319cffef121e327331aeaff59522ae279b112ecc`; full scripts suite 266/266. This is model-only evidence on that exact historical target, not current-HEAD CI, adapter proof or CASE acceptance. Lane 4 remains BLOCKED / NOT TESTABLE; CASE-04 remains INCOMPLETE / timed_out.
+- Previous baseline entries naming `8298111d2b5d60cab9bbe8d5610fe52861e940c9` or earlier are historical snapshots. This live reconciliation supersedes them for the branch head at this pass.
+- The owner-friendly Pyodios instructions remain optional; the Console probe is NOT RUN. No owner action is required for repo-only work. Preserve the existing matching `summary.json`; never rerun the artifact-producing attempt.
+- Tests in this documentation reconciliation: NOT RUN. No source/test/device/deployment/provider/DNS/settings/PR/RevDev changes. P39 implementation/adapter gate remains CLOSED; D-005/D-006 remain $0.
