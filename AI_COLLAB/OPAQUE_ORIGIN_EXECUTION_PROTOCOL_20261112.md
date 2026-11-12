@@ -60,11 +60,11 @@ Origin and hosting:
 Threat: opaque origins serialize as the string null in MessageEvent.origin. Many unrelated opaque origins also serialize as null. Therefore event.origin === "null" is not a unique sender identity.
 
 Handshake:
-1. Parent creates the fixed iframe, sets sandbox and restrictive policy before navigation, and retains the iframe's exact contentWindow reference plus a new local frame-generation value.
+1. Parent creates the fixed iframe, sets sandbox and restrictive policy before navigation, and retains the iframe's exact contentWindow reference plus a new local frame-generation value. The trusted parent/coordinator also binds the canonical `ExecutionId` to a fresh `execution_instance_id` for this frame/worker session before EXECUTE; the two identifiers are never aliases.
 2. After the fixed supervisor loads, it sends HELLO with protocol version and a fresh supervisor-generated challenge. No secret or user data is included.
 3. Parent accepts HELLO only when event.source is exactly that iframe's current contentWindow, event.origin is the expected opaque-origin marker, frame generation is current and the strict HELLO schema validates. The origin marker is an additional check, never the identity check by itself.
 4. Parent creates a MessageChannel and sends one minimal INIT message with the transferred port to that exact contentWindow. Because the receiver has an opaque origin, a tuple targetOrigin cannot address it; the wildcard target is permitted only for this bootstrap to the retained exact WindowProxy. It must contain no provider credentials, session tokens, secrets or authority beyond the new channel.
-5. INIT contains protocol version, one-time session nonce, CommandId, DispatchAttemptId, ExecutionId, per-attempt limits and the supervisor challenge binding. It contains no ambient credentials.
+5. INIT contains protocol version, one-time session nonce, CommandId, DispatchAttemptId, canonical ExecutionId, parent-generated `execution_instance_id`, per-attempt limits and the supervisor challenge binding. It contains no ambient credentials. Both execution identifiers are fixed before EXECUTE and bound to this one transferred port.
 6. Supervisor verifies the parent message's exact parent origin and source, validates challenge/session shape, then binds the transferred port to this one execution. All subsequent control messages use the MessagePort, not window message events.
 7. Parent never accepts a new window message as a continuation after channel establishment. Duplicate HELLO, replayed INIT, a stale frame generation or a message from another source closes the channel and fails the attempt.
 8. Close both port ends and destroy the frame on completion, cancellation, malformed message, timeout or navigation.
@@ -76,12 +76,18 @@ The child-to-parent HELLO checks event.source === parent and the exact configure
 Every post-handshake message is a structured object with exactly these envelope fields:
 - protocol: opaque-origin-execution/v1.
 - session_nonce: one-time per-frame session binding.
-- execution_instance_id: unique frame execution instance.
+- execution_instance_id: unique parent-generated frame/worker session identity.
+- execution_id: canonical ExecutionId bound in INIT; distinct from `execution_instance_id`.
 - command_id and dispatch_attempt_id: existing identities; they are not interchangeable.
 - sequence: positive safe integer, monotonically increasing independently in each direction.
 - message_id: unique within this execution direction.
 - kind: one of the explicit message kinds below.
 - payload: strict kind-specific object; reject unknown security-sensitive keys.
+
+Binding rules:
+- The parent generates `execution_instance_id` and binds it to one canonical `ExecutionId` in INIT. Every post-handshake message echoes both exact values; the parent validates both against immutable channel state before processing the payload.
+- `execution_instance_id` is a browser frame/worker session correlation value, not an alias for `ExecutionId`, `DispatchAttemptId` or `CommandId`. Neither identifier may be selected or rebound by task output.
+- If the canonical ExecutionId is not yet assigned by the trusted coordinator, EXECUTE is not sent. Never invent or accept it from an untrusted message.
 
 Limits:
 - Validate message shape, direction, state and size before copying buffers or parsing deep structures.
@@ -101,7 +107,7 @@ Allowed supervisor-to-parent kinds:
 - READY: fixed supervisor and protocol initialized.
 - STARTED: supervisor accepted this exact execution request.
 - FINISHED: task returned a result envelope and zero or more staged output candidates. These are task-reported results, not by themselves authenticated child-process exit evidence.
-- CANCEL_ACK: supervisor confirms it requested termination of its exact worker and closed the task channel; this is a controller acknowledgement, not proof of OS-level containment.
+- CANCEL_ACK: supervisor confirms it invoked `terminate()` on the exact Worker object it created and closed the task channel. Store this narrowly as `worker_termination_action_acknowledged`; it is not a native child wait status, proof of renderer/OS-process teardown, or proof that every external side effect stopped. Do not promote it to a broader termination/cleanup claim without an execution-model-specific acceptance rule.
 - FAULT: protocol, worker, resource or validation fault with bounded diagnostic text.
 - SHUTDOWN_ACK: supervisor reports local teardown completed.
 No artifact is releasable on READY, STARTED, FINISHED, CANCEL_ACK or SHUTDOWN_ACK alone.
@@ -169,7 +175,7 @@ Projection:
 | Input traversal/duplicate file names/oversized files | Reject before execution |
 | Output changed after supervisor digest claim | Parent recomputes digest; quarantine on mismatch |
 | Worker reports forged success/exit code | Preserve only as task-reported result, not trusted process verdict |
-| Worker runs forever | Supervisor deadline terminates its exact Worker; record controller result |
+| Worker runs forever | Supervisor deadline invokes `terminate()` on its exact Worker; record `worker_termination_action_acknowledged` only when the matching controller message is validated, otherwise termination remains UNKNOWN |
 | Worker allocates until renderer failure | Browser containment is UNKNOWN; never claim hard memory quota |
 | CANCEL_ACK withheld or sent for another attempt | Termination UNKNOWN, job INCOMPLETE; parent closes frame |
 | Artifact emitted before full staging/current authorization | Block release under OD-01/OD-02 |
