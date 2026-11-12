@@ -1,28 +1,22 @@
 # CHECKPOINT — 2026-11-12
 
-Completed units 1–2: grant-event envelope/relay contract and opaque-origin browser execution protocol.
+Completed units 1–3: grant-event envelope/relay, opaque-origin execution, browser artifact storage/recovery.
 Branch: pocketcode-ai-workflow-director-research-2026-10-28
 Unit 1 commit: 0db55f439ff7429e12ab6d0327aa74b95d18d98c
-Unit 2 parent: 0db55f439ff7429e12ab6d0327aa74b95d18d98c
-Unit 2 new document: AI_COLLAB/OPAQUE_ORIGIN_EXECUTION_PROTOCOL_20261112.md
-Scope: documentation/spec only. No application/test edits, device tests, implementation gate changes or infrastructure selection.
+Unit 2 commit: e8c46a73ced696ebcbb0bcefe11e204f7057ccbe
+Unit 3 parent: e8c46a73ced696ebcbb0bcefe11e204f7057ccbe
+Unit 3 new document: AI_COLLAB/BROWSER_ARTIFACT_STORAGE_RECOVERY_CONTRACT_20261112.md
+Scope remains documentation/spec only: no application/test edits, device tests, implementation gate changes or infrastructure selection.
 
-Unit 1 verified model defects:
-- Equal progress increments aggregate_version without event/outbox.
-- Consumer trusts a supplied first-delivery digest and does not validate full tenant/grant/effect/attempt/producer scope.
-- Grant-event delivery marker has no lease/fence/stale-ack protection.
-Deliverable defines grant-event-envelope/v1, canonical bytes/digest, authenticated ingress, atomic aggregate+outbox parity, separate transition and relay fences, ordered at-least-once publication, durable consumer inbox and 18 acceptance cases.
+Unit 1 (grant-event-envelope/v1): event/version parity; no-op does not advance version; canonical bytes and recomputed digest; independent producer authentication; separate business transition and relay fences; ordered at-least-once publisher; durable consumer inbox; stale-ack and restore-roll-back acceptance cases.
 
-Unit 2 deliverable defines opaque-origin-execution/v1:
-- sandboxed iframe allow-scripts only; no allow-same-origin.
-- exact WindowProxy source binding, opaque origin null nuance, one-time nonce and narrowly scoped wildcard bootstrap to exact child only.
-- MessageChannel held only by trusted supervisor; task Worker receives no parent port or credentials.
-- default-deny CSP, bounded explicit file copies, parent-side digest verification, no MVP streaming.
-- distinct task-reported result, controller teardown acknowledgement, child exit evidence and job/artifact disposition.
-- missing same-attempt acknowledgement remains UNKNOWN/INCOMPLETE; browser hard memory quota remains UNKNOWN.
-Research sources opened include WHATWG HTML, MDN postMessage/CSP/Worker.terminate, W3C Permissions Policy, Pyodide docs, OWASP and Open WebUI advisory. No code/dependencies copied.
+Unit 2 (opaque-origin-execution/v1): allow-scripts-only opaque iframe; source-bound handshake; null-origin nuance and narrowly scoped wildcard bootstrap; MessageChannel retained by supervisor; untrusted worker has no parent port/credentials; CSP network deny; explicit bounded file copies; truthful cancellation and resource limits.
 
-Housekeeping: INDEX includes name collision, provider cache/context and Claude red-team docs; AI_LANES_AND_DISPATCH remains indexed once. P39/P40 grouped and INDEX budget reduced. Do not rename PocketCode or publish PoCo pending name clearance; exact trademark specifics not verified.
+Unit 3 (browser-artifact-recovery/v1): separates produced, locally stored, read-back verified, manifest committed, exported, transport emitted, client observed and client acknowledged. Defines origin trust/no-secrets, immutable staged writes, read-back digest, manifest commit, recovery/reopen, quota/persist signals, Safari inactive-origin eviction and explicit export. IndexedDB, OPFS, SQLite-WASM and Cache API remain unselected. Acceptance matrix includes crash points, quota, eviction, same-origin sibling, multi-tab CAS and import/export.
 
-P40 remains PASS: Actions run #59 / 43126974602, exact target 319cffef121e327331aeaff59522ae279b112ecc, full scripts 266/266; lane 4 BLOCKED. Model-only, not adapter/CASE acceptance. Docs-only commits do not trigger current CI path filters.
-Next unit: browser artifact storage/recovery contract (IndexedDB transaction and durability hints, Safari storage eviction, export/recovery), then update STATE/NEXT_TASK/INBOX and final checkpoint. Tests NOT RUN in units 1–2. CASE-04 remains INCOMPLETE / timed_out.
+Research sources opened 2026-11-12: AWS, Debezium, CloudEvents, NATS, RFC 8785/9421, WHATWG, MDN messaging/CSP/storage/durability/Worker, W3C Permissions Policy, Pyodide, WebKit, SQLite and OWASP. Licences checked where relevant; no source code or dependencies copied.
+
+Housekeeping: INDEX now indexes name collision/provider context/Claude red-team files and all three new contracts; AI_LANES_AND_DISPATCH remains indexed once. P39 and P40 rows compacted. Name collision remains open: no rename or PoCo publication before clearance; specific trademark evidence remains UNKNOWN.
+
+P40 remains PASS: Actions run #59 / 43126974602, exact target 319cffef121e327331aeaff59522ae279b112ecc, full scripts 266/266; lane 4 BLOCKED. Model-only. Docs-only commits do not trigger CI path filters.
+Next: update STATE.md, NEXT_TASK.md, INDEX/INBOX status, final CHECKPOINT, then verify branch commits and relevant CI. Tests NOT RUN in units 1–3. CASE-04 remains INCOMPLETE / timed_out.
