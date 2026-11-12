@@ -31,3 +31,18 @@ Evidence and gate:
 - Tests: NOT RUN during this pass. Existing P40 model PASS remains separate and must not be generalized.
 
 Next pass first read: BOOT.md -> STATE.md -> NEXT_TASK.md -> CHECKPOINT.md -> INBOX_chatgpt.md; then latest five commits and INDEX. Do not load prohibited history files or any document over 1,500 words whole.
+
+ 
+## Final branch reconciliation — 2026-11-12
+Latest verified branch HEAD before this checkpoint refresh: 53df0496eef3031c947a6b8405ce3cc7dd15b186.
+Last five commits at that point:
+- 53df0496eef3031c947a6b8405ce3cc7dd15b186 — state, NEXT_TASK, naming evidence and inbox reconciliation
+- b71315068ec33a0175fed46ef96912e954d87f9f — lifecycle/termination/receipt acceptance
+- 8422bed92598ac76f756735e6213e7e06a06258e — browser artifact recovery contract
+- e8c46a73ced696ebcbb0bcefe11e204f7057ccbe — opaque-origin execution protocol
+- 0db55f439ff7429e12ab6d0327aa74b95d18d98c — grant-event envelope and relay contract
+
+Verified changed-file boundary for all five commits: AI_COLLAB documentation only. No app, scripts, tests, workflow or configuration paths changed.
+INDEX.md verified at 546 words, below the 1,200-word target. AI_LANES_AND_DISPATCH appears once.
+Latest relevant CI: Actions run #59 / 43126974602, completed SUCCESS on workflow-only commit d93cd11e6873090cdb280fd18e45d9eeee9a973f, exact P40 checkout target 319cffef121e327331aeaff59522ae279b112ecc, full scripts suite 266/266. Docs-only commits do not match the workflow's scripts/workflow path filter; no new CI run is claimed for them.
+This checkpoint update itself is a documentation-only commit after the HEAD above. On the next resume, read the required five files first and re-fetch the latest five commits to establish the new tip.
