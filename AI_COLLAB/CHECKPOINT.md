@@ -58,3 +58,12 @@ All five were verified as AI_COLLAB-only. This unit updated STATE.md and NEXT_TA
 CI at unit start: head `6c67df2bd2d7623836bf824c24ebb0a72b4a2cea` had no status checks. Latest relevant run remains #59 / 43126974602 SUCCESS, workflow commit `d93cd11e6873090cdb280fd18e45d9eeee9a973f`, exact historical model target `319cffef121e327331aeaff59522ae279b112ecc`, full scripts suite 266/266. This is not current-head, adapter or CASE acceptance. Tests in this unit: NOT RUN.
 
 Next: owner read-only Pyodios Console probe only. Keep the already matching `summary.json`; do not rerun the artifact-producing attempt. The Pages visual check need not be repeated if the preview URL was the one opened. Keep P39 implementation/adapter gate CLOSED and D-005/D-006 at $0.
+
+
+## Source-delta verification
+
+GitHub compare from source audit pin `b71315068ec33a0175fed46ef96912e954d87f9f` to the verified branch head at the start of this unit, `04d8181bf159f5a90ae6b7ace017c7f58e31611d`, reports 35 commits ahead, 0 behind, and 11 changed paths. Every changed path is under `AI_COLLAB/`. No application source, scripts/tests, workflow or product assets changed in that interval. This verifies the documented source/test boundary since the source audit pin; it does not imply current-HEAD tests or adapter acceptance.
+
+The user says the previously requested GitHub link looked okay. Since the earlier reply contained both a commit URL and a Pages-preview action, the exact target is ambiguous. This remains a user-reported visual observation, not independently verified live Pages response evidence. If the Pages preview was opened, no repeat check is needed.
+
+Next startup should re-read the five boot files and fetch latest five commits from the active branch. Current CI evidence remains run #59 on the historical pinned model target; current docs head has no status checks. Tests in this unit: NOT RUN.
