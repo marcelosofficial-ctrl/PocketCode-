@@ -127,6 +127,9 @@ No candidate is approved. In particular:
 | Object exists but manifest is missing | Orphan; no implicit reconstruction of authority |
 | Receipt head advanced in another tab | Old revision cannot be made current by restore |
 | Two tabs race a receipt successor | One compare-and-swap wins; other must re-read and reconcile |
+| Same receipt ID/revision presented with different canonical bytes/digest | Conflict and quarantine; never rebind an immutable receipt identity |
+| Same artifact ID/object version presented with different bytes/digest | Immutable-object conflict; reject and preserve original object |
+| Grant request matches IDs but receipt/artifact digest differs or manifest is quarantined | Deny before grant/event/outbox commit; no authorization by identifier equality alone |
 | navigator.storage.persist() denied | Continue with disclosed best-effort storage and explicit export option |
 | persist() granted then user clears site data | Data-loss recovery; do not claim persist() was a backup |
 | Quota estimate changes between check and write | Write error handled; no manifest points to incomplete bytes |
