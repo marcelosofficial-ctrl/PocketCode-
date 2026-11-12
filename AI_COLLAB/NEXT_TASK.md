@@ -37,3 +37,7 @@ Move from design contracts to evidence closure while keeping the P39 implementat
 - VERIFIED latest five commits: `8298111d2b5d60cab9bbe8d5610fe52861e940c9`, `9c05f9158df250efa8cb3d7dcadcab047f5b6087`, `214c39bdd90947efaa660db280182f112c29ba61`, `04d8181bf159f5a90ae6b7ace017c7f58e31611d`, `0d7f8736d0db9855eda5d9d05da07fdf4ff7d0e0`.
 - VERIFIED source boundary: compare from `b71315068ec33a0175fed46ef96912e954d87f9f` to HEAD = 38 ahead / 0 behind / 11 paths, all AI_COLLAB. No source/scripts/tests/workflow/assets changed.
 - VERIFIED current HEAD has no status checks. Latest CI remains run #59, successful only on historical target `319cffef121e327331aeaff59522ae279b112ecc`; current-head tests NOT RUN.
+
+
+## Owner usability clarification (2026-11-12)
+The owner said the earlier phrase “run the probe” was unclear. The exact simple iPhone steps and copyable read-only code are now in section 2A of PHONE_DEVICE_VALIDATION_RUNBOOK_20261112.md. No Python knowledge is required. Owner action is optional and may be deferred: open Pyodios, tap Console (not Editor), paste the supplied block, run once, and send the output. If Console or its input/run control is unclear or unavailable, stop and report the screen text. Do not rerun main.py, run the wrapper, restart the session, or overwrite summary.json.
