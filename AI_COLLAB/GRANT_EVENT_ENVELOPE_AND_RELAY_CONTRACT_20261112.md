@@ -54,7 +54,7 @@ Required data fields:
 - aggregate_version: positive monotonic integer, exactly predecessor + 1.
 - from_state and to_state: explicit states. Initial reservation uses from_state absent and to_state reserved; do not encode a fake prior state.
 - receipt_id and receipt_revision: exact immutable receipt binding used by the grant.
-- receipt_sha256: SHA-256 of the exact canonical immutable receipt bytes, obtained from the ReceiptHead binding or an authenticated immutable reference that resolves to those exact values.
+- receipt_sha256: SHA-256 of the exact canonical immutable receipt bytes, obtained from the ReceiptHead binding or an authenticated immutable reference that resolves to those exact values. The receipt's versioned schema must define the canonical byte encoding (JCS or an independently reviewed exact equivalent).
 - artifact_id and object_version: exact immutable artifact object binding where the transition concerns artifact transfer.
 - artifact_sha256: SHA-256 of the exact artifact bytes in the bound receipt manifest, required for artifact-transfer transitions.
 - operation: download or share where applicable.
@@ -83,6 +83,7 @@ Canonical bytes and integrity:
 - Do not parse and re-serialize with an arbitrary JSON serializer when verifying a digest. Verify digest against the received canonical bytes first, then parse and validate the schema.
 - JCS follows I-JSON / ECMAScript-number semantics. Represent identifiers and counters that may exceed the exact IEEE-754 integer range as decimal strings in a future schema revision; do not silently round them. JCS does not normalize Unicode; equivalent-looking strings remain distinct unless the domain schema defines normalization explicitly.
 - `data_sha256`, `receipt_sha256` and `artifact_sha256` are three different digests with different subjects; none substitutes for another.
+- The current Python receipt model computes its fingerprint with `json.dumps(sort_keys=True, separators=...)`; that is model-local deterministic serialization, not proof of RFC 8785/JCS cross-language canonicalization. A future adapter must follow the selected receipt schema's exact canonical byte rule and pin its version.
 - Receipt and artifact digests must be recomputed or resolved from trusted immutable records, not accepted from request fields. Before reservation, verify the exact receipt ID/revision/digest and the exact artifact ID/object-version/length/digest; require the manifest integrity state to be `verified` and quarantine to be false.
 - A digest detects byte changes relative to a trusted expected digest. It does not identify who created the event and does not make a caller-supplied digest trustworthy.
 
@@ -96,7 +97,7 @@ Producer authentication:
 
 For a state transition:
 1. Read the current grant under a transaction/compare-and-swap boundary.
-2. Validate exact grant, tenant, effect, attempt, receipt ID/revision/receipt SHA-256, artifact ID/object version/artifact length/artifact SHA-256, verified non-quarantined manifest state, allowed transition, policy epoch and current worker fence where applicable. The receipt and artifact proofs are resolved from trusted immutable content, never from caller-supplied digest claims.
+2. Validate exact grant, tenant, effect, attempt, receipt ID/revision/receipt SHA-256, artifact ID/object version/artifact length/artifact SHA-256, verified non-quarantined manifest state, allowed transition, policy epoch and current worker fence where applicable. The current authorization decision must bind the same receipt digest, artifact digest, operation and scope. The receipt and artifact proofs are resolved from trusted immutable content, never from caller-supplied digest claims.
 3. Determine whether the request changes semantic state. If not, return the current aggregate and event cursor without incrementing the version.
 4. Build the next aggregate with aggregate_version = prior + 1.
 5. Build and canonicalize exactly one event for that next version. Compute the digest from those exact bytes.
