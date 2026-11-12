@@ -43,6 +43,7 @@ Size: S <8 KB, M 8–25 KB, L 25–50 KB, XL >50 KB (never load XL whole). “Hi
 | FULL_POWER_GAP_RESEARCH_20261112.md | Ranked execution, grant, storage and evidence research |
 | OPAQUE_ORIGIN_EXECUTION_PROTOCOL_20261112.md | Opaque-origin frame, MessageChannel, CSP, bounded I/O and teardown contract |
 | BROWSER_ARTIFACT_STORAGE_RECOVERY_CONTRACT_20261112.md | Origin trust, staged artifact durability signals, eviction recovery and export contract |
+| LIFECYCLE_TERMINATION_RECEIPT_ACCEPTANCE_20261112.md | Typed lifecycle, child/wrapper distinction, same-attempt termination and receipt acceptance contract |
 | GRANT_EVENT_ENVELOPE_AND_RELAY_CONTRACT_20261112.md | Versioned event envelope, atomic parity, relay fence and inbox acceptance contract |
 | P40 source/run set: P40_MODEL_ONLY_EXECUTION_PROTOCOL_20261110.md; P40_BOUNDED_MODEL_RUN_AUTHORIZATION_20261111.md; P40_EXECUTION_ATTEMPT_20261111.md; P40_SOURCE_PINNED_COVERAGE_AND_PAGES_ORIGIN_AUDIT_20261111.md | Exact-SHA model-only plan, approval, run record and coverage/origin audit |
 | PR4_CONTINUITY_REFINEMENT_RECONCILIATION_20261109.md | PR #4 seven-file review; no owner action |
