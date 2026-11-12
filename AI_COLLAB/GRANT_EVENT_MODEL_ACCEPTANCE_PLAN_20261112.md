@@ -1,6 +1,6 @@
 # Grant-event model acceptance plan (2026-11-12)
 
-Status: proposed test-only scope; not authorised for implementation in this pass. This plan converts the grant-event-envelope/v1 contract into a deterministic model acceptance suite. No new canonical LOOP, CASE or D identifiers are created. Local scenario labels below are not canonical IDs.
+Status: proposed test-only scope; not authorised for implementation in this pass. This plan converts the grant-event-envelope/v1 contract into a deterministic 32-scenario model acceptance suite (A1–A7, B1–B9, C1–C9, D1–D7). No new canonical LOOP, CASE or D identifiers are created. Local scenario labels below are not canonical IDs.
 
 ## 1. Ranked purpose
 
@@ -52,6 +52,8 @@ Allowed future scope, only after explicit owner gate:
 | B5 schema validation | Unknown major version, missing required field, wrong type, empty identity, unknown critical extension | Reject/quarantine; no projection |
 | B6 exact scope | Wrong tenant, grant, effect, attempt, receipt/revision, artifact/object version, operation or policy epoch | Reject/quarantine; no projection |
 | B7 event identity collision | Same (source,event_id), exact same bytes and scope; then same identity with changed bytes/scope | First is duplicate; second quarantined; original remains immutable |
+| B8 conditional field presence | Initial reservation omits `from_state`; compare omitted vs null/empty values for conditional fields | Accept only the exact event-type schema; reject null/empty substitutes and forbidden fields |
+| B9 v1 numeric bounds | Exercise maximum safe integer and one-past-maximum for version, fence, sequence and byte counters; include booleans | Accept only in-range field-valid safe integers; reject overflow/rounding/coercion before projection |
 
 The in-memory test must state clearly that producer identity is a trusted test fixture. It may verify that an injected ingress decision is bound to exact bytes and scope; it cannot claim cryptographic authentication, key revocation, certificate validation or production trust.
 
@@ -67,6 +69,7 @@ The in-memory test must state clearly that producer identity is a trusted test f
 | C6 ack binding | Ack with wrong event ID, version, owner or fence | Reject without changing delivery state |
 | C7 per-grant ordering | N+1 is pending while N unresolved | N+1 cannot be marked publisher-acknowledged first |
 | C8 distinct fences | Advance worker transition fence while relay lease remains active, and vice versa | Each fence only authorizes its own state machine |
+| C9 relay fence exhaustion | Attempt takeover when relay_fence is at the v1 safe-integer ceiling | Fail closed; no wrap, reuse, claim or acknowledgement under a rounded fence |
 
 Use a deterministic fake clock and monotonic integer relay fence. Do not reuse `FakeOutboxStore.Lease` or `StaleLease` as the grant relay API; its state machine is for effect dispatch.
 
