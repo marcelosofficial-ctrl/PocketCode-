@@ -77,3 +77,13 @@ Verified last five commits before this checkpoint refresh:
 
 Changes in the Pages unit are AI_COLLAB documents only. No app/test/workflow/config files changed. P40 run #59 remains SUCCESS (full scripts 266/266, exact target 319cffef121e327331aeaff59522ae279b112ecc). Pages run #17 remains SUCCESS for deployment SHA 90cc378df1f7c7f1b5f5535c322eddcfbfb9b26c. Neither run is a check for this documentation-only commit. No new CI was triggered.
 Tests during this pass: NOT RUN. Live Pages headers/body, actual device storage, cross-path marker and Pyodios Console probe remain NOT RUN.
+
+
+## Grant-event test-plan unit — 2026-11-12
+Added AI_COLLAB/GRANT_EVENT_MODEL_ACCEPTANCE_PLAN_20261112.md (four groups, 28 local scenarios):
+- Transition parity/atomicity, including equal-progress no-op and exactly one event/outbox for real transitions.
+- Exact canonical bytes, digest recomputation, first-delivery tamper, producer trust separation and full scope checks.
+- Independent grant-event relay lease/fence, takeover, stale ack, publish-before-ack crash and ordering.
+- Consumer inbox idempotency, gap deferral/recovery, inbox/effect atomicity and restore high-water.
+Red-team boundaries: in-memory model is not database atomicity; typed producer fixture is not cryptographic authentication; effect fence is not relay fence; transport is at-least-once; restore model is not backup proof.
+No implementation/test edits or test execution. Requires explicit owner gate before source/test changes.
