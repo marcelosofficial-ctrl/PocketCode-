@@ -51,3 +51,10 @@ Evidence labels: VERIFIED / INFERRED / UNKNOWN / NOT RUN. Tests: PASS / FAIL / N
 - VERIFIED latest five branch commits, newest first: `8298111d2b5d60cab9bbe8d5610fe52861e940c9` (CHECKPOINT), `9c05f9158df250efa8cb3d7dcadcab047f5b6087` (NEXT_TASK), `214c39bdd90947efaa660db280182f112c29ba61` (STATE), `04d8181bf159f5a90ae6b7ace017c7f58e31611d` (CHECKPOINT), `0d7f8736d0db9855eda5d9d05da07fdf4ff7d0e0` (NEXT_TASK). - VERIFIED GitHub compare from source audit pin `b71315068ec33a0175fed46ef96912e954d87f9f` to current HEAD: 38 commits ahead, 0 behind, 11 changed paths, every path under `AI_COLLAB/`. No app source, scripts/tests, workflow or product assets changed in this interval.
 - VERIFIED HEAD combined status: no status checks. Latest workflow run remains #59 / 43126974602 SUCCESS on workflow-only commit `d93cd11e6873090cdb280fd18e45d9eeee9a973f`, checking out historical model target `319cffef121e327331aeaff59522ae279b112ecc`; full scripts suite 266/266. This is not current-HEAD CI or adapter/CASE acceptance.
 - Tests in this reconciliation unit: NOT RUN. Owner/device evidence remains the next external dependency; do not rerun the artifact-producing Pyodios attempt.
+
+
+## Owner diagnostic usability update (2026-11-12)
+- Owner said the earlier phrase “run the probe” did not explain what to do. This was a communication gap, not an owner failure.
+- VERIFIED: `PHONE_DEVICE_VALIDATION_RUNBOOK_20261112.md` section 2A now gives plain iPhone steps, the exact copyable read-only Console block, expected empty-result wording, privacy/redaction guidance and stop conditions. No Python knowledge is required.
+- The check reads only the existing session's saved exception (`sys.last_exc`, then `sys.last_value`). It does not run project code or write files. Owner may defer it; if Console or its input/run control is unclear, stop and report what is visible.
+- Preserve the existing exact-match `summary.json`; never rerun `main.py`, run the wrapper, restart the session or clear the Error Log for this diagnostic.
