@@ -60,6 +60,15 @@ Required data fields:
 - transition_fence: current worker/coordinator fence for a transition that requires a live claim. The initial coordinator reservation event is the sole no-worker-fence exception.
 - progress_bytes: present only for a progress transition; bounded by the pinned artifact length and monotonic. Equal progress is a no-op.
 
+Conditional field presence:
+- The initial reservation omits the `from_state` property entirely; it does not encode `null`, an empty string or a synthetic prior state. All later transitions include the exact prior `from_state` and new `to_state` values.
+- Conditional fields such as `operation`, `artifact_id`, `object_version` and `policy_epoch` are either present with a valid value or omitted only where that transition type explicitly permits omission. `null` is not an alternate spelling of omission. The per-event-type schema must define required, optional and forbidden fields before implementation.
+
+Version-1 numeric bounds:
+- Every integer counter, sequence, fence, version or byte length represented as a JSON number MUST be an ECMAScript safe integer (absolute value no greater than 9,007,199,254,740,991). Field-specific rules still apply: aggregate_version and applicable fences are positive; progress_bytes is non-negative.
+- This applies to `aggregate_version`, `transition_fence`, mutable `relay_fence`, and `progress_bytes`, and to any other numeric sequence/high-water field added to this v1 envelope or relay metadata. Boolean values are not integers for schema validation.
+- If a required counter cannot be advanced without exceeding the safe-integer bound, fail closed before mutation or publication. Never round, wrap or reuse it. A decimal-string representation requires an explicitly versioned schema revision and coordinated consumer migration; do not silently change v1 types.
+
 Mapping rules:
 - attempt_id is the existing DispatchAttemptId value. Do not merge it with EffectId, ExecutionId, CommandId, ObservationSequence, ResultReceiptId or PublicationAttemptId.
 - relay_fence, relay_owner and relay lease expiry are relay-control metadata, not immutable business event data.
