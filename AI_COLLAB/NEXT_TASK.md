@@ -4,7 +4,7 @@
 Move from design contracts to evidence closure while keeping the P39 implementation/adapter gate CLOSED. Do not implement or select infrastructure from these specifications alone.
 
 ## Current evidence
-- VERIFIED branch HEAD at start of this work unit: `6c67df2bd2d7623836bf824c24ebb0a72b4a2cea`. Its latest five commits are 6c67df2, 5600730, 5b54464, 3565d63 and 64ad86c; all are documentation-only. The branch head has no status checks. The commit-search index is stale; use the branch-ref commit history.
+- VERIFIED branch HEAD at start of this work unit: `04d8181bf159f5a90ae6b7ace017c7f58e31611d`. Its latest five commits are 04d8181, 0d7f873, 0545312, 6c67df2 and 5600730; all are documentation-only. GitHub compare from source audit pin `b71315068ec33a0175fed46ef96912e954d87f9f` to this head reports 35 commits, 0 behind, 11 changed paths, all under `AI_COLLAB/`. No app source/scripts/tests/workflows/assets changed in that interval. The branch head has no status checks.
 - VERIFIED: P40 model lanes and full scripts suite PASS on exact target SHA 319cffef121e327331aeaff59522ae279b112ecc; Actions run 43126974602; full suite 266/266. Lane 4 BLOCKED / NOT TESTABLE. Model-only.
 - VERIFIED: contract and acceptance documents are committed: GRANT_EVENT_ENVELOPE_AND_RELAY_CONTRACT_20261112.md; OPAQUE_ORIGIN_EXECUTION_PROTOCOL_20261112.md; BROWSER_ARTIFACT_STORAGE_RECOVERY_CONTRACT_20261112.md; LIFECYCLE_TERMINATION_RECEIPT_ACCEPTANCE_20261112.md; GRANT_EVENT_MODEL_ACCEPTANCE_PLAN_20261112.md (29 model scenarios); REPORT_PROJECTION_V2_MIGRATION_AND_ACCEPTANCE_20261112.md.
 - VERIFIED: OD-01..OD-13 are adopted policy; implementation and durable adapter proof remain outstanding.
