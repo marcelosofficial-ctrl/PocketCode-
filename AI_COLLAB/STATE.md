@@ -1,5 +1,5 @@
 # STATE: PocketCode
-Updated: 2026-11-12. Source-level audit remains pinned through b71315068ec33a0175fed46ef96912e954d87f9f; last independently verified pre-final metadata head was 7faf225e50cdec6749e5b07fe08e0030e580eeec; subsequent reconciliation commits also changed documentation only. All commits after the source audit remain documentation-only. This state records the contract/acceptance units, origin research, device runbook and repository housekeeping.
+Updated: 2026-11-12. Live branch head reconciled at `8298111d2b5d60cab9bbe8d5610fe52861e940c9`. Source-level audit remains pinned through b71315068ec33a0175fed46ef96912e954d87f9f; last independently verified pre-final metadata head was 7faf225e50cdec6749e5b07fe08e0030e580eeec; subsequent reconciliation commits also changed documentation only. All commits after the source audit remain documentation-only. This state records the contract/acceptance units, origin research, device runbook and repository housekeeping.
 
 ## Status and evidence
 - Phase: discovery/product definition and acceptance-contract refinement. P39 product-policy gate CLEARED by owner delegation; P39 implementation/adapter conformance gate remains CLOSED. No runtime, provider, database, transport, host or storage engine selected.
@@ -44,3 +44,11 @@ Updated: 2026-11-12. Source-level audit remains pinned through b71315068ec33a017
 8. Prove fresh-chat one-line resume using the five-file startup sequence. Do not open CHAT_START_HERE, HOT_RESUME or STATE_LEDGER.
 
 Evidence labels: VERIFIED / INFERRED / UNKNOWN / NOT RUN. Tests: PASS / FAIL / NOT RUN. Model test PASS never closes adapter or canonical CASE acceptance.
+
+
+## Live branch-head reconciliation (2026-11-12)
+- VERIFIED active branch HEAD: `8298111d2b5d60cab9bbe8d5610fe52861e940c9`.
+- VERIFIED latest five branch commits, newest first: `8298111d2b5d60cab9bbe8d5610fe52861e940c9` (CHECKPOINT), `9c05f9158df250efa8cb3d7dcadcab047f5b6087` (NEXT_TASK), `214c39bdd90947efa?` (STATE), `04d8181bf159f5a90ae6b7ace017c7f58e31611d` (CHECKPOINT), `0d7f8736d0db9855eda5d9d05da07fdf4ff7d0e0` (NEXT_TASK). The third SHA is recorded as `214c39bdd90947efaa660db280182f112c29ba61` in the branch history; see commit URL.
+- VERIFIED GitHub compare from source audit pin `b71315068ec33a0175fed46ef96912e954d87f9f` to current HEAD: 38 commits ahead, 0 behind, 11 changed paths, every path under `AI_COLLAB/`. No app source, scripts/tests, workflow or product assets changed in this interval.
+- VERIFIED HEAD combined status: no status checks. Latest workflow run remains #59 / 43126974602 SUCCESS on workflow-only commit `d93cd11e6873090cdb280fd18e45d9eeee9a973f`, checking out historical model target `319cffef121e327331aeaff59522ae279b112ecc`; full scripts suite 266/266. This is not current-HEAD CI or adapter/CASE acceptance.
+- Tests in this reconciliation unit: NOT RUN. Owner/device evidence remains the next external dependency; do not rerun the artifact-producing Pyodios attempt.
