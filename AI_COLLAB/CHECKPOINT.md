@@ -1,30 +1,28 @@
 # CHECKPOINT — 2026-11-12
 
-Unit 1 complete: grant-event envelope and relay contract.
+Completed units 1–2: grant-event envelope/relay contract and opaque-origin browser execution protocol.
 Branch: pocketcode-ai-workflow-director-research-2026-10-28
-Parent before unit: 1ec716a75ee6a05ebbe4d8f6a2eb570837ea4f13
-New document: AI_COLLAB/GRANT_EVENT_ENVELOPE_AND_RELAY_CONTRACT_20261112.md
-Scope: documentation/spec only; no application/test changes; P39 implementation/adapter gate remains CLOSED.
-Contract version: grant-event-envelope/v1 (not a canonical LOOP/CASE/D ID).
+Unit 1 commit: 0db55f439ff7429e12ab6d0327aa74b95d18d98c
+Unit 2 parent: 0db55f439ff7429e12ab6d0327aa74b95d18d98c
+Unit 2 new document: AI_COLLAB/OPAQUE_ORIGIN_EXECUTION_PROTOCOL_20261112.md
+Scope: documentation/spec only. No application/test edits, device tests, implementation gate changes or infrastructure selection.
 
-Verified source defects:
-- aggregate_version increments on equal progress without matching event/outbox.
-- consumer trusts supplied first-delivery digest and does not validate complete authority/scope.
-- grant-event delivery marker has no lease, relay fence or stale-ack protection.
-- initial grant/event/outbox atomicity is only a synchronous in-memory model; no durable proof.
-- P40 suite did not include parity/first-delivery-authentication/relay-fencing adversarial tests.
+Unit 1 verified model defects:
+- Equal progress increments aggregate_version without event/outbox.
+- Consumer trusts a supplied first-delivery digest and does not validate full tenant/grant/effect/attempt/producer scope.
+- Grant-event delivery marker has no lease/fence/stale-ack protection.
+Deliverable defines grant-event-envelope/v1, canonical bytes/digest, authenticated ingress, atomic aggregate+outbox parity, separate transition and relay fences, ordered at-least-once publication, durable consumer inbox and 18 acceptance cases.
 
-Contract decisions:
-- Every semantic aggregate transition commits exactly one immutable event/outbox row with its version; no-op does not advance version.
-- Canonical data bytes are hashed; producer authentication is separate; CloudEvents source+id is identity only.
-- Business transition fence and relay fence are separate.
-- At-least-once publication with immutable identity, ordered application, durable inbox and stale-ack rejection; no exactly-once claim.
-- Database, transport, key system, signature algorithm and runtime remain unselected.
+Unit 2 deliverable defines opaque-origin-execution/v1:
+- sandboxed iframe allow-scripts only; no allow-same-origin.
+- exact WindowProxy source binding, opaque origin null nuance, one-time nonce and narrowly scoped wildcard bootstrap to exact child only.
+- MessageChannel held only by trusted supervisor; task Worker receives no parent port or credentials.
+- default-deny CSP, bounded explicit file copies, parent-side digest verification, no MVP streaming.
+- distinct task-reported result, controller teardown acknowledgement, child exit evidence and job/artifact disposition.
+- missing same-attempt acknowledgement remains UNKNOWN/INCOMPLETE; browser hard memory quota remains UNKNOWN.
+Research sources opened include WHATWG HTML, MDN postMessage/CSP/Worker.terminate, W3C Permissions Policy, Pyodide docs, OWASP and Open WebUI advisory. No code/dependencies copied.
 
-Research sources opened 2026-11-12: AWS transactional outbox, Debezium Outbox Event Router, CloudEvents core, NATS JetStream ack/consumer docs, RFC 8785 JCS, RFC 9421 HTTP Message Signatures. Pattern reuse only; no code/dependencies copied. See source register in the contract.
+Housekeeping: INDEX includes name collision, provider cache/context and Claude red-team docs; AI_LANES_AND_DISPATCH remains indexed once. P39/P40 grouped and INDEX budget reduced. Do not rename PocketCode or publish PoCo pending name clearance; exact trademark specifics not verified.
 
-Housekeeping reconciled: INDEX now includes name collision, provider cache/context and Claude red-team documents; AI_LANES_AND_DISPATCH remains indexed once. P39 and P40 rows compacted. Name-clearance is a non-blocking open item; do not rename or publish PoCo before clearance. Official Catrobat/Poco-project sources support product/search collision; alleged trademark specifics remain unverified.
-
-Prior P40 evidence remains: run #59 / 43126974602 SUCCESS, exact checkout 319cffef121e327331aeaff59522ae279b112ecc; full scripts 266/266; lane 4 BLOCKED. Model-only, not adapter/CASE acceptance. Latest relevant CI is the same run; docs-only commit has no CI trigger.
-
-Next unit: opaque-origin execution message protocol. Then storage/artifact recovery contract, followed by state/NEXT_TASK/name-collision housekeeping. Tests NOT RUN in this unit. CASE-04 remains INCOMPLETE / timed_out.
+P40 remains PASS: Actions run #59 / 43126974602, exact target 319cffef121e327331aeaff59522ae279b112ecc, full scripts 266/266; lane 4 BLOCKED. Model-only, not adapter/CASE acceptance. Docs-only commits do not trigger current CI path filters.
+Next unit: browser artifact storage/recovery contract (IndexedDB transaction and durability hints, Safari storage eviction, export/recovery), then update STATE/NEXT_TASK/INBOX and final checkpoint. Tests NOT RUN in units 1–2. CASE-04 remains INCOMPLETE / timed_out.
