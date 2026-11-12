@@ -51,6 +51,7 @@ Size: S <8 KB, M 8–25 KB, L 25–50 KB, XL >50 KB (never load XL whole). “Hi
 | P40_MODEL_ONLY_EXECUTION_PROTOCOL_20261110.md | Six-lane model-only plan (not authorized/run) |
 | P40_BOUNDED_MODEL_RUN_AUTHORIZATION_20261111.md | Exact source-pinned read-only run request; owner approved, execution blocked |
 | P40_EXECUTION_ATTEMPT_20261111.md | Approved run attempt; target pins verified; runner unavailable, tests NOT RUN |\n| P40_SOURCE_PINNED_COVERAGE_AND_PAGES_ORIGIN_AUDIT_20261111.md | Source/test mapping and Pages/shared-origin audit |
+| FULL_POWER_GAP_RESEARCH_20261112.md | Ranked execution, grant-event, storage, evidence and P40 research with red-team corrections |
 | PR4_CONTINUITY_REFINEMENT_RECONCILIATION_20261109.md | PR #4 seven-file review; no merge recommendation |
 | VERDICT_EVIDENCE_EXIT_PROVENANCE_MATRIX_20261105.md; PROVIDER_NEUTRAL_RECIPE_AND_DURABLE_TASK_MANIFEST_PROPOSAL_20261105.md | Exit matrix and manifest proposal |
 | CANONICAL_ACCEPTANCE_TRACEABILITY_20261029.md; OWNER_DECISION_REGISTER_20261029.md | LOOP/CASE traceability and earlier owner register |

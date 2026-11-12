@@ -32,3 +32,9 @@ Owner approval is needed for a narrowly scoped workflow-only change that adds ex
 - VERIFIED: the existing workflow on the active branch has a `push` trigger restricted to this branch and paths `scripts/**` or `.github/workflows/pocketcode-python-tests.yml`. A narrowly scoped workflow-only commit on this active branch can trigger the workflow without touching main, while checking out the exact target SHA; however, this is outside the approved read-only run and still requires separate owner approval.
 - VERIFIED: latest HEAD status endpoint reports `pending` with zero statuses; Actions runs query returns zero runs. CI remains NOT RUN.
 - No temporary branch was created. No workflow, source, test, PR, Pages or deployment changes were made.
+
+
+## Follow-up correction — full-power pass 2026-11-12
+The branch baseline was advanced to `6b28b5afd59e404b8d2bda9d7cf4a99001a6cd34` by a documentation-only commit. Earlier follow-up text records an earlier point-in-time HEAD, not the current branch head. The current latest five commits are recorded in `CHECKPOINT.md`.
+
+The owner then instructed a FULL-POWER PASS, explicitly directing the lead not to ask permission and to act. This is interpreted narrowly as authorization for one workflow-only P40 runner change: exact target checkout `319cffef121e327331aeaff59522ae279b112ecc`, Python/SQLite/OS version output, five authorized lane commands and full scripts discovery. No application or test code edits, provider calls, device tests, deployment, PR changes or spend are included. Execution outcome will be recorded only from actual Actions logs.

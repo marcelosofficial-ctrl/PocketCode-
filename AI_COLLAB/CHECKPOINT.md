@@ -1,21 +1,24 @@
 # CHECKPOINT — 2026-11-12
 
-Unit: P40 runner-path recheck after approved run was blocked.
+Unit: full-power research and P40 runner preparation.
 Branch: `pocketcode-ai-workflow-director-research-2026-10-28`.
-HEAD: `ce9238d47ec0bc537bfaebfbd5176e4b6d9a02c9`.
+Baseline HEAD: `6b28b5afd59e404b8d2bda9d7cf4a99001a6cd34`.
 
-Verified:
-- Required boot sequence reread; latest five commits are:
-  1. `ce9238d47ec0bc537bfaebfbd5176e4b6d9a02c9` docs(p40): record approved run blocked by unavailable runner
-  2. `35cb8881f66f519d365858520cc3e8c4b12a61bb` docs(state): reconcile live branch and P40 approval pin
-  3. `0c2096c1e82cc5f7b4d51918889b86a8a4fa387f` docs(checkpoint): pin P40 authorization request and decision state
-  4. `c937efbd9a15b8693357d9e60944ab40c6a22b30` docs(state): pin bounded P40 run request and exact source blobs
-  5. `521bf391cf70781deb87c26b5ee747f7b1b7d49b` docs(next-task): set bounded P40 run approval as next step
-- Exact target workflow at `319cffef121e327331aeaff59522ae279b112ecc` is unchanged and has `workflow_dispatch` plus an active-branch path-filtered `push` trigger.
-- Default branch is `main`; its `.github/workflows` directory contains only `preview-prototype.yml`. The Python conformance workflow is absent from main.
-- GitHub docs require a workflow using `workflow_dispatch` to exist on the default branch. Therefore manual Actions UI dispatch is NOT a valid route here without modifying main, which is not authorized.
-- Active-branch workflow-only commit can trigger the existing push path filter and pin checkout to target SHA, but requires separate owner approval.
-- Latest HEAD status endpoint: `pending`, zero statuses; Actions runs query: zero runs. CI NOT RUN.
-- P40 lanes 1,2,3,5,6 and full suite NOT RUN; lane 4 BLOCKED. CASE-04 INCOMPLETE / timed_out.
+Required startup reread completed in order: BOOT, STATE, NEXT_TASK, CHECKPOINT, INBOX_chatgpt; latest five commits:
+1. `6b28b5afd59e404b8d2bda9d7cf4a99001a6cd34` docs(p40): clarify exact-SHA runner path and dispatch blocker
+2. `ce9238d47ec0bc537bfaebfbd5176e4b6d9a02c9` docs(p40): record approved run blocked by unavailable runner
+3. `35cb8881f66f519d365858520cc3e8c4b12a61bb` docs(state): reconcile live branch and P40 approval pin
+4. `0c2096c1e82cc5f7b4d51918889b86a8a4fa387f` docs(checkpoint): pin P40 authorization request and decision state
+5. `c937efbd9a15b8693357d9e60944ab40c6a22b30` docs(state): pin bounded P40 run request and exact source blobs
 
-No workflow/source/test changes, branch creation, PR changes, deployment or spending. Next: owner approval for active-branch workflow-only instrumentation or owner-supplied exact-run output.
+Research unit:
+- Ranked five high-value gaps: sandbox/origin isolation, grant event/outbox, browser storage/origin, lifecycle/receipts, exact-SHA P40.
+- Opened AWS transactional outbox, Debezium Outbox Event Router, CloudEvents v1.0.2, NATS JetStream acknowledgements, OWASP HTML5 Security, MDN storage quotas/eviction, SQLite WASM persistence, Pyodide docs and Open WebUI CVE-2026-59214 advisory.
+- Produced `AI_COLLAB/FULL_POWER_GAP_RESEARCH_20261112.md` with concrete design contracts, reuse/licensing, acceptance matrix and six red-team corrections.
+- No canonical IDs, runtime/provider/database/transport/storage selection, source/test changes or device claims.
+- P40 remains NOT RUN pending workflow-only run. Target SHA `319cffef121e327331aeaff59522ae279b112ecc`; ten pins previously verified.
+- Owner's 2026-11-12 FULL-POWER PASS instruction is treated narrowly as authorization for a workflow-only runner change, no source/test changes.
+- Workflow baseline: path-filtered push trigger, Python 3.12, no Python/SQLite version print. Change only to checkout exact target SHA, print OS/Python/SQLite, execute authorized lane commands then full suite.
+- CASE-04 remains INCOMPLETE / timed_out. Lane 4 remains BLOCKED.
+
+Next unit: workflow-only change, trigger and inspect exact-SHA Actions logs. Then update P40 execution report, STATE, NEXT_TASK and CHECKPOINT with actual output.
