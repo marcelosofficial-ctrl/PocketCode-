@@ -64,3 +64,16 @@ Final read-only Pages audit unit committed as 90f312f6dd04301176fc80e678a5c6b4ff
 - Added PG-04..08 for harmless cross-path storage marker, live script inventory, storage/service-worker inventory, iOS install-mode comparison and response-header policy.
 - Sources opened: official WebKit Tracking Prevention, MDN Web Storage/Origin/Same-origin policy, GitHub Pages publishing/workflow docs.
 - No source/test/workflow/host/Pages/DNS changes. Live headers and device probes NOT RUN.
+
+
+## Final reconciliation after shared-origin correction — 2026-11-12
+Latest completed unit commit: cc4b455077c4a495df433ac298381a5516e07a86. It updates the Pages audit, STATE and NEXT_TASK. The current Pages audit is 994 words; INDEX is 559 words and includes it.
+Verified last five commits before this checkpoint refresh:
+- cc4b455077c4a495df433ac298381a5516e07a86 — correct shared-origin and iOS storage assumptions
+- b94e70033887fba9f592bc2ddcabe0365e6e4481 — checkpoint for Pages source audit
+- 90f312f6dd04301176fc80e678a5c6b4ffe13d8c — Pages source/deployment audit
+- 7aa785b1b0502a6f03d3fffe6eb143ba33753605 — full-pass checkpoint reconciliation
+- 53df0496eef3031c947a6b8405ce3cc7dd15b186 — four contracts and naming evidence state update
+
+Changes in the Pages unit are AI_COLLAB documents only. No app/test/workflow/config files changed. P40 run #59 remains SUCCESS (full scripts 266/266, exact target 319cffef121e327331aeaff59522ae279b112ecc). Pages run #17 remains SUCCESS for deployment SHA 90cc378df1f7c7f1b5f5535c322eddcfbfb9b26c. Neither run is a check for this documentation-only commit. No new CI was triggered.
+Tests during this pass: NOT RUN. Live Pages headers/body, actual device storage, cross-path marker and Pyodios Console probe remain NOT RUN.
