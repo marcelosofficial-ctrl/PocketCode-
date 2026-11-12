@@ -1,26 +1,26 @@
 # NEXT TASK: PocketCode
 
 ## Goal
-Execute the owner-approved exact-SHA P40 read-only model run using the narrow workflow-only route. The 2026-11-12 FULL-POWER PASS instruction authorizes acting without another permission prompt; no source/test code changes.
+Turn the remaining grant-event relay and untrusted-execution gaps into versioned, acceptance-ready contracts without crossing the closed implementation gate.
 
 ## Current evidence
 - VERIFIED: Claude and Gemini P39 reviews are reconciled. Claude's provider/design strategy drafts were independently audited but are not P39 gate evidence.
-- VERIFIED: P40 six-lane protocol exists; NOT AUTHORIZED / NOT RUN. Historical 266/266 PASS applies only to SHA `744cb4dc7cd4994647c84ac7476d0c78a21f0540`.
+- VERIFIED: P40 lanes 1,2,3,5,6 and full scripts suite PASS on exact target SHA `319cffef121e327331aeaff59522ae279b112ecc`; run `43126974602`. Totals: 26,22,27,59,31; full suite 266/266. Lane 4 remains BLOCKED / NOT TESTABLE. These are model-only results.
 - OD-01..OD-13 ADOPTED under explicit owner delegation; see `P39_OWNER_DELEGATED_DECISIONS_20261111.md`. No live streaming in MVP; fully staged and verified bounded artifact download/share remains. Policy covers revocation, epoch consistency, authoritative time, durable identities, receipt binding, exit projection, termination and client acknowledgement.
-- CASE-04 INCOMPLETE / timed_out. Pyodios Console probe NOT RUN. Live Pages response/headers and sibling script behavior UNKNOWN.
-- Claude C01.4: repository continuity has been used in practice; fresh-chat one-line resume remains unproven. ChatGPT repo creation UNKNOWN. Current CI has path filters/cancellation/Python 3.12 but no Python/SQLite version print.
+- CASE-04 INCOMPLETE / timed_out. Pyodios Console probe NOT RUN. Live Pages response/headers and sibling script behavior UNKNOWN. Research and red-team results are in `FULL_POWER_GAP_RESEARCH_20261112.md`.
+- CI workflow now prints Python/SQLite/OS versions and checks out the immutable P40 target; actual environment was Python 3.12.16, SQLite 3.46.1, Ubuntu 26.04.1. Node 20 deprecation warning remains on current action major versions.
+- Claude C01.4: repository continuity has been used in practice; fresh-chat one-line resume remains unproven. ChatGPT repo creation UNKNOWN.
 
 ## Ranked steps
-1. Apply one narrowly scoped workflow-only change on the active branch: pin checkout to target SHA `319cffef121e327331aeaff59522ae279b112ecc`; print OS, Python and SQLite versions; run each authorized lane command and full `scripts` unittest discovery. The existing workflow-path push filter will trigger it. No application or test code changes.
-2. Fetch the triggered Actions run, job steps and complete logs. Record exact run ID, triggering commit, checked-out target SHA, environment, exit codes and per-lane/full-suite totals. If no run triggers or target checkout cannot be proven, report NOT RUN.
-3. Alternatively, owner can run the exact commands in the authorization record at target SHA and supply complete output. Keep lane 4 BLOCKED and model results separate from adapter/CASE acceptance.
-4. Obtain owner-run Pyodios Console evidence and reliable read-only Pages/origin evidence.
-5. Prove fresh-chat resume. CI version printing is included only in the bounded run request, not a workflow change.
+1. Specify the grant-event envelope, atomic aggregate/event parity, relay lease/fence, ordered publication, stale-ack rejection and consumer inbox atomicity. Separate producer authentication from CloudEvents identity/digest fields.
+2. Specify opaque-origin browser execution and the bounded parent/sandbox message protocol; include no ambient authority, default-deny network, explicit file copies, teardown and resource-containment limits.
+3. Owner-run the read-only Pyodios Console probe and record exact `sys.last_exc`/`sys.last_value` output.
+4. Collect read-only Pages response/header/service-worker and portfolio-script evidence; no deploy/settings changes.
+5. Plan fresh-chat resume proof and target-device storage/recovery matrix. Keep all model results distinct from adapter/CASE acceptance.
 
 ## Constraints
-- Workflow change authorization: owner's 2026-11-12 instruction explicitly says FULL-POWER PASS, do not ask permission and act. Interpret narrowly as authorization for this workflow-only test-runner change, not broader application/config/stack changes.
 - D-005/D-006: $0. No API keys/provider calls, paid tests/hosting, Apple Developer Program, TestFlight or App Store.
-- No runtime/provider/database/transport choice, source/test edits, device tests, deployment/settings/DNS changes, PR #2/#3/#4 changes or RevDev work without applicable owner authorization.
+- No runtime/provider/database/transport choice, source/test edits, device tests, deployment/settings/DNS changes, PR #2/#3/#4 changes or RevDev work without applicable owner authorization. The P40 workflow-only change is complete and limited to test execution.
 - Preserve LOOP-01..14, CASE-01..16 and all D-IDs. OD policy is adopted by explicit delegation; do not infer implementation authorization from it.
 - Evidence: VERIFIED / INFERRED / UNKNOWN / NOT RUN. Tests: PASS / FAIL / NOT RUN.
 - Commit before summarizing; checkpoint after each unit; keep files within their stated word limits.

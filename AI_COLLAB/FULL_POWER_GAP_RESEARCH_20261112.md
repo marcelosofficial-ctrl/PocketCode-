@@ -149,3 +149,9 @@ A termination request is not an acknowledgement. An untrusted worker's own messa
 - **UNKNOWN:** actual Pyodios worker topology, iPhone browser engine details for the user's app, current Pages headers, portfolio deployed scripts, target-device OPFS/persist support and durable production adapter.
 - **NOT RUN:** new PocketCode tests, browser/device tests, live Pages probe, adversarial iframe tests and storage eviction/recovery tests.
 - No canonical LOOP/CASE/D IDs changed. No provider, runtime, database, transport, storage engine or new host selected. No spending, deployment, DNS, PR or RevDev change.
+
+
+## P40 execution result update — 2026-11-12
+The active-branch workflow-only runner change was completed under the owner's FULL-POWER PASS instruction. It checks out exact target `319cffef121e327331aeaff59522ae279b112ecc`, prints OS/Python/SQLite versions and runs all authorized model lanes plus full scripts discovery.
+
+Actions run #59 (`43126974602`) completed SUCCESS on Ubuntu 26.04.1, Python 3.12.16, SQLite 3.46.1. Results: release-grant+consumer 26/26; FakeOutbox 22/22; EventJournal 27/27; result receipts 59/59; execution projection 31/31; full scripts suite 266/266. Lane 4 remains BLOCKED / NOT TESTABLE. This closes the execution blocker only; known model gaps, production adapter proof and CASE acceptance remain open. See `P40_EXECUTION_ATTEMPT_20261111.md`.

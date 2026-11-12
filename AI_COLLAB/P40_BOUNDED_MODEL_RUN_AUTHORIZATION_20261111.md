@@ -57,3 +57,15 @@ Stop without running if the active branch no longer descends from target commit 
 ## 5. Authorization state
 
 **APPROVED BY OWNER IN CHAT ON 2026-11-11.** Approval covers only this exact read-only run. Execution was attempted but blocked because the connected GitHub toolset has no workflow-dispatch action and the local runner could not resolve github.com. No tests ran. See `P40_EXECUTION_ATTEMPT_20261111.md`. A workflow-only change to print Python/SQLite versions and pin checkout to the target SHA is outside this approval and requires separate owner approval. No implementation, adapter selection, provider calls, device tests, deployment or spending are authorized.
+
+
+## Execution result addendum — 2026-11-12
+The owner approved the exact-SHA read-only test scope on 2026-11-11. On 2026-11-12 the owner issued a FULL-POWER PASS instruction to act without another permission prompt. This was interpreted narrowly as authorization for the workflow-only runner change; no source/test code was edited.
+
+- Workflow commit: `d93cd11e6873090cdb280fd18e45d9eeee9a973f`.
+- Actions run #59: `43126974602`, SUCCESS; job `130881431566`.
+- Exact checkout confirmed in logs: `319cffef121e327331aeaff59522ae279b112ecc`.
+- Environment: Ubuntu 26.04.1, Python 3.12.16, SQLite 3.46.1.
+- Lane results: 1+2 26/26 PASS; 3 22/22 PASS; 5 27/27 PASS; 6a 59/59 PASS; 6b 31/31 PASS; full scripts suite 266/266 PASS.
+- Lane 4 remains BLOCKED / NOT TESTABLE. Model results do not prove production adapters or canonical CASE acceptance. CASE-04 remains INCOMPLETE / timed_out.
+- See `P40_EXECUTION_ATTEMPT_20261111.md` for complete run evidence and known limitations.

@@ -1,12 +1,13 @@
 # STATE: PocketCode
-Updated: 2026-11-12. Reconciled against live branch HEAD `6b28b5afd59e404b8d2bda9d7cf4a99001a6cd34`.
+Updated: 2026-11-12. Reconciled against live branch HEAD `d93cd11e6873090cdb280fd18e45d9eeee9a973f`.
 
 ## Status and evidence
-- Phase: discovery/product definition. P39 product-policy decision gate CLEARED by owner delegation; P39 technical-conformance/P40 execution gate remains CLOSED pending bounded execution authorization. No runtime, provider, database, transport or storage engine selected.
-- Historical PASS: Actions run `42365455316`, workflow "PocketCode Python conformance tests", 266/266 on source/test SHA `744cb4dc7cd4994647c84ac7476d0c78a21f0540`. Historical only, not current.
-- Live branch latest five: `6b28b5af`, `ce9238d4`, `35cb8881`, `0c2096c1`, `c937efbd`. All five are documentation-only; no scripts/tests changed.
-- Ten P40 source/test pins revalidated exact directly at target commit `319cffef121e327331aeaff59522ae279b112ecc`; live HEAD is six documentation-only commits ahead and zero behind. Owner approved the bounded read-only run, but execution is BLOCKED by unavailable dispatch/runner capability; see `P40_EXECUTION_ATTEMPT_20261111.md`. Lane 4 remains BLOCKED / NOT TESTABLE.
-- Latest HEAD `6b28b5afd59e404b8d2bda9d7cf4a99001a6cd34`: status endpoint reports `pending` with zero statuses; Actions run query returns zero runs. CI and full suite: NOT RUN, not PASS. P40 execution explicitly APPROVED but NOT RUN due unavailable runner.
+- Phase: discovery/product definition. P39 product-policy decision gate CLEARED by owner delegation; P39 implementation/adapter conformance gate remains CLOSED. The bounded P40 model run is complete; its model-only scope does not establish adapter or canonical CASE acceptance. No runtime, provider, database, transport or storage engine selected.
+- VERIFIED current P40 PASS: Actions run #59 / `43126974602`, job `130881431566`, triggered by workflow-only commit `d93cd11e6873090cdb280fd18e45d9eeee9a973f`; checkout log confirms exact target SHA `319cffef121e327331aeaff59522ae279b112ecc`. Full scripts suite 266/266; lane runs: release grant + consumer 26/26, FakeOutbox 22/22, EventJournal 27/27, receipts 59/59, execution projection 31/31. Python 3.12.16, SQLite 3.46.1, Ubuntu 26.04.1 / Linux 7.0.0-1019-azure x86_64. Lane 4 BLOCKED / NOT TESTABLE. This is model-only evidence, not adapter/CASE acceptance.
+- Historical PASS: Actions run `42365455316`, 266/266 on source/test SHA `744cb4dc7cd4994647c84ac7476d0c78a21f0540`; retained as separate historical evidence.
+- Live branch latest five at last refresh: `d93cd11e`, `d6ff1276`, `6b28b5af`, `ce9238d4`, `35cb8881`. Changes are research/docs plus one workflow-only runner update; no application or test source changed.
+- Ten P40 source/test pins were revalidated at target commit `319cffef121e327331aeaff59522ae279b112ecc`; run log proves checkout of that exact SHA. Current branch is ten commits ahead and zero behind; intervening changes are docs/research plus workflow-only. Lane 4 remains BLOCKED / NOT TESTABLE.
+- P40 workflow run `43126974602` completed SUCCESS with all six executed test commands and final gate step successful. A separate legacy commit-status endpoint still reports `pending`/zero statuses, but the actual Actions check-run is completed/success; use the run/job evidence as the CI result.
 - VERIFIED 2026-11-12: manual `workflow_dispatch` is not a viable no-edit route because `.github/workflows/pocketcode-python-tests.yml` is absent from default branch `main` (main only has `preview-prototype.yml`). GitHub requires a `workflow_dispatch` workflow to exist on the default branch. A workflow-only change on the active branch can instead trigger its existing path-filtered `push` event, but still requires separate owner approval; see `P40_EXECUTION_ATTEMPT_20261111.md`.
 - Model findings: equal grant progress increments aggregate_version without matching event/outbox; grant-event consumer lacks grant/source/producer binding; FakeOutbox fencing covers effect dispatch, not grant-event publication; EventJournal producer identity is adapter-verified input, not cryptographic authentication. These are model/test-double findings, not durable production proof.
 - Pyodios iPhone (owner-reported): app 1.1.0 Build 7, Pyodide 314.0.5, Python 3.14.2. Editor returned "[Bridge/executePython] PythonError"; Console probe NOT RUN; cause and worker topology UNKNOWN.
@@ -14,10 +15,10 @@ Updated: 2026-11-12. Reconciled against live branch HEAD `6b28b5afd59e404b8d2bda
 - PWA research covers IndexedDB metadata, OPFS staging/readback, local fencing and recovery; no storage engine selected. Target iOS/Safari behavior, persist(), quota and lifecycle UNKNOWN. The 2026-11-12 full-power research adds Safari proactive eviction, SQLite OPFS Safari-version caveats and the Pyodide same-origin security advisory.
 - Claude and Gemini P39 reviews reconciled. Claude's provider-cache/context and AI-lane drafts were independently audited in `CLAUDE_PROVIDER_AND_LANES_INDEPENDENT_AUDIT_20261111.md`; strategy drafts are not P39 gate evidence.
 - Claude C01.4 (2026-11-10) reports the five-file continuity system has been used for repository reads, updates and commits. Fresh-chat one-line resume test is explicitly NOT YET PROVEN. New-repository creation by ChatGPT is UNKNOWN; assume owner creates repos. Claude reports recurring app stalls, large-file/upload limits, connector 403/CI-log limits and large-push JSON escaping failures; mitigations are recorded in the supplied C01.4 response.
-- Current CI workflow `.github/workflows/pocketcode-python-tests.yml` uses branch/path filters, cancel-in-progress, Python 3.12 and unittest discovery. It does not print Python/SQLite versions. Version-baseline step is a future proposal only, not implemented.
+- Current CI workflow `.github/workflows/pocketcode-python-tests.yml` now checks out the immutable P40 target, prints Python/SQLite/OS versions, runs the authorized model lanes and full scripts discovery. A Node 20 deprecation warning was emitted for actions/checkout@v4 and setup-python@v5, but all steps passed.
 - CASE-04 INCOMPLETE / timed_out. No precedence-only patch to `scripts/report_contract.py` until child/wrapper/termination provenance is resolved.
 
-- 2026-11-12 full-power research ranked five gaps and produced `FULL_POWER_GAP_RESEARCH_20261112.md`; red-team corrections include Worker-not-origin-boundary, browser eviction, OPFS browser caveats, CloudEvents-not-authentication and P40-not-acceptance.
+- 2026-11-12 full-power research ranked five gaps and produced `FULL_POWER_GAP_RESEARCH_20261112.md`; red-team corrections include Worker-not-origin-boundary, browser eviction, OPFS browser caveats, CloudEvents-not-authentication and P40-not-acceptance. P40 run outcome is recorded in `P40_EXECUTION_ATTEMPT_20261111.md`.
 
 ## Decisions and constraints
 - D-001 unified PC-and-phone direction with separate project boundaries; D-002 GitHub source of truth; D-003 no secrets in public repo; D-004 validate before stack commitment; D-005 $0.
@@ -27,11 +28,11 @@ Updated: 2026-11-12. Reconciled against live branch HEAD `6b28b5afd59e404b8d2bda
 - 2026-11-07 owner: AGENTS.md carries tiered decision rights. 2026-11-08 owner: possible PoCo rename undecided; website design must not change. Nothing renamed.
 
 ## Open items
-1. Execute the now-authorized narrow workflow-only P40 runner change on the active branch: print OS/Python/SQLite versions, run lanes 1,2,3,5,6 plus full scripts discovery, and checkout exact target SHA `319cffef121e327331aeaff59522ae279b112ecc`. Verify resulting run logs and test totals.
-2. Owner: run read-only Pyodios Console probe in `PYODIOS_PYTHONERROR_BRIDGE_TRIAGE_20261106.md`.
-3. Claude is busy; do not request another review unless new evidence creates a material unresolved conflict. Existing Claude/Gemini reviews are reconciled.
-4. After explicit bounded authorization, run applicable P40 lanes and full Python suite on exact pinned SHA; keep model tests separate from CASE acceptance.
-5. Obtain reliable read-only live Pages/header/service-worker and portfolio-script evidence; no deployment or settings changes.
-6. Resolve typed child exit vs wrapper exit vs termination provenance and receipt ordering. PoCo name undecided; LinkedIn work waits for laptop/export.
+1. Produce a versioned grant-event envelope and relay state-machine contract from the 2026-11-12 research, including atomic version/event parity, first-delivery validation, separate relay fencing and consumer inbox atomicity. Docs/spec only until implementation authorization; no new canonical IDs.
+2. Owner: run the read-only Pyodios Console probe in `PYODIOS_PYTHONERROR_BRIDGE_TRIAGE_20261106.md`; preserve the existing `summary.json` and do not rerun the successful artifact-producing attempt.
+3. Obtain reliable read-only live Pages/header/service-worker and portfolio-script evidence; no deployment or settings changes.
+4. Plan adversarial browser sandbox and storage-recovery tests against actual target iOS Safari and Android versions; no stack choice or device acceptance claim until run.
+5. Prove fresh-chat resume and resolve child/wrapper/termination provenance; CASE-04 remains INCOMPLETE / timed_out.
+6. Do not request another Claude review unless new evidence creates a material unresolved conflict.
 
 Evidence labels: VERIFIED / INFERRED / UNKNOWN / NOT RUN. Keep current test outcomes distinct from historical results.

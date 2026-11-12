@@ -38,3 +38,28 @@ Owner approval is needed for a narrowly scoped workflow-only change that adds ex
 The branch baseline was advanced to `6b28b5afd59e404b8d2bda9d7cf4a99001a6cd34` by a documentation-only commit. Earlier follow-up text records an earlier point-in-time HEAD, not the current branch head. The current latest five commits are recorded in `CHECKPOINT.md`.
 
 The owner then instructed a FULL-POWER PASS, explicitly directing the lead not to ask permission and to act. This is interpreted narrowly as authorization for one workflow-only P40 runner change: exact target checkout `319cffef121e327331aeaff59522ae279b112ecc`, Python/SQLite/OS version output, five authorized lane commands and full scripts discovery. No application or test code edits, provider calls, device tests, deployment, PR changes or spend are included. Execution outcome will be recorded only from actual Actions logs.
+
+
+## Successful bounded run — 2026-11-12
+**VERIFIED:** The 2026-11-12 FULL-POWER PASS instruction was interpreted narrowly as authorization for the workflow-only runner change needed to execute the previously approved exact-SHA read-only test request. No application or test code was changed.
+
+- Workflow-only commit: `d93cd11e6873090cdb280fd18e45d9eeee9a973f`.
+- Actions run #59: `43126974602`; job ID `130881431566`; [run](https://github.com/marcelosofficial-ctrl/PocketCode-/actions/runs/43126974602).
+- Run conclusion: SUCCESS. All test steps and the final enforcement step completed successfully.
+- Checkout log confirms exact immutable target `319cffef121e327331aeaff59522ae279b112ecc`; `git log -1 --format=%H` returned that exact SHA.
+- Environment: Ubuntu 26.04.1 (runner image `ubuntu-26.04`), Python 3.12.16, SQLite 3.46.1, Linux 7.0.0-1019-azure x86_64, glibc 2.43.
+- Results:
+  - Lane 1+2 combined, `test_release_grant_conformance.py`: **26/26 PASS**.
+  - Lane 3, `test_fake_outbox.py`: **22/22 PASS**.
+  - Lane 5, `test_event_journal.py`: **27/27 PASS**.
+  - Lane 6a, `test_result_receipts.py`: **59/59 PASS**.
+  - Lane 6b, `test_execution_projection.py`: **31/31 PASS**.
+  - Full `scripts` discovery: **266/266 PASS**.
+  - No test command reported a failure. Individual lane totals overlap the full-suite total and must not be added to it.
+- Lane 4 remains BLOCKED / NOT TESTABLE because no grant-event relay-specific model/test exists.
+- Known static gaps remain unchanged: equal progress can advance aggregate_version without a matching event/outbox; first-delivery grant-event authenticity/canonical envelope binding is not established; grant-event relay lacks its own claim/lease/fence/stale-ack model. The FakeOutbox PASS applies only to effect dispatch.
+- EventJournal's typed producer input is still not cryptographic authentication. Receipt/projection tests remain in-memory/pure model evidence.
+- CASE-04 remains INCOMPLETE / timed_out. No adapter, browser/device, durable storage, client receipt or production acceptance claim changes.
+- Runner emitted a Node 20 deprecation warning for actions/checkout@v4 and actions/setup-python@v5, but all requested steps passed.
+
+The original NOT RUN sections above are a historical record of the earlier blocked attempt and are superseded by this successful run.
