@@ -19,13 +19,67 @@ concurrency:
 jobs:
   unittest:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
     steps:
-      - name: Check out exact commit
+      - name: Check out immutable P40 target
         uses: actions/checkout@v4
+        with:
+          ref: 319cffef121e327331aeaff59522ae279b112ecc
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: Run repository Python conformance suite
+
+      - name: Record execution environment
+        run: |
+          python --version
+          python -c "import platform, sqlite3, sys; print('Python:', sys.version); print('SQLite:', sqlite3.sqlite_version); print('OS:', platform.platform())"
+
+      - name: P40 lanes 1 and 2 - release grant and grant-event consumer
+        id: lane12
+        continue-on-error: true
+        run: python -m unittest discover -s scripts -p "test_release_grant_conformance.py" -v
+
+      - name: P40 lane 3 - effect-dispatch FakeOutbox
+        id: lane3
+        continue-on-error: true
+        run: python -m unittest discover -s scripts -p "test_fake_outbox.py" -v
+
+      - name: P40 lane 5 - EventJournal
+        id: lane5
+        continue-on-error: true
+        run: python -m unittest discover -s scripts -p "test_event_journal.py" -v
+
+      - name: P40 lane 6a - result receipts
+        id: lane6a
+        continue-on-error: true
+        run: python -m unittest discover -s scripts -p "test_result_receipts.py" -v
+
+      - name: P40 lane 6b - execution projection
+        id: lane6b
+        continue-on-error: true
+        run: python -m unittest discover -s scripts -p "test_execution_projection.py" -v
+
+      - name: Full scripts Python conformance suite
+        id: fullsuite
+        continue-on-error: true
         run: python -m unittest discover -s scripts -p "test_*.py" -v
+
+      - name: Enforce all requested test commands succeeded
+        if: always()
+        env:
+          LANE12: ${{ steps.lane12.outcome }}
+          LANE3: ${{ steps.lane3.outcome }}
+          LANE5: ${{ steps.lane5.outcome }}
+          LANE6A: ${{ steps.lane6a.outcome }}
+          LANE6B: ${{ steps.lane6b.outcome }}
+          FULLSUITE: ${{ steps.fullsuite.outcome }}
+        run: |
+          printf 'lane1_2=%s\nlane3=%s\nlane5=%s\nlane6a=%s\nlane6b=%s\nfullsuite=%s\n' "$LANE12" "$LANE3" "$LANE5" "$LANE6A" "$LANE6B" "$FULLSUITE"
+          test "$LANE12" = success
+          test "$LANE3" = success
+          test "$LANE5" = success
+          test "$LANE6A" = success
+          test "$LANE6B" = success
+          test "$FULLSUITE" = success
