@@ -27,6 +27,17 @@ Allowed future scope, only after explicit owner gate:
 - No DB, broker, network, key store, signing algorithm, provider, adapter, hosting or mobile runtime.
 - No changes to canonical IDs or owner decisions. No external dependencies added.
 
+### Existing source/test coverage disposition (static inspection only)
+
+| Group | Existing coverage observed | Additional proof still required |
+|---|---|---|
+| A: transition parity/atomicity | `reserve()` stages the initial grant/event/outbox at one in-memory commit point; existing failpoint and replay tests cover parts of A1/A2/A7. The progress test covers monotonic bounds. | A3/A4 event/version parity and equal-progress no-op are missing: `record_progress()` increments aggregate_version and updates the grant but appends no event/outbox. A5/A6 need the exact full matrix, including event/version uniqueness conflicts. In-memory failpoints do not prove database atomicity. |
+| B: envelope/first delivery | Existing consumer tests cover same-identity/same-digest duplicate handling and changed supplied digest conflict. | Current `GrantEvent`/consumer path does not parse an exact canonical envelope, recompute first-delivery SHA-256, authenticate a producer or validate the full tenant/effect/attempt/receipt/object/policy scope. B1–B9 remain required; a supplied digest is not proof. |
+| C: relay lease/fence | No grant-event relay lease state machine or relay-specific test group exists. `mark_outbox_delivered()` only flips a boolean. | C1–C9 are absent, including expiry/takeover, stale acknowledgement, publish-before-ack crash, order and relay-fence exhaustion. `FakeOutboxStore` tests are for effect dispatch and are not substitutes. |
+| D: inbox/restore | Existing consumer code defers a future version gap and recognizes a duplicate based on its in-memory identity/digest map. | D4 durable lost-ack recovery, D5 inbox/projection/effect atomicity, D6 conflicting history and D7 restore high-water safety are unproven. Current state is in-memory only. |
+
+The existing tests are historical model coverage, not tests of the proposed v1 envelope or a durable adapter. This crosswalk records static facts only; no test was executed during this pass.
+
 ## 3. Proposed test grouping
 
 ### A. Transition parity and atomicity (required)
