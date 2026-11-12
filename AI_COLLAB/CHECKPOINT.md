@@ -42,19 +42,19 @@ No device probe, app code, tests, deployment, host/provider, DNS/settings or sto
 - ZERO_BUDGET_ORIGIN_OPTIONS_20261112.md
 - PHONE_DEVICE_VALIDATION_RUNBOOK_20261112.md
 
-## Branch reconciliation completed
+## Full work pass: owner visual-check clarification and branch reconciliation
 
-This startup/work unit re-read the five required files in order: BOOT.md, STATE.md, NEXT_TASK.md, CHECKPOINT.md and INBOX_chatgpt.md. It then used the branch-ref commits endpoint to verify the latest five commits. Commit-search results were stale and were not treated as branch-tip evidence.
+The owner reports opening the previously requested GitHub link and says it looked okay. The previous assistant reply included a GitHub commit URL and separately asked the owner to open the PocketCode Pages preview URL. Therefore the exact target is ambiguous. Record this as an owner-reported informal visual observation only. If the URL was `https://marcelosofficial-ctrl.github.io/PocketCode-/`, it establishes at most that the preview appeared to load/look okay in that one unrecorded context. No exact URL, page content, device/browser/version, screenshot, HTTP headers or service-worker state were captured. Do not ask the owner to repeat the check unless they actually opened the commit URL instead. This does not close the live Pages/device acceptance items.
 
-Pre-update branch HEAD: `3565d63f34c9476e58f96ded42af6fc4bfc1b615`. The latest five commits before this reconciliation were:
-- `3565d63f34c9476e58f96ded42af6fc4bfc1b615` — checkpoint chronology
-- `64ad86ce65b1b1ddbc41096700bc082a7f97fbbf` — NEXT_TASK chronology
-- `e2581f224971459c2cb50bea3a01a51a20c9b165` — STATE chronology
-- `b7021362cd9ef6564a7ff8d6a769ee39e392ab98` — checkpoint reconciliation
-- `fc959d417263a0397f89e0157d103a516c0e47db` — STATE reconciliation
+Startup protocol completed: BOOT.md, STATE.md, NEXT_TASK.md, CHECKPOINT.md and INBOX_chatgpt.md were read in required order. Exact branch-ref API history, not stale commit search, supplied the latest five commits at unit start:
+- `6c67df2bd2d7623836bf824c24ebb0a72b4a2cea` — checkpoint
+- `56007305d110b94cd5f13ee17a6b766eec3cc027` — next task
+- `5b54464ab0423292cec8ef9b0e4bc5481c508c6c` — state
+- `3565d63f34c9476e58f96ded42af6fc4bfc1b615` — checkpoint
+- `64ad86ce65b1b1ddbc41096700bc082a7f97fbbf` — next task
 
-All five were fetched; each changes only AI_COLLAB documentation. This unit corrected stale branch-head chronology in STATE.md and NEXT_TASK.md, then refreshed this checkpoint. No application source, tests, workflows, device evidence, host/provider, deployment or PR changes.
+All five were verified as AI_COLLAB-only. This unit updated STATE.md and NEXT_TASK.md to capture the owner observation with its ambiguity and correct branch chronology, then refreshed this checkpoint. No app source, tests, workflow, deployment, host/provider, DNS/settings, PR or RevDev changes.
 
-CI: current pre-update HEAD `3565d63f34c9476e58f96ded42af6fc4bfc1b615` has no status checks. Latest relevant workflow remains run #59 / 43126974602 SUCCESS, workflow head `d93cd11e6873090cdb280fd18e45d9eeee9a973f`, checking out exact historical model target `319cffef121e327331aeaff59522ae279b112ecc`; full scripts suite 266/266. It is model-only historical evidence, not current-HEAD, adapter or CASE acceptance. Tests in this reconciliation unit: NOT RUN.
+CI at unit start: head `6c67df2bd2d7623836bf824c24ebb0a72b4a2cea` had no status checks. Latest relevant run remains #59 / 43126974602 SUCCESS, workflow commit `d93cd11e6873090cdb280fd18e45d9eeee9a973f`, exact historical model target `319cffef121e327331aeaff59522ae279b112ecc`, full scripts suite 266/266. This is not current-head, adapter or CASE acceptance. Tests in this unit: NOT RUN.
 
-Next startup: read BOOT.md, STATE.md, NEXT_TASK.md, CHECKPOINT.md, INBOX_chatgpt.md; then list latest five commits. Use INDEX.md for further reads. Never open CHAT_START_HERE, HOT_RESUME or STATE_LEDGER; never read any file over 1,500 words whole.
+Next: owner read-only Pyodios Console probe only. Keep the already matching `summary.json`; do not rerun the artifact-producing attempt. The Pages visual check need not be repeated if the preview URL was the one opened. Keep P39 implementation/adapter gate CLOSED and D-005/D-006 at $0.
