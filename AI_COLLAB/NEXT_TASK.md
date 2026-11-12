@@ -4,7 +4,7 @@
 Move from design contracts to evidence closure while keeping the P39 implementation/adapter gate CLOSED. Do not implement or select infrastructure from these specifications alone.
 
 ## Current evidence
-- VERIFIED branch head before the current reconciliation unit: `8b148413898ec273bed2ec3b70b2f328f9be7bd7`. Latest five commits are documentation-only; no source/test code changed. Latest head has no status checks or associated workflow runs. Do not mistake the stale search-index commit list for the active branch tip.
+- VERIFIED current branch head before this reconciliation commit: `3565d63f34c9476e58f96ded42af6fc4bfc1b615`. The exact branch-ref API lists latest five commits as 3565d63, 64ad86c, e2581f2, b702136 and fc959d4; all are documentation-only. Current head has no status checks. The commit-search index is stale and must not be used as branch-tip evidence.
 - VERIFIED: P40 model lanes and full scripts suite PASS on exact target SHA 319cffef121e327331aeaff59522ae279b112ecc; Actions run 43126974602; full suite 266/266. Lane 4 BLOCKED / NOT TESTABLE. Model-only.
 - VERIFIED: contract and acceptance documents are committed: GRANT_EVENT_ENVELOPE_AND_RELAY_CONTRACT_20261112.md; OPAQUE_ORIGIN_EXECUTION_PROTOCOL_20261112.md; BROWSER_ARTIFACT_STORAGE_RECOVERY_CONTRACT_20261112.md; LIFECYCLE_TERMINATION_RECEIPT_ACCEPTANCE_20261112.md; GRANT_EVENT_MODEL_ACCEPTANCE_PLAN_20261112.md (29 model scenarios); REPORT_PROJECTION_V2_MIGRATION_AND_ACCEPTANCE_20261112.md.
 - VERIFIED: OD-01..OD-13 are adopted policy; implementation and durable adapter proof remain outstanding.
