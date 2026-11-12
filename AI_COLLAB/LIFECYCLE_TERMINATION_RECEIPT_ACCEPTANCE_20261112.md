@@ -79,6 +79,7 @@ Embedded interpreter:
 
 Termination and cleanup:
 - Record request_sent, controller_action, same-attempt termination_acknowledged and observation source as separate facts.
+- For the opaque-origin browser Worker protocol, `worker_termination_action_acknowledged` means only that the trusted supervisor invoked `terminate()` on its exact Worker and closed the task channel. It is a controller-action acknowledgement, not by itself the broader `termination_acknowledged` required by OD-12. Keep both facts separate; only an execution-model-specific, independently accepted authority rule may promote the narrower action fact to the termination/cleanup evidence needed for release.
 - A request to cancel/kill, timeout event, disconnect, process signal request, wrapper exit or iframe removal is not termination acknowledgement.
 - Confirmation must bind DispatchAttemptId and ExecutionId and come from the authoritative process/transport controller for that execution model.
 - Missing, late, contradictory, wrong-attempt or unauthenticated acknowledgement leaves termination UNKNOWN and cleanup UNKNOWN. Artifact release stays blocked where containment/cleanup is required.
