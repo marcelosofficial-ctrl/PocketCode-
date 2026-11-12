@@ -1,76 +1,58 @@
 # STATE: PocketCode
-Updated: 2026-11-12. Live branch head reconciled at `8298111d2b5d60cab9bbe8d5610fe52861e940c9`. Source-level audit remains pinned through b71315068ec33a0175fed46ef96912e954d87f9f; last independently verified pre-final metadata head was 7faf225e50cdec6749e5b07fe08e0030e580eeec; subsequent reconciliation commits also changed documentation only. All commits after the source audit remain documentation-only. This state records the contract/acceptance units, origin research, device runbook and repository housekeeping.
 
-## Status and evidence
-- Phase: discovery/product definition and acceptance-contract refinement. P39 product-policy gate CLEARED by owner delegation; P39 implementation/adapter conformance gate remains CLOSED. No runtime, provider, database, transport, host or storage engine selected.
-- VERIFIED current P40 PASS: Actions run #59 / 43126974602, job 130881431566, workflow-only commit d93cd11e6873090cdb280fd18e45d9eeee9a973f; checkout log confirms exact target SHA 319cffef121e327331aeaff59522ae279b112ecc. Full scripts suite 266/266; lanes: release-grant + consumer 26/26, FakeOutbox 22/22, EventJournal 27/27, receipts 59/59, execution projection 31/31. Python 3.12.16, SQLite 3.46.1, Ubuntu 26.04.1 / Linux 7.0.0-1019-azure x86_64. Lane 4 BLOCKED / NOT TESTABLE. Model-only evidence, not adapter/CASE acceptance.
-- Historical PASS: Actions run 42365455316, 266/266 on source/test SHA 744cb4dc7cd4994647c84ac7476d0c78a21f0540; historical only.
-- VERIFIED branch HEAD at start of this work unit: `04d8181bf159f5a90ae6b7ace017c7f58e31611d` (`docs(checkpoint): record owner visual check and work pass`, 2026-11-12 14:02:09Z). Exact branch-ref API returned latest five commits: 04d8181 (AI_COLLAB/CHECKPOINT.md), 0d7f873 (AI_COLLAB/NEXT_TASK.md), 0545312 (AI_COLLAB/STATE.md), 6c67df2 (AI_COLLAB/CHECKPOINT.md), 5600730 (AI_COLLAB/NEXT_TASK.md). All five are documentation-only; no source/test code changed. The commit-search index was stale; branch-ref history is authoritative.
-- VERIFIED source-delta boundary: GitHub compare `b71315068ec33a0175fed46ef96912e954d87f9f...04d8181bf159f5a90ae6b7ace017c7f58e31611d` reports 35 commits ahead, 0 behind, and exactly 11 changed paths, all under `AI_COLLAB/`. Therefore no application source, scripts/tests, workflows or product assets changed anywhere in that 35-commit interval. This supports the existing source audit pin; it does not prove tests on current HEAD.
-- VERIFIED model defects: equal grant progress increments aggregate_version without matching event/outbox; grant-event consumer trusts first-delivery digest and lacks full grant/source/producer/tenant/attempt binding; grant-event delivery has no relay lease/fence/stale-ack protection. FakeOutbox fencing covers effect dispatch only. EventJournal.AuthenticatedProducer is a typed adapter input, not cryptographic authentication.
-- VERIFIED documentation deliverables committed on this branch:
-  - GRANT_EVENT_ENVELOPE_AND_RELAY_CONTRACT_20261112.md: grant-event-envelope/v1, atomic aggregate/event parity, canonical bytes, trusted producer ingress, separate relay fence, ordered at-least-once delivery and consumer inbox.
-  - OPAQUE_ORIGIN_EXECUTION_PROTOCOL_20261112.md: opaque iframe, source-bound handshake, narrow wildcard bootstrap, supervisor-owned MessageChannel, CSP restrictions, bounded explicit input/output and termination semantics.
-  - BROWSER_ARTIFACT_STORAGE_RECOVERY_CONTRACT_20261112.md: origin trust, staged writes/read-back verification, manifest commit, eviction recovery, explicit export and durability vocabulary.
-  - LIFECYCLE_TERMINATION_RECEIPT_ACCEPTANCE_20261112.md: typed child/wrapper/interpreter evidence, same-attempt termination, three projections and receipt acceptance matrix.
-  - GRANT_EVENT_MODEL_ACCEPTANCE_PLAN_20261112.md: 29 deterministic model scenarios across parity, envelope validation, relay fencing and inbox/restore; plan only, no test/source implementation.
-  - REPORT_PROJECTION_V2_MIGRATION_AND_ACCEPTANCE_20261112.md: legacy formatter defect and versioned projection migration plan; no precedence-only patch.
-  - PAGES_READ_ONLY_SOURCE_AUDIT_20261112.md and ZERO_BUDGET_ORIGIN_OPTIONS_20261112.md: Pages deployment/source and shared-origin analysis; alternative hosts remain research only.
-  - PHONE_DEVICE_VALIDATION_RUNBOOK_20261112.md: reproducible, non-destructive Pyodios and browser/device evidence protocol; owner/device execution pending.
-  These are proposals/audits/runbooks, not implementation or device-test proof.
-- VERIFIED code issue: report_contract.classify_verdict() checks any nonzero integer before lifecycle, so nonzero codes paired with timeout, cancellation, rejection, infrastructure failure, nonterminal or unknown status can yield FAIL. It cannot distinguish direct-child natural exit from wrapper/signal/embedded/caller values. The typed execution_projection handles timeout + wrapper 137 correctly in its model tests, but is not authenticated or integrated into the formatter. See REPORT_PROJECTION_V2_MIGRATION_AND_ACCEPTANCE_20261112.md. Do not apply a precedence-only patch.
-- Pyodios iPhone (owner-reported): app 1.1.0 Build 7, Pyodide 314.0.5, Python 3.14.2. Editor returned [Bridge/executePython] PythonError; Console probe NOT RUN; cause and worker topology UNKNOWN. Existing summary.json was reported to match the oracle; preserve it. This pass rechecked the exact probe in PYODIOS_PYTHONERROR_BRIDGE_TRIAGE_20261106.md against PHONE_DEVICE_VALIDATION_RUNBOOK_20261112.md; the runbook's no-rerun/read-only guidance is consistent.
-- Pages: VERIFIED last successful preview run #17 / 39433670146 (2026-10-20) deployed main SHA 90cc378df1f7c7f1b5f5535c322eddcfbfb9b26c. Current main prototype/workflow blobs match deployment; artifact contains README.md + simulation-only index.html. No runtime/worker/service worker/manifest/backend/login in that subtree. Portfolio repo uses same scheme/host/port under /portfolio and its BaseLayout reads localStorage. Treat the github.io host as one trust domain; no sensitive user data until origin isolation or accepted threat model. Current live response/headers/Pages settings remain UNKNOWN. See PAGES_READ_ONLY_SOURCE_AUDIT_20261112.md.
-- Storage: WebKit documents a 7-day script-writable storage cap in Safari under stated conditions, but explicitly exempts first-party Home Screen web-app domains from that cap and isolates their data from Safari. This is not backup or a guarantee against other loss. Safari, Home Screen app and WKWebView behaviour in the actual installed app remains UNKNOWN. IndexedDB, OPFS and SQLite-WASM remain unselected.
-- VERIFIED research comparison: ZERO_BUDGET_ORIGIN_OPTIONS_20261112.md documents Cloudflare Pages and Netlify provider subdomains as possible separate origins from the shared github.io host; Vercel Hobby is excluded from default shortlist due current non-commercial restriction and model-training terms. Research only. No provider selected, account created, integration authorized, deployment or D-006 change.
-- Name clearance / O-7: VERIFIED official Catrobat page describes Pocket Code as a smartphone programming app for Android/iOS, creating a direct same-category naming/confusion risk. VERIFIED official POCO C++ project page reports current 1.15.4 release and ongoing development; official About page states Boost Software License 1.0. UNKNOWN whether reported Xiaomi POCO trademark registrations/classes apply; aggregator claims were not confirmed in an official trademark record. Do not rename repo/docs/site or publish PoCo before a direct clearance search.
-- Fresh-chat one-line resume remains NOT YET PROVEN. Actual production coordinator, durable adapter, provider and device integration remain UNKNOWN.
+Updated: 2026-11-12. This is the compact live state, not a historical ledger. Use Git history and INDEX.md for older detail.
 
-## Decisions and constraints
-- D-001 unified PC-and-phone direction with separate project boundaries; D-002 GitHub source of truth; D-003 no secrets in public repo; D-004 validate before stack commitment; D-005 $0.
-- D-006 owner decision (2026-11-08): no spending; no Apple Developer Program, TestFlight or App Store; installable web app on GitHub Pages for now.
-- OD-01..OD-13 ADOPTED 2026-11-11. No live/incremental artifact streaming in MVP; bounded downloads/shares only after complete staging, integrity and fresh authorization. See P39_OWNER_DELEGATED_DECISIONS_20261111.md. These are policy decisions, not implementation proof.
-- Preserve LOOP-01..14, CASE-01..16 and all D-IDs. PR #2/#3/#4 owner-controlled and untouched. Keep PocketCode and RevDev separate. No provider calls, spending, source/test edits, device tests, deployments, settings/DNS changes or PR changes without applicable authorization.
-- No candidate name approved. Do not rename or publish PoCo before name clearance.
+## Product and hard constraints
 
-## Open items
-1. Owner: run the read-only Pyodios Console probe from PYODIOS_PYTHONERROR_BRIDGE_TRIAGE_20261106.md using the exact steps in PHONE_DEVICE_VALIDATION_RUNBOOK_20261112.md; preserve existing summary.json and do not rerun the successful artifact-producing attempt.
-2. Owner-reported partial visual check (2026-11-12): user opened the GitHub link previously requested and said it looked okay. The prior instructions included both a GitHub commit link and the PocketCode Pages preview URL, so the exact target is ambiguous. Treat this as an informal observation only, not verified live Pages evidence. If the opened link was https://marcelosofficial-ctrl.github.io/PocketCode-/, the owner has confirmed only that it appeared okay; exact URL/content, device/browser/version, live headers and service-worker state were not captured. No need to repeat this check unless the preview URL was not the one opened. Do not store secrets/private code on the shared origin.
-3. Before any persistent user data, resolve the shared github.io origin threat boundary; no credentials/private source/artifacts there. After separately approved implementation scope, add model-level grant-event parity, first-delivery validation, relay fencing, stale-ack, consumer inbox and restore-high-water adversarial tests. Current contracts are NOT implementation.
-4. Verify opaque-origin/CSP protocol on target iOS Safari/WKWebView and Android versions, including worker termination, no-network paths and explicit file copies. No device tests run; use the new runbook when an approved build exists.
-5. Run browser storage/recovery matrix: cold launch, force-close, quota, persist grant/denial, inactivity eviction, multi-tab CAS, export/import and artifact read-back. No storage engine selected.
-6. Resolve child/wrapper/termination provenance with authoritative same-attempt evidence and a versioned typed report projection. CASE-04 remains INCOMPLETE / timed_out.
-7. O-7: complete direct candidate-name clearance across intended app stores, GitHub, domains/social handles and official trademark databases. Do not rename or publish PoCo until resolved.
-8. Prove fresh-chat one-line resume using the five-file startup sequence. Do not open CHAT_START_HERE, HOT_RESUME or STATE_LEDGER.
+- Phone-first, provider-neutral AI workflow/control plane for iOS and Android. MVP: explicit paste/import -> bounded execution -> truthful evidence/artifacts -> copyable report for any AI -> corrected rerun as a distinct attempt.
+- $0 only (D-005/D-006). No paid API, host, provider, workload, Apple Developer Program, TestFlight or App Store.
+- No runtime, provider, database, transport, storage engine or new host selected. Owner-approved no-spend GitHub Pages preview only.
+- User-controlled context: explicit paste/import only; no clipboard polling, overlays or automatic capture.
+- Untrusted code requires disposable, externally constrained execution. Stock Pyodide/WASM is for trusted light tasks only.
+- Preserve CommandId, EffectId, DispatchAttemptId, ExecutionId, ObservationSequence, ResultReceiptId/revision and PublicationAttemptId as distinct identities. Unknown/degraded evidence never becomes PASS or FAIL by inference.
+- Preserve LOOP-01..14, CASE-01..16, all D-IDs and OD-01..OD-13. Keep PocketCode separate from RevDev. PR #2/#3/#4 remain owner-controlled and untouched. No secrets/private user data in this public repo.
 
-Evidence labels: VERIFIED / INFERRED / UNKNOWN / NOT RUN. Tests: PASS / FAIL / NOT RUN. Model test PASS never closes adapter or canonical CASE acceptance.
+## Live repository and CI evidence
 
+- Repo: `marcelosofficial-ctrl/PocketCode-`; branch: `pocketcode-ai-workflow-director-research-2026-10-28`.
+- VERIFIED snapshot at start of this state-refresh unit: HEAD `3d635c5b0e0e14ee12a0ca1d65f55c0eee31ee9f`. Latest five then: `3d635c5` index scenario count; `4800374` storage receipt/artifact rebinding cases; `774660e` grant receipt-hash cross-model gap; `37a3fea` grant canonical digest binding; `22a6669` grant acceptance case. Re-fetch live HEAD on every continuation.
+- VERIFIED compare from source-audit pin `b71315068ec33a0175fed46ef96912e954d87f9f`: 63 commits ahead, 0 behind, 15 changed paths, every path under `AI_COLLAB/`. No application source, scripts/tests, workflow or product assets changed in this interval.
+- VERIFIED HEAD combined status at snapshot: `pending`, zero status entries. No check is attached; this is not a pass.
+- Latest relevant Actions run #59 / `43126974602`, job `130881431566`, SUCCESS. Workflow-only commit `d93cd11e6873090cdb280fd18e45d9eeee9a973f` checked out historical model target `319cffef121e327331aeaff59522ae279b112ecc`. Full scripts suite 266/266; release-grant+consumer 26/26, FakeOutbox 22/22, EventJournal 27/27, receipts 59/59, execution projection 31/31. Python 3.12.16, SQLite 3.46.1, Ubuntu 26.04.1. Lane 4 BLOCKED / NOT TESTABLE; lane totals overlap the full suite. This is model-only evidence on that SHA, not current-HEAD CI, adapter proof or CASE acceptance.
+- Tests in the current documentation pass: NOT RUN.
 
-## Live branch-head reconciliation (2026-11-12)
-- VERIFIED active branch HEAD: `8298111d2b5d60cab9bbe8d5610fe52861e940c9`.
-- VERIFIED latest five branch commits, newest first: `8298111d2b5d60cab9bbe8d5610fe52861e940c9` (CHECKPOINT), `9c05f9158df250efa8cb3d7dcadcab047f5b6087` (NEXT_TASK), `214c39bdd90947efaa660db280182f112c29ba61` (STATE), `04d8181bf159f5a90ae6b7ace017c7f58e31611d` (CHECKPOINT), `0d7f8736d0db9855eda5d9d05da07fdf4ff7d0e0` (NEXT_TASK). - VERIFIED GitHub compare from source audit pin `b71315068ec33a0175fed46ef96912e954d87f9f` to current HEAD: 38 commits ahead, 0 behind, 11 changed paths, every path under `AI_COLLAB/`. No app source, scripts/tests, workflow or product assets changed in this interval.
-- VERIFIED HEAD combined status: no status checks. Latest workflow run remains #59 / 43126974602 SUCCESS on workflow-only commit `d93cd11e6873090cdb280fd18e45d9eeee9a973f`, checking out historical model target `319cffef121e327331aeaff59522ae279b112ecc`; full scripts suite 266/266. This is not current-HEAD CI or adapter/CASE acceptance.
-- Tests in this reconciliation unit: NOT RUN. Owner/device evidence remains the next external dependency; do not rerun the artifact-producing Pyodios attempt.
+## Current model and contract findings
 
+- VERIFIED: `ReleaseGrantContractModel.record_progress()` increments aggregate_version even for equal progress and changes only the grant; it adds no matching event/outbox row. `consume_event()` trusts supplied first-delivery payload_sha256 and lacks canonical-byte recomputation and full producer/scope checks. `mark_outbox_delivered()` flips a boolean; no grant-event relay lease/fence/stale-ack protection.
+- VERIFIED: grant `ReceiptHead` stores effect/attempt/receipt ID/revision and artifact ID/object version/length, but not receipt SHA-256, artifact SHA-256 or quarantine state. `reserve()` binds identity/revision/object version and authorization fields, not those content proofs.
+- VERIFIED: separate `result_receipts` model stores artifact SHA-256, integrity/quarantine state and ResultReceipt.receipt_sha256, and checks artifact digest/length at release. It is not wired into the grant ReceiptHead/reservation. Its receipt fingerprint uses Python `json.dumps(sort_keys=True, separators=...)`, which is not proof of RFC 8785/JCS cross-language canonicalization.
+- VERIFIED documentation additions: grant-event-envelope/v1 now distinguishes data/receipt/artifact digests, states exact absent-vs-null field rules and safe-integer bounds; storage contract binds receipt head to receipt digest and artifact manifest content; the grant acceptance plan has 33 local cases (A1–A8, B1–B9, C1–C9, D1–D7) and a static current-coverage crosswalk. These are proposals, not implementation or tests.
+- VERIFIED: opaque-origin protocol now binds canonical ExecutionId separately from parent-generated execution_instance_id in INIT and every channel message. Browser CANCEL_ACK is narrowly described as acknowledgement that the supervisor invoked terminate() on its exact Worker and closed the channel, not proof of native child exit, renderer/OS teardown or all side effects stopping.
+- VERIFIED report issue: `report_contract.classify_verdict()` lets any nonzero integer exit code override timeout/cancel/rejection/infrastructure/nonterminal states. Do not patch precedence only. Keep format 1; versioned format-2 migration plan exists and remains gated.
+- Other indexed contracts: opaque-origin execution; browser artifact storage/recovery; lifecycle/termination/receipt; Pages shared-origin audit; zero-budget origin comparison; phone/device validation runbook; grant model acceptance; report projection migration.
 
-## Owner diagnostic usability update (2026-11-12)
-- Owner said the earlier phrase “run the probe” did not explain what to do. This was a communication gap, not an owner failure.
-- VERIFIED: `PHONE_DEVICE_VALIDATION_RUNBOOK_20261112.md` section 2A now gives plain iPhone steps, the exact copyable read-only Console block, expected empty-result wording, privacy/redaction guidance and stop conditions. No Python knowledge is required.
-- The check reads only the existing session's saved exception (`sys.last_exc`, then `sys.last_value`). It does not run project code or write files. Owner may defer it; if Console or its input/run control is unclear, stop and report what is visible.
-- Preserve the existing exact-match `summary.json`; never rerun `main.py`, run the wrapper, restart the session or clear the Error Log for this diagnostic.
+## Device, origin and naming evidence
 
-## Live branch reconciliation — 2026-11-12 22:43 local
+- Owner-reported Pyodios iPhone: app 1.1.0 Build 7, Pyodide 314.0.5, Python 3.14.2. Editor showed `[Bridge/executePython] PythonError`. Console probe NOT RUN; cause and worker topology UNKNOWN. Preserve the existing matching `summary.json`; do not rerun main.py, wrapper or artifact-producing attempt. Owner-friendly Console instructions are in `PHONE_DEVICE_VALIDATION_RUNBOOK_20261112.md`; optional and may be deferred.
+- Pages preview last successful run #17 / `39433670146` deployed static simulation from main SHA `90cc378df1f7c7f1b5f5535c322eddcfbfb9b26c`. Not app runtime. PocketCode Pages and portfolio paths share the same github.io origin; do not store credentials, tokens, private source or security authority there. Live headers, current scripts and device context remain UNKNOWN.
+- Safari storage behaviour, Home Screen app exception and browser eviction are research evidence, not proof for the installed app. IndexedDB/OPFS/SQLite-WASM remain unselected.
+- O-7: official Catrobat Pocket Code app and POCO C++ project are verified naming/search collisions. Xiaomi POCO official trademark scope remains UNKNOWN. No rename or PoCo publication before direct clearance.
+- Owner said a previously opened GitHub link looked okay; exact target remains ambiguous between commit page and Pages preview. Treat only as informal owner observation, not live Pages evidence. Do not ask to repeat unless necessary.
 
-- VERIFIED active branch HEAD at start of this pass: `928bc31dd41b854f6beda0e74d2774b72257b71b`.
-- VERIFIED latest five commits, newest first:
-- 928bc31dd41b854f6beda0e74d2774b72257b71b — docs(checkpoint): close owner diagnostic usability unit
-- ebdaf6dbf4e116f5ab9d887d9b747f3f3e9b2584 — docs(state): record owner-friendly diagnostic guidance
-- 599391c0fb57d45b20e3593d99d5013164d21977 — docs(next): clarify owner Pyodios diagnostic steps
-- 7cc887837596e2d3099ecfefa738ca716aab84b3 — docs(runbook): make Pyodios probe owner-friendly
-- 93f1b7dd40142437270455921303a4704a3e1aa5 — docs(checkpoint): close branch history reconciliation
-- VERIFIED compare from source audit pin `b71315068ec33a0175fed46ef96912e954d87f9f` to HEAD: 47 commits ahead, 0 behind, 11 changed paths. Every changed path is under `AI_COLLAB/`; no application source, scripts/tests, workflow or product assets changed in this interval.
-- VERIFIED HEAD combined commit status: `pending` with zero status entries (`total_count: 0`). This means no status checks are attached, not that a check passed.
-- VERIFIED latest relevant Actions run remains #59 / `43126974602`, SUCCESS, workflow commit `d93cd11e6873090cdb280fd18e45d9eeee9a973f`, checking out historical model target `319cffef121e327331aeaff59522ae279b112ecc`; full scripts suite 266/266. This is model-only evidence on that exact historical target, not current-HEAD CI, adapter proof or CASE acceptance. Lane 4 remains BLOCKED / NOT TESTABLE; CASE-04 remains INCOMPLETE / timed_out.
-- Previous baseline entries naming `8298111d2b5d60cab9bbe8d5610fe52861e940c9` or earlier are historical snapshots. This live reconciliation supersedes them for the branch head at this pass.
-- The owner-friendly Pyodios instructions remain optional; the Console probe is NOT RUN. No owner action is required for repo-only work. Preserve the existing matching `summary.json`; never rerun the artifact-producing attempt.
-- Tests in this documentation reconciliation: NOT RUN. No source/test/device/deployment/provider/DNS/settings/PR/RevDev changes. P39 implementation/adapter gate remains CLOSED; D-005/D-006 remain $0.
+## Decisions and gates
+
+- D-001 unified PC-and-phone direction with distinct project boundaries; D-002 GitHub as durable source of truth; D-003 no secrets in public repo; D-004 validate before stack commitment; D-005/D-006 $0.
+- OD-01..OD-13 adopted 2026-11-11. No live/incremental artifact streaming in MVP; bounded download/share only after complete staging, integrity verification and fresh authorization. Policy adoption does not prove implementation.
+- P39 product-policy gate CLEARED by owner delegation; P39 implementation/adapter conformance gate remains CLOSED. No source/test edits, provider calls, device tests, deployments, DNS/settings, PR changes or infrastructure selections without their separate gate.
+- CASE-04 remains INCOMPLETE / timed_out. Model PASS never closes adapter or canonical CASE acceptance.
+
+## Ranked open work
+
+1. Continue static source-to-contract reconciliation of grant, receipt, authorization, lifecycle and artifact recovery; document concrete gaps only. Do not edit code/tests while P39 implementation/adapter gate is closed.
+2. Keep the 33-scenario grant acceptance plan and three-projection report migration ready for a separately authorized model/test scope. Durable adapter, producer authentication, relay fencing and backup/restore proof remain UNKNOWN.
+3. Device/browser work requires an approved synthetic-data build and exact target-device evidence. The Pyodios Console probe is optional; preserve summary.json and do not rerun the successful attempt.
+4. Resolve shared-origin threat boundary before any persistent sensitive data; no host migration or deployment without owner decision.
+5. Complete O-7 official name clearance only if a naming decision is needed.
+6. Prove five-file fresh-chat resume protocol. Never open CHAT_START_HERE, HOT_RESUME or STATE_LEDGER.
+
+Evidence labels: VERIFIED / INFERRED / UNKNOWN / NOT RUN. Tests: PASS / FAIL / NOT RUN. Chat assertions are not proof.
