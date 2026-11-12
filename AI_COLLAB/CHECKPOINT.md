@@ -99,3 +99,12 @@ Added `AI_COLLAB/REPORT_PROJECTION_V2_MIGRATION_AND_ACCEPTANCE_20261112.md`. Sou
 VERIFIED: legacy classify_verdict treats any integer nonzero as FAIL before lifecycle, including timeout/cancel/reject/infrastructure/nonterminal/unknown statuses; it cannot distinguish child natural exit from wrapper, signal, embedded or caller values. Typed execution_projection already tests timeout + wrapper 137 as INCOMPLETE, but it is pure and unauthenticated. The report packet defines a versioned format-2 migration, preserves format 1, separates execution/job/artifact projections, and supplies a regression matrix. No precedence-only patch.
 Updated INDEX: corrected grant-event plan to 29 scenarios and indexed report migration packet; INDEX is 589 words. STATE and NEXT_TASK link the new packet. No application/test source changed; no tests run. P39 implementation/adapter gate remains CLOSED; CASE-04 remains INCOMPLETE / timed_out.
 Unit commit: a326cc3dc1644a6f2349dfdc56897a3f59847894. This checkpoint refresh is a separate documentation-only commit.
+
+## Final branch and CI reconciliation — 2026-11-12
+Latest five branch commits verified after the report migration and state refresh:
+- 4020384bb4be0ae7d20b89e1a61f5531b5abdf32 — state reconciliation
+- e0876a094ebe8761ad51eef9d3e8ae71b91cd474 — report migration checkpoint
+- a326cc3dc1644a6f2349dfdc56897a3f59847894 — report migration/acceptance packet
+- 06f52ae8eb1fb4714e14561b64b6a08874c52f58 — grant-event scenario-count/next-gate reconciliation
+- a348a53824a6459169fc4afff7bdfe7419839843 — grant-event 29-scenario plan
+Branch source audit remains pinned through b71315068ec33a0175fed46ef96912e954d87f9f; commits after that source pin in this list are documentation-only. Latest commit has no combined status checks. No new CI is claimed. Latest relevant Python conformance run remains #59 / 43126974602 SUCCESS, workflow head d93cd11e6873090cdb280fd18e45d9eeee9a973f, exact P40 checkout target 319cffef121e327331aeaff59522ae279b112ecc, full scripts 266/266. Tests in this pass NOT RUN. No application/test/workflow/config changes, device probes, deployment or spending.
