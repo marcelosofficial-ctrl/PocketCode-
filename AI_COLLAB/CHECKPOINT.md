@@ -83,3 +83,12 @@ Next startup should re-read the five boot files and fetch latest five commits fr
 ## Final verification for live-head reconciliation
 
 The reconciliation notes in STATE.md and NEXT_TASK.md were refreshed against the branch at unit start (`8298111d2b5d60cab9bbe8d5610fe52861e940c9`). A malformed abbreviated SHA introduced in the first STATE.md update was corrected to the exact third commit SHA `214c39bdd90947efaa660db280182f112c29ba61` before closing this unit. The three startup documents were committed sequentially; no source files or tests were touched. Final branch ref is checked after this checkpoint commit. Tests remain NOT RUN; current-head combined status was empty before these documentation-only updates.
+
+
+## Owner-friendly Pyodios diagnostic unit — 2026-11-12
+
+The owner clarified that “run the probe” was not actionable because they do not know what that means. This is a documentation/usability gap; no diagnostic was attempted and no user action is assumed. Updated `PHONE_DEVICE_VALIDATION_RUNBOOK_20261112.md` with section 2A: plain-language iPhone navigation, Console vs Editor distinction, exact copyable read-only code, what output to send, privacy/redaction guidance, and clear stop conditions. Updated NEXT_TASK.md and STATE.md to use the understandable instructions and make the action optional/deferable.
+
+Safety boundary: the code only reads `sys.last_exc` / `sys.last_value` in the existing session. It does not import or execute project files, modify the project, or write artifacts. The owner must not tap Editor's green run button, rerun `main.py`, run the wrapper, restart the session, clear logs or overwrite the already matching `summary.json`. If Console or its input/run control is unclear, stop and report the visible screen text. No owner-side action is required to continue repo-only work.
+
+No application source, scripts/tests, workflow, Pages settings, provider/host, deployment, PR or RevDev changes. Tests: NOT RUN. P39 implementation/adapter gate remains CLOSED; D-005/D-006 remain $0.
