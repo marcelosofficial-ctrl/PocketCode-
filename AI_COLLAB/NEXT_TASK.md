@@ -6,11 +6,11 @@ Continue evidence closure without reopening the P39 implementation/adapter gate.
 
 ## Verified baseline at start of this update
 
-- Branch: `pocketcode-ai-workflow-director-research-2026-10-28`; snapshot HEAD `e2d078f59ec0213249ae881253746d134151e1fe`.
-- Latest five then: `e2d078f` live STATE; `d2494de` OD09–OD13 crosswalk correction; `e8b678c` device runbook identity/teardown alignment; `adcb0eb` INDEX OD09–OD13 row; `0b50bce` OD09–OD13 crosswalk.
-- Source-audit compare pin `b71315068ec33a0175fed46ef96912e954d87f9f`: 75 ahead / 0 behind / 18 changed paths, all AI_COLLAB. No application source, scripts/tests, workflow or product assets changed.
-- HEAD combined status at that snapshot: pending with zero status entries. This is not a CI pass.
-- Latest relevant Actions run #59 / `43126974602` is SUCCESS only on historical model target `319cffef121e327331aeaff59522ae279b112ecc`, full scripts 266/266. Not current-HEAD CI or adapter/CASE proof.
+- Branch: `pocketcode-ai-workflow-director-research-2026-10-28`; live snapshot before this update `22a2cf8ba2df5543ad0ca241d62228b185d1a4d6`.
+- Latest five at snapshot: `22a2cf8` live STATE refresh; `af4a0f8` termination-evidence checkpoint; `a1a55c4` Worker-action vs termination-proof clarification; `d9d61c2` full policy/traceability checkpoint; `56789cb` owner-gated next-task plan.
+- Source-audit compare pin `b71315068ec33a0175fed46ef96912e954d87f9f`: 80 ahead / 0 behind / 19 changed paths, all AI_COLLAB. No application source, scripts/tests, workflow or product assets changed.
+- HEAD combined status at snapshot: pending with zero status entries. This is not a CI pass.
+- Latest Actions run #59 / `43126974602` is SUCCESS only on historical model target `319cffef121e327331aeaff59522ae279b112ecc`, full scripts 266/266. Not current-HEAD CI or adapter/CASE proof.
 - INDEX 655 words. All referenced Markdown basenames exist.
 
 ## Completed in the current full work pass
@@ -27,15 +27,21 @@ Continue evidence closure without reopening the P39 implementation/adapter gate.
 
 Tests in this documentation pass: NOT RUN.
 
+## Completed in the 2026-11-13 follow-up
+
+- Reconciled OD-12 with the browser Worker protocol. `worker_termination_action_acknowledged` proves only the supervisor invoked `terminate()` on its exact Worker and closed the channel. It is not automatically the broader same-attempt `termination_acknowledged` required for cleanup/release. Lifecycle contract now preserves the distinction.
+- Cross-checked OD-01..OD-13 against owner decisions, grant event, browser storage, opaque-origin and lifecycle contracts. No additional contradiction requiring a policy change was found. OD-03's missing transport cancellation/ack model and OD-02/04/05/06/07/08 model gaps remain explicitly open in the existing crosswalk.
+- No source/test files changed; tests NOT RUN.
+
 ## Ranked next work
 
-1. **No further speculative model design unless a new concrete source gap appears.** OD-01..OD-13 are mapped to current models in two indexed crosswalks; grant and report test plans are documented.
-2. **Implementation/test gate:** wait for a separate explicit owner authorization identifying exact model-only source/test scope. Until then do not touch scripts/tests, run CI, introduce dependencies or alter canonical acceptance.
-3. **Device evidence:** owner may optionally perform the simple read-only Pyodios Console inspection in `PHONE_DEVICE_VALIDATION_RUNBOOK_20261112.md`. Preserve existing summary.json; do not rerun main.py or artifact-producing attempt. If Console controls are unclear, stop.
-4. **Browser/device acceptance:** only with an approved synthetic-data build. Record separate iOS Safari, Home Screen app, WKWebView, Android Chrome, PWA and WebView contexts. No desktop/browser inference. Verify deployed CSP, source-bound handshake, identity binding, exact Worker termination action, storage read-back/eviction/export and client acknowledgement.
-5. **Shared-origin boundary:** no sensitive persistence on github.io until origin separation or an owner-accepted threat model. Host/DNS changes and deployment require a separate owner decision.
-6. **O-7 naming:** direct official clearance only if a naming decision is needed. No rename or PoCo publication before clearance.
-7. **Fresh-chat continuity:** test the five-file resume protocol in a genuinely fresh chat when available; never open CHAT_START_HERE, HOT_RESUME or STATE_LEDGER.
+1. **Implementation/test gate:** wait for separate explicit owner authorization identifying exact model-only source/test scope. Until then do not touch scripts/tests or run CI.
+2. **Device evidence:** owner may optionally perform the read-only Pyodios Console inspection in `PHONE_DEVICE_VALIDATION_RUNBOOK_20261112.md`. Preserve existing summary.json; do not rerun main.py or the artifact-producing attempt. If Console controls are unclear, stop.
+3. **Browser/device acceptance:** only with an approved synthetic-data build and exact target-device evidence. No desktop/browser inference.
+4. **Shared-origin boundary:** no sensitive persistence on github.io until origin separation or an owner-accepted threat model. No host/DNS changes or deployment.
+5. **O-7 naming:** direct official clearance only if a naming decision is needed. No rename or PoCo publication before clearance.
+6. **Fresh-chat continuity:** test the five-file resume protocol in a genuinely fresh chat when practical; never open CHAT_START_HERE, HOT_RESUME or STATE_LEDGER.
+7. **Static review:** stop repeating completed crosswalk work unless a new concrete contradiction or source change appears.
 
 ## Constraints and stop conditions
 
