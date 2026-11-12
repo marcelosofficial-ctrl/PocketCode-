@@ -65,7 +65,9 @@ Stage:
 Atomicity:
 - If the chosen store can keep bytes and metadata within one transaction, document exactly which object stores participate and test crash/abort semantics.
 - If bytes and manifest live in different APIs or stores, do not claim one atomic transaction. Use staging then read-back then a manifest commit pointer. A crash between these steps leaves an orphan staged object, not a published artifact.
-- Use compare-and-swap against the expected receipt head/revision. Two concurrent tabs must not both create conflicting successors.
+- The separate `ReceiptHead` must bind `ResultReceiptId` + revision to the exact canonical receipt SHA-256, or to an authenticated immutable reference that resolves to that digest. Define the exact canonical receipt bytes being hashed; do not hash a representation that includes its own derived digest. The receipt's artifact manifest binds each `ArtifactId` + object version to byte length, artifact SHA-256, integrity state and quarantine state.
+- Grant reservation and recovery must compare the full receipt-head tuple (receipt ID, revision and receipt digest) and verify the exact artifact digest/length from the immutable receipt manifest. Only `integrity_state=verified` and `quarantined=false` are eligible. Identifier equality alone is insufficient.
+- Use compare-and-swap against the expected receipt-head tuple, including its digest. Two concurrent tabs must not create conflicting successors or silently rebind the same ID/revision to different content.
 - Persist sequence and fence high-water values without rollback after restore, consistent with OD-07. Local tab counters are not authoritative.
 - A temporary cache is never the canonical artifact store. Cache eviction must not erase the only manifest or evidence pointer.
 
