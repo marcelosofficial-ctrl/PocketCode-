@@ -67,3 +67,14 @@ GitHub compare from source audit pin `b71315068ec33a0175fed46ef96912e954d87f9f` 
 The user says the previously requested GitHub link looked okay. Since the earlier reply contained both a commit URL and a Pages-preview action, the exact target is ambiguous. This remains a user-reported visual observation, not independently verified live Pages response evidence. If the Pages preview was opened, no repeat check is needed.
 
 Next startup should re-read the five boot files and fetch latest five commits from the active branch. Current CI evidence remains run #59 on the historical pinned model target; current docs head has no status checks. Tests in this unit: NOT RUN.
+
+
+## Live-head reconciliation unit — 2026-11-12
+
+- Startup sequence completed: BOOT, STATE, NEXT_TASK, CHECKPOINT, INBOX_chatgpt, then branch history. The branch-ref history endpoint was used because commit search returned stale results.
+- VERIFIED current branch HEAD: `8298111d2b5d60cab9bbe8d5610fe52861e940c9`.
+- VERIFIED latest five commits, newest first: `8298111d2b5d60cab9bbe8d5610fe52861e940c9` (CHECKPOINT), `9c05f9158df250efa8cb3d7dcadcab047f5b6087` (NEXT_TASK), `214c39bdd90947efaa660db280182f112c29ba61` (STATE), `04d8181bf159f5a90ae6b7ace017c7f58e31611d` (CHECKPOINT), `0d7f8736d0db9855eda5d9d05da07fdf4ff7d0e0` (NEXT_TASK).
+- VERIFIED compare from source audit pin `b71315068ec33a0175fed46ef96912e954d87f9f` to HEAD: 38 commits ahead, 0 behind, 11 changed paths, all under AI_COLLAB. No application source, scripts/tests, workflow or product assets changed.
+- VERIFIED HEAD combined status: no status checks. Latest relevant Actions run #59 / 43126974602 SUCCESS remains pinned to historical model target `319cffef121e327331aeaff59522ae279b112ecc`; 266/266 model suite. This does not establish tests on current HEAD, adapter acceptance or CASE acceptance.
+- Tests in this unit: NOT RUN. No source/test/device/deployment/provider/PR changes. P39 implementation/adapter gate remains CLOSED; D-005/D-006 remain $0.
+- Next: owner-run read-only Pyodios Console probe only, preserving `summary.json`; no rerun of `main.py`. If Pages preview URL was the one opened, no repeat visual check needed.
