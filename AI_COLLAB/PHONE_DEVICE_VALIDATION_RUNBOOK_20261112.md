@@ -91,9 +91,11 @@ A. **Isolation and message boundary**
 - Confirm the task document is a fixed supervisor in an iframe sandboxed with `allow-scripts` only and without `allow-same-origin`.
 - Verify the parent accepts HELLO only from the exact current iframe `contentWindow`; `event.origin === "null"` alone is never identity.
 - Verify the wildcard target is used only for the one-time credential-free bootstrap to that exact WindowProxy; all later control uses the transferred MessagePort.
-- Attempt malformed, replayed, wrong-attempt, wrong-sequence, oversized and post-terminal messages. Each must fail closed without privileged action.
+- Bind the canonical `ExecutionId` separately from the parent-generated `execution_instance_id` in INIT and every subsequent channel message. Neither identifier may be chosen or rebound by task output.
+- Attempt malformed, replayed, wrong-CommandId, wrong-DispatchAttemptId, wrong-ExecutionId, wrong-execution_instance_id, wrong-sequence, oversized and post-terminal messages. Each must fail closed without privileged action.
 - Verify network requests are blocked by the actual deployed CSP and browser behaviour. A source declaration alone is not proof.
-- Verify timeout/cancel destroys the frame and worker, but do not claim termination until an authoritative same-attempt controller acknowledgement exists.
+- Verify timeout/cancel invokes `terminate()` on the exact Worker held by the trusted supervisor. Accept the bounded `worker_termination_action_acknowledged` fact only from the current MessagePort and only when CommandId, DispatchAttemptId, ExecutionId, execution_instance_id and sequence all match.
+- The supervisor acknowledgement proves only that its controller invoked Worker termination and closed that task channel. It is not a native child wait, proof the browser renderer/OS process stopped, or proof all external side effects ended. Without the matching acknowledgement, report termination UNKNOWN; frame removal is cleanup action, not termination proof.
 
 B. **Artifact staging and recovery**
 - Use a synthetic artifact with a known byte length and SHA-256. Verify the parent reads the bytes back from the actual store before committing a manifest.
@@ -104,7 +106,7 @@ B. **Artifact staging and recovery**
 - Export only a verified manifest-bound object through an explicit user action; record browser save/share outcome separately from client acknowledgement.
 
 C. **Lifecycle and evidence**
-- Keep child natural exit, wrapper exit, signal, embedded Python exception/SystemExit, termination request, termination acknowledgement, cleanup, artifact collection and client receipt as separate observations.
+- Keep child natural exit, wrapper exit, signal, embedded Python exception/SystemExit, termination request, worker termination action acknowledgement, broader termination/cleanup confirmation, artifact collection and client receipt as separate observations. Preserve canonical `ExecutionId` and frame `execution_instance_id` as distinct bindings.
 - Wrong-attempt, missing, unauthenticated or contradictory evidence must remain UNKNOWN/INCOMPLETE.
 - A UI toast, worker self-report, frame removal or wrapper code does not prove child exit or termination.
 - CASE-04 remains INCOMPLETE / timed_out until authoritative same-attempt evidence and canonical acceptance are supplied.
