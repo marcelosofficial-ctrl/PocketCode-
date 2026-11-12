@@ -44,13 +44,17 @@ No device probe, app code, tests, deployment, host/provider, DNS/settings or sto
 
 ## Branch reconciliation completed
 
-The prior branch head before this work was `8b148413898ec273bed2ec3b70b2f328f9be7bd7`. This unit reconciled STATE, NEXT_TASK and CHECKPOINT only. Five commits immediately before this final checkpoint update:
-- `64ad86ce65b1b1ddbc41096700bc082a7f97fbbf` — clarify prior head chronology in NEXT_TASK
-- `e2581f224971459c2cb50bea3a01a51a20c9b165` — clarify reconciliation chronology in STATE
+This startup/work unit re-read the five required files in order: BOOT.md, STATE.md, NEXT_TASK.md, CHECKPOINT.md and INBOX_chatgpt.md. It then used the branch-ref commits endpoint to verify the latest five commits. Commit-search results were stale and were not treated as branch-tip evidence.
+
+Pre-update branch HEAD: `3565d63f34c9476e58f96ded42af6fc4bfc1b615`. The latest five commits before this reconciliation were:
+- `3565d63f34c9476e58f96ded42af6fc4bfc1b615` — checkpoint chronology
+- `64ad86ce65b1b1ddbc41096700bc082a7f97fbbf` — NEXT_TASK chronology
+- `e2581f224971459c2cb50bea3a01a51a20c9b165` — STATE chronology
 - `b7021362cd9ef6564a7ff8d6a769ee39e392ab98` — checkpoint reconciliation
 - `fc959d417263a0397f89e0157d103a516c0e47db` — STATE reconciliation
-- `7faf225e50cdec6749e5b07fe08e0030e580eeec` — CI/head reconciliation
 
-Each commit was fetched and verified as AI_COLLAB-only. Latest known head before this checkpoint write had no status checks. Tests in this unit: NOT RUN. Latest relevant test evidence remains P40 run #59, 266/266 on exact historical model target SHA `319cffef121e327331aeaff59522ae279b112ecc`; not current-code or adapter/CASE acceptance.
+All five were fetched; each changes only AI_COLLAB documentation. This unit corrected stale branch-head chronology in STATE.md and NEXT_TASK.md, then refreshed this checkpoint. No application source, tests, workflows, device evidence, host/provider, deployment or PR changes.
 
-Next startup: read BOOT.md, STATE.md, NEXT_TASK.md, CHECKPOINT.md, INBOX_chatgpt.md; then list latest five commits. Use INDEX for further reads. Never open CHAT_START_HERE, HOT_RESUME or STATE_LEDGER; never read any file over 1,500 words whole.
+CI: current pre-update HEAD `3565d63f34c9476e58f96ded42af6fc4bfc1b615` has no status checks. Latest relevant workflow remains run #59 / 43126974602 SUCCESS, workflow head `d93cd11e6873090cdb280fd18e45d9eeee9a973f`, checking out exact historical model target `319cffef121e327331aeaff59522ae279b112ecc`; full scripts suite 266/266. It is model-only historical evidence, not current-HEAD, adapter or CASE acceptance. Tests in this reconciliation unit: NOT RUN.
+
+Next startup: read BOOT.md, STATE.md, NEXT_TASK.md, CHECKPOINT.md, INBOX_chatgpt.md; then list latest five commits. Use INDEX.md for further reads. Never open CHAT_START_HERE, HOT_RESUME or STATE_LEDGER; never read any file over 1,500 words whole.
