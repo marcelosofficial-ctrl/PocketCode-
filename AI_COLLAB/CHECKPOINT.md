@@ -30,3 +30,14 @@ P40 run:
 No application/test source changes, no provider/device tests, deployment, PR changes, spending or stack selections. P40 report, authorization record, STATE, NEXT_TASK and research addendum updated in this commit.
 
 Next unit: write versioned grant-event envelope/relay state-machine contract, then opaque-origin sandbox protocol. Owner-run Pyodios Console probe and read-only Pages evidence remain open.
+
+
+## Final repository refresh — 2026-11-12
+- Latest five commits after recording run evidence:
+  1. `cd1be18b4fb523060d231db7980503c119cc34eb` docs(p40): record exact-SHA model run results and next gaps
+  2. `d93cd11e6873090cdb280fd18e45d9eeee9a973f` ci(p40): run pinned model lanes and record runtime versions
+  3. `d6ff1276664edb9127867dd3974a4dc901ef08cb` docs(research): rank and red-team PocketCode execution gaps
+  4. `6b28b5afd59e404b8d2bda9d7cf4a99001a6cd34` docs(p40): clarify exact-SHA runner path and dispatch blocker
+  5. `ce9238d47ec0bc537bfaebfbd5176e4b6d9a02c9` docs(p40): record approved run blocked by unavailable runner
+- Latest docs-only commit has no check runs because the workflow is path-filtered to scripts/workflow changes. Latest relevant CI is run #59 on workflow commit `d93cd11e`, SUCCESS.
+- Compare target `319cffef121e327331aeaff59522ae279b112ecc` to current branch: 11 ahead, 0 behind. Changed paths are the workflow and AI_COLLAB documentation only; no application or test source.
