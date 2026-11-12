@@ -31,6 +31,43 @@ Interpretation:
 - A matching existing JSON proves only the inspected artifact values, not the bridge, lifecycle, termination or full-run verdict.
 - The wrapper's local CPython checks are not Pyodide/iPhone evidence.
 
+
+## 2A. Owner-friendly instructions: what to tap and what to send
+
+You do not need to understand Python or diagnose the error. This is just a read-only check that asks the already-open Python session whether it still remembers the error from the earlier run. It does **not** run your project, change `main.py`, or write/replace `summary.json`.
+
+1. Open the **Pyodios** app on your iPhone.
+2. Leave the existing project and its files alone. Do not tap the green play/run button.
+3. At the bottom of the app, tap **Console** (not Editor).
+4. Tap the Console input area so the keyboard appears.
+5. Copy the entire small code block below, paste it into Console, and tap the Console's run/return control once. If the app does not show an obvious input area or run control, stop and tell us what you see. Do not guess or tap Editor's green play button.
+6. Wait for the text output. Copy all output from the first line through the last line and send it here. If copying is difficult, a screenshot is fine, but check that it contains no private information first.
+7. If it says **“No previous Python exception is available.”**, that is a valid result. Send that exact message. It does not mean you did anything wrong.
+8. If Console is missing, unavailable, or shows an unexpected prompt/error before you can run the block, stop and tell us the exact screen text. Do not try another command.
+
+Copy this exact block, without changing it:
+
+```python
+import sys
+import traceback
+
+exc = getattr(sys, "last_exc", None)
+if exc is None:
+    exc = getattr(sys, "last_value", None)
+
+if exc is None:
+    print("No previous Python exception is available.")
+else:
+    print("EXCEPTION TYPE:", type(exc).__name__)
+    print("EXCEPTION VALUE:", repr(exc))
+    print("TRACEBACK:")
+    print("".join(traceback.format_exception(type(exc), exc, exc.__traceback__)))
+```
+
+**Privacy:** before sending, check the output for personal paths, private filenames, source code, tokens or other private data. Redact those parts. The exception type, short error message and traceback lines are the useful parts. Do not send the whole project or `summary.json` again; its successful values are already recorded.
+
+**Stop conditions:** do not close/restart the project or Console, clear the Error Log, reinstall/update Pyodios, run `main.py`, run the diagnostic wrapper, or create a new project for this check. This is only the single read-only Console inspection. If it cannot be done as written, stop and report the obstacle.
+
 ## 3. Origin and application-context inventory
 
 For each available context, record the exact URL (including scheme, host and port), app/browser version, whether installed, and whether the app opens standalone or in browser chrome:
