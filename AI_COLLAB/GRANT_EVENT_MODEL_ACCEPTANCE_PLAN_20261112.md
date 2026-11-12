@@ -1,6 +1,6 @@
 # Grant-event model acceptance plan (2026-11-12)
 
-Status: proposed test-only scope; not authorised for implementation in this pass. This plan converts the grant-event-envelope/v1 contract into a deterministic 32-scenario model acceptance suite (A1–A7, B1–B9, C1–C9, D1–D7). No new canonical LOOP, CASE or D identifiers are created. Local scenario labels below are not canonical IDs.
+Status: proposed test-only scope; not authorised for implementation in this pass. This plan converts the grant-event-envelope/v1 contract into a deterministic 33-scenario model acceptance suite (A1–A8, B1–B9, C1–C9, D1–D7). No new canonical LOOP, CASE or D identifiers are created. Local scenario labels below are not canonical IDs.
 
 ## 1. Ranked purpose
 
@@ -31,7 +31,7 @@ Allowed future scope, only after explicit owner gate:
 
 | Group | Existing coverage observed | Additional proof still required |
 |---|---|---|
-| A: transition parity/atomicity | `reserve()` stages the initial grant/event/outbox at one in-memory commit point; existing failpoint and replay tests cover parts of A1/A2/A7. The progress test covers monotonic bounds. | A3/A4 event/version parity and equal-progress no-op are missing: `record_progress()` increments aggregate_version and updates the grant but appends no event/outbox. A5/A6 need the exact full matrix, including event/version uniqueness conflicts. In-memory failpoints do not prove database atomicity. |
+| A: transition parity/atomicity | `reserve()` stages the initial grant/event/outbox at one in-memory commit point; existing failpoint and replay tests cover parts of A1/A2/A7. The progress test covers monotonic bounds. | A3/A4 event/version parity and equal-progress no-op are missing: `record_progress()` increments aggregate_version and updates the grant but appends no event/outbox. A5/A6 need the exact full matrix, including event/version uniqueness conflicts. A8 is also missing: `ReceiptHead` and `reserve()` validate IDs/revision/object version but not `receipt_sha256`, artifact SHA-256 or quarantine state. The separate `result_receipts` model does compute `ResultReceipt.receipt_sha256` and has artifact SHA/integrity/quarantine fields, but these facts are not bound into this grant model. In-memory failpoints do not prove database atomicity. |
 | B: envelope/first delivery | Existing consumer tests cover same-identity/same-digest duplicate handling and changed supplied digest conflict. | Current `GrantEvent`/consumer path does not parse an exact canonical envelope, recompute first-delivery SHA-256, authenticate a producer or validate the full tenant/effect/attempt/receipt/object/policy scope. B1–B9 remain required; a supplied digest is not proof. |
 | C: relay lease/fence | No grant-event relay lease state machine or relay-specific test group exists. `mark_outbox_delivered()` only flips a boolean. | C1–C9 are absent, including expiry/takeover, stale acknowledgement, publish-before-ack crash, order and relay-fence exhaustion. `FakeOutboxStore` tests are for effect dispatch and are not substitutes. |
 | D: inbox/restore | Existing consumer code defers a future version gap and recognizes a duplicate based on its in-memory identity/digest map. | D4 durable lost-ack recovery, D5 inbox/projection/effect atomicity, D6 conflicting history and D7 restore high-water safety are unproven. Current state is in-memory only. |
@@ -51,6 +51,7 @@ The existing tests are historical model coverage, not tests of the proposed v1 e
 | A5 invalid progress | Regression, bool, negative, non-integer and above artifact length | Reject; aggregate, event list, outbox and sequence unchanged |
 | A6 event uniqueness conflict | Force duplicate (grant_id, aggregate_version) or (source,event_id) | Entire aggregate transition rolls back; original immutable event remains |
 | A7 idempotent retry after lost response | Commit then replay exact reservation/transition key | Return same grant/event identity; never mint a second transition |
+| A8 receipt/artifact content binding | Try reservation with missing or mismatched receipt SHA, artifact SHA/length, or quarantined/unverified artifact | Reject before grant/event/outbox commit; exact receipt head and verified artifact content must match the authorization scope |
 
 ### B. Envelope and first-delivery validation (required)
 
