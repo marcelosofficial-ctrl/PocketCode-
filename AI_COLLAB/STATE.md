@@ -27,7 +27,7 @@ Updated: 2026-11-12. Reconciled against branch source through b71315068ec33a0175
 - Preserve LOOP-01..14, CASE-01..16 and all D-IDs. PR #2/#3/#4 owner-controlled and untouched. Keep PocketCode and RevDev separate. No provider calls, spending, source/test edits, device tests, deployments, settings/DNS changes or PR changes without applicable authorization.
 - No candidate name approved. Do not rename or publish PoCo before name clearance.
 
-- VERIFIED: grant-event model-only test plan committed at GRANT_EVENT_MODEL_ACCEPTANCE_PLAN_20261112.md. It specifies four test groups (transition parity, envelope validation, relay fencing, consumer inbox/restore), 28 local scenarios, and strict model-vs-adapter evidence limits. Proposed only; no test/source implementation or execution.
+- VERIFIED: grant-event model-only test plan committed at GRANT_EVENT_MODEL_ACCEPTANCE_PLAN_20261112.md. It specifies four test groups (transition parity, envelope validation, relay fencing, consumer inbox/restore), 29 local scenarios, and strict model-vs-adapter evidence limits. Proposed only; no test/source implementation or execution.
 
 ## Open items
 1. Owner: run the read-only Pyodios Console probe in PYODIOS_PYTHONERROR_BRIDGE_TRIAGE_20261106.md; preserve existing summary.json and do not rerun the successful artifact-producing attempt.

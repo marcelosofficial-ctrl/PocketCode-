@@ -80,10 +80,16 @@ Tests during this pass: NOT RUN. Live Pages headers/body, actual device storage,
 
 
 ## Grant-event test-plan unit — 2026-11-12
-Added AI_COLLAB/GRANT_EVENT_MODEL_ACCEPTANCE_PLAN_20261112.md (four groups, 28 local scenarios):
+Added AI_COLLAB/GRANT_EVENT_MODEL_ACCEPTANCE_PLAN_20261112.md (four groups, 29 local scenarios):
 - Transition parity/atomicity, including equal-progress no-op and exactly one event/outbox for real transitions.
 - Exact canonical bytes, digest recomputation, first-delivery tamper, producer trust separation and full scope checks.
 - Independent grant-event relay lease/fence, takeover, stale ack, publish-before-ack crash and ordering.
 - Consumer inbox idempotency, gap deferral/recovery, inbox/effect atomicity and restore high-water.
 Red-team boundaries: in-memory model is not database atomicity; typed producer fixture is not cryptographic authentication; effect fence is not relay fence; transport is at-least-once; restore model is not backup proof.
 No implementation/test edits or test execution. Requires explicit owner gate before source/test changes.
+
+
+## Scenario-count correction and final reconciliation — 2026-11-12
+A count audit found the test-plan tables contain 29 cases (A1-A7 = 7, B1-B7 = 7, C1-C8 = 8, D1-D7 = 7), not 28. STATE and this checkpoint now use 29. No scenario was removed or added in the correction.
+Latest completed test-plan unit commit before this checkpoint refresh: a348a53824a6459169fc4afff7bdfe7419839843. The current branch is documentation-only; latest five commits were a348a538, 38ff79c, cc4b455, b94e700 and 90f312f. Index is 574 words.
+CI: no new run for docs-only commits. P40 run #59 remains SUCCESS (266/266 exact model baseline); Pages run #17 remains SUCCESS for the static simulation preview. Tests during this pass: NOT RUN.
