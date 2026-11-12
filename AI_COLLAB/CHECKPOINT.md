@@ -25,7 +25,7 @@ No device probe, app code, tests, deployment, host/provider, DNS/settings or sto
 ## Existing evidence
 
 - P40 exact-SHA model run #59 / 43126974602 SUCCESS, full scripts 266/266, exact target `319cffef121e327331aeaff59522ae279b112ecc`; Lane 4 BLOCKED / NOT TESTABLE. Historical model-only evidence, not adapter/CASE acceptance.
-- Latest relevant CI remains run #59. Documentation-only changes do not match Python workflow path filters.
+- Latest relevant CI remains run #59. Latest documentation HEAD has no status checks; tests in this unit NOT RUN.
 - Pages preview run #17 / 39433670146 deployed a static simulation subtree, not app runtime.
 - Pyodios iPhone error reported by owner; Console probe NOT RUN; cause/topology UNKNOWN.
 - Live Pages response/headers and actual device storage/service-worker state UNKNOWN.
@@ -42,15 +42,14 @@ No device probe, app code, tests, deployment, host/provider, DNS/settings or sto
 - ZERO_BUDGET_ORIGIN_OPTIONS_20261112.md
 - PHONE_DEVICE_VALIDATION_RUNBOOK_20261112.md
 
-## Branch reconciliation
+## Latest five commits on the active branch
 
-Before this unit, latest five commits were:
-- 03e65ef35d8b22cb4337ac7097b2a31247c3721e — STATE.md post-Gemini gate/Claude wait
-- 319d3da7291465a2f209bf7cada2a9bb66ae6d7f — README banner/name note
-- 3e09ada6b4eaacae4b0e8d9193bdb746a796d859 — INBOX housekeeping
-- c598371c6447a605398d2b6e48aca903842b58dd — NEXT_TASK gate clarification
-- a8ff22690afe97858a17f10efdc26159d90f63db — checkpoint
+- `28552091ad0dba628db866b4b2149486d2a5e6be` — checkpoint for device validation runbook
+- `639722e08684b8542b75350f394c631953d2bb92` — next task routing
+- `5e1d4727f165539876d3be8c53bccdda7bb6d0ab` — state reconciliation
+- `bd2f0041744937ec5d26a791b5efa711912012d9` — index entry
+- `b0e590ded211d1406e0fcd205babe2ad876e9779` — runbook
 
-New documentation unit began at `03e65ef35d8b22cb4337ac7097b2a31247c3721e`; runbook commit `b0e590ded211d1406e0fcd205babe2ad876e9779`. INDEX, STATE, NEXT_TASK and this checkpoint are being reconciled on the active branch. Tests this unit: NOT RUN. No CI result is claimed.
+All five were fetched and verified as documentation-only commits. Latest commit status check list is empty. No CI result is claimed for this documentation unit.
 
 Next startup: read BOOT.md, STATE.md, NEXT_TASK.md, CHECKPOINT.md, INBOX_chatgpt.md; then list latest five commits. Use INDEX for further reads. Never open CHAT_START_HERE, HOT_RESUME or STATE_LEDGER; never read any file over 1,500 words whole.
