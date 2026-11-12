@@ -42,14 +42,14 @@ No device probe, app code, tests, deployment, host/provider, DNS/settings or sto
 - ZERO_BUDGET_ORIGIN_OPTIONS_20261112.md
 - PHONE_DEVICE_VALIDATION_RUNBOOK_20261112.md
 
-## Five commits immediately preceding this checkpoint refresh
+## Branch head before this reconciliation unit
 
-- `28552091ad0dba628db866b4b2149486d2a5e6be` — checkpoint for device validation runbook
+- `8b148413898ec273bed2ec3b70b2f328f9be7bd7` — checkpoint clarification (active head)
+- `6619ad9fa33f18f94731dca803931a022159ec6f` — checkpoint verification
+- `28552091ad0dba628db866b4b2149486d2a5e6be` — device runbook checkpoint
 - `639722e08684b8542b75350f394c631953d2bb92` — next task routing
 - `5e1d4727f165539876d3be8c53bccdda7bb6d0ab` — state reconciliation
-- `bd2f0041744937ec5d26a791b5efa711912012d9` — index entry
-- `b0e590ded211d1406e0fcd205babe2ad876e9779` — runbook
 
-All five were fetched and verified as documentation-only commits. The checkpoint commit itself was subsequently verified to have no status checks. No CI result is claimed for this documentation unit.
+All five were fetched and verified as documentation-only commits. The active head has no status checks and no associated workflow runs. GitHub's commit search returned an older list, so this reconciliation uses the exact fetched commit and branch-ref content rather than the stale search response. Tests in this unit: NOT RUN.
 
 Next startup: read BOOT.md, STATE.md, NEXT_TASK.md, CHECKPOINT.md, INBOX_chatgpt.md; then list latest five commits. Use INDEX for further reads. Never open CHAT_START_HERE, HOT_RESUME or STATE_LEDGER; never read any file over 1,500 words whole.
