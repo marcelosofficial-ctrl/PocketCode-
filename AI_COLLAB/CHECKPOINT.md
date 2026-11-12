@@ -108,3 +108,9 @@ No application source, scripts/tests, workflow, Pages settings, provider/host, d
 - Previous baseline entries naming `8298111d2b5d60cab9bbe8d5610fe52861e940c9` or earlier are historical snapshots. This live reconciliation supersedes them for the branch head at this pass.
 - The owner-friendly Pyodios instructions remain optional; the Console probe is NOT RUN. No owner action is required for repo-only work. Preserve the existing matching `summary.json`; never rerun the artifact-producing attempt.
 - Tests in this documentation reconciliation: NOT RUN. No source/test/device/deployment/provider/DNS/settings/PR/RevDev changes. P39 implementation/adapter gate remains CLOSED; D-005/D-006 remain $0.
+
+## Report-projection migration artifact closure — 2026-11-12
+
+A final repository integrity check found that STATE.md, NEXT_TASK.md and INDEX.md referenced `REPORT_PROJECTION_V2_MIGRATION_AND_ACCEPTANCE_20261112.md`, but the path was absent from the branch tree at the start of this pass and at the previous reconciled heads. This was a missing deliverable, not a rename: the tree contained only the earlier `REPORT_VERDICT_PROVENANCE_PROJECTION_AUDIT_20261104.md` and related legacy report-projection references. The missing migration/acceptance document has now been created and committed as `78e513745b810ebd94ab71f63cb1cd352c62f8c9`. It is based on re-read pinned source blobs and the existing exit-provenance and lifecycle contracts. It preserves format 1, proposes a gated version-2 migration across three projections, includes 14 future regression cases, and explicitly leaves implementation NOT AUTHORIZED / NOT RUN. No source/test or canonical acceptance changes.
+
+Verification: the new path exists in the Git tree and is already indexed in INDEX.md. This closes the broken document reference. Tests remain NOT RUN; P39 implementation/adapter gate remains CLOSED; D-005/D-006 remain $0.
