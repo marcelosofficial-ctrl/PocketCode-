@@ -1,6 +1,6 @@
 # STATE: PocketCode
 
-Updated: 2026-11-12. Compact live state; use Git history and INDEX.md for older detail.
+Updated: 2026-11-13. Compact live state; use Git history and INDEX.md for older detail.
 
 ## Product and hard constraints
 
@@ -15,11 +15,11 @@ Updated: 2026-11-12. Compact live state; use Git history and INDEX.md for older 
 ## Live repository and CI evidence
 
 - Repo `marcelosofficial-ctrl/PocketCode-`; branch `pocketcode-ai-workflow-director-research-2026-10-28`.
-- VERIFIED live snapshot at 2026-11-13: HEAD `e1c7e27996354dbb98913eca8408a1f72afa2e4d`. Latest five, newest first: `e1c7e27` OD12 consistency/live-state checkpoint; `e8c7085` owner-gated next-task priorities; `22a2cf8` STATE live-head refresh; `af4a0f8` termination-evidence checkpoint; `a1a55c4` lifecycle Worker-action/termination-proof distinction.
-- VERIFIED compare from source-audit pin `b71315068ec33a0175fed46ef96912e954d87f9f`: 83 ahead / 0 behind / 19 changed paths, every path under `AI_COLLAB/`. No application source, scripts/tests, workflow or product assets changed in this interval.
-- VERIFIED exact-HEAD CI check-runs: 0; combined commit status: `pending`, zero attached statuses. No current-HEAD CI has run. Pending with zero entries is not a pass or failure.
-- Latest Actions run #59 / `43126974602`, SUCCESS, checked out historical model target `d93cd11e6873090cdb280fd18e45d9eeee9a973f` (run metadata head SHA), which in turn recorded the pinned model target `319cffef121e327331aeaff59522ae279b112ecc`. Historical full scripts suite 266/266. It is not current-HEAD CI, adapter proof or canonical CASE acceptance.
-- Tests in the current documentation-only pass: NOT RUN.
+- VERIFIED start-of-pass snapshot (parent of the atomic continuity commit): `676cc03f222408ce37032135d764881e34656ab9`. Latest five at that snapshot, newest first: `676cc03` checkpoint continuity repair; `a9fba95` NEXT_TASK baseline refresh; `b828418` STATE baseline refresh; `e1c7e27` OD12 consistency/live-state checkpoint; `e8c7085` owner-gated priorities.
+- VERIFIED compare from source-audit pin `b71315068ec33a0175fed46ef96912e954d87f9f`: 86 ahead / 0 behind / 19 changed paths, all under `AI_COLLAB/`. No application source, scripts/tests, workflow or product assets changed in this interval.
+- VERIFIED exact-parent CI check-runs: 0; combined commit status: `pending`, zero attached statuses. No CI run on this snapshot. Pending with zero entries is not a pass or failure.
+- Latest Actions run #59 / `43126974602`, SUCCESS, historical model target `319cffef121e327331aeaff59522ae279b112ecc`, full scripts suite 266/266. Not CI for this snapshot, adapter proof or canonical CASE acceptance.
+- Tests in this documentation-only pass: NOT RUN. The atomic continuity commit itself is documentation-only and is not represented as tested.
 
 ## Current model and contract findings
 

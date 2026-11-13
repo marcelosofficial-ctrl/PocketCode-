@@ -6,12 +6,11 @@ Continue evidence closure without reopening the P39 implementation/adapter gate.
 
 ## Verified baseline at start of this update
 
-- Live branch snapshot: `e1c7e27996354dbb98913eca8408a1f72afa2e4d`.
-- Latest five at that snapshot: `e1c7e27` OD12 consistency/live-state checkpoint; `e8c7085` owner-gated priorities; `22a2cf8` STATE refresh; `af4a0f8` termination-evidence checkpoint; `a1a55c4` lifecycle Worker-action distinction.
-- Source-audit compare pin `b71315068ec33a0175fed46ef96912e954d87f9f`: 83 ahead / 0 behind / 19 changed paths, all AI_COLLAB. No application source, scripts/tests, workflow or product assets changed.
-- Exact-HEAD check-runs: 0; combined status `pending` with zero attached statuses. No current-HEAD CI.
-- Latest Actions run #59 / `43126974602` is SUCCESS on historical model target `319cffef121e327331aeaff59522ae279b112ecc`, full scripts 266/266. Not current-HEAD CI, adapter proof or CASE acceptance.
-- The prior STATE/NEXT_TASK/CHECKPOINT snapshots lagged different commits. This pass reconciles their recorded baseline; always fetch live HEAD rather than relying on saved SHAs.
+- Snapshot parent: `676cc03f222408ce37032135d764881e34656ab9`; latest five: `676cc03`, `a9fba95`, `b828418`, `e1c7e27`, `e8c7085` (newest first).
+- Compare from `b71315068ec33a0175fed46ef96912e954d87f9f`: 86 ahead / 0 behind / 19 paths, all AI_COLLAB; no source/tests/workflow/product assets changed.
+- Exact-parent check-runs: 0; combined status `pending`, zero attached statuses. No CI on this snapshot.
+- Latest historical run #59 / `43126974602` is SUCCESS on model target `319cffef121e327331aeaff59522ae279b112ecc`, 266/266 scripts; not current-snapshot CI, adapter proof or canonical CASE acceptance.
+- The previous continuity refresh used separate file commits, which made the records lag one another. This pass consolidates STATE, NEXT_TASK and CHECKPOINT into one atomic commit to prevent intra-record skew. This baseline is explicitly the parent snapshot, not a claim that the resulting commit was tested.
 
 ## Completed in the current full work pass
 
@@ -39,6 +38,15 @@ Tests in this documentation pass: NOT RUN.
 - Re-read the live branch commit list, exact-HEAD check-runs/status, Actions run #59 and source-audit comparison. The latest commit is documentation-only; current HEAD has zero check-runs and a pending status with zero entries.
 - Updated the live baseline and historical-CI caveat. No application source, tests, workflow, product policy or canonical acceptance IDs changed.
 - Tests/device checks: NOT RUN.
+
+## Completed in the 2026-11-13 atomic continuity pass
+
+- Repeated the required five-file startup sequence and fetched the latest five commits.
+- Verified that prior per-file Contents API commits left STATE, NEXT_TASK and CHECKPOINT describing different snapshots. The root cause was sequential commits, each advancing branch HEAD after only one record was refreshed.
+- Consolidated all three records into a single Git tree/commit update. They now describe the same parent snapshot and explicitly distinguish that baseline from the new documentation commit.
+- Confirmed INDEX.md remains 655 words, below the 1,200-word limit. No new document or duplicate crosswalk was created.
+- Exact-parent CI has zero check-runs and a pending status with zero attached statuses. Tests/device checks NOT RUN.
+- No source, tests, workflow, product policy, canonical IDs, runtime/provider/storage/host choices or adapter implementation changed.
 
 ## Ranked next work
 

@@ -1,35 +1,33 @@
 # CHECKPOINT — 2026-11-13
 
-## Full work pass: live-state continuity repair
+## Full work pass: atomic continuity repair
 
-### Unit 1: required startup and live repository verification
-- Read in order: BOOT.md, STATE.md, NEXT_TASK.md, CHECKPOINT.md, INBOX_chatgpt.md.
-- Listed latest five branch commits. Live starting HEAD: `e1c7e27996354dbb98913eca8408a1f72afa2e4d`.
-- INDEX.md used only for navigation; no further static contract audit was repeated because NEXT_TASK explicitly says stop absent a new contradiction/source change.
-- Found a concrete continuity defect: STATE.md referenced `af4a0f8`, NEXT_TASK.md referenced `22a2cf8`, and CHECKPOINT.md described its pre-commit parent `e8c7085`. All three were behind the actual live branch head.
+### Unit 1: startup and current evidence
+- Read only the required startup files, in order: BOOT.md, STATE.md, NEXT_TASK.md, CHECKPOINT.md, INBOX_chatgpt.md. Then listed the latest five branch commits.
+- Parent snapshot: `676cc03f222408ce37032135d764881e34656ab9`.
+- Latest five at parent: `676cc03`, `a9fba95`, `b828418`, `e1c7e27`, `e8c7085`.
+- INDEX.md: 655 words, below 1,200-word budget.
+- Compare from `b71315068ec33a0175fed46ef96912e954d87f9f`: 86 ahead / 0 behind / 19 changed paths, all AI_COLLAB. No source/tests/workflow/product assets changed.
+- Exact-parent check-runs: 0; combined status pending with zero attached statuses. No CI on this snapshot.
+- Latest historical Actions run #59 / `43126974602`: SUCCESS, 266/266 scripts on historical model target `319cffef121e327331aeaff59522ae279b112ecc`. Not current snapshot CI, adapter proof or canonical CASE acceptance.
+- Tests/device checks: NOT RUN.
 
-### Unit 2: exact evidence refresh
-- Compared live HEAD against source-audit pin `b71315068ec33a0175fed46ef96912e954d87f9f`: 83 ahead / 0 behind / 19 changed paths, all under AI_COLLAB. No application source, scripts/tests, workflow or product assets changed.
-- Queried exact-HEAD check-runs and combined status: zero check-runs; status `pending` with zero attached statuses. No current-HEAD CI.
-- Latest Actions run #59 / `43126974602` is SUCCESS on a historical model target, full scripts 266/266. It is not current-HEAD CI, adapter proof or canonical CASE acceptance.
-- Tests and device checks: NOT RUN.
+### Unit 2: cause and repair
+- Verified a recurring continuity defect: separate STATE/NEXT_TASK/CHECKPOINT Contents API commits advanced HEAD between file updates, leaving the three records describing different points in history.
+- Prepared replacements for all three records and committed them as one Git tree/commit operation, so their baseline metadata is internally consistent.
+- Baseline wording explicitly says "snapshot parent" and does not falsely claim that the resulting documentation commit has CI.
+- No redundant crosswalk, new research doc or source/test change.
 
-### Unit 3: continuity records repaired
-- Updated `AI_COLLAB/STATE.md` to record the verified live snapshot, latest five commits, exact-HEAD CI absence and historical run caveat.
-- Updated `AI_COLLAB/NEXT_TASK.md` with the same baseline and an explicit record of this reconciliation.
-- No source/test, workflow, policy, canonical ID, adapter, runtime, provider, storage or infrastructure changes.
-- P39 implementation/adapter gate remains CLOSED. CASE-04 remains INCOMPLETE / timed_out.
+## Scope and gates
+- P39 implementation/adapter gate remains CLOSED.
+- CASE-04 remains INCOMPLETE / timed_out.
+- No device probe, artifact-producing rerun, deployment, provider/host/runtime/storage selection, PR change, paid service or external AI request.
+- Preserve all canonical LOOP/CASE/D/OD identifiers and existing owner constraints.
 
-## Exact write sequence
-- Starting live HEAD: `e1c7e27996354dbb98913eca8408a1f72afa2e4d`.
-- STATE refresh commit: `b8284181f1c0fd79ecc4c5bbde92b2f3be51aa09`.
-- NEXT_TASK refresh commit: `a9fba95ecfd59a236d0d3b534575cf868fb4b58c`.
-- This CHECKPOINT is the final unit record; re-fetch branch HEAD and exact-HEAD CI after commit before reporting.
-
-## Next
-1. Implementation/test work remains blocked until separate explicit owner authorization names an exact model-only source/test scope.
-2. Optional Pyodios Console evidence remains owner/device-only; preserve the existing successful summary artifact and do not rerun the artifact-producing attempt.
-3. Browser/device acceptance requires an approved synthetic-data build and exact target-device evidence.
-4. Do not repeat completed static crosswalks absent a new concrete contradiction or source change.
+## Next passes
+1. Wait for explicit owner authorization before model-only source/test implementation.
+2. If owner supplies new Pyodios Console output, reconcile it against the read-only runbook without rerunning the successful artifact attempt.
+3. Resume browser/device acceptance only with an approved synthetic-data build and exact target-device evidence.
+4. Reopen static review only on a concrete new source/contract change or contradiction. Do not repeat completed crosswalks.
 
 Evidence labels: VERIFIED / INFERRED / UNKNOWN / NOT RUN. Tests: PASS / FAIL / NOT RUN.
