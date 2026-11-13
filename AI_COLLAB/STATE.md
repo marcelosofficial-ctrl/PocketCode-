@@ -15,11 +15,11 @@ Updated: 2026-11-12. Compact live state; use Git history and INDEX.md for older 
 ## Live repository and CI evidence
 
 - Repo `marcelosofficial-ctrl/PocketCode-`; branch `pocketcode-ai-workflow-director-research-2026-10-28`.
-- VERIFIED live snapshot after the 2026-11-13 documentation pass: HEAD `af4a0f8e9fecd9374c3de29a28378d72424b3dbf`. Latest five: `af4a0f8` checkpoint termination-evidence alignment; `a1a55c4` lifecycle contract distinguishes Worker action acknowledgement from OD-12 termination proof; `d9d61c2` full policy/traceability checkpoint; `56789cb` next-task owner-gated priorities; `e2d078f` prior state refresh.
-- VERIFIED compare from source-audit pin `b71315068ec33a0175fed46ef96912e954d87f9f`: 75 ahead, 0 behind, 18 changed paths, every path under `AI_COLLAB/`. No application source, scripts/tests, workflow or product assets changed in this interval.
-- VERIFIED HEAD combined status at snapshot: `pending`, zero attached status entries. No check is attached; this is not a pass. Latest Actions run remains #59 / `43126974602`, SUCCESS on historical model target `319cffef121e327331aeaff59522ae279b112ecc`, full scripts 266/266; it is not current-HEAD CI.
-- Latest relevant Actions run #59 / `43126974602`, job `130881431566`, SUCCESS. Workflow-only commit `d93cd11e6873090cdb280fd18e45d9eeee9a973f` checked out historical model target `319cffef121e327331aeaff59522ae279b112ecc`. Full scripts suite 266/266; release-grant+consumer 26/26, FakeOutbox 22/22, EventJournal 27/27, receipts 59/59, execution projection 31/31. Python 3.12.16, SQLite 3.46.1, Ubuntu 26.04.1. Lane 4 BLOCKED / NOT TESTABLE; lane totals overlap full suite. Historical model-only evidence, not current-HEAD CI, adapter proof or CASE acceptance.
-- Tests in current documentation pass: NOT RUN.
+- VERIFIED live snapshot at 2026-11-13: HEAD `e1c7e27996354dbb98913eca8408a1f72afa2e4d`. Latest five, newest first: `e1c7e27` OD12 consistency/live-state checkpoint; `e8c7085` owner-gated next-task priorities; `22a2cf8` STATE live-head refresh; `af4a0f8` termination-evidence checkpoint; `a1a55c4` lifecycle Worker-action/termination-proof distinction.
+- VERIFIED compare from source-audit pin `b71315068ec33a0175fed46ef96912e954d87f9f`: 83 ahead / 0 behind / 19 changed paths, every path under `AI_COLLAB/`. No application source, scripts/tests, workflow or product assets changed in this interval.
+- VERIFIED exact-HEAD CI check-runs: 0; combined commit status: `pending`, zero attached statuses. No current-HEAD CI has run. Pending with zero entries is not a pass or failure.
+- Latest Actions run #59 / `43126974602`, SUCCESS, checked out historical model target `d93cd11e6873090cdb280fd18e45d9eeee9a973f` (run metadata head SHA), which in turn recorded the pinned model target `319cffef121e327331aeaff59522ae279b112ecc`. Historical full scripts suite 266/266. It is not current-HEAD CI, adapter proof or canonical CASE acceptance.
+- Tests in the current documentation-only pass: NOT RUN.
 
 ## Current model and contract findings
 
