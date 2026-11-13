@@ -54,3 +54,18 @@ Links and product claims must be rechecked before decisions. This is not a featu
 - [ ] Check whether the proposed evidence/report/fix/rerun workflow is genuinely missing.
 - [ ] Validate PocketCode name for product collisions, trademark risk, and domain/social availability.
 - [ ] Interview target users and test alternatives with realistic tasks.
+
+
+## Official-source refresh — 2026-10-26
+
+Detailed notes: [AI_COLLAB/PASS1_COMPETITOR_RESEARCH.md](../AI_COLLAB/PASS1_COMPETITOR_RESEARCH.md).
+
+| Product / alternative | Current official-source observation | Implication / unresolved check |
+|---|---|---|
+| PocketCode (one word) | Android IDE with on-device runtimes, terminal/SSH, Git, database/API tools, and multi-provider AI BYOK; free tier plus paid Pro | Exact-name collision is high priority. Do not treat name as cleared; no hands-on verification |
+| Derle | Markets local IDE, terminal, Git, previews, and AI assistance on Android and an iPhone experience | Direct overlap; iOS distribution availability needs confirmation |
+| Kodo | iPhone/iPad editor with offline web preview, on-device AI, and SSH; Python/PHP/Swift are not local runtimes according to its site | User-owned server is needed for those languages; test setup friction only if later approved |
+| Codeg | Mobile clients supervise agents running on a desktop/server the user controls | Strong remote-agent substitute, but requires a host/server and current mobile releases are test releases |
+| GitHub Codespaces | Browser-accessible cloud development from any internet-connected device, with free personal quota and paid usage beyond quota | Cloud execution without a PC already exists; compare task friction rather than feature count |
+
+This refresh uses official product/billing pages, not independent hands-on tests or representative user research. The differentiation hypothesis remains unvalidated.

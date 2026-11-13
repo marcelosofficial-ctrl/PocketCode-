@@ -107,3 +107,16 @@ This angle is not yet proven unique. Competitor walkthroughs and user testing mu
 - [ ] Interview target users about their last real experience running AI-generated code from a phone.
 - [ ] Test whether a PC-free hosted runner is wanted enough to justify its ongoing operating cost.
 - [ ] Research alternative names and trademark/domain availability before public branding.
+
+
+## Official-source refresh — 2026-10-26
+
+See the detailed evidence table in [AI_COLLAB/PASS1_COMPETITOR_RESEARCH.md](../AI_COLLAB/PASS1_COMPETITOR_RESEARCH.md). The current official pages materially strengthen the competitive counterargument:
+
+- [PocketCode (one word)](https://www.pocketcodeapp.com/en) describes an existing Android IDE with on-device Python/Node and other runtimes, terminal/SSH, Git, API/database tools, and multi-provider AI via BYOK. Its site distinguishes itself from Catrobat's “Pocket Code,” but the one-word name directly overlaps this project. **Treat the current project name as a high-priority risk; it is not cleared.**
+- [Derle](https://derle.app/) markets local coding/execution, terminal, Git, previews, and AI-assisted edits on Android and an iPhone experience. Its page invites users to ask about the iOS build, so public iOS distribution remains unconfirmed.
+- [Kodo](https://www.kodoeditor.com/) is a free iPhone/iPad editor with offline HTML/CSS/JS preview, on-device AI, and SSH; its official page says Python/PHP/Swift do not execute locally.
+- [Codeg](https://docs.codeg.app/getting-started/installation) provides iOS/Android clients for agents and projects running on a desktop/server the user controls; current mobile apps are described as test releases.
+- [GitHub Codespaces](https://github.com/features/codespaces) already provides browser-based cloud development from any internet-connected device, with personal usage quotas and paid overage rules documented by [GitHub billing](https://docs.github.com/en/billing/concepts/product-billing/github-codespaces).
+
+**Updated interpretation:** “coding from a phone” is not a defensible differentiator. The narrower hypothesis to falsify is a no-setup, cross-platform disposable run with trustworthy bounded output/files and a clean report-to-any-AI handoff. This is still an inference, not customer validation. No apps were installed and no task-based comparison was performed. The name remains provisional pending a distinct-name shortlist and formal trademark/domain review.

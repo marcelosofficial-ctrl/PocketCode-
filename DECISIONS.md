@@ -36,3 +36,12 @@ Only record decisions that have actually been made. Proposals belong in the open
 - Use copy/paste AI handoff before building direct integrations.
 - Offer a free tier or paid plans.
 - Choose a specific cloud provider, sandbox vendor, or framework.
+
+
+## D-006: Use evidence-separated lifecycle semantics for the first verifier
+- **Status:** Accepted for provider-neutral contract and offline-test design; not a public API freeze.
+- **Decision:** Preserve immutable execution observations separately from cleanup state and versioned derived job disposition. PASS requires authoritative zero exit, exact required policy confirmation before start, termination evidence, no prohibited timeout/cancel/limit/truncation, validated artifacts, correct tenant/job association, and confirmed cleanup. Artifacts remain quarantined until cleanup and integrity/authorization gates pass. Coordinator-ingress sequence determines replay order; idempotency is tenant-scoped and server-fingerprinted; output caps fail closed.
+- **Reason:** Prevent false PASS, unsafe result exposure, duplicate execution, and irreproducible race handling while keeping the design provider-neutral and testable without spend.
+- **Limits:** Offline-test defaults are 32 KiB stdout, 32 KiB stderr, 64 KiB aggregate retained output, 1-second bounded drain/discard, 10-second wall time, 64 KiB source, 256 KiB inputs, 10 artifacts, 256 KiB per artifact, and 1 MiB total artifacts. These are provisional test values, not production capacity/security claims. A 30-day post-deletion idempotency tombstone is an MVP policy choice and must be revisited if retention/privacy evidence warrants.
+- **Evidence:** [Decision packet](AI_COLLAB/PASS1_OWNER_DECISION_PACKET_20261027.md); [research rationale](AI_COLLAB/PASS1_OWNER_DECISIONS_RESEARCH_20261027.md); [draft contract](AI_COLLAB/DRAFT_EXECUTION_CONTRACT.md).
+- **Not authorized:** provider selection, accounts, spend, live execution, production implementation, merge, or deployment.
