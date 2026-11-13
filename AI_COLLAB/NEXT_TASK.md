@@ -6,12 +6,12 @@ Continue evidence closure without reopening the P39 implementation/adapter gate.
 
 ## Verified baseline at start of this update
 
-- Branch: `pocketcode-ai-workflow-director-research-2026-10-28`; live snapshot before this update `22a2cf8ba2df5543ad0ca241d62228b185d1a4d6`.
-- Latest five at snapshot: `22a2cf8` live STATE refresh; `af4a0f8` termination-evidence checkpoint; `a1a55c4` Worker-action vs termination-proof clarification; `d9d61c2` full policy/traceability checkpoint; `56789cb` owner-gated next-task plan.
-- Source-audit compare pin `b71315068ec33a0175fed46ef96912e954d87f9f`: 80 ahead / 0 behind / 19 changed paths, all AI_COLLAB. No application source, scripts/tests, workflow or product assets changed.
-- HEAD combined status at snapshot: pending with zero status entries. This is not a CI pass.
-- Latest Actions run #59 / `43126974602` is SUCCESS only on historical model target `319cffef121e327331aeaff59522ae279b112ecc`, full scripts 266/266. Not current-HEAD CI or adapter/CASE proof.
-- INDEX 655 words. All referenced Markdown basenames exist.
+- Live branch snapshot: `e1c7e27996354dbb98913eca8408a1f72afa2e4d`.
+- Latest five at that snapshot: `e1c7e27` OD12 consistency/live-state checkpoint; `e8c7085` owner-gated priorities; `22a2cf8` STATE refresh; `af4a0f8` termination-evidence checkpoint; `a1a55c4` lifecycle Worker-action distinction.
+- Source-audit compare pin `b71315068ec33a0175fed46ef96912e954d87f9f`: 83 ahead / 0 behind / 19 changed paths, all AI_COLLAB. No application source, scripts/tests, workflow or product assets changed.
+- Exact-HEAD check-runs: 0; combined status `pending` with zero attached statuses. No current-HEAD CI.
+- Latest Actions run #59 / `43126974602` is SUCCESS on historical model target `319cffef121e327331aeaff59522ae279b112ecc`, full scripts 266/266. Not current-HEAD CI, adapter proof or CASE acceptance.
+- The prior STATE/NEXT_TASK/CHECKPOINT snapshots lagged different commits. This pass reconciles their recorded baseline; always fetch live HEAD rather than relying on saved SHAs.
 
 ## Completed in the current full work pass
 
@@ -32,6 +32,13 @@ Tests in this documentation pass: NOT RUN.
 - Reconciled OD-12 with the browser Worker protocol. `worker_termination_action_acknowledged` proves only the supervisor invoked `terminate()` on its exact Worker and closed the channel. It is not automatically the broader same-attempt `termination_acknowledged` required for cleanup/release. Lifecycle contract now preserves the distinction.
 - Cross-checked OD-01..OD-13 against owner decisions, grant event, browser storage, opaque-origin and lifecycle contracts. No additional contradiction requiring a policy change was found. OD-03's missing transport cancellation/ack model and OD-02/04/05/06/07/08 model gaps remain explicitly open in the existing crosswalk.
 - No source/test files changed; tests NOT RUN.
+
+## Completed in the 2026-11-13 live-state reconciliation
+
+- Found and corrected a continuity defect: STATE, NEXT_TASK and CHECKPOINT each referenced a different stale baseline despite the live branch having advanced to `e1c7e27`.
+- Re-read the live branch commit list, exact-HEAD check-runs/status, Actions run #59 and source-audit comparison. The latest commit is documentation-only; current HEAD has zero check-runs and a pending status with zero entries.
+- Updated the live baseline and historical-CI caveat. No application source, tests, workflow, product policy or canonical acceptance IDs changed.
+- Tests/device checks: NOT RUN.
 
 ## Ranked next work
 
