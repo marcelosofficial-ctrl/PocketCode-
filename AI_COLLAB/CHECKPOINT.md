@@ -1,45 +1,35 @@
 # CHECKPOINT — 2026-11-13
 
-## Full work pass completed
+## Full work pass: live-state continuity repair
 
-### Unit 1: termination evidence semantic alignment
-- Updated `LIFECYCLE_TERMINATION_RECEIPT_ACCEPTANCE_20261112.md` to distinguish `worker_termination_action_acknowledged` from OD-12's broader `termination_acknowledged`.
-- Browser CANCEL_ACK proves only that the trusted supervisor invoked `terminate()` on its exact Worker and closed the task channel. It is not native child wait status, renderer/OS teardown, proof all side effects stopped, or automatically sufficient for artifact release.
-- Promotion to OD-12 termination/cleanup proof requires a separately accepted execution-model-specific authority rule.
-- This closes a real semantic ambiguity between the browser protocol and generic lifecycle contract without changing policy or canonical acceptance.
+### Unit 1: required startup and live repository verification
+- Read in order: BOOT.md, STATE.md, NEXT_TASK.md, CHECKPOINT.md, INBOX_chatgpt.md.
+- Listed latest five branch commits. Live starting HEAD: `e1c7e27996354dbb98913eca8408a1f72afa2e4d`.
+- INDEX.md used only for navigation; no further static contract audit was repeated because NEXT_TASK explicitly says stop absent a new contradiction/source change.
+- Found a concrete continuity defect: STATE.md referenced `af4a0f8`, NEXT_TASK.md referenced `22a2cf8`, and CHECKPOINT.md described its pre-commit parent `e8c7085`. All three were behind the actual live branch head.
 
-### Unit 2: cross-document policy consistency
-- Cross-checked OD-01..OD-13 against owner decisions, grant event/relay contract, browser artifact storage/recovery, opaque-origin protocol and lifecycle/receipt acceptance.
-- No additional contradiction requiring a policy change was found.
-- Confirmed still-open evidence gaps: OD-02 claim-time auth; OD-03 transport cancellation and same-attempt ack; OD-04 fresh capability on resume; OD-05 linearizable policy epoch; OD-06 adapter-owned time; OD-07 restore-safe high-water; OD-08 grant-model receipt/artifact digest binding; OD-09 policy/egress barrier integration; OD-10 unified three projections; OD-11 authenticated coordinator reducer; OD-12 authoritative termination; OD-13 authenticated client receipt.
-- Existing model crosswalks already record these gaps. No redundant new document created.
+### Unit 2: exact evidence refresh
+- Compared live HEAD against source-audit pin `b71315068ec33a0175fed46ef96912e954d87f9f`: 83 ahead / 0 behind / 19 changed paths, all under AI_COLLAB. No application source, scripts/tests, workflow or product assets changed.
+- Queried exact-HEAD check-runs and combined status: zero check-runs; status `pending` with zero attached statuses. No current-HEAD CI.
+- Latest Actions run #59 / `43126974602` is SUCCESS on a historical model target, full scripts 266/266. It is not current-HEAD CI, adapter proof or canonical CASE acceptance.
+- Tests and device checks: NOT RUN.
 
-### Unit 3: live-state and next-task refresh
-- Updated `STATE.md` to live HEAD at the time of update and current CI caveat.
-- Updated `NEXT_TASK.md` with the OD-12 clarification, cross-contract consistency result and ranked next work.
-- INDEX unchanged: 655 words, 90 Markdown references, no missing basenames.
+### Unit 3: continuity records repaired
+- Updated `AI_COLLAB/STATE.md` to record the verified live snapshot, latest five commits, exact-HEAD CI absence and historical run caveat.
+- Updated `AI_COLLAB/NEXT_TASK.md` with the same baseline and an explicit record of this reconciliation.
+- No source/test, workflow, policy, canonical ID, adapter, runtime, provider, storage or infrastructure changes.
+- P39 implementation/adapter gate remains CLOSED. CASE-04 remains INCOMPLETE / timed_out.
 
-## Exact baseline before this checkpoint commit
+## Exact write sequence
+- Starting live HEAD: `e1c7e27996354dbb98913eca8408a1f72afa2e4d`.
+- STATE refresh commit: `b8284181f1c0fd79ecc4c5bbde92b2f3be51aa09`.
+- NEXT_TASK refresh commit: `a9fba95ecfd59a236d0d3b534575cf868fb4b58c`.
+- This CHECKPOINT is the final unit record; re-fetch branch HEAD and exact-HEAD CI after commit before reporting.
 
-- Repo: `marcelosofficial-ctrl/PocketCode-`.
-- Branch: `pocketcode-ai-workflow-director-research-2026-10-28`.
-- HEAD: `e8c7085028484ba92e5b9a37add5a4003d1f93d7`.
-- Latest five:
-  1. `e8c7085` next-task priority update
-  2. `22a2cf8` live STATE refresh
-  3. `af4a0f8` termination-evidence checkpoint
-  4. `a1a55c4` lifecycle Worker-action/termination-proof distinction
-  5. `d9d61c2` prior full policy/traceability checkpoint
-- Compare from source-audit pin `b71315068ec33a0175fed46ef96912e954d87f9f`: 82 ahead / 0 behind / 19 changed paths; all 19 are AI_COLLAB documentation. No application source, scripts/tests, workflow or product assets changed.
-- HEAD combined status: pending with zero status entries. No current-HEAD CI check is attached.
-- Latest relevant Actions run #59 / `43126974602`: SUCCESS on historical model target `319cffef121e327331aeaff59522ae279b112ecc`; full scripts 266/266. This is not current-HEAD CI, adapter proof or canonical CASE acceptance.
-- Tests and device checks in this pass: NOT RUN.
-
-## Constraints and next
-
-- P39 implementation/adapter gate remains CLOSED. No source/test changes, CI execution, adapter, provider/runtime/database/transport/storage selection, device test, deployment, PR or budget changes.
-- D-005/D-006 remain $0. CASE-04 remains INCOMPLETE / timed_out. Preserve LOOP-01..14, CASE-01..16, all D-IDs and OD-01..OD-13.
-- Next: wait for a separately scoped owner authorization before any source/test pass. Owner may optionally run the read-only Pyodios Console inspection; preserve summary.json and do not rerun main.py or the successful artifact-producing attempt. Browser/device acceptance requires an approved synthetic-data build and exact target-device evidence.
-- No owner action required now.
+## Next
+1. Implementation/test work remains blocked until separate explicit owner authorization names an exact model-only source/test scope.
+2. Optional Pyodios Console evidence remains owner/device-only; preserve the existing successful summary artifact and do not rerun the artifact-producing attempt.
+3. Browser/device acceptance requires an approved synthetic-data build and exact target-device evidence.
+4. Do not repeat completed static crosswalks absent a new concrete contradiction or source change.
 
 Evidence labels: VERIFIED / INFERRED / UNKNOWN / NOT RUN. Tests: PASS / FAIL / NOT RUN.
