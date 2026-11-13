@@ -1,13 +1,17 @@
 # CHECKPOINT — 2026-11-13
 
-## Research and continuity pass
-- Start HEAD `dcf76c8f6b1ebe8e89f54a40ef001180c5763991`; latest five fetched.
-- Compare: 87 ahead / 0 behind / 19 AI_COLLAB paths. Exact-HEAD checks 0; status pending with no attached statuses.
-- Added and indexed `RESEARCH_DELTA_AND_RED_TEAM_20261113.md`; five ranked gaps, primary-source research, reuse/licence notes and four corrections.
-- Corrected stale parent-snapshot reporting. No app source, tests, workflow, policy, canonical IDs or stack choices changed.
-- Tests/device checks NOT RUN. P39 implementation/adapter gate CLOSED; CASE-04 remains INCOMPLETE / timed_out.
+## Continuation and evidence reconciliation
+- Re-read BOOT, STATE, NEXT_TASK, CHECKPOINT and INBOX_chatgpt in required order; then fetched the live branch ref and latest five commits.
+- Start HEAD: `9de34daec63546f45f79a88f8f50f5ee9756884a`; latest five: `9de34da`, `dcf76c8`, `676cc03`, `a9fba95`, `b828418`.
+- Compare from `b71315068ec33a0175fed46ef96912e954d87f9f`: 88 ahead / 0 behind / 20 changed paths, all AI_COLLAB. No app source, scripts/tests, workflow or product assets changed.
+- Exact-HEAD status has zero attached statuses; PR-triggered workflow lookup returned zero runs. CI/tests NOT RUN.
+- Inspected Claude inbox: no new strategy reply; prior strategy-program request remains OPEN. No new owner/device evidence.
+- No qualifying source/contract change or separate authorization exists. Correct decision: do not manufacture source/test work and do not reopen P39 implementation/adapter gate.
+- No device probe, artifact rerun, deployment, stack selection, PR change, provider request or paid service.
 
 ## Next
-1. Wait for separately scoped owner authorization before model-only source/test work.
-2. Reconcile optional Pyodios Console output without rerunning the successful artifact attempt.
-3. Require approved synthetic data and exact-device evidence for browser/device acceptance.
+1. Wait for explicit bounded model-only source/test authorization, or a concrete new source/contract change.
+2. If owner supplies Pyodios Console output, diagnose read-only; preserve successful `summary.json`.
+3. Device/browser acceptance requires approved synthetic data and exact target-device evidence.
+
+Evidence: repository and commit facts VERIFIED; test/device execution NOT RUN; no new external owner evidence.

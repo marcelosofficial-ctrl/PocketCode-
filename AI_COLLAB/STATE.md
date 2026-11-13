@@ -15,9 +15,9 @@ Updated: 2026-11-13. Compact live state; use Git history and INDEX.md for older 
 ## Live repository and CI evidence
 
 - Repo `marcelosofficial-ctrl/PocketCode-`; branch `pocketcode-ai-workflow-director-research-2026-10-28`.
-- VERIFIED start-of-pass HEAD: `dcf76c8f6b1ebe8e89f54a40ef001180c5763991`. Latest five: `dcf76c8`, `676cc03`, `a9fba95`, `b828418`, `e1c7e27` (newest first).
-- VERIFIED compare from `b71315068ec33a0175fed46ef96912e954d87f9f`: 87 ahead / 0 behind / 19 changed paths, all AI_COLLAB; no application source/tests/workflow/product assets changed.
-- VERIFIED exact-start-HEAD check-runs: 0; combined status `pending`, zero attached statuses. No CI on this snapshot. Pending with zero entries is neither pass nor failure.
+- VERIFIED current live HEAD at this pass start: `9de34daec63546f45f79a88f8f50f5ee9756884a`. Latest five, newest first: `9de34da` research delta; `dcf76c8` atomic continuity records; `676cc03` checkpoint repair; `a9fba95` next-task baseline; `b828418` state baseline.
+- VERIFIED compare from `b71315068ec33a0175fed46ef96912e954d87f9f`: 88 ahead / 0 behind / 20 changed paths, all AI_COLLAB; no application source/tests/workflow/product assets changed.
+- VERIFIED exact-HEAD combined status has zero attached statuses; PR-triggered workflow-run lookup returned zero runs. No CI evidence on this snapshot. This is NOT RUN, not pass or failure.
 - Latest Actions run #59 / `43126974602`, SUCCESS, historical model target `319cffef121e327331aeaff59522ae279b112ecc`, full scripts suite 266/266. Not CI for this snapshot, adapter proof or canonical CASE acceptance.
 - Tests in this documentation-only pass: NOT RUN. The atomic continuity commit itself is documentation-only and is not represented as tested.
 
