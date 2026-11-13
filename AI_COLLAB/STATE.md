@@ -15,9 +15,9 @@ Updated: 2026-11-13. Compact live state; use Git history and INDEX.md for older 
 ## Live repository and CI evidence
 
 - Repo `marcelosofficial-ctrl/PocketCode-`; branch `pocketcode-ai-workflow-director-research-2026-10-28`.
-- VERIFIED current live HEAD after this continuation: `f02065853404b325e0f87ac7045807ad5fe3edfc`. Latest five, newest first: `f020658` continuity reconciliation; `9de34da` risk delta research; `dcf76c8` atomic continuity records; `676cc03` checkpoint repair; `a9fba95` next-task baseline.
-- VERIFIED compare from `b71315068ec33a0175fed46ef96912e954d87f9f`: 88 ahead / 0 behind / 20 changed paths, all AI_COLLAB; no application source/tests/workflow/product assets changed.
-- VERIFIED exact-HEAD combined status has zero attached statuses and PR-triggered workflow-run lookup returned zero runs. CI/tests on this HEAD: NOT RUN, not pass or failure.
+- VERIFIED last source-audited baseline: `f02065853404b325e0f87ac7045807ad5fe3edfc`; the following commits `0b1a435` and this checkpoint update are documentation-only. Fetch the live branch ref on every resume; these notes are not a substitute for that check.
+- At baseline `f020658`, latest five were `f020658`, `9de34da`, `dcf76c8`, `676cc03`, `a9fba95`. Compare from `b71315068ec33a0175fed46ef96912e954d87f9f`: 88 ahead / 0 behind / 20 changed paths, all AI_COLLAB; no application source/tests/workflow/product assets changed.
+- VERIFIED `f020658` and `0b1a435` each had zero attached status checks and zero PR-triggered workflow runs. This checkpoint is also documentation-only; its CI must be checked at its exact resulting SHA. Tests NOT RUN.
 - Latest Actions run #59 / `43126974602`, SUCCESS, historical model target `319cffef121e327331aeaff59522ae279b112ecc`, full scripts suite 266/266. Not CI for this snapshot, adapter proof or canonical CASE acceptance.
 - Tests in this documentation-only pass: NOT RUN. The atomic continuity commit itself is documentation-only and is not represented as tested.
 
