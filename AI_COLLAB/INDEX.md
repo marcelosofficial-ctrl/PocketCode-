@@ -45,6 +45,7 @@ Size: S <8 KB, M 8–25 KB, L 25–50 KB, XL >50 KB (never load XL whole). “Hi
 | PYODIDE_WORKER_CONTROL_CHANNEL_REDTEAM_20261110.md | Worker-channel threats; actual topology UNKNOWN |
 | FULL_POWER_GAP_RESEARCH_20261112.md | Ranked execution, grant, storage and evidence research |
 | RESEARCH_DELTA_AND_RED_TEAM_20261113.md | Five ranked gaps, primary-source delta, reuse/licence boundaries and red-team corrections |
+| FULL_POWER_GAP_RESEARCH_20261114.md | Current-branch journal watermark/conflict attribution, signed-byte verification, relay fencing, lifecycle, browser recovery and report-v2 research delta |
 | PAGES_READ_ONLY_SOURCE_AUDIT_20261112.md | Exact Pages source/deploy artifact comparison; live response remains unknown |
 | ZERO_BUDGET_ORIGIN_OPTIONS_20261112.md | Supplemental $0 hosting-origin comparison; Cloudflare/Netlify research only, no provider selected |
 | OPAQUE_ORIGIN_EXECUTION_PROTOCOL_20261112.md | Opaque-origin frame, MessageChannel, CSP, bounded I/O and teardown contract |
@@ -56,7 +57,6 @@ Size: S <8 KB, M 8–25 KB, L 25–50 KB, XL >50 KB (never load XL whole). “Hi
 | P40 source/run set: P40_MODEL_ONLY_EXECUTION_PROTOCOL_20261110.md; P40_BOUNDED_MODEL_RUN_AUTHORIZATION_20261111.md; P40_EXECUTION_ATTEMPT_20261111.md; P40_SOURCE_PINNED_COVERAGE_AND_PAGES_ORIGIN_AUDIT_20261111.md | Exact-SHA model-only plan, approval, run record and coverage/origin audit |
 | PR4_CONTINUITY_REFINEMENT_RECONCILIATION_20261109.md | PR #4 seven-file review; no owner action |
 | VERDICT_EVIDENCE_EXIT_PROVENANCE_MATRIX_20261105.md; PROVIDER_NEUTRAL_RECIPE_AND_DURABLE_TASK_MANIFEST_PROPOSAL_20261105.md | Exit matrix and manifest proposal |
-| CANONICAL_ACCEPTANCE_TRACEABILITY_20261029.md; OWNER_DECISION_REGISTER_20261029.md | LOOP/CASE traceability and earlier decision register |
 
 ## Device evidence
 PYODIOS_DEVICE_BASELINE_AND_HANDS_ON_PROTOCOL_20261106.md; PYODIOS_PYTHONERROR_BRIDGE_TRIAGE_20261106.md (O-1); PHONE_DEVICE_VALIDATION_RUNBOOK_20261112.md (read-only, owner/device evidence pending); PRODUCT_FIXED_TASK_COMPARISON_WORKSHEET_20261028.md (XL); IOS_PYTHON_RUNNER_COMPETITIVE_BASELINE_20261103.md.

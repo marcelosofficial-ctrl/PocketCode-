@@ -12,9 +12,10 @@ Updated: 2026-11-14. Current facts only; use INDEX.md for source documents and o
 
 ## Repository and CI
 - Repo `marcelosofficial-ctrl/PocketCode-`; active branch `pocketcode-ai-workflow-director-research-2026-10-28`. Always fetch live HEAD and latest five commits.
-- Latest verified continuation start (2026-11-14): HEAD `f1cf507485c9a20217137c45b6fed87c9f955b9a`; latest five: `f1cf507`, `dec8b75`, `ecda8de`, `22ac837`, `0195910`.
-- Exact start HEAD: zero attached commit statuses and zero PR-triggered workflow runs; tests NOT RUN. GitHub status endpoint reports `pending` only because there are zero status contexts, not because a job is running. Historical Actions run #59 (`43126974602`) passed 266/266 on different model target `319cffef121e327331aeaff59522ae279b112ecc`; not current-head CI, adapter proof or CASE acceptance.
-- Source-audited baseline `f02065853404b325e0f87ac7045807ad5fe3edfc`: fourteen commits ahead, zero behind. Compare shows only BOOT/STATE/NEXT_TASK/CHECKPOINT/WORK_PROTOCOL continuity documents changed; no application source, tests, workflows or product assets changed.
+- Latest verified HEAD (2026-11-14): `c3972a07a4546e08c41b87ec48bc2645ae9906e4`; latest five: `c3972a0`, `f1cf507`, `dec8b75`, `ecda8de`, `22ac837`.
+- Exact HEAD status endpoint: zero attached statuses; exact-SHA PR-triggered workflow-runs endpoint: zero runs. Tests NOT RUN. Empty status list is not an active job and not PASS/FAIL.
+- Source-audited baseline `f02065853404b325e0f87ac7045807ad5fe3edfc`: 15 ahead / 0 behind. Only BOOT/STATE/NEXT_TASK/CHECKPOINT/WORK_PROTOCOL continuity docs differ; no application source, tests, workflows or product assets changed.
+- Historical Actions run #59 (`43126974602`) passed 266/266 on different model target SHA `319cffef121e327331aeaff59522ae279b112ecc`; not current-head CI, adapter proof or CASE acceptance.
 
 ## Accepted decisions and gates
 - D-001 unified PC/phone direction with separate project boundaries; D-002 GitHub as durable source; D-003 no secrets in public repo; D-004 validate before stack commitment; D-005/D-006 $0.
@@ -24,10 +25,10 @@ Updated: 2026-11-14. Current facts only; use INDEX.md for source documents and o
 
 ## Current known gaps (model/design evidence, not production proof)
 - Grant model: aggregate/event parity and no-op semantics; canonical first-delivery digest and producer/scope authentication; grant-event relay lease/fence/stale-ack; atomic consumer inbox/restore. 33-case plan is model-only.
-- Journal/receipt: quarantined conflicts are outside accepted-event projection and can be omitted from receipt uncertainty/evidence; no explicit journal high-water in receipt. Attribution or conservative quarantine is needed. This is an INFERRED model integration gap, not proof of production exploit.
+- Journal/receipt: conflicts consume journal observation sequence but are omitted from accepted-event projection; conflict records omit attempted producer, effect/attempt/fence and timestamps; receipts have no structured journal high-water or conflict refs. INFERRED model integration gap, not proof of production exploit.
 - Lifecycle/receipt: execution_projection.py and result_receipts.py are pure/in-memory. Child verdict, job/evidence disposition and artifact disposition remain separate; no integrated authenticated policy/egress barrier, authoritative termination proof or client-generated acknowledgement bound to exact artifact digest/version/range.
-- EventJournal AuthenticatedProducer is supplied model input, not cryptographic verification. Report format 1 lets nonzero integer exit override timeout/cancel/rejection/infrastructure/nonterminal state; keep format 1 until gated format-2 migration.
-- Opaque-origin Worker acknowledgement proves supervisor called terminate() on its Worker and closed the channel only, not native child exit or OS/renderer teardown. Keep this distinct from OD-12 proof.
+- EventJournal AuthenticatedProducer is supplied model input, not cryptographic verification. Report format 1 lets nonzero integer exit override timeout/cancel/rejection/infrastructure/nonterminal status; keep format 1 until gated format-2 migration.
+- Opaque-origin Worker acknowledgement proves supervisor called terminate() on its Worker and closed the channel only, not native child exit or OS/renderer teardown. Not OD-12 proof.
 - Dispatch/projection helpers were checked against their contract; trusted caller owns authentication, persistence, sequence ordering and deduplication. No helper defect established.
 - Mobile runner is simulation-only; its static checker does not prove browser/device/accessibility/runtime/security behavior.
 
@@ -37,10 +38,10 @@ Updated: 2026-11-14. Current facts only; use INDEX.md for source documents and o
 - O-7: official Catrobat Pocket Code and POCO C++ naming/search collisions verified; Xiaomi POCO trademark scope UNKNOWN. No rename or PoCo publication pending direct clearance.
 
 ## Next priorities
-1. Until separate authorization, wait for a genuinely new owner task/evidence. Do not repeat completed receipt, dispatch/projection or prototype audits.
-2. After scoped authorization, address journal-conflict attribution/quarantine and receipt high-water/uncertainty; only then add focused model tests.
-3. Keep grant 33-case and report-v2 14-case plans ready. P39 implementation/adapter gate CLOSED.
-4. Device/browser acceptance needs approved synthetic data and exact target-device evidence. Preserve Pyodios summary.
-5. Resolve shared-origin threat boundary before sensitive persistence. No host migration/deployment or stack selection without owner decision.
+1. Await separate owner authorization for any source/test or adapter work. The 2026-11-14 request authorized research/specification deliverables only.
+2. Once authorized, first resolve journal conflict attribution and dual receipt watermarks; add focused model cases only within that approved scope.
+3. Then address grant semantic no-op/event parity, authenticated canonical bytes, relay fencing and atomic consumer inbox; retain the 33-case plan as model-only until authorized.
+4. Keep report-v2 migration gated; preserve format 1 and CASE-04 status.
+5. Device/browser acceptance needs approved synthetic data and exact target-device evidence. Preserve Pyodios summary. Resolve shared-origin threat boundary before sensitive persistence.
 
 Evidence: VERIFIED / INFERRED / UNKNOWN / NOT RUN. Tests: PASS / FAIL / NOT RUN. Chat assertions are not proof.
