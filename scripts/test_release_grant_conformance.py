@@ -204,11 +204,12 @@ class ReleaseGrantConformanceTests(unittest.TestCase):
         self.reserve()
         event = next(iter(self.store.events.values()))
         self.store.consume_event(event)
-        changed = type(event)(
-            event.source, event.event_id, event.grant_id,
-            event.aggregate_version, event.state, "0" * 64,
+        changed = self.store._make_event(
+            event.grant_id, event.aggregate_version, "transferring",
         )
-        with self.assertRaisesRegex(ContractConflict, "canonical payload digest"):
+        # Digest is internally valid, but the same source/event identity now
+        # carries a different canonical payload.
+        with self.assertRaisesRegex(ContractConflict, "different payload"):
             self.store.consume_event(changed)
 
     def test_same_progress_is_a_semantic_noop_without_duplicate_event(self):
@@ -250,13 +251,30 @@ class ReleaseGrantConformanceTests(unittest.TestCase):
         self.assertEqual(self.store.consumer_versions.get(grant.grant_id, 0), 0)
         self.assertEqual(self.store.consumer_seen, {})
 
+    def test_consumer_rejects_malformed_event_envelopes_without_mutation(self):
+        self.reserve()
+        event = next(iter(self.store.events.values()))
+        malformed = (
+            type(event)("urn:other", event.event_id, event.grant_id,
+                        event.aggregate_version, event.state, event.payload_sha256),
+            type(event)(event.source, "wrong-id", event.grant_id,
+                        event.aggregate_version, event.state, event.payload_sha256),
+            type(event)(event.source, event.event_id, event.grant_id,
+                        True, event.state, event.payload_sha256),
+            type(event)(event.source, event.event_id, event.grant_id,
+                        event.aggregate_version, "completed", event.payload_sha256),
+        )
+        for candidate in malformed:
+            with self.subTest(candidate=candidate):
+                with self.assertRaisesRegex(ContractConflict, "envelope is invalid"):
+                    self.store.consume_event(candidate)
+        self.assertEqual(self.store.consumer_seen, {})
+        self.assertEqual(self.store.consumer_versions, {})
+
     def test_consumer_does_not_mark_future_event_consumed_when_predecessor_is_missing(self):
         self.reserve()
         event = next(iter(self.store.events.values()))
-        future = type(event)(
-            event.source, "release-grant-1:v3", event.grant_id,
-            3, "completed", "future-digest",
-        )
+        future = self.store._make_event(event.grant_id, 3, "transferring")
         self.assertEqual(self.store.consume_event(future), "deferred_gap")
         self.assertEqual(self.store.consumer_versions.get(event.grant_id, 0), 0)
 
