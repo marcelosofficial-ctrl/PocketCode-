@@ -4,9 +4,9 @@
 Continue evidence closure without reopening the P39 implementation/adapter gate. No source/test work is authorized by the existing design or P40 evidence.
 
 ## Verified start snapshot (2026-11-14)
-- Live branch HEAD at this continuation: `10935cd83483fda1c2afbac6bdcadbb865f31a61`. Latest five: `10935cd`, `4447193`, `6ca4aec`, `63e643c`, `943a403`. Always fetch live ref and latest five before work.
-- Compare from source-audited baseline `f02065853404b325e0f87ac7045807ad5fe3edfc`: five commits ahead, zero behind; only `AI_COLLAB/CHECKPOINT.md`, `AI_COLLAB/NEXT_TASK.md` and `AI_COLLAB/STATE.md` changed. No source, tests, workflow or product assets changed.
-- Exact-HEAD checks for `10935cd`: zero attached statuses and zero PR-triggered workflow runs. Tests NOT RUN.
+- Live branch HEAD at start of this continuation: `9064c8538d3b4228b19faf498977404cd3c1fe00`. Latest five: `9064c85`, `10935cd`, `4447193`, `6ca4aec`, `63e643c`. Always fetch live ref; the checkpoint commit itself advances HEAD. Always fetch live ref and latest five before work.
+- Compare from source-audited baseline `f02065853404b325e0f87ac7045807ad5fe3edfc`: eight commits ahead, zero behind; only `AI_COLLAB/CHECKPOINT.md`, `AI_COLLAB/NEXT_TASK.md` and `AI_COLLAB/STATE.md` changed. No source, tests, workflow or product assets changed.
+- Exact-HEAD checks for `9064c85`: zero attached statuses and zero PR-triggered workflow runs. Tests NOT RUN.
 - Historical run #59 succeeded on pinned model target `319cffef121e327331aeaff59522ae279b112ecc`, 266/266 scripts. Not current-HEAD CI, adapter proof or CASE acceptance.
 
 ## Completed this pass
@@ -14,11 +14,12 @@ Continue evidence closure without reopening the P39 implementation/adapter gate.
 - Repeated source-to-contract validation on the pinned grant, outbox, journal, coordinator, execution projection and receipt models.
 - NEW INFERRED integration gap: journal quarantine conflicts are not carried into FakeCoordinator verdict/report/receipt projections. QuarantinedConflict omits effect/attempt scope; projection methods enumerate accepted events only. `create_result_receipt()` passes caller-supplied uncertainties through without deriving conflict state, and ResultReceipt has no journal high-water field. Existing tests check rebuilt dispatch state only, not receipt/verdict uncertainty. Exact source pins: `scripts/event_journal.py` `371a175739b9cb65cd4d59bb4cd5b3c1c4953564`; `scripts/fake_coordinator.py` `651921ffe07d27f7d1b7371eb4d36777e39d94ed`; `scripts/test_event_journal.py` `333cf5ec856d4244c3f84da9e82bb2fa126607b5`; `scripts/test_fake_coordinator.py` `b06a4f7af870922003345e3c5f119344302f8c78`.
 - Existing docs define changed source/event identity as quarantine, but do not specify how a quarantined collision affects the corresponding attempt receipt. Treat this as an unresolved model/contract integration question, not a proven production exploit.
+- Reviewed `dispatch_reconciliation.py` and `execution_projection.py` against the execution evidence contract. Dispatch decision gates align with the contract; authentication, durable reservation and persistence remain caller/adapter responsibilities. ObservationSequence ordering is explicitly delegated to the trusted caller, so no helper defect is claimed. No new distinct gap established.
 - No code/tests/workflow changed. Tests/device checks NOT RUN. P39 implementation/adapter gate remains CLOSED.
 
 ## Ranked next work
 1. After separate owner authorization, resolve conflict attribution and receipt completeness: retain candidate scope/source identity in quarantine evidence or define conservative quarantine; include journal high-water and conflict uncertainty in receipt projection; add tests for same-attempt changed payload, cross-attempt collision, producer collision, receipt creation after conflict, and unrelated conflict isolation.
-2. Until authorization, perform only non-duplicative static contract review and record concrete evidence. The current continuation rechecked receipt creation/transfer paths against OD-09..OD-13 and found no additional distinct gap beyond the already-indexed crosswalk. Do not repeat that audit or edit source/tests/run model suites without authorization.
+2. Until authorization, perform only non-duplicative static contract review and record concrete evidence. The current continuations rechecked receipt creation/transfer paths against OD-09..OD-13 and dispatch/projection helpers against their contract; no additional distinct gap was established. Do not repeat these audits or edit source/tests/run model suites without authorization.
 3. Keep the 33-case grant plan and 14-case report-v2 plan ready for a separately authorized model/test scope.
 4. Device/browser acceptance requires approved synthetic-data build and exact target-device evidence. Preserve successful Pyodios summary.json; never rerun artifact-producing work.
 5. Resolve shared github.io origin trust boundary before sensitive persistence. No host migration/deployment or stack choice without owner decision.
