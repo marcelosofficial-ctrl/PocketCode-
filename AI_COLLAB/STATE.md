@@ -12,9 +12,9 @@ Updated: 2026-11-14. Current facts only; use INDEX.md for source documents and o
 
 ## Repository and CI
 - Repo `marcelosofficial-ctrl/PocketCode-`; active branch `pocketcode-ai-workflow-director-research-2026-10-28`. Always fetch live HEAD and latest five commits.
-- Start of 2026-11-14 continuation: HEAD `0195910c3e686d3567411e4101f1f00c2be0a7e7`; latest five: `0195910`, `109a6e6`, `9064c85`, `10935cd`, `4447193`.
+- Latest verified continuation start (2026-11-14): HEAD `dec8b755870d5f70bcf4a7d2109d26fa2282320e`; latest five: `dec8b75`, `ecda8de`, `22ac837`, `0195910`, `109a6e6`.
 - Exact start HEAD: zero commit statuses and zero PR-triggered workflow runs; tests NOT RUN. Historical Actions run #59 (`43126974602`) passed 266/266 on different model target `319cffef121e327331aeaff59522ae279b112ecc`; not current-head CI, adapter proof or CASE acceptance.
-- Source-audited baseline `f02065853404b325e0f87ac7045807ad5fe3edfc`: ten commits ahead, zero behind. Compare shows only STATE/NEXT_TASK/CHECKPOINT changed; no application source, tests, workflows or product assets changed.
+- Source-audited baseline `f02065853404b325e0f87ac7045807ad5fe3edfc`: thirteen commits ahead, zero behind. Compare shows only BOOT/STATE/NEXT_TASK/CHECKPOINT/WORK_PROTOCOL continuity documents changed; no application source, tests, workflows or product assets changed.
 
 ## Accepted decisions and gates
 - D-001 unified PC/phone direction with separate project boundaries; D-002 GitHub as durable source; D-003 no secrets in public repo; D-004 validate before stack commitment; D-005/D-006 $0.
