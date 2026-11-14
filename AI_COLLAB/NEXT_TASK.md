@@ -4,13 +4,14 @@
 Continue evidence closure without reopening the P39 implementation/adapter gate. No source/test work is authorized by existing design or P40 evidence.
 
 ## Verified start snapshot (2026-11-14)
-- Branch HEAD: `dec8b755870d5f70bcf4a7d2109d26fa2282320e`; latest five: `dec8b75`, `ecda8de`, `22ac837`, `0195910`, `109a6e6`. Fetch live ref and latest five on every resume.
-- Thirteen ahead / zero behind source-audited baseline `f02065853404b325e0f87ac7045807ad5fe3edfc`; changed paths are BOOT, STATE, NEXT_TASK, CHECKPOINT and WORK_PROTOCOL only.
-- Exact-HEAD statuses and PR-triggered runs: zero. Tests NOT RUN. Historical run #59 passed 266/266 on another SHA; not current-head CI or acceptance.
+- Branch HEAD: `f1cf507485c9a20217137c45b6fed87c9f955b9a`; latest five: `f1cf507`, `dec8b75`, `ecda8de`, `22ac837`, `0195910`. Fetch live ref and latest five on every resume.
+- Fourteen ahead / zero behind source-audited baseline `f02065853404b325e0f87ac7045807ad5fe3edfc`; changed paths are BOOT, STATE, NEXT_TASK, CHECKPOINT and WORK_PROTOCOL only.
+- Exact-start statuses: zero; PR-triggered workflow runs: zero. Tests NOT RUN. Historical run #59 passed 266/266 on another SHA; not current-head CI or acceptance.
 
 ## Completed
-- Read required startup files, INDEX and latest five commits; inbox has no new task.
-- Reconciled stale resume metadata: BOOT now explicitly includes itself first; WORK_PROTOCOL includes CHECKPOINT in the startup sequence and states continuity budgets.
+- Read required startup files in order, then latest five commits and INDEX; inbox has no new task.
+- Verified live branch HEAD and exact-SHA status/workflow evidence.
+- Detected that the previous continuation snapshot in STATE/NEXT_TASK/CHECKPOINT remained pinned to `dec8b755` despite commit `f1cf507`. Corrected the live snapshot in this unit.
 - Prior static mobile-runner review confirmed simulation-only scope; it did not prove browser/device/runtime/security behavior.
 - Prior dispatch/projection review found no helper defect. Journal conflict-to-receipt propagation remains the known model integration gap.
 

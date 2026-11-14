@@ -12,9 +12,9 @@ Updated: 2026-11-14. Current facts only; use INDEX.md for source documents and o
 
 ## Repository and CI
 - Repo `marcelosofficial-ctrl/PocketCode-`; active branch `pocketcode-ai-workflow-director-research-2026-10-28`. Always fetch live HEAD and latest five commits.
-- Latest verified continuation start (2026-11-14): HEAD `dec8b755870d5f70bcf4a7d2109d26fa2282320e`; latest five: `dec8b75`, `ecda8de`, `22ac837`, `0195910`, `109a6e6`.
-- Exact start HEAD: zero commit statuses and zero PR-triggered workflow runs; tests NOT RUN. Historical Actions run #59 (`43126974602`) passed 266/266 on different model target `319cffef121e327331aeaff59522ae279b112ecc`; not current-head CI, adapter proof or CASE acceptance.
-- Source-audited baseline `f02065853404b325e0f87ac7045807ad5fe3edfc`: thirteen commits ahead, zero behind. Compare shows only BOOT/STATE/NEXT_TASK/CHECKPOINT/WORK_PROTOCOL continuity documents changed; no application source, tests, workflows or product assets changed.
+- Latest verified continuation start (2026-11-14): HEAD `f1cf507485c9a20217137c45b6fed87c9f955b9a`; latest five: `f1cf507`, `dec8b75`, `ecda8de`, `22ac837`, `0195910`.
+- Exact start HEAD: zero attached commit statuses and zero PR-triggered workflow runs; tests NOT RUN. GitHub status endpoint reports `pending` only because there are zero status contexts, not because a job is running. Historical Actions run #59 (`43126974602`) passed 266/266 on different model target `319cffef121e327331aeaff59522ae279b112ecc`; not current-head CI, adapter proof or CASE acceptance.
+- Source-audited baseline `f02065853404b325e0f87ac7045807ad5fe3edfc`: fourteen commits ahead, zero behind. Compare shows only BOOT/STATE/NEXT_TASK/CHECKPOINT/WORK_PROTOCOL continuity documents changed; no application source, tests, workflows or product assets changed.
 
 ## Accepted decisions and gates
 - D-001 unified PC/phone direction with separate project boundaries; D-002 GitHub as durable source; D-003 no secrets in public repo; D-004 validate before stack commitment; D-005/D-006 $0.
@@ -37,9 +37,9 @@ Updated: 2026-11-14. Current facts only; use INDEX.md for source documents and o
 - O-7: official Catrobat Pocket Code and POCO C++ naming/search collisions verified; Xiaomi POCO trademark scope UNKNOWN. No rename or PoCo publication pending direct clearance.
 
 ## Next priorities
-1. After separate authorization, resolve journal-conflict attribution/quarantine and receipt completeness; then add focused model tests.
-2. Until authorization, wait for a genuinely new owner task/evidence. Do not repeat completed receipt, dispatch/projection or mobile-prototype reviews.
-3. Preserve 33-case grant and 14-case report-v2 plans for a separately authorized model/test scope.
+1. Until separate authorization, wait for a genuinely new owner task/evidence. Do not repeat completed receipt, dispatch/projection or prototype audits.
+2. After scoped authorization, address journal-conflict attribution/quarantine and receipt high-water/uncertainty; only then add focused model tests.
+3. Keep grant 33-case and report-v2 14-case plans ready. P39 implementation/adapter gate CLOSED.
 4. Device/browser acceptance needs approved synthetic data and exact target-device evidence. Preserve Pyodios summary.
 5. Resolve shared-origin threat boundary before sensitive persistence. No host migration/deployment or stack selection without owner decision.
 
