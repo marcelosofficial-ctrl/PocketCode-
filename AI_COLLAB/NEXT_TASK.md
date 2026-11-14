@@ -6,7 +6,7 @@ Continue bounded model-only evidence closure. Owner authorization covers source/
 ## Verified snapshot (2026-11-14)
 - Grant model `45cb200`; grant regression correction `ed4d821`. The focused grant suite has 30 methods (static count only); exact-tree execution remains NOT RUN.
 - Journal snapshot implementation commits: `9f0ade8`, `af0c770`, `91c0d12`, `a4e27bb`. EventJournal derives immutable snapshots with global high-waters and conflict sequences scoped to an exact effect/attempt. Receipt creation consumes a sealed snapshot, rejects mismatched scope and caller-supplied scalar claims, and fingerprints derived values. Tests add cross-scope isolation and immutable-capture coverage (static review only).
-- Actions run #63 (`43627117644`) passed 266/266 on Python 3.12.16 / Ubuntu, but checked out historical SHA `319cffef121e327331aeaff59522ae279b112ecc`. It does not verify the snapshot changes. Latest head `1af5096` has zero Actions runs/status contexts. Local clone/test path previously failed DNS; current-tree tests remain NOT RUN.
+- Actions run #63 (`43627117644`) passed 266/266 on Python 3.12.16 / Ubuntu, but checked out historical SHA `319cffef121e327331aeaff59522ae279b112ecc`. It does not verify the snapshot changes. Latest docs head `284bc8b` has zero Actions runs/status contexts. Local clone/test path previously failed DNS; current-tree tests remain NOT RUN.
 - Previous research note: AI_COLLAB/FULL_POWER_GAP_RESEARCH_20261114.md.
 
 ## Completed this unit

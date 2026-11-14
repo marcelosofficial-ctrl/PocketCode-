@@ -7,7 +7,7 @@
   - ResultReceiptStore.create_receipt fingerprints derived snapshot values, preserving immutable successor semantics.
   - Tests cover cross-effect/attempt conflict isolation, immutable capture after later appends, successor receipt binding, wrong-scope snapshots, manual-value rejection, mixed-input rejection and unsealed construction rejection.
 - Source/test commits: 9f0ade8 (snapshot derivation), af0c770 (seal), 91c0d12 (package-mode imports), a4e27bb (scope and immutability tests).
-- Docs commits: 1af5096 and follow-up correction pending.
+- Docs commits: 1af5096 (initial checkpoint), 59344ef (STATE), 5ccc9a8 (NEXT_TASK), 284bc8b (CHECKPOINT). Latest head 284bc8b has zero Actions runs/status contexts; docs-only commits do not trigger the workflow.
 - Actions run #63 (43627117644) triggered by 9f0ade8 completed SUCCESS, 266/266, Python 3.12.16, Ubuntu. It checked out fixed historical SHA 319cffef121e327331aeaff59522ae279b112ecc, so it did not execute or verify snapshot changes. Latest head 1af5096 has zero Actions runs/status contexts.
 - Snapshot source/test changes: static review only; current-tree tests NOT RUN. Prior local clone/execution path could not resolve github.com.
 - Private seal is an in-process guard, not cryptographic isolation. Durable journal/store atomicity and authenticated producer proof remain adapter obligations.
