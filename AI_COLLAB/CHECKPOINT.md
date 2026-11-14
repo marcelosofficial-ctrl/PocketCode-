@@ -1,17 +1,22 @@
-# CHECKPOINT — 2026-11-13
+# CHECKPOINT — 2026-11-14
 
-## Continuation: live-state and policy-boundary audit
-- Required startup files were reread in order; live branch ref and latest five commits fetched.
-- Pass-start HEAD: `f02065853404b325e0f87ac7045807ad5fe3edfc`; latest five: `f020658`, `9de34da`, `dcf76c8`, `676cc03`, `a9fba95`.
-- Compare to audit pin `b71315068ec33a0175fed46ef96912e954d87f9f`: 88 ahead / 0 behind / 20 paths, all AI_COLLAB. No app source, scripts/tests, workflow or product assets changed.
-- Static review of INDEX, OD-02..OD-13 crosswalks, opaque-origin, artifact-storage and lifecycle contracts found no new source-to-policy gap beyond those already documented. These are explicitly proposals/model-only, not implementation evidence. No duplicate memo added.
-- Claude inbox strategy-program item remains OPEN; no new reply or owner/device evidence.
-- Found and corrected stale resume metadata across STATE, NEXT_TASK and CHECKPOINT. The repair commit `0b1a435` was verified on the live branch. This checkpoint update is also documentation-only; live HEAD must always be fetched on the next resume.
-- No source/test changes, P39 implementation/adapter gate reopening, provider/runtime/host selection, PR edits, deployment, device probe or artifact rerun.
+## Continuation: report projection source-to-contract audit
+- Required startup records were reread in order. Live branch ref verified at pass start: `95280a4af9212722021470da8f99390f749ae74d`.
+- Latest five commits, fetched from the branch-specific GitHub commits endpoint: `95280a4`, `0b1a435`, `f020658`, `9de34da`, `dcf76c8`. The branch ref and commit history agree; commit-search ordering was not used as the authoritative list.
+- The latest commit `95280a4` changes only AI_COLLAB continuity records. The prior two commits `0b1a435` and `f020658` also change only STATE/NEXT_TASK/CHECKPOINT. No source, test, workflow or product asset changes were introduced in this tail.
+- Audited pinned source blobs: `scripts/report_contract.py` (`2459137b6f8d4b6bfadd6218e5a9bd92e75b0817`), `scripts/test_report_contract.py` (`85109f056009d65a274e9306deb39b68e1fefbd2`), `scripts/execution_projection.py` (`f32237c8c5ee5d62b0416b3dd867515ce567c21b`) and `scripts/test_execution_projection.py` (`cbd756cce1bc42a6aab0d5c48d8fac6f56cce7c1`), against report-v2 and lifecycle/termination contracts.
+- Confirmed legacy boundary: format 1's generic integer `exit_code` returns FAIL before lifecycle is considered; the legacy unit test explicitly preserves `succeeded + nonzero => FAIL`. The typed projection separately distinguishes child natural exit, wrapper exit, signal and embedded-interpreter observations and retains contradictions as INCOMPLETE. It is a pure helper, is not wired into the formatter, and relies on callers for authentication, attempt authorization, deduplication, policy validation and persistence.
+- No new source-to-policy defect beyond the already indexed report-v2 migration and lifecycle contracts was established. Do not add a duplicate memo or alter legacy format 1. The exact distinction above is now recorded here to prevent repeated rediscovery.
+- No code/test/workflow edits, device probes, artifact reruns, P39 gate reopening, provider/runtime/host selection, PR changes or deployment.
+
+## CI and execution evidence
+- Exact HEAD `95280a4af9212722021470da8f99390f749ae74d`: zero attached commit statuses and zero PR-triggered workflow runs. Tests NOT RUN; this is not a PASS or FAIL result.
+- The model-only regression matrices remain proposals; no tests were executed in this pass.
+- CASE-04 remains INCOMPLETE / timed_out. Successful Pyodios `summary.json` remains protected.
 
 ## Next
-1. Fetch live branch ref and latest five commits before any work.
-2. Wait for separately scoped owner authorization naming exact model-only source/test work, or a concrete new source/contract change.
-3. If Pyodios Console output is supplied, diagnose read-only; preserve successful `summary.json`. Browser/device acceptance needs approved synthetic data and exact-device evidence.
+1. Fetch live branch ref and latest five commits before resuming; never treat this checkpoint SHA as authoritative for a later session.
+2. Continue only if new source/contract evidence exposes a concrete gap, or separately scoped owner authorization reopens model-only source/test work.
+3. If Pyodios Console output is supplied, diagnose read-only. Do not rerun the successful artifact-producing attempt.
 
-Evidence: repository/document metadata VERIFIED; tests/device execution NOT RUN; production adapter conformance UNKNOWN.
+Evidence: repository and source blob identities VERIFIED; source behavior VERIFIED by static inspection; tests/device execution NOT RUN; authenticated production adapter and canonical CASE conformance UNKNOWN.
