@@ -12,9 +12,9 @@ Updated: 2026-11-14. Current facts only; use INDEX.md for source documents and o
 
 ## Repository and CI
 - Repo `marcelosofficial-ctrl/PocketCode-`; active branch `pocketcode-ai-workflow-director-research-2026-10-28`. Always fetch live HEAD and latest five commits.
-- Latest verified HEAD (2026-11-14): `97b302f5f753273bbc58369d743e41e87f676b2f` (`feat(model): bind journal conflicts into result receipts`), parent `339bccf`.
-- This commit changes `scripts/event_journal.py`, `scripts/result_receipts.py`, their two focused test files and CHECKPOINT. Exact-HEAD status endpoint: zero statuses; exact-SHA workflow-runs endpoint: zero runs. Tests NOT RUN; no PASS claim.
-- Historical Actions run #59 (`43126974602`) passed 266/266 on different SHA `319cffef121e327331aeaff59522ae279b112ecc`; not current-head CI, adapter proof or CASE acceptance.
+- Latest verified HEAD (2026-11-14): `607abc899cbb025a97c069388c2737f1e2543e21` (`docs(state): checkpoint journal receipt model slice`), parent `97b302f`.
+- Model source/test commit `97b302f` changes `scripts/event_journal.py`, `scripts/result_receipts.py` and their focused tests. Documentation checkpoint commit `607abc8` reconciles STATE/NEXT_TASK/CHECKPOINT.
+- Exact-HEAD statuses: zero; exact-SHA workflow runs: zero. Tests NOT RUN. Workflow caveat: `.github/workflows/pocketcode-python-tests.yml` checks out fixed SHA `319cffef121e327331aeaff59522ae279b112ecc`, so even a triggered run executes that historical tree, not current HEAD. It cannot verify this slice.
 - Historical Actions run #59 (`43126974602`) passed 266/266 on different model target SHA `319cffef121e327331aeaff59522ae279b112ecc`; not current-head CI, adapter proof or CASE acceptance.
 
 ## Accepted decisions and gates

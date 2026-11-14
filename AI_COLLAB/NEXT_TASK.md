@@ -5,7 +5,7 @@ Continue bounded model-only evidence closure. Owner authorization covers source/
 
 ## Verified snapshot (2026-11-14)
 - Current HEAD: `97b302f5f753273bbc58369d743e41e87f676b2f`; parent `339bccf62dce3becab848e8f31bf05ca3609c802`.
-- Latest commit changes two model modules, their two focused test modules and CHECKPOINT. Exact-HEAD statuses: zero; workflow runs: zero; tests NOT RUN.
+- Latest commit changes two model modules, their two focused test modules and CHECKPOINT. Exact-HEAD statuses: zero; workflow runs: zero; tests NOT RUN. Existing Python workflow is pinned to historical SHA `319cffef121e327331aeaff59522ae279b112ecc`; it cannot verify current branch source.
 - Previous research note remains `AI_COLLAB/FULL_POWER_GAP_RESEARCH_20261114.md`.
 
 ## Completed this unit
@@ -16,7 +16,7 @@ Continue bounded model-only evidence closure. Owner authorization covers source/
 - No adapter, provider, runtime, storage, canonical LOOP/CASE/D/OD ID, PR or infrastructure changes.
 
 ## Next
-1. Obtain exact test output and inspect CI for HEAD `97b302f`; until then tests remain NOT RUN.
+1. Establish a safe, authorized way to execute the focused suites against the exact current tree. The existing Actions workflow checks out fixed historical SHA `319cffef121e327331aeaff59522ae279b112ecc`, so its result cannot validate this commit.
 2. Red-team journal/receipt composition. Conflict sequence references are caller-supplied and range-validated, not independently resolved against a journal. Decide whether the next model slice should introduce a narrow typed journal snapshot input before integrating grant semantics.
 3. Then model grant semantic no-op/event parity and canonical first-delivery digest verification. Keep relay fencing and atomic consumer inbox implementation gated.
 4. Preserve report-v2 gate, format-1 compatibility, CASE-04 INCOMPLETE / timed_out, and the successful Pyodios `summary.json`.
