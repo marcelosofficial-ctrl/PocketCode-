@@ -3,19 +3,19 @@
 Goal: a brand-new chat on a free account resumes from about 1,700 words of context, and any chat can die at any moment without losing work.
 
 ## 1. Context tiers
-- Tier 0 BOOT.md (500 words max). Tier 1 STATE.md (900) + NEXT_TASK.md (350) + your INBOX file (600). Tier 2 INDEX.md (1,200): locate files. Tier 3 everything else, by section only.
+- Tier 0 BOOT.md (500 words max). Tier 1 STATE.md (900) + NEXT_TASK.md (350) + CHECKPOINT.md (150) + your INBOX file (600). Tier 2 INDEX.md (1,200): locate files. Tier 3 everything else, by section only.
 - Never load a file over ~1,500 words whole. If your tool can only return whole files, do not open files marked L or XL in INDEX.md; use an extract instead.
 - Extract once, then read the extract: when a big document is needed more than once, write EXTRACT_<name>.md (500 words max, with pointers to the sections) next to it and add it to INDEX.md. Extract, do not paraphrase away facts.
 - Start-up load is about 1,700 words (roughly 2.5k to 3k tokens), which fits a 16K-token free chat (reported free-tier size; check your account).
 
 ## 2. Session rules
 1. One chat = one task = one commit-sized result. Finished? Close and start a fresh chat.
-2. Boot: BOOT, STATE, NEXT_TASK, INBOX only. Open nothing else until they are read.
+2. Boot: read BOOT, STATE, NEXT_TASK, CHECKPOINT, then your INBOX file, in that order. Then fetch the live branch HEAD and latest five commits. Use INDEX only after this startup sequence to locate additional files. Open nothing else until the startup files are read.
 3. Write-ahead: commit work to GitHub BEFORE summarizing it in chat. The chat is a notification; the commit is the record.
 4. About 350 lines per turn; files in chunks of at most 200 lines; at most 6 files per commit.
 5. Normal mode by default. Think only for architecture challenge, security review, or a bug that survived two normal attempts, with the task card and at most 3 files.
-6. Overwrite CHECKPOINT.md after every unit of work (under 150 words).
-7. Close: update STATE (slim), write the next NEXT_TASK, overwrite CHECKPOINT, list changed paths and evidence status.
+6. Overwrite CHECKPOINT.md after every unit of work (150 words max); it records the last completed unit, exact starting HEAD/latest-five snapshot, evidence status and next action.
+7. Close: keep STATE under 900 words, NEXT_TASK under 350 words and CHECKPOINT under 150 words. Preserve older detail in indexed source documents; do not silently discard decisions, IDs or evidence. List changed paths and evidence status.
 
 ## 3. Lean rules (adapted from the Ponytail skill and similar token-saving plugins)
 - Before writing anything: (1) does the platform or standard library already do it? (2) does the repo already have it? (3) is there a maintained open-source piece with a compatible licence? (4) only then write the smallest version. No speculative features, surgical diffs, no new framework or dependency without a one-line reason.
