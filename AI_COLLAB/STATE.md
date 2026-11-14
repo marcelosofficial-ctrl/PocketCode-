@@ -32,7 +32,7 @@ Updated: 2026-11-14. Compact live state; use Git history and INDEX.md for older 
 ## Device, origin and naming evidence
 
 - Owner-reported Pyodios iPhone: app 1.1.0 Build 7, Pyodide 314.0.5, Python 3.14.2. Editor showed `[Bridge/executePython] PythonError`. Console probe NOT RUN; cause and worker topology UNKNOWN. Preserve matching `summary.json`; do not rerun main.py, wrapper or artifact-producing attempt. Owner-friendly instructions in `PHONE_DEVICE_VALIDATION_RUNBOOK_20261112.md`; optional/deferable.
-- Pages preview last successful run #17 / `39433670146` deployed static simulation from main SHA `90cc378df1f7c7f1b5535c322eddcfbfb9b26c`, not app runtime. PocketCode Pages and portfolio paths share one github.io origin; no credentials, tokens, private source or authority there. Live headers/scripts/device context UNKNOWN.
+- Pages preview last successful run #17 / `39433670146` deployed static simulation from main SHA `90cc378df1f7c7f1b5f5535c322eddcfbfb9b26c`, not app runtime. PocketCode Pages and portfolio paths share one github.io origin; no credentials, tokens, private source or authority there. Live headers/scripts/device context UNKNOWN.
 - Safari storage and Home Screen app research are not proof for installed app. IndexedDB/OPFS/SQLite-WASM remain unselected.
 - O-7: official Catrobat Pocket Code app and POCO C++ are verified naming/search collisions. Xiaomi POCO official trademark scope UNKNOWN. No rename or PoCo publication before direct clearance.
 - Owner's prior visual check is an informal observation; exact opened link ambiguous between commit and Pages preview. Not live Pages proof; do not repeat unless necessary.
