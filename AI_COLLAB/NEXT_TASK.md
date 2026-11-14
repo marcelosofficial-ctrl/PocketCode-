@@ -4,8 +4,7 @@
 Continue bounded model-only evidence closure. Owner authorization covers source/test work for journal conflict attribution and receipt watermarks. P39 implementation/adapter conformance remains CLOSED.
 
 ## Verified snapshot (2026-11-14)
-- Current HEAD: `97b302f5f753273bbc58369d743e41e87f676b2f`; parent `339bccf62dce3becab848e8f31bf05ca3609c802`.
-- Latest commit changes two model modules, their two focused test modules and CHECKPOINT. Exact-HEAD statuses: zero; workflow runs: zero; tests NOT RUN. Existing Python workflow is pinned to historical SHA `319cffef121e327331aeaff59522ae279b112ecc`; it cannot verify current branch source.
+- Latest substantive model commit: `45cb200b3e7959625f1dee8cab1c2577b0b6bb59`; parent `b6db10e75d0207457ac60c9859651192c91f855a`. It updates the grant model and focused tests. A documentation checkpoint follows this source commit. Tests NOT RUN: ephemeral execution could not resolve github.com. Existing Python workflow is pinned to historical SHA `319cffef121e327331aeaff59522ae279b112ecc`; it cannot verify current branch source.
 - Previous research note remains `AI_COLLAB/FULL_POWER_GAP_RESEARCH_20261114.md`.
 
 ## Completed this unit
@@ -16,9 +15,9 @@ Continue bounded model-only evidence closure. Owner authorization covers source/
 - No adapter, provider, runtime, storage, canonical LOOP/CASE/D/OD ID, PR or infrastructure changes.
 
 ## Next
-1. Establish a safe, authorized way to execute the focused suites against the exact current tree. The existing Actions workflow checks out fixed historical SHA `319cffef121e327331aeaff59522ae279b112ecc`, so its result cannot validate this commit.
-2. Red-team journal/receipt composition. Conflict sequence references are caller-supplied and range-validated, not independently resolved against a journal. Decide whether the next model slice should introduce a narrow typed journal snapshot input before integrating grant semantics.
-3. Then model grant semantic no-op/event parity and canonical first-delivery digest verification. Keep relay fencing and atomic consumer inbox implementation gated.
+1. Obtain exact-tree test execution without changing the pinned historical workflow. The current environment cannot resolve github.com; any Actions result from the existing workflow is non-verifying for current source.
+2. Red-team journal/receipt composition: conflict sequence references remain caller-supplied and range-validated, not independently resolved against journal contents. Decide whether a typed snapshot model is justified before integration.
+3. Extend grant model tests to transition replay/order and canonical envelope edge cases. Keep relay fencing and atomic consumer inbox implementation gated.
 4. Preserve report-v2 gate, format-1 compatibility, CASE-04 INCOMPLETE / timed_out, and the successful Pyodios `summary.json`.
 
 ## Constraints
