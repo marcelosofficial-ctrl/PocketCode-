@@ -20,7 +20,7 @@
 10. **Evidence:** VERIFIED / INFERRED / UNKNOWN / NOT RUN. A chat assertion is not proof; source pins and CI output are.
 
 ## Read and resume
-Read in order: STATE.md → NEXT_TASK.md → CHECKPOINT.md → INBOX_<your name>.md → latest five branch commits. If commits post-date the checkpoint, inspect their messages and changed paths first. Use INDEX.md only to locate other docs. Never load a file over ~1,500 words whole; read large history by section.
+Read in order: BOOT.md (this file) → STATE.md → NEXT_TASK.md → CHECKPOINT.md → INBOX_<your name>.md → live branch HEAD and latest five commits. If commits post-date the checkpoint, inspect their messages and changed paths first. Use INDEX.md only after this sequence to locate other docs. Never load a file over ~1,500 words whole; read large history by section.
 
 ## Working rules
 - One chat = one task. Commit to GitHub before summarizing. About 350 lines per turn; overwrite CHECKPOINT.md after each unit. Normal mode unless NEXT_TASK says otherwise.
