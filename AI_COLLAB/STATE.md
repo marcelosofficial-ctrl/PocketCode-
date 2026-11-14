@@ -12,9 +12,9 @@ Updated: 2026-11-14. Current facts only; use INDEX.md for source documents and o
 
 ## Repository and CI
 - Repo `marcelosofficial-ctrl/PocketCode-`; active branch `pocketcode-ai-workflow-director-research-2026-10-28`. Always fetch live HEAD and latest five commits.
-- Latest verified HEAD (2026-11-14): `c3972a07a4546e08c41b87ec48bc2645ae9906e4`; latest five: `c3972a0`, `f1cf507`, `dec8b75`, `ecda8de`, `22ac837`.
+- Latest verified unit-start HEAD (2026-11-14): `c20fd173fa9e457c2ae594ca1b7562ef0ce1555e`; latest five: `c20fd17`, `c3972a0`, `f1cf507`, `dec8b75`, `ecda8de`.
 - Exact HEAD status endpoint: zero attached statuses; exact-SHA PR-triggered workflow-runs endpoint: zero runs. Tests NOT RUN. Empty status list is not an active job and not PASS/FAIL.
-- Source-audited baseline `f02065853404b325e0f87ac7045807ad5fe3edfc`: 15 ahead / 0 behind. Only BOOT/STATE/NEXT_TASK/CHECKPOINT/WORK_PROTOCOL continuity docs differ; no application source, tests, workflows or product assets changed.
+- Source-audited baseline `f02065853404b325e0f87ac7045807ad5fe3edfc`: 16 ahead / 0 behind. Seven changed paths are documentation only: BOOT, STATE, NEXT_TASK, CHECKPOINT, WORK_PROTOCOL, INDEX and the 2026-11-14 research note; no application source, tests, workflows or product assets changed.
 - Historical Actions run #59 (`43126974602`) passed 266/266 on different model target SHA `319cffef121e327331aeaff59522ae279b112ecc`; not current-head CI, adapter proof or CASE acceptance.
 
 ## Accepted decisions and gates

@@ -4,8 +4,8 @@
 Continue evidence closure without reopening the P39 implementation/adapter gate. This pass completed the owner-authorized research/specification work. No source/test work is authorized by this pass.
 
 ## Verified start snapshot (2026-11-14)
-- Branch HEAD: `c3972a07a4546e08c41b87ec48bc2645ae9906e4`; latest five: `c3972a0`, `f1cf507`, `dec8b75`, `ecda8de`, `22ac837`.
-- Fifteen ahead / zero behind source-audited baseline `f02065853404b325e0f87ac7045807ad5fe3edfc`; changed paths remain continuity/process docs only.
+- Unit-start HEAD: `c20fd173fa9e457c2ae594ca1b7562ef0ce1555e`; latest five: `c20fd17`, `c3972a0`, `f1cf507`, `dec8b75`, `ecda8de`.
+- Sixteen ahead / zero behind source-audited baseline `f02065853404b325e0f87ac7045807ad5fe3edfc`; seven changed paths are documentation only (continuity/process, INDEX and the new research note).
 - Exact-HEAD statuses: zero; PR-triggered workflow runs: zero. Tests NOT RUN. Historical run #59 passed 266/266 on another SHA; not current-head CI or acceptance.
 
 ## Completed this unit
