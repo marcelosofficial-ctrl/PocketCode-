@@ -218,16 +218,7 @@ class ReleaseGrantContractModel:
             grant_id, tenant_id, principal_id, request_key, fingerprint,
             head, operation, authorization_id, policy_revision,
         )
-        event_id = f"{grant_id}:v1"
-        payload = json.dumps(
-            {"grant_id": grant_id, "version": 1, "state": "reserved"},
-            sort_keys=True, separators=(",", ":"),
-        ).encode()
-        event = GrantEvent(
-            source="urn:pocketcode:release-grants", event_id=event_id,
-            grant_id=grant_id, aggregate_version=1, state="reserved",
-            payload_sha256=sha256(payload).hexdigest(),
-        )
+        event = self._make_event(grant_id, 1, "reserved")
         outbox_item = OutboxItem(event)
 
         # Staged values are not visible until the single commit point below.
@@ -283,17 +274,59 @@ class ReleaseGrantContractModel:
                 or progress_bytes < grant.progress_bytes
                 or progress_bytes > grant.head.artifact_length):
             raise ContractConflict("progress must be monotonic and within immutable artifact length")
+        # Repeating the exact committed progress is a semantic no-op:
+        # it must not advance the aggregate version or emit another event.
+        if progress_bytes == grant.progress_bytes:
+            return grant
         updated = Grant(
             grant.grant_id, grant.tenant_id, grant.principal_id, grant.request_key,
             grant.intent_fingerprint, grant.head, grant.operation,
             grant.authorization_id, grant.policy_revision,
             "transferring", grant.aggregate_version + 1, progress_bytes,
         )
+        event = self._make_event(
+            updated.grant_id, updated.aggregate_version, updated.state,
+        )
+        identity = (event.source, event.event_id)
+        if identity in self.events:
+            raise ContractConflict("grant event identity already exists")
+        # Aggregate, event and outbox become visible together at this model's
+        # single commit point. A durable adapter still needs one transaction.
         self.grants[grant_identity] = updated
+        self.events[identity] = event
+        self.outbox[identity] = OutboxItem(event)
         return updated
 
+    @staticmethod
+    def _make_event(grant_id: str, version: int, state: str) -> GrantEvent:
+        payload = json.dumps(
+            {"grant_id": grant_id, "version": version, "state": state},
+            sort_keys=True, separators=(",", ":"),
+        ).encode()
+        return GrantEvent(
+            source="urn:pocketcode:release-grants",
+            event_id=f"{grant_id}:v{version}", grant_id=grant_id,
+            aggregate_version=version, state=state,
+            payload_sha256=sha256(payload).hexdigest(),
+        )
+
     def consume_event(self, event: GrantEvent) -> str:
-        """Idempotent, ordered consumer reference; gaps are rejected, not silently skipped."""
+        """Verify canonical envelope digest before idempotent ordered consumption."""
+        if not isinstance(event, GrantEvent):
+            raise ContractConflict("event must be a typed grant event")
+        if (not isinstance(event.grant_id, str) or not event.grant_id.strip()
+                or not isinstance(event.state, str) or event.state not in {"reserved", "transferring"}
+                or isinstance(event.aggregate_version, bool)
+                or not isinstance(event.aggregate_version, int)
+                or event.aggregate_version < 1
+                or event.source != "urn:pocketcode:release-grants"
+                or event.event_id != f"{event.grant_id}:v{event.aggregate_version}"):
+            raise ContractConflict("grant event envelope is invalid")
+        expected = self._make_event(
+            event.grant_id, event.aggregate_version, event.state,
+        )
+        if event.payload_sha256 != expected.payload_sha256:
+            raise ContractConflict("grant event canonical payload digest mismatch")
         identity = (event.source, event.event_id)
         digest = event.payload_sha256
         previous = self.consumer_seen.get(identity)

@@ -140,16 +140,10 @@ class ReleaseGrantConformanceTests(unittest.TestCase):
     def test_consumer_defers_future_event_until_predecessor_arrives(self):
         self.reserve()
         first = next(iter(self.store.events.values()))
-        future = type(first)(
-            first.source, "release-grant-1:v3", first.grant_id,
-            3, "completed", "future-digest",
-        )
+        future = self.store._make_event(first.grant_id, 3, "transferring")
         self.assertEqual(self.store.consume_event(future), "deferred_gap")
         self.assertEqual(self.store.consume_event(first), "accepted")
-        second = type(first)(
-            first.source, "release-grant-1:v2", first.grant_id,
-            2, "transferring", "second-digest",
-        )
+        second = self.store._make_event(first.grant_id, 2, "transferring")
         self.assertEqual(self.store.consume_event(second), "accepted")
         self.assertEqual(self.store.consume_event(future), "accepted")
 
@@ -212,10 +206,49 @@ class ReleaseGrantConformanceTests(unittest.TestCase):
         self.store.consume_event(event)
         changed = type(event)(
             event.source, event.event_id, event.grant_id,
-            event.aggregate_version, event.state, "different-digest",
+            event.aggregate_version, event.state, "0" * 64,
         )
-        with self.assertRaisesRegex(ContractConflict, "different payload"):
+        with self.assertRaisesRegex(ContractConflict, "canonical payload digest"):
             self.store.consume_event(changed)
+
+    def test_same_progress_is_a_semantic_noop_without_duplicate_event(self):
+        grant = self.reserve()
+        lease = self.store.claim_worker(
+            grant_id=grant.grant_id, owner="A", now=0, lease_seconds=20,
+        )
+        first = self.store.record_progress(lease, now=1, progress_bytes=4)
+        events_before = dict(self.store.events)
+        outbox_before = dict(self.store.outbox)
+        replay = self.store.record_progress(lease, now=2, progress_bytes=4)
+        self.assertEqual(replay, first)
+        self.assertEqual(dict(self.store.events), events_before)
+        self.assertEqual(dict(self.store.outbox), outbox_before)
+        self.assertEqual(first.aggregate_version, 2)
+
+    def test_progress_transition_commits_aggregate_event_and_outbox_together(self):
+        grant = self.reserve()
+        lease = self.store.claim_worker(
+            grant_id=grant.grant_id, owner="A", now=0, lease_seconds=20,
+        )
+        updated = self.store.record_progress(lease, now=1, progress_bytes=4)
+        self.assertEqual(updated.aggregate_version, 2)
+        identity = ("urn:pocketcode:release-grants", "release-grant-1:v2")
+        self.assertEqual(self.store.events[identity].state, "transferring")
+        self.assertEqual(self.store.outbox[identity].event, self.store.events[identity])
+        self.assertEqual(len(self.store.events), updated.aggregate_version)
+        self.assertEqual(len(self.store.outbox), updated.aggregate_version)
+
+    def test_consumer_rejects_noncanonical_first_delivery_digest(self):
+        grant = self.reserve()
+        event = next(iter(self.store.events.values()))
+        forged = type(event)(
+            event.source, event.event_id, event.grant_id,
+            event.aggregate_version, event.state, "0" * 64,
+        )
+        with self.assertRaisesRegex(ContractConflict, "canonical payload digest"):
+            self.store.consume_event(forged)
+        self.assertEqual(self.store.consumer_versions.get(grant.grant_id, 0), 0)
+        self.assertEqual(self.store.consumer_seen, {})
 
     def test_consumer_does_not_mark_future_event_consumed_when_predecessor_is_missing(self):
         self.reserve()
