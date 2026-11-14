@@ -1,12 +1,18 @@
 # CHECKPOINT — 2026-11-14
 
-- Startup sequence re-read from live branch. Start HEAD: `5489f61518b4aaea23c60824381de56965d709a6`.
-- Source/test commit `ed4d8210ce480ee25ebd148ac5d7c24d322a0d73` updates only `scripts/test_release_grant_conformance.py`.
-- Fixed an outdated future-event fixture that still used a now-invalid `completed` state and placeholder digest. The fixture now uses the model's canonical event constructor.
-- Strengthened same-identity/different-payload test: alternate payload now has a valid canonical digest, so rejection tests the event identity collision rather than merely malformed digest.
-- Added malformed-envelope rejection coverage for wrong source, wrong event ID, boolean aggregate version and unsupported state; asserts no consumer state mutation. One new test method, four subcases. Static test-method count: 30.
-- Test execution attempted through clone and local execution environment; both failed because `github.com` could not be resolved. Tests NOT RUN.
-- Exact latest docs HEAD `1fef0207e3825c3d389138bfee7769ca12a9558b`: Actions runs 0; commit status contexts 0 (pending state, no contexts). Existing workflow's fixed historical checkout cannot validate this head.
-- Previous grant implementation `45cb200` still models aggregate/event/outbox update at one in-memory commit point only. No durable atomicity or authenticated producer proof.
-- Next: exact-tree tests; typed EventJournal-to-ResultReceipt snapshot composition; grant transition replay/order and outbox delivery tests.
-- Preserve P39 adapter gate CLOSED, CASE-04 INCOMPLETE / timed_out, report-v2 gated and successful Pyodios `summary.json`.
+- Startup sequence re-read in required order; active branch head at start: `03deccd1c9a8e52d1c55511223a71610f1f08ac6`. Latest five commits inspected.
+- Exact-head status at start: `03deccd` had zero Actions runs and zero status contexts.
+- Added journal-derived receipt evidence:
+  - `EventJournal.receipt_snapshot(effect_id, attempt_id)` captures global observation and accepted-event high-waters plus conflict sequences scoped to the exact effect/attempt.
+  - `JournalReceiptSnapshot` is immutable and carries a private module seal. Receipt creation rejects ordinary fabricated dataclass instances, mismatched effect/attempt, mixed snapshot/manual values, and caller-supplied scalar watermarks/conflict sequences.
+  - `ResultReceiptStore.create_receipt` fingerprints the derived snapshot values, preserving immutable successor semantics.
+- Regression tests updated for journal-derived watermarks, exact scope, late conflict successor, caller-supplied value rejection, mixed-input rejection and unsealed construction rejection.
+- Source/test commits:
+  - `9f0ade8e502c87d34a57a73a9105714933305ed0` — derive receipt evidence from snapshots.
+  - `af0c770c5df7eeaf40237e50f8931ded16869169` — add private snapshot seal.
+  - `91c0d12de0dd5392947888147494be607857ddf3` — correct package-mode test imports.
+- CI run #63 (`43627117644`) triggered by `9f0ade8` completed SUCCESS, 266/266, Python 3.12.16, Ubuntu. Critical limitation: workflow step "Check out immutable P40 target" checks out fixed historical SHA `319cffef121e327331aeaff59522ae279b112ecc`. Therefore run #63 does NOT execute or verify the snapshot source/test changes. Latest head `91c0d12` has not had its own Actions/status checked yet.
+- Snapshot implementation has only static review so far; current-tree tests NOT RUN. Existing local clone/execution path could not resolve github.com.
+- The private seal is an ordinary in-process guard, not cryptographic isolation against hostile Python code with module introspection. Durable journal/store atomicity and authenticated producer proof remain adapter obligations.
+- Preserve P39 implementation/adapter gate CLOSED, CASE-04 INCOMPLETE / timed_out, report-v2 gated and successful Pyodios `summary.json`.
+- Next: verify latest head CI; exact-tree tests; red-team snapshot serialization/copy/timing/scope behavior; then grant transition replay/order and outbox delivery tests.

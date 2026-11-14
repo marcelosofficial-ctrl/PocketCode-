@@ -11,7 +11,7 @@ Continue bounded model-only evidence closure. Owner authorization covers source/
 - Journal/receipt model from `97b302f`: conflict attribution, separate high-waters, receipt fingerprint binding and successor immutability; 5 focused tests added (NOT RUN).
 - Grant model from `45cb200`: progress semantic no-op, versioned event/outbox parity and canonical consumer digest/envelope validation.
 - Grant regression test correction `ed4d821`: stale future fixture now canonical; same event identity with a changed but valid canonical payload is rejected as a conflict; malformed source/event-id/version/state envelopes rejected before consumer state mutation. Added one test method with four malformed subcases. Total 30 test methods in grant suite (static count only). NOT RUN.
-- No adapter, provider, runtime, storage, canonical LOOP/CASE/D/OD ID, PR or infrastructure changes.
+- Journal snapshot boundary added: `EventJournal.receipt_snapshot(effect_id, attempt_id)` captures global high-waters plus exact-attempt conflict refs; `ResultReceiptStore.create_receipt` now requires the sealed typed snapshot for nonzero journal evidence, rejects manual scalar inputs and mismatched scope. Added receipt snapshot regression cases. Commits `9f0ade8`, `af0c770`, `91c0d12`.\n- No adapter, provider, runtime, storage, canonical LOOP/CASE/D/OD ID, PR or infrastructure changes.
 
 ## Next
 1. Obtain exact-tree test execution without changing the pinned historical workflow. This environment cannot resolve github.com; current tests remain NOT RUN.
