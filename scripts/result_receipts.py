@@ -12,9 +12,9 @@ import re
 from typing import Optional
 
 try:
-    from event_journal import JournalReceiptSnapshot
+    from event_journal import JournalReceiptSnapshot, _is_journal_receipt_snapshot
 except ModuleNotFoundError:
-    from scripts.event_journal import JournalReceiptSnapshot
+    from scripts.event_journal import JournalReceiptSnapshot, _is_journal_receipt_snapshot
 
 
 class ReceiptConflict(ValueError):
@@ -459,7 +459,7 @@ class ResultReceiptStore:
             journal_observation_high_water, journal_accepted_event_high_water = 0, 0
             journal_conflict_sequences = ()
         else:
-            if not isinstance(journal_snapshot, JournalReceiptSnapshot):
+            if not _is_journal_receipt_snapshot(journal_snapshot):
                 raise ReceiptConflict("journal snapshot must be a typed EventJournal snapshot")
             if (journal_snapshot.effect_id != effect_id or journal_snapshot.attempt_id != attempt_id):
                 raise ReceiptConflict("journal snapshot effect/attempt does not match receipt identity")
