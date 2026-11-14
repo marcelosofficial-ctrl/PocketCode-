@@ -50,6 +50,14 @@ class QuarantinedConflict:
     producer_event_id: str
     accepted_payload_sha256: str
     conflicting_payload_sha256: str
+    attempted_producer_issuer: str
+    attempted_producer_subject: str
+    attempted_producer_key_id: str
+    effect_id: Optional[str]
+    attempt_id: Optional[str]
+    fence: Optional[int]
+    occurred_at_ms: int
+    observed_at_ms: int
     reason: str = "producer_event_id_payload_conflict"
 
 
@@ -84,7 +92,16 @@ class EventJournal:
 
     @property
     def last_sequence(self) -> int:
+        """Compatibility alias for the observation high-water."""
         return self._sequence
+
+    @property
+    def observation_high_water(self) -> int:
+        return self._sequence
+
+    @property
+    def accepted_event_high_water(self) -> int:
+        return max((event.sequence for event in self._events), default=0)
 
     def advance_fence(self, effect_id: str, attempt_id: str, fence: int) -> None:
         if not _nonempty(effect_id, attempt_id) or not _positive_int(fence):
@@ -156,7 +173,14 @@ class EventJournal:
                 return AppendResult("duplicate", prior.sequence, event=prior)
             self._sequence += 1
             conflict = QuarantinedConflict(
-                self._sequence, source, event_id, prior.payload_sha256, digest,
+                sequence=self._sequence, source=source, producer_event_id=event_id,
+                accepted_payload_sha256=prior.payload_sha256,
+                conflicting_payload_sha256=digest,
+                attempted_producer_issuer=producer.issuer,
+                attempted_producer_subject=producer.subject,
+                attempted_producer_key_id=producer.key_id,
+                effect_id=effect_id, attempt_id=attempt_id, fence=fence,
+                occurred_at_ms=occurred_at_ms, observed_at_ms=observed_at_ms,
             )
             self._conflicts.append(conflict)
             return AppendResult("quarantined", conflict.sequence, conflict=conflict)

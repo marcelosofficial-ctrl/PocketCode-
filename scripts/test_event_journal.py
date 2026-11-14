@@ -139,6 +139,31 @@ class EventJournalTests(unittest.TestCase):
         self.assertEqual(self.journal.events[0], original)
         self.assertEqual(self.journal.last_sequence, 2)
 
+    def test_conflict_keeps_attempted_identity_scope_fence_and_timestamps(self):
+        self.journal.advance_fence("effect-1", "attempt-1", 3)
+        self.append(effect_id="effect-1", attempt_id="attempt-1", fence=3)
+        other = AuthenticatedProducer("issuer-B", "worker-9", "key-9", "fp",
+                                      "pocketcode-journal", ("worker-events",))
+        result = self.append(producer=other, payload=b"changed",
+                             effect_id="effect-1", attempt_id="attempt-1",
+                             fence=3, occurred_at_ms=105, observed_at_ms=125)
+        c = result.conflict
+        self.assertEqual((c.attempted_producer_issuer, c.attempted_producer_subject,
+                          c.attempted_producer_key_id), ("issuer-B", "worker-9", "key-9"))
+        self.assertEqual((c.effect_id, c.attempt_id, c.fence), ("effect-1", "attempt-1", 3))
+        self.assertEqual((c.occurred_at_ms, c.observed_at_ms), (105, 125))
+        self.assertEqual((self.journal.observation_high_water,
+                          self.journal.accepted_event_high_water), (2, 1))
+
+    def test_conflict_after_accepted_event_separates_high_waters(self):
+        self.append()
+        self.append(payload=b"changed")
+        self.assertEqual((self.journal.observation_high_water,
+                          self.journal.accepted_event_high_water), (2, 1))
+        self.append(event_id="evt-2", payload=b"next")
+        self.assertEqual((self.journal.observation_high_water,
+                          self.journal.accepted_event_high_water), (3, 3))
+
     def test_wrong_audience_rejected(self):
         bad = AuthenticatedProducer("i", "s", "k", "fp", "other", ("worker-events",))
         with self.assertRaises(JournalConflict):

@@ -63,6 +63,9 @@ class ResultReceipt:
     revision_reason: Optional[str]
     created_at_ms: int
     receipt_sha256: str
+    journal_observation_high_water: int = 0
+    journal_accepted_event_high_water: int = 0
+    journal_conflict_sequences: tuple[int, ...] = ()
 
 
 @dataclass(frozen=True)
@@ -428,6 +431,9 @@ class ResultReceiptStore:
         created_at_ms: int, predecessor_receipt_id: Optional[str] = None,
         revision_reason: Optional[str] = None,
         projection_reason: Optional[str] = None,
+        journal_observation_high_water: int = 0,
+        journal_accepted_event_high_water: int = 0,
+        journal_conflict_sequences: tuple[int, ...] = (),
     ) -> ResultReceipt:
         identity = (revision_key, effect_id, attempt_id, contract_version,
                     execution_outcome, collection_state, lifecycle_disposition,
@@ -439,6 +445,19 @@ class ResultReceiptStore:
             raise ReceiptConflict("receipt identity and projection fields are required")
         if isinstance(created_at_ms, bool) or not isinstance(created_at_ms, int) or created_at_ms < 0:
             raise ReceiptConflict("receipt timestamp must be a non-negative integer")
+        if (type(journal_observation_high_water) is not int
+                or journal_observation_high_water < 0
+                or type(journal_accepted_event_high_water) is not int
+                or journal_accepted_event_high_water < 0):
+            raise ReceiptConflict("journal watermarks must be non-negative integers")
+        if journal_accepted_event_high_water > journal_observation_high_water:
+            raise ReceiptConflict("accepted-event high-water cannot exceed observation high-water")
+        if not isinstance(journal_conflict_sequences, tuple):
+            raise ReceiptConflict("journal conflict references must be an immutable tuple")
+        if (any(type(value) is not int or value <= 0 or value > journal_observation_high_water
+                for value in journal_conflict_sequences)
+                or tuple(sorted(set(journal_conflict_sequences))) != journal_conflict_sequences):
+            raise ReceiptConflict("journal conflict references must be unique increasing observed sequences")
         if not isinstance(evidence_refs, tuple) or not isinstance(evidence_sha256, tuple):
             raise ReceiptConflict("evidence references and digests must be immutable tuples")
         if len(evidence_refs) != len(evidence_sha256):
@@ -497,6 +516,9 @@ class ResultReceiptStore:
             "predecessor_receipt_id": predecessor_receipt_id,
             "revision_reason": revision_reason,
             "projection_reason": projection_reason,
+            "journal_observation_high_water": journal_observation_high_water,
+            "journal_accepted_event_high_water": journal_accepted_event_high_water,
+            "journal_conflict_sequences": list(journal_conflict_sequences),
         }
         fingerprint = sha256(json.dumps(canonical, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
         prior = self._receipt_by_revision.get(revision_key)
@@ -524,6 +546,8 @@ class ResultReceiptStore:
             execution_outcome, projection_reason, collection_state, lifecycle_disposition,
             cleanup_state, evidence_refs, evidence_sha256, tuple(manifest), uncertainties,
             predecessor_receipt_id, revision_reason, created_at_ms, fingerprint,
+            journal_observation_high_water, journal_accepted_event_high_water,
+            journal_conflict_sequences,
         )
         self._receipts.append(receipt)
         self._receipt_by_revision[revision_key] = receipt

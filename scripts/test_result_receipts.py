@@ -104,6 +104,40 @@ class ResultReceiptTests(unittest.TestCase):
         self.assertEqual(first, second)
         self.assertEqual(len(self.store.receipts), 1)
 
+    def test_receipt_binds_journal_watermarks_and_conflict_refs(self):
+        receipt = self.create(
+            revision_key="journal-watermarks", predecessor_receipt_id=self.receipt.receipt_id,
+            revision_reason="bind journal observation", created_at_ms=110,
+            journal_observation_high_water=8, journal_accepted_event_high_water=6,
+            journal_conflict_sequences=(4, 8))
+        self.assertEqual((receipt.journal_observation_high_water,
+                          receipt.journal_accepted_event_high_water,
+                          receipt.journal_conflict_sequences), (8, 6, (4, 8)))
+
+    def test_late_conflict_creates_immutable_successor_receipt(self):
+        first = self.receipt
+        successor = self.create(
+            revision_key="receipt-rev-2", created_at_ms=110,
+            predecessor_receipt_id=first.receipt_id,
+            revision_reason="late journal conflict", journal_observation_high_water=3,
+            journal_accepted_event_high_water=2, journal_conflict_sequences=(3,))
+        self.assertEqual(first.journal_conflict_sequences, ())
+        self.assertEqual((successor.journal_observation_high_water,
+                          successor.journal_accepted_event_high_water,
+                          successor.journal_conflict_sequences), (3, 2, (3,)))
+
+    def test_journal_watermark_and_conflict_reference_validation(self):
+        invalid = (
+            {"journal_observation_high_water": True},
+            {"journal_observation_high_water": 1, "journal_accepted_event_high_water": 2},
+            {"journal_observation_high_water": 2, "journal_conflict_sequences": [2]},
+            {"journal_observation_high_water": 2, "journal_conflict_sequences": (3,)},
+            {"journal_observation_high_water": 3, "journal_conflict_sequences": (2, 2)},
+        )
+        for values in invalid:
+            with self.subTest(values=values), self.assertRaises(ReceiptConflict):
+                self.create(**values)
+
     def test_projection_reason_is_part_of_immutable_receipt(self):
         self.assertIsNone(self.receipt.projection_reason)
         with self.assertRaises(ReceiptConflict):
