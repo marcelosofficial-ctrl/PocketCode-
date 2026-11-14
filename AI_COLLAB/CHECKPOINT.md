@@ -6,6 +6,7 @@
 - Strengthened same-identity/different-payload test: alternate payload now has a valid canonical digest, so rejection tests the event identity collision rather than merely malformed digest.
 - Added malformed-envelope rejection coverage for wrong source, wrong event ID, boolean aggregate version and unsupported state; asserts no consumer state mutation. One new test method, four subcases. Static test-method count: 30.
 - Test execution attempted through clone and local execution environment; both failed because `github.com` could not be resolved. Tests NOT RUN.
+- Exact latest docs HEAD `1fef0207e3825c3d389138bfee7769ca12a9558b`: Actions runs 0; commit status contexts 0 (pending state, no contexts). Existing workflow's fixed historical checkout cannot validate this head.
 - Previous grant implementation `45cb200` still models aggregate/event/outbox update at one in-memory commit point only. No durable atomicity or authenticated producer proof.
 - Next: exact-tree tests; typed EventJournal-to-ResultReceipt snapshot composition; grant transition replay/order and outbox delivery tests.
 - Preserve P39 adapter gate CLOSED, CASE-04 INCOMPLETE / timed_out, report-v2 gated and successful Pyodios `summary.json`.
