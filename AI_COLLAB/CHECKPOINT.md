@@ -6,5 +6,5 @@
 - Consumer validates typed envelope, exact source, canonical event ID/version, allowed state and recomputed canonical payload digest before deduplication/ordering.
 - Added 3 tests: semantic no-op, aggregate/event/outbox parity, and forged first-delivery digest rejection. NOT RUN.
 - Test execution attempt: ephemeral container could not resolve github.com, so current branch source could not be cloned. No test result claimed.
-- Existing workflow remains untouched and checks out historical SHA `319cffef121e327331aeaff59522ae279b112ecc`; it cannot validate this source commit.
+- Exact source-commit Actions runs/statuses: zero. Docs HEAD before this final checkpoint update (`81c8501`) also had zero runs/statuses. Existing workflow remains untouched and checks out historical SHA `319cffef121e327331aeaff59522ae279b112ecc`; it cannot validate this source commit.
 - Next: exact-tree test path without workflow modification; red-team journal/receipt caller-supplied conflict references; grant transition replay/order tests. Keep P39 adapter gate CLOSED, CASE-04 INCOMPLETE / timed_out, report-v2 gated, and preserve successful Pyodios `summary.json`.
