@@ -1,10 +1,11 @@
 # CHECKPOINT — 2026-11-14
 
-- Startup sequence completed from live branch; branch head at start was `b6db10e75d0207457ac60c9859651192c91f855a`.
-- Committed model slice `45cb200b3e7959625f1dee8cab1c2577b0b6bb59` (parent `b6db10e`): `scripts/release_grant_conformance.py`, `scripts/test_release_grant_conformance.py`.
-- Identical progress now returns the existing aggregate unchanged. Changed progress emits a versioned canonical event and matching outbox record with the aggregate update at one in-memory commit point.
-- Consumer validates typed envelope, exact source, canonical event ID/version, allowed state and recomputed canonical payload digest before deduplication/ordering.
-- Added 3 tests: semantic no-op, aggregate/event/outbox parity, and forged first-delivery digest rejection. NOT RUN.
-- Test execution attempt: ephemeral container could not resolve github.com, so current branch source could not be cloned. No test result claimed.
-- Exact source-commit Actions runs/statuses: zero. Docs HEAD before this final checkpoint update (`81c8501`) also had zero runs/statuses. Existing workflow remains untouched and checks out historical SHA `319cffef121e327331aeaff59522ae279b112ecc`; it cannot validate this source commit.
-- Next: exact-tree test path without workflow modification; red-team journal/receipt caller-supplied conflict references; grant transition replay/order tests. Keep P39 adapter gate CLOSED, CASE-04 INCOMPLETE / timed_out, report-v2 gated, and preserve successful Pyodios `summary.json`.
+- Startup sequence re-read from live branch. Start HEAD: `5489f61518b4aaea23c60824381de56965d709a6`.
+- Source/test commit `ed4d8210ce480ee25ebd148ac5d7c24d322a0d73` updates only `scripts/test_release_grant_conformance.py`.
+- Fixed an outdated future-event fixture that still used a now-invalid `completed` state and placeholder digest. The fixture now uses the model's canonical event constructor.
+- Strengthened same-identity/different-payload test: alternate payload now has a valid canonical digest, so rejection tests the event identity collision rather than merely malformed digest.
+- Added malformed-envelope rejection coverage for wrong source, wrong event ID, boolean aggregate version and unsupported state; asserts no consumer state mutation. One new test method, four subcases. Static test-method count: 30.
+- Test execution attempted through clone and local execution environment; both failed because `github.com` could not be resolved. Tests NOT RUN.
+- Previous grant implementation `45cb200` still models aggregate/event/outbox update at one in-memory commit point only. No durable atomicity or authenticated producer proof.
+- Next: exact-tree tests; typed EventJournal-to-ResultReceipt snapshot composition; grant transition replay/order and outbox delivery tests.
+- Preserve P39 adapter gate CLOSED, CASE-04 INCOMPLETE / timed_out, report-v2 gated and successful Pyodios `summary.json`.

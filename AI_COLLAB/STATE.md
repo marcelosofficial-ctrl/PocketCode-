@@ -12,9 +12,9 @@ Updated: 2026-11-14. Current facts only; use INDEX.md for source documents and o
 
 ## Repository and CI
 - Repo `marcelosofficial-ctrl/PocketCode-`; active branch `pocketcode-ai-workflow-director-research-2026-10-28`. Always fetch live HEAD and latest five commits.
-- Latest substantive model commit: `45cb200b3e7959625f1dee8cab1c2577b0b6bb59` (`feat(model): enforce grant event parity and digest checks`), parent `b6db10e`. The following documentation checkpoint records this pass.
-- Journal/receipt source/test commit remains `97b302f`; the latest grant model commit changes `scripts/release_grant_conformance.py` and `scripts/test_release_grant_conformance.py`.
-- Exact source-commit (`45cb200`) Actions runs: zero; commit status contexts: zero. Current docs HEAD (`81c8501`) also has zero runs and zero status contexts. Focused tests NOT RUN. Local execution attempt was blocked because the execution container could not resolve github.com. Workflow caveat: `.github/workflows/pocketcode-python-tests.yml` checks out fixed SHA `319cffef121e327331aeaff59522ae279b112ecc`, so a triggered run executes that historical tree, not current HEAD. It cannot verify this slice.
+- Latest model source commit: `45cb200b3e7959625f1dee8cab1c2577b0b6bb59`; follow-up grant test correction: `ed4d8210ce480ee25ebd148ac5d7c24d322a0d73`. Latest docs commit at previous checkpoint: `5489f61518b4aaea23c60824381de56965d709a6`.
+- `ed4d821` corrects the stale future-event fixture to use a canonical event, makes the changed-payload test use a valid recomputed digest with the same event identity, and adds malformed-envelope rejection coverage. The focused grant test file now contains 30 test methods (static count only).
+- Exact current-head CI will be checked after this pass. Tests remain NOT RUN: `git clone` and the execution container could not resolve github.com. Workflow caveat: `.github/workflows/pocketcode-python-tests.yml` checks out fixed SHA `319cffef121e327331aeaff59522ae279b112ecc`, so a triggered run executes that historical tree, not current HEAD. It cannot verify this slice.
 - Historical Actions run #59 (`43126974602`) passed 266/266 on different model target SHA `319cffef121e327331aeaff59522ae279b112ecc`; not current-head CI, adapter proof or CASE acceptance.
 
 ## Accepted decisions and gates
@@ -24,7 +24,7 @@ Updated: 2026-11-14. Current facts only; use INDEX.md for source documents and o
 - CASE-04 remains INCOMPLETE / timed_out. Model PASS never closes adapter or canonical CASE acceptance.
 
 ## Current known gaps (model/design evidence, not production proof)
-- Grant model (VERIFIED in source at `45cb200`): identical progress is a semantic no-op; changed progress advances the aggregate and appends matching versioned event/outbox records at one in-memory commit point; consumer recomputes canonical event digest and validates source/event identity/version before accepting. The model still is not durable/atomic across processes, and producer authentication, relay leases/fences, stale acknowledgements and consumer inbox/restore remain adapter obligations. 33-case plan remains model-only.
+- Grant model (VERIFIED in source at `45cb200`, regression tests corrected at `ed4d821`): identical progress is a semantic no-op; changed progress advances the aggregate and appends matching versioned event/outbox records at one in-memory commit point; consumer recomputes canonical event digest and validates source/event identity/version before accepting. Tests now exercise valid-digest identity collisions and malformed envelope rejection; NOT RUN. The model still is not durable/atomic across processes, and producer authentication, relay leases/fences, stale acknowledgements and consumer inbox/restore remain adapter obligations. 33-case plan remains model-only.
 - Journal/receipt model (VERIFIED at `97b302f`): conflicts retain attempted producer issuer/subject/key ID, effect/attempt/fence and occurrence/observation timestamps. EventJournal exposes observation high-water separately from highest accepted-event sequence; `last_sequence` remains a compatibility alias. ResultReceipt binds both watermarks and ordered conflict sequence references into its immutable fingerprint; late conflict evidence requires a successor receipt. These are caller-supplied model fields, not a cryptographic or automatic journal/store binding.
 - Lifecycle/receipt: execution_projection.py and result_receipts.py are pure/in-memory. Child verdict, job/evidence disposition and artifact disposition remain separate; no integrated authenticated policy/egress barrier, authoritative termination proof or client-generated acknowledgement bound to exact artifact digest/version/range.
 - EventJournal AuthenticatedProducer is supplied model input, not cryptographic verification. Report format 1 lets nonzero integer exit override timeout/cancel/rejection/infrastructure/nonterminal status; keep format 1 until gated format-2 migration.
@@ -38,9 +38,9 @@ Updated: 2026-11-14. Current facts only; use INDEX.md for source documents and o
 - O-7: official Catrobat Pocket Code and POCO C++ naming/search collisions verified; Xiaomi POCO trademark scope UNKNOWN. No rename or PoCo publication pending direct clearance.
 
 ## Next priorities
-1. Run and inspect exact-HEAD journal/receipt tests and Actions CI; current status is NOT RUN.
-2. Red-team the trusted caller boundary: receipt conflict sequence references are not verified against a journal object or durable store.
-3. Continue with grant semantic no-op/event parity and canonical first-delivery digest model tests under the standing model-only scope. Keep relay fencing, atomic inbox adapters and provider integrations gated.
+1. Run exact-tree focused tests when a network-capable execution path is available; current test status is NOT RUN and the pinned workflow is non-verifying.
+2. Red-team and close the journal-to-receipt composition boundary: conflict sequence references are still caller-supplied and are not resolved against an EventJournal instance.
+3. Extend grant model coverage for envelope identity, transition replay/order and outbox delivery semantics. Keep relay fencing, atomic inbox adapters and provider integrations gated.
 4. Keep report-v2 migration gated; preserve format 1 and CASE-04 status.
 5. Device/browser acceptance needs approved synthetic data and exact target-device evidence. Preserve Pyodios summary. Resolve shared-origin threat boundary before sensitive persistence.
 
