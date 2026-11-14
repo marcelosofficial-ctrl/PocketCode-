@@ -15,8 +15,8 @@ Updated: 2026-11-14. Compact live state; use Git history and INDEX.md for older 
 ## Live repository and CI evidence
 
 - Repo `marcelosofficial-ctrl/PocketCode-`; branch `pocketcode-ai-workflow-director-research-2026-10-28`.
-- VERIFIED live branch HEAD at continuation: `6ca4aec8fe80c103b5cf5a9dd87033c32a2dd0b2`. Latest five in branch order: `6ca4aec`, `63e643c`, `943a403`, `95280a4`, `0b1a435`.
-- Exact HEAD `6ca4aec`: zero attached commit statuses and zero PR-triggered workflow runs. Tests NOT RUN. No current-HEAD CI PASS/FAIL evidence.
+- VERIFIED live branch HEAD at continuation: `4447193174f1fa9952850b6652650208ea22b97d`. Latest five in branch order: `4447193`, `6ca4aec`, `63e643c`, `943a403`, `95280a4`.
+- Exact HEAD `4447193`: zero attached commit statuses and zero PR-triggered workflow runs. Tests NOT RUN. No current-HEAD CI PASS/FAIL evidence.
 - Historical Actions run #59 / `43126974602`, SUCCESS, model target `319cffef121e327331aeaff59522ae279b112ecc`, full scripts suite 266/266. Not CI for this HEAD, adapter proof or canonical CASE acceptance.
 - Latest source-audited baseline remains `f02065853404b325e0f87ac7045807ad5fe3edfc`; five commits after it are continuity/checkpoint documentation only. Compare confirms zero application source, test, workflow or product-asset changes.
 
@@ -28,6 +28,7 @@ Updated: 2026-11-14. Compact live state; use Git history and INDEX.md for older 
 - VERIFIED: EventJournal's AuthenticatedProducer is a supplied model value, not cryptographic verification. report_contract format 1 lets a nonzero integer exit override timeout/cancel/rejection/infrastructure/nonterminal state; retain format 1 until gated format-2 migration.
 - VERIFIED: opaque-origin protocol separates canonical ExecutionId and execution_instance_id. Worker action acknowledgement proves supervisor invoked terminate() on its Worker and closed the channel only; it does not prove native child exit or OS/renderer teardown. CASE-04 remains INCOMPLETE / timed_out.
 - NEW STATIC INTEGRATION FINDING (INFERRED from pinned source): EventJournal records changed-payload / producer / scope collisions in `journal.conflicts`, but QuarantinedConflict has no effect_id/attempt_id, and FakeCoordinator's verdict, report-state and receipt builders read only accepted `journal.events`. A conflict can therefore be omitted from the receipt evidence/uncertainty set; the coordinator cannot attribute it to the affected attempt or conservatively block/reconcile that attempt. Existing test `test_quarantined_conflicts_do_not_enter_rebuilt_projection` checks only that the accepted read-model state is not overwritten; it does not test verdict or receipt behavior after a same-attempt event-ID conflict. `create_result_receipt()` also forwards caller-supplied `uncertainties` unchanged, while `ResultReceiptStore` only validates their tuple shape and does not derive them from the journal. Receipts contain accepted-event references/digests but no explicit journal high-water that would expose the quarantined sequence. This is a model integration gap, not proof of a production exploit. No source/test change is authorized.
+- VERIFIED review boundary: re-read the receipt-store creation/transfer paths and OD-09..OD-13 crosswalk. The transfer/client-acknowledgement, projection-composition and authority limits are already explicitly captured in that crosswalk; no additional distinct source-to-contract gap was established in this continuation. Avoid duplicating those findings.
 
 ## Device, origin and naming evidence
 
