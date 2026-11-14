@@ -4,9 +4,9 @@
 Continue evidence closure without reopening the P39 implementation/adapter gate. No source/test work is authorized by the existing design or P40 evidence.
 
 ## Verified start snapshot (2026-11-14)
-- Live branch HEAD at this continuation: `4447193174f1fa9952850b6652650208ea22b97d`. Latest five: `4447193`, `6ca4aec`, `63e643c`, `943a403`, `95280a4`. Always fetch live ref and latest five before work.
+- Live branch HEAD at this continuation: `10935cd83483fda1c2afbac6bdcadbb865f31a61`. Latest five: `10935cd`, `4447193`, `6ca4aec`, `63e643c`, `943a403`. Always fetch live ref and latest five before work.
 - Compare from source-audited baseline `f02065853404b325e0f87ac7045807ad5fe3edfc`: five commits ahead, zero behind; only `AI_COLLAB/CHECKPOINT.md`, `AI_COLLAB/NEXT_TASK.md` and `AI_COLLAB/STATE.md` changed. No source, tests, workflow or product assets changed.
-- Exact-HEAD checks for `4447193`: zero attached statuses and zero PR-triggered workflow runs. Tests NOT RUN.
+- Exact-HEAD checks for `10935cd`: zero attached statuses and zero PR-triggered workflow runs. Tests NOT RUN.
 - Historical run #59 succeeded on pinned model target `319cffef121e327331aeaff59522ae279b112ecc`, 266/266 scripts. Not current-HEAD CI, adapter proof or CASE acceptance.
 
 ## Completed this pass

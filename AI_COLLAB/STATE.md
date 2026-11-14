@@ -15,8 +15,8 @@ Updated: 2026-11-14. Compact live state; use Git history and INDEX.md for older 
 ## Live repository and CI evidence
 
 - Repo `marcelosofficial-ctrl/PocketCode-`; branch `pocketcode-ai-workflow-director-research-2026-10-28`.
-- VERIFIED live branch HEAD at continuation: `4447193174f1fa9952850b6652650208ea22b97d`. Latest five in branch order: `4447193`, `6ca4aec`, `63e643c`, `943a403`, `95280a4`.
-- Exact HEAD `4447193`: zero attached commit statuses and zero PR-triggered workflow runs. Tests NOT RUN. No current-HEAD CI PASS/FAIL evidence.
+- VERIFIED live branch HEAD at continuation: `10935cd83483fda1c2afbac6bdcadbb865f31a61`. Latest five in branch order: `10935cd`, `4447193`, `6ca4aec`, `63e643c`, `943a403`.
+- Exact HEAD `10935cd`: zero attached commit statuses and zero PR-triggered workflow runs. Tests NOT RUN. No current-HEAD CI PASS/FAIL evidence.
 - Historical Actions run #59 / `43126974602`, SUCCESS, model target `319cffef121e327331aeaff59522ae279b112ecc`, full scripts suite 266/266. Not CI for this HEAD, adapter proof or canonical CASE acceptance.
 - Latest source-audited baseline remains `f02065853404b325e0f87ac7045807ad5fe3edfc`; five commits after it are continuity/checkpoint documentation only. Compare confirms zero application source, test, workflow or product-asset changes.
 
