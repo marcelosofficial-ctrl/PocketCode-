@@ -26,6 +26,12 @@ class ResultReceiptTests(unittest.TestCase):
         journal.append(producer=producer, source="worker-events", event_id="event-1",
                        payload=b'{"state":"failed"}', occurred_at_ms=1, observed_at_ms=3,
                        effect_id="effect-1", attempt_id="attempt-1")
+        journal.append(producer=producer, source="worker-events", event_id="other-event",
+                       payload=b'{"state":"started"}', occurred_at_ms=4, observed_at_ms=5,
+                       effect_id="effect-2", attempt_id="attempt-2")
+        journal.append(producer=producer, source="worker-events", event_id="other-event",
+                       payload=b'{"state":"failed"}', occurred_at_ms=4, observed_at_ms=6,
+                       effect_id="effect-2", attempt_id="attempt-2")
         return journal.receipt_snapshot("effect-1", "attempt-1")
     def setUp(self):
         self.store = ResultReceiptStore()
@@ -126,7 +132,7 @@ class ResultReceiptTests(unittest.TestCase):
             journal_snapshot=self.journal_snapshot())
         self.assertEqual((receipt.journal_observation_high_water,
                           receipt.journal_accepted_event_high_water,
-                          receipt.journal_conflict_sequences), (2, 1, (2,)))
+                          receipt.journal_conflict_sequences), (4, 3, (2,)))
 
     def test_late_journal_conflict_creates_immutable_successor_receipt(self):
         first = self.receipt
@@ -141,6 +147,24 @@ class ResultReceiptTests(unittest.TestCase):
     def test_unsealed_snapshot_cannot_supply_journal_evidence(self):
         with self.assertRaises(TypeError):
             JournalReceiptSnapshot("effect-1", "attempt-1", 99, 99, (99,))
+
+    def test_journal_snapshot_is_immutable_and_conflicts_are_attempt_scoped(self):
+        journal = EventJournal(expected_audience="pocketcode-journal")
+        producer = AuthenticatedProducer("issuer", "worker", "key", "fp",
+                                         "pocketcode-journal", ("worker-events",))
+        journal.append(producer=producer, source="worker-events", event_id="e",
+                       payload=b"accepted", occurred_at_ms=1, observed_at_ms=2,
+                       effect_id="effect-1", attempt_id="attempt-1")
+        journal.append(producer=producer, source="worker-events", event_id="e",
+                       payload=b"conflict", occurred_at_ms=1, observed_at_ms=3,
+                       effect_id="effect-1", attempt_id="attempt-1")
+        snapshot = journal.receipt_snapshot("effect-1", "attempt-1")
+        journal.append(producer=producer, source="worker-events", event_id="e",
+                       payload=b"later conflict", occurred_at_ms=1, observed_at_ms=4,
+                       effect_id="effect-1", attempt_id="attempt-1")
+        self.assertEqual(snapshot.conflict_sequences, (2,))
+        self.assertEqual(journal.receipt_snapshot("effect-1", "attempt-1").conflict_sequences,
+                         (2, 3))
 
     def test_journal_snapshot_must_match_receipt_attempt(self):
         journal = EventJournal(expected_audience="pocketcode-journal")
