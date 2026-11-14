@@ -6,6 +6,7 @@
 - Repo: marcelosofficial-ctrl/PocketCode- (PUBLIC). Active branch: `pocketcode-ai-workflow-director-research-2026-10-28`. Always fetch live HEAD; no saved SHA is authoritative.
 - `main` is stale. Work on the active branch. PR #2 and #3 are open drafts; do not modify them.
 - Code/tests: `scripts/`. CI workflow: "PocketCode Python conformance tests". Docs: `AI_COLLAB/`.
+- Name: the project name stays PocketCode (owner decision 2026-11-11 after name research; PoCo is not adopted).
 
 ## Hard constraints
 1. **$0:** no paid account, host, provider, workload or billing (D-005/D-006).
@@ -19,15 +20,16 @@
 9. **Public repo:** no secrets, tokens or private data.
 10. **Evidence:** VERIFIED / INFERRED / UNKNOWN / NOT RUN. A chat assertion is not proof; source pins and CI output are.
 
-## Read and resume
-Read in order: BOOT.md (this file) → STATE.md → NEXT_TASK.md → CHECKPOINT.md → INBOX_<your name>.md → live branch HEAD and latest five commits. If commits post-date the checkpoint, inspect their messages and changed paths first. Use INDEX.md only after this sequence to locate other docs. Never load a file over ~1,500 words whole; read large history by section.
+## Read and resume (no handoff message is ever needed)
+Read in order: BOOT.md (this file) → STATE.md → NEXT_TASK.md → CHECKPOINT.md → INBOX_<your name>.md → live branch HEAD and latest five commits. If CHECKPOINT.md says IN PROGRESS, or commits post-date it, RECOVER first (kit/docs/TURN_BUDGET_AND_RECOVERY.md, rule T4): inspect their messages and changed paths, write a RECOVERED note, then do one unit. Use INDEX.md only after this sequence to locate other docs. Never load a file over ~1,500 words whole; read large history by section.
 
 ## Working rules
-- One chat = one task. Commit to GitHub before summarizing. About 350 lines per turn; overwrite CHECKPOINT.md after each unit. Normal mode unless NEXT_TASK says otherwise.
+- **TURN BUDGET (hard):** at most 5 commits, 10 tool calls and 3 files read per turn; each commit at most 2 files and about 200 changed lines; never rewrite or reconstruct a large file. No Think, Work or agent mode, no autonomous loops. First action: overwrite CHECKPOINT.md with `IN PROGRESS: unit, files, time`; last action: `DONE` plus commit SHAs and the next step; reply in at most 10 lines and stop. The owner says "continue".
+- Commit to GitHub before summarizing; chat replies can vanish, commits do not.
 - Owner decisions and canonical specs outrank proposals and history. One lead writer per shared work item; re-fetch branch and file SHAs after concurrent writes or rejected updates. See `kit/docs/WORK_PROTOCOL.md` sections 11–13.
 - Keep CI claims tied to exact workflow/run/branch/SHA/job/environment/test totals. NOT RUN is neither failure nor success.
-- Final chat reply: at most 15 lines (done, CI, next, owner actions). Move/archive rather than delete; log file moves in MOVES.tsv.
+- Move/archive rather than delete; log file moves in MOVES.tsv.
 - Coordinate through INBOX_<name>.md (MAILBOX.md). If GitHub read/write is unavailable, say so and stop.
 
 ## Roles
-Claude: lead developer and architecture/implementation reviewer. Gemini: co-developer and independent security/spec auditor. ChatGPT: continuity, evidence reconciliation, acceptance architecture and cross-project coordination. One lead writer per branch/work item; other AIs review or take disjoint files.
+Claude: reviewer and small verified tasks. Gemini: independent security/spec auditor. ChatGPT: lead, continuity, evidence reconciliation, acceptance architecture and cross-project coordination. One lead writer per branch/work item; other AIs review or take disjoint files.
