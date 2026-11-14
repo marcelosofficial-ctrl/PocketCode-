@@ -69,6 +69,16 @@ class AppendResult:
     conflict: Optional[QuarantinedConflict] = None
 
 
+@dataclass(frozen=True)
+class JournalReceiptSnapshot:
+    """Immutable journal-derived evidence for one effect/attempt receipt."""
+    effect_id: str
+    attempt_id: str
+    observation_high_water: int
+    accepted_event_high_water: int
+    conflict_sequences: tuple[int, ...]
+
+
 class EventJournal:
     """In-memory append-only journal with source-scoped identity and fencing."""
 
@@ -102,6 +112,15 @@ class EventJournal:
     @property
     def accepted_event_high_water(self) -> int:
         return max((event.sequence for event in self._events), default=0)
+
+    def receipt_snapshot(self, effect_id: str, attempt_id: str) -> JournalReceiptSnapshot:
+        """Capture global watermarks and exact-attempt conflict references."""
+        if not _nonempty(effect_id, attempt_id):
+            raise ValueError("receipt snapshot requires effect and attempt identity")
+        conflicts = tuple(c.sequence for c in self._conflicts
+                          if c.effect_id == effect_id and c.attempt_id == attempt_id)
+        return JournalReceiptSnapshot(effect_id, attempt_id, self.observation_high_water,
+                                      self.accepted_event_high_water, conflicts)
 
     def advance_fence(self, effect_id: str, attempt_id: str, fence: int) -> None:
         if not _nonempty(effect_id, attempt_id) or not _positive_int(fence):

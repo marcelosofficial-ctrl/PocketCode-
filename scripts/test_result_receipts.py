@@ -1,5 +1,9 @@
 import hashlib
 import unittest
+try:
+    from event_journal import AuthenticatedProducer, EventJournal
+except ModuleNotFoundError:
+    from scripts.event_journal import AuthenticatedProducer, EventJournal
 
 try:
     from result_receipts import (
@@ -12,6 +16,17 @@ except ModuleNotFoundError:
 
 
 class ResultReceiptTests(unittest.TestCase):
+    def journal_snapshot(self):
+        journal = EventJournal(expected_audience="pocketcode-journal")
+        producer = AuthenticatedProducer("issuer", "worker", "key", "fp",
+                                         "pocketcode-journal", ("worker-events",))
+        journal.append(producer=producer, source="worker-events", event_id="event-1",
+                       payload=b'{"state":"started"}', occurred_at_ms=1, observed_at_ms=2,
+                       effect_id="effect-1", attempt_id="attempt-1")
+        journal.append(producer=producer, source="worker-events", event_id="event-1",
+                       payload=b'{"state":"failed"}', occurred_at_ms=1, observed_at_ms=3,
+                       effect_id="effect-1", attempt_id="attempt-1")
+        return journal.receipt_snapshot("effect-1", "attempt-1")
     def setUp(self):
         self.store = ResultReceiptStore()
         self.content = b'{"ok":true}\n'
@@ -104,39 +119,42 @@ class ResultReceiptTests(unittest.TestCase):
         self.assertEqual(first, second)
         self.assertEqual(len(self.store.receipts), 1)
 
-    def test_receipt_binds_journal_watermarks_and_conflict_refs(self):
-        receipt = self.create(
-            revision_key="journal-watermarks", predecessor_receipt_id=self.receipt.receipt_id,
+    def test_receipt_uses_journal_derived_watermarks_and_conflicts(self):
+        receipt = self.create(revision_key="journal-watermarks",
+            predecessor_receipt_id=self.receipt.receipt_id,
             revision_reason="bind journal observation", created_at_ms=110,
-            journal_observation_high_water=8, journal_accepted_event_high_water=6,
-            journal_conflict_sequences=(4, 8))
+            journal_snapshot=self.journal_snapshot())
         self.assertEqual((receipt.journal_observation_high_water,
                           receipt.journal_accepted_event_high_water,
-                          receipt.journal_conflict_sequences), (8, 6, (4, 8)))
+                          receipt.journal_conflict_sequences), (2, 1, (2,)))
 
-    def test_late_conflict_creates_immutable_successor_receipt(self):
+    def test_late_journal_conflict_creates_immutable_successor_receipt(self):
         first = self.receipt
-        successor = self.create(
-            revision_key="receipt-rev-2", created_at_ms=110,
+        successor = self.create(revision_key="receipt-rev-2", created_at_ms=110,
             predecessor_receipt_id=first.receipt_id,
-            revision_reason="late journal conflict", journal_observation_high_water=3,
-            journal_accepted_event_high_water=2, journal_conflict_sequences=(3,))
+            revision_reason="late journal conflict", journal_snapshot=self.journal_snapshot())
         self.assertEqual(first.journal_conflict_sequences, ())
         self.assertEqual((successor.journal_observation_high_water,
                           successor.journal_accepted_event_high_water,
-                          successor.journal_conflict_sequences), (3, 2, (3,)))
+                          successor.journal_conflict_sequences), (2, 1, (2,)))
 
-    def test_journal_watermark_and_conflict_reference_validation(self):
-        invalid = (
-            {"journal_observation_high_water": True},
-            {"journal_observation_high_water": 1, "journal_accepted_event_high_water": 2},
-            {"journal_observation_high_water": 2, "journal_conflict_sequences": [2]},
-            {"journal_observation_high_water": 2, "journal_conflict_sequences": (3,)},
-            {"journal_observation_high_water": 3, "journal_conflict_sequences": (2, 2)},
-        )
-        for values in invalid:
-            with self.subTest(values=values), self.assertRaises(ReceiptConflict):
+    def test_journal_snapshot_must_match_receipt_attempt(self):
+        journal = EventJournal(expected_audience="pocketcode-journal")
+        with self.assertRaisesRegex(ReceiptConflict, "does not match"):
+            self.create(journal_snapshot=journal.receipt_snapshot("other", "attempt-1"))
+
+    def test_caller_supplied_journal_values_are_rejected(self):
+        for values in ({"journal_observation_high_water": 1},
+                       {"journal_accepted_event_high_water": 1},
+                       {"journal_conflict_sequences": (1,)}):
+            with self.subTest(values=values), self.assertRaisesRegex(
+                    ReceiptConflict, "EventJournal.receipt_snapshot"):
                 self.create(**values)
+
+    def test_snapshot_cannot_be_mixed_with_caller_supplied_values(self):
+        with self.assertRaisesRegex(ReceiptConflict, "cannot be mixed"):
+            self.create(journal_snapshot=self.journal_snapshot(),
+                        journal_observation_high_water=2)
 
     def test_projection_reason_is_part_of_immutable_receipt(self):
         self.assertIsNone(self.receipt.projection_reason)
