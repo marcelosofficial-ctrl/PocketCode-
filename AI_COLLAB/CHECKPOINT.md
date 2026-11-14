@@ -1,34 +1,43 @@
 # CHECKPOINT — 2026-11-14
 
-## Continuation: coordinator quarantine-to-receipt integration audit
-- Required startup records were reread in order; INDEX was used only for document discovery. Live branch ref at audit start: `943a4034a774b2f5efd49e42d6efd811447fa858`.
-- Latest five commits, fetched from the branch-specific GitHub commits endpoint: `943a403`, `95280a4`, `0b1a435`, `f020658`, `9de34da`. The branch ref and commit history agree. Commits after source-audited baseline `f020658` are continuity/checkpoint documentation only.
-- Exact HEAD `943a403`: zero attached commit statuses and zero PR-triggered workflow runs. Tests NOT RUN. Historical Actions run #59 / `43126974602` (266/266) targets a different model SHA and is not current-HEAD evidence.
+## Continuation: journal conflict, verdict and receipt completeness audit
 
-## Scope and exact source pins
-- Continued the prior report projection review into the composition boundary among the in-memory outbox, event journal, coordinator reducer, result receipt store and their tests. No source or test files were modified.
+- Required startup files were reread in order: BOOT, STATE, NEXT_TASK, CHECKPOINT, INBOX_chatgpt; INDEX was then used for discovery. The inbox contains no new open task.
+- Live branch at audit start: `6ca4aec8fe80c103b5cf5a9dd87033c32a2dd0b2`. Latest five, branch order: `6ca4aec`, `63e643c`, `943a403`, `95280a4`, `0b1a435`.
+- Compare from source-audited baseline `f02065853404b325e0f87ac7045807ad5fe3edfc`: five commits ahead, zero behind. Only STATE/NEXT_TASK/CHECKPOINT changed; no source, tests, workflow or product assets changed.
+- Exact HEAD `6ca4aec`: zero attached commit statuses and zero PR-triggered workflow runs. Tests NOT RUN. Historical run #59 (266/266) targets another SHA and is not current-head CI or adapter/CASE evidence.
+
+## Source and test pins
+
 - `scripts/event_journal.py`: `371a175739b9cb65cd4d59bb4cd5b3c1c4953564`.
 - `scripts/fake_coordinator.py`: `651921ffe07d27f7d1b7371eb4d36777e39d94ed`.
+- `scripts/result_receipts.py`: source SHA re-fetch not needed for the prior pin; exact HEAD comparison confirms no source changes since the audited baseline. The receipt create path was re-read at lines 430–590.
 - `scripts/test_event_journal.py`: `333cf5ec856d4244c3f84da9e82bb2fa126607b5`.
 - `scripts/test_fake_coordinator.py`: `b06a4f7af870922003345e3c5f119344302f8c78`.
-- Cross-checked `P39_OD09_OD13_MODEL_COVERAGE_CROSSWALK_20261112.md`, `P39_OD02_OD08_MODEL_COVERAGE_CROSSWALK_20261112.md`, `LIFECYCLE_TERMINATION_RECEIPT_ACCEPTANCE_20261112.md` and `EXECUTION_EVIDENCE_AND_RECOVERY_CONTRACT_20261106.md`. Their established limits remain unchanged: models are in-memory; producer credentials, durable atomicity, policy barrier, termination authority and client receipt are not production-proven.
+- Cross-checked `EVENT_JOURNAL_MODEL_20261106.md`, `EXECUTION_EVIDENCE_AND_RECOVERY_CONTRACT_20261106.md` and `LIFECYCLE_TERMINATION_RECEIPT_ACCEPTANCE_20261112.md`. They define quarantine and immutable receipt evidence requirements, while explicitly classifying these components as in-memory models.
 
-## New static integration finding (INFERRED, not a production exploit)
-- EventJournal correctly keeps the first accepted `(source, event_id)` immutable and appends a `QuarantinedConflict` for changed payload, producer identity or attempt-scope reuse. The conflict record contains sequence, source, event ID and the two payload digests, but no effect_id or attempt_id.
-- FakeCoordinator's `project_attempt_verdict()`, `project_attempt_report_state()` and `create_result_receipt()` enumerate `journal.events` only. They do not inspect `journal.conflicts`; receipt evidence references/digests likewise include accepted events only.
-- The existing `test_quarantined_conflicts_do_not_enter_rebuilt_projection` asserts that a conflict does not overwrite the accepted dispatch read-model state. It does not assert that a same-attempt conflicting terminal observation is represented as uncertainty, blocks PASS, or appears in a receipt's evidence/uncertainties.
-- Because conflict metadata has no attempt scope, the coordinator cannot currently attribute the conflict to one affected attempt. It also cannot safely assume that every conflict is unrelated. A changed-payload collision against an accepted lifecycle/exit event could therefore be absent from the projection/receipt evidence even though the journal has recorded an integrity conflict.
-- Contract already requires changed source/event identity to be quarantined and receipts to preserve uncertainty/contradictions. What is missing is a defined propagation rule: attach candidate scope to conflict evidence (without trusting conflicting payload as accepted), or apply an explicitly conservative quarantine policy; then make verdict, report-state and receipt creation consume that signal. Cross-attempt collisions need a rule that avoids contaminating unrelated attempts.
-- This is a model integration/contract gap inferred from static control flow. It is not evidence of a live exploit or authenticated producer. Do not patch source/tests or run tests under the CLOSED P39 implementation/adapter gate.
+## Findings (static control-flow evidence)
 
-## Existing boundaries reconfirmed
-- Grant/outbox relay fencing is distinct from effect dispatch fencing. In-memory model transitions do not establish durable atomicity, authenticated relay identity or restore-safe high-water.
-- ResultReceiptStore publication accepts caller-supplied `success`; it is not destination-generated acknowledgement. Its transfer helpers are not a network transport or cancellation acknowledgement.
-- Typed execution projection still relies on callers for authentication, attempt authorization, deduplication, policy validation and persistence. No new report-format-1 precedence patch is appropriate.
-- CASE-04 remains INCOMPLETE / timed_out. Preserve the successful Pyodios `summary.json`; no device probe or artifact rerun.
+1. **VERIFIED:** EventJournal increments its sequence and appends a QuarantinedConflict on changed payload, producer identity, attempt scope, occurrence timestamp or fence identity. The conflict record stores source/event ID and accepted/conflicting payload digests, but discards candidate effect_id, attempt_id, producer identity, fence and conflict reason detail beyond a generic default.
+2. **VERIFIED:** FakeCoordinator's `project_attempt_verdict()`, `project_attempt_report_state()` and `create_result_receipt()` filter `journal.events` only. They never inspect `journal.conflicts`. The receipt evidence references and digests likewise enumerate accepted events only.
+3. **VERIFIED:** `create_result_receipt()` accepts an `uncertainties` tuple from its caller and passes it through unchanged. ResultReceiptStore validates that tuple's shape and string values but does not derive conflict uncertainty from EventJournal.
+4. **VERIFIED:** ResultReceipt records evidence references/digests but no journal high-water sequence. Since conflict append advances `last_sequence` without adding an accepted event, the receipt cannot prove it accounted for the conflict sequence.
+5. **VERIFIED:** Existing EventJournal tests cover changed payload, producer collision, cross-attempt reuse and fence reuse at the journal layer. Existing coordinator conflict test only checks that a forged conflicting event does not overwrite rebuilt dispatch state. No test composes those conflicts with verdict projection, report state, receipt creation, uncertainty or evidence completeness.
+6. **INFERRED:** A receipt can be created from accepted evidence while a relevant quarantined collision remains outside its evidence and uncertainty set. For example, after a valid same-attempt success lifecycle + child-exit pair, a conflicting reuse of one accepted event ID is quarantined; the accepted pair still projects PASS, and absent caller-supplied uncertainty the receipt path has no automatic conflict guard. This is a model integration defect, not proof of a production exploit or authenticated producer.
 
-## Actions and next
-- Updated STATE and NEXT_TASK with this new unresolved integration boundary and a narrowly scoped future acceptance plan.
-- No code/test/workflow edits, device probes, artifact reruns, P39 gate reopening, provider/runtime/host selection, PR changes or deployment.
-- Next: fetch live branch ref/latest five; if no new source changes, wait for separate owner authorization before adding conflict-attribution model cases. Otherwise continue only non-duplicative static contract review.
-- Evidence: source/test blob identities and static control flow VERIFIED; risk of an unqualified receipt after quarantine is INFERRED; authenticated production behavior UNKNOWN; tests/device execution NOT RUN.
+## Contract implications and bounded remediation proposal
+
+- Do not accept the conflicting payload as authoritative. Preserve the first accepted event and the conflict as separate immutable evidence.
+- Extend quarantine evidence with non-authoritative candidate scope and producer/fence metadata sufficient for safe attribution. If attribution is ambiguous, use a documented conservative quarantine boundary rather than silently ignoring the conflict.
+- Have all projections consume an integrity/uncertainty view alongside accepted events. A relevant unresolved conflict should block an unqualified PASS and appear in receipt uncertainties/evidence.
+- Bind the receipt to an explicit journal high-water (including the conflict sequence) plus accepted evidence references/digests and conflict references/digests. A receipt must distinguish accepted observations from rejected/quarantined observations.
+- Specify cross-attempt collision behavior so one attempt is not silently contaminated or falsely cleared. If safe attribution is impossible, keep the affected source/effect scope quarantined pending reconciliation.
+- Focused future tests: same-attempt changed-payload conflict after a valid PASS pair; same event ID reused across attempts; producer collision; stale-fence collision; receipt created after conflict; explicit uncertainty omitted by caller; unrelated attempt isolation; receipt high-water includes quarantined sequence; reconciliation and successor receipt preserve prior immutable receipt.
+
+## Gate, scope and next
+
+- No source/test/workflow changes, no test execution, no device probe, no artifact rerun, no provider/runtime/host selection, no PR changes or deployment.
+- P39 implementation/adapter gate remains CLOSED. This audit is static evidence only and does not authorize model-only code/tests.
+- CASE-04 remains INCOMPLETE / timed_out. Preserve the successful Pyodios `summary.json`.
+- Updated STATE/NEXT_TASK/CHECKPOINT to correct the stale 943a403 resume snapshot and capture the stronger receipt-completeness finding. The prior 6ca4aec commit corrected the Pages SHA transcription; this checkpoint now reconciles actual branch history.
+- Evidence labels: source and test structure VERIFIED by pinned static inspection; risk of unqualified receipt after conflict INFERRED; authenticated production behavior UNKNOWN; tests/device execution NOT RUN.
