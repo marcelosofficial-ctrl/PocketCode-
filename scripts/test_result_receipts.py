@@ -1,9 +1,9 @@
 import hashlib
 import unittest
 try:
-    from event_journal import AuthenticatedProducer, EventJournal
+    from event_journal import AuthenticatedProducer, EventJournal, JournalReceiptSnapshot
 except ModuleNotFoundError:
-    from scripts.event_journal import AuthenticatedProducer, EventJournal
+    from scripts.event_journal import AuthenticatedProducer, EventJournal, JournalReceiptSnapshot
 
 try:
     from result_receipts import (
@@ -139,7 +139,6 @@ class ResultReceiptTests(unittest.TestCase):
                           successor.journal_conflict_sequences), (2, 1, (2,)))
 
     def test_unsealed_snapshot_cannot_supply_journal_evidence(self):
-        from event_journal import JournalReceiptSnapshot
         with self.assertRaises(TypeError):
             JournalReceiptSnapshot("effect-1", "attempt-1", 99, 99, (99,))
 
