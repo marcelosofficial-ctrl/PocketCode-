@@ -7,7 +7,7 @@ signatures, certificates, sessions, or external credentials.
 from __future__ import annotations
 
 import json
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from hashlib import sha256
 from typing import Optional
 
@@ -69,6 +69,9 @@ class AppendResult:
     conflict: Optional[QuarantinedConflict] = None
 
 
+_JOURNAL_SNAPSHOT_SEAL = object()
+
+
 @dataclass(frozen=True)
 class JournalReceiptSnapshot:
     """Immutable journal-derived evidence for one effect/attempt receipt."""
@@ -77,6 +80,12 @@ class JournalReceiptSnapshot:
     observation_high_water: int
     accepted_event_high_water: int
     conflict_sequences: tuple[int, ...]
+    _seal: object = field(repr=False, compare=False)
+
+
+def _is_journal_receipt_snapshot(value: object) -> bool:
+    return (isinstance(value, JournalReceiptSnapshot)
+            and value._seal is _JOURNAL_SNAPSHOT_SEAL)
 
 
 class EventJournal:
@@ -120,7 +129,7 @@ class EventJournal:
         conflicts = tuple(c.sequence for c in self._conflicts
                           if c.effect_id == effect_id and c.attempt_id == attempt_id)
         return JournalReceiptSnapshot(effect_id, attempt_id, self.observation_high_water,
-                                      self.accepted_event_high_water, conflicts)
+                                      self.accepted_event_high_water, conflicts, _JOURNAL_SNAPSHOT_SEAL)
 
     def advance_fence(self, effect_id: str, attempt_id: str, fence: int) -> None:
         if not _nonempty(effect_id, attempt_id) or not _positive_int(fence):
