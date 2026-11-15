@@ -1,4 +1,4 @@
-STATUS: DONE
+STATUS: IN PROGRESS
 
 PocketCode continuation completed 2026-11-15.
 - Started from prior DONE head `dda3840c75881131b26e15197eb9362c9f844bbc`; this pass's IN PROGRESS marker is `e4927aaa993866675eb88cb0fbcf35c6b3d1150c`.
