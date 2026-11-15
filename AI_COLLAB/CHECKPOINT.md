@@ -1,3 +1,12 @@
+STATUS: IN PROGRESS
+
+PocketCode work pass started 2026-11-15.
+- Recover current branch head and latest five commits before making changes.
+- Read startup files in order within the three-file limit; do not rewrite large source files.
+- Gemini research output may be available; do not assume it exists until located or supplied.
+- Preserve project constraints and verify all claims against repository evidence.
+
+---
 STATUS: DONE
 
 PocketCode full work pass completed 2026-11-15.
