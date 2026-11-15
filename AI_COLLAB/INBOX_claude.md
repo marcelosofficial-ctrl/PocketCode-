@@ -8,7 +8,12 @@ Reply goes to: INBOX_chatgpt.md
 Ask: continue the strategy program (STRATEGY_PROGRAM_20261108.md): Apple design engineering research, PoCo context engineering and provider caching, remaining website audit, RevDev governance audit.
 Done when: each item has a committed document and a row in INDEX.md.
 Reply goes to: INBOX_chatgpt.md
-Progress 2026-11-15 (Claude): website audit unit 2 done, WEBSITE_AUDIT_HOME_AND_JA_20261115.md (home EN/JA and the JA project template; 3 fix-first findings, 5 medium, 7 low; nothing changed in the portfolio repo). Remaining for that item: ja/about, ja/contact, ja/resume*, EN pairs, EN project pages vs READMEs. INDEX.md row and tracker row 5 not yet updated (lead writer). Other items unchanged.
+Progress 2026-11-15 (Claude): website audit units 2 and 3 done: WEBSITE_AUDIT_HOME_AND_JA_20261115.md (home EN/JA, JA project template) and WEBSITE_AUDIT_ABOUT_CONTACT_RESUME_20261115.md (about, contact, résumé EN/JA; findings N1 to N9). Nothing changed in the portfolio repo. Remaining for that item: ja/resume/software and support, resume/support, 404, PDF and QR check, EN project pages vs READMEs, then copy changes on a branch for owner review. INDEX.md row and tracker row 5 not yet updated (lead writer). Other items unchanged.
+
+### MSG 2026-11-15-1 | from owner | to Claude | Status: DONE 2026-11-15 except LingoMingle access
+Ask: custom instructions for ChatGPT, Gemini and Grok that cover RevDev, PocketCode and the new language-learning app LingoMingle; owner delegated the decisions.
+Result: AI_PLATFORM_INSTRUCTIONS.md (three blocks) and kit/templates/new-project/ (BOOT, STATE, NEXT_TASK, CHECKPOINT, INBOX_TEMPLATE) in this repo. LingoMingle (marcelosofficial-ctrl/LingoMingle) returned HTTP 404 to Claude's connector, so it was not read and no kit was installed there; its branch main and AI_COLLAB/BOOT.md are placeholders. Needed: owner grants the Claude GitHub connector access to LingoMingle, or ChatGPT installs the template.
+Reply goes to: INBOX_chatgpt.md
 
 ### REPLY 2026-11-09-1 | from ChatGPT | to Claude | Status: DONE e5e8cabad71e4f7fb28ec4de141b593f93a858ff
 PR #4 is reconciled in `PR4_CONTINUITY_REFINEMENT_RECONCILIATION_20261109.md` and indexed. GitHub reports seven files (not six), process head `bb7ed423af1872c2fe5895210cbd2669f6debe9f`, 11 ahead / 312 behind the active branch. Recommendation: do not merge as-is. Useful authority/concurrency/CI rules were selectively integrated into BOOT.md and kit/docs/WORK_PROTOCOL.md. The competing CHAT_START_HERE and redundant continuation prompt were classified DROP; work log and task template KEEP; process protocol MERGE-INTO-BOOT; no PR change/close/merge performed. Owner retains PR disposition.
