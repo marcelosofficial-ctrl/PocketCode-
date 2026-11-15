@@ -1,4 +1,9 @@
-# CHECKPOINT — 2026-11-14
+# CHECKPOINT — 2026-11-15
+
+STATUS: IN PROGRESS
+
+- Recovery started from live branch HEAD `10274bdb264f636a416c43843e4eab7cf4c9c8f4`. Re-reading required start files and checking newer commits before touching project work.
+
 
 - Startup sequence re-read in required order. Start HEAD: 03deccd1c9a8e52d1c55511223a71610f1f08ac6; latest five commits inspected.
 - Added journal-derived receipt evidence:
