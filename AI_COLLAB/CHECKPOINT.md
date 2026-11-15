@@ -1,3 +1,10 @@
-STATUS: IN PROGRESS
+STATUS: DONE
 
-PocketCode pass started 2026-11-15. Recover branch history and re-read the three startup files within the per-turn read cap. Preserve the $0/provider-neutral/phone-first constraints and all existing gates. No source edits until a safe bounded patch route is established. Exact-tree tests remain NOT RUN until verified.
+PocketCode pass completed 2026-11-15.
+- VERIFIED: Set this checkpoint IN PROGRESS first; re-read BOOT.md, STATE.md and NEXT_TASK.md in order (3-file cap). INBOX_chatgpt.md not read because the per-turn file-read cap was reached.
+- RECOVERED: Compared the prior completed head 2865a97 with the latest five commits surfaced by GitHub. The five newer commits touch only AI_COLLAB/CHECKPOINT.md, INBOX_chatgpt.md, NEXT_TASK.md, STATE.md and README.md; no source, tests or workflow paths changed. Latest visible messages include P39 owner/review gate updates and post-Gemini/Claude-wait state. The aggregate compare reports 5 commits ahead and 1440 behind with a diverged ancestry; do not infer a clean linear history or overwrite it.
+- VERIFIED: Re-read current STATE/NEXT_TASK. Highest priority remains live EventJournal-derived receipt provenance/freshness, then exact-tree test evidence; grant/outbox and producer/concurrency work remain model/adapter-gated. P39 implementation/adapter gate CLOSED; CASE-04 INCOMPLETE / timed_out.
+- VERIFIED: GitHub connector catalogue exposes Git object APIs (create_blob/create_tree/create_commit), but no bounded in-place patch/hunk API. Those APIs still require complete replacement blob content for a changed existing file. Reconstructing a large source/test file would violate the no-large-file-rewrite rule; therefore no source/test edits were attempted.
+- VERIFIED: Exact visible latest commit 03e65ef has zero combined status contexts and zero associated workflow runs. This is NOT RUN, not a test failure or success. Historical run #63 remains pinned to SHA 319cffef and does not verify current source.
+- NOT RUN: focused/full tests, device/browser acceptance, adapter conformance. No source, test, workflow, provider, runtime, adapter, PR, deployment or infrastructure changes.
+- Next: obtain a true bounded patch route or owner-provided local/network-capable patch execution path; then implement receipt creation from the live EventJournal, add the listed stale-snapshot/high-water/scoped-conflict regressions, and run tests on the exact resulting commit.
