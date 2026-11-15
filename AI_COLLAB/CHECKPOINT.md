@@ -1,6 +1,6 @@
-STATUS: DONE
+STATUS: IN PROGRESS
 
-PocketCode continuation completed 2026-11-15.
+PocketCode continuation resumed 2026-11-15.
 - Started from aaded3cef8629dddaae2d10f4102320640a28578; IN PROGRESS marker commit: 08d9557539c08fd861f7335c052aabdec7508b1d.
 - Added `AI_COLLAB/GEMINI_RESEARCH_HANDOFF_2026-11-15.md` (commit 9deabee802aeba3ecfdd48cae100aeb32c6c5fc7): four cumulative passes, durable research ledger, evidence/citation rules, bounded repository scope and exact priority questions.
 - Re-read BOOT.md, STATE.md and NEXT_TASK.md in order. CHECKPOINT.md and INBOX_chatgpt.md were not read because the hard three-file read cap was reached.
