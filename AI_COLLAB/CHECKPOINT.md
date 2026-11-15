@@ -1,12 +1,12 @@
-STATUS: IN PROGRESS
+# CHECKPOINT — 2026-11-15
 
-- Continuation started from live HEAD `24bb4699d238325c852d8ec00b5cb99b42482fcf`; startup recovery is underway. No source changes yet.
+STATUS: DONE
 
-RECOVERED: inspected the latest 10 commits; this turn's only new project work before recovery was the IN PROGRESS marker.
-Earlier commits landed the snapshot model/seal/import/scope tests (`9f0ade8`, `af0c770`, `91c0d12`, `a4e27bb`) and checkpoint docs (`1af5096`, `59344ef`, `5ccc9a8`, `284bc8b`, `6ba850c`).
-Concurrent parent `10274bd` only changes `AI_COLLAB/BOOT.md` and adds `AI_COLLAB/kit/docs/TURN_BUDGET_AND_RECOVERY.md`; it records PocketCode naming and hard turn budgets. No product IDs or technical gates changed.
-Ten-commit path diff: `AI_COLLAB/BOOT.md`, `AI_COLLAB/CHECKPOINT.md`, `AI_COLLAB/NEXT_TASK.md`, `AI_COLLAB/STATE.md`, `AI_COLLAB/kit/docs/TURN_BUDGET_AND_RECOVERY.md`, `scripts/test_result_receipts.py`.
-Latest five before marker: `15ea602`, `10274bd`, `6ba850c`, `284bc8b`, `5ccc9a8`. Live HEAD at recovery marker: `15ea602`.
-Unfinished: prior checkpoint overstated the private snapshot seal; CI run #63 did not test the pushed source; stored STATE/NEXT_TASK had stale head references and literal `\n` text.
-Current work: red-team snapshot provenance and exact-head CI; then one bounded source/test correction and accurate evidence checkpoint.
-Constraints retained: $0, model-only, no workflow edits, no adapters/providers/devices/PRs, no CASE/LOOP/D/OD changes. P39 adapter gate CLOSED.
+- Re-read BOOT.md, STATE.md and NEXT_TASK.md; refreshed live branch HEAD and latest five commits. CHECKPOINT was read to mark IN PROGRESS; INBOX_chatgpt.md was not read this turn because the 3-file read cap was reached.
+- Live start HEAD `24bb4699d238325c852d8ec00b5cb99b42482fcf`; this pass marker `67edd52858b181208cea8a1678ba7163b07646f9`.
+- Latest five at close: `67edd52`, `24bb469`, `87b2e64`, `c31ca75`, `0807077`.
+- Run #68 (`43681167497`) completed SUCCESS for push SHA `24bb4699d238325c852d8ec00b5cb99b42482fcf`; all listed job steps succeeded. It checked out the immutable historical P40 target, so it is not exact-head verification. Current HEAD `67edd52` has zero status contexts and no run.
+- Source API refactor was reverted in `24bb469`; current source matches pre-refactor snapshot API. No source/test/workflow/provider/adapter/PR changes in this pass.
+- Red-team conclusions remain: module sentinel is importable, frozen dataclass is not security, detached snapshot may be stale; exact-tree tests NOT RUN. Do not treat run #63/#67/#68 as current-tree evidence.
+- Next: migrate tests and receipt API together so receipt creation derives live journal evidence; add stale-snapshot, forged-sentinel and concurrent snapshot tests; preserve historical P40 CI lane and request authorization before adding a current-head lane.
+- Constraints: $0; P39 adapter gate CLOSED; CASE-04 INCOMPLETE / timed_out; report format 1; preserve all canonical LOOP/CASE/D/OD IDs; no PR #2/#3/#4 changes.
