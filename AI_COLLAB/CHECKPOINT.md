@@ -1,20 +1,8 @@
-# CHECKPOINT — 2026-11-15
-
-STATUS: IN PROGRESS
-
-- Recovery started from live branch HEAD `10274bdb264f636a416c43843e4eab7cf4c9c8f4`. Re-reading required start files and checking newer commits before touching project work.
-
-
-- Startup sequence re-read in required order. Start HEAD: 03deccd1c9a8e52d1c55511223a71610f1f08ac6; latest five commits inspected.
-- Added journal-derived receipt evidence:
-  - EventJournal.receipt_snapshot(effect_id, attempt_id) captures journal-global observation/accepted-event high-waters and conflict sequences scoped to the exact effect/attempt.
-  - JournalReceiptSnapshot is immutable and carries a private module seal. Receipt creation rejects ordinary fabricated dataclasses, mismatched effect/attempt, mixed snapshot/manual values and caller-supplied scalar claims.
-  - ResultReceiptStore.create_receipt fingerprints derived snapshot values, preserving immutable successor semantics.
-  - Tests cover cross-effect/attempt conflict isolation, immutable capture after later appends, successor receipt binding, wrong-scope snapshots, manual-value rejection, mixed-input rejection and unsealed construction rejection.
-- Source/test commits: 9f0ade8 (snapshot derivation), af0c770 (seal), 91c0d12 (package-mode imports), a4e27bb (scope and immutability tests).
-- Docs commits: 1af5096 (initial checkpoint), 59344ef (STATE), 5ccc9a8 (NEXT_TASK), 284bc8b (CHECKPOINT). Latest head 284bc8b has zero Actions runs/status contexts; docs-only commits do not trigger the workflow.
-- Actions run #63 (43627117644) triggered by 9f0ade8 completed SUCCESS, 266/266, Python 3.12.16, Ubuntu. It checked out fixed historical SHA 319cffef121e327331aeaff59522ae279b112ecc, so it did not execute or verify snapshot changes. Latest head 1af5096 has zero Actions runs/status contexts.
-- Snapshot source/test changes: static review only; current-tree tests NOT RUN. Prior local clone/execution path could not resolve github.com.
-- Private seal is an in-process guard, not cryptographic isolation. Durable journal/store atomicity and authenticated producer proof remain adapter obligations.
-- P39 implementation/adapter gate CLOSED; CASE-04 INCOMPLETE / timed_out; report-v2 gated; preserve successful Pyodios summary.json.
-- Next: exact-tree tests; red-team snapshot serialization/copy/timing and receipt revision semantics; grant transition replay/order and outbox delivery tests.
+RECOVERED: inspected the latest 10 commits; this turn's only new project work before recovery was the IN PROGRESS marker.
+Earlier commits landed the snapshot model/seal/import/scope tests (`9f0ade8`, `af0c770`, `91c0d12`, `a4e27bb`) and checkpoint docs (`1af5096`, `59344ef`, `5ccc9a8`, `284bc8b`, `6ba850c`).
+Concurrent parent `10274bd` only changes `AI_COLLAB/BOOT.md` and adds `AI_COLLAB/kit/docs/TURN_BUDGET_AND_RECOVERY.md`; it records PocketCode naming and hard turn budgets. No product IDs or technical gates changed.
+Ten-commit path diff: `AI_COLLAB/BOOT.md`, `AI_COLLAB/CHECKPOINT.md`, `AI_COLLAB/NEXT_TASK.md`, `AI_COLLAB/STATE.md`, `AI_COLLAB/kit/docs/TURN_BUDGET_AND_RECOVERY.md`, `scripts/test_result_receipts.py`.
+Latest five before marker: `15ea602`, `10274bd`, `6ba850c`, `284bc8b`, `5ccc9a8`. Live HEAD at recovery marker: `15ea602`.
+Unfinished: prior checkpoint overstated the private snapshot seal; CI run #63 did not test the pushed source; stored STATE/NEXT_TASK had stale head references and literal `\n` text.
+Current work: red-team snapshot provenance and exact-head CI; then one bounded source/test correction and accurate evidence checkpoint.
+Constraints retained: $0, model-only, no workflow edits, no adapters/providers/devices/PRs, no CASE/LOOP/D/OD changes. P39 adapter gate CLOSED.
