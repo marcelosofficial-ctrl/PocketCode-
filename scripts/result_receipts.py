@@ -12,9 +12,9 @@ import re
 from typing import Optional
 
 try:
-    from event_journal import JournalReceiptSnapshot, _is_journal_receipt_snapshot
+    from event_journal import EventJournal
 except ModuleNotFoundError:
-    from scripts.event_journal import JournalReceiptSnapshot, _is_journal_receipt_snapshot
+    from scripts.event_journal import EventJournal
 
 
 class ReceiptConflict(ValueError):
@@ -436,7 +436,7 @@ class ResultReceiptStore:
         created_at_ms: int, predecessor_receipt_id: Optional[str] = None,
         revision_reason: Optional[str] = None,
         projection_reason: Optional[str] = None,
-        journal_snapshot: Optional[JournalReceiptSnapshot] = None,
+        journal: Optional[EventJournal] = None,
         journal_observation_high_water: Optional[int] = None,
         journal_accepted_event_high_water: Optional[int] = None,
         journal_conflict_sequences: Optional[tuple[int, ...]] = None,
@@ -453,21 +453,20 @@ class ResultReceiptStore:
             raise ReceiptConflict("receipt timestamp must be a non-negative integer")
         legacy = (journal_observation_high_water, journal_accepted_event_high_water,
                   journal_conflict_sequences)
-        if journal_snapshot is None:
+        if journal is None:
             if any(value is not None for value in legacy):
-                raise ReceiptConflict("journal evidence must come from EventJournal.receipt_snapshot")
+                raise ReceiptConflict("journal evidence must be derived from an EventJournal instance")
             journal_observation_high_water, journal_accepted_event_high_water = 0, 0
             journal_conflict_sequences = ()
         else:
-            if not _is_journal_receipt_snapshot(journal_snapshot):
-                raise ReceiptConflict("journal snapshot must be a typed EventJournal snapshot")
-            if (journal_snapshot.effect_id != effect_id or journal_snapshot.attempt_id != attempt_id):
-                raise ReceiptConflict("journal snapshot effect/attempt does not match receipt identity")
+            if type(journal) is not EventJournal:
+                raise ReceiptConflict("journal evidence requires an EventJournal instance")
             if any(value is not None for value in legacy):
-                raise ReceiptConflict("journal snapshot cannot be mixed with caller-supplied watermarks")
-            journal_observation_high_water = journal_snapshot.observation_high_water
-            journal_accepted_event_high_water = journal_snapshot.accepted_event_high_water
-            journal_conflict_sequences = journal_snapshot.conflict_sequences
+                raise ReceiptConflict("EventJournal cannot be mixed with caller-supplied watermarks")
+            snapshot = journal.receipt_snapshot(effect_id, attempt_id)
+            journal_observation_high_water = snapshot.observation_high_water
+            journal_accepted_event_high_water = snapshot.accepted_event_high_water
+            journal_conflict_sequences = snapshot.conflict_sequences
         if (type(journal_observation_high_water) is not int or journal_observation_high_water < 0
                 or type(journal_accepted_event_high_water) is not int
                 or journal_accepted_event_high_water < 0):
