@@ -1,6 +1,15 @@
-STATUS: IN PROGRESS
+STATUS: DONE
 
-PocketCode continuation pass started 2026-11-16 10:40 CET. Prior completed checkpoint and project constraints retained below; this pass will keep the three-file read cap and bounded commit limits.
+PocketCode continuation pass completed 2026-11-16 10:40 CET.
+- First repository action: set checkpoint IN PROGRESS (commit 1d1222fc64e8fda50859ea6722470f8dfc3374cf); immediately restored the full previously fetched checkpoint history in commit 458ef0f3f04018a2efb67a5ff7ace9a26af5f755 after detecting an incomplete replacement. The history is preserved below. This checkpoint initialization mishap is disclosed in the recovery note.
+- Read BOOT.md -> STATE.md -> NEXT_TASK.md in order. Stopped at the three-file project startup read cap; did not open source/test files or exceed the whole-file limit.
+- VERIFIED: branch-scoped GitHub commits endpoint produced the ordered latest five; commit-search results were not the branch history. Recovery note: AI_COLLAB/RECOVERED_2026-11-16_PLATFORM_INSTRUCTIONS_AND_HISTORY.md, commit a387cb61b3ecd9022cf690e2894655769706444d.
+- VERIFIED: commit a98529d2b8e475ff52f36fb49f586bbcb53ab785 is the intervening owner-authored platform-instructions update. It adds Claude-specific no-checkpoint-overwrite guidance and Actions evidence notes; source/tests/workflow/adapters/runtime unaffected.
+- VERIFIED: compare from prior DONE bc63ebc4481493c2d36415ca1c74704acd5378ab to pre-completion head 458ef0f3f04018a2efb67a5ff7ace9a26af5f755 was 3 ahead / 0 behind; aggregate paths AI_COLLAB/AI_PLATFORM_INSTRUCTIONS.md and AI_COLLAB/CHECKPOINT.md.
+- VERIFIED: current head 458ef0f3f04018a2efb67a5ff7ace9a26af5f755 had zero combined status contexts and zero associated workflow runs. Exact-tree tests NOT RUN.
+- VERIFIED: no exposed GitHub hunk/patch apply action. Contents update and Git Data blob/tree/commit both require complete replacement file content. No safe bounded patch route found; large source files were not opened or reconstructed.
+- NOT RUN: focused/full tests, device/browser acceptance, adapter conformance. No source/test/workflow/PR/provider/runtime/adapter/deployment/infrastructure changes.
+- Next: establish a patch-capable route, implement live-journal receipt capture with explicit linearization semantics and stale-snapshot/scope regressions, then run tests against exact resulting SHA.
 
 PocketCode pass completed 2026-11-16.
 - VERIFIED: First repository action set this checkpoint IN PROGRESS. Re-read BOOT.md, STATE.md and NEXT_TASK.md in order; stopped at the three-file read cap.
@@ -9,7 +18,7 @@ PocketCode pass completed 2026-11-16.
 - VERIFIED: Re-read priorities remain live EventJournal receipt provenance/freshness, followed by exact-tree test evidence; grant/outbox and producer/concurrency remain model/adapter-gated. P39 implementation/adapter conformance CLOSED; CASE-04 INCOMPLETE / timed_out.
 - VERIFIED: GitHub file update API requires complete replacement UTF-8 content; available Git object APIs also require a complete blob for any changed file. No safe bounded hunk/patch operation or local network-capable patch route was established. Large-file reconstruction would violate the working rules, so no source/test edits were attempted.
 - VERIFIED: This pass checkpoint commit ec73cbc1 has zero combined status contexts and zero associated workflow runs. NOT RUN; no exact-tree tests. Historical run #63 remains pinned to SHA 319cffef and is not current-source evidence.
-- NOT RUN: focused/full tests, device/browser acceptance and adapter conformance. No source/test/workflow/PR/provider/runtime/adapter/deployment/infrastructure changes. 
+- NOT RUN: focused/full tests, device/browser acceptance and adapter conformance. No source/test/workflow/PR/provider/runtime/adapter/deployment/infrastructure changes.
 - Next: establish a bounded source patch route; implement receipt creation from the live EventJournal; add stale-snapshot, high-water and exact-scope regressions; execute tests against the exact resulting SHA.
 
 PocketCode research pass completed 2026-11-16.
