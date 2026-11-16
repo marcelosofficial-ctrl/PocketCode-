@@ -1,4 +1,4 @@
-STATUS: IN PROGRESS
+STATUS: DONE
 
 PocketCode pass completed 2026-11-16.
 - VERIFIED: First repository action set this checkpoint IN PROGRESS. Re-read BOOT.md, STATE.md and NEXT_TASK.md in order; stopped at the three-file read cap.
@@ -9,3 +9,14 @@ PocketCode pass completed 2026-11-16.
 - VERIFIED: This pass checkpoint commit ec73cbc1 has zero combined status contexts and zero associated workflow runs. NOT RUN; no exact-tree tests. Historical run #63 remains pinned to SHA 319cffef and is not current-source evidence.
 - NOT RUN: focused/full tests, device/browser acceptance and adapter conformance. No source/test/workflow/PR/provider/runtime/adapter/deployment/infrastructure changes.
 - Next: establish a bounded source patch route; implement receipt creation from the live EventJournal; add stale-snapshot, high-water and exact-scope regressions; execute tests against the exact resulting SHA.
+
+
+PocketCode research pass completed 2026-11-16.
+- Recovery: prior DONE commit f17052f -> IN PROGRESS marker 6de26ce; compare is 1 ahead / 0 behind and contains only CHECKPOINT.md. Commit-search results again lack reliable branch ancestry/message reconciliation; do not claim ordered latest five.
+- New deliverable: AI_COLLAB/RESEARCH_PASS_2026-11-16_RECEIPT_ATOMICITY_REPLAY_CI.md, commit e7251c06c76b61699e63262816ad06aaad6987c1.
+- Ranked and researched five gaps: receipt provenance/linearization, coherent journal snapshots, exact-SHA CI, outbox replay/order, producer trust/lifecycle evidence.
+- New correction: deriving inside create_receipt closes detached-snapshot age but coherent multi-field capture still needs a shared lock/transaction or explicit non-thread-safe contract.
+- Opened current official Python thread-safety, PostgreSQL 18 transaction isolation, Debezium 3.7 outbox, Kafka delivery semantics, Temporal retry and GitHub Actions push-event documentation. Debezium license fetch failed; exact license/SPDX classification remains UNKNOWN; no code or dependency copied.
+- Red-team corrections: concurrency/linearization omission; Python free-threaded-doc scope; in-memory outbox vs durable exactly-once; destination cooperation for exactly-once; CI must assert resolved checkout SHA.
+- No source/test/workflow/adapter/provider/runtime/device/browser/PR/infrastructure changes. Exact-tree tests and acceptance NOT RUN.
+- Next: establish bounded patch route; implement live-journal receipt capture with explicit linearization contract and focused regressions; only then exact-SHA tests.
