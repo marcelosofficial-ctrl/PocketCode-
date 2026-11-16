@@ -1,4 +1,4 @@
-STATUS: IN PROGRESS
+STATUS: DONE
 
 PocketCode pass completed 2026-11-16.
 - VERIFIED: First repository action set this checkpoint IN PROGRESS. Re-read BOOT.md, STATE.md and NEXT_TASK.md in order; stopped at the three-file read cap.
@@ -20,3 +20,14 @@ PocketCode research pass completed 2026-11-16.
 - Red-team corrections: concurrency/linearization omission; Python free-threaded-doc scope; in-memory outbox vs durable exactly-once; destination cooperation for exactly-once; CI must assert resolved checkout SHA.
 - No source/test/workflow/adapter/provider/runtime/device/browser/PR/infrastructure changes. Exact-tree tests and acceptance NOT RUN.
 - Next: establish bounded patch route; implement live-journal receipt capture with explicit linearization contract and focused regressions; only then exact-SHA tests.
+
+
+PocketCode bounded implementation pass completed 2026-11-16.
+- First action: checkpoint IN PROGRESS commit e1a97e27db5f966a610e5edff8a9527e57362809.
+- Re-read BOOT.md, STATE.md and NEXT_TASK.md; checked CHECKPOINT.md and INBOX_chatgpt.md. Startup constraints/gaps remain unchanged.
+- Recovery note committed: AI_COLLAB/RECOVERED_2026-11-16_BOUNDED_PATCH_PASS.md, commit 69ea992c218f7ff7374de8de3bf7a2207f80937b. Compare from prior DONE 7f262d9 to e1a97e2 is exactly one checkpoint-only commit.
+- VERIFIED new patching finding: Git Data API can create a blob, construct a tree based on an existing tree, create a commit, then advance the branch with expected_sha. This enables a bounded path-level replacement without Contents API, but it still requires the complete new blob content for each changed file; it is not a hunk/patch application API.
+- VERIFIED tree inventory identifies scripts/event_journal.py (blob e64d18be, 10,473 bytes), scripts/result_receipts.py (5b78cfc3, 38,108 bytes), scripts/test_event_journal.py (2907e498, 12,147 bytes), scripts/test_result_receipts.py (8e35e1cc, 45,628 bytes). The source/test files exceed the safe whole-file reading/reconstruction budget or would require additional file reads beyond this pass limit. No source blobs were opened, no large file was reconstructed, and no source/test edit was made.
+- UNKNOWN: exact branch latest-five commit order remains unresolved because commit search omits useful messages and ancestry; compare establishes only the checkpoint delta.
+- NOT RUN: exact-tree focused/full tests, device/browser acceptance, adapter conformance. No workflow/PR/provider/runtime/adapter/deployment/infrastructure changes.
+- Next: use a bounded source-editing environment that can apply a verified patch against the exact blob without reconstructing large files, or split the change into a new small module with a reviewed import seam; then focused tests and exact-SHA CI proposal. Preserve all gates and IDs.
