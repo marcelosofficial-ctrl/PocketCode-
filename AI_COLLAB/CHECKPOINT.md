@@ -1,4 +1,4 @@
-STATUS: IN PROGRESS
+STATUS: DONE
 
 PocketCode pass completed 2026-11-16.
 - First successful repository write set checkpoint IN PROGRESS at 22b659e1c96a19fe8144067ff22fe14e6eef2ac3.
@@ -62,3 +62,12 @@ PocketCode bounded implementation pass completed 2026-11-16.
 - Red-team corrections: five prior weak claims corrected in the research note. No source, test, workflow, adapter, runtime, PR or canonical acceptance IDs changed.
 - NOT RUN: tests and device/browser acceptance. Exact-tree CI remains unverified.
 - Next: implement only a bounded journal API/test patch after a safe patch-capable editing/execution route exists; then prepare exact-SHA CI proposal for owner authorization.
+
+
+## 2026-11-16 continuation pass
+- Recovery note: AI_COLLAB/RECOVERED_2026-11-16_OWNER_AND_REVIEWER_UPDATES.md (commit a610c04ffcf371195dc12b99dfa4964b05d82b23) records the owner-authored intervening update and Claude's OPEN housekeeping request. No source/test/workflow/acceptance changes were present in that recovery delta.
+- Research deliverable: AI_COLLAB/GRANT_REPLAY_FAILURE_MATRIX_2026-11-16.md (commit 5baaf3535e55eecb74e14e148455cf6fd57292ee), with 16 crash/ambiguity cases, 15 deterministic model regression cases, and adapter-only gated tests.
+- Research opened AWS transactional outbox, Debezium outbox router, CloudEvents, Azure Service Bus duplicate detection/recovery, Amazon SQS FIFO, Kafka 4.4 and Microsoft idempotent-consumer guidance. Clarified bounded broker dedupe windows, consumer inbox retention, per-key ordering and downstream atomicity limits.
+- No source/test/workflow/runtime/provider/adapter/PR/canonical acceptance ID changed. No paid service or dependency selected.
+- NOT RUN: exact-tree model tests, adapter tests, device/browser acceptance. CASE-04 remains INCOMPLETE / timed_out; P39 implementation/adapter conformance remains CLOSED.
+- Next: inspect the exact current EventJournal and ResultReceiptStore APIs within the 3-file budget, then implement the smallest owner-authorized source/test change only if safe patching preserves unrelated file content. Separately handle Claude's non-blocking index/checkpoint-policy request; do not modify LingoMingle without its own BOOT-first workflow.
