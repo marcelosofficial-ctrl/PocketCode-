@@ -1,4 +1,7 @@
-STATUS: DONE
+STATUS: IN PROGRESS
+
+PocketCode pass started 2026-11-16.
+- First successful repository write: set checkpoint IN PROGRESS; prior checkpoint history retained below.
 
 PocketCode continuation pass completed 2026-11-16 10:40 CET.
 - First repository action: set checkpoint IN PROGRESS (commit 1d1222fc64e8fda50859ea6722470f8dfc3374cf); immediately restored the full previously fetched checkpoint history in commit 458ef0f3f04018a2efb67a5ff7ace9a26af5f755 after detecting an incomplete replacement. The history is preserved below. This checkpoint initialization mishap is disclosed in the recovery note.
@@ -22,7 +25,7 @@ PocketCode pass completed 2026-11-16.
 - Next: establish a bounded source patch route; implement receipt creation from the live EventJournal; add stale-snapshot, high-water and exact-scope regressions; execute tests against the exact resulting SHA.
 
 PocketCode research pass completed 2026-11-16.
-- Recovery: prior DONE commit f17052f -> IN PROGRESS marker 6de26ce; compare is 1 ahead / 0 behind and contains only CHECKPOINT.md. Commit-search results again lack reliable branch ancestry/message reconciliation; do not claim ordered latest five.
+- Recovery: prior DONE commit f17052f -> IN PROGRESS marker 6de26ce; compare is 1 ahead / 0 behind and contains only CHECKPOINT.md. Commit-search results again lack reliable branch ancestry/message reconciliation; do not claim ordered latest-five branch history from that search output.
 - New deliverable: AI_COLLAB/RESEARCH_PASS_2026-11-16_RECEIPT_ATOMICITY_REPLAY_CI.md, commit e7251c06c76b61699e63262816ad06aaad6987c1.
 - Ranked and researched five gaps: receipt provenance/linearization, coherent journal snapshots, exact-SHA CI, outbox replay/order, producer trust/lifecycle evidence.
 - New correction: deriving inside create_receipt closes detached-snapshot age but coherent multi-field capture still needs a shared lock/transaction or explicit non-thread-safe contract.
