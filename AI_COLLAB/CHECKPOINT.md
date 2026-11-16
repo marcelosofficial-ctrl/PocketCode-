@@ -1,4 +1,4 @@
-STATUS: DONE
+STATUS: IN PROGRESS
 
 PocketCode pass completed 2026-11-16.
 - VERIFIED: First repository action set this checkpoint IN PROGRESS. Re-read BOOT.md, STATE.md and NEXT_TASK.md in order; stopped at the three-file read cap.
