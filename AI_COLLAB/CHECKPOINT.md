@@ -1,4 +1,4 @@
-STATUS: IN PROGRESS
+STATUS: DONE
 
 PocketCode pass completed 2026-11-16.
 - First successful repository write set checkpoint IN PROGRESS at 22b659e1c96a19fe8144067ff22fe14e6eef2ac3.
@@ -53,3 +53,12 @@ PocketCode bounded implementation pass completed 2026-11-16.
 - UNKNOWN: exact branch latest-five commit order remains unresolved because commit search omits useful messages and ancestry; compare establishes only the checkpoint delta.
 - NOT RUN: exact-tree focused/full tests, device/browser acceptance, adapter conformance. No workflow/PR/provider/runtime/adapter/deployment/infrastructure changes.
 - Next: use a bounded source-editing environment that can apply a verified patch against the exact blob without reconstructing large files, or split the change into a new small module with a reviewed import seam; then focused tests and exact-SHA CI proposal. Preserve all gates and IDs.
+
+
+## 2026-11-16 pass completion
+- Research deliverable: AI_COLLAB/RESEARCH_PASS_2026-11-16_PYODIDE_CONCURRENCY_OUTBOX_CI_TRUST.md (commit bf32b87913cf5be3e39f35679cc555cc7dac0c43).
+- VERIFIED: exact Pyodide 314.0.5 documentation says Python threading/multiprocessing are unsupported; previous universal shared-thread-lock recommendation is withdrawn for the Pyodide baseline.
+- Corrected receipt composition, outbox/inbox crash semantics, exact-source CI identities, producer authentication and worker termination evidence.
+- Red-team corrections: five prior weak claims corrected in the research note. No source, test, workflow, adapter, runtime, PR or canonical acceptance IDs changed.
+- NOT RUN: tests and device/browser acceptance. Exact-tree CI remains unverified.
+- Next: implement only a bounded journal API/test patch after a safe patch-capable editing/execution route exists; then prepare exact-SHA CI proposal for owner authorization.
