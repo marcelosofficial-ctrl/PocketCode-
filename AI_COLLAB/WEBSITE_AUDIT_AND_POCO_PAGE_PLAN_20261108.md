@@ -16,11 +16,11 @@ NOT read: src/pages/index.astro (56 KB), src/pages/ja/*, the other eleven projec
 ## 3. Accuracy audit of what was read (revdev.astro)
 | Claim on the page | Status | Evidence |
 |---|---|---|
-| "Native .NET 8 / WPF control surface" | UNVERIFIED | no RevDev application source exists in any of the owner's 12 GitHub repositories (VERIFIED by listing; DevRelay-Missions has only handoffs, incoming, maintenance, payloads, protocol, publication, research, results, resume). Only the owner's PC can confirm |
+| "Native .NET 8 / WPF control surface" | UNVERIFIED | no RevDev application source exists in any of the owner's 12 GitHub repositories (VERIFIED by listing). Only the owner's PC can confirm |
 | "5 PROVIDERS" (ExactArtifact, GapTrace, VektorDeck, CrashScope, EasyFlix) | UNVERIFIED by me | the five repositories exist and are public; the provider contracts live in RevDev source I cannot see |
 | "self-contained Windows x64 package, guarded installer/update/uninstall" | UNVERIFIED | PC state is UNKNOWN in RevDev's own BOOT; the page hedges ("still in progress") |
-| "HOSTED_DENY", "local-first", Dev Relay as execution authority | VERIFIED in RevDev docs (private repo) | resume/revdev/BOOT.md and the onboarding document |
-| "FINAL ACCEPTANCE IN PROGRESS" | LIKELY OVERSTATED | RevDev's own state: all acceptance suites NOT RUN, zero accepted, P0 durable publication OPEN. Suggest "ACTIVE DEVELOPMENT · ACCEPTANCE PENDING" |
+| "HOSTED_DENY", "local-first", Dev Relay as execution authority | VERIFIED in RevDev's private documentation | not quoted here |
+| "FINAL ACCEPTANCE IN PROGRESS" | LIKELY OVERSTATED | RevDev's acceptance status is tracked in its private repository and is deliberately not recorded in this public file; the owner confirms against it. Suggest "ACTIVE DEVELOPMENT · ACCEPTANCE PENDING" |
 | "A fresh agent can resume from machine-readable truth" | PARTLY TRUE | true in intent; the entry documents were far too large for a free chat until 2026-11-07. Claim is fine once the new entry set proves itself |
 These are proposals for the owner to approve; none has been applied.
 
@@ -32,3 +32,6 @@ These are proposals for the owner to approve; none has been applied.
 
 ## 5. Remaining audit work
 Read index.astro and the ja pages; audit each of the other eleven project pages against its repository README and CI (public repos allow this); verify the Japanese pages mirror the English claims; check README.md and PROJECT-GOALS.md for stale facts; then prepare exact copy changes for owner review. Deploying any change is a separate owner authorization (a push to main may trigger a Pages deployment; work on a branch).
+Progress: units 2 and 3 are in WEBSITE_AUDIT_HOME_AND_JA_20261115.md and WEBSITE_AUDIT_ABOUT_CONTACT_RESUME_20261115.md.
+
+Redacted 2026-11-16 (Claude): private RevDev status details were removed from this public file (project rule: RevDev material stays in the private repository). The earlier text remains in public git history; it contained no secrets.
