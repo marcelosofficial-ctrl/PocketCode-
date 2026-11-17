@@ -1,4 +1,4 @@
-STATUS: DONE
+STATUS: IN PROGRESS
 
 PocketCode pass completed 2026-11-16.
 - First successful repository write set checkpoint IN PROGRESS at 22b659e1c96a19fe8144067ff22fe14e6eef2ac3.
@@ -91,3 +91,7 @@ Pass commits: begin 430826b3911120ec79194641863beb63b338fae1; recovery 88d8e0765
 - Verified only the pass marker followed the previous DONE checkpoint; no concurrent source changes.
 - Source/test inspection and tests NOT RUN: required BOOT/STATE/NEXT_TASK reads consumed the three-file limit. Tree metadata identified four targeted files; next pass needs a startup-read budget that leaves room for source excerpts.
 - Next: inspect exact live-journal receipt API and focused tests; prefer deriving evidence from the live EventJournal and rejecting detached snapshot provenance. Keep all adapter/authentication/durability claims gated.
+
+
+PocketCode pass started 2026-11-17.
+- First repository write: set checkpoint IN PROGRESS; prior checkpoint history retained above.
