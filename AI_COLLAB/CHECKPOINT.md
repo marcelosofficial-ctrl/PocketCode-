@@ -1,4 +1,6 @@
-STATUS: DONE
+STATUS: IN PROGRESS
+
+Pass started 2026-11-17. Previous completed checkpoint and its evidence are retained below. First repository action: mark this pass IN PROGRESS.
 
 PocketCode pass completed 2026-11-17.
 - Owner-approved continuation rule applied: startup set reused because newest prior completed commit was `630225f`; no external commit required startup refresh.
