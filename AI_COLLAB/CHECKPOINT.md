@@ -1,4 +1,12 @@
-STATUS: IN PROGRESS
+STATUS: DONE
+
+PocketCode continuation pass completed 2026-11-17.
+- VERIFIED: branch-specific last five commits at pass start were `c4c2d7e` (this pass IN PROGRESS marker), `ffb6814` (prior DONE), `8078675` (receipt provenance review), `18d0d89` (prior start marker), `630225f` (prior DONE). No external commit appeared after the previous turn's completed head; reused startup context, but reread the full five-file startup set as a conservative recovery check.
+- Startup confirms NEXT_TASK priority remains live-journal receipt provenance, followed by exact-tree CI and grant/outbox replay semantics. P39 adapter conformance remains CLOSED; CASE-04 remains INCOMPLETE / `timed_out`.
+- Confirmed branch-specific HEAD was `c4c2d7e` and distinguished it from repository-wide commit search results on the default branch.
+- Inspected GitHub write capabilities: create_blob/create_tree exist, but no patch/hunk-apply action is exposed. Full-file update remains the only contents API edit route; source/test files exceed the safe rewrite limit. No source/test edits made.
+- No test or CI execution. No workflow, provider, runtime, adapter, device, PR, infrastructure, or acceptance-ID changes.
+- Next: use a patch-capable working tree to change `ResultReceiptStore.create_receipt` to derive evidence from the live `EventJournal`, migrate `journal_snapshot=` callers, add stale-snapshot regression and exact-scope/high-water tests, then run focused exact-tree tests.
 
 Pass started 2026-11-17. Previous completed checkpoint and its evidence are retained below. First repository action: mark this pass IN PROGRESS.
 
