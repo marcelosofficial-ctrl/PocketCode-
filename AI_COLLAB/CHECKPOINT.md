@@ -1,4 +1,4 @@
-STATUS: IN PROGRESS
+STATUS: DONE
 
 PocketCode pass completed 2026-11-16.
 - First successful repository write set checkpoint IN PROGRESS at 22b659e1c96a19fe8144067ff22fe14e6eef2ac3.
@@ -83,3 +83,11 @@ Pass commits: begin 430826b3911120ec79194641863beb63b338fae1; recovery 88d8e0765
 - Verified only the current pass marker followed the previous DONE checkpoint; no concurrent source changes.
 - Startup file budget consumed by BOOT, STATE and NEXT_TASK; source/test inspection and tests NOT RUN.
 - Next: inspect live EventJournal receipt API and focused tests, then address stale detached snapshot provenance if a safe bounded patch is possible.
+
+
+## Completed 2026-11-17 receipt provenance recovery
+- Recovery note: `AI_COLLAB/RECOVERED_2026-11-17_RECEIPT_PROVENANCE_READ_BUDGET.md` (commit `936e64f`).
+- Exact latest five commits, newest first: `d64b54b`, `d59ca7b`, `2e6803e`, `c06adbc`, `27363bf`.
+- Verified only the pass marker followed the previous DONE checkpoint; no concurrent source changes.
+- Source/test inspection and tests NOT RUN: required BOOT/STATE/NEXT_TASK reads consumed the three-file limit. Tree metadata identified four targeted files; next pass needs a startup-read budget that leaves room for source excerpts.
+- Next: inspect exact live-journal receipt API and focused tests; prefer deriving evidence from the live EventJournal and rejecting detached snapshot provenance. Keep all adapter/authentication/durability claims gated.
