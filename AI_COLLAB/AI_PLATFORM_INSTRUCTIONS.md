@@ -1,4 +1,4 @@
-# AI platform instructions (ChatGPT, Claude, Gemini, Grok), 2026-11-16
+# AI platform instructions (ChatGPT, Claude, Gemini, Grok), 2026-11-17
 
 Purpose: one place with the text the owner pastes into each AI's settings, so every AI starts the same way on RevDev, PocketCode and LingoMingle. Public-safe: only repo names, branches and folder names, no secrets. Update this file first whenever a project, branch or boot path changes, then re-paste.
 
@@ -9,7 +9,7 @@ Purpose: one place with the text the owner pastes into each AI's settings, so ev
 - Keep each block short. Reported limits (third-party sources, UNVERIFIED): ChatGPT about 1,500 characters per field; Gemini global instructions about 1,500 per field and a Gem about 8,000 (sources disagree); Grok about 4,000. If a field rejects the text, move it into a Gem (Gemini) or an agent or workspace (Grok) instead of cutting rules. The Claude block is 1,533 characters; Claude Project instructions are not known to share the 1,500 limit.
 - Per-project containers beat one global block when a project grows: one Gem per project, one Grok workspace per project, one ChatGPT Project per project. A ChatGPT Project's own instructions must not contradict the global block (see LingoMingle note below).
 
-## ChatGPT (Settings, Personalization, Custom instructions) - 1,344 characters
+## ChatGPT (Settings, Personalization, Custom instructions) - 1,371 characters
 ```
 Three GitHub projects, all under marcelosofficial-ctrl (use your GitHub tools).
 RevDev: repo DevRelay-Missions, branch review/revdev-adaptive-ai-workshare-2026-10-27, boot file resume/revdev/BOOT.md.
@@ -17,8 +17,15 @@ PocketCode: repo PocketCode-, branch pocketcode-ai-workflow-director-research-20
 LingoMingle (language-learning app): repo LingoMingle, branch lingomingle-foundation-2026-11-10, boot file AI_COLLAB/BOOT.md (root BOOT.md on main points to it). Its STATE.md, NEXT_TASK.md and INBOX_chatgpt.md are at the repo root; CHECKPOINT.md is in AI_COLLAB/.
 When I say "continue working on <project>", read ONLY that boot file, then STATE.md, NEXT_TASK.md, CHECKPOINT.md and INBOX_chatgpt.md, then list the last 5 commits. If CHECKPOINT says IN PROGRESS or newer commits exist, recover first (BOOT explains). I never send a handoff.
 HARD TURN LIMIT: per turn at most 3 commits (RevDev) or 5 (others), 6 to 10 tool calls, 3 files read. No Think, Work or agent mode; no long autonomous runs. First action: set CHECKPOINT.md to IN PROGRESS. Last action: set it to DONE. Then reply in 10 lines max and STOP; I will say continue.
-Never open a file over 1,500 words whole or rewrite a large file. Tag VERIFIED / INFERRED / UNKNOWN; never claim tests passed without output. If you cannot read or write GitHub, say so and stop.
+Never open a file over 1,500 words whole or rewrite a large file. Tag VERIFIED / INFERRED / UNKNOWN; never claim tests passed without output. If you cannot read or write GitHub, or a boot file is missing, say so and stop.
 ```
+
+## Startup-set reuse (decided 2026-11-17, owner-delegated, after the PocketCode chat asked)
+The startup set is the boot file, STATE.md, NEXT_TASK.md, CHECKPOINT.md and INBOX_chatgpt.md. It does not count toward the 3-file limit, which is for source and test inspection.
+1. Read the startup set fresh on the first "continue" of a chat and after any restart, IN PROGRESS state or failed write.
+2. On later turns list the last 5 commits first. If the newest commit is the one the previous turn ended on, reuse the startup set from context.
+3. If a newer commit exists (owner, Claude or another AI), re-read CHECKPOINT.md and any startup file that commit changed, say so in one line, then continue.
+4. All other limits stay: 3 or 5 commits, 6 to 10 tool calls, 10-line reply, CHECKPOINT first and last.
 
 ## Claude (claude.ai Project "RevDev", Project instructions) - 1,533 characters
 ```
@@ -58,5 +65,5 @@ Tag every claim VERIFIED (from text I pasted), INFERRED or UNKNOWN. Never say te
 ## Open items
 - UNKNOWN: exact settings menu names and limits (third-party sources only); verify in each app after pasting.
 - UNKNOWN: whether Gemini or Grok can open public GitHub URLs; PocketCode- is public, the other two repos are private.
-- Access: Claude's connector uses a fine-grained token. LingoMingle became readable and writable on 2026-11-16 after the owner added it; marcelosofficial-ctrl/portfolio is still read-only for it (HTTP 403 on branch creation), which blocks the website fixes in SITE_FIX_PLAN_20261116.md.
-- GitHub Actions: Claude's connector has no workflow-run or log tool. Since the owner turned off the failed-only Actions notification on 2026-11-16, GitHub emails every run; "Run succeeded" and "Run failed" emails in Gmail give run, branch, commit and conclusion (not test totals or logs) and count as partial evidence.
+- Access: Claude's connector uses a fine-grained token. From 2026-11-17 it can read and write every repository of the owner, including LingoMingle and portfolio.
+- GitHub Actions: Claude's connector has no workflow-run or log tool. Since the owner turned off the failed-only Actions notification on 2026-11-16, GitHub emails every run; "Run succeeded" and "Run failed" emails in Gmail give run, branch, commit and conclusion (not test totals or logs) and count as partial evidence. For the portfolio, pull-request check runs are readable.
