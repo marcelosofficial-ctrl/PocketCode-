@@ -1,3 +1,9 @@
+STATUS: IN PROGRESS
+Unit: bounded model-level review of positive outbox reconciliation timestamp semantics; source edits only if a safe patch-capable path exists.
+Started: 2026-11-17. Previous completed HEAD: 486947aab79b76cfb5a5de4a961d3ff80996764c.
+
+---
+
 STATUS: DONE
 
 PocketCode bounded continuation pass completed 2026-11-17.
