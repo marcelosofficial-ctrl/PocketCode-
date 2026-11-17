@@ -1,4 +1,4 @@
-STATUS: DONE
+STATUS: IN PROGRESS
 
 PocketCode pass completed 2026-11-16.
 - First successful repository write set checkpoint IN PROGRESS at 22b659e1c96a19fe8144067ff22fe14e6eef2ac3.
@@ -108,3 +108,6 @@ PocketCode pass started 2026-11-17.
 
 PocketCode pass completed 2026-11-17.
 - Final checkpoint write follows recovery-note commit `1e5c0ea6af237f46e015dc379950c50e0ae5ef80`; all prior checkpoint history retained.
+
+
+PocketCode pass started 2026-11-17 (owner-approved startup-context exception).
