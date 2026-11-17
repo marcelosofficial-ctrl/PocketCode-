@@ -1,36 +1,41 @@
-# Outbox Reconciliation Review — 2026-11-17
+# Outbox Reconciliation Review — 2026-11-18 correction
 
 ## Scope and evidence
 
-Reviewed the active-branch implementations in `scripts/fake_outbox.py`, `scripts/release_grant_conformance.py`, and the existing `scripts/test_fake_outbox.py` tests. This is a reference-model review only; it is not evidence of durable adapter behavior.
+Rechecked the exact active-branch implementation in `scripts/fake_outbox.py` (lines 110–246) and `scripts/test_fake_outbox.py` (lines 1–188). This is a synchronous in-memory reference-model review, not durable adapter evidence.
 
-## VERIFIED — positive reconciliation can omit observation time
+## VERIFIED — both reconciliation outcomes accept missing observation time
 
-`FakeOutboxStore.resolve_reconciliation()` requires a non-negative `now` for final exact-identity absence, then persists it as `reconciliation_observed_at`. The `outcome == "found"` path, however, accepts `now=None`, writes `acknowledged_at=None` and `reconciliation_observed_at=None`, and still returns `adopt_existing`.
+Correction to the 2026-11-17 review: its statement that final exact-identity absence already required `now` was incorrect.
 
-The existing test `test_lost_ack_found_reconciles_without_second_dispatch` exercises precisely that timestamp-free path. A separate test verifies timestamp persistence only when `now` is supplied. Therefore the current suite does not enforce a timestamped positive reconciliation observation.
+In `FakeOutboxStore.resolve_reconciliation()`:
 
-### Narrow follow-up
+- `outcome == "found"` validates `now` only when it is non-`None`. With `now=None`, it acknowledges and adopts the existing provider operation while persisting both `acknowledged_at` and `reconciliation_observed_at` as `None`.
+- `outcome == "not_found"` with `absence_final is True` has the same conditional-validation defect. With `now=None`, it authorizes retry and records `reconciliation_observed_at=None`. The error text says time is required, but the condition does not reject its absence.
+- Existing tests `test_lost_ack_found_reconciles_without_second_dispatch` and `test_final_exact_absence_allows_same_attempt_retry` both exercise timestamp-free transitions. The separate positive timestamp test checks persistence only when a time is supplied.
 
-- Require a valid non-negative integer `now` for `found`, just as final absence does.
-- Keep the exact-identity and authoritative gates; do not treat these caller booleans as cryptographic/provider verification.
-- Add a regression asserting that `found` without `now` is rejected and leaves the record in `reconciling`.
-- Assert that a valid `found` transition persists the same observation time in both `acknowledged_at` and `reconciliation_observed_at`.
-- Preserve adoption semantics: no second dispatch, same EffectId/AttemptId, and immutable original reservation.
+The precise defect is shared: each branch uses `if now is not None and invalid(now)` where the contract requires `if now is None or invalid(now)`. Validation must reject booleans, non-integers and negative integers as well.
 
-## VERIFIED — model boundary remains deliberately limited
+## Required narrow correction
 
-Both outbox and release-grant implementations are synchronous in-memory reference models. Their staged commit points demonstrate intended atomic transition semantics only; they do not establish database transactionality, crash durability, cross-process fencing, or receiver-side atomic deduplication. The reconciliation method explicitly says caller trust is not verified. Do not promote these models to adapter-conformance evidence.
+1. For both authoritative exact-identity `found` and final `not_found`, require `now` to be a non-negative integer before mutating the record.
+2. Add no-time rejection tests for both outcomes; assert the exception and that the record remains `reconciling` with no provider reference, acknowledgement timestamp, or retry authorization.
+3. Add invalid-time cases (`True`, negative integer, non-integer) for both branches.
+4. Assert valid `found` stores the same `now` in `acknowledged_at` and `reconciliation_observed_at`; assert valid final absence stores `now` in `reconciliation_observed_at` and retains the same EffectId/AttemptId.
+5. Preserve no-second-dispatch adoption and exact-final-absence gating. Caller booleans remain assertions, not cryptographic/provider proof.
 
-## INFERRED — next implementation order
+## Model boundary
 
-1. Fix positive-reconciliation timestamp validation and focused tests in the fake outbox model.
-2. Keep provider evidence authentication and exact operation/scope binding as a separate adapter boundary; booleans supplied by a caller are not proof.
-3. Continue to treat durable outbox + consumer inbox transactionality and restart/replay tests as open adapter work.
+The outbox and release-grant models are synchronous and in-memory. They do not prove database transactionality, crash durability, cross-process fencing, receiver-side atomic deduplication, or authenticity of reconciliation evidence.
 
 ## Execution status
 
-- Source review: complete.
-- Source/test changes: none in this review.
-- Tests/CI: NOT RUN.
-- Production adapter/durable storage: UNKNOWN / NOT PROVEN.
+- Source review: VERIFIED at active-branch blob `813957e5061d40cba2ebb5e2936edcbac645820b`.
+- Test review: VERIFIED at active-branch blob `67951a77f87e9523c9080970068fd158680f23a9`.
+- Source/test changes: NOT MADE; the available write API replaces complete files and no safe patch/hunk action is exposed.
+- Current marker commit combined status: no status contexts; associated workflow runs: none. Tests/CI: NOT RUN.
+- Durable provider adapter and authoritative evidence: UNKNOWN / NOT PROVEN.
+
+## Next
+
+Use a patch-capable working tree to implement the two-branch timestamp guard and focused regressions. Then return to the higher-ranked live-journal receipt provenance/freshness gap. Do not change workflows, adapters, provider/runtime choices, PRs, canonical acceptance IDs, or P39/CASE-04 gates.
