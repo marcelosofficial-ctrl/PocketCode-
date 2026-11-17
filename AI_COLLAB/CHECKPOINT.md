@@ -1,4 +1,4 @@
-STATUS: IN PROGRESS
+STATUS: DONE
 
 PocketCode pass completed 2026-11-16.
 - First successful repository write set checkpoint IN PROGRESS at 22b659e1c96a19fe8144067ff22fe14e6eef2ac3.
@@ -95,3 +95,16 @@ Pass commits: begin 430826b3911120ec79194641863beb63b338fae1; recovery 88d8e0765
 
 PocketCode pass started 2026-11-17.
 - First repository write: set checkpoint IN PROGRESS; prior checkpoint history retained above.
+
+
+## Completed 2026-11-17 patch-route/read-cap pass
+- Recovery: prior DONE `1f42f96` to pre-completion head `096fddc` was 1 ahead / 0 behind; only CHECKPOINT.md changed. Latest five verified: `096fddc`, `1f42f96`, `936e64f`, `d64b54b`, `d59ca7b`.
+- Recovery note: `AI_COLLAB/RECOVERED_2026-11-17_PATCH_ROUTE_AND_READ_CAP.md`, commit `1e5c0ea6af237f46e015dc379950c50e0ae5ef80`.
+- VERIFIED: exact current head `096fddc` had zero status contexts, zero check runs and zero Actions workflow runs.
+- VERIFIED: no GitHub patch-application action is exposed; PR patch retrieval is read-only. Source edits require full-file replacement, unsafe for the large source/test files under current constraints.
+- Read BOOT.md, STATE.md and NEXT_TASK.md. INBOX and source/test files not read because the three-file cap was exhausted. No source/test/workflow/adapter/provider/PR/device/runtime changes.
+- NOT RUN: tests, CI, device/browser acceptance and adapter conformance. P39 implementation/adapter conformance remains CLOSED; CASE-04 remains INCOMPLETE / timed_out.
+- Next: owner must resolve the three-startup-file versus three-file-total conflict (allow one targeted source/test read or reduce continuation startup reads); then inspect targeted excerpts and apply a verified minimal patch through a patch-capable environment.
+
+PocketCode pass completed 2026-11-17.
+- Final checkpoint write follows recovery-note commit `1e5c0ea6af237f46e015dc379950c50e0ae5ef80`; all prior checkpoint history retained.
