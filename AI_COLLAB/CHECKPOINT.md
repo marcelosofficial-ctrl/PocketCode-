@@ -5,3 +5,7 @@ STATUS: DONE — 2026-11-18.
 - No source/test changes. Existing implementation packets remain valid and separate; no duplicate review document added.
 - Tests/CI NOT RUN. No workflow or PR edits, runtime/adapter changes, merges, deployments, spend or acceptance-gate changes.
 - Next: secure a patch-capable checkout/editor. Implement fake_outbox timestamp validation/tests first; then receipt API provenance/freshness in a separate unit.
+
+STATUS: IN PROGRESS — 2026-11-18.
+- New owner commits detected after prior DONE: `ad903deb` (program tracker) and `e79a60c` (LinkedIn draft); startup context and affected paths must be rechecked before further work.
+- This pass follows the current branch head `e79a60ca358cdd911d2d6f97e77e176868c174c1`.
