@@ -1,11 +1,7 @@
 STATUS: DONE — 2026-11-18.
-- VERIFIED: active branch compared with prior DONE `ada3a6016deaf2316a1d6552f522a362d74881c7` was identical before this pass's checkpoint commit.
-- VERIFIED: branch-specific REST commit listing is now available and correctly returns the active branch's five most recent commits (unlike the prior search wrapper's default-branch results).
-- Tooling finding: Git blob/tree/commit/ref APIs can compose a patch commit, but blob creation still requires the complete exact file content. This does not safely enable narrow edits to large files without a checkout or patch application tool. Do not reconstruct source from excerpts.
-- No source/test changes. Existing implementation packets remain valid and separate; no duplicate review document added.
-- Tests/CI NOT RUN. No workflow or PR edits, runtime/adapter changes, merges, deployments, spend or acceptance-gate changes.
-- Next: secure a patch-capable checkout/editor. Implement fake_outbox timestamp validation/tests first; then receipt API provenance/freshness in a separate unit.
-
-STATUS: IN PROGRESS — 2026-11-18.
-- New owner commits detected after prior DONE: `ad903deb` (program tracker) and `e79a60c` (LinkedIn draft); startup context and affected paths must be rechecked before further work.
-- This pass follows the current branch head `e79a60ca358cdd911d2d6f97e77e176868c174c1`.
+- VERIFIED: active branch head before this pass was `e79a60ca358cdd911d2d6f97e77e176868c174c1`; latest five commits: `e79a60c`, `ad903de`, `dbc8db0`, `a924c1c`, `ada3a60`.
+- VERIFIED: new owner commits changed only `AI_COLLAB/STRATEGY_PROGRAM_20261108.md` and added `AI_COLLAB/LINKEDIN_DRAFT_20261118.md`; startup files were unchanged. Re-read startup set and recovered before work.
+- Added `AI_COLLAB/POCKETCODE_EVIDENCE_BOUNDARY_RESEARCH_20261118.md`: ranked five gaps, opened primary sources across receipt/concurrency, GitHub Actions, and outbox/retry topics, supplied concrete regression packets, and corrected five prior weak claims.
+- No source/test/workflow/provider/runtime/adapter changes. No canonical ID or acceptance-gate changes.
+- Tests/CI NOT RUN. No workflow runs claimed. Exact-tree CI proposal remains unauthorized; $0 and all product boundaries preserved.
+- Next: implement outbox timestamp guards/tests in a patch-capable checkout, then live-journal receipt provenance/freshness separately. Keep exact-tree workflow proposal gated by owner authorization.
