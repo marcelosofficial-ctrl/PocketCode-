@@ -4,15 +4,15 @@
 Ask: independent adversarial review of the release-grant adapter research and the P39 static audit, before any adapter is selected.
 Reply goes to: INBOX_chatgpt.md
 
-### MSG 2026-11-08-1 | from owner | to Claude | Status: OPEN
+### MSG 2026-11-08-1 | from owner | to Claude | Status: OPEN (mostly done; see Progress)
 Ask: continue the strategy program (STRATEGY_PROGRAM_20261108.md): Apple design engineering research, PoCo context engineering and provider caching, remaining website audit, RevDev governance audit.
 Done when: each item has a committed document and a row in INDEX.md.
 Reply goes to: INBOX_chatgpt.md
-Progress 2026-11-15 (Claude): website audit units 2 and 3 done: WEBSITE_AUDIT_HOME_AND_JA_20261115.md (home EN/JA, JA project template) and WEBSITE_AUDIT_ABOUT_CONTACT_RESUME_20261115.md (about, contact, résumé EN/JA; findings N1 to N9). Nothing changed in the portfolio repo. Remaining for that item: ja/resume/software and support, resume/support, 404, PDF and QR check, EN project pages vs READMEs, then copy changes on a branch for owner review. INDEX.md row and tracker row 5 not yet updated (lead writer). Other items unchanged.
+Progress 2026-11-19 (Claude): tracker updated (STRATEGY_PROGRAM_20261108.md rows 3, 5, 6, 7, 8, 9). Context engineering and provider caching: DONE (PROVIDER_CACHING_AND_CONTEXT_ENGINEERING_20261110.md). RevDev governance audit: DONE (GOVERNANCE_AUDIT_REVDEV_20261116.md in the private repo). Website audit: MOSTLY DONE (units 2 to 4, SITE_FIX_PLAN_20261116.md; portfolio pull requests #28 to #31 merged and deployed; the home pages and the résumé PDF are left, reasons and exact edits in the plan). LinkedIn: draft in LINKEDIN_DRAFT_20261118.md. Still open for Claude: Apple design (remaining HIG pages) and the competitor-flow comparison (Happy Coder first: MIT, end-to-end encrypted relay, wraps Claude Code and Codex on the user's computer). INDEX.md rows for the new files are with ChatGPT (MSG 2026-11-16-1).
 
-### MSG 2026-11-15-1 | from owner | to Claude | Status: DONE 2026-11-15 except LingoMingle access
+### MSG 2026-11-15-1 | from owner | to Claude | Status: DONE 2026-11-17 (LingoMingle access resolved)
 Ask: custom instructions for ChatGPT, Gemini and Grok that cover RevDev, PocketCode and the new language-learning app LingoMingle; owner delegated the decisions.
-Result: AI_PLATFORM_INSTRUCTIONS.md (three blocks) and kit/templates/new-project/ (BOOT, STATE, NEXT_TASK, CHECKPOINT, INBOX_TEMPLATE) in this repo. LingoMingle (marcelosofficial-ctrl/LingoMingle) returned HTTP 404 to Claude's connector, so it was not read and no kit was installed there; its branch main and AI_COLLAB/BOOT.md are placeholders. Needed: owner grants the Claude GitHub connector access to LingoMingle, or ChatGPT installs the template.
+Result: AI_PLATFORM_INSTRUCTIONS.md (blocks for ChatGPT, Claude, Gemini and Grok, plus the startup-set reuse rule) and kit/templates/new-project/. LingoMingle is readable since 2026-11-17; it has its own BOOT on the working branch plus a root BOOT.md pointer on main (commit 85c40e1), so the starter kit was not needed there.
 Reply goes to: INBOX_chatgpt.md
 
 ### REPLY 2026-11-09-1 | from ChatGPT | to Claude | Status: DONE e5e8cabad71e4f7fb28ec4de141b593f93a858ff
