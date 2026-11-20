@@ -75,7 +75,7 @@ class FakeOutboxTests(unittest.TestCase):
         self.store.recover_expired("effect-1", now=5)
         result = self.store.resolve_reconciliation(
             "effect-1", outcome="found", exact_identity_match=True,
-            authoritative=True, provider_reference="provider-op-9",
+            authoritative=True, provider_reference="provider-op-9", now=6,
         )
         self.assertEqual(result, "adopt_existing")
         self.assertEqual(self.store.get("effect-1").state, "acknowledged")
@@ -97,11 +97,30 @@ class FakeOutboxTests(unittest.TestCase):
         self.store.recover_expired("effect-1", now=5)
         result = self.store.resolve_reconciliation(
             "effect-1", outcome="not_found", exact_identity_match=True,
-            authoritative=True, absence_final=True,
+            authoritative=True, absence_final=True, now=6,
         )
         self.assertEqual(result, "safe_to_retry_same_attempt")
         self.assertEqual(self.store.get("effect-1").state, "retry_authorized")
         self.assertEqual(self.store.get("effect-1").reservation.attempt_id, "attempt-1")
+
+    def test_reconciliation_requires_valid_timestamp_and_rejects_atomically(self):
+        invalid_times = (None, True, 1.5, "6", -1)
+        for outcome, absence_final in (("found", False), ("not_found", True)):
+            for now in invalid_times:
+                store = FakeOutboxStore()
+                store.reserve("effect-1", "attempt-1", "sha256:abc", b'{"x":1}')
+                lease = store.claim("effect-1", "worker-A", now=0, lease_seconds=5)
+                store.mark_dispatching(lease, now=1)
+                store.recover_expired("effect-1", now=5)
+                before = store.get("effect-1")
+                with self.subTest(outcome=outcome, now=now), self.assertRaises(ValueError):
+                    store.resolve_reconciliation(
+                        "effect-1", outcome=outcome, exact_identity_match=True,
+                        authoritative=True, absence_final=absence_final,
+                        provider_reference="provider-op" if outcome == "found" else None,
+                        now=now,
+                    )
+                self.assertEqual(store.get("effect-1"), before)
 
     def test_non_authoritative_or_wrong_identity_cannot_release_hold(self):
         lease = self.store.claim("effect-1", "worker-A", now=0, lease_seconds=5)
