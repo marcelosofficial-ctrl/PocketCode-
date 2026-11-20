@@ -83,3 +83,29 @@ jobs:
           test "$LANE6A" = success
           test "$LANE6B" = success
           test "$FULLSUITE" = success
+
+  # Exact-head lane (added 2026-11-20, owner-authorized): checks out the commit that
+  # triggered this run, so a green result is evidence for that commit's tree. The
+  # historical job above stays pinned to the P40 target and is reported separately.
+  unittest-head:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out the triggering commit
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Record triggering SHA and execution environment
+        run: |
+          echo "GITHUB_SHA=$GITHUB_SHA"
+          echo "checked-out HEAD=$(git rev-parse HEAD)"
+          test "$GITHUB_SHA" = "$(git rev-parse HEAD)"
+          python --version
+          python -c "import platform, sqlite3, sys; print('SQLite:', sqlite3.sqlite_version); print('OS:', platform.platform())"
+
+      - name: Full scripts Python conformance suite at the triggering commit
+        run: python -m unittest discover -s scripts -p "test_*.py" -v
