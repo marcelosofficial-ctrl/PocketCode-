@@ -162,7 +162,7 @@ class FakeOutboxTests(unittest.TestCase):
         self.store.recover_expired("effect-1", now=5)
         self.store.resolve_reconciliation(
             "effect-1", outcome="found", exact_identity_match=True,
-            authoritative=True, provider_reference="provider-op-1",
+            authoritative=True, provider_reference="provider-op-1", now=6,
         )
         with self.assertRaises(OutboxConflict):
             self.store.claim("effect-1", "worker-B", now=6, lease_seconds=5)
