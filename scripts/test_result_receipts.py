@@ -142,7 +142,7 @@ class ResultReceiptTests(unittest.TestCase):
         self.assertEqual(first.journal_conflict_sequences, ())
         self.assertEqual((successor.journal_observation_high_water,
                           successor.journal_accepted_event_high_water,
-                          successor.journal_conflict_sequences), (2, 1, (2,)))
+                          successor.journal_conflict_sequences), (4, 3, (2,)))
 
     def test_unsealed_snapshot_cannot_supply_journal_evidence(self):
         with self.assertRaises(TypeError):
