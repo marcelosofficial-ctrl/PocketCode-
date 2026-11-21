@@ -49,3 +49,9 @@ Evidence: VERIFIED / INFERRED / UNKNOWN / NOT RUN. Tests: PASS / FAIL / NOT RUN.
 ## 2026-11-15 research corrections
 - Corrected previous overclaims: frozen dataclasses/module-private sentinels are not security boundaries; snapshot time-of-check can lag journal state; run #63 is historical-checkout PASS only, not current-source CI. Recovered the stale checkpoint chain and removed escaped newline debris from the state record.
 - Project name remains PocketCode per owner decision recorded in `10274bd`. No workflow, adapter, provider, device, PR or canonical acceptance changes made.
+
+
+## 2026-11-21 exact-head CI triage
+- VERIFIED: Exact-head run #72 (SHA 696d8cbed7ae0e12a59b515f47ad0b90c2e70686) fails unittest-head; pinned historical unittest job passes. The 280-test suite reports exactly one failure: test_late_journal_conflict_creates_immutable_successor_receipt at scripts/test_result_receipts.py:143. Assertion expected (2,1,(2,)) but actual journal_snapshot() yields (4,3,(2,)); helper preloads 4 observations, 3 accepted events and scoped conflict sequence 2. The expected tuple should likely match helper watermarks, but this test's "late conflict" intent is also invalid because it creates a fresh preloaded snapshot instead of appending conflict after predecessor receipt. VERIFIED log, INFERRED design defect.
+- BLOCKED: test_result_receipts.py is 45KB and GitHub connector exposes whole-file replacement only, no surgical patch. No safe fix this pass; don't rewrite large test file. Focused fragment confirmed assertion lines 137-143.
+- Next: find an authorized/safe patch-capable editing path, then redesign this regression to retain one journal and append a genuine late conflict, derive successor snapshot from that same journal, assert (4,3,(2,)) as applicable and predecessor immutability. Run exact-head CI and record SHA/results.
