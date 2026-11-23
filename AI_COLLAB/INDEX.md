@@ -22,8 +22,7 @@ Size: S <8 KB, M 8–25 KB, L 25–50 KB, XL >50 KB (never load XL whole). “Hi
 | IPHONE_ONLY_APP_STORE_ROADMAP_20261108.md | Phone-only build/signing/submission; paid steps deferred by D-006 |
 | WEBSITE_AUDIT_AND_POCO_PAGE_PLAN_20261108.md | Portfolio audit/page plan; proposed |
 | GOVERNANCE_AUDIT_20261108.md | Governance review; proposed |
-| COMPETITOR_FLOW_HAPPY_20261122.md | Happy (slopus/happy) flow comparison for R-P4; documents read, code not read; no PocketCode claims (S) |
-| COMPETITOR_FLOW_VIBE_KANBAN_20261123.md | Vibe Kanban flow comparison; project sunsetting since 2026-04-10; code not read; no PocketCode claims (S) |
+| COMPETITOR_FLOW_HAPPY_20261122.md; COMPETITOR_FLOW_VIBE_KANBAN_20261123.md; COMPETITOR_FLOW_CLOUDCLI_20261123.md; COMPETITOR_FLOW_CLINE_AIDER_20261123.md | Strategy question 1: flow comparisons of five tools plus roll-up (last file); documents read, code not read; no PocketCode claims (S each) |
 
 ## Repo root (outside AI_COLLAB)
 ../AGENTS.md decision rights; ../ARCHITECTURE.md architecture; ../DECISIONS.md D-IDs; ../ROADMAP.md; ../PRODUCT_SPEC.md; ../SECURITY.md; ../PROJECT_STATUS.md (XL history); ../CLAUDE.md; ../GEMINI.md.
