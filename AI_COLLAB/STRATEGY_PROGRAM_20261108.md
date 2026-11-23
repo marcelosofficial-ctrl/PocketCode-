@@ -1,10 +1,10 @@
 # STRATEGY PROGRAM: design, PoCo, App Store, website, LinkedIn, governance (tracker)
 
-Started 2026-11-08 by Claude from the owner's master brief. The brief's requirements are the master; findings here support them. Status values: DONE (evidence in repo), PARTIAL, NOT STARTED, BLOCKED, WAITING. Tags as in other docs. Updated 2026-11-23 by Claude (rows 3, 5, research question 1).
+Started 2026-11-08 by Claude from the owner's master brief. The brief's requirements are the master; findings here support them. Status values: DONE (evidence in repo), PARTIAL, NOT STARTED, BLOCKED, WAITING. Tags as in other docs. Updated 2026-11-23 by Claude (rows 1, 3, 5, research questions 1 and 2).
 
 | # | Deliverable | Status | Evidence / where | Next step | Blocker or owner decision |
 |---|---|---|---|---|---|
-| 1 | Apple design engineering research | PARTIAL (web app done; RevDev blocked) | APPLE_DESIGN_ENGINEERING_SPEC_20261108.md | verify the UNKNOWN items on the iPhone; read the remaining HIG pages | RevDev UI source is not on GitHub (VERIFIED by listing) |
+| 1 | Apple design engineering research | PARTIAL (web app done; RevDev blocked) | APPLE_DESIGN_ENGINEERING_SPEC_20261108.md; APPLE_HIG_ADDENDUM_20261123.md (Typography, Layout, Buttons, Sheets, Accessibility read; contrast check of the spec's tokens) | fix the state and accent tokens that miss 4.5:1; verify the UNKNOWN items on the iPhone; read Color, Dark Mode, bars and lists pages | RevDev UI source is not on GitHub (VERIFIED by listing) |
 | 2 | RevDev modernization plan | BLOCKED (partly) | website claims .NET 8 / WPF (UNVERIFIED by source) | document-level plan only | PC access |
 | 3 | PoCo product and architecture research | DONE for context engineering, provider caching and the differentiation comparison (five third-party tools plus Anthropic's own phone access); rest PARTIAL | PROVIDER_CACHING_AND_CONTEXT_ENGINEERING_20261110.md; COMPETITOR_FLOW_HAPPY_20261122.md, COMPETITOR_FLOW_VIBE_KANBAN_20261123.md, COMPETITOR_FLOW_CLOUDCLI_20261123.md, COMPETITOR_FLOW_CLINE_AIDER_20261123.md (roll-up, corrected for first-party cloud sessions and Remote Control); kit/docs/REUSE_BACKLOG.md | read Anthropic's Remote Control limitations page and how approvals show on the phone; read LICENSE files before any reuse; update R-P4 in REUSE_BACKLOG.md (lead) | none |
 | 4 | iPhone-only App Store roadmap | DONE (first pass); paid steps DEFERRED by D-006 | IPHONE_ONLY_APP_STORE_ROADMAP_20261108.md; NO_SPEND_PWA_PATH_20261108.md | PWA hardening | none |
@@ -22,5 +22,5 @@ Started 2026-11-08 by Claude from the owner's master brief. The brief's requirem
 
 ## Research questions queued
 1. DONE 2026-11-23: differentiation comparison of Happy, Vibe Kanban, CloudCLI, Cline and Aider (four COMPETITOR_FLOW_* files; roll-up in COMPETITOR_FLOW_CLINE_AIDER_20261123.md, which also records that Anthropic's own Claude Code phone access offers cloud sessions and Remote Control, so phone control and "works with the computer off" are not unique). Remaining follow-ups are listed in row 3.
-2. Remaining HIG pages (typography, layout, sheets, accessibility) for the web spec.
+2. DONE for the five named pages 2026-11-23 (APPLE_HIG_ADDENDUM_20261123.md: Typography, Layout, Buttons, Sheets, Accessibility). Pages still unread are listed in the addendum, section 3.
 3. Repo-map extracts and a CI strategy that fit a phone-only workflow.
