@@ -59,3 +59,8 @@ Close the highest-value model-level evidence gaps without reopening P39 adapter 
 - Preserve LOOP-01..14, CASE-01..16, D-IDs and OD-01..OD-13. PocketCode remains the adopted project name; PoCo is not adopted.
 - P39 implementation/adapter conformance CLOSED; CASE-04 INCOMPLETE / timed_out; report format 1 retained; successful Pyodios `summary.json` preserved.
 - No workflow edits, adapter/provider integrations, device/browser acceptance, deployments, secrets, PR #2/#3/#4 changes or artifact reruns.
+
+
+## 2026-11-24 patch-anchor recovery
+- Reconfirmed the live API still accepts `journal_snapshot` (detached provenance) and legacy caller watermarks. Patch attempts aborted before blob creation/commit; exact-anchor failures exposed mismatch in the test file's three snapshot call sites and late-conflict block shape. No source changes were made.
+- Safe next implementation: fetch `result_receipts.py` and `test_result_receipts.py` at one pinned head; transform in a single in-memory script with anchor assertions, and print every targeted section before blob creation. Convert the helper to return the live `EventJournal`; replace all three injection calls with `journal=...`; remove the attempt-mismatch test in favor of attempt-scoped conflicts from the live journal; keep an explicit `journal_snapshot=` TypeError regression; redesign late conflict to append to the same journal after predecessor receipt creation; then commit the two files together and verify exact blobs. Tests NOT RUN.
