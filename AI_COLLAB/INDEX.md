@@ -17,6 +17,7 @@ Size: S <8 KB, M 8–25 KB, L 25–50 KB, XL >50 KB (never load XL whole). “Hi
 | STRATEGY_PROGRAM_20261108.md | Strategy tracker (live) |
 | APPLE_DESIGN_ENGINEERING_SPEC_20261108.md | PoCo web design proposal; corrected 2026-11-10; not implemented |
 | APPLE_HIG_ADDENDUM_20261123.md | HIG Typography, Layout, Buttons, Sheets and Accessibility read; contrast check of the spec's tokens; proposed, extends the spec (S) |
+| PHONE_ONLY_CI_VISIBILITY_20261124.md | How AI collaborators read CI results without Actions log access; evidence-branch pattern; proposed (S) |
 | PROVIDER_CACHING_AND_CONTEXT_ENGINEERING_20261110.md; CLAUDE_PROVIDER_AND_LANES_INDEPENDENT_AUDIT_20261111.md | Provider cache/context proposal and independent audit; no provider selected |
 | RED_TEAM_CORRECTIONS_CLAUDE_20261110.md | Corrections to earlier Claude documents |
 | NAME_COLLISION_RESEARCH_20261111.md | PocketCode/PoCo naming collisions; no rename; clearance pending |
