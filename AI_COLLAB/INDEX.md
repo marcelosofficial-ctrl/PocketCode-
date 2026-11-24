@@ -31,6 +31,7 @@ Size: S <8 KB, M 8–25 KB, L 25–50 KB, XL >50 KB (never load XL whole). “Hi
 
 ## Contracts and recovery
 | Path | Purpose / status |
+| GITHUB_SURGICAL_PATCH_WORKFLOW.md | Safe exact-anchor in-memory patches using Git blobs/trees/commits with expected-head lease; procedure (S) |
 |---|---|
 | EXECUTION_EVIDENCE_AND_RECOVERY_CONTRACT_20261106.md | Lifecycle/recovery/evidence (L) |
 | EVENT_JOURNAL_MODEL_20261106.md; FAKE_OUTBOX_MODEL_20261106.md | In-memory journal and effect-dispatch models |
