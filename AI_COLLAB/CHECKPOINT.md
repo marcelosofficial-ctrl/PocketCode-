@@ -1,1 +1,1 @@
-IN PROGRESS: live-journal receipt provenance migration | files: scripts/result_receipts.py, scripts/test_result_receipts.py | 2026-11-25
+RECOVERED: IN PROGRESS marker a3d12909 is newer than prior DONE checkpoint; it is only a checkpoint update, no source edits. Source files remain at SHAs 5b78cfc (result_receipts) and 70ea04c (tests). Recovery verified startup files, latest 5 commit paths (checkpoint-only), and exact method/test blocks. Proceeding with live-journal migration.
