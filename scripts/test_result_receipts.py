@@ -187,8 +187,7 @@ class ResultReceiptTests(unittest.TestCase):
         for values in ({"journal_observation_high_water": 1},
                        {"journal_accepted_event_high_water": 1},
                        {"journal_conflict_sequences": (1,)}):
-            with self.subTest(values=values), self.assertRaisesRegex(
-                    ReceiptConflict, "EventJournal.receipt_snapshot"):
+            with self.subTest(values=values), self.assertRaises(TypeError):
                 self.create(**values)
 
     def test_detached_journal_snapshot_keyword_is_rejected(self):
