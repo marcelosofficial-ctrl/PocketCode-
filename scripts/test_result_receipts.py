@@ -135,15 +135,14 @@ class ResultReceiptTests(unittest.TestCase):
                           receipt.journal_conflict_sequences), (4, 3, (2,)))
 
     def test_late_journal_conflict_creates_immutable_successor_receipt(self):
+        first = self.receipt
+        first_digest = first.receipt_sha256
         journal = EventJournal(expected_audience="pocketcode-journal")
         producer = AuthenticatedProducer("issuer", "worker", "key", "fp",
                                          "pocketcode-journal", ("worker-events",))
         journal.append(producer=producer, source="worker-events", event_id="event-1",
                        payload=b'{"state":"started"}', occurred_at_ms=1, observed_at_ms=2,
                        effect_id="effect-1", attempt_id="attempt-1")
-        first = self.create(revision_key="receipt-rev-1-journal", created_at_ms=100,
-                           journal=journal)
-        first_digest = first.receipt_sha256
         journal.append(producer=producer, source="worker-events", event_id="event-1",
                        payload=b'{"state":"failed"}', occurred_at_ms=1, observed_at_ms=3,
                        effect_id="effect-1", attempt_id="attempt-1")
